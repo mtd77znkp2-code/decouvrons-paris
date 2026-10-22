@@ -1,0 +1,2 @@
+/__/auth/*      https://decouvrons-paris.firebaseapp.com/__/auth/:splat      200
+/__/firebase/*  https://decouvrons-paris.firebaseapp.com/__/firebase/:splat  200

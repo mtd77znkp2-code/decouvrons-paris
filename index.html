@@ -320,7 +320,8 @@ footer{padding:40px 0 30px;color:var(--mut)}
 // Base de données Firebase (projet decouvrons-paris)
 var FB_CONFIG={
   apiKey:"AIzaSyBhd_xCy7FMFmCpjWxHrHk-9Tqwk0rC_U4",
-  authDomain:"decouvrons-paris.firebaseapp.com",
+  // Sur Netlify, la connexion passe par l’adresse du site (voir _redirects) : indispensable sur iPhone.
+  authDomain:/\.netlify\.app$/.test(location.hostname)?location.hostname:"decouvrons-paris.firebaseapp.com",
   projectId:"decouvrons-paris",
   storageBucket:"decouvrons-paris.firebasestorage.app",
   messagingSenderId:"67600209029",
@@ -378,6 +379,7 @@ function lbSubmit(key,score){
     db.collection("scores").onSnapshot(function(s){
       LB.docs=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});lbRender();
     },function(){LB.db=null;lbRender()});
+    auth.getRedirectResult().then(function(r){if(r&&r.user&&!r.user.isAnonymous)adminEnter(r.user)}).catch(function(){adminFail("Connexion impossible. Réessaie.")});
     auth.onAuthStateChanged(function(u){
       if(!u){LB.uid=null;window.ADMIN_OK=false;auth.signInAnonymously().catch(function(){});return}
       LB.uid=u.uid;window.ADMIN_OK=!u.isAnonymous;lbRender();
@@ -766,15 +768,16 @@ Array.prototype.forEach.call(document.querySelectorAll(".gtile"),function(b){
 
 // Connexion administrateur (par e-mail, discrète, en bas du site)
 $("adminLink").onclick=function(){var f=$("adminLogin");f.hidden=!f.hidden};
+function adminFail(x){$("adminLogin").hidden=false;$("adm-msg").textContent=x}
+function adminEnter(u){
+  if(u.email!==ADMIN_EMAIL){adminFail("Ce compte Google n’a pas les droits d’administration.");LB.auth.signOut();return}
+  window.ADMIN_UNLOCKED=true;$("adm-msg").textContent="";$("adminLogin").hidden=true;goTo("admin");
+}
 $("adminLogin").onsubmit=function(e){
   e.preventDefault();
-  var m=$("adm-msg");
-  if(!LB.auth){m.textContent="Connexion impossible ici.";return}
-  m.textContent="Connexion…";
-  LB.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function(r){
-    if(!r.user||r.user.email!==ADMIN_EMAIL){m.textContent="Ce compte Google n’a pas les droits d’administration.";return LB.auth.signOut()}
-    window.ADMIN_UNLOCKED=true;m.textContent="";$("adminLogin").hidden=true;goTo("admin");
-  }).catch(function(){m.textContent="Connexion annulée ou impossible. Réessaie."});
+  if(!LB.auth){adminFail("Connexion impossible ici.");return}
+  $("adm-msg").textContent="Connexion…";
+  LB.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()).catch(function(){adminFail("Connexion impossible. Réessaie.")});
 };
 $("adminOut").onclick=function(){window.ADMIN_UNLOCKED=false;if(LB.auth)LB.auth.signOut();tab("jeux");$("back").click()};
 
