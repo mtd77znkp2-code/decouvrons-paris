@@ -1,9 +1,10 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Seul le compte administrateur (créé dans Firebase > Authentication) peut modifier le contenu.
+    // Seul le compte administrateur (connexion Google) peut modifier le contenu.
     function isAdmin() {
-      return request.auth != null && request.auth.token.email == "evangaberel@icloud.com";
+      return request.auth != null && request.auth.token.email == "evangaberelinvest@gmail.com"
+        && request.auth.token.email_verified == true;
     }
 
     // Classement : tout le monde lit, chaque joueur ne modifie que sa propre ligne.

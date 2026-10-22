@@ -311,7 +311,7 @@ footer{padding:40px 0 30px;color:var(--mut)}
 </section>
 </div>
 <footer class="pf"><div class="wrap"><p>© Découvrons Paris · @decouvronsparis1</p><button class="adminlink" id="adminLink" type="button">Administration</button>
-<form id="adminLogin" class="alogin" hidden><label for="adm-mail">E-mail administrateur</label><input id="adm-mail" type="email" autocomplete="email" required><label for="adm-pass">Mot de passe</label><input id="adm-pass" type="password" autocomplete="current-password" required><button class="btn" type="submit">Se connecter</button><p id="adm-msg" class="msg"></p></form></div></footer>
+<form id="adminLogin" class="alogin" hidden><button class="btn" type="submit">Se connecter avec Google</button><p id="adm-msg" class="msg"></p></form></div></footer>
 
 <script src="https://www.gstatic.com/firebasejs/13.1.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/13.1.0/firebase-auth-compat.js"></script>
@@ -326,6 +326,8 @@ var FB_CONFIG={
   messagingSenderId:"67600209029",
   appId:"1:67600209029:web:f5ed5ec1afbcefc34e05ec"
 };
+
+var ADMIN_EMAIL="evangaberelinvest@gmail.com";
 
 // Jeux
 function $(i){return document.getElementById(i)}
@@ -763,16 +765,16 @@ Array.prototype.forEach.call(document.querySelectorAll(".gtile"),function(b){
 });
 
 // Connexion administrateur (par e-mail, discrète, en bas du site)
-$("adminLink").onclick=function(){var f=$("adminLogin");f.hidden=!f.hidden;if(!f.hidden)$("adm-mail").focus()};
+$("adminLink").onclick=function(){var f=$("adminLogin");f.hidden=!f.hidden};
 $("adminLogin").onsubmit=function(e){
   e.preventDefault();
-  var m=$("adm-msg"),v=$("adm-mail").value.trim(),pw=$("adm-pass").value;
+  var m=$("adm-msg");
   if(!LB.auth){m.textContent="Connexion impossible ici.";return}
-  if(!v||!pw)return;
-  m.textContent="Vérification…";
-  LB.auth.signInWithEmailAndPassword(v,pw).then(function(){
-    window.ADMIN_UNLOCKED=true;m.textContent="";$("adm-mail").value="";$("adm-pass").value="";$("adminLogin").hidden=true;goTo("admin");
-  }).catch(function(){m.textContent="E-mail ou mot de passe incorrect."});
+  m.textContent="Connexion…";
+  LB.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function(r){
+    if(!r.user||r.user.email!==ADMIN_EMAIL){m.textContent="Ce compte Google n’a pas les droits d’administration.";return LB.auth.signOut()}
+    window.ADMIN_UNLOCKED=true;m.textContent="";$("adminLogin").hidden=true;goTo("admin");
+  }).catch(function(){m.textContent="Connexion annulée ou impossible. Réessaie."});
 };
 $("adminOut").onclick=function(){window.ADMIN_UNLOCKED=false;if(LB.auth)LB.auth.signOut();tab("jeux");$("back").click()};
 
