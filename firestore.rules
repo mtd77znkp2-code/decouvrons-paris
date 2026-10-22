@@ -3,7 +3,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     // Seul le compte administrateur (créé dans Firebase > Authentication) peut modifier le contenu.
     function isAdmin() {
-      return request.auth != null && request.auth.token.email == "EMAIL_ADMIN";
+      return request.auth != null && request.auth.token.email == "evangaberel@icloud.com";
     }
 
     // Classement : tout le monde lit, chaque joueur ne modifie que sa propre ligne.
