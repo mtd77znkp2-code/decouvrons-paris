@@ -104,6 +104,13 @@ nav.soc a+a{background:#fff}
 .vid:hover .play{transform:scale(1.08)}
 .vid .play{transition:transform .2s}
 #home{position:relative}
+#adminBadge{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;z-index:50;display:inline-flex;align-items:center;gap:7px;padding:5px 11px 5px 9px;border-radius:999px;border:1px solid rgba(245,178,26,.45);background:rgba(14,23,64,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--c);font:700 11px/1 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25);transition:border-color .2s,background .2s}
+#adminBadge:hover{border-color:var(--a);background:rgba(24,37,92,.9)}
+#adminBadge[hidden]{display:none}
+#adminBadge i{width:7px;height:7px;border-radius:50%;background:var(--a);box-shadow:0 0 0 0 rgba(245,178,26,.6);animation:adm 2.4s infinite}
+@keyframes adm{70%{box-shadow:0 0 0 6px rgba(245,178,26,0)}100%{box-shadow:0 0 0 0 rgba(245,178,26,0)}}
+@media (prefers-reduced-motion:reduce){#adminBadge i{animation:none}}
+body.admin #loginBtn{top:52px}body.admin #loginBox{top:106px}
 #loginBtn{position:absolute;top:16px;right:16px;background:var(--a);color:#0e1740;z-index:2}
 #loginBox{position:absolute;top:70px;right:16px;width:min(300px,calc(100% - 32px));background:var(--card);border:3px solid var(--a);border-radius:20px;padding:18px;text-align:left;z-index:2}
 #loginBox[hidden],#loginBox [hidden]{display:none}
@@ -206,6 +213,7 @@ footer{padding:40px 0 30px;color:var(--mut)}
 </head>
 <body>
 <span id="top"></span>
+<button id="adminBadge" type="button" hidden title="Ouvrir l’administration"><i aria-hidden="true"></i>Admin mode</button>
 <div id="home">
   <button class="btn" id="loginBtn">👤 Connexion</button>
   <div id="loginBox" hidden>
@@ -383,6 +391,7 @@ function lbSubmit(key,score){
     auth.onAuthStateChanged(function(u){
       if(!u){LB.uid=null;window.ADMIN_OK=false;auth.signInAnonymously().catch(function(){});return}
       LB.uid=u.uid;window.ADMIN_OK=!u.isAnonymous;lbRender();
+      if(!u.isAnonymous&&u.email===ADMIN_EMAIL&&window.adminMode)adminMode(true);
     });
   }catch(e){LB.db=null}
 })();
@@ -769,9 +778,11 @@ Array.prototype.forEach.call(document.querySelectorAll(".gtile"),function(b){
 // Connexion administrateur (par e-mail, discrète, en bas du site)
 $("adminLink").onclick=function(){var f=$("adminLogin");f.hidden=!f.hidden};
 function adminFail(x){$("adminLogin").hidden=false;$("adm-msg").textContent=x}
+function adminMode(on){window.ADMIN_UNLOCKED=on;$("adminBadge").hidden=!on;document.body.classList.toggle("admin",on)}
+$("adminBadge").onclick=function(){goTo("admin")};
 function adminEnter(u){
   if(u.email!==ADMIN_EMAIL){adminFail("Ce compte Google n’a pas les droits d’administration.");LB.auth.signOut();return}
-  window.ADMIN_UNLOCKED=true;$("adm-msg").textContent="";$("adminLogin").hidden=true;goTo("admin");
+  adminMode(true);$("adm-msg").textContent="";$("adminLogin").hidden=true;goTo("admin");
 }
 $("adminLogin").onsubmit=function(e){
   e.preventDefault();
@@ -779,7 +790,7 @@ $("adminLogin").onsubmit=function(e){
   $("adm-msg").textContent="Connexion…";
   LB.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()).catch(function(){adminFail("Connexion impossible. Réessaie.")});
 };
-$("adminOut").onclick=function(){window.ADMIN_UNLOCKED=false;if(LB.auth)LB.auth.signOut();tab("jeux");$("back").click()};
+$("adminOut").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut();tab("jeux");$("back").click()};
 
 // Accueil
 function goTo(s){if(s==="admin"&&!window.ADMIN_UNLOCKED)return;var st=document.getElementById("site");st.hidden=false;tab(s);setTimeout(function(){st.scrollIntoView({behavior:"smooth",block:"start"})},50)}
