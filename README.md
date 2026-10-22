@@ -4,4 +4,7 @@ Site de @decouvronsparis1 : carte de Paris, quiz, devine où c'est, devine le pr
 
 - `index.html` : tout le site dans un seul fichier.
 - Hébergement : Netlify, relié à ce dépôt (chaque modification met le site à jour).
-- Pour l'instant, classements et administration ne fonctionnent que dans Claude ; une base de données externe sera ajoutée ensuite.
+- Base de données : Firebase (projet `decouvrons-paris`), pour les classements, les questions du quiz et les prix.
+  - Les joueurs sont connectés automatiquement en anonyme pour enregistrer leurs scores.
+  - L'administration se fait avec le compte e-mail + mot de passe créé dans Firebase > Authentication.
+- `firestore.rules` : règles de sécurité à copier dans Firebase > Firestore Database > Règles.

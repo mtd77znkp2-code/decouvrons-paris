@@ -311,13 +311,27 @@ footer{padding:40px 0 30px;color:var(--mut)}
 </section>
 </div>
 <footer class="pf"><div class="wrap"><p>© Découvrons Paris · @decouvronsparis1</p><button class="adminlink" id="adminLink" type="button">Administration</button>
-<form id="adminLogin" class="alogin" hidden><label for="adm-mail">E-mail administrateur</label><input id="adm-mail" type="email" autocomplete="email" required><button class="btn" type="submit">Se connecter</button><p id="adm-msg" class="msg"></p><p class="lbn">À la toute première connexion, l’e-mail saisi devient l’e-mail administrateur.</p></form></div></footer>
+<form id="adminLogin" class="alogin" hidden><label for="adm-mail">E-mail administrateur</label><input id="adm-mail" type="email" autocomplete="email" required><label for="adm-pass">Mot de passe</label><input id="adm-pass" type="password" autocomplete="current-password" required><button class="btn" type="submit">Se connecter</button><p id="adm-msg" class="msg"></p></form></div></footer>
 
+<script src="https://www.gstatic.com/firebasejs/13.1.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/13.1.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore-compat.js"></script>
 <script>
+// Base de données Firebase (projet decouvrons-paris)
+var FB_CONFIG={
+  apiKey:"AIzaSyBhd_xCy7FMFmCpjWxHrHk-9Tqwk0rC_U4",
+  authDomain:"decouvrons-paris.firebaseapp.com",
+  projectId:"decouvrons-paris",
+  storageBucket:"decouvrons-paris.firebasestorage.app",
+  messagingSenderId:"67600209029",
+  appId:"1:67600209029:web:f5ed5ec1afbcefc34e05ec"
+};
+
 // Jeux
 function $(i){return document.getElementById(i)}
 function shuffle(a){return a.slice().sort(function(){return Math.random()-.5})}
 function rec(g,s){var k="rec_"+g+"_"+(window.user||""),b=0;try{b=+localStorage.getItem(k)||0}catch(e){}if(s>b){b=s;try{localStorage.setItem(k,b)}catch(e){}}return b}
+function imgSrc(x){return /^(data:|https?:)/.test(x)?x:"/_blob/"+x}
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
 
 // Classement général (base partagée si disponible)
@@ -327,7 +341,7 @@ function lbRender(){for(var id in LB.boards)lbDraw(id)}
 function lbDraw(id){
   var b=LB.boards[id],box=$(id);if(!b||!box)return;
   box.innerHTML="";box.appendChild(el("h4","",b.t()));
-  if(!LB.db){box.appendChild(el("p","lbn","Le classement général n’est pas disponible ici. Il apparaît quand le site est ouvert depuis Claude avec un compte."));return}
+  if(!LB.db){box.appendChild(el("p","lbn","Le classement général n’est pas disponible pour le moment."));return}
   var key=b.k(),rows=LB.docs.filter(function(d){return d.s&&d.s[key]>0}).sort(function(x,y){return y.s[key]-x.s[key]}).slice(0,10);
   if(!rows.length){box.appendChild(el("p","lbn","Aucun score pour l’instant. Sois le premier !"));return}
   var t=el("ol","lbl");
@@ -345,13 +359,12 @@ function lbSubmit(key,score){
     return ref.set({name:window.user,s:m,at:Date.now()}).then(function(){return "Ton score est dans le classement général !"});
   }).catch(function(){return "Impossible d’enregistrer ton score dans le classement."});
 }
-(async function(){
+(function(){
   try{
-    if(!window.claude||!claude.use)return;
-    var db=await claude.use("db"),u=await claude.use("user");
-    if(!db||!u)return;
-    LB.uid=await u.id();if(!LB.uid)return;
-    LB.db=db;
+    if(!window.firebase)return;
+    firebase.initializeApp(FB_CONFIG);
+    var db=firebase.firestore(),auth=firebase.auth();
+    LB.db=db;LB.auth=auth;lbRender();
     db.collection("questions").onSnapshot(function(s){
       window.QDB=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});
       if(window.adminRender)adminRender();
@@ -360,14 +373,14 @@ function lbSubmit(key,score){
       window.PDB=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});
       if(window.adminRender)adminRender();
     },function(){});
-    try{
-      var ok=(await u.canEdit())||(await u.isOwner());
-      if(ok){window.ADMIN_OK=true;try{window.ASSETS=await claude.use("assets")}catch(e){}if(window.adminRender)adminRender()}
-    }catch(e){}
     db.collection("scores").onSnapshot(function(s){
       LB.docs=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});lbRender();
     },function(){LB.db=null;lbRender()});
-  }catch(e){}
+    auth.onAuthStateChanged(function(u){
+      if(!u){LB.uid=null;window.ADMIN_OK=false;auth.signInAnonymously().catch(function(){});return}
+      LB.uid=u.uid;window.ADMIN_OK=!u.isAnonymous;lbRender();
+    });
+  }catch(e){LB.db=null}
 })();
 
 // 1) Devine où c'est
@@ -474,7 +487,7 @@ function lbSubmit(key,score){
     q=list[i];answered=false;box.innerHTML="";
     msg.textContent="Question "+(i+1)+"/"+list.length+" · Score : "+sc;
     box.appendChild(el("p","qq",q[0]));
-    if(q[3]){var qi=el("img","qimg");qi.alt="";qi.src="/_blob/"+q[3];box.appendChild(qi)}
+    if(q[3]){var qi=el("img","qimg");qi.alt="";qi.src=imgSrc(q[3]);box.appendChild(qi)}
     var g=el("div","opts");
     shuffle(q[2]).forEach(function(o){var b=el("button","opt",o);b.onclick=function(){answer(o,b)};g.appendChild(b)});
     box.appendChild(g);box.appendChild(el("p","qnote",""));
@@ -544,7 +557,7 @@ function lbSubmit(key,score){
     it=list[i];answered=false;box.innerHTML="";
     msg.textContent="Objet "+(i+1)+"/"+list.length+" · Score : "+sc;
     box.appendChild(el("p","qq","Combien coûte environ : "+it[0]+" ?"));
-    if(it[2]){var im=el("img","qimg");im.alt="";im.src="/_blob/"+it[2];box.appendChild(im)}
+    if(it[2]){var im=el("img","qimg");im.alt="";im.src=imgSrc(it[2]);box.appendChild(im)}
     var f=el("form","pform"),inp=el("input");inp.type="text";inp.inputMode="decimal";inp.required=true;inp.autocomplete="off";inp.setAttribute("aria-label","Ton prix en euros");inp.placeholder="Ton prix en €";
     var ok=el("button","btn","Valider");ok.type="submit";f.appendChild(inp);f.appendChild(ok);box.appendChild(f);box.appendChild(el("p","qnote",""));
     f.onsubmit=function(e){e.preventDefault();var g=parseFloat(inp.value.replace(",","."));if(isNaN(g)||g<0)return;answer(g)};
@@ -615,7 +628,7 @@ function lbSubmit(key,score){
     QF.forEach(function(i){$(i).value=""});$("a-price").value="";$("a-file").value="";imgId=null;showPrev(null);edit=null;
     $("a-ft").textContent=game==="quiz"?"Ajouter une question":"Ajouter un objet";$("a-cancel").hidden=true;$("a-level").value=cur;
   }
-  function wr(p){if(!LB.db){am("Base indisponible.");return Promise.reject()}return p.catch(function(){am("Action refusée : il faut un accès éditeur.");throw 0})}
+  function wr(p){if(!LB.db){am("Base indisponible.");return Promise.reject()}return p.catch(function(){am("Action refusée : ce compte n’a pas les droits d’administration.");throw 0})}
   window.adminRender=function(){
     var all=rowsAll();
     Array.prototype.forEach.call($("a-lvls").children,function(b){
@@ -629,7 +642,7 @@ function lbSubmit(key,score){
     rows.forEach(function(x,k){
       var it=el("div","aitem"+(x.on===false?" off":""));
       var q=el("p","aq",(k+1)+". "+(game==="quiz"?x.q:x.t));if(x.on===false)q.appendChild(el("span","badge","Masquée"));it.appendChild(q);
-      if(x.img){var im=el("img");im.alt="";im.src="/_blob/"+x.img;it.appendChild(im)}
+      if(x.img){var im=el("img");im.alt="";im.src=imgSrc(x.img);it.appendChild(im)}
       if(game==="quiz"){
         it.appendChild(el("p","aa","✔ "+x.a));
         it.appendChild(el("p","aw","✘ "+(x.o||[]).filter(function(o){return o!==x.a}).join(" · ")));
@@ -646,7 +659,7 @@ function lbSubmit(key,score){
             $("a-q").value=x.q;$("a-a").value=x.a;
             var w=(x.o||[]).filter(function(o){return o!==x.a});$("a-w1").value=w[0]||"";$("a-w2").value=w[1]||"";$("a-w3").value=w[2]||"";
           }else{$("a-q").value=x.t;$("a-price").value=String(x.p).replace(".",",")}
-          showPrev(x.img?"/_blob/"+x.img:null);$("a-ft").textContent="Modifier";$("a-cancel").hidden=false;am("");
+          showPrev(x.img?imgSrc(x.img):null);$("a-ft").textContent="Modifier";$("a-cancel").hidden=false;am("");
           $("a-form").scrollIntoView({behavior:"smooth",block:"start"});
         };
         var m=el("button","btn ghost",x.on===false?"Afficher":"Masquer");m.onclick=function(){wr(ref().update({on:x.on===false})).catch(function(){})};
@@ -662,18 +675,15 @@ function lbSubmit(key,score){
   $("a-rmimg").onclick=function(){imgId=null;$("a-file").value="";showPrev(null)};
   $("a-file").onchange=function(){
     var f=this.files[0];if(!f)return;
-    if(!window.ASSETS){am("L’ajout d’images demande un accès éditeur.");this.value="";return}
-    am("Envoi de l’image…");
+    am("Préparation de l’image…");
     var rd=new FileReader();
     rd.onload=function(){
       var im=new Image();
       im.onload=function(){
-        var s=Math.min(1,900/Math.max(im.width,im.height)),c=document.createElement("canvas");
+        var s=Math.min(1,700/Math.max(im.width,im.height)),c=document.createElement("canvas");
         c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);
         c.getContext("2d").drawImage(im,0,0,c.width,c.height);
-        c.toBlob(function(b){
-          ASSETS.upload(b).then(function(r){imgId=r.id;showPrev(r.url);am("Image ajoutée. Pense à enregistrer.")}).catch(function(){am("L’envoi de l’image a échoué.")});
-        },"image/jpeg",.82);
+        imgId=c.toDataURL("image/jpeg",.75);showPrev(imgId);am("Image ajoutée. Pense à enregistrer.");
       };
       im.onerror=function(){am("Image illisible.")};
       im.src=rd.result;
@@ -756,24 +766,15 @@ Array.prototype.forEach.call(document.querySelectorAll(".gtile"),function(b){
 $("adminLink").onclick=function(){var f=$("adminLogin");f.hidden=!f.hidden;if(!f.hidden)$("adm-mail").focus()};
 $("adminLogin").onsubmit=function(e){
   e.preventDefault();
-  var m=$("adm-msg"),v=$("adm-mail").value.trim().toLowerCase();
-  if(!window.ADMIN_OK){m.textContent="Accès refusé : ce compte n’a pas les droits d’administration.";return}
-  if(!LB.db||!window.crypto||!crypto.subtle){m.textContent="Connexion impossible ici.";return}
-  if(!v){return}
+  var m=$("adm-msg"),v=$("adm-mail").value.trim(),pw=$("adm-pass").value;
+  if(!LB.auth){m.textContent="Connexion impossible ici.";return}
+  if(!v||!pw)return;
   m.textContent="Vérification…";
-  var ref=LB.db.doc("config/admin");
-  crypto.subtle.digest("SHA-256",new TextEncoder().encode(v)).then(function(b){
-    var hv=Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("");
-    return ref.get().then(function(s){
-      if(!s.exists){return ref.set({h:hv,at:Date.now()}).then(function(){return true})}
-      return s.data().h===hv;
-    });
-  }).then(function(ok){
-    if(!ok){m.textContent="Cet e-mail n’est pas celui de l’administrateur.";return}
-    window.ADMIN_UNLOCKED=true;m.textContent="";$("adm-mail").value="";$("adminLogin").hidden=true;goTo("admin");
-  }).catch(function(){m.textContent="Connexion impossible. Réessaie."});
+  LB.auth.signInWithEmailAndPassword(v,pw).then(function(){
+    window.ADMIN_UNLOCKED=true;m.textContent="";$("adm-mail").value="";$("adm-pass").value="";$("adminLogin").hidden=true;goTo("admin");
+  }).catch(function(){m.textContent="E-mail ou mot de passe incorrect."});
 };
-$("adminOut").onclick=function(){window.ADMIN_UNLOCKED=false;tab("jeux");$("back").click()};
+$("adminOut").onclick=function(){window.ADMIN_UNLOCKED=false;if(LB.auth)LB.auth.signOut();tab("jeux");$("back").click()};
 
 // Accueil
 function goTo(s){if(s==="admin"&&!window.ADMIN_UNLOCKED)return;var st=document.getElementById("site");st.hidden=false;tab(s);setTimeout(function(){st.scrollIntoView({behavior:"smooth",block:"start"})},50)}
