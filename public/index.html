@@ -1034,7 +1034,7 @@ function geoDist(a,b){
   function reels(){
     if(!window.igOrdered)return [];
     return igOrdered().map(function(v,i){
-      var n=i+1,sp=SPOTS?SPOTS.lieux.filter(function(s){return s.video===n}).map(function(s){return s.nom}).join(", "):"";
+      var n=i+1,sp=SPOTS?SPOTS.lieux.filter(function(s){return s.video===n||(s.date&&v.ts&&igDay(v.ts)===s.date)}).map(function(s){return s.nom}).join(", "):"";
       return Object.assign({},v,{n:n,spots:sp});
     });
   }
@@ -1319,7 +1319,14 @@ window.dInit=function(){
     if(l.every(function(v){return v.ts}))l.sort(function(a,b){return a.ts<b.ts?-1:a.ts>b.ts?1:0});else l.reverse();
     return l;
   };
-  function vidOf(s){var l=igOrdered();return l[s.video-1]||null}
+  // Jour de publication (heure de Paris) au format AAAA-MM-JJ
+  window.igDay=function(ts){try{return new Date(ts).toLocaleDateString("sv-SE",{timeZone:"Europe/Paris"})}catch(e){return String(ts).slice(0,10)}};
+  // Une vidéo se désigne par son numéro (1 = la plus ancienne) ou par sa date de publication
+  function vidOf(s){
+    var l=igOrdered();
+    if(s.date)return l.filter(function(v){return v.ts&&igDay(v.ts)===s.date})[0]||null;
+    return l[s.video-1]||null;
+  }
   function secs(x){if(x==null||x==="")return null;if(typeof x==="number")return x;var p=String(x).split(":").map(Number);return p.length>1?p[0]*60+p[1]:p[0]}
   function emo(c){return (SP.categories[c]||{}).emoji||"📍"}
   // Lieux regroupés par position (même GPS = même bulle)
