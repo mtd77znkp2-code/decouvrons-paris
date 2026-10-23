@@ -492,7 +492,10 @@ function lbSubmit(key,score){
 
 // Vraie carte de Paris (Leaflet)
 var GEO={"Tour Eiffel":[48.85826,2.2945],"Arc de Triomphe":[48.87378,2.29504],"Musée du Louvre":[48.86061,2.33764],"Notre-Dame":[48.85297,2.34989],"Sacré-Cœur":[48.88671,2.3431],"Moulin Rouge":[48.88409,2.33225],"Opéra Garnier":[48.87197,2.33163],"Père-Lachaise":[48.86148,2.39345],"Panthéon":[48.84622,2.34637],"Place de la Bastille":[48.85321,2.36912],"Tour Montparnasse":[48.84211,2.32199],"Les Invalides":[48.855,2.31258],"Musée d’Orsay":[48.85998,2.32656],"Centre Pompidou":[48.86064,2.35222],"Catacombes":[48.83385,2.3324],"Trocadéro":[48.8629,2.2873]};
-var PARIS=[[48.8156,2.2241],[48.9022,2.4699]];
+// Cadre de départ : le centre de Paris, là où sont les lieux du jeu
+var PARIS=[[48.834,2.282],[48.889,2.398]];
+// Vue de départ : tout le cadre si l'écran est large, sinon zoom minimum 12,5 (téléphone)
+function parisHome(m,fly){var c=[48.8615,2.34],z=Math.max(12.5,m.getBoundsZoom(PARIS));if(fly)m.flyTo(c,z,{duration:.6});else m.setView(c,z)}
 function parisMap(box){
   var m=L.map(box,{minZoom:11,maxZoom:18,maxBounds:[[48.74,2.1],[48.98,2.6]],maxBoundsViscosity:.8,zoomSnap:.5});
   // Fonds Esri sans clé et sans noms de lieux (pour ne pas donner la réponse)
@@ -501,7 +504,7 @@ function parisMap(box){
   var plan=L.tileLayer(E+"Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,maxNativeZoom:16,attribution:"Plan © Esri, HERE, OpenStreetMap"});
   sat.addTo(m);
   L.control.layers({"Satellite":sat,"Plan":plan},null,{collapsed:false,position:"topright"}).addTo(m);
-  m.fitBounds(PARIS);
+  parisHome(m);
   if(window.ResizeObserver)new ResizeObserver(function(){m.invalidateSize()}).observe(box);
   return m;
 }
@@ -541,7 +544,7 @@ function geoDist(a,b){
   setup();
   function ask(){
     layer.clearLayers();cur=order[round];guess=null;wait=true;btn.hidden=true;
-    map.flyToBounds(PARIS,{duration:.6});
+    parisHome(map,true);
     msg.textContent="Manche "+(round+1)+"/5 : où est « "+cur.n+" » ? Touche la carte.";
   }
   function check(){
