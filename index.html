@@ -135,8 +135,17 @@ body.admin #loginBtn{top:80px}body.admin #loginBox{top:134px}
 .pform{display:flex;gap:10px;flex-wrap:wrap;max-width:420px}
 .pform input{flex:1;min-width:140px;font:inherit;padding:12px 14px;border-radius:14px;border:2px solid var(--mut);background:var(--bg);color:#fff}
 .pform input:focus-visible{outline:3px solid var(--c);outline-offset:2px}
-#g-loc .mapwrap{touch-action:pan-x pan-y}
-#g-loc .map{cursor:crosshair}
+.geo{height:min(62vh,520px);min-height:320px;border-radius:22px;overflow:hidden;background:#dfe6ee;z-index:0}
+.geo .leaflet-container,.geo.leaflet-container{font:inherit;cursor:crosshair}
+.geo .leaflet-control-attribution{font-size:10px}
+.leaflet-tooltip.geo-tip{background:#0e1740;color:#fff;border:2px solid var(--a);border-radius:999px;font:800 14px "Bricolage Grotesque",system-ui,sans-serif;padding:4px 12px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.leaflet-tooltip.geo-tip::before{display:none}
+.geo-msg{display:none;position:absolute;inset:0;place-items:center;padding:20px;text-align:center;color:#0e1740;font-weight:800}
+.ap-geo{height:340px;border-radius:12px;overflow:hidden;background:#dfe6ee}
+.ap-warn{color:#ffb4a2;font-weight:700}
+.ap-scx{display:inline-flex;align-items:center;gap:6px}
+.ap-scx button{width:22px;height:22px;border-radius:50%;border:1px solid rgba(255,90,95,.35);background:none;color:#ff8a8e;font:700 14px/1 system-ui,sans-serif;cursor:pointer;padding:0;opacity:.6}
+.ap-scx button:hover,.ap-scx button:focus-visible{opacity:1;border-color:#ff8a8e}
 [hidden]{display:none!important}
 .lvls{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
 .lvl{font:inherit;font-weight:800;color:#fff;background:#2b3d93;border:3px solid transparent;border-radius:999px;padding:8px 18px;cursor:pointer}
@@ -217,7 +226,7 @@ body.apage #adminBadge,body.apage #adminLogout{position:absolute}
 .ap-seg button.on{background:var(--a);color:#0e1740}
 .ap-tools .btn{padding:10px 18px;font-size:15px;background:var(--a);color:#0e1740;margin-left:auto}
 .ap-count{margin:0 0 10px;color:var(--mut);font-size:14px}
-.ap-wrap{background:var(--card);border-radius:16px;overflow:hidden}
+.ap-wrap{background:var(--card);border-radius:16px;overflow-x:auto}
 .ap-table{width:100%;border-collapse:collapse;font-size:15px}
 .ap-table th{text-align:left;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);padding:12px 14px;border-bottom:1px solid rgba(185,192,224,.18);white-space:nowrap;background:rgba(14,23,64,.35)}
 .ap-table th button{font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
@@ -345,8 +354,8 @@ body.apage #adminBadge,body.apage #adminLogout{position:absolute}
   <div class="games">
     <div class="game" id="g-loc">
       <h3>Devine où c’est</h3>
-      <div class="bar"><span id="l-msg" class="msg">Touche la carte à l’endroit du lieu demandé. 5 manches.</span><button class="btn" id="l-btn">Jouer</button></div>
-      <div class="mapwrap"><svg id="l-svg" class="map" viewBox="0 0 1536 1024" role="img" aria-label="Plan de Paris pour le jeu"><image id="l-img" x="0" y="0" width="1536" height="1024"/><g id="l-m"></g></svg></div>
+      <div class="bar"><span id="l-msg" class="msg">Touche la carte à l’endroit du lieu demandé, puis valide. 5 manches.</span><button class="btn" id="l-btn">Jouer</button></div>
+      <div id="l-map" class="geo" role="application" aria-label="Carte de Paris pour le jeu"></div>
       <div class="lb" id="lb-loc"></div>
     </div>
     <div class="game" id="g-quiz" hidden>
@@ -397,6 +406,8 @@ body.apage #adminBadge,body.apage #adminLogout{position:absolute}
   <div id="apToast" role="status" aria-live="polite"></div>
 </div>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/13.1.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/13.1.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore-compat.js"></script>
@@ -476,43 +487,72 @@ function lbSubmit(key,score){
   }catch(e){LB.db=null}
 })();
 
+// Vraie carte de Paris (Leaflet, fond OpenStreetMap/CARTO sans noms pour ne pas donner la réponse)
+var GEO={"Tour Eiffel":[48.85826,2.2945],"Arc de Triomphe":[48.87378,2.29504],"Musée du Louvre":[48.86061,2.33764],"Notre-Dame":[48.85297,2.34989],"Sacré-Cœur":[48.88671,2.3431],"Moulin Rouge":[48.88409,2.33225],"Opéra Garnier":[48.87197,2.33163],"Père-Lachaise":[48.86148,2.39345],"Panthéon":[48.84622,2.34637],"Place de la Bastille":[48.85321,2.36912],"Tour Montparnasse":[48.84211,2.32199],"Les Invalides":[48.855,2.31258],"Musée d’Orsay":[48.85998,2.32656],"Centre Pompidou":[48.86064,2.35222],"Catacombes":[48.83385,2.3324],"Trocadéro":[48.8629,2.2873]};
+var PARIS=[[48.8156,2.2241],[48.9022,2.4699]];
+function parisMap(box){
+  var m=L.map(box,{minZoom:11,maxZoom:18,maxBounds:[[48.74,2.1],[48.98,2.6]],maxBoundsViscosity:.8,zoomSnap:.5});
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",{subdomains:"abcd",maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · © <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'}).addTo(m);
+  m.fitBounds(PARIS);
+  if(window.ResizeObserver)new ResizeObserver(function(){m.invalidateSize()}).observe(box);
+  return m;
+}
+function geoDot(ll,c){return L.circleMarker(ll,{radius:11,color:"#fff",weight:4,fillColor:c,fillOpacity:1})}
+function geoDist(a,b){
+  var R=6371000,r=Math.PI/180,dl=(b.lat-a.lat)*r,dn=(b.lng-a.lng)*r;
+  var h=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dn/2)*Math.sin(dn/2);
+  return 2*R*Math.asin(Math.sqrt(h));
+}
+
 // 1) Devine où c'est
 (function(){
-  var NS="http://www.w3.org/2000/svg";
-  $("l-img").setAttribute("href",document.querySelector("#videos .map image").getAttribute("href"));
   var LOC=[],ALL=[];
   Array.prototype.forEach.call(document.querySelectorAll(".pin"),function(p){
-    var n=p.dataset.n.split(" : ")[0],c=p.querySelector("circle"),o={n:n,x:+c.getAttribute("cx"),y:+c.getAttribute("cy")};
-    var on=!(n==="Notre-Dame"||n==="Moulin Rouge");
-    ALL.push({n:o.n,x:o.x,y:o.y,on:on});if(on)LOC.push(o);
+    var n=p.dataset.n.split(" : ")[0],g=GEO[n];if(!g)return;
+    var o={n:n,lat:g[0],lng:g[1]};ALL.push({n:n,lat:g[0],lng:g[1],on:true});LOC.push(o);
   });
   window.locBank=ALL;
   function pool(){
-    var d=(window.LDB||[]).filter(function(x){return x.on!==false&&x.n&&isFinite(x.x)&&isFinite(x.y)});
+    var d=(window.LDB||[]).filter(function(x){return x.on!==false&&x.n&&isFinite(x.lat)&&isFinite(x.lng)});
     return d.length>=5?d:LOC;
   }
   lbBoard("lb-loc",function(){return "loc"},function(){return "🏆 Classement général · Devine où c’est"});
-  var order,round,pts,wait,cur,btn=$("l-btn"),msg=$("l-msg"),mk=$("l-m");
+  var order,round,pts,wait,cur,guess,map,layer,btn=$("l-btn"),msg=$("l-msg");
+  function setup(){
+    if(map)return true;
+    if(!window.L){$("l-map").textContent="La carte n’a pas pu se charger. Vérifie ta connexion et recharge la page.";return false}
+    map=parisMap($("l-map"));layer=L.layerGroup().addTo(map);
+    map.on("click",function(e){
+      if(!wait)return;
+      guess=e.latlng;layer.clearLayers();geoDot(guess,"#ff5a5f").addTo(layer);
+      btn.hidden=false;btn.textContent="Valider";btn.dataset.m="ok";
+      msg.textContent="Manche "+(round+1)+"/5 : « "+cur.n+" ». Tu peux encore déplacer ton point, puis valide.";
+    });
+    return true;
+  }
+  setup();
   function ask(){
-    mk.innerHTML="";cur=order[round];wait=true;btn.hidden=true;
+    layer.clearLayers();cur=order[round];guess=null;wait=true;btn.hidden=true;
+    map.flyToBounds(PARIS,{duration:.6});
     msg.textContent="Manche "+(round+1)+"/5 : où est « "+cur.n+" » ? Touche la carte.";
   }
-  btn.onclick=function(){
-    if(btn.dataset.m==="next"){round++;ask();return}
-    order=shuffle(pool()).slice(0,5);round=0;pts=0;btn.dataset.m="next";ask();
-  };
-  $("l-svg").addEventListener("click",function(e){
-    if(!wait)return;
-    var r=this.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*1536,y=(e.clientY-r.top)/r.height*1024;
-    var d=Math.sqrt(Math.pow(x-cur.x,2)+Math.pow(y-cur.y,2)),km=d*19.6/1000,s=Math.max(0,Math.round(100-d/4));
-    pts+=s;wait=false;
-    var ln=document.createElementNS(NS,"line");ln.setAttribute("x1",x);ln.setAttribute("y1",y);ln.setAttribute("x2",cur.x);ln.setAttribute("y2",cur.y);ln.setAttribute("stroke","#fff");ln.setAttribute("stroke-width","4");ln.setAttribute("stroke-dasharray","10 8");mk.appendChild(ln);
-    [[x,y,"#ff5a5f"],[cur.x,cur.y,"#f5b21a"]].forEach(function(c){var o=document.createElementNS(NS,"circle");o.setAttribute("cx",c[0]);o.setAttribute("cy",c[1]);o.setAttribute("r",16);o.setAttribute("fill",c[2]);o.setAttribute("stroke","#fff");o.setAttribute("stroke-width","4");mk.appendChild(o)});
-    var t=cur.n+" : +"+s+" points (à environ "+km.toFixed(1).replace(".",",")+" km). ";
-    btn.hidden=false;
+  function check(){
+    wait=false;
+    var ans=L.latLng(cur.lat,cur.lng),d=geoDist(guess,ans),s=Math.max(0,Math.round(100-d/78));
+    pts+=s;
+    L.polyline([guess,ans],{color:"#0e1740",weight:3,dashArray:"8 8"}).addTo(layer);
+    geoDot(ans,"#f5b21a").addTo(layer).bindTooltip(cur.n,{permanent:true,direction:"top",offset:[0,-12],className:"geo-tip"});
+    map.flyToBounds(L.latLngBounds([guess,ans]).pad(.4),{maxZoom:16,duration:.6});
+    var t=cur.n+" : +"+s+" points (à "+(d<1000?Math.round(d/10)*10+" m":(d/1000).toFixed(1).replace(".",",")+" km")+"). ";
     if(round===4){var b=rec("loc",pts);msg.textContent=t+"Fini ! Score : "+pts+"/500 · Record : "+b;lbSubmit("loc",pts).then(function(x){msg.textContent+=" "+x});btn.textContent="Rejouer";btn.dataset.m=""}
     else{msg.textContent=t;btn.textContent="Manche suivante";btn.dataset.m="next"}
-  });
+  }
+  btn.onclick=function(){
+    if(!setup())return;
+    if(btn.dataset.m==="ok"){if(guess)check();return}
+    if(btn.dataset.m==="next"){round++;ask();return}
+    order=shuffle(pool()).slice(0,5);round=0;pts=0;ask();
+  };
 })();
 
 // 2) Quiz sur Paris : 3 niveaux, 10 questions, 20 s par question, 5 s entre deux
@@ -707,7 +747,6 @@ function lbSubmit(key,score){
 // Administration : page à part, un tableau par jeu avec recherche, filtres et tri
 (function(){
   var LVN={facile:"Facile",moyen:"Moyen",difficile:"Difficile"},LVO={facile:0,moyen:1,difficile:2};
-  var MAP=document.querySelector("#videos .map image").getAttribute("href");
   var st={t:"quiz",q:"",lvl:"",vis:"",sk:null,sd:1};
   function norm(s){return String(s==null?"":s).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase()}
   function eur(n){n=+n;return (n%1?n.toFixed(2).replace(".",","):String(n))+" €"}
@@ -721,7 +760,23 @@ function lbSubmit(key,score){
     b.onclick=function(){write(LB.db.doc(T[st.t].coll+"/"+x.id).update({on:x.on===false}),x.on===false?"Affiché dans le jeu.":"Masqué du jeu.")};
     return b;
   }
-  function sc(k){return {h:{loc:"Où c’est",quiz_facile:"Quiz facile",quiz_moyen:"Quiz moyen",quiz_difficile:"Quiz difficile",prix_facile:"Prix facile",prix_moyen:"Prix moyen",prix_difficile:"Prix difficile"}[k],cls:"ap-sc",k:function(x){return (x.s&&x.s[k])||0},c:function(x){var v=x.s&&x.s[k];return el("span",v?"":"ap-mut",v?String(v):"—")}}}
+  function sc(k){return {h:{loc:"Où c’est",quiz_facile:"Quiz facile",quiz_moyen:"Quiz moyen",quiz_difficile:"Quiz difficile",prix_facile:"Prix facile",prix_moyen:"Prix moyen",prix_difficile:"Prix difficile"}[k],cls:"ap-sc",k:function(x){return (x.s&&x.s[k])||0},c:function(x){
+    var v=x.s&&x.s[k];if(!v)return el("span","ap-mut","—");
+    var w=el("span","ap-scx");w.appendChild(el("span","",String(v)));
+    var b=el("button","","×");b.type="button";b.title="Supprimer ce score";b.setAttribute("aria-label","Supprimer ce score");b.onclick=function(){askScore(x,k)};w.appendChild(b);
+    return w;
+  }}}
+  var SCN={loc:"Devine où c’est",quiz_facile:"Quiz facile",quiz_moyen:"Quiz moyen",quiz_difficile:"Quiz difficile",prix_facile:"Prix facile",prix_moyen:"Prix moyen",prix_difficile:"Prix difficile"};
+  function askScore(x,k){
+    var y=el("button","btn danger","Supprimer ce score");y.type="button";
+    var p=el("p","ap-mut","Le score de "+x.s[k]+" points sera retiré du classement « "+SCN[k]+" ». Les autres scores de ce joueur restent.");
+    var err=dlg("Supprimer le score de « "+(x.name||"Anonyme")+" » ?",[p],[y]);
+    y.onclick=function(){
+      y.disabled=true;var m=Object.assign({},x.s);delete m[k];
+      var ref=LB.db.doc("scores/"+x.id);
+      write(Object.keys(m).length?ref.update({s:m}):ref.delete(),"Score supprimé.").then(function(){$("apDlg").close()}).catch(function(){y.disabled=false;err.textContent="La suppression a échoué."});
+    };
+  }
   var T={
     quiz:{coll:"questions",one:"question",many:"questions",lv:true,vis:true,
       cols:[
@@ -747,7 +802,7 @@ function lbSubmit(key,score){
     lieux:{coll:"lieux",one:"lieu",many:"lieux",vis:true,
       cols:[
         {h:"Lieu",k:function(x){return norm(x.n)},c:function(x){return el("span","ap-strong",x.n)}},
-        {h:"Position",c:function(x){return el("span","ap-mut","x "+Math.round(x.x)+" · y "+Math.round(x.y))}},
+        {h:"Position",c:function(x){return isFinite(x.lat)&&isFinite(x.lng)?el("span","ap-mut",(+x.lat).toFixed(4)+", "+(+x.lng).toFixed(4)):el("span","ap-warn","À placer sur la carte")}},
         {h:"Visible",cls:"ap-vis",k:function(x){return x.on===false?0:1},c:sw}
       ],
       find:function(x){return x.n},
@@ -804,7 +859,7 @@ function lbSubmit(key,score){
       d.cols.forEach(function(c){var td=el("td",c.cls||"");td.dataset.l=c.h;td.appendChild(c.c(x));tr.appendChild(td)});
       var a=el("td","ap-act");
       if(!d.noEdit){var e=el("button","","Modifier");e.type="button";e.onclick=function(){edit(x)};a.appendChild(e)}
-      var del=el("button","del","Supprimer");del.type="button";del.onclick=function(){ask(x)};a.appendChild(del);
+      var del=el("button","del",st.t==="scores"?"Supprimer le joueur":"Supprimer");del.type="button";del.onclick=function(){ask(x)};a.appendChild(del);
       tr.appendChild(a);bd.appendChild(tr);
     });
     var em=$("apEmpty");em.hidden=!!list.length;
@@ -841,15 +896,17 @@ function lbSubmit(key,score){
     box.appendChild(pv);box.appendChild(f);box.appendChild(rm);w.appendChild(box);show(cur||null);
     return w;
   }
-  function mapField(x,y,set){
-    var NS="http://www.w3.org/2000/svg",w=el("div","ap-f");
-    w.appendChild(el("span","","Position : touche la carte à l’endroit du lieu"));
-    var sv=document.createElementNS(NS,"svg");sv.setAttribute("viewBox","0 0 1536 1024");sv.setAttribute("class","ap-map");
-    var im=document.createElementNS(NS,"image");im.setAttribute("href",MAP);im.setAttribute("width","1536");im.setAttribute("height","1024");sv.appendChild(im);
-    var m=document.createElementNS(NS,"circle");m.setAttribute("r","22");m.setAttribute("fill","#f5b21a");m.setAttribute("stroke","#fff");m.setAttribute("stroke-width","6");sv.appendChild(m);
-    function put(a,b){set(a,b);m.style.display=a==null?"none":"";if(a!=null){m.setAttribute("cx",a);m.setAttribute("cy",b)}}
-    sv.addEventListener("click",function(e){var r=sv.getBoundingClientRect();put(Math.round((e.clientX-r.left)/r.width*1536),Math.round((e.clientY-r.top)/r.height*1024))});
-    w.appendChild(sv);put(x,y);return w;
+  function geoField(lat,lng,set){
+    var w=el("div","ap-f");w.appendChild(el("span","","Position : touche la carte à l’endroit du lieu (tu peux zoomer)"));
+    var box=el("div","ap-geo");w.appendChild(box);
+    if(!window.L){box.appendChild(el("p","ap-err","La carte n’a pas pu se charger."));return w}
+    setTimeout(function(){
+      var m=parisMap(box),mk=null;
+      function put(ll){set(ll.lat,ll.lng);if(mk)mk.setLatLng(ll);else mk=geoDot(ll,"#f5b21a").addTo(m)}
+      if(isFinite(lat)&&isFinite(lng)){put(L.latLng(lat,lng));m.setView([lat,lng],15)}
+      m.on("click",function(e){put(e.latlng)});
+    },30);
+    return w;
   }
   function chk(lbl,v){var w=el("label","ap-chk"),c=el("input");c.type="checkbox";c.checked=v;w.appendChild(c);w.appendChild(document.createTextNode(lbl));w.__c=c;return w}
   function dlg(title,body,acts){
@@ -863,7 +920,7 @@ function lbSubmit(key,score){
     return err;
   }
   function edit(x){
-    var t=st.t,d=T[t],img=x?x.img||null:null,px=x?x.x:null,py=x?x.y:null,body=[],get;
+    var t=st.t,d=T[t],img=x?x.img||null:null,px=x?x.lat:null,py=x?x.lng:null,body=[],get;
     if(t==="quiz"){
       var lv=lvSel(x&&x.level),q=el("textarea");q.rows=2;q.maxLength=200;q.value=x?x.q:"";
       var w=x?(x.o||[]).filter(function(o){return o!==x.a}):[];
@@ -888,11 +945,11 @@ function lbSubmit(key,score){
       };
     }else{
       var nm=inp(x&&x.n,60);
-      body=[fld("Nom du lieu",nm),mapField(px,py,function(a,b){px=a;py=b})];
+      body=[fld("Nom du lieu",nm),geoField(px,py,function(a,b){px=+a.toFixed(6);py=+b.toFixed(6)})];
       get=function(){
         if(!nm.value.trim())return "Indique le nom du lieu.";
-        if(px==null)return "Touche la carte pour placer le lieu.";
-        return {n:nm.value.trim(),x:px,y:py};
+        if(!isFinite(px)||!isFinite(py)||px===null)return "Touche la carte pour placer le lieu.";
+        return {n:nm.value.trim(),lat:px,lng:py};
       };
     }
     if(t!=="lieux")body.push(imgField(img,function(v){img=v}));
@@ -911,15 +968,19 @@ function lbSubmit(key,score){
   }
   function ask(x){
     var d=T[st.t],nm=st.t==="quiz"?x.q:st.t==="prix"?x.t:st.t==="lieux"?x.n:(x.name||"Anonyme");
-    var y=el("button","btn danger","Supprimer");y.type="button";
-    var p=el("p","ap-mut",st.t==="scores"?"Tous les scores de ce joueur seront effacés du classement. C’est définitif.":"C’est définitif. Pour le retirer du jeu sans l’effacer, utilise plutôt l’interrupteur « Visible ».");
+    var y=el("button","btn danger",st.t==="scores"?"Supprimer le joueur":"Supprimer");y.type="button";
+    var p=el("p","ap-mut",st.t==="scores"?"Tous les scores de ce joueur seront effacés du classement. C’est définitif. Pour retirer un seul score, utilise le petit × à côté du score.":"C’est définitif. Pour le retirer du jeu sans l’effacer, utilise plutôt l’interrupteur « Visible ».");
     var err=dlg("Supprimer « "+nm+" » ?",[p],[y]);
     y.onclick=function(){y.disabled=true;write(LB.db.doc(d.coll+"/"+x.id).delete(),"Supprimé.").then(function(){$("apDlg").close()}).catch(function(){y.disabled=false;err.textContent="La suppression a échoué."})};
   }
 
   // Première ouverture : copie les questions, prix et lieux de base dans la base pour pouvoir tout modifier
-  var seeding=false;
+  var seeding=false,migrated=false;
   window.apSeed=function(){
+    if(!migrated&&window.ADMIN_UNLOCKED&&LB.db&&window.LDB_OK){
+      migrated=true;
+      (window.LDB||[]).forEach(function(x){var g=GEO[x.n];if(g&&!isFinite(x.lat))LB.db.doc("lieux/"+x.id).update({lat:g[0],lng:g[1]}).catch(function(){})});
+    }
     if(seeding||!window.ADMIN_UNLOCKED||!LB.db||!window.QDB_OK||!window.PDB_OK||!window.LDB_OK)return;
     seeding=true;
     var ref=LB.db.doc("config/seed");
@@ -935,7 +996,7 @@ function lbSubmit(key,score){
         mark.prix=true;
       }
       if(!done.lieux&&!window.LDB.length){
-        (window.locBank||[]).forEach(function(q,i){b.set(LB.db.doc("lieux/base_"+pad(i)),{n:q.n,x:q.x,y:q.y,on:q.on,o:i});n++});
+        (window.locBank||[]).forEach(function(q,i){b.set(LB.db.doc("lieux/base_"+pad(i)),{n:q.n,lat:q.lat,lng:q.lng,on:q.on,o:i});n++});
         mark.lieux=true;
       }
       if(!n){seeding=false;return}
