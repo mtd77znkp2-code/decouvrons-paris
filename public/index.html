@@ -1073,6 +1073,18 @@ function geoDist(a,b){
       def:function(a,b){return (b.at||0)-(a.at||0)}}
   };
   var SPOTS=null;fetch("spots.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){SPOTS=j}).catch(function(){});
+  // Import manuel des lieux de spots.json (même contenu que l'import automatique)
+  function importSpots(){
+    if(!LB.db||!SPOTS)return Promise.reject(new Error("données pas encore chargées"));
+    var b=LB.db.batch();function pad(i){return ("00"+i).slice(-3)}
+    Object.keys(SPOTS.categories).forEach(function(k,i){var c=SPOTS.categories[k];b.set(LB.db.doc("spotcats/"+k),{nom:c.nom,emoji:c.emoji,n:i})});
+    SPOTS.lieux.forEach(function(s,i){
+      var v=window.spotVid&&window.IGV?spotVid(s):null;
+      b.set(LB.db.doc("spots/spot_"+pad(i)),{nom:s.nom,emoji:s.emoji||null,categorie:s.categorie,adresse:s.adresse||"",description:s.description||"",lat:s.gps[0],lng:s.gps[1],mid:v?v.id:null,date:s.date||null,video:s.video||null,debut:s.debut==null?null:s.debut,fin:s.fin==null?null:s.fin,on:true,n:i});
+    });
+    b.set(LB.db.doc("config/seed"),{spots:true},{merge:true});
+    return b.commit();
+  }
   function allSpots(){return window.SPDB&&SPDB.length?SPDB:(SPOTS?SPOTS.lieux:[])}
   function reels(){
     if(!window.igOrdered)return [];
@@ -1259,6 +1271,12 @@ function geoDist(a,b){
       tr.appendChild(a);bd.appendChild(tr);
     });
     var em=$("apEmpty");em.hidden=!!list.length;
+    if(st.t==="spots"&&!all.length){
+      em.innerHTML="";em.appendChild(el("p","","Aucun lieu dans la base pour l’instant."));
+      var ib=el("button","btn","Importer mes "+(SPOTS?SPOTS.lieux.length:"")+" lieux de départ");ib.type="button";
+      ib.onclick=function(){ib.disabled=true;importSpots().then(function(){toast("Lieux et catégories importés.")}).catch(function(e){ib.disabled=false;toast("Import impossible : "+((e&&e.message)||"réessaie"))})};
+      em.appendChild(ib);return;
+    }
     em.textContent=all.length?"Aucun résultat pour cette recherche.":(st.t==="scores"?"Personne n’a encore joué.":st.t==="reels"?(window.IGV===null?"Chargement…":"Aucune vidéo Instagram trouvée."):"Chargement…");
   };
 
@@ -1422,7 +1440,7 @@ function geoDist(a,b){
       }
       // Version 2 des lieux : 3 niveaux × Paris/banlieue. Les 16 anciens lieux de base sont remplacés,
       // les lieux ajoutés à la main sont gardés et classés « Moyen · Paris » par défaut.
-      if(!done.spots&&window.SPDB_OK&&window.SCDB_OK&&SPOTS&&!(window.SPDB||[]).length){
+      if(!done.spots&&window.SPDB&&window.SCDB&&SPOTS&&!SPDB.length){
         Object.keys(SPOTS.categories).forEach(function(k,i){var c=SPOTS.categories[k];b.set(LB.db.doc("spotcats/"+k),{nom:c.nom,emoji:c.emoji,n:i});n++});
         SPOTS.lieux.forEach(function(s,i){
           var v=window.spotVid&&window.IGV?spotVid(s):null;
