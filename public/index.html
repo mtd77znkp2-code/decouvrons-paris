@@ -92,6 +92,8 @@ h2{font-size:32px;margin:48px 0 16px;font-weight:800;letter-spacing:-.02em}
 .leaflet-popup.dpop .leaflet-popup-content{margin:12px 16px;font:600 15px/1.4 "Bricolage Grotesque",system-ui,sans-serif}
 .leaflet-popup.dpop .leaflet-popup-content b{display:block;font-size:17px;color:var(--a);margin-bottom:2px}
 .leaflet-popup.dpop a.leaflet-popup-close-button{color:#fff}
+.leaflet-popup.dpop .leaflet-popup-content span{display:block;color:#d6dbf2;font-size:14px;margin-top:2px}
+.dpop-go{display:block;margin-top:10px;font:inherit;font-weight:800;font-size:14px;color:#0e1740;background:var(--a);border:0;border-radius:999px;padding:8px 14px;cursor:pointer}
 .vid{display:block;text-decoration:none;color:inherit;background:var(--card);border-radius:18px;overflow:hidden}
 .thumb{aspect-ratio:9/16;display:grid;place-items:center;color:var(--a);font-size:44px}
 .vid b{display:block;padding:12px 14px 2px}
@@ -419,8 +421,8 @@ body.apage #adminBadge,body.apage #adminLogout{position:absolute}
   <h3 class="dsub">La carte de Paris</h3>
   <div class="dcats" id="d-cats" role="group" aria-label="Catégories" hidden></div>
   <div class="dvids" id="d-vids" hidden></div>
-  <div id="d-map" class="geo dmap" role="application" aria-label="Carte de Paris avec les lieux à découvrir"></div>
-  <p id="mapmsg">Touche un lieu pour découvrir son histoire.</p>
+  <div id="d-map" class="geo dmap" role="application" aria-label="Carte de Paris avec mes lieux en vidéo"></div>
+  <p id="mapmsg">Touche un lieu pour voir sa vidéo.</p>
 </section>
 
 <section id="jeux" hidden>
@@ -1297,32 +1299,19 @@ function geoDist(a,b){
   $("apDlg").addEventListener("click",function(e){if(e.target===this)this.close()});
 })();
 
-// Découvre ! : vraie carte avec les lieux à découvrir
-var DECOUVRE=[["Tour Eiffel","330 m, inaugurée en 1889","🗼"],["Arc de Triomphe","En haut des Champs-Élysées, inauguré en 1836","🏛"],["Musée du Louvre","La Joconde et des milliers d’œuvres","🎨"],["Notre-Dame","Cathédrale gothique sur l’île de la Cité","⛪"],["Sacré-Cœur","Au sommet de la butte Montmartre","🌅"],["Moulin Rouge","Le cabaret de Pigalle, ouvert en 1889","💃"],["Opéra Garnier","Le grand théâtre à l’italienne, ouvert en 1875","🎭"],["Père-Lachaise","Le plus grand cimetière de Paris","🌳"],["Panthéon","Repos de Victor Hugo et Marie Curie","⭐"],["Place de la Bastille","Symbole de la Révolution","🏰"],["Tour Montparnasse","210 m, vue à 360°","🏙"],["Les Invalides","Hôpital militaire et tombeau de Napoléon","🎖"],["Musée d’Orsay","L’art impressionniste dans une ancienne gare","🖼"],["Centre Pompidou","Le musée d’art moderne aux tuyaux colorés","🏗"],["Catacombes","Des kilomètres de galeries sous le 14e","💀"],["Trocadéro","La meilleure vue sur la tour Eiffel","📸"]];
+// Découvre ! : vraie carte avec mes lieux en vidéo
 window.dInit=function(){
   if(window.dMap||!window.L)return;
-  var pos={};LIEUX.paris.facile.forEach(function(q){pos[q[0]]=[q[1],q[2]]});
-  var m=window.dMap=parisMap($("d-map"),false,true),last=null,all=[];
-  DECOUVRE.forEach(function(d){
-    if(!pos[d[0]])return;
-    var ic=L.divIcon({className:"",html:'<div class="dpin" aria-hidden="true">'+d[2]+'</div>',iconSize:[44,44],iconAnchor:[22,22],popupAnchor:[0,-20]});
-    var mk=L.marker(pos[d[0]],{icon:ic,title:d[0],keyboard:true,alt:d[0]}).addTo(m);
-    var c=document.createElement("div"),b=document.createElement("b");b.textContent=d[0];c.appendChild(b);c.appendChild(document.createTextNode(d[1]));
-    mk.bindPopup(c,{className:"dpop",maxWidth:260});all.push(pos[d[0]]);
-    mk.on("click",function(){
-      if(last)last.classList.remove("on");last=mk.getElement().querySelector(".dpin");last.classList.add("on");
-      $("mapmsg").textContent=d[0]+" : "+d[1];
-    });
-  });
-  // Ici on veut voir tous les lieux d'un coup, même sur téléphone
-  if(all.length)m.fitBounds(L.latLngBounds(all).pad(.08));
+  var m=window.dMap=parisMap($("d-map"),false,true);
   if(window.spotsInit)spotsInit(m);
 };
 
 // Découvre ! : mes lieux en vidéo (public/spots.json). Chaque lieu renvoie à une de mes vidéos Instagram
 // par son numéro (1 = la plus ancienne), avec un extrait facultatif « debut »/« fin » en secondes.
 (function(){
-  var SP=null,cat="",layer=null,map=null;
+  var SP=null,cat="",layer=null,map=null,framed=false;
+  // Survol seulement avec une souris (sur téléphone, on touche le point)
+  var HOVER=!!(window.matchMedia&&matchMedia("(hover:hover) and (pointer:fine)").matches);
   fetch("spots.json").then(function(r){return r.json()}).then(function(j){SP=j;draw()}).catch(function(){SP={categories:{},lieux:[]}});
   // Mes vidéos de la plus ancienne (n°1) à la plus récente
   window.igOrdered=function(){
@@ -1357,8 +1346,20 @@ window.dInit=function(){
     groups().forEach(function(g){
       var s=g[0],html='<div class="vpin" aria-hidden="true">'+(s.emoji||emo(s.categorie))+(g.length>1?'<b>'+g.length+'</b>':'')+'</div>';
       var mk=L.marker(s.gps,{icon:L.divIcon({className:"",html:html,iconSize:[48,48],iconAnchor:[24,24]}),title:g.length>1?s.nom+" ("+g.length+" vidéos)":s.nom,keyboard:true,alt:s.nom,zIndexOffset:500}).addTo(layer);
-      mk.on("click",function(){show((s.emoji||"📍")+" "+s.nom,g)});
+      var c=document.createElement("div"),b=document.createElement("b");b.textContent=(s.emoji?s.emoji+" ":"")+s.nom;c.appendChild(b);
+      if(g.length===1&&s.description)c.appendChild(el("span","",s.description));
+      else if(g.length>1)c.appendChild(el("span","",g.map(function(x){return x.nom}).filter(function(n,i,a){return a.indexOf(n)===i}).join(" · ")));
+      var go=el("button","dpop-go",g.length>1?"▶ Voir les "+g.length+" vidéos":"▶ Voir la vidéo");go.type="button";
+      go.onclick=function(){mk.closePopup();show((s.emoji||"📍")+" "+s.nom,g)};c.appendChild(go);
+      mk.bindPopup(c,{className:"dpop",maxWidth:260,autoPanPadding:[20,20]});
+      // À la souris : la fiche s'ouvre au survol et reste ouverte tant qu'on est sur le point ou sur la fiche
+      var tm=null;function keep(){clearTimeout(tm)}function leave(){tm=setTimeout(function(){mk.closePopup()},350)}
+      if(HOVER){mk.on("mouseover",function(){keep();mk.openPopup()});mk.on("mouseout",leave)}
+      mk.on("popupopen",function(){var pe=mk.getPopup().getElement();if(pe&&!pe.__h){pe.__h=1;pe.addEventListener("mouseenter",keep);pe.addEventListener("mouseleave",leave)}});
     });
+    // Cadrer sur mes lieux (sans trop zoomer s'il n'y en a qu'un)
+    var pts=SP.lieux.map(function(s){return s.gps});
+    if(!framed&&pts.length>1){framed=true;map.fitBounds(L.latLngBounds(pts).pad(.15),{maxZoom:14})}
   }
   function hide(){$("d-vids").hidden=true;$("d-vids").innerHTML=""}
   // Un lecteur par vidéo, limité à l'extrait choisi
