@@ -55,6 +55,30 @@ h2{font-size:32px;margin:48px 0 16px;font-weight:800;letter-spacing:-.02em}
 .tt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .tt.ig video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
 .ig-link{position:absolute;left:10px;top:10px;background:rgba(14,23,64,.8);color:#fff;font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px;text-decoration:none}
+.dcats{display:flex;gap:8px;overflow-x:auto;margin:0 0 12px;padding-bottom:4px;scrollbar-width:none}
+.dcats::-webkit-scrollbar{display:none}
+.dcat{display:inline-flex;align-items:center;gap:6px;flex:none;font:inherit;font-weight:800;font-size:15px;color:#fff;background:var(--card);border:2px solid transparent;border-radius:999px;padding:8px 14px;cursor:pointer}
+.dcat .e{font-size:18px}
+.dcat.on{background:var(--a);color:#0e1740}
+.dvids{background:var(--card);border-radius:20px;padding:14px;margin:0 0 14px}
+.dv-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 10px}
+.dv-head b{font-size:18px}
+.dv-x{width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.1);color:#fff;font-size:22px;line-height:1;cursor:pointer}
+.dv-row{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(190px,240px);gap:12px;overflow-x:auto;padding-bottom:4px;scroll-snap-type:x proximity}
+.dv{scroll-snap-align:start;display:grid;gap:8px;align-content:start}
+.dv-vid{position:relative;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#000}
+.dv-vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.dv-again{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:inherit;font-weight:800;background:var(--a);color:#0e1740;border:0;border-radius:999px;padding:10px 16px;cursor:pointer}
+.dv-none{position:absolute;inset:0;display:grid;place-items:center;margin:0;padding:16px;text-align:center;color:var(--mut)}
+.dv-txt{display:grid;gap:3px}
+.dv-txt b{font-size:17px}
+.dv-txt p{margin:2px 0 0;color:var(--mut);font-size:14px;line-height:1.4}
+.dv-cat{font-size:13px;font-weight:800;color:var(--a)}
+.dv-adr{font-size:14px;color:var(--mut)}
+.dv-ext{font-size:12px;color:var(--mut)}
+.dv-ig{justify-self:start;margin-top:4px;font-size:13px;font-weight:800;color:#0e1740;background:#fff;border-radius:999px;padding:6px 12px;text-decoration:none}
+.vpin{position:relative;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;font-size:24px;background:#fff;border:3px solid #e1306c;box-shadow:0 6px 16px rgba(0,0,0,.35)}
+.vpin b{position:absolute;top:-6px;right:-6px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#e1306c;color:#fff;font:800 13px/22px "Bricolage Grotesque",system-ui,sans-serif;text-align:center;border:2px solid #fff}
 .tt-creator{max-width:780px}
 .tt-creator .tiktok-embed{margin:0!important;max-width:780px;min-width:288px}
 .tt-creator section a{display:inline-block;color:#0e1740;background:var(--a);border-radius:999px;padding:10px 18px;font-weight:800;text-decoration:none}
@@ -393,6 +417,8 @@ body.apage #adminBadge,body.apage #adminLogout{position:absolute}
   <h3 class="dsub">Mes vidéos</h3>
   <div class="vids" id="tt"></div>
   <h3 class="dsub">La carte de Paris</h3>
+  <div class="dcats" id="d-cats" role="group" aria-label="Catégories" hidden></div>
+  <div class="dvids" id="d-vids" hidden></div>
   <div id="d-map" class="geo dmap" role="application" aria-label="Carte de Paris avec les lieux à découvrir"></div>
   <p id="mapmsg">Touche un lieu pour découvrir son histoire.</p>
 </section>
@@ -453,6 +479,7 @@ body.apage #adminBadge,body.apage #adminLogout{position:absolute}
       <button type="button" role="tab" data-t="quiz">Quiz sur Paris<span class="n"></span></button>
       <button type="button" role="tab" data-t="prix">Devine le prix<span class="n"></span></button>
       <button type="button" role="tab" data-t="lieux">Devine où c’est<span class="n"></span></button>
+      <button type="button" role="tab" data-t="reels">Mes Reels<span class="n"></span></button>
       <button type="button" role="tab" data-t="videos">Vidéos TikTok<span class="n"></span></button>
       <button type="button" role="tab" data-t="scores">Classement<span class="n"></span></button>
     </nav>
@@ -973,6 +1000,17 @@ function geoDist(a,b){
       ],
       find:function(x){return x.n},
       def:function(a,b){return ((a.zone==="banlieue")-(b.zone==="banlieue"))||(LVO[a.level]-LVO[b.level])||((a.o||0)-(b.o||0))}},
+    reels:{one:"vidéo",many:"vidéos",noAdd:true,noEdit:true,noDel:true,noNum:true,
+      cols:[
+        {h:"N°",k:function(x){return x.n},c:function(x){return el("b","",String(x.n))}},
+        {h:"Miniature",c:function(x){if(!x.poster)return el("span","ap-mut","—");var i=el("img","ap-th");i.alt="";i.loading="lazy";i.src=x.poster;return i}},
+        {h:"Publiée le",k:function(x){return x.ts||""},c:function(x){return el("span","ap-mut",x.ts?new Date(x.ts).toLocaleDateString("fr-FR",{day:"numeric",month:"short",year:"numeric"}):"—")}},
+        {h:"Légende",c:function(x){return el("span","",x.caption||"—")}},
+        {h:"Sur la carte",c:function(x){return el("span",x.spots?"ap-ok":"ap-mut",x.spots||"—")}},
+        {h:"Lien",c:function(x){if(!x.link)return el("span","ap-mut","—");var a=el("a","ap-mut","Ouvrir");a.href=x.link;a.target="_blank";a.rel="noopener";return a}}
+      ],
+      find:function(x){return x.n+" "+(x.caption||"")+" "+(x.spots||"")},
+      def:function(a,b){return a.n-b.n}},
     videos:{coll:"videos",one:"vidéo",many:"vidéos",vis:true,
       cols:[
         {h:"Titre",k:function(x){return norm(x.t)},c:function(x){return el("span",x.t?"ap-strong":"ap-mut",x.t||"Sans titre")}},
@@ -990,7 +1028,15 @@ function geoDist(a,b){
       find:function(x){return x.name},
       def:function(a,b){return (b.at||0)-(a.at||0)}}
   };
-  function rows(t){return (t==="quiz"?window.QDB:t==="prix"?window.PDB:t==="lieux"?window.LDB:t==="videos"?window.VDB:LB.docs)||[]}
+  var SPOTS=null;fetch("spots.json").then(function(r){return r.json()}).then(function(j){SPOTS=j}).catch(function(){});
+  function reels(){
+    if(!window.igOrdered)return [];
+    return igOrdered().map(function(v,i){
+      var n=i+1,sp=SPOTS?SPOTS.lieux.filter(function(s){return s.video===n}).map(function(s){return s.nom}).join(", "):"";
+      return Object.assign({},v,{n:n,spots:sp});
+    });
+  }
+  function rows(t){if(t==="reels")return reels();return (t==="quiz"?window.QDB:t==="prix"?window.PDB:t==="lieux"?window.LDB:t==="videos"?window.VDB:LB.docs)||[]}
   function nameOf(d){return d.one==="question"?"une question":d.one==="objet"?"un objet":d.one==="vidéo"?"une vidéo":"un lieu"}
   function write(p,ok){
     if(!LB.db)return Promise.reject();
@@ -1026,7 +1072,7 @@ function geoDist(a,b){
     list.sort(col&&col.k?function(a,b){var x=col.k(a),y=col.k(b);return (x<y?-1:x>y?1:0)*st.sd||d.def(a,b)}:d.def);
     var nok=st.t==="lieux"?" · "+all.filter(function(x){return x.ok===true}).length+" validés au total":"";
     $("apCount").textContent=(list.length===all.length?all.length+" "+(all.length>1?d.many:d.one):list.length+" sur "+all.length+" "+d.many)+nok;
-    var hr=el("tr");hr.appendChild(el("th","ap-num","#"));
+    var hr=el("tr");if(!d.noNum)hr.appendChild(el("th","ap-num","#"));
     d.cols.forEach(function(c,i){
       var th=el("th",c.cls||"");
       if(c.k){var b=el("button","",c.h);b.type="button";if(st.sk===i)b.dataset.d=st.sd;b.onclick=function(){if(st.sk===i)st.sd=-st.sd;else{st.sk=i;st.sd=1}apRender()};th.appendChild(b)}
@@ -1038,15 +1084,15 @@ function geoDist(a,b){
     var bd=$("apBody");bd.innerHTML="";
     list.forEach(function(x,k){
       var tr=el("tr",x.on===false?"off":"");
-      var n=el("td","ap-num",String(k+1));tr.appendChild(n);
+      if(!d.noNum){var n=el("td","ap-num",String(k+1));tr.appendChild(n)}
       d.cols.forEach(function(c){var td=el("td",c.cls||"");td.dataset.l=c.h;td.appendChild(c.c(x));tr.appendChild(td)});
       var a=el("td","ap-act");
       if(!d.noEdit){var e=el("button","","Modifier");e.type="button";e.onclick=function(){edit(x)};a.appendChild(e)}
-      var del=el("button","del",st.t==="scores"?"Supprimer le joueur":"Supprimer");del.type="button";del.onclick=function(){ask(x)};a.appendChild(del);
+      if(!d.noDel){var del=el("button","del",st.t==="scores"?"Supprimer le joueur":"Supprimer");del.type="button";del.onclick=function(){ask(x)};a.appendChild(del)}
       tr.appendChild(a);bd.appendChild(tr);
     });
     var em=$("apEmpty");em.hidden=!!list.length;
-    em.textContent=all.length?"Aucun résultat pour cette recherche.":(st.t==="scores"?"Personne n’a encore joué.":"Chargement…");
+    em.textContent=all.length?"Aucun résultat pour cette recherche.":(st.t==="scores"?"Personne n’a encore joué.":st.t==="reels"?(window.IGV===null?"Chargement…":"Aucune vidéo Instagram trouvée."):"Chargement…");
   };
 
   // Fenêtre d'ajout / modification
@@ -1270,14 +1316,102 @@ window.dInit=function(){
   });
   // Ici on veut voir tous les lieux d'un coup, même sur téléphone
   if(all.length)m.fitBounds(L.latLngBounds(all).pad(.08));
+  if(window.spotsInit)spotsInit(m);
 };
+
+// Découvre ! : mes lieux en vidéo (public/spots.json). Chaque lieu renvoie à une de mes vidéos Instagram
+// par son numéro (1 = la plus ancienne), avec un extrait facultatif « debut »/« fin » en secondes.
+(function(){
+  var SP=null,cat="",layer=null,map=null;
+  fetch("spots.json").then(function(r){return r.json()}).then(function(j){SP=j;draw()}).catch(function(){SP={categories:{},lieux:[]}});
+  // Mes vidéos de la plus ancienne (n°1) à la plus récente
+  window.igOrdered=function(){
+    var l=(window.IGV||[]).slice();
+    if(l.every(function(v){return v.ts}))l.sort(function(a,b){return a.ts<b.ts?-1:a.ts>b.ts?1:0});else l.reverse();
+    return l;
+  };
+  function vidOf(s){var l=igOrdered();return l[s.video-1]||null}
+  function secs(x){if(x==null||x==="")return null;if(typeof x==="number")return x;var p=String(x).split(":").map(Number);return p.length>1?p[0]*60+p[1]:p[0]}
+  function emo(c){return (SP.categories[c]||{}).emoji||"📍"}
+  // Lieux regroupés par position (même GPS = même bulle)
+  function groups(){
+    var g={};SP.lieux.forEach(function(s){if(cat&&s.categorie!==cat)return;var k=s.gps[0].toFixed(5)+","+s.gps[1].toFixed(5);(g[k]=g[k]||[]).push(s)});
+    return Object.keys(g).map(function(k){return g[k]});
+  }
+  function chips(){
+    var box=$("d-cats");box.innerHTML="";
+    var cs=Object.keys(SP.categories).filter(function(c){return SP.lieux.some(function(s){return s.categorie===c})});
+    box.hidden=!cs.length;if(!cs.length)return;
+    [""].concat(cs).forEach(function(c){
+      var n=SP.lieux.filter(function(s){return !c||s.categorie===c}).length;
+      var b=el("button","dcat"+(c===cat?" on":""));b.type="button";
+      b.appendChild(el("span","e",c?emo(c):"✨"));b.appendChild(el("span","",(c?SP.categories[c].nom:"Tout")+" ("+n+")"));
+      b.onclick=function(){cat=c;chips();draw();if(c)show((SP.categories[c].emoji||"")+" "+SP.categories[c].nom,SP.lieux.filter(function(s){return s.categorie===c}));else hide()};
+      box.appendChild(b);
+    });
+  }
+  function draw(){
+    if(!SP||!map)return;
+    chips();
+    if(layer)layer.remove();layer=L.layerGroup().addTo(map);
+    groups().forEach(function(g){
+      var s=g[0],html='<div class="vpin" aria-hidden="true">'+emo(s.categorie)+(g.length>1?'<b>'+g.length+'</b>':'')+'</div>';
+      var mk=L.marker(s.gps,{icon:L.divIcon({className:"",html:html,iconSize:[48,48],iconAnchor:[24,24]}),title:g.length>1?s.nom+" ("+g.length+" vidéos)":s.nom,keyboard:true,alt:s.nom,zIndexOffset:500}).addTo(layer);
+      mk.on("click",function(){show("📍 "+s.nom,g)});
+    });
+  }
+  function hide(){$("d-vids").hidden=true;$("d-vids").innerHTML=""}
+  // Un lecteur par vidéo, limité à l'extrait choisi
+  function card(s){
+    var c=el("div","dv"),v=vidOf(s),a=secs(s.debut),z=secs(s.fin);
+    var w=el("div","dv-vid");
+    if(v){
+      var vd=document.createElement("video");vd.src=v.src;if(v.poster)vd.poster=v.poster;vd.controls=true;vd.playsInline=true;vd.preload="metadata";
+      vd.setAttribute("aria-label","Vidéo : "+s.nom);
+      var again=el("button","dv-again","↻ Revoir l’extrait");again.type="button";again.hidden=true;
+      vd.addEventListener("loadedmetadata",function(){if(a)vd.currentTime=a});
+      vd.addEventListener("timeupdate",function(){if(z&&vd.currentTime>=z){vd.pause();again.hidden=false}});
+      vd.addEventListener("play",function(){
+        again.hidden=true;
+        if((z&&vd.currentTime>=z)||(a&&vd.currentTime<a-.5))vd.currentTime=a||0;
+        Array.prototype.forEach.call(document.querySelectorAll("#d-vids video,#tt video"),function(o){if(o!==vd)o.pause()});
+      });
+      again.onclick=function(){vd.currentTime=a||0;vd.play()};
+      w.appendChild(vd);w.appendChild(again);
+    }else w.appendChild(el("p","dv-none",window.IGV===null?"Chargement de la vidéo…":"Vidéo indisponible pour le moment."));
+    c.appendChild(w);
+    var t=el("div","dv-txt");
+    t.appendChild(el("span","dv-cat",emo(s.categorie)+" "+((SP.categories[s.categorie]||{}).nom||"")));
+    t.appendChild(el("b","",s.nom));
+    t.appendChild(el("span","dv-adr",s.adresse));
+    if(s.description)t.appendChild(el("p","",s.description));
+    if(a!=null||z!=null)t.appendChild(el("span","dv-ext","Extrait "+fmt(a||0)+(z?" → "+fmt(z):"")));
+    if(v&&v.link){var l=el("a","dv-ig","Voir sur Instagram");l.href=v.link;l.target="_blank";l.rel="noopener";t.appendChild(l)}
+    c.appendChild(t);
+    return c;
+  }
+  function fmt(x){return Math.floor(x/60)+":"+("0"+Math.floor(x%60)).slice(-2)}
+  var cur=null;
+  function show(title,list){
+    cur=[title,list];
+    var p=$("d-vids");p.innerHTML="";p.hidden=false;
+    var h=el("div","dv-head");h.appendChild(el("b","",title+" · "+list.length+" vidéo"+(list.length>1?"s":"")));
+    var x=el("button","dv-x","×");x.type="button";x.setAttribute("aria-label","Fermer");x.onclick=function(){cur=null;hide()};h.appendChild(x);p.appendChild(h);
+    var row=el("div","dv-row");list.forEach(function(s){row.appendChild(card(s))});p.appendChild(row);
+    p.scrollIntoView({behavior:"smooth",block:"nearest"});
+  }
+  // Quand la liste Instagram arrive, on met à jour les vidéos affichées
+  window.spotsRefresh=function(){if(cur)show(cur[0],cur[1])};
+  window.spotsInit=function(m){map=m;draw()};
+})();
+
 
 // Découvre ! : 5 vidéos au hasard. D'abord les Reels Instagram (automatique, via /api/insta),
 // sinon la liste TikTok de l'admin, sinon le widget officiel TikTok.
 (function(){
   var shown=null,igShown=null;
   window.IGV=null;
-  fetch("/api/insta").then(function(r){return r.ok?r.json():null}).then(function(j){window.IGV=(j&&j.videos)||[];ttRender()}).catch(function(){window.IGV=[];ttRender()});
+  fetch("/api/insta").then(function(r){return r.ok?r.json():null}).then(function(j){window.IGV=(j&&j.videos)||[];ttRender();if(window.spotsRefresh)spotsRefresh();if(window.apRender)apRender()}).catch(function(){window.IGV=[];ttRender()});
   function igRender(box){
     if(!igShown)igShown=shuffle(IGV).slice(0,5);
     if(box.dataset.mode==="ig")return;

@@ -31,13 +31,14 @@ export async function listVideos(token, fetchFn = fetch) {
   const fields = "id,media_type,media_url,thumbnail_url,permalink,caption,timestamp";
   let url = `${API}/me/media?fields=${fields}&limit=50&access_token=${encodeURIComponent(token)}`;
   const out = [];
-  for (let page = 0; url && page < 6; page++) {
+  // Jusqu'à 1000 publications, pour retrouver aussi les plus anciennes vidéos (numérotées depuis la 1re)
+  for (let page = 0; url && page < 20; page++) {
     const r = await fetchFn(url);
     const j = await r.json();
     if (!r.ok) throw new Error(j.error && j.error.message || `Instagram a répondu ${r.status}`);
     for (const m of j.data || []) {
       if (m.media_type !== "VIDEO" || !m.media_url) continue;
-      out.push({ id: m.id, src: m.media_url, poster: m.thumbnail_url || null, link: m.permalink || null, caption: (m.caption || "").slice(0, 140) });
+      out.push({ id: m.id, src: m.media_url, poster: m.thumbnail_url || null, link: m.permalink || null, caption: (m.caption || "").slice(0, 140), ts: m.timestamp || null });
     }
     url = j.paging && j.paging.next;
   }
