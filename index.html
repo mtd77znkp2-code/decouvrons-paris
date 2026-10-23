@@ -138,6 +138,9 @@ body.admin #loginBtn{top:80px}body.admin #loginBox{top:134px}
 .geo{height:min(62vh,520px);min-height:320px;border-radius:22px;overflow:hidden;background:#dfe6ee;z-index:0}
 .geo .leaflet-container,.geo.leaflet-container{font:inherit;cursor:crosshair}
 .geo .leaflet-control-attribution{font-size:10px}
+.leaflet-control-layers{color-scheme:light;accent-color:#0e1740;border-radius:12px!important;font:700 13px "Bricolage Grotesque",system-ui,sans-serif;color:#0e1740}
+.leaflet-control-layers-expanded{padding:6px 10px}
+.leaflet-control-layers label{margin:2px 0;cursor:pointer}
 .leaflet-tooltip.geo-tip{background:#0e1740;color:#fff;border:2px solid var(--a);border-radius:999px;font:800 14px "Bricolage Grotesque",system-ui,sans-serif;padding:4px 12px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
 .leaflet-tooltip.geo-tip::before{display:none}
 .geo-msg{display:none;position:absolute;inset:0;place-items:center;padding:20px;text-align:center;color:#0e1740;font-weight:800}
@@ -487,12 +490,17 @@ function lbSubmit(key,score){
   }catch(e){LB.db=null}
 })();
 
-// Vraie carte de Paris (Leaflet, fond OpenStreetMap/CARTO sans noms pour ne pas donner la réponse)
+// Vraie carte de Paris (Leaflet)
 var GEO={"Tour Eiffel":[48.85826,2.2945],"Arc de Triomphe":[48.87378,2.29504],"Musée du Louvre":[48.86061,2.33764],"Notre-Dame":[48.85297,2.34989],"Sacré-Cœur":[48.88671,2.3431],"Moulin Rouge":[48.88409,2.33225],"Opéra Garnier":[48.87197,2.33163],"Père-Lachaise":[48.86148,2.39345],"Panthéon":[48.84622,2.34637],"Place de la Bastille":[48.85321,2.36912],"Tour Montparnasse":[48.84211,2.32199],"Les Invalides":[48.855,2.31258],"Musée d’Orsay":[48.85998,2.32656],"Centre Pompidou":[48.86064,2.35222],"Catacombes":[48.83385,2.3324],"Trocadéro":[48.8629,2.2873]};
 var PARIS=[[48.8156,2.2241],[48.9022,2.4699]];
 function parisMap(box){
   var m=L.map(box,{minZoom:11,maxZoom:18,maxBounds:[[48.74,2.1],[48.98,2.6]],maxBoundsViscosity:.8,zoomSnap:.5});
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",{subdomains:"abcd",maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · © <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'}).addTo(m);
+  // Fonds Esri sans clé et sans noms de lieux (pour ne pas donner la réponse)
+  var E="https://server.arcgisonline.com/ArcGIS/rest/services/";
+  var sat=L.tileLayer(E+"World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,attribution:"Images © Esri, Maxar, Earthstar Geographics"});
+  var plan=L.tileLayer(E+"Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,maxNativeZoom:16,attribution:"Plan © Esri, HERE, OpenStreetMap"});
+  sat.addTo(m);
+  L.control.layers({"Satellite":sat,"Plan":plan},null,{collapsed:false,position:"topright"}).addTo(m);
   m.fitBounds(PARIS);
   if(window.ResizeObserver)new ResizeObserver(function(){m.invalidateSize()}).observe(box);
   return m;
