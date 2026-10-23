@@ -106,11 +106,13 @@ nav.soc a+a{background:#fff}
 #home{position:relative}
 #adminBadge{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;z-index:50;display:inline-flex;align-items:center;gap:7px;padding:5px 11px 5px 9px;border-radius:999px;border:1px solid rgba(245,178,26,.45);background:rgba(14,23,64,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--c);font:700 11px/1 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25);transition:border-color .2s,background .2s}
 #adminBadge:hover{border-color:var(--a);background:rgba(24,37,92,.9)}
-#adminBadge[hidden]{display:none}
+#adminBadge[hidden],#adminLogout[hidden]{display:none}
+#adminLogout{position:fixed;top:calc(env(safe-area-inset-top,0px) + 44px);right:12px;z-index:50;padding:5px 11px;border-radius:999px;border:1px solid rgba(185,192,224,.35);background:rgba(14,23,64,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--mut);font:600 11px/1 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:.04em;cursor:pointer;transition:color .2s,border-color .2s}
+#adminLogout:hover{color:#fff;border-color:var(--mut)}
 #adminBadge i{width:7px;height:7px;border-radius:50%;background:var(--a);box-shadow:0 0 0 0 rgba(245,178,26,.6);animation:adm 2.4s infinite}
 @keyframes adm{70%{box-shadow:0 0 0 6px rgba(245,178,26,0)}100%{box-shadow:0 0 0 0 rgba(245,178,26,0)}}
 @media (prefers-reduced-motion:reduce){#adminBadge i{animation:none}}
-body.admin #loginBtn{top:52px}body.admin #loginBox{top:106px}
+body.admin #loginBtn{top:80px}body.admin #loginBox{top:134px}
 #loginBtn{position:absolute;top:16px;right:16px;background:var(--a);color:#0e1740;z-index:2}
 #loginBox{position:absolute;top:70px;right:16px;width:min(300px,calc(100% - 32px));background:var(--card);border:3px solid var(--a);border-radius:20px;padding:18px;text-align:left;z-index:2}
 #loginBox[hidden],#loginBox [hidden]{display:none}
@@ -214,6 +216,7 @@ footer{padding:40px 0 30px;color:var(--mut)}
 <body>
 <span id="top"></span>
 <button id="adminBadge" type="button" hidden title="Ouvrir l’administration"><i aria-hidden="true"></i>Admin mode</button>
+<button id="adminLogout" type="button" hidden>Se déconnecter</button>
 <div id="home">
   <button class="btn" id="loginBtn">👤 Connexion</button>
   <div id="loginBox" hidden>
@@ -283,7 +286,6 @@ footer{padding:40px 0 30px;color:var(--mut)}
   </div>
 </section>
 <section id="admin" hidden>
-  <button class="btn ghost" id="adminOut" type="button">Quitter l’administration</button>
   <h2>Administration</h2>
   <div class="lvls" id="a-games" role="group" aria-label="Jeu"><button class="lvl on" data-k="quiz">Quiz sur Paris</button><button class="lvl" data-k="prix">Devine le prix</button></div>
   <p class="lbn">Les changements sont pris en compte tout de suite dans le jeu.</p>
@@ -778,7 +780,7 @@ Array.prototype.forEach.call(document.querySelectorAll(".gtile"),function(b){
 // Connexion administrateur (par e-mail, discrète, en bas du site)
 $("adminLink").onclick=function(){var f=$("adminLogin");f.hidden=!f.hidden};
 function adminFail(x){$("adminLogin").hidden=false;$("adm-msg").textContent=x}
-function adminMode(on){window.ADMIN_UNLOCKED=on;$("adminBadge").hidden=!on;document.body.classList.toggle("admin",on)}
+function adminMode(on){window.ADMIN_UNLOCKED=on;$("adminBadge").hidden=!on;$("adminLogout").hidden=!on;document.body.classList.toggle("admin",on)}
 $("adminBadge").onclick=function(){goTo("admin")};
 function adminEnter(u){
   if(u.email!==ADMIN_EMAIL){adminFail("Ce compte Google n’a pas les droits d’administration.");LB.auth.signOut();return}
@@ -790,7 +792,7 @@ $("adminLogin").onsubmit=function(e){
   $("adm-msg").textContent="Connexion…";
   LB.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()).catch(function(){adminFail("Connexion impossible. Réessaie.")});
 };
-$("adminOut").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut();tab("jeux");$("back").click()};
+$("adminLogout").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut();tab("jeux");$("back").click()};
 
 // Accueil
 function goTo(s){if(s==="admin"&&!window.ADMIN_UNLOCKED)return;var st=document.getElementById("site");st.hidden=false;tab(s);setTimeout(function(){st.scrollIntoView({behavior:"smooth",block:"start"})},50)}
