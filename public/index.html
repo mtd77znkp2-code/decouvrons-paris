@@ -68,6 +68,7 @@ h2{font-size:32px;margin:48px 0 16px;font-weight:800;letter-spacing:-.02em}
 .dv{scroll-snap-align:start;display:grid;gap:8px;align-content:start}
 .dv-vid{position:relative;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#000}
 .dv-vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.dv-embed{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
 .dv-again{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:inherit;font-weight:800;background:var(--a);color:#0e1740;border:0;border-radius:999px;padding:10px 16px;cursor:pointer}
 .dv-none{position:absolute;inset:0;display:grid;place-items:center;margin:0;padding:16px;text-align:center;color:var(--mut)}
 .dv-txt{display:grid;gap:3px}
@@ -1008,6 +1009,7 @@ function geoDist(a,b){
         {h:"Miniature",c:function(x){if(!x.poster)return el("span","ap-mut","—");var i=el("img","ap-th");i.alt="";i.loading="lazy";i.src=x.poster;return i}},
         {h:"Publiée le",k:function(x){return x.ts||""},c:function(x){return el("span","ap-mut",x.ts?new Date(x.ts).toLocaleDateString("fr-FR",{day:"numeric",month:"short",year:"numeric"}):"—")}},
         {h:"Légende",c:function(x){return el("span","",x.caption||"—")}},
+        {h:"Lecture",c:function(x){return x.src?el("span","ap-ok",x.kind==="carrousel"?"Sur le site (carrousel)":"Sur le site"):el("span","ap-warn","Lecteur Instagram (musique protégée)")}},
         {h:"Sur la carte",c:function(x){return el("span",x.spots?"ap-ok":"ap-mut",x.spots||"—")}},
         {h:"Lien",c:function(x){if(!x.link)return el("span","ap-mut","—");var a=el("a","ap-mut","Ouvrir");a.href=x.link;a.target="_blank";a.rel="noopener";return a}}
       ],
@@ -1373,7 +1375,7 @@ window.dInit=function(){
   function card(s){
     var c=el("div","dv"),v=vidOf(s),a=secs(s.debut),z=secs(s.fin);
     var w=el("div","dv-vid");
-    if(v){
+    if(v&&v.src){
       var vd=document.createElement("video");vd.src=v.src;if(v.poster)vd.poster=v.poster;vd.controls=true;vd.playsInline=true;vd.preload="metadata";
       vd.setAttribute("aria-label","Vidéo : "+s.nom);
       var again=el("button","dv-again","↻ Revoir l’extrait");again.type="button";again.hidden=true;
@@ -1386,14 +1388,18 @@ window.dInit=function(){
       });
       again.onclick=function(){vd.currentTime=a||0;vd.play()};
       w.appendChild(vd);w.appendChild(again);
-    }else w.appendChild(el("p","dv-none",window.IGV===null?"Chargement de la vidéo…":"Vidéo indisponible pour le moment."));
+    }else if(v&&v.link){
+      // Musique protégée : Instagram ne donne pas le fichier, on intègre son lecteur officiel (pas d'extrait possible)
+      var f=document.createElement("iframe");f.className="dv-embed";f.src=v.link.split("?")[0].replace(/\/?$/,"/")+"embed/";
+      f.title="Vidéo Instagram : "+s.nom;f.loading="lazy";f.allow="encrypted-media; fullscreen";f.allowFullscreen=true;w.appendChild(f);
+    }else w.appendChild(el("p","dv-none",window.IGV===null?"Chargement de la vidéo…":"Vidéo introuvable sur le compte Instagram."));
     c.appendChild(w);
     var t=el("div","dv-txt");
     t.appendChild(el("span","dv-cat",emo(s.categorie)+" "+((SP.categories[s.categorie]||{}).nom||"")));
     t.appendChild(el("b","",(s.emoji?s.emoji+" ":"")+s.nom));
     t.appendChild(el("span","dv-adr",s.adresse));
     if(s.description)t.appendChild(el("p","",s.description));
-    if(a!=null||z!=null)t.appendChild(el("span","dv-ext","Extrait "+fmt(a||0)+(z?" → "+fmt(z):"")));
+    if((a!=null||z!=null)&&v&&v.src)t.appendChild(el("span","dv-ext","Extrait "+fmt(a||0)+(z?" → "+fmt(z):"")));
     if(v&&v.link){var l=el("a","dv-ig","Voir sur Instagram");l.href=v.link;l.target="_blank";l.rel="noopener";t.appendChild(l)}
     c.appendChild(t);
     return c;
@@ -1421,7 +1427,7 @@ window.dInit=function(){
   window.IGV=null;
   fetch("/api/insta").then(function(r){return r.ok?r.json():null}).then(function(j){window.IGV=(j&&j.videos)||[];ttRender();if(window.spotsRefresh)spotsRefresh();if(window.apRender)apRender()}).catch(function(){window.IGV=[];ttRender()});
   function igRender(box){
-    if(!igShown)igShown=shuffle(IGV).slice(0,5);
+    if(!igShown)igShown=shuffle(IGV.filter(function(v){return v.src})).slice(0,5);
     if(box.dataset.mode==="ig")return;
     box.dataset.mode="ig";box.className="vids";box.innerHTML="";
     igShown.forEach(function(v){
@@ -1438,7 +1444,7 @@ window.dInit=function(){
   window.ttRender=function(){
     var box=$("tt");if(!box)return;
     if(window.IGV===null){if(!box.dataset.mode){box.dataset.mode="wait";box.className="vids";box.innerHTML="";box.appendChild(el("p","lbn","Chargement des vidéos…"))}return}
-    if(IGV.length){igRender(box);return}
+    if(IGV.some(function(v){return v.src})){igRender(box);return}
     var all=(window.VDB||[]).filter(function(v){return v.on!==false&&/^\d{8,25}$/.test(v.vid||"")});
     var ids=all.map(function(v){return v.vid});
     // On garde le même tirage tant que la liste ne change pas

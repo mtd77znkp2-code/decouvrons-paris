@@ -28,7 +28,7 @@ export async function getToken(store, env, fetchFn = fetch, now = Date.now()) {
 }
 
 export async function listVideos(token, fetchFn = fetch) {
-  const fields = "id,media_type,media_url,thumbnail_url,permalink,caption,timestamp";
+  const fields = "id,media_type,media_url,thumbnail_url,permalink,caption,timestamp,children{media_type,media_url,thumbnail_url}";
   let url = `${API}/me/media?fields=${fields}&limit=50&access_token=${encodeURIComponent(token)}`;
   const out = [];
   // Jusqu'à 1000 publications, pour retrouver aussi les plus anciennes vidéos (numérotées depuis la 1re)
@@ -37,8 +37,16 @@ export async function listVideos(token, fetchFn = fetch) {
     const j = await r.json();
     if (!r.ok) throw new Error(j.error && j.error.message || `Instagram a répondu ${r.status}`);
     for (const m of j.data || []) {
-      if (m.media_type !== "VIDEO" || !m.media_url) continue;
-      out.push({ id: m.id, src: m.media_url, poster: m.thumbnail_url || null, link: m.permalink || null, caption: (m.caption || "").slice(0, 140), ts: m.timestamp || null });
+      // Vidéos et carrousels contenant une vidéo. Pour un Reel avec une musique protégée,
+      // Instagram ne donne pas le fichier (media_url) : on garde quand même la vidéo, lue avec le lecteur Instagram.
+      let v = null;
+      if (m.media_type === "VIDEO") v = { src: m.media_url || null, poster: m.thumbnail_url || null, kind: "video" };
+      else if (m.media_type === "CAROUSEL_ALBUM") {
+        const c = ((m.children && m.children.data) || []).find((x) => x.media_type === "VIDEO");
+        if (c) v = { src: c.media_url || null, poster: c.thumbnail_url || null, kind: "carrousel" };
+      }
+      if (!v) continue;
+      out.push({ id: m.id, src: v.src, poster: v.poster, kind: v.kind, link: m.permalink || null, caption: (m.caption || "").slice(0, 140), ts: m.timestamp || null });
     }
     url = j.paging && j.paging.next;
   }
@@ -46,10 +54,10 @@ export async function listVideos(token, fetchFn = fetch) {
 }
 
 export async function getVideos(store, env, fetchFn = fetch, now = Date.now(), force = false) {
-  const cache = await store.get("videos", { type: "json" });
+  const cache = await store.get("videos2", { type: "json" });
   if (!force && cache && now - cache.at < CACHE_FOR) return cache.list;
   const token = await getToken(store, env, fetchFn, now);
   const list = await listVideos(token, fetchFn);
-  await store.setJSON("videos", { at: now, list });
+  await store.setJSON("videos2", { at: now, list });
   return list;
 }
