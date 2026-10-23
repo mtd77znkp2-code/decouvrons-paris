@@ -29,6 +29,18 @@
         2.3129372
       ],
       "description": "Installation de l’artiste argentin Leandro Erlich, connu pour ses illusions en trompe-l’œil, au Grand Palais."
+    },
+    {
+      "date": "2026-07-30",
+      "nom": "Musée Carnavalet",
+      "emoji": "📜",
+      "categorie": "musee",
+      "adresse": "23 rue de Sévigné, 75003 Paris",
+      "gps": [
+        48.8575,
+        2.3626
+      ],
+      "description": "Le musée de l’histoire de Paris, installé dans deux hôtels particuliers du Marais. Les collections permanentes sont gratuites."
     }
   ]
 }
