@@ -144,6 +144,19 @@ body.admin #loginBtn{top:80px}body.admin #loginBox{top:134px}
 .leaflet-tooltip.geo-tip{background:#0e1740;color:#fff;border:2px solid var(--a);border-radius:999px;font:800 14px "Bricolage Grotesque",system-ui,sans-serif;padding:4px 12px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
 .leaflet-tooltip.geo-tip::before{display:none}
 .geo-msg{display:none;position:absolute;inset:0;place-items:center;padding:20px;text-align:center;color:#0e1740;font-weight:800}
+.bantog{display:inline-flex;align-items:center;gap:10px;font-weight:800;cursor:pointer;margin:0 0 6px;user-select:none}
+.bantog input{position:absolute;opacity:0;width:1px;height:1px}
+.bantog .tg{position:relative;width:46px;height:26px;border-radius:999px;background:#2b3d93;transition:background .2s;flex:none}
+.bantog .tg::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
+.bantog input:checked+.tg{background:var(--a)}
+.bantog input:checked+.tg::after{transform:translateX(20px)}
+.bantog input:focus-visible+.tg{outline:3px solid var(--c);outline-offset:2px}
+.bantog input:disabled+.tg{opacity:.55}
+.ap-zone{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap;background:rgba(185,192,224,.15);color:#fff}
+.ap-scl{display:grid;gap:4px;margin:0;padding:0;list-style:none}
+.ap-scl li{display:flex;gap:6px;align-items:center;white-space:nowrap}
+.ap-scl small{color:var(--mut);font-size:12px}
+.ap-geo .leaflet-control-layers input{width:auto;padding:0;margin:0 6px 0 0;border:0;background:none;font-size:13px}
 .ap-geo{height:340px;border-radius:12px;overflow:hidden;background:#dfe6ee}
 .ap-warn{color:#ffb4a2;font-weight:700}
 .ap-scx{display:inline-flex;align-items:center;gap:6px}
@@ -357,7 +370,9 @@ body.apage #adminBadge,body.apage #adminLogout{position:absolute}
   <div class="games">
     <div class="game" id="g-loc">
       <h3>Devine où c’est</h3>
-      <div class="bar"><span id="l-msg" class="msg">Touche la carte à l’endroit du lieu demandé, puis valide. 5 manches.</span><button class="btn" id="l-btn">Jouer</button></div>
+      <div class="lvls" id="l-lvls" role="group" aria-label="Niveau"><button class="lvl on" data-l="facile">Facile</button><button class="lvl" data-l="moyen">Moyen</button><button class="lvl" data-l="difficile">Difficile</button></div>
+      <label class="bantog"><input type="checkbox" id="l-ban"><span class="tg" aria-hidden="true"></span>Inclure la banlieue</label>
+      <div class="bar"><span id="l-msg" class="msg">10 lieux à retrouver : touche la carte à l’endroit du lieu, puis valide.</span><button class="btn" id="l-btn">Jouer</button></div>
       <div id="l-map" class="geo" role="application" aria-label="Carte de Paris pour le jeu"></div>
       <div class="lb" id="lb-loc"></div>
     </div>
@@ -399,6 +414,7 @@ body.apage #adminBadge,body.apage #adminLogout{position:absolute}
     <div class="ap-tools">
       <div class="ap-search"><input id="apSearch" type="search" placeholder="Rechercher…" aria-label="Rechercher" autocomplete="off"></div>
       <div class="ap-seg" id="apLvl" role="group" aria-label="Niveau"><button type="button" data-v="" class="on">Tous</button><button type="button" data-v="facile">Facile</button><button type="button" data-v="moyen">Moyen</button><button type="button" data-v="difficile">Difficile</button></div>
+      <div class="ap-seg" id="apZone" role="group" aria-label="Zone"><button type="button" data-v="" class="on">Partout</button><button type="button" data-v="paris">Paris</button><button type="button" data-v="banlieue">Banlieue</button></div>
       <div class="ap-seg" id="apVis" role="group" aria-label="Visibilité"><button type="button" data-v="" class="on">Tout</button><button type="button" data-v="on">Visibles</button><button type="button" data-v="off">Masqués</button></div>
       <button class="btn" id="apAdd" type="button">+ Ajouter</button>
     </div>
@@ -491,20 +507,36 @@ function lbSubmit(key,score){
 })();
 
 // Vraie carte de Paris (Leaflet)
-var GEO={"Tour Eiffel":[48.85826,2.2945],"Arc de Triomphe":[48.87378,2.29504],"Musée du Louvre":[48.86061,2.33764],"Notre-Dame":[48.85297,2.34989],"Sacré-Cœur":[48.88671,2.3431],"Moulin Rouge":[48.88409,2.33225],"Opéra Garnier":[48.87197,2.33163],"Père-Lachaise":[48.86148,2.39345],"Panthéon":[48.84622,2.34637],"Place de la Bastille":[48.85321,2.36912],"Tour Montparnasse":[48.84211,2.32199],"Les Invalides":[48.855,2.31258],"Musée d’Orsay":[48.85998,2.32656],"Centre Pompidou":[48.86064,2.35222],"Catacombes":[48.83385,2.3324],"Trocadéro":[48.8629,2.2873]};
-// Cadre de départ : le centre de Paris, là où sont les lieux du jeu
-var PARIS=[[48.834,2.282],[48.889,2.398]];
-// Vue de départ : tout le cadre si l'écran est large, sinon zoom minimum 12,5 (téléphone)
-function parisHome(m,fly){var c=[48.8615,2.34],z=Math.max(12.5,m.getBoundsZoom(PARIS));if(fly)m.flyTo(c,z,{duration:.6});else m.setView(c,z)}
-function parisMap(box){
-  var m=L.map(box,{minZoom:11,maxZoom:18,maxBounds:[[48.74,2.1],[48.98,2.6]],maxBoundsViscosity:.8,zoomSnap:.5});
+// Lieux de base du jeu « Devine où c'est » : [nom, latitude, longitude], 40 par niveau et par zone
+var LIEUX={
+ paris:{
+  facile:[["Tour Eiffel",48.85826,2.2945],["Arc de Triomphe",48.87378,2.29504],["Musée du Louvre",48.86061,2.33764],["Notre-Dame",48.85297,2.34989],["Sacré-Cœur",48.88671,2.3431],["Moulin Rouge",48.88409,2.33225],["Opéra Garnier",48.87197,2.33163],["Père-Lachaise",48.86148,2.39345],["Panthéon",48.84622,2.34637],["Place de la Bastille",48.85321,2.36912],["Tour Montparnasse",48.84211,2.32199],["Les Invalides",48.855,2.31258],["Musée d’Orsay",48.85998,2.32656],["Centre Pompidou",48.86064,2.35222],["Catacombes",48.83385,2.3324],["Trocadéro",48.8629,2.2873],["Place de la Concorde",48.86556,2.32125],["Jardin du Luxembourg",48.84622,2.33714],["Jardin des Tuileries",48.8634,2.3274],["Grand Palais",48.86613,2.31248],["Place de la Nation",48.84838,2.39582],["Gare du Nord",48.88094,2.3553],["Gare de Lyon",48.84436,2.37386],["Gare de l’Est",48.8766,2.359],["Gare Saint-Lazare",48.87622,2.32543],["Place de la République",48.86744,2.36366],["Hôtel de Ville",48.85639,2.35222],["Sainte-Chapelle",48.85543,2.34501],["Pont Neuf",48.85706,2.34126],["Place Vendôme",48.86748,2.32939],["Parc de la Villette",48.8938,2.3907],["Parc des Princes",48.84144,2.25299],["Stade Roland-Garros",48.84716,2.24946],["Jardin d’Acclimatation",48.8787,2.2636],["Parc des Buttes-Chaumont",48.88092,2.38295],["Jardin des Plantes",48.8438,2.3595],["Place des Vosges",48.85561,2.36549],["Canal Saint-Martin",48.8717,2.3653],["Accor Arena (Bercy)",48.8386,2.3785],["Bibliothèque François-Mitterrand",48.83364,2.37583]],
+  moyen:[["Pont Alexandre III",48.86386,2.3136],["Opéra Bastille",48.85222,2.37],["Forum des Halles",48.8624,2.346],["Mur des je t’aime",48.8848,2.3379],["Place du Tertre",48.88649,2.34078],["Église Saint-Sulpice",48.85099,2.33475],["Église de la Madeleine",48.87005,2.3245],["Église Saint-Germain-des-Prés",48.85393,2.33424],["La Sorbonne",48.84866,2.34331],["Musée Rodin",48.85532,2.31593],["Musée de l’Orangerie",48.86378,2.32267],["Petit Palais",48.86602,2.31478],["Jardin du Palais-Royal",48.865,2.3377],["Conciergerie",48.856,2.3456],["Île Saint-Louis",48.8515,2.3566],["Pont des Arts",48.85834,2.33752],["Parc Monceau",48.87969,2.30899],["La Géode",48.89553,2.3883],["Philharmonie de Paris",48.8917,2.3938],["Lac Daumesnil (bois de Vincennes)",48.8335,2.4115],["Parc zoologique de Paris",48.8326,2.4166],["Parc André-Citroën",48.84133,2.2746],["Statue de la Liberté (île aux Cygnes)",48.85,2.2797],["Pont de Bir-Hakeim",48.8556,2.2875],["Palais de Tokyo",48.8642,2.2972],["Musée du quai Branly",48.8609,2.2977],["Flamme de la Liberté (pont de l’Alma)",48.8642,2.3009],["Fondation Louis Vuitton",48.8766,2.2633],["Institut du monde arabe",48.8489,2.3573],["Grande Mosquée de Paris",48.8419,2.3551],["Arènes de Lutèce",48.8453,2.3526],["Place de la Contrescarpe",48.8429,2.3496],["Gare d’Austerlitz",48.8423,2.3653],["Shakespeare and Company",48.8526,2.3471],["Passage des Panoramas",48.8715,2.3418],["Galerie Vivienne",48.8665,2.3399],["Bourse de commerce",48.8629,2.3429],["Palais de l’Élysée",48.8704,2.3168],["Assemblée nationale",48.862,2.3186],["Sénat (palais du Luxembourg)",48.8484,2.3371]],
+  difficile:[["Musée Picasso",48.8598,2.3623],["Musée Carnavalet",48.8575,2.3626],["Musée Jacquemart-André",48.8754,2.3106],["Musée Marmottan Monet",48.8592,2.2674],["Musée de Cluny",48.8505,2.344],["Tour Saint-Jacques",48.858,2.3489],["Église Saint-Eustache",48.8634,2.3451],["Église Saint-Étienne-du-Mont",48.8467,2.348],["Val-de-Grâce",48.8403,2.3421],["Observatoire de Paris",48.8364,2.3365],["Parc Montsouris",48.8222,2.338],["Cité internationale universitaire",48.8199,2.3386],["Butte-aux-Cailles",48.8272,2.35],["Chapelle expiatoire",48.8735,2.3227],["Place Dauphine",48.8564,2.3423],["Viaduc des Arts",48.8485,2.3735],["Cimetière de Montmartre",48.8878,2.3303],["Cimetière du Montparnasse",48.8383,2.3263],["Parc de Belleville",48.8714,2.3845],["Parc de Bercy",48.8357,2.3832],["Hôpital Saint-Louis",48.874,2.3685],["Chapelle de la Pitié-Salpêtrière",48.8385,2.3614],["Musée des Arts et Métiers",48.8665,2.3554],["Marché des Enfants-Rouges",48.8627,2.3619],["Musée de la Vie romantique",48.8816,2.3338],["Musée Guimet",48.865,2.2936],["Musée Nissim-de-Camondo",48.8783,2.3122],["Parc de Bagatelle",48.8711,2.2477],["Square des Batignolles",48.8869,2.3175],["Palais de la Porte Dorée",48.8352,2.4086],["Rue Crémieux",48.8473,2.3701],["Mémorial de la Shoah",48.8546,2.3561],["Pavillon de l’Arsenal",48.8511,2.3628],["Rotonde de la Villette (Stalingrad)",48.8838,2.3695],["Le Centquatre",48.8904,2.3717],["Musée de Montmartre",48.8883,2.3405],["Le Bateau-Lavoir",48.886,2.3376],["Fondation Cartier",48.8371,2.3317],["Parc Georges-Brassens",48.8325,2.3003],["Place d’Italie",48.831,2.3556]]
+ },
+ banlieue:{
+  facile:[["Château de Versailles",48.8049,2.1204],["Stade de France",48.92445,2.36015],["Basilique de Saint-Denis",48.9356,2.3599],["Grande Arche de la Défense",48.8926,2.236],["Disneyland Paris",48.8722,2.7758],["Aéroport Paris-Charles-de-Gaulle",49.0097,2.5479],["Aéroport d’Orly",48.7262,2.3652],["Château de Vincennes",48.8428,2.4359],["Château de Fontainebleau",48.4021,2.7004],["Château de Saint-Germain-en-Laye",48.8984,2.0938],["Paris La Défense Arena",48.8957,2.229],["Domaine national de Saint-Cloud",48.837,2.215],["Parc des expositions de Villepinte",48.9723,2.5149],["Château de Malmaison",48.8705,2.1676],["Musée de l’Air et de l’Espace (Le Bourget)",48.9462,2.4369],["La Seine Musicale",48.8245,2.2304],["Marché aux puces de Saint-Ouen",48.9017,2.3434],["Parc Georges-Valbon (La Courneuve)",48.945,2.402],["Marché international de Rungis",48.7552,2.353],["Château de Sceaux",48.7718,2.2984],["Zoo de Thoiry",48.8665,1.7981],["France Miniature",48.7707,1.9692],["Château de Vaux-le-Vicomte",48.5654,2.714],["Château de Rambouillet",48.6444,1.8206],["Créteil Soleil",48.7796,2.4588],["Vélodrome national (Saint-Quentin-en-Yvelines)",48.7875,2.0375],["École polytechnique",48.713,2.211],["Île de loisirs de Cergy-Pontoise",49.0212,2.0395],["La Vallée Village",48.8552,2.7964],["Boulogne-Billancourt",48.8356,2.2403],["Neuilly-sur-Seine",48.8847,2.2686],["Montreuil",48.8619,2.4433],["Nanterre",48.892,2.2066],["Argenteuil",48.9472,2.2467],["Issy-les-Moulineaux",48.824,2.27],["Levallois-Perret",48.895,2.287],["Cité de la céramique (Sèvres)",48.826,2.2222],["Cergy-Préfecture",49.0365,2.0761],["Cathédrale de Meaux",48.9601,2.8788],["Melun",48.5393,2.6608]],
+  moyen:[["Grand Trianon (Versailles)",48.8146,2.1045],["Château d’Écouen",49.0185,2.3777],["Château de Maisons-Laffitte",48.947,2.1533],["Lac d’Enghien-les-Bains",48.97,2.307],["Église d’Auvers-sur-Oise",49.0716,2.1714],["Barbizon",48.444,2.604],["Observatoire de Meudon",48.8051,2.2305],["Île de la Jatte",48.8878,2.257],["Université Paris-Nanterre",48.9033,2.2131],["Tour Pleyel (Saint-Denis)",48.9195,2.3446],["Stade Bauer (Saint-Ouen)",48.9081,2.3387],["Golf national (Guyancourt)",48.754,2.077],["Vélizy 2",48.782,2.222],["Conflans-Sainte-Honorine",48.999,2.097],["Cathédrale de Pontoise",49.0508,2.1008],["Collégiale de Mantes-la-Jolie",48.9906,1.717],["Poissy",48.9294,2.0456],["Saint-Maur-des-Fossés",48.7994,2.4997],["Champigny-sur-Marne",48.8172,2.5156],["Vitry-sur-Seine",48.7875,2.3928],["Ivry-sur-Seine",48.8131,2.385],["Aubervilliers",48.9146,2.3821],["Pantin",48.8944,2.4093],["Bobigny",48.9085,2.4396],["Courbevoie",48.8973,2.253],["Colombes",48.9226,2.2523],["Asnières-sur-Seine",48.9116,2.2856],["Clichy",48.9045,2.306],["Rueil-Malmaison",48.8778,2.1803],["Massy",48.7309,2.2713],["Évry-Courcouronnes",48.629,2.441],["Sarcelles",48.9973,2.3797],["Noisy-le-Grand",48.8487,2.5527],["Aulnay-sous-Bois",48.9386,2.4977],["Antony",48.754,2.2975],["Nogent-sur-Marne",48.837,2.4825],["Montmorency",48.989,2.322],["Cité du cinéma (Saint-Denis)",48.9183,2.3482],["Gennevilliers",48.9333,2.2928],["Villejuif",48.792,2.3636]],
+  difficile:[["Hameau de la Reine (Versailles)",48.8178,2.109],["Mémorial du Mont-Valérien",48.871,2.213],["Maison Fournaise (Chatou)",48.896,2.159],["Villa Savoye (Poissy)",48.9245,2.0283],["Abbaye de Royaumont",49.1432,2.3794],["Château de Breteuil",48.6747,2.0264],["Port-Royal des Champs",48.743,2.017],["Château de la Madeleine (Chevreuse)",48.704,2.04],["Moret-sur-Loing",48.372,2.816],["Milly-la-Forêt",48.404,2.47],["Étampes",48.435,2.161],["Château de Dourdan",48.529,2.011],["L’Isle-Adam",49.11,2.222],["Le Vésinet",48.893,2.131],["Domaine de Marly",48.87,2.095],["Château de Champs-sur-Marne",48.853,2.603],["Chocolaterie Menier (Noisiel)",48.85,2.625],["Jouy-en-Josas",48.757,2.169],["Mémorial de Drancy",48.92,2.454],["Les Lilas",48.88,2.419],["Bagnolet",48.8692,2.418],["Le Pré-Saint-Gervais",48.885,2.404],["Saint-Mandé",48.8424,2.4186],["Charenton-le-Pont",48.822,2.413],["Montrouge",48.816,2.3166],["Malakoff",48.8169,2.2966],["Vanves",48.8215,2.29],["Clamart",48.8003,2.2665],["Châtillon",48.8031,2.2934],["Bagneux",48.796,2.308],["Gentilly",48.813,2.344],["Le Kremlin-Bicêtre",48.81,2.358],["Cachan",48.7915,2.3341],["Aqueduc d’Arcueil",48.8058,2.3364],["Choisy-le-Roi",48.763,2.409],["Villeneuve-Saint-Georges",48.732,2.45],["Juvisy-sur-Orge",48.69,2.377],["Fontenay-sous-Bois",48.851,2.477],["Bondy",48.9022,2.4828],["Le Raincy",48.899,2.517]]
+ }
+};
+// Cadre de départ : le centre de Paris (ou Paris et sa proche banlieue)
+var PARIS=[[48.834,2.282],[48.889,2.398]],IDF=[[48.68,2.05],[49.02,2.66]];
+var BOUNDS={p:[[48.74,2.1],[48.98,2.6]],b:[[48.1,1.3],[49.45,3.4]]};
+// Vue de départ : tout le cadre si l'écran est large, sinon zoom minimum (téléphone)
+function parisHome(m,fly,wide){
+  var c=wide?[48.85,2.35]:[48.8615,2.34],z=Math.max(wide?10:12.5,m.getBoundsZoom(wide?IDF:PARIS));
+  if(fly)m.flyTo(c,z,{duration:.6});else m.setView(c,z);
+}
+function parisMap(box,wide){
+  var m=L.map(box,{minZoom:wide?8:11,maxZoom:18,maxBounds:wide?BOUNDS.b:BOUNDS.p,maxBoundsViscosity:.8,zoomSnap:.5});
   // Fonds Esri sans clé et sans noms de lieux (pour ne pas donner la réponse)
   var E="https://server.arcgisonline.com/ArcGIS/rest/services/";
   var sat=L.tileLayer(E+"World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,attribution:"Images © Esri, Maxar, Earthstar Geographics"});
   var plan=L.tileLayer(E+"Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,maxNativeZoom:16,attribution:"Plan © Esri, HERE, OpenStreetMap"});
   sat.addTo(m);
   L.control.layers({"Satellite":sat,"Plan":plan},null,{collapsed:false,position:"topright"}).addTo(m);
-  parisHome(m);
+  parisHome(m,false,wide);
   if(window.ResizeObserver)new ResizeObserver(function(){m.invalidateSize()}).observe(box);
   return m;
 }
@@ -515,20 +547,34 @@ function geoDist(a,b){
   return 2*R*Math.asin(Math.sqrt(h));
 }
 
-// 1) Devine où c'est
+// 1) Devine où c'est : 3 niveaux, option banlieue, 10 manches
 (function(){
-  var LOC=[],ALL=[];
-  Array.prototype.forEach.call(document.querySelectorAll(".pin"),function(p){
-    var n=p.dataset.n.split(" : ")[0],g=GEO[n];if(!g)return;
-    var o={n:n,lat:g[0],lng:g[1]};ALL.push({n:n,lat:g[0],lng:g[1],on:true});LOC.push(o);
-  });
+  var ALL=[];
+  ["paris","banlieue"].forEach(function(z){["facile","moyen","difficile"].forEach(function(l){
+    LIEUX[z][l].forEach(function(q,i){ALL.push({n:q[0],lat:q[1],lng:q[2],level:l,zone:z,on:true,o:i})});
+  })});
   window.locBank=ALL;
+  var LV={facile:"Facile",moyen:"Moyen",difficile:"Difficile"},N=10;
+  var lvl="facile",ban=false,playing=false;
+  function key(){return "loc_"+lvl+(ban?"_b":"")}
+  function keep(x){return x.on!==false&&x.n&&x.level===lvl&&(x.zone==="paris"||(ban&&x.zone==="banlieue"))&&isFinite(x.lat)&&isFinite(x.lng)}
   function pool(){
-    var d=(window.LDB||[]).filter(function(x){return x.on!==false&&x.n&&isFinite(x.lat)&&isFinite(x.lng)});
-    return d.length>=5?d:LOC;
+    var d=(window.LDB||[]).filter(keep);
+    return d.length>=N?d:ALL.filter(keep);
   }
-  lbBoard("lb-loc",function(){return "loc"},function(){return "🏆 Classement général · Devine où c’est"});
-  var order,round,pts,wait,cur,guess,map,layer,btn=$("l-btn"),msg=$("l-msg");
+  lbBoard("lb-loc",key,function(){return "🏆 Classement général · Où c’est "+LV[lvl]+(ban?" + banlieue":"")});
+  var order,round,pts,wait,cur,guess,map,layer,btn=$("l-btn"),msg=$("l-msg"),lv=$("l-lvls"),bx=$("l-ban");
+  var DEF=msg.textContent;
+  function lock(on){Array.prototype.forEach.call(lv.children,function(b){b.disabled=on});bx.disabled=on}
+  function mode(){
+    if(!map)return;
+    map.setMaxBounds(ban?BOUNDS.b:BOUNDS.p);map.setMinZoom(ban?8:11);
+    layer.clearLayers();parisHome(map,true,ban);
+  }
+  Array.prototype.forEach.call(lv.children,function(b){
+    b.onclick=function(){if(playing)return;lvl=b.dataset.l;Array.prototype.forEach.call(lv.children,function(x){x.classList.toggle("on",x===b)});lbRender()};
+  });
+  bx.onchange=function(){if(playing)return;ban=bx.checked;mode();lbRender()};
   function setup(){
     if(map)return true;
     if(!window.L){$("l-map").textContent="La carte n’a pas pu se charger. Vérifie ta connexion et recharge la page.";return false}
@@ -537,32 +583,38 @@ function geoDist(a,b){
       if(!wait)return;
       guess=e.latlng;layer.clearLayers();geoDot(guess,"#ff5a5f").addTo(layer);
       btn.hidden=false;btn.textContent="Valider";btn.dataset.m="ok";
-      msg.textContent="Manche "+(round+1)+"/5 : « "+cur.n+" ». Tu peux encore déplacer ton point, puis valide.";
+      msg.textContent="Manche "+(round+1)+"/"+N+" : « "+cur.n+" ». Tu peux encore déplacer ton point, puis valide.";
     });
     return true;
   }
   setup();
+  window.locStop=function(){if(!playing)return;playing=false;wait=false;lock(false);if(layer)layer.clearLayers();btn.hidden=false;btn.textContent="Jouer";btn.dataset.m="";msg.textContent=DEF};
   function ask(){
     layer.clearLayers();cur=order[round];guess=null;wait=true;btn.hidden=true;
-    parisHome(map,true);
-    msg.textContent="Manche "+(round+1)+"/5 : où est « "+cur.n+" » ? Touche la carte.";
+    parisHome(map,true,ban);
+    msg.textContent="Manche "+(round+1)+"/"+N+" : où est « "+cur.n+" » ? Touche la carte.";
   }
   function check(){
     wait=false;
-    var ans=L.latLng(cur.lat,cur.lng),d=geoDist(guess,ans),s=Math.max(0,Math.round(100-d/78));
+    // Avec la banlieue, les distances sont plus grandes : la note baisse moins vite
+    var ans=L.latLng(cur.lat,cur.lng),d=geoDist(guess,ans),s=Math.max(0,Math.round(100-d/(ban?250:78)));
     pts+=s;
     L.polyline([guess,ans],{color:"#0e1740",weight:3,dashArray:"8 8"}).addTo(layer);
     geoDot(ans,"#f5b21a").addTo(layer).bindTooltip(cur.n,{permanent:true,direction:"top",offset:[0,-12],className:"geo-tip"});
     map.flyToBounds(L.latLngBounds([guess,ans]).pad(.4),{maxZoom:16,duration:.6});
     var t=cur.n+" : +"+s+" points (à "+(d<1000?Math.round(d/10)*10+" m":(d/1000).toFixed(1).replace(".",",")+" km")+"). ";
-    if(round===4){var b=rec("loc",pts);msg.textContent=t+"Fini ! Score : "+pts+"/500 · Record : "+b;lbSubmit("loc",pts).then(function(x){msg.textContent+=" "+x});btn.textContent="Rejouer";btn.dataset.m=""}
+    if(round===N-1){
+      playing=false;lock(false);
+      var b=rec(key(),pts);msg.textContent=t+"Fini ! Score : "+pts+"/"+N*100+" · Record : "+b;
+      lbSubmit(key(),pts).then(function(x){msg.textContent+=" "+x});btn.textContent="Rejouer";btn.dataset.m="";
+    }
     else{msg.textContent=t;btn.textContent="Manche suivante";btn.dataset.m="next"}
   }
   btn.onclick=function(){
     if(!setup())return;
     if(btn.dataset.m==="ok"){if(guess)check();return}
     if(btn.dataset.m==="next"){round++;ask();return}
-    order=shuffle(pool()).slice(0,5);round=0;pts=0;ask();
+    order=shuffle(pool()).slice(0,N);round=0;pts=0;playing=true;lock(true);ask();
   };
 })();
 
@@ -758,7 +810,7 @@ function geoDist(a,b){
 // Administration : page à part, un tableau par jeu avec recherche, filtres et tri
 (function(){
   var LVN={facile:"Facile",moyen:"Moyen",difficile:"Difficile"},LVO={facile:0,moyen:1,difficile:2};
-  var st={t:"quiz",q:"",lvl:"",vis:"",sk:null,sd:1};
+  var st={t:"quiz",q:"",lvl:"",vis:"",zone:"",sk:null,sd:1};
   function norm(s){return String(s==null?"":s).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase()}
   function eur(n){n=+n;return (n%1?n.toFixed(2).replace(".",","):String(n))+" €"}
   function day(ms){if(!ms)return "—";var d=new Date(ms);return d.toLocaleDateString("fr-FR",{day:"numeric",month:"short"})+" "+d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})}
@@ -771,16 +823,29 @@ function geoDist(a,b){
     b.onclick=function(){write(LB.db.doc(T[st.t].coll+"/"+x.id).update({on:x.on===false}),x.on===false?"Affiché dans le jeu.":"Masqué du jeu.")};
     return b;
   }
-  function sc(k){return {h:{loc:"Où c’est",quiz_facile:"Quiz facile",quiz_moyen:"Quiz moyen",quiz_difficile:"Quiz difficile",prix_facile:"Prix facile",prix_moyen:"Prix moyen",prix_difficile:"Prix difficile"}[k],cls:"ap-sc",k:function(x){return (x.s&&x.s[k])||0},c:function(x){
-    var v=x.s&&x.s[k];if(!v)return el("span","ap-mut","—");
-    var w=el("span","ap-scx");w.appendChild(el("span","",String(v)));
-    var b=el("button","","×");b.type="button";b.title="Supprimer ce score";b.setAttribute("aria-label","Supprimer ce score");b.onclick=function(){askScore(x,k)};w.appendChild(b);
-    return w;
-  }}}
-  var SCN={loc:"Devine où c’est",quiz_facile:"Quiz facile",quiz_moyen:"Quiz moyen",quiz_difficile:"Quiz difficile",prix_facile:"Prix facile",prix_moyen:"Prix moyen",prix_difficile:"Prix difficile"};
+  var LVS={facile:"Facile",moyen:"Moyen",difficile:"Difficile"};
+  function scName(k){
+    if(k==="loc")return "Devine où c’est (ancienne version)";
+    var p=k.split("_"),g={loc:"Devine où c’est",quiz:"Quiz",prix:"Devine le prix"}[p[0]]||p[0];
+    return g+" "+(LVS[p[1]]||p[1]||"")+(p[2]==="b"?" + banlieue":"");
+  }
+  function scLabel(k){if(k==="loc")return "Ancienne version";var p=k.split("_");return (LVS[p[1]]||p[1])+(p[2]==="b"?" + banlieue":"")}
+  function sc(g,h){
+    var mine=function(x){return Object.keys(x.s||{}).filter(function(k){return (k===g||k.indexOf(g+"_")===0)&&x.s[k]>0}).sort(function(a,b){return (LVO[a.split("_")[1]]||0)-(LVO[b.split("_")[1]]||0)||(a.length-b.length)})};
+    return {h:h,k:function(x){return mine(x).reduce(function(m,k){return Math.max(m,x.s[k])},0)},c:function(x){
+      var ks=mine(x);if(!ks.length)return el("span","ap-mut","—");
+      var u=el("ul","ap-scl");
+      ks.forEach(function(k){
+        var li=el("li");li.appendChild(el("small","",scLabel(k)));li.appendChild(el("b","",String(x.s[k])));
+        var b=el("button","","×");b.type="button";b.title="Supprimer ce score";b.setAttribute("aria-label","Supprimer le score "+scName(k));b.onclick=function(){askScore(x,k)};
+        var w=el("span","ap-scx");w.appendChild(b);li.appendChild(w);u.appendChild(li);
+      });
+      return u;
+    }};
+  }
   function askScore(x,k){
     var y=el("button","btn danger","Supprimer ce score");y.type="button";
-    var p=el("p","ap-mut","Le score de "+x.s[k]+" points sera retiré du classement « "+SCN[k]+" ». Les autres scores de ce joueur restent.");
+    var p=el("p","ap-mut","Le score de "+x.s[k]+" points sera retiré du classement « "+scName(k)+" ». Les autres scores de ce joueur restent.");
     var err=dlg("Supprimer le score de « "+(x.name||"Anonyme")+" » ?",[p],[y]);
     y.onclick=function(){
       y.disabled=true;var m=Object.assign({},x.s);delete m[k];
@@ -810,18 +875,20 @@ function geoDist(a,b){
       ],
       find:function(x){return x.t+" "+x.p},
       def:function(a,b){return (LVO[a.level]-LVO[b.level])||((a.n||0)-(b.n||0))}},
-    lieux:{coll:"lieux",one:"lieu",many:"lieux",vis:true,
+    lieux:{coll:"lieux",one:"lieu",many:"lieux",lv:true,vis:true,
       cols:[
+        {h:"Niveau",k:function(x){return LVO[x.level]},c:lvCell},
+        {h:"Zone",k:function(x){return x.zone||""},c:function(x){return el("span","ap-zone",x.zone==="banlieue"?"Banlieue":x.zone==="paris"?"Paris":"—")}},
         {h:"Lieu",k:function(x){return norm(x.n)},c:function(x){return el("span","ap-strong",x.n)}},
         {h:"Position",c:function(x){return isFinite(x.lat)&&isFinite(x.lng)?el("span","ap-mut",(+x.lat).toFixed(4)+", "+(+x.lng).toFixed(4)):el("span","ap-warn","À placer sur la carte")}},
         {h:"Visible",cls:"ap-vis",k:function(x){return x.on===false?0:1},c:sw}
       ],
       find:function(x){return x.n},
-      def:function(a,b){return (a.o||0)-(b.o||0)}},
+      def:function(a,b){return ((a.zone==="banlieue")-(b.zone==="banlieue"))||(LVO[a.level]-LVO[b.level])||((a.o||0)-(b.o||0))}},
     scores:{coll:"scores",one:"joueur",many:"joueurs",noAdd:true,noEdit:true,
       cols:[
         {h:"Joueur",k:function(x){return norm(x.name)},c:function(x){return el("span","ap-strong",x.name||"Anonyme")}},
-        sc("loc"),sc("quiz_facile"),sc("quiz_moyen"),sc("quiz_difficile"),sc("prix_facile"),sc("prix_moyen"),sc("prix_difficile"),
+        sc("loc","Devine où c’est"),sc("quiz","Quiz sur Paris"),sc("prix","Devine le prix"),
         {h:"Dernière partie",k:function(x){return x.at||0},c:function(x){return el("span","ap-mut",day(x.at))}}
       ],
       find:function(x){return x.name},
@@ -841,12 +908,13 @@ function geoDist(a,b){
       var on=b.dataset.t===st.t;b.setAttribute("aria-selected",String(on));b.querySelector(".n").textContent=rows(b.dataset.t).length;
     });
     var d=T[st.t];
-    $("apLvl").hidden=!d.lv;$("apVis").hidden=!d.vis;$("apAdd").hidden=!!d.noAdd;
+    $("apLvl").hidden=!d.lv;$("apZone").hidden=st.t!=="lieux";$("apVis").hidden=!d.vis;$("apAdd").hidden=!!d.noAdd;
     $("apAdd").textContent="+ Ajouter "+(d.one==="question"?"une question":d.one==="objet"?"un objet":"un lieu");
     $("apSearch").placeholder="Rechercher dans les "+d.many+"…";
     var all=rows(st.t),q=norm(st.q).trim();
     var list=all.filter(function(x){
       if(d.lv&&st.lvl&&x.level!==st.lvl)return false;
+      if(st.t==="lieux"&&st.zone&&x.zone!==st.zone)return false;
       if(d.vis&&st.vis==="on"&&x.on===false)return false;
       if(d.vis&&st.vis==="off"&&x.on!==false)return false;
       return !q||norm(d.find(x)).indexOf(q)>=0;
@@ -907,14 +975,14 @@ function geoDist(a,b){
     box.appendChild(pv);box.appendChild(f);box.appendChild(rm);w.appendChild(box);show(cur||null);
     return w;
   }
-  function geoField(lat,lng,set){
+  function geoField(lat,lng,set,wide){
     var w=el("div","ap-f");w.appendChild(el("span","","Position : touche la carte à l’endroit du lieu (tu peux zoomer)"));
     var box=el("div","ap-geo");w.appendChild(box);
     if(!window.L){box.appendChild(el("p","ap-err","La carte n’a pas pu se charger."));return w}
     setTimeout(function(){
-      var m=parisMap(box),mk=null;
+      var m=parisMap(box,true),mk=null;parisHome(m,false,wide);
       function put(ll){set(ll.lat,ll.lng);if(mk)mk.setLatLng(ll);else mk=geoDot(ll,"#f5b21a").addTo(m)}
-      if(isFinite(lat)&&isFinite(lng)){put(L.latLng(lat,lng));m.setView([lat,lng],15)}
+      if(lat!=null&&lng!=null&&isFinite(lat)&&isFinite(lng)){put(L.latLng(lat,lng));m.setView([lat,lng],15)}
       m.on("click",function(e){put(e.latlng)});
     },30);
     return w;
@@ -955,12 +1023,15 @@ function geoDist(a,b){
         return {level:lv2.value,t:s,p:p};
       };
     }else{
-      var nm=inp(x&&x.n,60);
-      body=[fld("Nom du lieu",nm),geoField(px,py,function(a,b){px=+a.toFixed(6);py=+b.toFixed(6)})];
+      var nm=inp(x&&x.n,60),lv3=lvSel(x&&x.level),zn=el("select");
+      [["paris","Paris"],["banlieue","Banlieue"]].forEach(function(z){var o=el("option","",z[1]);o.value=z[0];zn.appendChild(o)});
+      zn.value=(x&&x.zone)||st.zone||"paris";
+      var r3=el("div","ap-row");r3.appendChild(fld("Niveau",lv3));r3.appendChild(fld("Zone",zn));
+      body=[fld("Nom du lieu",nm),r3,geoField(px,py,function(a,b){px=+a.toFixed(6);py=+b.toFixed(6)},zn.value==="banlieue")];
       get=function(){
         if(!nm.value.trim())return "Indique le nom du lieu.";
         if(!isFinite(px)||!isFinite(py)||px===null)return "Touche la carte pour placer le lieu.";
-        return {n:nm.value.trim(),lat:px,lng:py};
+        return {n:nm.value.trim(),lat:px,lng:py,level:lv3.value,zone:zn.value};
       };
     }
     if(t!=="lieux")body.push(imgField(img,function(v){img=v}));
@@ -972,7 +1043,7 @@ function geoDist(a,b){
       r.on=vis.__c.checked;
       if(t!=="lieux")r.img=img||null;
       if(t==="lieux")r.o=x?x.o||0:Date.now();else r.n=x?x.n||0:Date.now();
-      var id=x?x.id:(t==="lieux"?"lieu":r.level)+"_"+Date.now().toString(36);
+      var id=x?x.id:(t==="lieux"?"lieu_"+r.zone+"_"+r.level:r.level)+"_"+Date.now().toString(36);
       sv.disabled=true;err.textContent="";
       write(LB.db.doc(d.coll+"/"+id).set(r),x?"Modifications enregistrées.":"Ajouté !").then(function(){$("apDlg").close()}).catch(function(){sv.disabled=false;err.textContent="L’enregistrement a échoué."});
     };
@@ -988,10 +1059,6 @@ function geoDist(a,b){
   // Première ouverture : copie les questions, prix et lieux de base dans la base pour pouvoir tout modifier
   var seeding=false,migrated=false;
   window.apSeed=function(){
-    if(!migrated&&window.ADMIN_UNLOCKED&&LB.db&&window.LDB_OK){
-      migrated=true;
-      (window.LDB||[]).forEach(function(x){var g=GEO[x.n];if(g&&!isFinite(x.lat))LB.db.doc("lieux/"+x.id).update({lat:g[0],lng:g[1]}).catch(function(){})});
-    }
     if(seeding||!window.ADMIN_UNLOCKED||!LB.db||!window.QDB_OK||!window.PDB_OK||!window.LDB_OK)return;
     seeding=true;
     var ref=LB.db.doc("config/seed");
@@ -1006,9 +1073,16 @@ function geoDist(a,b){
         Object.keys(LVN).forEach(function(l,li){(window.priceBank[l]||[]).forEach(function(q,i){b.set(LB.db.doc("prix/base_"+l+"_"+pad(i)),{level:l,t:q[0],p:q[1],img:null,on:true,n:li*1000+i});n++})});
         mark.prix=true;
       }
-      if(!done.lieux&&!window.LDB.length){
-        (window.locBank||[]).forEach(function(q,i){b.set(LB.db.doc("lieux/base_"+pad(i)),{n:q.n,lat:q.lat,lng:q.lng,on:q.on,o:i});n++});
-        mark.lieux=true;
+      // Version 2 des lieux : 3 niveaux × Paris/banlieue. Les 16 anciens lieux de base sont remplacés,
+      // les lieux ajoutés à la main sont gardés et classés « Moyen · Paris » par défaut.
+      if(!done.lieux2){
+        (window.LDB||[]).forEach(function(x){
+          if(x.level&&x.zone)return;
+          if(/^base_/.test(x.id))b.delete(LB.db.doc("lieux/"+x.id));else b.update(LB.db.doc("lieux/"+x.id),{level:"moyen",zone:"paris"});
+          n++;
+        });
+        (window.locBank||[]).forEach(function(q){b.set(LB.db.doc("lieux/geo_"+q.zone+"_"+q.level+"_"+pad(q.o)),{n:q.n,lat:q.lat,lng:q.lng,level:q.level,zone:q.zone,on:true,o:q.o});n++});
+        mark.lieux=true;mark.lieux2=true;
       }
       if(!n){seeding=false;return}
       b.set(ref,mark,{merge:true});
@@ -1030,7 +1104,7 @@ function geoDist(a,b){
   };
   Array.prototype.forEach.call($("apTabs").children,function(b){b.onclick=function(){if(st.t===b.dataset.t)return;st.t=b.dataset.t;st.sk=null;st.sd=1;st.q="";$("apSearch").value="";apRender()}});
   $("apSearch").oninput=function(){st.q=this.value;apRender()};
-  [["apLvl","lvl"],["apVis","vis"]].forEach(function(g){
+  [["apLvl","lvl"],["apVis","vis"],["apZone","zone"]].forEach(function(g){
     Array.prototype.forEach.call($(g[0]).children,function(b){b.onclick=function(){st[g[1]]=b.dataset.v;Array.prototype.forEach.call($(g[0]).children,function(x){x.classList.toggle("on",x===b)});apRender()}});
   });
   $("apAdd").onclick=function(){edit(null)};
@@ -1084,6 +1158,7 @@ Array.prototype.forEach.call(document.querySelectorAll(".gtile"),function(b){
   b.onclick=function(){
     if(window.quizStop)quizStop();
     if(window.prixStop)prixStop();
+    if(window.locStop)locStop();
     Array.prototype.forEach.call(document.querySelectorAll(".gtile"),function(x){x.classList.toggle("on",x===b)});
     ["g-loc","g-quiz","g-prix"].forEach(function(id){$(id).hidden=(id!==b.dataset.g)});
   };
