@@ -7,25 +7,19 @@ service cloud.firestore {
         && request.auth.token.email_verified == true;
     }
 
-    // Classement : tout le monde lit, chaque joueur ne modifie que sa propre ligne.
-    match /scores/{uid} {
+    // Tout le contenu du site (questions, prix, lieux…) : lecture publique, écriture admin.
+    match /{collection}/{id} {
       allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Classement : chaque joueur ne modifie que sa propre ligne.
+    match /scores/{uid} {
       allow create, update: if request.auth != null && request.auth.uid == uid
         && request.resource.data.keys().hasOnly(["name", "s", "at"])
         && request.resource.data.name is string
         && request.resource.data.name.size() <= 20
         && request.resource.data.s is map;
-      allow delete: if isAdmin();
-    }
-
-    // Questions du quiz et objets de « Devine le prix » : lecture publique, écriture admin.
-    match /questions/{id} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
-    match /prix/{id} {
-      allow read: if true;
-      allow write: if isAdmin();
     }
   }
 }
