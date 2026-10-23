@@ -53,6 +53,18 @@
         2.3026
       ],
       "description": "Une visite dans les vraies galeries des égouts de Paris, sous le quai d’Orsay, pour découvrir comment fonctionne la ville sous nos pieds."
+    },
+    {
+      "date": "2026-08-16",
+      "nom": "Musée Guimet",
+      "emoji": "🏯",
+      "categorie": "musee",
+      "adresse": "6 place d’Iéna, 75116 Paris",
+      "gps": [
+        48.8652406,
+        2.2937088
+      ],
+      "description": "Le musée national des arts asiatiques, l’une des plus grandes collections d’art d’Asie en Europe."
     }
   ]
 }
