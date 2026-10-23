@@ -11,3 +11,5 @@ Site de @decouvronsparis1 : carte de Paris, quiz, devine où c'est, devine le pr
 - Vidéos Instagram (section « Découvre ! ») : fonctions Netlify dans `netlify/functions` (`/api/insta` et un renouvellement quotidien).
   - Il faut la variable d'environnement Netlify `IG_TOKEN` (jeton « Instagram API with Instagram Login » du compte @decouvronsparis1).
   - Le jeton est ensuite renouvelé automatiquement et rangé dans Netlify Blobs.
+- Carte « Découvre ! » : les lieux en vidéo se gèrent dans l'admin (onglet « Carte Découvre »), stockés dans Firebase (`spots`, `spotcats`).
+  `public/spots.json` ne sert plus qu'à l'import initial (et de secours si la base est vide).

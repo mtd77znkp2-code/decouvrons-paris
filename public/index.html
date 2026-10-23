@@ -218,6 +218,24 @@ body.admin #loginBtn{top:80px}body.admin #loginBox{top:134px}
 .ap-maint .ap-sw.on{background:var(--a)}
 .ap-ok{font-weight:700;font-size:13px;color:#7ee2a8;white-space:nowrap}
 .ap-geo .leaflet-control-layers input{width:auto;padding:0;margin:0 6px 0 0;border:0;background:none;font-size:13px}
+.ap-sel{font:inherit;font-size:14px;font-weight:700;color:#fff;background:var(--card);border:1px solid rgba(185,192,224,.35);border-radius:12px;padding:9px 12px}
+.ap-tools .btn.ghost{background:transparent;color:#fff;margin-left:0}
+.ap-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;max-height:260px;overflow-y:auto;padding:2px}
+.ap-pv{display:grid;gap:4px;padding:4px;border-radius:12px;border:2px solid transparent;background:var(--bg);color:#fff;cursor:pointer;font:inherit}
+.ap-pv img,.ap-pv .ap-pv-x{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:8px;display:grid;place-items:center;background:#000}
+.ap-pv small{font-size:11px;color:var(--mut);text-align:center}
+.ap-pv.on{border-color:var(--a)}
+.ap-pv.on small{color:var(--a);font-weight:800}
+.ap-emo{max-width:90px;font-size:22px!important;text-align:center}
+.ap-emos{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.ap-emos button{font-size:20px;width:36px;height:36px;border-radius:10px;border:0;background:var(--bg);cursor:pointer}
+.ap-emos button:hover{background:#2b3d93}
+.ap-newcat{padding:10px;border-radius:12px;background:rgba(245,178,26,.08)}
+.ap-cats{display:grid;gap:8px}
+.ap-catrow{display:grid;grid-template-columns:70px 1fr auto auto;gap:8px;align-items:center}
+.ap-catrow input{font:inherit;padding:8px 10px;border-radius:10px;border:1px solid rgba(185,192,224,.35);background:var(--bg);color:#fff;width:100%}
+.ap-catrow.del{opacity:.4;text-decoration:line-through}
+.ap-catrow .btn{padding:7px 12px;font-size:13px}
 .ap-geo{height:340px;border-radius:12px;overflow:hidden;background:#dfe6ee}
 .ap-warn{color:#ffb4a2;font-weight:700}
 .ap-scx{display:inline-flex;align-items:center;gap:6px}
@@ -482,6 +500,7 @@ body.apage #adminBadge,body.apage #adminLogout{position:absolute}
       <button type="button" role="tab" data-t="quiz">Quiz sur Paris<span class="n"></span></button>
       <button type="button" role="tab" data-t="prix">Devine le prix<span class="n"></span></button>
       <button type="button" role="tab" data-t="lieux">Devine où c’est<span class="n"></span></button>
+      <button type="button" role="tab" data-t="spots">Carte Découvre<span class="n"></span></button>
       <button type="button" role="tab" data-t="reels">Mes Reels<span class="n"></span></button>
       <button type="button" role="tab" data-t="videos">Vidéos TikTok<span class="n"></span></button>
       <button type="button" role="tab" data-t="scores">Classement<span class="n"></span></button>
@@ -493,6 +512,8 @@ body.apage #adminBadge,body.apage #adminLogout{position:absolute}
       <div class="ap-seg" id="apZone" role="group" aria-label="Zone"><button type="button" data-v="" class="on">Partout</button><button type="button" data-v="paris">Paris</button><button type="button" data-v="banlieue">Banlieue</button></div>
       <div class="ap-seg" id="apOk" role="group" aria-label="Validation"><button type="button" data-v="" class="on">Tous</button><button type="button" data-v="ok">Validés</button><button type="button" data-v="no">À valider</button></div>
       <div class="ap-seg" id="apVis" role="group" aria-label="Visibilité"><button type="button" data-v="" class="on">Tout</button><button type="button" data-v="on">Visibles</button><button type="button" data-v="off">Masqués</button></div>
+      <select id="apCat" class="ap-sel" aria-label="Catégorie" hidden></select>
+      <button class="btn ghost" id="apCatsBtn" type="button" hidden>🏷️ Catégories</button>
       <button class="btn" id="apAdd" type="button">+ Ajouter</button>
     </div>
     <p class="ap-count" id="apCount"></p>
@@ -566,6 +587,14 @@ function lbSubmit(key,score){
     db.collection("prix").onSnapshot(function(s){
       window.PDB=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});window.PDB_OK=!s.metadata.fromCache;
       if(window.apRender)apRender();
+    },function(){});
+    db.collection("spots").onSnapshot(function(s){
+      window.SPDB=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});window.SPDB_OK=!s.metadata.fromCache;
+      if(window.spotsData)spotsData();if(window.apRender)apRender();
+    },function(){});
+    db.collection("spotcats").onSnapshot(function(s){
+      window.SCDB=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});window.SCDB_OK=!s.metadata.fromCache;
+      if(window.spotsData)spotsData();if(window.apRender)apRender();
     },function(){});
     db.collection("videos").onSnapshot(function(s){
       window.VDB=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});
@@ -917,7 +946,7 @@ function geoDist(a,b){
 // Administration : page à part, un tableau par jeu avec recherche, filtres et tri
 (function(){
   var LVN={facile:"Facile",moyen:"Moyen",difficile:"Difficile"},LVO={facile:0,moyen:1,difficile:2};
-  var st={t:"quiz",q:"",lvl:"",vis:"",zone:"",ok:"",sk:null,sd:1};
+  var st={t:"quiz",q:"",lvl:"",vis:"",zone:"",ok:"",cat:"",sk:null,sd:1};
   function norm(s){return String(s==null?"":s).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase()}
   function eur(n){n=+n;return (n%1?n.toFixed(2).replace(".",","):String(n))+" €"}
   function day(ms){if(!ms)return "—";var d=new Date(ms);return d.toLocaleDateString("fr-FR",{day:"numeric",month:"short"})+" "+d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})}
@@ -1003,6 +1032,17 @@ function geoDist(a,b){
       ],
       find:function(x){return x.n},
       def:function(a,b){return ((a.zone==="banlieue")-(b.zone==="banlieue"))||(LVO[a.level]-LVO[b.level])||((a.o||0)-(b.o||0))}},
+    spots:{coll:"spots",one:"lieu",many:"lieux",vis:true,dup:true,
+      cols:[
+        {h:"Vidéo",c:function(x){var v=window.spotVid&&spotVid(x);if(!v||!v.poster)return el("span","ap-mut","—");var i=el("img","ap-th");i.alt="";i.loading="lazy";i.src=v.poster;return i}},
+        {h:"Lieu",k:function(x){return norm(x.nom)},c:function(x){var w=el("div");w.appendChild(el("b","",(x.emoji?x.emoji+" ":"")+(x.nom||"Sans nom")));w.appendChild(el("div","ap-mut",x.adresse||""));return w}},
+        {h:"Catégorie",k:function(x){return x.categorie||""},c:function(x){return el("span","ap-zone",catName(x.categorie))}},
+        {h:"Extrait",c:function(x){return el("span","ap-mut",x.debut!=null||x.fin!=null?mmss(x.debut||0)+" → "+(x.fin!=null?mmss(x.fin):"fin"):"Vidéo entière")}},
+        {h:"État",c:function(x){var w=spotIssues(x);return w.length?el("span","ap-warn","⚠ "+w.join(", ")):el("span","ap-ok","✓ Prêt")}},
+        {h:"Visible",cls:"ap-vis",k:function(x){return x.on===false?0:1},c:sw}
+      ],
+      find:function(x){return (x.nom||"")+" "+(x.adresse||"")+" "+(x.description||"")+" "+catName(x.categorie)},
+      def:function(a,b){return (a.n||0)-(b.n||0)}},
     reels:{one:"vidéo",many:"vidéos",noAdd:true,noEdit:true,noDel:true,noNum:true,
       cols:[
         {h:"N°",k:function(x){return x.n},c:function(x){return el("b","",String(x.n))}},
@@ -1033,14 +1073,128 @@ function geoDist(a,b){
       def:function(a,b){return (b.at||0)-(a.at||0)}}
   };
   var SPOTS=null;fetch("spots.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){SPOTS=j}).catch(function(){});
+  function allSpots(){return window.SPDB&&SPDB.length?SPDB:(SPOTS?SPOTS.lieux:[])}
   function reels(){
     if(!window.igOrdered)return [];
     return igOrdered().map(function(v,i){
-      var n=i+1,sp=SPOTS?SPOTS.lieux.filter(function(s){return s.video===n||(s.date&&v.ts&&igDay(v.ts)===s.date)}).map(function(s){return s.nom}).join(", "):"";
+      var n=i+1,sp=allSpots().filter(function(s){var x=window.spotVid&&spotVid(s);return x&&x.id===v.id}).map(function(s){return s.nom}).join(", ");
       return Object.assign({},v,{n:n,spots:sp});
     });
   }
-  function rows(t){if(t==="reels")return reels();return (t==="quiz"?window.QDB:t==="prix"?window.PDB:t==="lieux"?window.LDB:t==="videos"?window.VDB:LB.docs)||[]}
+  function rows(t){if(t==="reels")return reels();if(t==="spots")return window.SPDB||[];return (t==="quiz"?window.QDB:t==="prix"?window.PDB:t==="lieux"?window.LDB:t==="videos"?window.VDB:LB.docs)||[]}
+  // ---------- Lieux de la carte « Découvre ! » ----------
+  var EMOS=["📍","🏛️","🖼️","🎨","🍽️","🥐","☕","🍸","🍷","🌳","🌸","🛍️","🎭","🎵","⛪","🏰","🌉","🗼","📸","🕯️","🪞","🐀","🏯","📜","🎡","🚶","🌅","💎"];
+  function cats(){return (window.SCDB||[]).slice().sort(function(a,b){return (a.n||0)-(b.n||0)})}
+  function catName(id){var c=cats().filter(function(c){return c.id===id})[0];return c?c.emoji+" "+c.nom:"—"}
+  function mmss(x){if(x==null||x==="")return "";x=+x;return Math.floor(x/60)+":"+("0"+Math.floor(x%60)).slice(-2)}
+  function parseT(s){s=String(s||"").trim();if(!s)return null;var m=s.match(/^(\d+):([0-5]?\d)$/);if(m)return +m[1]*60+(+m[2]);if(/^\d+$/.test(s))return +s;return NaN}
+  function parseGps(s){var m=String(s||"").match(/(-?\d{1,2}\.\d+)\s*[,; ]\s*(-?\d{1,3}\.\d+)/);return m?[+m[1],+m[2]]:null}
+  function spotIssues(x){
+    var w=[];if(!window.spotVid||!spotVid(x))w.push(window.IGV===null?"vidéo en chargement":"vidéo introuvable");
+    if(!isFinite(x.lat)||!isFinite(x.lng))w.push("pas de GPS");if(!x.adresse)w.push("pas d’adresse");
+    if(!x.categorie||!cats().some(function(c){return c.id===x.categorie}))w.push("pas de catégorie");return w;
+  }
+  function slug(s){return norm(s).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,30)||"cat"}
+  function editSpot(x,dup){
+    var v0=x&&window.spotVid?spotVid(x):null,mid=x&&(x.mid||(v0&&v0.id))||null,lat=x?x.lat:null,lng=x?x.lng:null,mk=null,gm=null;
+    // 1. La vidéo, choisie parmi mes Reels
+    var pw=el("div","ap-f");pw.appendChild(el("span","","Vidéo (touche la bonne miniature)"));
+    var pick=el("div","ap-pick");pw.appendChild(pick);
+    var list=window.igOrdered?igOrdered():[];
+    if(window.IGV===null)pick.appendChild(el("p","ap-mut","Chargement de tes vidéos…"));
+    else if(!list.length)pick.appendChild(el("p","ap-err","Aucune vidéo Instagram trouvée."));
+    list.slice().reverse().forEach(function(v){
+      var n=list.indexOf(v)+1,b=el("button","ap-pv"+(v.id===mid?" on":""));b.type="button";
+      if(v.poster){var im=el("img");im.alt="";im.loading="lazy";im.src=v.poster;b.appendChild(im)}else b.appendChild(el("span","ap-pv-x","🎬"));
+      b.appendChild(el("small","","n°"+n+(v.ts?" · "+new Date(v.ts).toLocaleDateString("fr-FR",{day:"numeric",month:"short",year:"2-digit"}):"")));
+      b.title=v.caption||"";
+      b.onclick=function(){mid=v.id;Array.prototype.forEach.call(pick.children,function(c){c.classList.toggle("on",c===b)})};
+      pick.appendChild(b);
+    });
+    // 2. L'extrait
+    var t1=inp(x?mmss(x.debut):"",6),t2=inp(x?mmss(x.fin):"",6);t1.placeholder="ex : 0:20";t2.placeholder="ex : 0:30";t1.inputMode=t2.inputMode="numeric";
+    var rx=el("div","ap-row");rx.appendChild(fld("Début de l’extrait (facultatif)",t1));rx.appendChild(fld("Fin de l’extrait (facultatif)",t2));
+    // 3. Même endroit qu'un lieu existant (pour regrouper plusieurs vidéos au même lieu)
+    var same=el("select"),seen={};same.appendChild(Object.assign(el("option","","— Nouveau lieu —"),{value:""}));
+    (window.SPDB||[]).forEach(function(s){
+      if(x&&s.id===x.id&&!dup)return;var k=s.nom+"|"+s.lat+"|"+s.lng;if(seen[k]||!s.nom)return;seen[k]=1;
+      var o=el("option","",(s.emoji?s.emoji+" ":"")+s.nom+(s.adresse?" — "+s.adresse:""));o.value=s.id;same.appendChild(o);
+    });
+    // 4. Nom, émoticône, catégorie, adresse, description
+    var nm=inp(x&&x.nom,80),em=inp(x&&x.emoji,8),ad=inp(x&&x.adresse,160),de=el("textarea");de.rows=2;de.maxLength=300;de.value=(x&&x.description)||"";
+    em.placeholder="📍";em.className="ap-emo";
+    var er=el("div","ap-emos");EMOS.forEach(function(e){var b=el("button","",e);b.type="button";b.onclick=function(){em.value=e};er.appendChild(b)});
+    var ef=fld("Émoticône sur la carte",em);ef.appendChild(er);
+    var ca=el("select");
+    function fillCats(sel){ca.innerHTML="";cats().forEach(function(c){var o=el("option","",c.emoji+" "+c.nom);o.value=c.id;ca.appendChild(o)});var o=el("option","","＋ Nouvelle catégorie…");o.value="__new";ca.appendChild(o);ca.value=sel||(cats()[0]||{id:"__new"}).id}
+    fillCats(x&&x.categorie);
+    var nc=el("div","ap-row ap-newcat"),ncn=inp("",40),nce=inp("",8);ncn.placeholder="ex : Restos";nce.placeholder="🍽️";
+    nc.appendChild(fld("Nom de la nouvelle catégorie",ncn));nc.appendChild(fld("Son émoticône",nce));
+    function upd(){nc.hidden=ca.value!=="__new"}ca.onchange=upd;upd();
+    var r1=el("div","ap-row");r1.appendChild(fld("Nom du lieu",nm));r1.appendChild(fld("Catégorie",ca));
+    // 5. Position GPS : coller les coordonnées ou toucher la carte
+    var gp=inp(isFinite(lat)&&lat!=null?lat+", "+lng:"",60);gp.placeholder="ex : 48.8605454, 2.3388832";
+    var gw=fld("Position GPS (colle les coordonnées de Google Maps, ou touche la carte)",gp),gbox=el("div","ap-geo");gw.appendChild(gbox);
+    function put(a,b,move){lat=+(+a).toFixed(7);lng=+(+b).toFixed(7);gp.value=lat+", "+lng;if(gm){if(mk)mk.setLatLng([lat,lng]);else mk=geoDot([lat,lng],"#e1306c").addTo(gm);if(move)gm.setView([lat,lng],Math.max(gm.getZoom(),15))}}
+    gp.oninput=function(){var g=parseGps(gp.value);if(g){lat=g[0];lng=g[1];if(gm){if(mk)mk.setLatLng(g);else mk=geoDot(g,"#e1306c").addTo(gm);gm.setView(g,Math.max(gm.getZoom(),15))}}};
+    if(window.L)setTimeout(function(){gm=parisMap(gbox,false,true);if(isFinite(lat)&&lat!=null)put(lat,lng,true);gm.on("click",function(e){put(e.latlng.lat,e.latlng.lng,false)})},30);
+    same.onchange=function(){
+      var s=(window.SPDB||[]).filter(function(y){return y.id===same.value})[0];if(!s)return;
+      nm.value=s.nom||"";ad.value=s.adresse||"";em.value=s.emoji||"";if(s.categorie)fillCats(s.categorie),upd();
+      if(!de.value&&s.description)de.value=s.description;if(isFinite(s.lat))put(s.lat,s.lng,true);
+    };
+    var vis=chk("Visible sur la carte",x?x.on!==false:true);
+    var body=[pw,rx,fld("Même endroit qu’un lieu déjà sur la carte ? (regroupe les vidéos dans une bulle)",same),r1,nc,ef,fld("Adresse affichée",ad),fld("Description (facultatif)",de),gw,vis];
+    var sv=el("button","btn",x&&!dup?"Enregistrer":"Ajouter");sv.type="submit";
+    var err=dlg(dup?"Dupliquer : même vidéo, autre extrait":x?"Modifier un lieu":"Ajouter un lieu",body,[sv]);
+    sv.onclick=function(){
+      var a=parseT(t1.value),z=parseT(t2.value),g=parseGps(gp.value);
+      var e=!mid?"Choisis la vidéo en touchant sa miniature.":!nm.value.trim()?"Donne un nom au lieu.":!ad.value.trim()?"Indique l’adresse du lieu.":
+        !g?"Ajoute la position GPS : colle les coordonnées (ex : 48.8605, 2.3388) ou touche la carte.":
+        (ca.value==="__new"&&!ncn.value.trim())?"Donne un nom à la nouvelle catégorie.":
+        (isNaN(a)||isNaN(z))?"Extrait : écris les temps comme 0:20 (minutes:secondes).":(a!=null&&z!=null&&z<=a)?"Extrait : la fin doit être après le début.":"";
+      if(e){err.textContent=e;return}
+      var ops=[],cid=ca.value;
+      if(cid==="__new"){
+        cid=slug(ncn.value);var base=cid,i=2;while(cats().some(function(c){return c.id===cid}))cid=base+"-"+(i++);
+        ops.push(LB.db.doc("spotcats/"+cid).set({nom:ncn.value.trim(),emoji:nce.value.trim()||"📍",n:Date.now()}));
+      }
+      var r={nom:nm.value.trim(),emoji:em.value.trim()||null,categorie:cid,adresse:ad.value.trim(),description:de.value.trim(),lat:g[0],lng:g[1],mid:mid,debut:a,fin:z,on:vis.__c.checked,n:x&&!dup?(x.n||0):Date.now()};
+      var id=x&&!dup?x.id:"spot_"+Date.now().toString(36);
+      ops.push(LB.db.doc("spots/"+id).set(r));
+      sv.disabled=true;err.textContent="";
+      write(Promise.all(ops),dup?"Extrait ajouté.":x?"Modifications enregistrées.":"Lieu ajouté à la carte !").then(function(){$("apDlg").close()}).catch(function(){sv.disabled=false;err.textContent="L’enregistrement a échoué."});
+    };
+  }
+  // Gérer les catégories : renommer, changer l'émoticône, ajouter, supprimer (si elle n'est plus utilisée)
+  function editCats(){
+    var rowsC=[],box=el("div","ap-cats");
+    function line(c){
+      var r=el("div","ap-catrow"),e=inp(c?c.emoji:"",8),n=inp(c?c.nom:"",40);e.placeholder="📍";n.placeholder="Nom de la catégorie";e.className="ap-emo";
+      var used=c?(window.SPDB||[]).filter(function(s){return s.categorie===c.id}).length:0;
+      r.appendChild(e);r.appendChild(n);r.appendChild(el("small","ap-mut",used+" lieu"+(used>1?"x":"")));
+      var d=el("button","btn ghost","Supprimer");d.type="button";
+      var o={c:c,e:e,n:n,del:false,r:r};
+      d.onclick=function(){if(used){err.textContent="« "+(c.nom||"")+" » est utilisée par "+used+" lieu"+(used>1?"x":"")+" : change d’abord leur catégorie.";return}o.del=!o.del;r.classList.toggle("del",o.del);d.textContent=o.del?"Annuler":"Supprimer"};
+      r.appendChild(d);rowsC.push(o);box.appendChild(r);
+    }
+    cats().forEach(line);
+    var add=el("button","btn ghost","＋ Ajouter une catégorie");add.type="button";add.onclick=function(){line(null)};
+    var sv=el("button","btn","Enregistrer");sv.type="submit";
+    var err=dlg("Catégories de la carte",[box,add],[sv]);
+    sv.onclick=function(){
+      var ops=[],bad=rowsC.filter(function(o){return !o.del&&(o.n.value.trim()||o.c)&&!o.n.value.trim()});
+      if(bad.length){err.textContent="Chaque catégorie doit avoir un nom.";return}
+      rowsC.forEach(function(o){
+        var nmv=o.n.value.trim(),emv=o.e.value.trim()||"📍";
+        if(o.c&&o.del)ops.push(LB.db.doc("spotcats/"+o.c.id).delete());
+        else if(o.c&&(nmv!==o.c.nom||emv!==o.c.emoji))ops.push(LB.db.doc("spotcats/"+o.c.id).update({nom:nmv,emoji:emv}));
+        else if(!o.c&&nmv){var id=slug(nmv),base=id,i=2;while(cats().some(function(c){return c.id===id}))id=base+"-"+(i++);ops.push(LB.db.doc("spotcats/"+id).set({nom:nmv,emoji:emv,n:Date.now()+ops.length}))}
+      });
+      if(!ops.length){$("apDlg").close();return}
+      sv.disabled=true;write(Promise.all(ops),"Catégories enregistrées.").then(function(){$("apDlg").close()}).catch(function(){sv.disabled=false;err.textContent="L’enregistrement a échoué."});
+    };
+  }
   function nameOf(d){return d.one==="question"?"une question":d.one==="objet"?"un objet":d.one==="vidéo"?"une vidéo":"un lieu"}
   function write(p,ok){
     if(!LB.db)return Promise.reject();
@@ -1056,6 +1210,8 @@ function geoDist(a,b){
     });
     var d=T[st.t];
     $("apLvl").hidden=!d.lv;$("apZone").hidden=st.t!=="lieux";$("apOk").hidden=st.t!=="lieux";
+    $("apCat").hidden=$("apCatsBtn").hidden=st.t!=="spots";
+    if(st.t==="spots"){var cs=$("apCat");cs.innerHTML="";cs.appendChild(Object.assign(el("option","","Toutes les catégories"),{value:""}));cats().forEach(function(c){var o=el("option","",c.emoji+" "+c.nom);o.value=c.id;cs.appendChild(o)});cs.value=st.cat||""}
     var mk={quiz:"quiz",prix:"prix",lieux:"loc"}[st.t],mon=!!(window.MAINT||{})[mk];
     $("apMaint").hidden=!mk;$("apMaint").classList.toggle("on",mon);
     $("apMaintSw").classList.toggle("on",mon);$("apMaintSw").setAttribute("aria-checked",String(mon));
@@ -1067,6 +1223,7 @@ function geoDist(a,b){
       if(d.lv&&st.lvl&&x.level!==st.lvl)return false;
       if(st.t==="lieux"&&st.zone&&x.zone!==st.zone)return false;
       if(st.t==="lieux"&&st.ok==="ok"&&x.ok!==true)return false;
+      if(st.t==="spots"&&st.cat&&x.categorie!==st.cat)return false;
       if(st.t==="lieux"&&st.ok==="no"&&x.ok===true)return false;
       if(d.vis&&st.vis==="on"&&x.on===false)return false;
       if(d.vis&&st.vis==="off"&&x.on!==false)return false;
@@ -1075,10 +1232,10 @@ function geoDist(a,b){
     var col=st.sk!=null&&d.cols[st.sk];
     list.sort(col&&col.k?function(a,b){var x=col.k(a),y=col.k(b);return (x<y?-1:x>y?1:0)*st.sd||d.def(a,b)}:d.def);
     var nok=st.t==="lieux"?" · "+all.filter(function(x){return x.ok===true}).length+" validés au total":"";
-    if(st.t==="reels"&&SPOTS&&window.IGV){
+    if(st.t==="reels"&&allSpots().length&&window.IGV){
       // Lieux de la carte pour lesquels aucune vidéo ne correspond (mauvaise date ou mauvais numéro)
-      var miss=SPOTS.lieux.filter(function(s){return !all.some(function(v){return s.video===v.n||(s.date&&v.ts&&igDay(v.ts)===s.date)})});
-      nok=" · "+(SPOTS.lieux.length-miss.length)+"/"+SPOTS.lieux.length+" lieux de la carte reliés à une vidéo"+(miss.length?" · ⚠ Sans vidéo trouvée : "+miss.map(function(s){return s.nom+" ("+(s.date||"n°"+s.video)+")"}).join(", "):"");
+      var sl=allSpots(),miss=sl.filter(function(s){return !(window.spotVid&&spotVid(s))});
+      nok=" · "+(sl.length-miss.length)+"/"+sl.length+" lieux de la carte reliés à une vidéo"+(miss.length?" · ⚠ Sans vidéo trouvée : "+miss.map(function(s){return s.nom+(s.date?" ("+s.date+")":s.video?" (n°"+s.video+")":"")}).join(", "):"");
     }
     $("apCount").textContent=(list.length===all.length?all.length+" "+(all.length>1?d.many:d.one):list.length+" sur "+all.length+" "+d.many)+nok;
     var hr=el("tr");if(!d.noNum)hr.appendChild(el("th","ap-num","#"));
@@ -1097,6 +1254,7 @@ function geoDist(a,b){
       d.cols.forEach(function(c){var td=el("td",c.cls||"");td.dataset.l=c.h;td.appendChild(c.c(x));tr.appendChild(td)});
       var a=el("td","ap-act");
       if(!d.noEdit){var e=el("button","","Modifier");e.type="button";e.onclick=function(){edit(x)};a.appendChild(e)}
+      if(d.dup){var du=el("button","","Dupliquer");du.type="button";du.title="Même vidéo et même lieu, pour un autre extrait";du.onclick=function(){editSpot(x,true)};a.appendChild(du)}
       if(!d.noDel){var del=el("button","del",st.t==="scores"?"Supprimer le joueur":"Supprimer");del.type="button";del.onclick=function(){ask(x)};a.appendChild(del)}
       tr.appendChild(a);bd.appendChild(tr);
     });
@@ -1158,6 +1316,7 @@ function geoDist(a,b){
     return err;
   }
   function edit(x){
+    if(st.t==="spots")return editSpot(x,false);
     var t=st.t,d=T[t],img=x?x.img||null:null,px=x?x.lat:null,py=x?x.lng:null,body=[],get;
     if(t==="quiz"){
       var lv=lvSel(x&&x.level),q=el("textarea");q.rows=2;q.maxLength=200;q.value=x?x.q:"";
@@ -1232,7 +1391,7 @@ function geoDist(a,b){
     };
   }
   function ask(x){
-    var d=T[st.t],nm=st.t==="quiz"?x.q:st.t==="prix"?x.t:st.t==="lieux"?x.n:st.t==="videos"?(x.t||"cette vidéo"):(x.name||"Anonyme");
+    var d=T[st.t],nm=st.t==="quiz"?x.q:st.t==="prix"?x.t:st.t==="lieux"?x.n:st.t==="videos"?(x.t||"cette vidéo"):st.t==="spots"?(x.nom||"ce lieu"):(x.name||"Anonyme");
     var y=el("button","btn danger",st.t==="scores"?"Supprimer le joueur":"Supprimer");y.type="button";
     var p=el("p","ap-mut",st.t==="scores"?"Tous les scores de ce joueur seront effacés du classement. C’est définitif. Pour retirer un seul score, utilise le petit × à côté du score.":"C’est définitif. Pour le retirer du jeu sans l’effacer, utilise plutôt l’interrupteur « Visible ».");
     var err=dlg("Supprimer « "+nm+" » ?",[p],[y]);
@@ -1240,8 +1399,13 @@ function geoDist(a,b){
   }
 
   // Première ouverture : copie les questions, prix et lieux de base dans la base pour pouvoir tout modifier
-  var seeding=false,migrated=false;
+  var seeding=false,migrated=false,midDone=false;
   window.apSeed=function(){
+    // Retenir la vidéo exacte des lieux importés (pour qu'une suppression sur Instagram ne décale rien)
+    if(!midDone&&window.ADMIN_UNLOCKED&&LB.db&&window.IGV&&IGV.length&&window.SPDB&&SPDB.length&&window.spotVid){
+      midDone=true;
+      SPDB.forEach(function(s){if(s.mid)return;var v=spotVid(s);if(v)LB.db.doc("spots/"+s.id).update({mid:v.id}).catch(function(){})});
+    }
     if(seeding||!window.ADMIN_UNLOCKED||!LB.db||!window.QDB_OK||!window.PDB_OK||!window.LDB_OK)return;
     seeding=true;
     var ref=LB.db.doc("config/seed");
@@ -1258,6 +1422,14 @@ function geoDist(a,b){
       }
       // Version 2 des lieux : 3 niveaux × Paris/banlieue. Les 16 anciens lieux de base sont remplacés,
       // les lieux ajoutés à la main sont gardés et classés « Moyen · Paris » par défaut.
+      if(!done.spots&&window.SPDB_OK&&window.SCDB_OK&&SPOTS&&!(window.SPDB||[]).length){
+        Object.keys(SPOTS.categories).forEach(function(k,i){var c=SPOTS.categories[k];b.set(LB.db.doc("spotcats/"+k),{nom:c.nom,emoji:c.emoji,n:i});n++});
+        SPOTS.lieux.forEach(function(s,i){
+          var v=window.spotVid&&window.IGV?spotVid(s):null;
+          b.set(LB.db.doc("spots/spot_"+pad(i)),{nom:s.nom,emoji:s.emoji||null,categorie:s.categorie,adresse:s.adresse||"",description:s.description||"",lat:s.gps[0],lng:s.gps[1],mid:v?v.id:null,date:s.date||null,video:s.video||null,debut:s.debut==null?null:s.debut,fin:s.fin==null?null:s.fin,on:true,n:i});n++;
+        });
+        mark.spots=true;
+      }
       if(!done.lieux2){
         (window.LDB||[]).forEach(function(x){
           if(x.level&&x.zone)return;
@@ -1297,6 +1469,8 @@ function geoDist(a,b){
     Array.prototype.forEach.call($(g[0]).children,function(b){b.onclick=function(){st[g[1]]=b.dataset.v;Array.prototype.forEach.call($(g[0]).children,function(x){x.classList.toggle("on",x===b)});apRender()}});
   });
   $("apAdd").onclick=function(){edit(null)};
+  $("apCatsBtn").onclick=function(){editCats()};
+  $("apCat").onchange=function(){st.cat=this.value;apRender()};
   $("apMaintSw").onclick=function(){
     var k={quiz:"quiz",prix:"prix",lieux:"loc"}[st.t];if(!k)return;
     var on=!(window.MAINT||{})[k],o={};o[k]=on;
@@ -1316,10 +1490,20 @@ window.dInit=function(){
 // Découvre ! : mes lieux en vidéo (public/spots.json). Chaque lieu renvoie à une de mes vidéos Instagram
 // par son numéro (1 = la plus ancienne), avec un extrait facultatif « debut »/« fin » en secondes.
 (function(){
-  var SP=null,cat="",layer=null,map=null,framed=false;
+  var SP=null,SPJ=null,cat="",layer=null,map=null,framed=false;
   // Survol seulement avec une souris (sur téléphone, on touche le point)
   var HOVER=!!(window.matchMedia&&matchMedia("(hover:hover) and (pointer:fine)").matches);
-  fetch("spots.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){SP=j;draw()}).catch(function(){SP={categories:{},lieux:[]}});
+  fetch("spots.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){SPJ=j;build()}).catch(function(){SPJ={categories:{},lieux:[]};build()});
+  // Les lieux se gèrent dans l'admin (Firebase : « spots » et « spotcats ») ; spots.json sert tant que la base est vide
+  function build(){
+    if(window.SPDB&&SPDB.length){
+      var cs={};(window.SCDB||[]).slice().sort(function(a,b){return (a.n||0)-(b.n||0)}).forEach(function(c){cs[c.id]={nom:c.nom,emoji:c.emoji}});
+      SP={categories:cs,lieux:SPDB.filter(function(s){return s.on!==false&&s.nom&&isFinite(s.lat)&&isFinite(s.lng)&&s.lat!==null}).sort(function(a,b){return (a.n||0)-(b.n||0)}).map(function(s){return Object.assign({},s,{gps:[+s.lat,+s.lng]})})};
+    }else if(SPJ)SP=SPJ;else return;
+    draw();
+  }
+  window.spotsData=build;
+  window.spotVid=function(s){return vidOf(s)};
   // Mes vidéos de la plus ancienne (n°1) à la plus récente
   window.igOrdered=function(){
     var l=(window.IGV||[]).slice();
@@ -1331,6 +1515,7 @@ window.dInit=function(){
   // Une vidéo se désigne par son numéro (1 = la plus ancienne) ou par sa date de publication
   function vidOf(s){
     var l=igOrdered();
+    if(s.mid)return l.filter(function(v){return v.id===s.mid})[0]||null;
     if(s.date)return l.filter(function(v){return v.ts&&igDay(v.ts)===s.date})[0]||null;
     return l[s.video-1]||null;
   }
