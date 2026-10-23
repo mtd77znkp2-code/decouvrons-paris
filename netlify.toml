@@ -1,0 +1,4 @@
+# Le site est servi depuis « public » ; les fonctions Netlify (Instagram) sont dans « netlify/functions ».
+[build]
+  publish = "public"
+  functions = "netlify/functions"
