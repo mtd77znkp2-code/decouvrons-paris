@@ -65,6 +65,18 @@
         2.2937088
       ],
       "description": "Le musée national des arts asiatiques, l’une des plus grandes collections d’art d’Asie en Europe."
+    },
+    {
+      "date": "2026-09-07",
+      "nom": "Les œuvres françaises du Louvre",
+      "emoji": "🖼️",
+      "categorie": "musee",
+      "adresse": "Musée du Louvre, rue de Rivoli, 75001 Paris",
+      "gps": [
+        48.8605454,
+        2.3388832
+      ],
+      "description": "Le plus grand musée du monde, ancien palais des rois de France. Ici, zoom sur ses œuvres françaises."
     }
   ]
 }
