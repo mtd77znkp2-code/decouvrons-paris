@@ -1032,7 +1032,7 @@ function geoDist(a,b){
       find:function(x){return x.name},
       def:function(a,b){return (b.at||0)-(a.at||0)}}
   };
-  var SPOTS=null;fetch("spots.json").then(function(r){return r.json()}).then(function(j){SPOTS=j}).catch(function(){});
+  var SPOTS=null;fetch("spots.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){SPOTS=j}).catch(function(){});
   function reels(){
     if(!window.igOrdered)return [];
     return igOrdered().map(function(v,i){
@@ -1075,6 +1075,11 @@ function geoDist(a,b){
     var col=st.sk!=null&&d.cols[st.sk];
     list.sort(col&&col.k?function(a,b){var x=col.k(a),y=col.k(b);return (x<y?-1:x>y?1:0)*st.sd||d.def(a,b)}:d.def);
     var nok=st.t==="lieux"?" · "+all.filter(function(x){return x.ok===true}).length+" validés au total":"";
+    if(st.t==="reels"&&SPOTS&&window.IGV){
+      // Lieux de la carte pour lesquels aucune vidéo ne correspond (mauvaise date ou mauvais numéro)
+      var miss=SPOTS.lieux.filter(function(s){return !all.some(function(v){return s.video===v.n||(s.date&&v.ts&&igDay(v.ts)===s.date)})});
+      nok=" · "+(SPOTS.lieux.length-miss.length)+"/"+SPOTS.lieux.length+" lieux de la carte reliés à une vidéo"+(miss.length?" · ⚠ Sans vidéo trouvée : "+miss.map(function(s){return s.nom+" ("+(s.date||"n°"+s.video)+")"}).join(", "):"");
+    }
     $("apCount").textContent=(list.length===all.length?all.length+" "+(all.length>1?d.many:d.one):list.length+" sur "+all.length+" "+d.many)+nok;
     var hr=el("tr");if(!d.noNum)hr.appendChild(el("th","ap-num","#"));
     d.cols.forEach(function(c,i){
@@ -1314,7 +1319,7 @@ window.dInit=function(){
   var SP=null,cat="",layer=null,map=null,framed=false;
   // Survol seulement avec une souris (sur téléphone, on touche le point)
   var HOVER=!!(window.matchMedia&&matchMedia("(hover:hover) and (pointer:fine)").matches);
-  fetch("spots.json").then(function(r){return r.json()}).then(function(j){SP=j;draw()}).catch(function(){SP={categories:{},lieux:[]}});
+  fetch("spots.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){SP=j;draw()}).catch(function(){SP={categories:{},lieux:[]}});
   // Mes vidéos de la plus ancienne (n°1) à la plus récente
   window.igOrdered=function(){
     var l=(window.IGV||[]).slice();
