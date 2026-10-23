@@ -1355,9 +1355,9 @@ window.dInit=function(){
     chips();
     if(layer)layer.remove();layer=L.layerGroup().addTo(map);
     groups().forEach(function(g){
-      var s=g[0],html='<div class="vpin" aria-hidden="true">'+emo(s.categorie)+(g.length>1?'<b>'+g.length+'</b>':'')+'</div>';
+      var s=g[0],html='<div class="vpin" aria-hidden="true">'+(s.emoji||emo(s.categorie))+(g.length>1?'<b>'+g.length+'</b>':'')+'</div>';
       var mk=L.marker(s.gps,{icon:L.divIcon({className:"",html:html,iconSize:[48,48],iconAnchor:[24,24]}),title:g.length>1?s.nom+" ("+g.length+" vidéos)":s.nom,keyboard:true,alt:s.nom,zIndexOffset:500}).addTo(layer);
-      mk.on("click",function(){show("📍 "+s.nom,g)});
+      mk.on("click",function(){show((s.emoji||"📍")+" "+s.nom,g)});
     });
   }
   function hide(){$("d-vids").hidden=true;$("d-vids").innerHTML=""}
@@ -1382,7 +1382,7 @@ window.dInit=function(){
     c.appendChild(w);
     var t=el("div","dv-txt");
     t.appendChild(el("span","dv-cat",emo(s.categorie)+" "+((SP.categories[s.categorie]||{}).nom||"")));
-    t.appendChild(el("b","",s.nom));
+    t.appendChild(el("b","",(s.emoji?s.emoji+" ":"")+s.nom));
     t.appendChild(el("span","dv-adr",s.adresse));
     if(s.description)t.appendChild(el("p","",s.description));
     if(a!=null||z!=null)t.appendChild(el("span","dv-ext","Extrait "+fmt(a||0)+(z?" → "+fmt(z):"")));

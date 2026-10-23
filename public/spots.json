@@ -1,14 +1,21 @@
 {
   "categories": {
-    "musee": { "nom": "Musées", "emoji": "🏛️" }
+    "musee": {
+      "nom": "Musées",
+      "emoji": "🏛️"
+    }
   },
   "lieux": [
     {
       "video": 3,
       "nom": "Mémorial des martyrs de la déportation",
+      "emoji": "🕯️",
       "categorie": "musee",
       "adresse": "7 Quai de l'Archevêché, 75004 Paris",
-      "gps": [48.8518272, 2.352359],
+      "gps": [
+        48.8518272,
+        2.352359
+      ],
       "description": "Mémorial national inauguré en 1962 à la pointe de l'île de la Cité, derrière Notre-Dame, en hommage aux déportés de France."
     }
   ]
