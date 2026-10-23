@@ -41,6 +41,18 @@
         2.3626
       ],
       "description": "Le musée de l’histoire de Paris, installé dans deux hôtels particuliers du Marais. Les collections permanentes sont gratuites."
+    },
+    {
+      "date": "2026-08-15",
+      "nom": "Musée des Égouts de Paris",
+      "emoji": "🐀",
+      "categorie": "musee",
+      "adresse": "Esplanade Habib-Bourguiba, pont de l’Alma, 75007 Paris",
+      "gps": [
+        48.8627,
+        2.3026
+      ],
+      "description": "Une visite dans les vraies galeries des égouts de Paris, sous le quai d’Orsay, pour découvrir comment fonctionne la ville sous nos pieds."
     }
   ]
 }
