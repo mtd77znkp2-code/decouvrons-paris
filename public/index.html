@@ -227,9 +227,9 @@ body.admin #loginBtn{top:80px}body.admin #loginBox{top:134px}
 .ap-pv.on{border-color:var(--a)}
 .ap-pv.on small{color:var(--a);font-weight:800}
 .ap-emo{max-width:90px;font-size:22px!important;text-align:center}
-.ap-emos{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
-.ap-emos button{font-size:20px;width:36px;height:36px;border-radius:10px;border:0;background:var(--bg);cursor:pointer}
-.ap-emos button:hover{background:#2b3d93}
+.ap-f input.ap-emo-in{font-size:22px}
+.ap-emo-row{display:flex;align-items:center;gap:12px;margin-top:6px}
+.ap-emo-pv{display:grid;place-items:center;width:48px;height:48px;flex:none;border-radius:50%;background:#fff;border:3px solid #e1306c;font-size:24px}
 .ap-newcat{padding:10px;border-radius:12px;background:rgba(245,178,26,.08)}
 .ap-cats{display:grid;gap:8px}
 .ap-catrow{display:grid;grid-template-columns:70px 1fr auto auto;gap:8px;align-items:center}
@@ -1097,7 +1097,6 @@ function geoDist(a,b){
   }
   function rows(t){if(t==="reels")return reels();if(t==="spots")return window.SPDB||[];return (t==="quiz"?window.QDB:t==="prix"?window.PDB:t==="lieux"?window.LDB:t==="videos"?window.VDB:LB.docs)||[]}
   // ---------- Lieux de la carte « Découvre ! » ----------
-  var EMOS=["📍","🏛️","🖼️","🎨","🍽️","🥐","☕","🍸","🍷","🌳","🌸","🛍️","🎭","🎵","⛪","🏰","🌉","🗼","📸","🕯️","🪞","🐀","🏯","📜","🎡","🚶","🌅","💎"];
   function cats(){return (window.SCDB||[]).slice().sort(function(a,b){return (a.n||0)-(b.n||0)})}
   function catName(id){var c=cats().filter(function(c){return c.id===id})[0];return c?c.emoji+" "+c.nom:"—"}
   function mmss(x){if(x==null||x==="")return "";x=+x;return Math.floor(x/60)+":"+("0"+Math.floor(x%60)).slice(-2)}
@@ -1107,6 +1106,13 @@ function geoDist(a,b){
     var w=[];if(!window.spotVid||!spotVid(x))w.push(window.IGV===null?"vidéo en chargement":"vidéo introuvable");
     if(!isFinite(x.lat)||!isFinite(x.lng))w.push("pas de GPS");if(!x.adresse)w.push("pas d’adresse");
     if(!x.categorie||!cats().some(function(c){return c.id===x.categorie}))w.push("pas de catégorie");return w;
+  }
+  // Premier émoji du texte (gère les émojis composés comme 👨‍🍳 ou 🇫🇷)
+  function firstEmoji(s){
+    s=String(s||"").trim();if(!s)return "";
+    var parts=window.Intl&&Intl.Segmenter?Array.from(new Intl.Segmenter("fr",{granularity:"grapheme"}).segment(s),function(x){return x.segment}):Array.from(s);
+    for(var i=0;i<parts.length;i++)if(/\p{Extended_Pictographic}|\p{Regional_Indicator}/u.test(parts[i]))return parts[i];
+    return "";
   }
   function slug(s){return norm(s).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,30)||"cat"}
   function editSpot(x,dup){
@@ -1136,9 +1142,11 @@ function geoDist(a,b){
     });
     // 4. Nom, émoticône, catégorie, adresse, description
     var nm=inp(x&&x.nom,80),em=inp(x&&x.emoji,8),ad=inp(x&&x.adresse,160),de=el("textarea");de.rows=2;de.maxLength=300;de.value=(x&&x.description)||"";
-    em.placeholder="📍";em.className="ap-emo";
-    var er=el("div","ap-emos");EMOS.forEach(function(e){var b=el("button","",e);b.type="button";b.onclick=function(){em.value=e};er.appendChild(b)});
-    var ef=fld("Émoticône sur la carte",em);ef.appendChild(er);
+    // Zone de texte libre : n'importe quel émoji, tapé avec le clavier émoji ou collé
+    em.maxLength=16;em.placeholder="Tape ou colle un émoji : 🍕 🎡 🌉 …";em.className="ap-emo-in";em.autocomplete="off";
+    var pv=el("span","ap-emo-pv",em.value||"📍");em.oninput=function(){pv.textContent=firstEmoji(em.value)||"📍"};
+    var ef=fld("Émoticône sur la carte (n’importe lequel)",em);
+    var eh=el("div","ap-emo-row");eh.appendChild(pv);eh.appendChild(el("small","ap-mut","Aperçu sur la carte. Sur téléphone : touche 😀 sur le clavier. Sur ordinateur : Windows + ; (PC) ou Ctrl + Cmd + Espace (Mac)."));ef.appendChild(eh);
     var ca=el("select");
     function fillCats(sel){ca.innerHTML="";cats().forEach(function(c){var o=el("option","",c.emoji+" "+c.nom);o.value=c.id;ca.appendChild(o)});var o=el("option","","＋ Nouvelle catégorie…");o.value="__new";ca.appendChild(o);ca.value=sel||(cats()[0]||{id:"__new"}).id}
     fillCats(x&&x.categorie);
@@ -1163,7 +1171,7 @@ function geoDist(a,b){
     var err=dlg(dup?"Dupliquer : même vidéo, autre extrait":x?"Modifier un lieu":"Ajouter un lieu",body,[sv]);
     sv.onclick=function(){
       var a=parseT(t1.value),z=parseT(t2.value),g=parseGps(gp.value);
-      var e=!mid?"Choisis la vidéo en touchant sa miniature.":!nm.value.trim()?"Donne un nom au lieu.":!ad.value.trim()?"Indique l’adresse du lieu.":
+      var e=(em.value.trim()&&!firstEmoji(em.value))?"L’émoticône doit être un émoji (par exemple 🍕), pas du texte.":!mid?"Choisis la vidéo en touchant sa miniature.":!nm.value.trim()?"Donne un nom au lieu.":!ad.value.trim()?"Indique l’adresse du lieu.":
         !g?"Ajoute la position GPS : colle les coordonnées (ex : 48.8605, 2.3388) ou touche la carte.":
         (ca.value==="__new"&&!ncn.value.trim())?"Donne un nom à la nouvelle catégorie.":
         (isNaN(a)||isNaN(z))?"Extrait : écris les temps comme 0:20 (minutes:secondes).":(a!=null&&z!=null&&z<=a)?"Extrait : la fin doit être après le début.":"";
@@ -1173,7 +1181,7 @@ function geoDist(a,b){
         cid=slug(ncn.value);var base=cid,i=2;while(cats().some(function(c){return c.id===cid}))cid=base+"-"+(i++);
         ops.push(LB.db.doc("spotcats/"+cid).set({nom:ncn.value.trim(),emoji:nce.value.trim()||"📍",n:Date.now()}));
       }
-      var r={nom:nm.value.trim(),emoji:em.value.trim()||null,categorie:cid,adresse:ad.value.trim(),description:de.value.trim(),lat:g[0],lng:g[1],mid:mid,debut:a,fin:z,on:vis.__c.checked,n:x&&!dup?(x.n||0):Date.now()};
+      var r={nom:nm.value.trim(),emoji:firstEmoji(em.value)||null,categorie:cid,adresse:ad.value.trim(),description:de.value.trim(),lat:g[0],lng:g[1],mid:mid,debut:a,fin:z,on:vis.__c.checked,n:x&&!dup?(x.n||0):Date.now()};
       var id=x&&!dup?x.id:"spot_"+Date.now().toString(36);
       ops.push(LB.db.doc("spots/"+id).set(r));
       sv.disabled=true;err.textContent="";
