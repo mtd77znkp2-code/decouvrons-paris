@@ -1,0 +1,24 @@
+# Met le site en ligne sur Firebase (pages, fonctions et règles de la base) à chaque modification de « main ».
+name: Mise en ligne Firebase
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+concurrency: firebase-deploy
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+        working-directory: functions
+      - name: Mise en ligne
+        env:
+          SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
+          npx --yes firebase-tools@15.33.0 deploy --only hosting,functions,firestore:rules --project decouvrons-paris --non-interactive --force

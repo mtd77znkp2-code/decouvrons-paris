@@ -1,4 +1,3 @@
-# Le site est servi depuis « public » ; les fonctions Netlify (Instagram) sont dans « netlify/functions ».
+# Ancien hébergement (Netlify) : le site est maintenant sur Firebase Hosting (voir firebase.json).
 [build]
   publish = "public"
-  functions = "netlify/functions"

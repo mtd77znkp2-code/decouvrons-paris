@@ -8,8 +8,9 @@ service cloud.firestore {
     }
 
     // Tout le contenu du site (questions, prix, lieux…) : lecture publique, écriture admin.
+    // Sauf « prive » (jeton Instagram) : personne ne peut le lire depuis le site.
     match /{collection}/{id} {
-      allow read: if true;
+      allow read: if collection != "prive";
       allow write: if isAdmin();
     }
 

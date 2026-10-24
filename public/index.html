@@ -514,6 +514,7 @@ body.apage #adminBadge,body.apage #adminLogout{position:absolute}
       <div class="ap-seg" id="apVis" role="group" aria-label="Visibilité"><button type="button" data-v="" class="on">Tout</button><button type="button" data-v="on">Visibles</button><button type="button" data-v="off">Masqués</button></div>
       <select id="apCat" class="ap-sel" aria-label="Catégorie" hidden></select>
       <button class="btn ghost" id="apCatsBtn" type="button" hidden>🏷️ Catégories</button>
+      <button class="btn ghost" id="apIgBtn" type="button" hidden>🔑 Connexion Instagram</button>
       <button class="btn" id="apAdd" type="button">+ Ajouter</button>
     </div>
     <p class="ap-count" id="apCount"></p>
@@ -532,8 +533,9 @@ body.apage #adminBadge,body.apage #adminLogout{position:absolute}
 // Base de données Firebase (projet decouvrons-paris)
 var FB_CONFIG={
   apiKey:"AIzaSyBhd_xCy7FMFmCpjWxHrHk-9Tqwk0rC_U4",
-  // Sur Netlify, la connexion passe par l’adresse du site (voir _redirects) : indispensable sur iPhone.
-  authDomain:/\.netlify\.app$/.test(location.hostname)?location.hostname:"decouvrons-paris.firebaseapp.com",
+  // La connexion Google passe par l’adresse du site (indispensable sur iPhone) : Firebase Hosting la fournit
+  // directement sur decouvrons-paris.web.app / .firebaseapp.com (sur Netlify, via public/_redirects).
+  authDomain:/(\.netlify\.app|^decouvrons-paris\.(web\.app|firebaseapp\.com))$/.test(location.hostname)?location.hostname:"decouvrons-paris.firebaseapp.com",
   projectId:"decouvrons-paris",
   storageBucket:"decouvrons-paris.firebasestorage.app",
   messagingSenderId:"67600209029",
@@ -1222,7 +1224,7 @@ function geoDist(a,b){
     });
     var d=T[st.t];
     $("apLvl").hidden=!d.lv;$("apZone").hidden=st.t!=="lieux";$("apOk").hidden=st.t!=="lieux";
-    $("apCat").hidden=$("apCatsBtn").hidden=st.t!=="spots";
+    $("apCat").hidden=$("apCatsBtn").hidden=st.t!=="spots";$("apIgBtn").hidden=st.t!=="reels";
     if(st.t==="spots"){var cs=$("apCat");cs.innerHTML="";cs.appendChild(Object.assign(el("option","","Toutes les catégories"),{value:""}));cats().forEach(function(c){var o=el("option","",c.emoji+" "+c.nom);o.value=c.id;cs.appendChild(o)});cs.value=st.cat||""}
     var mk={quiz:"quiz",prix:"prix",lieux:"loc"}[st.t],mon=!!(window.MAINT||{})[mk];
     $("apMaint").hidden=!mk;$("apMaint").classList.toggle("on",mon);
@@ -1488,6 +1490,16 @@ function geoDist(a,b){
   });
   $("apAdd").onclick=function(){edit(null)};
   $("apCatsBtn").onclick=function(){editCats()};
+  $("apIgBtn").onclick=function(){
+    var tk=el("textarea");tk.rows=3;tk.placeholder="Colle ici le token Instagram (commence souvent par IG…)";tk.autocomplete="off";tk.spellcheck=false;
+    var p=el("p","ap-mut","Le token est rangé dans une partie privée de ta base : personne ne peut le lire depuis le site. Il se renouvelle ensuite tout seul. Tu n’as besoin de le recoller que si les vidéos disparaissent.");
+    var sv=el("button","btn","Enregistrer le token");sv.type="submit";
+    var err=dlg("Connexion Instagram",[fld("Token Instagram",tk),p],[sv]);
+    sv.onclick=function(){
+      var v=tk.value.trim();if(v.length<20){err.textContent="Ce token paraît trop court : vérifie le copier-coller.";return}
+      sv.disabled=true;write(LB.db.doc("prive/instagram").set({token:v,at:Date.now()}),"Token enregistré. Les vidéos arrivent d’ici quelques minutes.").then(function(){$("apDlg").close()}).catch(function(){sv.disabled=false;err.textContent="L’enregistrement a échoué (as-tu publié les nouvelles règles ?)."});
+    };
+  };
   $("apCat").onchange=function(){st.cat=this.value;apRender()};
   $("apMaintSw").onclick=function(){
     var k={quiz:"quiz",prix:"prix",lieux:"loc"}[st.t];if(!k)return;

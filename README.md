@@ -1,15 +1,14 @@
 # Découvrons Paris
 
-Site de @decouvronsparis1 : carte de Paris, quiz, devine où c'est, devine le prix.
+Site de @decouvronsparis1 : Découvre ! (vidéos et carte), quiz, devine où c'est, devine le prix.
 
-- `public/index.html` : tout le site dans un seul fichier (`public/_redirects` : connexion Google via l'adresse du site).
-- Hébergement : Netlify, relié à ce dépôt (chaque modification met le site à jour).
-- Base de données : Firebase (projet `decouvrons-paris`), pour les classements, les questions du quiz et les prix.
-  - Les joueurs sont connectés automatiquement en anonyme pour enregistrer leurs scores.
-  - L'administration se fait avec le bouton « Se connecter avec Google » (compte administrateur indiqué dans `firestore.rules` et `index.html`).
-- `firestore.rules` : règles de sécurité à copier dans Firebase > Firestore Database > Règles.
-- Vidéos Instagram (section « Découvre ! ») : fonctions Netlify dans `netlify/functions` (`/api/insta` et un renouvellement quotidien).
-  - Il faut la variable d'environnement Netlify `IG_TOKEN` (jeton « Instagram API with Instagram Login » du compte @decouvronsparis1).
-  - Le jeton est ensuite renouvelé automatiquement et rangé dans Netlify Blobs.
-- Carte « Découvre ! » : les lieux en vidéo se gèrent dans l'admin (onglet « Carte Découvre »), stockés dans Firebase (`spots`, `spotcats`).
-  `public/spots.json` ne sert plus qu'à l'import initial (et de secours si la base est vide).
+- `public/index.html` : tout le site dans un seul fichier.
+- Hébergement : **Firebase Hosting** (projet `decouvrons-paris`), adresse https://decouvrons-paris.web.app.
+  - Chaque modification de `main` est mise en ligne par GitHub Actions (`.github/workflows/firebase.yml`),
+    avec le secret GitHub `FIREBASE_SERVICE_ACCOUNT` (clé JSON d'un compte de service du projet).
+  - `firebase.json` : pages (`public/`), fonctions (`functions/`) et règles de la base (`firestore.rules`).
+- Base de données : Firestore (classements, quiz, prix, lieux, vidéos, carte Découvre).
+  - L'administration se fait avec « Se connecter avec Google » (compte indiqué dans `firestore.rules` et `index.html`).
+- Vidéos Instagram : fonction `insta` (`/api/insta`) et renouvellement quotidien `instaRefresh`.
+  - Le token se colle dans l'admin → « Mes Reels » → « Connexion Instagram » (rangé dans `prive/instagram`, illisible depuis le site).
+- `public/spots.json` : lieux de départ de la carte Découvre (importés dans la base à la première ouverture de l'admin).
