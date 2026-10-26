@@ -1,0 +1,306 @@
+// Vie quotidienne, série 7
+=== quo-226 | quotidien | Les robinets des cimetières en panne
+Les familles ne peuvent plus arroser les fleurs des tombes.
+A) Réparer tous les points d’eau :: Respect.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les fleurs des tombes refleurissent.
+B) Des arrosoirs en prêt à l’entrée :: Simple.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les familles empruntent un arrosoir.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Les familles apportent des bouteilles.
+
+=== quo-227 | quotidien | La sonnerie de l’école réveille le quartier
+La sonnerie stridente d’une école retentit dès 8 heures, même pendant les vacances.
+A) Une sonnerie plus douce :: Apaiser.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Une mélodie remplace la sirène.
+B) Couper la sonnerie pendant les vacances :: Bon sens.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les vacances sont silencieuses.
+C) Rien :: École.
+   bon-1 | g0 c+1 d+1 e0
+   > Les voisins grincent des dents.
+
+=== quo-228 | quotidien | Les stores des terrasses trop bas
+Les grands passants se cognent dans les stores des cafés.
+A) Imposer une hauteur minimale :: Règle.
+   bon+1 | g0 c+2 d+2 e0
+   > Les stores sont relevés.
+B) Une simple campagne auprès des cafés :: Dialogue.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les cafés ajustent leurs stores.
+C) Rien :: Anecdotique.
+   bon-1 | g0 c+1 d+1 e0
+   > Les fronts continuent de cogner.
+
+=== quo-229 | quotidien | Les lampadaires qui s’allument trop tard
+L’hiver, les rues restent sombres une demi-heure après le coucher du soleil.
+A) Des capteurs de luminosité :: Adapter.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > La lumière s’allume au bon moment.
+B) Avancer les horaires l’hiver :: Simple.
+   securite+1 ecologie-1 | g0 c+2 d+1 e0
+   > Les rues s’éclairent plus tôt.
+C) Rien :: Économie d’énergie.
+   securite-1 | g+1 c+1 d0 e+1
+   > Les piétons marchent dans le noir.
+
+=== quo-230 | quotidien | Des panneaux de stationnement incompréhensibles
+Horaires, exceptions, zones : les automobilistes ne comprennent rien.
+A) Des panneaux simplifiés :: Clarté.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les amendes injustes diminuent.
+B) Une application qui explique la règle :: Numérique.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les conducteurs vérifient sur leur téléphone.
+C) Rien :: Code de la route.
+   bon-1 | g0 c+1 d+1 e0
+   > Les contestations s’accumulent.
+
+=== quo-231 | quotidien | Une déchetterie mobile dans chaque quartier
+Les habitants sans voiture ne peuvent pas aller à la déchetterie.
+A) Un camion-déchetterie qui tourne chaque semaine :: Proximité.
+   rec-0.01x60 proprete+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les habitants déposent leurs vieux objets en bas de chez eux.
+B) Une fois par mois :: Compromis.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Les dépôts sauvages diminuent.
+C) Rien :: Encombrants.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les objets finissent sur le trottoir.
+
+=== quo-232 | quotidien | Des bancs pour les grands-parents devant les écoles
+Les grands-parents attendent debout à la sortie de l’école.
+A) Des bancs devant chaque école :: Confort.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les grands-parents s’assoient en attendant.
+B) Seulement là où le trottoir le permet :: Pragmatisme.
+   bon+1 | g0 c+2 d+1 e+1
+   > Quelques bancs sont posés.
+C) Rien :: Trottoirs encombrés.
+   bon-1 | g0 c+1 d+1 e0
+   > Les grands-parents attendent debout.
+
+=== quo-233 | quotidien | Des gouttières percées qui arrosent les passants
+Des descentes d’eau cassées déversent la pluie sur les trottoirs.
+A) Mettre en demeure les propriétaires :: Fermeté.
+   bon+1 | g0 c+2 d+2 e0
+   > Les gouttières sont réparées.
+B) Réparer et facturer :: Agir.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les passants restent au sec.
+C) Rien :: Propriétaires.
+   bon-1 | g0 c+1 d+1 e0
+   > Les passants changent de trottoir.
+
+=== quo-234 | quotidien | Les vélos attachés aux arbres
+Faute d’arceaux, les cyclistes attachent leur vélo aux arbres et les abîment.
+A) Plus d’arceaux près des arbres :: Équiper.
+   bud-1 transports+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les arbres sont libérés.
+B) Des protections autour des troncs :: Protéger.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Les vélos ne peuvent plus s’attacher.
+C) Rien :: Tolérance.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les écorces sont blessées.
+
+=== quo-235 | quotidien | Les parents qui fument devant les écoles
+Les enfants traversent des nuages de fumée à la sortie des classes.
+? distinct
+A) Des zones sans tabac devant les écoles :: Santé.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les abords des écoles deviennent sans tabac.
+B) Une campagne d’affichage :: Sensibiliser.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les parents s’éloignent pour fumer.
+C) Rien :: Liberté.
+   bon-1 | g0 c+1 d+1 e0
+   > Les mégots s’accumulent devant les grilles.
+
+=== quo-236 | quotidien | Les vendeurs de roses dans les restaurants
+Des vendeurs passent de table en table toute la soirée.
+A) Une médiation et un encadrement :: Apaiser.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les vendeurs s’organisent avec les restaurateurs.
+B) Verbaliser :: Fermeté.
+   securite+1 bon-1 | g-1 c+2 d+2 e0
+   > Les vendeurs disparaissent des terrasses.
+C) Rien :: Tradition.
+   bon-1 | g0 c+1 d+1 e0
+   > Les dîneurs sont dérangés.
+
+=== quo-237 | quotidien | Les recruteurs d’ONG qui harcèlent dans la rue
+Des recruteurs de dons arrêtent tous les passants dans les rues commerçantes.
+A) Limiter leur nombre par rue :: Encadrer.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les passants respirent.
+B) Une charte avec les associations :: Dialogue.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les recruteurs se font plus discrets.
+C) Rien :: Bonnes causes.
+   bon-1 | g+1 c+1 d0 e0
+   > Les passants changent de trottoir.
+
+=== quo-238 | quotidien | Les travaux annoncés la veille
+Des riverains découvrent un chantier devant chez eux sans aucun préavis.
+A) Un préavis obligatoire de quinze jours :: Respect.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les riverains s’organisent.
+B) Une alerte par SMS pour les riverains :: Informer.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les habitants sont prévenus.
+C) Rien :: Urgences.
+   bon-1 | g0 c+1 d+1 e0
+   > Les voitures sont enlevées au petit matin.
+
+=== quo-239 | quotidien | Les bibliothèques fermées en août
+En plein été, la plupart des bibliothèques ferment, les étudiants n’ont nulle part où travailler.
+? distinct
+A) Garder une bibliothèque ouverte par arrondissement :: Continuité.
+   rec-0.01x60 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les étudiants révisent au frais.
+B) Un roulement des fermetures :: Organiser.
+   services+1 | g0 c+2 d+1 e+1
+   > Les bibliothèques ferment à tour de rôle.
+C) Rien :: Congés.
+   bon-1 | g0 c+1 d+1 e0
+   > Les étudiants cherchent un café climatisé.
+
+=== quo-240 | quotidien | Les piscines fermées pour vidange en plein été
+Des piscines ferment pour vidange au moment des canicules.
+A) Faire les vidanges au printemps :: Organiser.
+   bon+1 services+1 | g0 c+2 d+1 e+1
+   > Les piscines restent ouvertes l’été.
+B) Un roulement par quartier :: Compromis.
+   services+1 | g0 c+2 d+1 e+1
+   > Une piscine reste toujours ouverte près de chez soi.
+C) Rien :: Planning.
+   bon-1 | g0 c+1 d+1 e0
+   > Les familles trouvent porte close.
+
+=== quo-241 | quotidien | Les hélicoptères qui tournent la nuit
+Des hélicoptères de surveillance tournent au-dessus des quartiers jusqu’à deux heures.
+A) Demander des drones silencieux :: Calme.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les rotors se taisent.
+B) Limiter les vols de nuit :: Négocier.
+   coh+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les survols nocturnes diminuent.
+C) Rien :: Sécurité.
+   bon-1 | g-1 c+1 d+2 e0
+   > Les riverains dorment mal.
+
+=== quo-242 | quotidien | Livrer les médicaments aux seniors
+Les seniors qui ne sortent plus attendent qu’un proche passe à la pharmacie.
+A) Une livraison gratuite par des agents :: Service.
+   rec-0.01x60 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les médicaments arrivent à domicile.
+B) Un partenariat avec les pharmacies :: Réseau.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Les pharmacies livrent les plus fragiles.
+C) Rien :: Familles.
+   bon-1 | g0 c+1 d+1 e0
+   > Des traitements sont interrompus.
+
+=== quo-243 | quotidien | Des marchés couverts sans toilettes
+Clients et commerçants des marchés couverts n’ont aucune toilette.
+? distinct
+A) Installer des toilettes dans chaque marché :: Confort.
+   bud-1 proprete+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les marchés deviennent vivables.
+B) Un accord avec les cafés voisins :: Simple.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les cafés ouvrent leurs toilettes.
+C) Rien :: Coût.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les recoins sentent mauvais.
+
+=== quo-244 | quotidien | Descendre sur les quais avec une poussette
+Les rampes vers les berges sont rares, les escaliers impraticables.
+A) Des rampes à chaque pont :: Accessibilité.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles descendent sans porter la poussette.
+B) Quelques rampes bien signalées :: Prioriser.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les accès sont indiqués.
+C) Rien :: Patrimoine.
+   bon-1 | g0 c+1 d+1 e0
+   > Les parents restent en haut.
+
+=== quo-245 | quotidien | Des marelles peintes sur les trottoirs
+Des parents proposent de peindre des jeux au sol près des écoles.
+? distinct
+A) Peindre des jeux devant chaque école :: Jouer.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les enfants sautent en attendant leurs parents.
+B) Laisser les parents peindre à la craie :: Simple.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les marelles apparaissent chaque mercredi.
+C) Rien :: Trottoirs.
+   bon-1 | g0 c+1 d+1 e0
+   > Les trottoirs restent gris.
+
+=== quo-246 | quotidien | Des malles de jeux dans les squares
+Des malles de jeux en libre accès permettraient aux enfants de jouer ensemble.
+A) Une malle par square :: Partager.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Ballons et cordes à sauter circulent.
+B) Gérées par des associations de parents :: Participatif.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les parents rangent la malle le soir.
+C) Rien :: Vols.
+   bon-1 | g0 c+1 d+1 e0
+   > Chacun vient avec ses jouets.
+
+=== quo-247 | quotidien | Fermer la rue pour la fête de l’école
+Les écoles veulent faire leur kermesse dans la rue.
+A) Fermer la rue le jour de la fête :: Convivialité.
+   bon+1 transports-1 | g+1 c+2 d+1 e+1
+   > La rue devient terrain de jeux.
+B) Une procédure simplifiée :: Faciliter.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les écoles demandent en ligne.
+C) Rien :: Circulation.
+   bon-1 | g0 c+1 d+1 e0
+   > La fête reste dans la cour.
+
+=== quo-248 | quotidien | Cueillir les fruits des arbres de la ville
+Des cerisiers et pommiers publics laissent leurs fruits pourrir au sol.
+? distinct
+A) Autoriser la cueillette et l’indiquer :: Partager.
+   bon+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les habitants récoltent les cerises.
+B) Des cueillettes organisées pour les associations :: Solidarité.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les fruits vont aux épiceries solidaires.
+C) Rien :: Hygiène.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les fruits pourrissent.
+
+=== quo-249 | quotidien | Le retour des gardiens de square
+Les squares n’ont plus de gardiens, les incivilités se multiplient.
+A) Un gardien dans chaque grand square :: Présence.
+   rec-0.03x60 securite+1 bon+1 | g0 c+2 d+2 e+1
+   > Les squares retrouvent leur gardien.
+B) Des gardiens mobiles :: Compromis.
+   rec-0.01x60 securite+1 | g0 c+2 d+1 e+1
+   > Les gardiens passent dans plusieurs squares.
+C) Rien :: Coût.
+   securite-1 | g0 c+1 d+1 e0
+   > Les squares sont livrés à eux-mêmes.
+
+=== quo-250 | quotidien | Des rues sans réseau téléphonique
+Dans certaines rues, impossible de téléphoner ni d’appeler les secours.
+? distinct
+A) Exiger des opérateurs une couverture complète :: Pression.
+   coh+1 securite+1 | g0 c+2 d+1 e+1
+   > Les opérateurs installent des relais.
+B) Du wifi public dans les zones blanches :: Pallier.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Les habitants se connectent au wifi.
+C) Rien :: Opérateurs.
+   securite-1 | g0 c+1 d+1 e0
+   > Les habitants sortent pour téléphoner.
