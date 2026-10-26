@@ -1,0 +1,485 @@
+// Services publics, série 4
+=== ser-106 | services | Les menus de substitution à la cantine
+Des parents demandent des menus de substitution quand de la viande est servie. D’autres veulent un menu unique pour tous.
+A) Proposer un menu végétarien alternatif chaque jour :: Choix pour tous.
+   rec-0.1x60 services+1 ecologie+1 | g+2 c+3 d0 e+3
+   > Chaque enfant peut choisir le menu végétarien.
+B) Menu unique pour tous :: Égalité.
+   coh+1 services-1 | g-2 c+1 d+3 e0
+   > Un seul menu est servi.
+   ~35 pop-2 > Des parents retirent leurs enfants de la cantine.
+C) Laisser chaque école décider :: Souplesse.
+   coh-1 | g0 c+2 d+1 e0
+   > Les pratiques varient d’une école à l’autre.
+
+=== ser-107 | services | Des sorties au musée pour toutes les classes
+Beaucoup d’écoles ne vont jamais au musée faute de budget de transport.
+A) Financer cars et entrées pour toutes les classes :: Égalité culturelle.
+   rec-0.2x60 services+2 bon+1 | g+3 c+2 d+1 e+1
+   > Chaque classe visite au moins deux musées par an.
+B) Ateliers des musées dans les écoles :: Le musée vient à l’école.
+   rec-0.1x60 services+1 | g+2 c+3 d+1 e+1
+   > Des médiateurs viennent dans les classes.
+C) Rien :: Budget des écoles.
+   services-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-108 | services | Des ateliers pour les parents
+Des parents démunis face à l’éducation de leurs enfants demandent de l’aide.
+A) Ateliers de parentalité gratuits :: Accompagner.
+   rec-0.1x60 services+1 bon+1 | g+2 c+3 d+1 e+1
+   > Des ateliers ont lieu dans chaque quartier.
+B) Ligne d’écoute pour les parents :: Simple.
+   rec-0.05x60 services+1 | g+1 c+3 d+1 e+1
+   > Des professionnels répondent aux parents.
+C) Rien :: Sphère privée.
+   services-1 | g-1 c0 d+2 e0
+   > Rien ne change.
+
+=== ser-109 | services | Des maisons des familles
+Les familles cherchent un lieu pour se retrouver, jouer et demander conseil.
+A) Ouvrir une maison des familles par arrondissement :: Lien social.
+   bud-10 rec-0.2x60 services+2 bon+1 | g+2 c+2 d+1 e+1
+   > Les maisons des familles ouvrent.
+B) Transformer des centres existants :: Économique.
+   bud-3 services+1 | g+1 c+3 d+1 e+1
+   > Des centres sociaux deviennent maisons des familles.
+C) Rien :: Les centres sociaux suffisent.
+   bon-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-110 | services | Des lunettes gratuites pour les élèves
+Des enfants ne voient pas le tableau mais leurs parents ne peuvent pas payer les lunettes.
+A) Dépistage et lunettes gratuites :: Réussite scolaire.
+   bud-4 services+2 achat+1 | g+3 c+2 d+1 e+1
+   > Des milliers d’enfants reçoivent des lunettes.
+B) Dépistage seulement :: Prévention.
+   bud-1 services+1 | g+1 c+3 d+1 e0
+   > Les enfants sont dépistés.
+C) Rien :: Sécurité sociale.
+   services-1 | g-1 c+1 d+2 e0
+   > Rien ne change.
+
+=== ser-111 | services | Des appareils auditifs pour les seniors
+Les seniors modestes renoncent aux appareils auditifs et s’isolent.
+A) Aide municipale à l’achat :: Rompre l’isolement.
+   rec-0.1x60 services+1 bon+1 | g+2 c+2 d+1 e+1
+   > Des seniors entendent à nouveau.
+B) Dépistage gratuit :: Prévention.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Les seniors sont dépistés.
+C) Rien :: Sécurité sociale.
+   services-1 | g-1 c+1 d+2 e0
+   > Rien ne change.
+
+=== ser-112 | services | Les chiens d’assistance refusés
+Des personnes aveugles se voient refuser l’entrée de commerces et taxis avec leur chien guide.
+A) Campagne et sanctions :: Faire respecter la loi.
+   bud-1 services+1 | g+2 c+3 d+1 e+1
+   > Les commerçants sont informés et contrôlés.
+B) Autocollant « chiens d’assistance bienvenus » :: Inciter.
+   bud-1 bon+1 | g+1 c+3 d+1 e+1
+   > Les commerces affichent l’autocollant.
+C) Rien :: La loi existe.
+   pop-1 | g0 c+1 d+1 e0
+   > Les refus continuent.
+
+=== ser-113 | services | L’éveil musical en crèche
+Des musiciens proposent des séances d’éveil musical dans toutes les crèches.
+A) Généraliser l’éveil musical :: Éveil.
+   rec-0.1x60 services+1 bon+1 | g+2 c+2 d+1 e+1
+   > Les bébés découvrent la musique.
+B) Quelques crèches pilotes :: Tester.
+   rec-0.02x60 services+1 | g+1 c+3 d+1 e+1
+   > Vingt crèches participent.
+C) Rien :: Pas prioritaire.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-114 | services | L’école dehors
+Des enseignants veulent faire classe dehors, dans les parcs, une demi-journée par semaine.
+A) Généraliser avec du matériel et des accompagnateurs :: Nature.
+   rec-0.1x60 services+1 ecologie+1 bon+1 | g+2 c+2 d0 e+4
+   > Les classes sortent dans les parcs.
+B) Autoriser les volontaires :: Liberté.
+   services+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Quelques classes sortent.
+C) Refuser :: Sécurité.
+   services-1 | g0 c0 d+2 e-1
+   > Les classes restent à l’intérieur.
+
+=== ser-115 | services | Des étudiants tuteurs pour les collégiens
+Des étudiants pourraient aider des collégiens en difficulté en échange d’une bourse.
+A) Programme de tutorat rémunéré :: Réussite.
+   rec-0.2x60 services+2 | g+2 c+3 d+1 e+1
+   > Mille collégiens ont un tuteur.
+B) Tutorat bénévole :: Économique.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Des étudiants bénévoles s’engagent.
+C) Rien :: Soutien scolaire existant.
+   services-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-116 | services | Des bibliothèques où l’on peut parler
+Les jeunes trouvent les bibliothèques trop silencieuses et austères.
+A) Créer des espaces de travail en groupe et de jeux :: Lieux de vie.
+   bud-6 services+1 bon+1 | g+2 c+2 d+1 e+1
+   > Les bibliothèques deviennent des lieux de vie.
+   ~25 pop-1 > Les lecteurs habitués regrettent le silence.
+B) Garder une salle silencieuse et une salle animée :: Compromis.
+   bud-3 services+1 | g+1 c+3 d+1 e+1
+   > Chacun trouve sa place.
+C) Rien :: Le silence est la règle.
+   services-1 | g0 c0 d+2 e0
+   > Rien ne change.
+
+=== ser-117 | services | Des piscines ouvertes la nuit l’été
+Pendant les canicules, les Parisiens voudraient nager le soir.
+? distinct
+A) Ouvrir jusqu’à minuit pendant les canicules :: Fraîcheur.
+   rec-0.1x20 services+1 bon+2 | g+2 c+2 d+1 e+1
+   > Les piscines ouvrent tard.
+B) Une nocturne par semaine :: Compromis.
+   rec-0.05x20 bon+1 | g+1 c+3 d+1 e+1
+   > Le vendredi soir, les piscines restent ouvertes.
+C) Rien :: Manque de maîtres-nageurs.
+   bon-1 | g0 c0 d+1 e0
+   > Les horaires restent.
+
+=== ser-118 | services | La santé des agents de la Ville
+Les agents de propreté et des crèches ont des problèmes de dos et de nombreux arrêts maladie.
+A) Plan de prévention et matériel adapté :: Prendre soin.
+   bud-5 services+1 proprete+1 | g+3 c+2 d+1 e+1
+   > Les arrêts maladie diminuent.
+B) Médecins du travail supplémentaires :: Suivi.
+   rec-0.1x60 services+1 | g+2 c+3 d+1 e0
+   > Les agents sont mieux suivis.
+C) Contrôle des arrêts maladie :: Rigueur.
+   rec+0.1x60 bon-1 | g-3 c+1 d+4 e0
+   > Les arrêts sont contrôlés.
+
+=== ser-119 | services | Les maisons de quartier ouvertes le dimanche
+Les maisons de quartier ferment le week-end, quand les habitants sont disponibles.
+? distinct
+A) Ouvrir le dimanche :: Lien social.
+   rec-0.1x60 bon+1 services+1 | g+2 c+2 d+1 e+1
+   > Les maisons de quartier ouvrent le dimanche.
+B) Ouvrir un dimanche par mois :: Compromis.
+   rec-0.03x60 bon+1 | g+1 c+3 d+1 e+1
+   > Un dimanche festif par mois.
+C) Rien :: Coût.
+   bon-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-120 | services | Des parrains pour les enfants isolés
+Des enfants de familles en difficulté manquent d’adultes pour les accompagner.
+A) Programme de parrainage avec des bénévoles :: Lien.
+   bud-2 services+1 bon+1 | g+2 c+3 d+1 e+1
+   > Des centaines d’enfants ont un parrain.
+B) Soutenir les associations de parrainage :: Partenariat.
+   rec-0.05x60 services+1 | g+1 c+3 d+1 e+1
+   > Les associations recrutent.
+C) Rien :: Pas le rôle de la Ville.
+   services-1 | g-1 c0 d+2 e0
+   > Rien ne change.
+
+=== ser-121 | services | Un centre de loisirs pour enfants handicapés
+Les enfants handicapés n’ont pas de centre de loisirs adapté pendant les vacances.
+A) Ouvrir des centres adaptés :: Inclusion.
+   bud-6 rec-0.2x60 services+2 | g+3 c+2 d+1 e+1
+   > Des centres adaptés ouvrent.
+B) Animateurs spécialisés dans les centres ordinaires :: Mixité.
+   rec-0.15x60 services+2 | g+2 c+3 d+1 e+1
+   > Les enfants handicapés rejoignent les centres de loisirs.
+C) Rien :: Compétence spécialisée.
+   services-1 | g-2 c0 d+2 e0
+   > Rien ne change.
+
+=== ser-122 | services | Une école pour les parents qui ne parlent pas français
+Des parents ne peuvent pas suivre la scolarité de leurs enfants faute de parler français.
+A) Cours de français dans les écoles pour les parents :: Intégration.
+   rec-0.1x60 services+2 | g+3 c+2 d0 e+1
+   > Les parents apprennent avec l’école.
+B) Traductions des documents scolaires :: Simple.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Les courriers sont traduits.
+C) Rien :: Compétence de l’État.
+   services-1 | g-2 c+1 d+2 e0
+   > Rien ne change.
+
+=== ser-123 | services | Dépister la dyslexie à l’école
+Les troubles de l’apprentissage sont repérés trop tard.
+A) Dépistage systématique en CP :: Prévenir.
+   rec-0.1x60 services+2 | g+2 c+3 d+1 e+1
+   > Les enfants dyslexiques sont repérés tôt.
+B) Former les animateurs et enseignants :: Repérer.
+   bud-2 services+1 | g+1 c+3 d+1 e+1
+   > Les adultes savent repérer les signes.
+C) Rien :: Médecine scolaire.
+   services-1 | g-1 c+1 d+1 e0
+   > Rien ne change.
+
+=== ser-124 | services | Des places de crèche pour les parents qui cherchent un emploi
+Les parents au chômage ne trouvent pas de crèche et ne peuvent pas chercher de travail.
+A) Réserver des places aux demandeurs d’emploi :: Retour à l’emploi.
+   rec-0.1x60 services+1 economie+1 | g+2 c+3 d+1 e+1
+   > Des places sont réservées.
+B) Halte-garderies pour les entretiens d’embauche :: Souple.
+   rec-0.05x60 services+1 | g+2 c+3 d+1 e+1
+   > Des gardes ponctuelles sont proposées.
+C) Rien :: Priorité aux parents qui travaillent.
+   services-1 | g-2 c0 d+3 e0
+   > Rien ne change.
+
+=== ser-125 | services | Le cimetière du Père-Lachaise saturé
+Plus aucune concession n’est disponible, les familles attendent des mois.
+A) Reprendre les tombes abandonnées après enquête :: Libérer.
+   bud-1 services+1 bon-1 | g0 c+1 d+1 e0
+   > Des concessions se libèrent, quelques familles protestent.
+B) Ouvrir un columbarium paysager :: Moderniser.
+   bud-2 services+1 | g+1 c0 d0 e+1
+   > Le columbarium séduit par sa sérénité.
+C) Orienter vers les cimetières extra-muros :: Coût.
+   services-1 bon-1 | g0 c+1 d+1 e0
+   > Les familles doivent aller loin pour se recueillir.
+=== ser-126 | services | Des assistantes sociales dans les écoles
+Les situations familiales difficiles ne sont pas repérées à temps.
+A) Une assistante sociale pour quatre écoles :: Protéger.
+   rec-0.3x60 services+2 | g+3 c+2 d+1 e+1
+   > Les situations sont repérées plus tôt.
+B) Permanences hebdomadaires :: Compromis.
+   rec-0.1x60 services+1 | g+2 c+3 d+1 e+1
+   > Une permanence a lieu chaque semaine.
+C) Rien :: Compétence départementale existante.
+   services-1 | g-1 c+1 d+1 e0
+   > Rien ne change.
+
+=== ser-127 | services | Des tablettes pour les seniors
+Des seniors isolés pourraient garder le contact avec leur famille grâce à des tablettes simplifiées.
+A) Prêter des tablettes avec formation :: Connecter.
+   bud-4 services+1 bon+1 | g+2 c+3 d+1 e+1
+   > Des seniors appellent leurs petits-enfants en vidéo.
+B) Ateliers numériques dans les clubs :: Former.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Les seniors apprennent à utiliser une tablette.
+C) Rien :: Pas prioritaire.
+   bon-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-128 | services | Des centres de santé ouverts le samedi
+Les centres de santé ferment le samedi. Les actifs ne peuvent pas consulter.
+A) Ouvrir le samedi :: Accès aux soins.
+   rec-0.1x60 services+2 | g+2 c+2 d+1 e+1
+   > Les centres ouvrent le samedi matin.
+B) Ouvrir en soirée :: Alternative.
+   rec-0.1x60 services+1 | g+1 c+3 d+1 e+1
+   > Les centres ferment à 21 h.
+C) Rien :: Manque de médecins.
+   services-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-129 | services | Les jeunes et la musique trop forte
+De plus en plus de jeunes ont des troubles de l’audition.
+A) Tests auditifs gratuits dans les lycées :: Prévenir.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Les lycéens sont testés.
+B) Bouchons d’oreille gratuits dans les concerts :: Protéger.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Des bouchons sont distribués.
+C) Rien :: Responsabilité individuelle.
+   services-1 | g-1 c0 d+2 e0
+   > Rien ne change.
+
+=== ser-130 | services | Des cars pour emmener les écoliers à la piscine
+Les écoles éloignées des piscines renoncent aux cours de natation.
+A) Navettes de cars pour toutes les écoles :: Savoir nager.
+   rec-0.1x60 services+2 | g+2 c+2 d+1 e0
+   > Toutes les classes vont à la piscine.
+B) Réorganiser les créneaux au plus près :: Économique.
+   services+1 | g+1 c+3 d+1 e+1
+   > Les écoles sont rattachées à la piscine la plus proche.
+C) Rien :: Coût.
+   services-1 | g-1 c0 d+1 e0
+   > Des enfants n’apprennent pas à nager.
+
+=== ser-131 | services | Garder les enfants pendant une formation
+Des parents ne peuvent pas suivre une formation faute de garde pour leurs enfants.
+? distinct
+A) Garderie gratuite pendant les formations :: Insertion.
+   rec-0.1x60 services+1 economie+1 | g+3 c+2 d+1 e+1
+   > Les parents se forment pendant que les enfants sont gardés.
+B) Formations aux horaires d’école :: Organisation.
+   services+1 | g+1 c+3 d+1 e+1
+   > Les formations ont lieu entre 9 h et 16 h.
+C) Rien :: Les parents s’organisent.
+   economie-1 | g-2 c0 d+2 e0
+   > Rien ne change.
+
+=== ser-132 | services | Du sport pour les agents de la Ville
+Des agents demandent à pouvoir faire du sport sur leur temps de travail.
+A) Une heure de sport par semaine :: Santé et bien-être.
+   rec-0.1x60 services+1 bon+1 | g+2 c+2 d0 e+1
+   > Les agents font du sport.
+B) Accès gratuit aux équipements municipaux :: Avantage.
+   services+1 bon+1 | g+1 c+3 d+1 e+1
+   > Les agents accèdent aux piscines gratuitement.
+C) Rien :: Temps de travail.
+   bon-1 | g-2 c0 d+3 e0
+   > Rien ne change.
+
+=== ser-133 | services | Des sections bilingues dans les écoles publiques
+Des parents quittent l’école publique pour des écoles privées bilingues.
+A) Ouvrir des sections bilingues dans chaque arrondissement :: Attractivité.
+   rec-0.2x60 services+2 | g+1 c+3 d+2 e+1
+   > Les sections bilingues font le plein.
+B) Cours de langue renforcés pour tous :: Égalité.
+   rec-0.1x60 services+1 | g+2 c+2 d+1 e+1
+   > Tous les élèves ont plus d’anglais.
+C) Rien :: Compétence de l’Éducation nationale.
+   services-1 | g0 c+1 d+1 e0
+   > Rien ne change.
+
+=== ser-134 | services | Trouver un stage de troisième
+Les collégiens des quartiers populaires ne trouvent pas de stage de troisième, faute de réseau.
+A) Plateforme de stages dans les services de la Ville :: Égalité des chances.
+   bud-1 services+1 economie+1 | g+3 c+2 d+1 e+1
+   > Des centaines de stages sont proposés.
+B) Mobiliser les entreprises :: Partenariat.
+   bud-1 economie+1 | g+1 c+3 d+2 e0
+   > Des entreprises s’engagent.
+C) Rien :: Aux familles de chercher.
+   services-1 | g-2 c0 d+2 e0
+   > Rien ne change.
+
+=== ser-135 | services | Un accueil de nuit avec les animaux
+Des sans-abri refusent l’hébergement parce que les chiens y sont interdits.
+A) Créer un accueil acceptant les animaux :: Inclure.
+   bud-4 rec-0.1x60 services+1 | g+3 c+2 d0 e+2
+   > Un centre accueille les maîtres et leurs chiens.
+B) Chenil gratuit à côté des centres :: Compromis.
+   bud-2 services+1 | g+2 c+3 d+1 e+1
+   > Les chiens dorment au chenil voisin.
+C) Rien :: Règles d’hygiène.
+   services-1 | g-2 c0 d+2 e0
+   > Les sans-abri avec chiens restent dehors.
+
+=== ser-136 | services | Des aires de jeux couvertes pour l’hiver
+L’hiver, les familles n’ont nulle part où emmener les enfants jouer.
+A) Créer des aires de jeux couvertes :: Toute l’année.
+   bud-10 bon+2 services+1 | g+2 c+2 d+1 e+1
+   > Des aires couvertes ouvrent.
+B) Ouvrir les gymnases aux familles le mercredi :: Économique.
+   rec-0.05x60 bon+1 | g+1 c+3 d+1 e+1
+   > Les gymnases accueillent les familles.
+C) Rien :: Coût.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-137 | services | Lire aux bébés dans les centres de protection maternelle
+Des bibliothécaires pourraient lire des histoires aux bébés en salle d’attente.
+A) Lecture dans tous les centres :: Éveil.
+   rec-0.05x60 services+1 bon+1 | g+2 c+3 d+1 e+1
+   > Les bébés écoutent des histoires.
+B) Livres offerts aux nouveau-nés :: Symbole.
+   bud-2 services+1 | g+1 c+3 d+1 e+1
+   > Chaque bébé reçoit un livre.
+C) Rien :: Pas prioritaire.
+   services-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-138 | services | Accompagner les personnes en deuil
+Des personnes endeuillées et isolées ne savent pas vers qui se tourner.
+A) Groupes de parole et accompagnement :: Soutien.
+   rec-0.05x60 services+1 bon+1 | g+2 c+3 d+1 e+1
+   > Des groupes de parole se réunissent.
+B) Guide des démarches après un décès :: Pratique.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Un guide aide les familles.
+C) Rien :: Sphère privée.
+   bon-1 | g-1 c0 d+2 e0
+   > Rien ne change.
+
+=== ser-139 | services | Vacciner les collégiens contre les papillomavirus
+Une campagne de vaccination au collège pourrait prévenir des cancers.
+A) Vaccination gratuite dans tous les collèges :: Santé publique.
+   bud-3 services+2 | g+2 c+3 d+1 e+1
+   > Des milliers d’élèves sont vaccinés.
+   ~25 pop-1 > Des parents contestent la campagne.
+B) Information des familles :: Informer.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Les familles reçoivent une brochure.
+C) Rien :: Compétence de l’État.
+   services-1 | g-1 c+1 d+1 e0
+   > Rien ne change.
+
+=== ser-140 | services | Des maisons sport-santé
+Des centres où l’on fait du sport encadré pour sa santé pourraient ouvrir dans les quartiers.
+A) Ouvrir une maison sport-santé par arrondissement :: Prévention.
+   bud-8 rec-0.2x60 services+2 bon+1 | g+2 c+2 d+1 e+1
+   > Les maisons sport-santé ouvrent.
+B) Deux maisons pilotes :: Tester.
+   bud-2 rec-0.05x60 services+1 | g+1 c+3 d+1 e+1
+   > Deux maisons ouvrent.
+C) Rien :: Les clubs existent.
+   services-1 | g0 c0 d+1 e0
+   > Rien n’est créé.
+
+=== ser-141 | services | Un agent par classe de maternelle
+Dans certaines maternelles, un seul agent aide trois classes.
+A) Un agent par classe :: Qualité.
+   rec-0.5x60 services+3 | g+3 c+2 d0 e+1
+   > Chaque classe a son agent.
+B) Un agent pour deux classes :: Compromis.
+   rec-0.2x60 services+1 | g+1 c+3 d+1 e+1
+   > Le ratio s’améliore.
+C) Rien :: Budget.
+   services-1 | g-2 c+1 d+2 e0
+   > Rien ne change.
+
+=== ser-142 | services | Les mairies fermées en août
+Les mairies d’arrondissement réduisent leurs horaires en août. Les démarches attendent.
+A) Horaires normaux toute l’année :: Continuité.
+   rec-0.05x60 services+1 | g+1 c+3 d+1 e0
+   > Les mairies restent ouvertes.
+B) Une mairie ouverte par secteur :: Compromis.
+   services+1 | g+1 c+3 d+1 e0
+   > Une mairie sur quatre reste ouverte.
+C) Rien :: Vacances des agents.
+   services-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-143 | services | Des retraités qui lisent aux écoliers
+Des retraités bénévoles proposent de lire des histoires aux enfants dans les écoles.
+A) Programme dans toutes les écoles :: Lien entre générations.
+   bud-1 services+1 bon+1 | g+2 c+3 d+1 e+1
+   > Des « papis lecteurs » visitent les classes.
+B) Quelques écoles volontaires :: Tester.
+   bon+1 services+1 | g+1 c+3 d+1 e+1
+   > Des écoles participent.
+C) Rien :: Sécurité.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-144 | services | Des cours de cuisine pour seniors isolés
+Des seniors isolés mangent mal faute de motivation à cuisiner seuls.
+A) Ateliers cuisine et repas partagés :: Convivialité.
+   rec-0.05x60 services+1 bon+2 | g+2 c+3 d+1 e+1
+   > Des seniors cuisinent et mangent ensemble.
+B) Recettes simples distribuées :: Minimum.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Un livret de recettes est diffusé.
+C) Rien :: Pas prioritaire.
+   bon-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-145 | services | Garder les animaux des seniors hospitalisés
+Des seniors refusent d’être hospitalisés par peur de laisser leur animal seul.
+A) Service de garde temporaire :: Rassurer.
+   bud-2 services+1 bon+1 | g+2 c+3 d+1 e+1
+   > Les animaux sont gardés pendant l’hospitalisation.
+B) Réseau de voisins volontaires :: Solidarité.
+   bud-1 bon+1 | g+1 c+3 d+1 e+1
+   > Des voisins s’occupent des animaux.
+C) Rien :: Sphère privée.
+   services-1 | g-1 c0 d+2 e0
+   > Rien ne change.
