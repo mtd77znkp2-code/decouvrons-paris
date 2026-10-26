@@ -1,0 +1,483 @@
+// Propreté, série 4
+=== pro-106 | proprete | Les berges du canal Saint-Denis
+Les berges du canal Saint-Denis, à la limite de Paris, sont couvertes de détritus.
+? distinct
+A) Nettoyage commun avec les villes voisines :: Coopération.
+   bud-3 proprete+2 ecologie+1 | g+2 c+3 d+1 e+2
+   > Paris, Aubervilliers et Saint-Denis nettoient ensemble.
+B) Nettoyer seulement la partie parisienne :: Notre territoire.
+   bud-2 proprete+1 | g0 c+2 d+2 e+1
+   > La rive parisienne est nettoyée.
+C) Rien :: Compétence partagée.
+   proprete-1 | g0 c0 d+1 e-1
+   > Les déchets restent.
+
+=== pro-107 | proprete | Où jeter ses vieux appareils électriques ?
+Les vieux grille-pains et téléphones finissent dans les poubelles ordinaires.
+A) Bornes de collecte dans chaque mairie :: Faciliter.
+   bud-3 ecologie+2 proprete+1 | g+1 c+3 d+1 e+3
+   > Les appareils sont collectés et recyclés.
+B) Collecte mensuelle dans les marchés :: Proximité.
+   rec-0.05x60 ecologie+1 | g+1 c+3 d+1 e+2
+   > Un camion passe sur les marchés.
+C) Rien :: Les magasins reprennent déjà.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== pro-108 | proprete | Les publicités peintes sur les trottoirs
+Des marques peignent leurs logos au pochoir sur les trottoirs pour se faire de la publicité.
+A) Facturer le nettoyage et une amende :: Sanction.
+   rec+0.05x60 proprete+2 | g+1 c+3 d+2 e+1
+   > Les marques paient.
+B) Effacer simplement :: Réagir.
+   bud-1 proprete+1 | g0 c+2 d+1 e0
+   > Les pochoirs sont effacés.
+C) Tolérer :: Peinture biodégradable.
+   proprete-1 | g0 c0 d+1 e0
+   > Les logos fleurissent.
+
+=== pro-109 | proprete | Recycler les jouets cassés
+Les jouets en plastique cassés finissent à la poubelle après Noël.
+A) Ateliers de réparation et collecte de jouets :: Réemploi.
+   bud-2 ecologie+2 bon+1 | g+2 c+2 d+1 e+3
+   > Les jouets réparés sont donnés.
+B) Collecte dans les écoles :: Simple.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les écoles collectent les jouets.
+C) Rien :: Poubelle classique.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Les jouets partent à l’incinérateur.
+
+=== pro-110 | proprete | Les fleurs fanées de la Toussaint
+Après la Toussaint, les cimetières croulent sous les pots de chrysanthèmes fanés.
+A) Compostage des fleurs et recyclage des pots :: Valoriser.
+   bud-2 ecologie+2 proprete+1 | g+1 c+3 d+1 e+3
+   > Les fleurs deviennent du compost.
+B) Bennes supplémentaires :: Simple.
+   bud-1 proprete+1 | g0 c+2 d+1 e0
+   > Des bennes sont installées.
+C) Rien :: Agents habituels.
+   proprete-1 | g0 c0 d+1 e0
+   > Les pots s’entassent.
+
+=== pro-111 | proprete | Les journaux gratuits jonchent le métro
+Les journaux gratuits distribués le matin finissent par terre dans les rames et les couloirs.
+A) Faire payer le nettoyage aux éditeurs :: Pollueur-payeur.
+   rec+0.05x60 proprete+1 | g+2 c+2 d0 e+2
+   > Les éditeurs paient.
+B) Bacs de recyclage aux sorties :: Faciliter.
+   bud-2 proprete+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les journaux sont recyclés.
+C) Rien :: Compétence de la RATP.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les journaux traînent.
+
+=== pro-112 | proprete | Les prospectus distribués à la sortie du métro
+Des distributeurs de prospectus inondent les sorties de métro. Les papiers finissent par terre.
+A) Interdire la distribution sur le domaine public :: Radical.
+   proprete+2 economie-1 | g+1 c+1 d0 e+2
+   > La distribution est interdite.
+B) Autorisation payante et obligation de ramassage :: Encadrer.
+   rec+0.05x60 proprete+1 | g0 c+3 d+2 e+1
+   > Les distributeurs doivent ramasser.
+C) Rien :: Liberté du commerce.
+   proprete-1 | g-1 c0 d+2 e-1
+   > Les prospectus jonchent le sol.
+
+=== pro-113 | proprete | Les poubelles des hôtels sur le trottoir
+Les hôtels sortent leurs dizaines de sacs-poubelle sur le trottoir dès le matin.
+A) Horaires stricts de sortie des déchets :: Organiser.
+   proprete+1 | g0 c+3 d+2 e0
+   > Les sacs sortent juste avant le camion.
+B) Collecte spéciale pour les hôtels payante :: Faire payer.
+   rec+0.05x60 proprete+2 | g+1 c+2 d+1 e+1
+   > Les hôtels paient une collecte dédiée.
+C) Rien :: Commerce.
+   proprete-1 | g0 c0 d+2 e0
+   > Les sacs restent.
+
+=== pro-114 | proprete | Les élèves trient leurs déchets
+Les écoles pourraient apprendre aux élèves à trier dès la maternelle.
+A) Poubelles de tri dans toutes les classes :: Éducation.
+   bud-3 ecologie+2 proprete+1 | g+1 c+3 d+1 e+3
+   > Les élèves deviennent des champions du tri.
+B) Ambassadeurs du tri en visite :: Sensibiliser.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Des animateurs visitent les écoles.
+C) Rien :: Programme scolaire.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== pro-115 | proprete | Les aires de jeux après le goûter
+Les aires de jeux sont couvertes d’emballages de goûters et de bouteilles en fin d’après-midi.
+A) Poubelles supplémentaires et passage à 18 h :: Service.
+   rec-0.1x60 proprete+2 | g+1 c+2 d+1 e0
+   > Les aires sont nettoyées en fin de journée.
+B) Campagne avec les écoles :: Éducation.
+   bud-1 proprete+1 | g+1 c+3 d+1 e+1
+   > Les enfants apprennent à ramasser.
+C) Rien :: Les parents doivent ramasser.
+   proprete-1 | g0 c0 d+2 e0
+   > Les emballages restent.
+
+=== pro-116 | proprete | Les bateaux de croisière vident leurs poubelles
+Les bateaux de croisière fluviale déposent leurs déchets sur les quais.
+A) Points de collecte payants sur les quais :: Organiser.
+   rec+0.05x60 proprete+1 ecologie+1 | g0 c+3 d+2 e+2
+   > Les bateaux déposent leurs déchets au bon endroit.
+B) Amendes pour les dépôts sauvages :: Sanction.
+   proprete+1 | g0 c+2 d+3 e+1
+   > Les compagnies sont verbalisées.
+C) Rien :: Tourisme.
+   proprete-1 | g0 c0 d+2 e-1
+   > Les dépôts continuent.
+
+=== pro-117 | proprete | Les camions de propreté tagués
+Les camions de propreté sont couverts de tags et donnent une image négative.
+A) Les nettoyer et protéger avec un vernis :: Image.
+   bud-2 proprete+1 | g0 c+3 d+2 e0
+   > Les camions brillent.
+B) Les décorer par des artistes :: Créatif.
+   bud-2 proprete+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les camions deviennent des œuvres roulantes.
+C) Rien :: Pas prioritaire.
+   proprete-1 | g0 c0 d0 e0
+   > Les camions restent tagués.
+
+=== pro-118 | proprete | L’odeur des étals de poissons
+Après le marché, les jus de poisson sur la chaussée sentent pendant des jours.
+A) Lavage à grande eau après chaque marché :: Hygiène.
+   rec-0.1x60 proprete+2 | g0 c+2 d+1 e-1
+   > Les rues sont lavées.
+B) Bacs étanches obligatoires pour les poissonniers :: À la source.
+   proprete+1 economie-1 | g+1 c+3 d+1 e+1
+   > Les poissonniers récupèrent leurs eaux.
+C) Rien :: Charme du marché.
+   proprete-1 | g0 c0 d+1 e0
+   > Les odeurs persistent.
+
+=== pro-119 | proprete | Les portions individuelles dans les cantines
+Les cantines servent beurre, fromage et compote en portions individuelles emballées.
+A) Passer au vrac dans toutes les cantines :: Moins de déchets.
+   bud-3 ecologie+2 proprete+1 | g+1 c+2 d+1 e+4
+   > Les emballages individuels disparaissent.
+B) Réduire progressivement :: Transition.
+   rec-0.02x60 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les emballages diminuent.
+C) Rien :: Hygiène et praticité.
+   ecologie-1 | g0 c0 d+2 e-2
+   > Rien ne change.
+
+=== pro-120 | proprete | Les lâchers de ballons
+Les lâchers de ballons lors des fêtes et mariages retombent en déchets dans les parcs et la Seine.
+A) Interdire les lâchers de ballons :: Pollution.
+   ecologie+1 proprete+1 bon-1 | g+1 c+2 d0 e+3
+   > Les lâchers sont interdits.
+B) Campagne de sensibilisation :: Informer.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Des alternatives sont proposées.
+C) Rien :: Fête.
+   proprete-1 bon+1 | g0 c0 d+1 e-2
+   > Les ballons continuent de s’envoler.
+
+=== pro-121 | proprete | Des clous sur les pistes cyclables
+Des clous et des débris de verre crèvent les pneus des cyclistes sur certaines pistes.
+A) Balayeuse dédiée aux pistes cyclables :: Service.
+   bud-5 rec-0.1x60 proprete+1 transports+1 | g+1 c+3 d+1 e+2
+   > Les pistes sont balayées chaque jour.
+B) Signalement par application :: Réactivité.
+   bud-1 proprete+1 | g+1 c+3 d+1 e+1
+   > Les cyclistes signalent les débris.
+C) Rien :: Balayage normal.
+   transports-1 | g0 c0 d+1 e-1
+   > Les crevaisons continuent.
+
+=== pro-122 | proprete | Les restes de travaux dans les caniveaux
+Après les travaux de voirie, sable et gravier bouchent les caniveaux.
+A) Pénalités pour les entreprises :: Responsabiliser.
+   proprete+1 rec+0.02x60 | g+1 c+3 d+1 e+1
+   > Les entreprises nettoient après leurs travaux.
+B) Nettoyage par la Ville facturé :: Service.
+   bud-1 proprete+1 | g0 c+2 d+1 e0
+   > La Ville nettoie et facture.
+C) Rien :: Normal.
+   proprete-1 | g0 c0 d+1 e0
+   > Les caniveaux restent bouchés.
+
+=== pro-123 | proprete | Des poubelles de rue brûlées
+Des centaines de poubelles de rue sont brûlées ou cassées chaque année.
+A) Poubelles en métal ignifugé :: Résistance.
+   bud-10 proprete+2 | g0 c+3 d+2 e0
+   > Les nouvelles poubelles résistent au feu.
+B) Remplacer au fur et à mesure :: Économique.
+   bud-3 proprete+1 | g0 c+2 d+1 e0
+   > Les poubelles sont remplacées.
+C) Moins de poubelles pour moins de dégâts :: Radical.
+   proprete-2 | g-1 c0 d+1 e0
+   > Les rues ont moins de poubelles.
+
+=== pro-124 | proprete | Les déchets verts des jardins partagés
+Les jardins partagés produisent des tonnes de déchets verts que personne ne collecte.
+A) Composteurs dans chaque jardin :: Sur place.
+   bud-2 ecologie+2 | g+1 c+3 d+1 e+3
+   > Les déchets deviennent du compost.
+B) Collecte mensuelle :: Service.
+   rec-0.05x60 ecologie+1 proprete+1 | g+1 c+2 d+1 e+2
+   > Un camion passe chaque mois.
+C) Rien :: Aux jardiniers de gérer.
+   proprete-1 | g0 c0 d+1 e-1
+   > Les déchets s’entassent.
+
+=== pro-125 | proprete | Prendre rendez-vous pour ses encombrants
+Il faut attendre trois semaines pour un rendez-vous de collecte d’encombrants.
+A) Rendez-vous sous 48 h :: Réactivité.
+   rec-0.2x60 proprete+2 | g+1 c+3 d+1 e+1
+   > Les encombrants sont collectés en deux jours.
+B) Collectes de quartier fixes chaque mois :: Organiser.
+   rec-0.1x60 proprete+1 | g+1 c+3 d+1 e+1
+   > Un jour fixe par quartier.
+C) Rien :: Organisation actuelle.
+   proprete-1 | g0 c0 d+1 e0
+   > Les encombrants finissent sur le trottoir.
+
+=== pro-126 | proprete | Les animaux morts sur la voie publique
+Des pigeons et des rats morts restent des jours sur les trottoirs.
+A) Service de ramassage sous 24 h :: Hygiène.
+   rec-0.05x60 proprete+1 | g0 c+3 d+2 e0
+   > Les cadavres sont enlevés rapidement.
+B) Former les agents de propreté :: Intégrer.
+   bud-1 proprete+1 | g+1 c+3 d+1 e0
+   > Les agents ramassent lors de leurs tournées.
+C) Rien :: Pas prioritaire.
+   proprete-1 | g0 c0 d+1 e0
+   > Les cadavres restent.
+
+=== pro-127 | proprete | Les distributeurs automatiques de nourriture
+Des distributeurs automatiques de pizzas et de boissons sont installés dans la rue. Leurs abords sont sales.
+A) Imposer des poubelles et un nettoyage :: Responsabiliser.
+   proprete+1 | g0 c+3 d+2 e+1
+   > Les exploitants entretiennent les abords.
+B) Interdire sur le domaine public :: Espace public.
+   proprete+1 economie-1 | g+1 c+2 d0 e+1
+   > Les distributeurs sont retirés.
+C) Rien :: Commerce.
+   proprete-1 economie+1 | g-1 c0 d+2 e0
+   > Les abords restent sales.
+
+=== pro-128 | proprete | Des lave-mains dans la rue
+Des lave-mains publics pourraient améliorer l’hygiène dans les lieux très fréquentés.
+A) Installer des lave-mains près des marchés et des gares :: Hygiène.
+   bud-4 proprete+1 services+1 | g+1 c+3 d+1 e+1
+   > Des lave-mains apparaissent.
+B) Seulement dans les parcs :: Ciblé.
+   bud-2 proprete+1 | g+1 c+3 d+1 e+1
+   > Les parcs sont équipés.
+C) Rien :: Gadget.
+   proprete-1 | g0 c0 d+1 e0
+   > Rien n’est installé.
+
+=== pro-129 | proprete | Des canettes dans les jardinières
+Les jardinières des rues piétonnes servent de poubelles aux passants.
+A) Jardinières avec grilles de protection :: Protéger.
+   bud-3 proprete+1 ecologie+1 | g0 c+3 d+1 e+2
+   > Les jardinières sont protégées.
+B) Nettoyage plus fréquent :: Service.
+   rec-0.05x60 proprete+1 | g+1 c+2 d+1 e+1
+   > Les jardinières sont nettoyées.
+C) Supprimer les jardinières :: Simplifier.
+   ecologie-1 bon-1 | g0 c+1 d+1 e-2
+   > Les jardinières disparaissent.
+
+=== pro-130 | proprete | Nettoyer les statues
+Les statues sont couvertes de fientes et de pollution.
+A) Programme de nettoyage de toutes les statues :: Patrimoine.
+   bud-5 proprete+2 bon+1 | g0 c+2 d+2 e0
+   > Les statues retrouvent leur éclat.
+B) Systèmes anti-pigeons :: Prévenir.
+   bud-3 proprete+1 | g0 c+3 d+2 e0
+   > Des pics et fils protègent les statues.
+C) Rien :: Coût.
+   proprete-1 | g0 c0 d+1 e0
+   > Les statues restent sales.
+
+=== pro-131 | proprete | Une grande journée du nettoyage
+Des associations proposent une grande journée où tous les Parisiens nettoient leur quartier.
+A) Organiser et fournir le matériel :: Mobilisation.
+   bud-2 proprete+2 bon+1 | g+1 c+2 d+2 e+2
+   > Cent mille Parisiens ramassent les déchets.
+B) Soutenir les associations sans organiser :: Léger.
+   bud-1 proprete+1 | g+1 c+3 d+1 e+1
+   > Les associations organisent la journée.
+C) Refuser :: Le nettoyage est le travail de la Ville.
+   proprete-1 | g+2 c0 d-1 e0
+   > Rien n’est fait.
+
+=== pro-132 | proprete | Les fêtes de fin d’année scolaire dans les parcs
+En juin, les fêtes de fin d’année des lycéens laissent les parcs couverts de déchets.
+A) Kits de nettoyage distribués aux lycées :: Responsabiliser.
+   bud-1 proprete+1 | g+1 c+3 d+1 e+1
+   > Les lycéens nettoient après leurs fêtes.
+B) Équipes de nettoyage supplémentaires en juin :: Service.
+   rec-0.1x20 proprete+2 | g+1 c+2 d+1 e0
+   > Les parcs sont nettoyés chaque matin.
+C) Fermer les parcs le soir en juin :: Prévention.
+   proprete+1 bon-1 | g-1 c+1 d+2 e0
+   > Les parcs ferment plus tôt.
+
+=== pro-133 | proprete | Les sacs-poubelle des commerces fermés le dimanche
+Les commerçants déposent leurs sacs le samedi soir. Ils restent jusqu’au lundi.
+A) Collecte le dimanche :: Service.
+   rec-0.1x60 proprete+2 | g+1 c+2 d+1 e0
+   > Les camions passent le dimanche.
+B) Interdire de sortir les sacs le samedi soir :: Règle.
+   proprete+1 economie-1 | g0 c+2 d+2 e0
+   > Les commerçants gardent leurs sacs.
+C) Rien :: Pas prioritaire.
+   proprete-1 | g0 c0 d+1 e0
+   > Les sacs restent le week-end.
+
+=== pro-134 | proprete | Les passages souterrains sales
+Les passages souterrains pour piétons sont sales, sombres et sentent l’urine.
+A) Rénovation et nettoyage quotidien :: Reconquête.
+   bud-8 rec-0.05x60 proprete+2 securite+1 | g+1 c+3 d+2 e0
+   > Les passages sont rénovés.
+B) Fermer les passages et créer des passages piétons en surface :: Supprimer.
+   bud-5 proprete+1 securite+1 | g+1 c+2 d+1 e+1
+   > Les souterrains sont murés.
+C) Rien :: Coût.
+   proprete-1 | g0 c0 d+1 e0
+   > Les passages restent sales.
+
+=== pro-135 | proprete | Éclairer les lieux de dépôts sauvages
+Les dépôts sauvages se concentrent dans les recoins sombres.
+A) Éclairage dissuasif :: Prévenir.
+   bud-3 proprete+1 securite+1 | g0 c+3 d+2 e0
+   > Les recoins sont éclairés.
+B) Aménager ces recoins en jardinets :: Transformer.
+   bud-4 proprete+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les recoins deviennent fleuris.
+C) Rien :: Ramassage normal.
+   proprete-1 | g0 c0 d+1 e0
+   > Les dépôts continuent.
+
+=== pro-136 | proprete | Des brigades vertes de jeunes l’été
+Des jeunes des quartiers pourraient être embauchés l’été pour nettoyer et embellir.
+A) Embaucher 1 000 jeunes l’été :: Emploi et propreté.
+   rec-0.3x20 proprete+2 economie+1 bon+1 | g+3 c+2 d+1 e+2
+   > Mille jeunes travaillent tout l’été.
+B) 200 jeunes en test :: Prudent.
+   rec-0.1x20 proprete+1 economie+1 | g+2 c+3 d+1 e+1
+   > Deux cents jeunes sont embauchés.
+C) Rien :: Agents professionnels.
+   proprete-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== pro-137 | proprete | Les panneaux de signalisation crasseux
+Les panneaux routiers sont noircis et illisibles.
+A) Nettoyage annuel de tous les panneaux :: Sécurité et propreté.
+   rec-0.05x60 proprete+1 securite+1 | g0 c+3 d+2 e0
+   > Les panneaux sont lisibles.
+B) Remplacer les plus abîmés :: Ciblé.
+   bud-3 securite+1 | g0 c+3 d+1 e0
+   > Les panneaux illisibles sont changés.
+C) Rien :: Pas prioritaire.
+   securite-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== pro-138 | proprete | Les abords des déchetteries
+Paradoxalement, les abords des déchetteries sont couverts de dépôts sauvages quand elles sont fermées.
+A) Bennes extérieures accessibles la nuit :: Pratique.
+   bud-3 proprete+1 | g+1 c+3 d+1 e+1
+   > Des bennes sont accessibles 24 h sur 24.
+B) Caméras et amendes :: Sanction.
+   bud-2 proprete+1 | g-1 c+2 d+3 e0
+   > Les dépôts nocturnes sont verbalisés.
+C) Rien :: Nettoyage le matin.
+   proprete-1 | g0 c0 d+1 e0
+   > Les dépôts continuent.
+
+=== pro-139 | proprete | Les emballages des distributions alimentaires
+Les distributions alimentaires laissent des cartons et emballages sur les trottoirs.
+A) Collecte dédiée après chaque distribution :: Accompagner.
+   rec-0.05x60 proprete+1 | g+2 c+2 d+1 e+1
+   > Les cartons sont ramassés.
+B) Fournir des contenants réutilisables :: Réduire.
+   bud-2 ecologie+1 proprete+1 | g+2 c+2 d+1 e+3
+   > Les associations utilisent des caisses réutilisables.
+C) Rien :: Les associations s’en chargent.
+   proprete-1 | g-1 c0 d+2 e0
+   > Les cartons restent.
+
+=== pro-140 | proprete | La place de la République après les rassemblements
+Après chaque grand rassemblement, la place de la République est couverte de déchets.
+A) Nettoyage immédiat après chaque événement :: Service.
+   rec-0.1x60 proprete+2 | g+1 c+2 d+2 e0
+   > La place est propre le lendemain.
+B) Faire payer les organisateurs :: Responsabiliser.
+   rec+0.02x60 proprete+1 coh-1 | g-2 c+2 d+3 e0
+   > Les organisateurs reçoivent une facture.
+C) Rien :: Liberté de manifester.
+   proprete-1 | g+1 c0 d-1 e0
+   > La place reste sale.
+
+=== pro-141 | proprete | Les poubelles des écoles débordent le lundi
+Les poubelles des écoles ne sont pas collectées le week-end et débordent le lundi.
+? distinct
+A) Collecte le lundi à l’aube :: Organiser.
+   rec-0.05x60 proprete+1 | g+1 c+3 d+1 e0
+   > Les poubelles sont vidées avant l’arrivée des élèves.
+B) Bacs plus grands :: Équiper.
+   bud-2 proprete+1 | g0 c+3 d+1 e0
+   > Des bacs plus grands sont livrés.
+C) Rien :: Pas prioritaire.
+   proprete-1 | g0 c0 d+1 e0
+   > Les poubelles débordent.
+
+=== pro-142 | proprete | Les cartons des déménageurs
+Les entreprises de déménagement laissent des montagnes de cartons dans les rues.
+A) Obligation de reprise des cartons :: Responsabiliser.
+   proprete+2 | g+1 c+3 d+1 e+2
+   > Les déménageurs repartent avec leurs cartons.
+B) Collecte spéciale payante :: Service.
+   rec+0.02x60 proprete+1 | g0 c+3 d+2 e+1
+   > Les déménageurs paient une collecte.
+C) Rien :: Pas prioritaire.
+   proprete-1 | g0 c0 d+1 e0
+   > Les cartons restent.
+
+=== pro-143 | proprete | Les sanisettes sales
+Les toilettes publiques automatiques sont souvent sales et hors service.
+A) Nettoyage manuel supplémentaire :: Hygiène.
+   rec-0.1x60 proprete+2 | g+1 c+2 d+1 e0
+   > Des agents passent plusieurs fois par jour.
+B) Pénalités pour le prestataire :: Exiger.
+   rec+0.02x60 proprete+1 | g0 c+3 d+2 e0
+   > Le prestataire améliore son service.
+C) Rien :: Contrat en cours.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les sanisettes restent sales.
+
+=== pro-144 | proprete | L’eau sale du lavage des commerces
+Des commerçants lavent leur trottoir et laissent couler de l’eau savonneuse dans les caniveaux.
+A) Autoriser seulement les produits écologiques :: Encadrer.
+   proprete+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les produits polluants sont interdits.
+B) Laisser faire : ils nettoient :: Encourager.
+   proprete+1 ecologie-1 | g0 c+1 d+2 e-1
+   > Les commerçants continuent.
+C) Interdire le lavage à grande eau :: Économie d’eau.
+   ecologie+1 proprete-1 | g+1 c+1 d0 e+3
+   > Le lavage est interdit.
+
+=== pro-145 | proprete | Des sacs plastique accrochés aux arbres
+Des sacs plastique et des ballons dégonflés restent accrochés dans les branches des arbres.
+? distinct
+A) Nacelles pour les retirer :: Nettoyer.
+   bud-2 proprete+1 ecologie+1 | g0 c+3 d+1 e+2
+   > Les arbres sont nettoyés.
+B) Retirer lors de l’élagage :: Économique.
+   bud-1 proprete+1 | g0 c+3 d+1 e+1
+   > Les sacs sont retirés pendant l’élagage.
+C) Rien :: Pas prioritaire.
+   proprete-1 | g0 c0 d+1 e0
+   > Les sacs flottent au vent.

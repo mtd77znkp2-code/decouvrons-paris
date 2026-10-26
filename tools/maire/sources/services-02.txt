@@ -247,6 +247,7 @@ C) Pas prioritaire :: D’autres urgences.
 
 === ser-046 | services | Les aires de jeux vétustes
 Des toboggans rouillés et des balançoires cassées sont fermés dans des dizaines de squares.
+? distinct
 A) Rénover toutes les aires de jeux :: Grand plan.
    bud-25 services+2 bon+2 | g+2 c+2 d+1 e+1
    > Toutes les aires de jeux sont refaites.

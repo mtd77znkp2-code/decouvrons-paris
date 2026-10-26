@@ -317,6 +317,7 @@ C) Proposer des cours de natation adultes pour débutants :: Alternative.
 
 === ser-092 | services | Les gymnases fermés le dimanche
 Les gymnases municipaux sont fermés le dimanche alors que les clubs manquent de créneaux.
+? distinct
 A) Ouvrir le dimanche avec des gardiens :: Plus de sport.
    rec-0.2x60 services+2 bon+1 | g+2 c+2 d+1 e+1
    > Les gymnases ouvrent le dimanche.
