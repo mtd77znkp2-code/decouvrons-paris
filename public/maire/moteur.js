@@ -6,11 +6,11 @@
 
   var TOURS = 100, SEUIL = 30;
   var DEPART = { pop: 58, bon: 58, coh: 70, tresor: 1000 };
-  var FONCT = { recettes: 200, depenses: 208 };          // fonctionnement courant (M€ par semaine), légèrement déficitaire
+  var FONCT = { recettes: 200, depenses: 209 };          // fonctionnement courant (M€ par semaine), légèrement déficitaire
   var PLAFOND_DETTE = 1000, TAUX = 0.003;               // emprunt autorisé et intérêts par semaine
 
   // Réglages d'équilibrage (vérifiés par tools/maire/test-moteur.mjs)
-  var P = { domRepos: 44, domVit: 0.03, bonVit: 0.05, popVit: 0.04, usure: 0.22, detteImpop: 120,
+  var P = { domRepos: 43, domVit: 0.03, bonVit: 0.05, popVit: 0.04, usure: 0.22, detteImpop: 120,
     cohRepos: 50, cohVit: 0.015, aliPlus: 0.8, aliMoins: 1.6, probleme: 3.7, ambMult: 2.5, ambSeuil: 56, problemeAmb: 0.5 };
 
   var LIGNES = {

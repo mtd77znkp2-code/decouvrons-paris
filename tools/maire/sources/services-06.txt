@@ -1,0 +1,488 @@
+// Services publics, série 6
+=== ser-186 | services | Prêter des instruments de musique en médiathèque
+Des familles n’ont pas les moyens d’acheter un instrument pour leurs enfants.
+A) Un prêt d’instruments dans toutes les médiathèques :: Culture pour tous.
+   bud-2 services+1 bon+1 | g+2 c+2 d0 e+1
+   > Des guitares et violons partent en prêt.
+B) Dans quelques médiathèques :: Tester.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Les instruments sont réservés des mois à l’avance.
+C) Rien :: Conservatoires.
+   bon-1 | g0 c+1 d+1 e0
+   > Les enfants rêvent d’un instrument.
+
+=== ser-187 | services | Un numéro d’urgence sociale le week-end
+Les services sociaux sont fermés le week-end, les situations d’urgence attendent le lundi.
+A) Une permanence sociale 7 jours sur 7 :: Protéger.
+   rec-0.02x60 services+1 bon+1 | g+2 c+2 d0 e+1
+   > Des familles sont aidées un dimanche soir.
+B) Une astreinte téléphonique :: Minimum.
+   rec-0.01x60 services+1 | g+1 c+2 d+1 e+1
+   > Un travailleur social répond la nuit.
+C) Rien :: Coût.
+   bon-1 | g-1 c+1 d+1 e0
+   > Des drames surviennent le week-end.
+
+=== ser-188 | services | Des repas à un euro pour les étudiants
+Des étudiants sautent des repas faute d’argent.
+A) Des repas à un euro dans les restaurants municipaux :: Solidarité.
+   rec-0.02x60 bon+1 | g+2 c+2 d0 e+1
+   > Les étudiants font la queue à midi.
+B) Seulement pour les boursiers :: Cibler.
+   rec-0.01x60 bon+1 | g+1 c+2 d+1 e+1
+   > Les boursiers mangent à leur faim.
+C) Rien :: Crous.
+   bon-1 | g0 c+1 d+1 e0
+   > Les distributions alimentaires débordent.
+
+=== ser-189 | services | Le dépistage dentaire à l’école
+Des enfants ont des caries jamais soignées.
+A) Un dépistage dans toutes les écoles :: Prévenir.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Des milliers de caries sont repérées.
+B) Un bus dentaire dans les quartiers :: Soigner.
+   bud-2 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les enfants sont soignés sur place.
+C) Rien :: Familles.
+   services-1 | g0 c+1 d+1 e0
+   > Les caries s’aggravent.
+
+=== ser-190 | services | Des cours d’anglais gratuits pour adultes
+Des habitants veulent apprendre l’anglais pour trouver un emploi.
+? distinct
+A) Des cours du soir gratuits :: Former.
+   bud-1 services+1 economie+1 | g+1 c+2 d+1 e+1
+   > Des milliers d’inscrits.
+B) Des cours en ligne :: Simple.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Les cours sont suivis depuis la maison.
+C) Rien :: Offre privée.
+   services-1 | g0 c+1 d+1 e0
+   > Seuls ceux qui peuvent payer apprennent.
+
+=== ser-191 | services | Une aide pour remplir sa déclaration d’impôts
+Des seniors et des familles se perdent dans la déclaration en ligne.
+A) Des permanences dans les mairies :: Accompagner.
+   rec-0.01x60 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les déclarations sont remplies sans erreur.
+B) Des bénévoles formés :: Solidarité.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Des retraités aident les voisins.
+C) Rien :: État.
+   bon-1 | g0 c+1 d+1 e0
+   > Des droits sont perdus.
+
+=== ser-192 | services | Des livres livrés à domicile pour les personnes âgées
+Des seniors ne peuvent plus se rendre à la bibliothèque.
+? distinct
+A) Un portage de livres par les bibliothécaires :: Lire.
+   rec-0.01x60 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les seniors reçoivent leurs romans.
+B) Par des bénévoles :: Solidarité.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Des jeunes livrent les livres.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Les seniors relisent les mêmes livres.
+
+=== ser-193 | services | Des sorties culturelles pour les seniors
+Des seniors isolés ne sortent plus au théâtre ou au musée.
+A) Des sorties accompagnées gratuites :: Lien social.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les seniors redécouvrent les musées.
+B) Des places à prix réduit :: Encourager.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les seniors réservent.
+C) Rien :: Familles.
+   bon-1 | g0 c+1 d+1 e0
+   > Les seniors restent chez eux.
+
+=== ser-194 | services | Des salles de révision pour lycéens
+Les lycéens révisent dans des appartements trop petits.
+A) Ouvrir des salles le soir et le week-end :: Réussite.
+   rec-0.01x60 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les salles se remplissent en juin.
+B) Ouvrir les écoles le samedi :: Mutualiser.
+   services+1 | g+1 c+2 d+1 e+1
+   > Les classes vides accueillent les lycéens.
+C) Rien :: Bibliothèques.
+   services-1 | g0 c+1 d+1 e0
+   > Les lycéens révisent sur leur lit.
+
+=== ser-195 | services | Un forum des métiers pour les collégiens
+Les collégiens choisissent leur orientation sans connaître les métiers.
+A) Un grand forum annuel :: Orienter.
+   bud-1 services+1 economie+1 | g+1 c+2 d+1 e+1
+   > Les collégiens découvrent des métiers inconnus.
+B) Des professionnels dans les classes :: Proximité.
+   services+1 | g+1 c+2 d+1 e+1
+   > Des artisans viennent parler de leur métier.
+C) Rien :: Éducation nationale.
+   services-1 | g0 c+1 d+1 e0
+   > Les orientations se font par défaut.
+
+=== ser-196 | services | Des ateliers contre l’addiction aux écrans
+Des enfants passent six heures par jour devant les écrans.
+A) Des ateliers pour parents et enfants :: Prévenir.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles fixent des règles.
+B) Une campagne d’affichage :: Sensibiliser.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Les affiches interpellent.
+C) Rien :: Familles.
+   bon-1 | g0 c+1 d+1 e0
+   > Les écrans gagnent du terrain.
+
+=== ser-197 | services | Une maison pour les parents d’enfants hospitalisés
+Des parents dorment dans leur voiture pendant l’hospitalisation de leur enfant.
+? distinct
+A) Ouvrir une maison près de l’hôpital :: Accueillir.
+   bud-3 services+1 bon+1 | g+2 c+2 d0 e+1
+   > Les parents dorment à deux pas de leur enfant.
+B) Soutenir une fondation :: Partenariat.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > La fondation agrandit sa maison.
+C) Rien :: Hôpitaux.
+   bon-1 | g-1 c+1 d+1 e0
+   > Les parents s’épuisent.
+
+=== ser-198 | services | La solitude des étudiants étrangers
+Des étudiants étrangers passent des mois sans parler à personne.
+? distinct
+A) Un parrainage par des familles parisiennes :: Accueillir.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Des étudiants partagent des dîners de famille.
+B) Des soirées d’accueil :: Convivialité.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les étudiants se rencontrent.
+C) Rien :: Universités.
+   bon-1 | g0 c+1 d+1 e0
+   > Des étudiants rentrent chez eux en cours d’année.
+
+=== ser-199 | services | Le registre des personnes fragiles en canicule
+Beaucoup de seniors isolés ne sont pas inscrits sur le registre d’alerte.
+A) Une campagne d’inscription porte à porte :: Protéger.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des milliers de seniors sont inscrits.
+B) S’appuyer sur les pharmaciens et facteurs :: Réseau.
+   services+1 | g+1 c+2 d+1 e+1
+   > Les professionnels signalent les personnes fragiles.
+C) Rien :: Inscription volontaire.
+   bon-1 | g0 c+1 d+1 e0
+   > Des seniors sont oubliés pendant la canicule.
+
+=== ser-200 | services | Des visites à domicile après la naissance
+De jeunes mères isolées sombrent dans la dépression après l’accouchement.
+A) Une visite de sage-femme pour chaque naissance :: Accompagner.
+   rec-0.02x60 services+1 bon+1 | g+2 c+2 d0 e+1
+   > Les jeunes mères sont soutenues.
+B) Seulement pour les mères isolées :: Cibler.
+   rec-0.01x60 services+1 | g+1 c+2 d+1 e+1
+   > Les mères seules reçoivent une visite.
+C) Rien :: Maternités.
+   bon-1 | g0 c+1 d+1 e0
+   > Des détresses passent inaperçues.
+
+=== ser-201 | services | Pas de médecin pour constater un décès la nuit
+Des familles attendent des heures qu’un médecin vienne constater un décès à domicile.
+A) Une équipe de médecins de garde municipale :: Dignité.
+   rec-0.01x60 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles ne restent plus seules.
+B) Une convention avec SOS Médecins :: Partenariat.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Les délais diminuent.
+C) Rien :: État.
+   bon-1 | g0 c+1 d+1 e0
+   > Des familles attendent toute la nuit.
+
+=== ser-202 | services | Les parrainages civils en mairie
+Des familles demandent des cérémonies de parrainage républicain pour leurs enfants.
+A) Des cérémonies chaque samedi :: Accueillir.
+   rec-0.01x60 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles célèbrent en mairie.
+B) Une cérémonie collective mensuelle :: Simple.
+   bon+1 | g0 c+2 d+1 e+1
+   > Plusieurs familles partagent la cérémonie.
+C) Rien :: Facultatif.
+   bon-1 | g0 c+1 d+1 e0
+   > Les familles sont déçues.
+
+=== ser-203 | services | Des cérémonies d’accueil des nouveaux Français
+Les naturalisés reçoivent leur décret par courrier, sans cérémonie.
+A) Une cérémonie solennelle à l’Hôtel de Ville :: Accueillir.
+   bud-1 bon+1 pop+1 | g+1 c+2 d+1 e+1
+   > Les nouveaux Français chantent la Marseillaise sous les lustres.
+B) Une cérémonie dans chaque mairie :: Proximité.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles sont émues.
+C) Rien :: Préfecture.
+   bon-1 | g0 c+1 d+1 e0
+   > Les décrets arrivent par la poste.
+
+=== ser-204 | services | Un guichet unique pour les personnes handicapées
+Les personnes handicapées font dix démarches dans dix bureaux différents.
+? distinct
+A) Un guichet unique avec un référent :: Simplifier.
+   rec-0.01x60 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Un seul interlocuteur suit chaque dossier.
+B) Un site internet regroupant tout :: Numérique.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Les démarches sont en ligne.
+C) Rien :: Département.
+   bon-1 | g0 c+1 d+1 e0
+   > Les familles s’épuisent.
+
+=== ser-205 | services | Scolariser les enfants des bidonvilles
+Des enfants vivant dans des campements ne vont pas à l’école.
+A) Des médiateurs scolaires dans les campements :: Éduquer.
+   bud-1 services+1 bon+1 | g+2 c+2 d0 e+1
+   > Des enfants entrent en classe.
+B) Un bus-école :: Adapter.
+   bud-2 services+1 | g+1 c+2 d+1 e+1
+   > Les enfants apprennent à lire dans le bus.
+C) Rien :: Campements illégaux.
+   bon-1 | g-2 c+1 d+2 e0
+   > Les enfants grandissent sans école.
+
+=== ser-206 | services | Des classes d’accueil pour les élèves arrivant de l’étranger
+Des enfants qui ne parlent pas français sont placés directement en classe ordinaire.
+A) Ouvrir des classes d’accueil :: Intégrer.
+   bud-2 services+1 | g+2 c+2 d0 e+1
+   > Les élèves apprennent le français en quelques mois.
+B) Du soutien après la classe :: Compromis.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Les élèves progressent le soir.
+C) Rien :: Éducation nationale.
+   services-1 | g-1 c+1 d+1 e0
+   > Les élèves décrochent.
+
+=== ser-207 | services | Un internat municipal pour collégiens en difficulté
+Des collégiens n’ont pas de calme chez eux pour étudier.
+A) Ouvrir un internat d’excellence :: Réussite.
+   bud-4 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des élèves reprennent confiance.
+B) Des places dans les internats existants :: Partenariat.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Quelques élèves partent en internat.
+C) Rien :: Familles.
+   services-1 | g0 c+1 d+1 e0
+   > Les élèves décrochent.
+
+=== ser-208 | services | Des bibliothèques dans les gares
+Les voyageurs attendent des heures sans rien à lire.
+A) Des bibliothèques en libre accès dans les gares :: Lire.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les voyageurs empruntent un roman pour le trajet.
+B) Des boîtes à livres seulement :: Simple.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les livres circulent.
+C) Rien :: SNCF.
+   bon-1 | g0 c+1 d+1 e0
+   > Les voyageurs regardent leur téléphone.
+
+=== ser-209 | services | Dépister les troubles de l’audition chez les enfants
+Des enfants en échec scolaire entendent mal sans que personne ne le sache.
+A) Un dépistage en maternelle :: Prévenir.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Des enfants reçoivent des appareils.
+B) Former les enseignants à repérer :: Former.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Les enseignants alertent les familles.
+C) Rien :: Médecine scolaire.
+   services-1 | g0 c+1 d+1 e0
+   > Des enfants redoublent.
+
+=== ser-210 | services | Un dépistage du diabète dans les quartiers
+Beaucoup d’habitants ignorent qu’ils sont diabétiques.
+A) Des journées de dépistage gratuites :: Santé.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Des milliers de personnes sont dépistées.
+B) Des pharmacies partenaires :: Réseau.
+   services+1 | g0 c+2 d+1 e+1
+   > Les pharmacies dépistent.
+C) Rien :: Assurance maladie.
+   services-1 | g0 c+1 d+1 e0
+   > Des diabètes passent inaperçus.
+
+=== ser-211 | services | Des clubs de sport adapté
+Les personnes handicapées trouvent peu de clubs qui les accueillent.
+A) Financer des sections adaptées :: Inclusion.
+   bud-2 services+1 bon+1 | g+2 c+2 d0 e+1
+   > Des clubs ouvrent des sections handisport.
+B) Former les éducateurs sportifs :: Former.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Les clubs accueillent mieux.
+C) Rien :: Fédérations.
+   bon-1 | g0 c+1 d+1 e0
+   > Les personnes handicapées restent sur la touche.
+
+=== ser-212 | services | Évaluer la conduite des seniors
+Des familles s’inquiètent de parents âgés qui conduisent encore.
+A) Des bilans de conduite gratuits et volontaires :: Accompagner.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Des seniors rendent leur permis d’eux-mêmes.
+B) Des chèques taxi en échange du permis :: Inciter.
+   bud-2 securite+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des seniors laissent le volant.
+C) Rien :: Liberté.
+   securite-1 | g0 c+1 d+1 e0
+   > Un accident survient.
+
+=== ser-213 | services | Une mairie annexe dans un centre commercial
+Les habitants passent plus de temps au centre commercial qu’en mairie.
+? distinct
+A) Ouvrir un guichet dans le centre commercial :: Proximité.
+   rec-0.01x60 services+1 bon+1 | g0 c+2 d+1 e+1
+   > Les démarches se font entre deux courses.
+B) Un guichet le samedi seulement :: Tester.
+   services+1 | g0 c+2 d+1 e+1
+   > Le guichet du samedi est pris d’assaut.
+C) Rien :: Mairies.
+   services-1 | g0 c+1 d+1 e0
+   > Les files continuent en mairie.
+
+=== ser-214 | services | Une halte-garderie pour les démarches administratives
+Des parents viennent en mairie avec des bébés qui pleurent dans les files.
+? distinct
+A) Un espace de garde temporaire dans les mairies :: Accueillir.
+   rec-0.01x60 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les parents font leurs démarches sereinement.
+B) Des coins jeux dans les salles d’attente :: Simple.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les enfants patientent en jouant.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Les salles d’attente résonnent de pleurs.
+
+=== ser-215 | services | Une carte de réduction pour les chômeurs
+Les demandeurs d’emploi renoncent au sport et à la culture.
+A) Une carte de réductions dans les équipements municipaux :: Inclusion.
+   rec-0.01x60 bon+1 | g+1 c+2 d+1 e+1
+   > Les chômeurs retrouvent la piscine.
+B) Seulement les chômeurs de longue durée :: Cibler.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les plus isolés en profitent.
+C) Rien :: Coût.
+   bon-1 | g-1 c+1 d+1 e0
+   > Les chômeurs restent chez eux.
+
+=== ser-216 | services | Prêter du matériel de puériculture aux jeunes parents
+Poussettes, lits et sièges auto coûtent cher pour quelques mois d’usage.
+? distinct
+A) Une puériculthèque dans chaque arrondissement :: Partager.
+   bud-1 services+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les familles empruntent au lieu d’acheter.
+B) Une bourse d’échange en ligne :: Simple.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Les familles échangent entre elles.
+C) Rien :: Marché.
+   bon-1 | g0 c+1 d+1 e0
+   > Les jeunes parents s’endettent.
+
+=== ser-217 | services | Plus de places en crèche pour les enfants handicapés
+Les enfants handicapés sont souvent refusés en crèche.
+A) Des places réservées avec du personnel formé :: Inclusion.
+   rec-0.02x60 services+1 bon+1 | g+2 c+2 d0 e+1
+   > Des enfants handicapés rejoignent la crèche.
+B) Une crèche spécialisée :: Spécialiser.
+   bud-3 services+1 | g+1 c+2 d+1 e+1
+   > Une crèche adaptée ouvre.
+C) Rien :: Coût.
+   bon-1 | g-1 c+1 d+1 e0
+   > Les parents arrêtent de travailler.
+
+=== ser-218 | services | Des soins des pieds pour les sans-abri
+Marcher toute la journée abîme les pieds des personnes à la rue.
+A) Des consultations de podologie gratuites :: Soigner.
+   bud-1 services+1 bon+1 | g+2 c+2 d0 e+1
+   > Des pieds blessés sont soignés.
+B) Des chaussures et chaussettes distribuées :: Équiper.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les sans-abri marchent mieux.
+C) Rien :: Associations.
+   bon-1 | g0 c+1 d+1 e0
+   > Les plaies s’infectent.
+
+=== ser-219 | services | Un architecte-conseil gratuit pour les habitants
+Les habitants qui veulent rénover ne savent pas à qui s’adresser.
+A) Des permanences d’architectes en mairie :: Conseiller.
+   rec-0.01x60 logement+1 | g+1 c+2 d+1 e+1
+   > Les habitants rénovent mieux.
+B) Un guide en ligne :: Simple.
+   bud-1 logement+1 | g0 c+2 d+1 e+1
+   > Le guide est très consulté.
+C) Rien :: Privé.
+   logement-1 | g0 c+1 d+1 e0
+   > Des rénovations ratées.
+
+=== ser-220 | services | Des consultations sur la ménopause
+Les femmes trouvent peu de médecins formés aux troubles de la ménopause.
+A) Des consultations dans les centres de santé :: Santé.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les femmes sont enfin écoutées.
+B) Former les médecins municipaux :: Former.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Les médecins se forment.
+C) Rien :: Assurance maladie.
+   services-1 | g0 c+1 d+1 e0
+   > Les femmes souffrent en silence.
+
+=== ser-221 | services | Recruter des médecins étrangers dans les centres de santé
+Des médecins diplômés à l’étranger attendent des années pour exercer.
+A) Les recruter avec un accompagnement :: Soigner.
+   rec-0.02x60 services+1 | g+1 c+2 d+1 e+1
+   > Les centres de santé rouvrent des créneaux.
+B) Les former en binôme avec des médecins français :: Prudence.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Les médecins s’intègrent.
+C) Rien :: Ordre des médecins.
+   services-1 | g-1 c+1 d+2 e0
+   > Les déserts médicaux persistent.
+
+=== ser-222 | services | Une crèche réservée aux enfants des agents
+Les agents de la Ville ne trouvent pas de place en crèche.
+A) Ouvrir une crèche pour les agents :: Attirer.
+   bud-3 services+1 coh+1 | g0 c+2 d+1 e+1
+   > Les recrutements deviennent plus faciles.
+B) Des places réservées dans les crèches existantes :: Prioriser.
+   coh+1 services-1 | g0 c+2 d+1 e0
+   > Les habitants protestent contre le favoritisme.
+C) Rien :: Égalité.
+   coh-1 | g0 c+1 d+1 e0
+   > Des agents démissionnent.
+
+=== ser-223 | services | Des médecins qui se déplacent chez les seniors
+Les seniors qui ne peuvent plus sortir n’ont plus de médecin traitant.
+A) Une équipe de médecins à domicile :: Soigner.
+   rec-0.02x60 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les seniors sont suivis chez eux.
+B) Des téléconsultations avec une infirmière :: Compromis.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > L’infirmière tient la tablette.
+C) Rien :: Médecine libérale.
+   services-1 | g0 c+1 d+1 e0
+   > Des seniors finissent aux urgences.
+
+=== ser-224 | services | Un relais local pour les enfants en danger
+Des voisins hésitent à signaler un enfant maltraité.
+A) Un numéro municipal et une équipe de protection :: Protéger.
+   rec-0.01x60 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des signalements sont traités rapidement.
+B) Une campagne d’information :: Sensibiliser.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Les habitants connaissent le 119.
+C) Rien :: Département.
+   services-1 | g0 c+1 d+1 e0
+   > Des enfants restent en danger.
+
+=== ser-225 | services | Un accompagnement des futures mamans isolées
+Des femmes enceintes seules n’ont personne pour les aider.
+A) Des marraines bénévoles :: Solidarité.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les futures mamans se sentent entourées.
+B) Un suivi renforcé en PMI :: Santé.
+   rec-0.01x60 services+1 | g+1 c+2 d+1 e+1
+   > Les grossesses sont mieux suivies.
+C) Rien :: Maternités.
+   bon-1 | g0 c+1 d+1 e0
+   > Des femmes accouchent seules.
