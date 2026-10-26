@@ -1,0 +1,303 @@
+// Culture et tourisme, série 7
+=== cul-226 | culture | Un fest-noz géant
+Les Bretons de Paris proposent une grande nuit de danse traditionnelle.
+A) L’accueillir sur le parvis de Montparnasse :: Fête.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Des milliers de danseurs tournent en rond.
+B) Prêter une salle municipale :: Soutien.
+   bon+1 | g0 c+2 d+1 e+1
+   > Le fest-noz remplit la salle.
+C) Rien :: Régionalisme.
+   bon-1 | g0 c+1 d+1 e0
+   > La fête n’a pas lieu.
+
+=== cul-227 | culture | Des poèmes affichés dans le métro
+Des poètes proposent de remplacer quelques publicités par des poèmes.
+A) Une campagne de poèmes chaque printemps :: Émerveiller.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les voyageurs lèvent les yeux de leur téléphone.
+B) Des poèmes d’écoliers :: Participer.
+   bud-1 bon+1 services+1 | g+1 c+2 d+1 e+1
+   > Les enfants voient leurs vers affichés.
+C) Rien :: Publicité.
+   bon-1 | g0 c+1 d+1 e0
+   > Les panneaux vendent des parfums.
+
+=== cul-228 | culture | Des œuvres sonores dans les jardins
+Des artistes proposent des installations qui font chanter le vent.
+A) Une installation par grand parc :: Créer.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les promeneurs écoutent les arbres chanter.
+B) Une exposition temporaire :: Tester.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > L’été devient sonore.
+C) Rien :: Calme des parcs.
+   bon-1 | g0 c+1 d+1 e0
+   > Les jardins restent silencieux.
+
+=== cul-229 | culture | Un festival de photographie de rue
+Des photographes exposeraient leurs clichés de Paris sur les grilles des jardins.
+A) Un festival annuel :: Regarder.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les passants découvrent leur ville autrement.
+B) Un concours ouvert aux habitants :: Participer.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Des milliers de photos sont envoyées.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Les grilles restent nues.
+
+=== cul-230 | culture | Une grande fête de la science
+Des chercheurs veulent installer des expériences sur les places.
+A) Un village des sciences sur une grande place :: Curiosité.
+   bud-1 bon+1 services+1 | g+1 c+2 d+1 e+1
+   > Les enfants font exploser des volcans en carton.
+B) Des ateliers dans les bibliothèques :: Proximité.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les bibliothèques deviennent des laboratoires.
+C) Rien :: Universités.
+   bon-1 | g0 c+1 d+1 e0
+   > La science reste dans les labos.
+
+=== cul-231 | culture | Un festival de musique baroque dans les églises
+Des ensembles proposent des concerts baroques dans les églises municipales.
+A) Une saison de concerts :: Patrimoine musical.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les églises résonnent de clavecins.
+B) Des concerts gratuits le dimanche :: Accès.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles découvrent la musique ancienne.
+C) Rien :: Laïcité.
+   bon-1 | g0 c+1 d+1 e0
+   > Les églises restent silencieuses.
+
+=== cul-232 | culture | Une reconstitution historique en costumes
+Des passionnés veulent rejouer une bataille de 1814 aux portes de Paris.
+A) Accueillir la reconstitution :: Histoire vivante.
+   bud-1 bon+1 economie+1 | g0 c+2 d+1 e+1
+   > Les familles assistent à la scène historique.
+B) Une version pédagogique pour les écoles :: Éduquer.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les élèves revivent l’histoire.
+C) Rien :: Bellicisme.
+   bon-1 | g+1 c+1 d0 e0
+   > Les passionnés vont ailleurs.
+
+=== cul-233 | culture | Un parcours des héros de BD sur les murs
+Des fresques de personnages de bandes dessinées sur les murs aveugles.
+A) Un parcours dans tout Paris :: Tourisme.
+   bud-2 bon+1 economie+1 | g0 c+2 d+1 e+1
+   > Les touristes suivent les fresques.
+B) Dans un quartier pilote :: Tester.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Le quartier attire les curieux.
+C) Rien :: Murs privés.
+   bon-1 | g0 c+1 d+1 e0
+   > Les murs restent gris.
+
+=== cul-234 | culture | Exposer les objets insolites des réserves
+Les réserves de la Ville regorgent d’objets étranges jamais montrés.
+A) Un cabinet de curiosités municipal :: Surprendre.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les visiteurs découvrent un crocodile empaillé.
+B) Une exposition tournante en mairie :: Proximité.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les objets voyagent d’arrondissement en arrondissement.
+C) Rien :: Conservation.
+   bon-1 | g0 c+1 d+1 e0
+   > Les objets restent en caisse.
+
+=== cul-235 | culture | Un salon des artistes refusés
+Des artistes recalés des grandes expositions veulent leur propre salon.
+A) Leur prêter un grand lieu :: Audace.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Le salon des refusés fait parler.
+B) Une exposition en ligne :: Simple.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les œuvres sont vues en ligne.
+C) Rien :: Les jurys décident.
+   bon-1 | g0 c+1 d+1 e0
+   > Les artistes restent dans l’ombre.
+
+=== cul-236 | culture | Restaurer les entrées de métro Guimard
+Les entrées Art nouveau du métro rouillent et perdent leurs verrières.
+A) Un plan de restauration :: Patrimoine.
+   bud-3 bon+1 | g0 c+2 d+1 e+1
+   > Les libellules de fonte retrouvent leurs couleurs.
+B) Restaurer les plus abîmées :: Prioriser.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les pires entrées sont sauvées.
+C) Rien :: RATP.
+   bon-1 | g0 c+1 d+1 e0
+   > Une verrière tombe.
+
+=== cul-237 | culture | Les colonnes Morris disparaissent
+Les colonnes d’affichage historiques sont remplacées par des écrans.
+A) Les garder pour les spectacles :: Tradition.
+   bon+1 economie-1 | g+1 c+2 d+1 e+1
+   > Les colonnes affichent les théâtres.
+B) En garder quelques-unes :: Compromis.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les plus belles sont conservées.
+C) Les remplacer :: Modernité.
+   rec+0.01x60 bon-1 | g-1 c+1 d+2 e0
+   > Les écrans s’allument.
+
+=== cul-238 | culture | La dernière vespasienne de Paris
+Le dernier urinoir public du XIXe siècle doit être déplacé pour des travaux.
+A) La restaurer sur place :: Patrimoine insolite.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les touristes photographient la vespasienne.
+B) La déplacer dans un musée :: Conserver.
+   bud-1 | g0 c+2 d+1 e+1
+   > La vespasienne entre au musée.
+C) La démonter :: Travaux.
+   bon-1 | g0 c+1 d+2 e0
+   > Un morceau d’histoire disparaît.
+
+=== cul-239 | culture | Des musiciens sur les marchés
+Des musiciens proposent de jouer le dimanche matin sur les marchés.
+A) Une programmation musicale des marchés :: Animer.
+   bud-1 bon+1 economie+1 | g+1 c+2 d+1 e+1
+   > Les courses se font en musique.
+B) Autoriser sans financer :: Liberté.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les musiciens jouent au chapeau.
+C) Rien :: Bruit.
+   bon-1 | g0 c+1 d+1 e0
+   > Les marchés restent sans musique.
+
+=== cul-240 | culture | Un salon du livre jeunesse
+Les éditeurs jeunesse veulent un grand salon à Paris pour les enfants.
+A) Accueillir le salon :: Lecture.
+   bud-1 bon+1 services+1 | g+1 c+2 d+1 e+1
+   > Les enfants rencontrent leurs auteurs préférés.
+B) Des rencontres dans les écoles :: Proximité.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les auteurs visitent les classes.
+C) Rien :: Montreuil.
+   bon-1 | g0 c+1 d+1 e0
+   > Le salon reste en banlieue.
+
+=== cul-241 | culture | Faire renaître un bal d’artistes
+Un célèbre bal costumé des Beaux-Arts pourrait être relancé.
+? distinct
+A) Relancer le bal :: Fête.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les étudiants défilent costumés.
+B) Une version populaire ouverte à tous :: Ouvrir.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Tout Paris se déguise.
+C) Rien :: Nostalgie.
+   bon-1 | g0 c+1 d+1 e0
+   > Le bal reste un souvenir.
+
+=== cul-242 | culture | Une école de cirque municipale
+Des enfants rêvent de trapèze mais les écoles de cirque sont rares et chères.
+A) Ouvrir une école de cirque :: Rêver.
+   bud-2 bon+1 services+1 | g+1 c+2 d+1 e+1
+   > Les enfants apprennent à jongler.
+B) Des ateliers dans les centres d’animation :: Proximité.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les ateliers affichent complet.
+C) Rien :: Privé.
+   bon-1 | g0 c+1 d+1 e0
+   > Le cirque reste un loisir de riches.
+
+=== cul-243 | culture | Un parcours des passages couverts
+Les passages couverts du XIXe siècle sont méconnus des touristes.
+? distinct
+A) Un parcours balisé et des visites :: Valoriser.
+   bud-1 economie+1 bon+1 | g0 c+2 d+1 e+1
+   > Les commerçants des passages voient revenir les clients.
+B) Une application de visite :: Numérique.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Les touristes suivent l’application.
+C) Rien :: Propriétés privées.
+   economie-1 | g0 c+1 d+1 e0
+   > Les passages restent confidentiels.
+
+=== cul-244 | culture | Le tango sur les quais de Seine
+Des centaines de danseurs se retrouvent le soir sur les quais.
+? distinct
+A) Aménager une piste de danse :: Encourager.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les danseurs ont leur parquet.
+B) Laisser faire sans aménager :: Liberté.
+   bon+1 | g0 c+2 d+1 e+1
+   > Le tango continue sur les pavés.
+C) Limiter le bruit :: Riverains.
+   bon-1 | g-1 c+1 d+2 e0
+   > Les danseurs partent ailleurs.
+
+=== cul-245 | culture | Un télé-crochet des quartiers
+Une grande compétition de chant entre les arrondissements.
+A) Organiser la compétition :: Révéler.
+   bud-1 bon+1 pop+1 | g+1 c+2 d+1 e+1
+   > Une lycéenne du 20e remporte la finale.
+B) Une version en ligne :: Numérique.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les vidéos font des millions de vues.
+C) Rien :: Télévision.
+   bon-1 | g0 c+1 d+1 e0
+   > Les talents restent cachés.
+
+=== cul-246 | culture | Des artistes en résidence dans les hôpitaux
+Peintres et musiciens proposent de créer avec les patients.
+A) Une résidence par hôpital :: Soigner autrement.
+   bud-1 bon+1 services+1 | g+1 c+2 d+1 e+1
+   > Les couloirs se couvrent de fresques.
+B) Des ateliers ponctuels :: Modeste.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les patients peignent le mercredi.
+C) Rien :: Hôpitaux.
+   bon-1 | g0 c+1 d+1 e0
+   > Les hôpitaux restent gris.
+
+=== cul-247 | culture | Un jeu de piste géant dans Paris
+Des milliers de joueurs résoudraient des énigmes dans toute la ville.
+A) Organiser le jeu chaque printemps :: Découvrir.
+   bud-1 bon+1 economie+1 | g0 c+2 d+1 e+1
+   > Les familles arpentent les rues en équipe.
+B) Une version pour les écoles :: Éduquer.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les élèves découvrent leur quartier.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Le projet est abandonné.
+
+=== cul-248 | culture | Une nuit de la lecture
+Bibliothèques et librairies ouvriraient toute une nuit pour lire.
+A) Ouvrir toutes les bibliothèques une nuit :: Lire.
+   bud-1 bon+1 services+1 | g+1 c+2 d+1 e+1
+   > Des milliers de lecteurs veillent.
+B) Quelques bibliothèques seulement :: Tester.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les bibliothèques ouvertes sont pleines.
+C) Rien :: Personnel.
+   bon-1 | g0 c+1 d+1 e0
+   > Les livres dorment la nuit.
+
+=== cul-249 | culture | Des jeux d’énigmes dans les musées
+Des créateurs proposent des parcours à énigmes pour attirer les jeunes.
+A) Un jeu dans chaque musée de la Ville :: Attirer.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les adolescents envahissent les musées.
+B) Un jeu test :: Prudence.
+   bon+1 | g0 c+2 d+1 e+1
+   > Le jeu affiche complet.
+C) Rien :: Sérieux.
+   bon-1 | g0 c+1 d+1 e0
+   > Les jeunes boudent les musées.
+
+=== cul-250 | culture | Un festival de cerfs-volants
+Des passionnés veulent remplir le ciel du Champ-de-Mars de cerfs-volants.
+A) Organiser le festival :: Émerveiller.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Le ciel se couvre de dragons colorés.
+B) Des ateliers de fabrication pour enfants :: Créer.
+   bud-1 bon+1 services+1 | g+1 c+2 d+1 e+1
+   > Les enfants font voler leurs créations.
+C) Rien :: Sécurité aérienne.
+   bon-1 | g0 c+1 d+1 e0
+   > Le ciel reste vide.
