@@ -31,6 +31,7 @@
     return pris;
   }
   function chargerLots(noms) {
+    noms = noms.concat(IDX.speciaux ? [IDX.speciaux.f] : []);   // catastrophes et coups de chance : toujours chargés
     return Promise.all(noms.map(function (f) { return fetch("maire/data/" + f).then(function (r) { if (!r.ok) throw 0; return r.json(); }); }))
       .then(function (ls) { BASE = M.indexer([].concat.apply([], ls)); return BASE; });
   }
@@ -165,7 +166,7 @@
   // ---------- Écran principal ----------
   function jeu() {
     if (st.phase === "fin" && (finVue || !st.resultat)) return fin();
-    box.innerHTML = "";
+    box.innerHTML = ""; document.body.classList.remove("m-modal");
     ajout(box, tableau(), onglets());
     var c = h("div", "m-contenu");
     box.appendChild(c);
@@ -184,7 +185,45 @@
     }
     if (l.children.length) parent.appendChild(l);
   }
+  // ---------- « Votre mandat » : où en est la partie, en quelques phrases ----------
+  function solde() { var r = 0; st.recurrents.forEach(function (x) { r += x.m; }); return M.FONCT.recettes - M.FONCT.depenses + r - st.dette * M.TAUX; }
+  function tendance(k) {
+    var t = 0; st.historique.slice(-6).forEach(function (x) { t += (x.d && x.d[k]) || 0; });
+    return t >= 3 ? " et elle progresse" : t <= -3 ? " et elle recule" : "";
+  }
+  function resume() {
+    var p = [], reste = M.TOURS - st.tour;
+    p.push(st.tour <= 1 ? "Ton mandat commence : 100 semaines pour transformer Paris." :
+      st.fin ? "Ton mandat s’est achevé à la semaine " + st.tour + "." : "Semaine " + st.tour + " : il te reste " + reste + " semaine" + (reste > 1 ? "s" : "") + " de mandat.");
+    p.push((st.pop >= 65 ? "Les Parisiens t’apprécient (popularité " : st.pop >= 50 ? "Ta popularité tient bon (" : st.pop >= 40 ? "Ta popularité s’effrite (" : "Danger : ta popularité frôle le seuil fatidique de 30 (") + Math.round(st.pop) + ")" + tendance("pop") + ".");
+    p.push((st.bon >= 60 ? "La ville respire, les habitants sont plutôt heureux" : st.bon >= 45 ? "L’humeur des Parisiens est mitigée" : st.bon >= 38 ? "Les Parisiens sont las et le font savoir" : "La colère monte dans les rues : le bonheur approche du seuil de 30") + " (bonheur " + Math.round(st.bon) + ").");
+    st.ambitions.forEach(function (k) {
+      var v = Math.round(st.dom[k]), n = M.DOMAINES[k].toLowerCase();
+      p.push(v >= M.P.ambSeuil ? "Ta promesse sur « " + n + " » est tenue (" + v + ")." : "Ta promesse sur « " + n + " » est en retard : " + v + " sur " + M.P.ambSeuil + " visés.");
+    });
+    var so = solde();
+    if (st.dette > 0) p.push("La ville est endettée de " + argent(st.dette) + " sur " + argent(M.PLAFOND_DETTE) + " autorisés" + (st.dette > M.PLAFOND_DETTE * 0.7 ? " : la faillite n’est plus loin." : "."));
+    else if (so < 0 && st.tresor / -so > M.TOURS - st.tour) p.push("Les caisses perdent " + argent(-so) + " par semaine, mais les réserves (" + argent(st.tresor) + ") tiennent jusqu’à la fin du mandat, hors imprévus.");
+    else if (so < 0) p.push("Les caisses perdent " + argent(-so) + " par semaine : à ce rythme, il faudra emprunter dans environ " + Math.max(1, Math.round(st.tresor / -so)) + " semaines.");
+    else p.push("Les comptes sont à l’équilibre, avec " + argent(st.tresor) + " en caisse.");
+    p.push(st.coh >= 70 ? "Ton camp se reconnaît dans tes choix." : st.coh >= 45 ? "Certains dans ton camp doutent de ta ligne politique." : "Ton camp ne comprend plus ta ligne : attention aux défections.");
+    var faible = Object.keys(M.DOMAINES).sort(function (a, b) { return st.dom[a] - st.dom[b]; })[0];
+    if (st.dom[faible] < 40) p.push("Point faible de la ville : " + M.DOMAINES[faible].toLowerCase() + " (" + Math.round(st.dom[faible]) + ").");
+    var cata = (st.historique || []).filter(function (x) { return x.sp === "catastrophe"; }).length;
+    if (cata) p.push("Paris a déjà traversé " + cata + " catastrophe" + (cata > 1 ? "s" : "") + " sous ton mandat.");
+    return p;
+  }
+  function caseMandat(ouvert) {
+    var d = h("details", "m-mandat"); d.open = ouvert;
+    d.appendChild(h("summary", null, "📜 Votre mandat"));
+    d.appendChild(h("p", null, resume().join(" ")));
+    d.ontoggle = function () { try { localStorage.setItem("maire_mandat_ferme", d.open ? "" : "1"); } catch (e) {} };
+    return d;
+  }
+  function mandatOuvert() { try { return !localStorage.getItem("maire_mandat_ferme"); } catch (e) { return true; } }
+
   function dossier(c) {
+    c.appendChild(caseMandat(mandatOuvert()));
     if (st.notes && st.notes.length && st.phase === "evenement") {
       var n = h("div", "m-notes"); n.appendChild(h("p", "m-nt", "Cette semaine, les conséquences de décisions passées :"));
       st.notes.forEach(function (x) { var p = h("div", "m-note"); p.appendChild(h("p", null, "⏳ " + x.txt)); variations(x.d, p); n.appendChild(p); });
@@ -193,7 +232,7 @@
     var ev = BASE.parId[st.evenement];
     if (!ev) { c.appendChild(h("p", "msg", "Dossier introuvable.")); return; }
     var carte = h("article", "m-dossier m-c-" + ev.cat);
-    ajout(carte, h("p", "m-cat", M.CATS[ev.cat]), h("h4", null, ev.titre));
+    ajout(carte, h("p", "m-cat", st.special === "catastrophe" ? "🚨 Catastrophe" : st.special === "chance" ? "🍀 Coup de chance" : M.CATS[ev.cat]), h("h4", null, ev.titre));
     if (st.phase === "evenement") {
       carte.appendChild(h("p", "m-desc", ev.desc));
       var ch = h("div", "m-choix");
@@ -218,16 +257,23 @@
         ? bouton("Voir le bilan du mandat", "btn m-go", function () { finVue = true; jeu(); haut(); })
         : bouton("Semaine suivante →", "btn m-go", function () { st = M.debutTour(st, BASE); sauver(); jeu(); haut(); }));
     }
-    c.appendChild(carte);
+    if (st.special) {
+      // Catastrophe ou coup de chance : la décision s'impose en pop-up, impossible de l'ignorer
+      var pop = h("div", "m-pop m-pop-" + st.special); pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "true");
+      var cadre = h("div", "m-pop-in");
+      cadre.appendChild(h("p", "m-pop-titre", st.special === "catastrophe" ? "Alerte : une catastrophe frappe Paris" : "Bonne nouvelle pour Paris !"));
+      cadre.appendChild(carte); pop.appendChild(cadre); c.appendChild(pop);
+      document.body.classList.add("m-modal");
+      var f = carte.querySelector("button"); if (f) setTimeout(function () { f.focus({ preventScroll: true }); }, 50);
+    } else c.appendChild(carte);
   }
 
   // ---------- Finances ----------
   function finances(c) {
-    var rec = 0; st.recurrents.forEach(function (r) { rec += r.m; });
-    var solde = M.FONCT.recettes - M.FONCT.depenses + rec - st.dette * M.TAUX;
+    var so = solde();
     var g = h("div", "m-fin");
     [["Trésorerie", argent(st.tresor)], ["Dette", argent(st.dette) + " / " + argent(M.PLAFOND_DETTE)],
-      ["Solde prévu par semaine", (solde > 0 ? "+" : "") + argent(solde)], ["Engagements futurs", argent(M.engagements(st))]].forEach(function (x) {
+      ["Solde prévu par semaine", (so > 0 ? "+" : "") + argent(so)], ["Engagements futurs", argent(M.engagements(st))]].forEach(function (x) {
       var d = h("div", "m-chiffre"); ajout(d, h("span", null, x[0]), h("b", null, x[1])); g.appendChild(d);
     });
     c.appendChild(g);
@@ -276,7 +322,7 @@
     if (!st.historique.length) { c.appendChild(h("p", "m-vide", "Aucune décision pour l’instant.")); return; }
     var l = h("ol", "m-histo");
     st.historique.slice().reverse().forEach(function (x) {
-      var li = h("li"); ajout(li, h("span", "m-hs", "S" + x.tour), h("strong", null, x.titre), h("span", "m-hc", x.choix));
+      var li = h("li"); ajout(li, h("span", "m-hs", "S" + x.tour), h("strong", null, (x.sp === "catastrophe" ? "🚨 " : x.sp === "chance" ? "🍀 " : "") + x.titre), h("span", "m-hc", x.choix));
       variations({ pop: x.d.pop, bon: x.d.bon, coh: x.d.coh, bud: x.d.bud }, li); l.appendChild(li);
     });
     c.appendChild(l);
@@ -284,7 +330,7 @@
 
   // ---------- Fin de partie ----------
   function fin() {
-    box.innerHTML = "";
+    box.innerHTML = ""; document.body.classList.remove("m-modal");
     var b = M.bilan(st), g = st.fin.gagne;
     var t = h("div", "m-final " + (g ? "m-gagne" : "m-perdu"));
     ajout(t, h("p", "m-sur", g ? "Mandat accompli" : "Fin de mandat anticipée"),
@@ -298,6 +344,7 @@
       var d = h("div", "m-chiffre"); ajout(d, h("span", null, x[0]), h("b", null, String(x[1]))); s.appendChild(d);
     });
     box.appendChild(s);
+    box.appendChild(caseMandat(true));
     box.appendChild(h("h5", null, "Tes ambitions"));
     b.ambitions.forEach(function (a) { box.appendChild(niveau(a.nom, a.niveau, M.P.ambSeuil, true)); });
     function liste(titre, l) {
@@ -333,5 +380,5 @@
     if (window.lbBoard) lbBoard("lb-maire", function () { return "maire"; }, function () { return "🏆 Classement général · Maire de Paris"; });
     accueil();
   };
-  window.maireStop = function () {};
+  window.maireStop = function () { document.body.classList.remove("m-modal"); };
 })();

@@ -8,7 +8,8 @@ const require = createRequire(import.meta.url);
 const M = require("../../public/maire/moteur.js");
 const DATA = new URL("../../public/maire/data/", import.meta.url);
 const idx = JSON.parse(readFileSync(new URL("index.json", DATA)));
-const tous = idx.lots.flatMap(l => JSON.parse(readFileSync(new URL(l.f, DATA))));
+const tous = idx.lots.flatMap(l => JSON.parse(readFileSync(new URL(l.f, DATA)))).concat(JSON.parse(readFileSync(new URL(idx.speciaux.f, DATA))));
+const NSP = idx.speciaux.catastrophe + idx.speciaux.chance;
 const base = M.indexer(tous);
 const N = +process.argv[2] || 400;
 
@@ -18,8 +19,9 @@ console.log("Tests du moteur");
 
 test("la base publiée est entièrement valide et le compteur est exact", () => {
   assert.equal(base.rejets.length, 0, JSON.stringify(base.rejets.slice(0, 3)));
-  assert.equal(base.liste.length, idx.total);
-  assert.equal(new Set(base.liste.map(e => e.id)).size, idx.total);
+  assert.equal(base.liste.length, idx.total + NSP);
+  assert.equal(new Set(base.liste.map(e => e.id)).size, idx.total + NSP);
+  assert.ok(idx.speciaux.catastrophe >= 30 && idx.speciaux.chance >= 30);
 });
 
 test("un événement invalide est rejeté", () => {
@@ -83,6 +85,25 @@ test("aucun événement deux fois dans une partie, suites respectées", () => {
     assert.ok(!vus.has(st.evenement), "doublon " + st.evenement); vus.add(st.evenement);
     st = M.choisir(st, base, 0);
   }
+});
+
+test("3 catastrophes par partie, un coup de chance une fois sur deux, jamais hors pop-up", () => {
+  let chances = 0;
+  for (let g = 0; g < 200; g++) {
+    let st = M.nouvellePartie({ ligne: "centre", ambitions: ["logement", "transports"], graine: g + 1 });
+    const vu = { catastrophe: 0, chance: 0 };
+    while (st.phase !== "fin") {
+      st = M.debutTour(st, base); if (st.phase === "fin") break;
+      const ev = base.parId[st.evenement];
+      if (M.SPECIAUX[ev.cat]) { assert.equal(st.special, ev.cat); vu[ev.cat]++; } else assert.equal(st.special, null);
+      st = M.choisir(st, base, 1);
+    }
+    const prevues = st.speciaux.filter(s => s.tour <= st.tour);
+    assert.equal(vu.catastrophe, prevues.filter(s => s.type === "catastrophe").length);
+    if (st.fin.gagne) assert.equal(vu.catastrophe, 3);
+    if (st.speciaux.some(s => s.type === "chance")) chances++;
+  }
+  assert.ok(chances > 70 && chances < 130, "coups de chance : " + chances + "/200");
 });
 
 console.log(ok + " tests réussis.\n");

@@ -110,3 +110,23 @@
   .m-onglets{gap:0}
   .m-onglet{font-size:13px;padding:8px 7px}
 }
+/* Votre mandat */
+.m-mandat{border-radius:12px;background:rgba(255,255,255,.06);border-left:4px solid var(--a);padding:10px 14px}
+.m-mandat summary{cursor:pointer;font-weight:800}
+.m-mandat p{margin:8px 0 2px;line-height:1.55;font-size:15px;color:#e6e9f7}
+/* Pop-up catastrophe / coup de chance */
+body.m-modal{overflow:hidden}
+.m-pop{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:16px;overflow-y:auto;background:rgba(5,8,25,.78);backdrop-filter:blur(3px);animation:m-fond .25s ease}
+.m-pop-in{width:min(640px,100%);display:grid;gap:10px;animation:m-entree .35s cubic-bezier(.2,.9,.3,1.2)}
+.m-pop-titre{margin:0;text-align:center;font-weight:800;font-size:clamp(17px,4vw,21px);letter-spacing:.02em}
+.m-pop-catastrophe .m-pop-titre{color:#ff8a80}
+.m-pop-chance .m-pop-titre{color:var(--b)}
+.m-pop-catastrophe .m-dossier{box-shadow:0 0 0 3px var(--rg),0 20px 60px rgba(200,53,46,.45)}
+.m-pop-catastrophe .m-cat{color:var(--rg)}
+.m-pop-catastrophe .m-dossier::before{background:var(--rg)}
+.m-pop-chance .m-dossier{box-shadow:0 0 0 3px var(--a),0 20px 60px rgba(245,178,26,.4)}
+.m-pop-chance .m-cat{color:#a06a00}
+.m-pop-chance .m-dossier::before{background:var(--a)}
+@keyframes m-fond{from{opacity:0}}
+@keyframes m-entree{from{opacity:0;transform:scale(.92) translateY(14px)}}
+@media (prefers-reduced-motion:reduce){.m-pop,.m-pop-in{animation:none}}

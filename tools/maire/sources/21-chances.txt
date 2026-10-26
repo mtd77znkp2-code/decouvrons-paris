@@ -1,0 +1,368 @@
+// Coups de chance : une chance sur deux d'en avoir un par partie, en pop-up. Trois façons d'en profiter.
+=== cha-001 | chance | Un milliardaire lègue sa fortune à Paris
+Un collectionneur sans héritier lègue 200 millions d’euros à la Ville de Paris, « pour le bonheur des Parisiens ».
+A) Tout investir dans le logement abordable :: Utile et durable.
+   bud+80 logement+6 pop+3 | g+4 c+2 d0 e+1
+   > Mille logements abordables seront construits grâce au legs.
+B) Rembourser la dette :: Sérieux, invisible.
+   bud+200 pop+1 | g-1 c+3 d+4 e0
+   > Les comptes de la Ville sont assainis.
+C) Créer des parcs et des fêtes dans chaque arrondissement :: Populaire.
+   bud+90 bon+5 ecologie+3 pop+3 | g+2 c+1 d0 e+3
+   > Vingt nouveaux jardins et des fêtes de quartier voient le jour.
+
+=== cha-002 | chance | Paris élue ville la plus agréable du monde
+Un classement international très suivi place Paris en tête des villes où il fait bon vivre. Les médias du monde entier en parlent.
+A) Lancer une grande campagne d’attractivité :: Tourisme et investisseurs.
+   bud-10 economie+5 pop+3 | g-1 c+2 d+3 e0
+   > Les réservations et les investissements affluent.
+B) Fêter le titre avec les Parisiens :: Fierté collective.
+   bud-5 bon+6 pop+4 | g+2 c+2 d+1 e+1
+   > Une grande fête gratuite réunit un million de personnes.
+C) Rester humble et continuer le travail :: Sobriété.
+   coh+3 pop+2 | g+1 c+2 d+1 e+2
+   > Le maire remercie les agents de la Ville.
+
+=== cha-003 | chance | L’État rembourse un trop-perçu
+Après dix ans de contentieux, le Conseil d’État condamne l’État à rembourser 150 millions d’euros à la Ville.
+A) Baisser les impôts locaux :: Pouvoir d’achat.
+   rec-1.5x60 bud+150 achat+5 pop+4 | g-2 c+2 d+4 e0
+   > La taxe foncière baisse de 5 %.
+B) Investir dans les écoles :: Avenir.
+   bud+80 services+6 bon+2 | g+4 c+2 d+1 e+2
+   > Cent écoles sont rénovées et végétalisées.
+C) Mettre de côté pour les coups durs :: Prudence.
+   bud+150 coh+2 | g0 c+3 d+3 e0
+   > Une réserve de précaution est créée.
+
+=== cha-004 | chance | Un club parisien gagne la Ligue des champions
+Le club de la capitale remporte la finale. Des centaines de milliers de supporters veulent faire la fête.
+A) Organiser une parade géante sur les Champs-Élysées :: Joie, gros dispositif.
+   bud-15 bon+6 pop+4 securite-1 | g+1 c+2 d+2 e0
+   > Le bus des joueurs descend les Champs devant 800 000 personnes.
+   ~25 securite-3 > Des débordements éclatent en fin de soirée.
+B) Profiter de l’élan pour rénover les terrains de quartier :: Héritage sportif.
+   bud-30 bon+3 services+3 pop+2 | g+3 c+2 d+1 e+1
+   > Cent terrains de foot de quartier sont rénovés.
+C) Négocier avec le club un financement pour la jeunesse :: Malin.
+   bud+20 bon+2 services+2 | g+1 c+3 d+2 e0
+   > Le club finance des écoles de foot gratuites.
+
+=== cha-005 | chance | Une découverte archéologique exceptionnelle
+Des travaux révèlent une ville gallo-romaine intacte sous le jardin du Luxembourg. Les archéologues du monde entier accourent.
+A) Créer un musée souterrain :: Investissement, tourisme assuré.
+   bud-40 rec+1.5x60 economie+4 bon+2 | g+1 c+2 d+2 e+1
+   > Le musée de Lutèce sera creusé sous le jardin.
+B) Ouvrir gratuitement les fouilles au public :: Accès à tous.
+   bud-10 bon+5 pop+3 | g+3 c+2 d0 e+1
+   > Des visites gratuites sont organisées chaque week-end.
+C) Vendre les droits de documentaire :: Recettes.
+   bud+40 economie+2 pop+1 | g-1 c+2 d+2 e0
+   > Une plateforme de streaming achète les droits.
+
+=== cha-006 | chance | Une grande entreprise installe son siège à Paris
+Un géant mondial de la technologie choisit Paris pour son siège européen : 8 000 emplois.
+A) Exiger des emplois pour les jeunes des quartiers :: Retombées sociales.
+   economie+5 achat+3 pop+3 | g+3 c+2 d+1 e0
+   > Un quart des embauches iront aux jeunes Parisiens.
+B) Tout faire pour accélérer son installation :: Économie avant tout.
+   rec+1x60 economie+7 pop+2 | g-2 c+2 d+4 e-1
+   > Le siège ouvre en un temps record.
+C) Exiger un bâtiment exemplaire écologiquement :: Ville durable.
+   economie+4 ecologie+4 pop+2 | g+1 c+2 d0 e+4
+   > Le siège sera la tour la plus verte d’Europe.
+
+=== cha-007 | chance | Une baisse historique des taux d’intérêt
+La Banque centrale baisse ses taux. La Ville peut emprunter presque gratuitement pendant un an.
+A) Emprunter pour lancer de grands travaux :: Investir maintenant.
+   bud+250 rec-1x60 transports+3 logement+3 | g+2 c+2 d+1 e+1
+   > Un grand plan d’investissement est lancé.
+B) Renégocier la dette existante :: Économies.
+   rec+2x60 pop+1 | g0 c+3 d+3 e0
+   > Les intérêts de la dette fondent.
+C) Ne rien changer :: Prudence.
+   coh+1 bud+20 | g0 c+1 d+2 e0
+   > La Ville garde son cap budgétaire.
+
+=== cha-008 | chance | Un film à succès tourné dans Paris
+Un film hollywoodien tourné à Montmartre bat des records au box-office. Les fans veulent visiter les lieux du tournage.
+A) Créer un parcours touristique du film :: Recettes.
+   bud-5 rec+1x50 economie+4 | g-1 c+2 d+2 e0
+   > Un circuit balisé guide les fans.
+   ~30 bon-2 > Les habitants de Montmartre saturent de la foule.
+B) Taxer les tournages et financer le cinéma local :: Redistribution.
+   rec+0.8x60 bon+2 | g+3 c+2 d-1 e+1
+   > Les tournages financent les cinémas de quartier.
+C) Profiter de la vitrine pour vanter les quartiers méconnus :: Équilibre.
+   bud-5 economie+3 bon+2 pop+2 | g+1 c+3 d+1 e+1
+   > Une campagne montre le Paris de l’Est et du Nord.
+
+=== cha-009 | chance | Une prix Nobel parisienne
+Une chercheuse formée dans un lycée public parisien reçoit le prix Nobel de médecine.
+A) Créer des bourses pour les lycéens à son nom :: Inspirant.
+   bud-10 services+3 pop+3 bon+2 | g+3 c+2 d+1 e+1
+   > Mille bourses sont créées pour les élèves méritants.
+B) Construire un centre de recherche municipal :: Ambition.
+   bud-60 economie+5 pop+2 | g+1 c+2 d+2 e+1
+   > Un centre de recherche sera bâti dans le 13e.
+C) Organiser une grande fête de la science :: Populaire.
+   bud-5 bon+4 pop+2 | g+1 c+2 d+1 e+1
+   > La fête de la science attire 300 000 visiteurs.
+
+=== cha-010 | chance | Un mécène offre la rénovation de toutes les fontaines
+Une fondation propose de rénover gratuitement les 200 fontaines historiques de Paris.
+A) Accepter avec une plaque discrète :: Patrimoine gratuit.
+   bud+30 bon+3 proprete+2 pop+2 | g0 c+3 d+2 e+1
+   > Les fontaines retrouvent leur éclat.
+B) Accepter et ajouter des fontaines à boire :: Encore mieux.
+   bud+10 bon+4 ecologie+2 pop+2 | g+2 c+2 d+1 e+3
+   > Chaque fontaine rénovée s’accompagne d’un point d’eau potable.
+C) Demander plutôt l’argent pour les écoles :: Priorités.
+   bud+40 services+3 pop+1 | g+3 c+1 d0 e+1
+   > La fondation accepte de financer des cours d’école.
+
+=== cha-011 | chance | Les touristes reviennent en masse
+Une saison touristique record remplit les caisses des hôtels et de la taxe de séjour.
+A) Investir les recettes dans la propreté :: Visible.
+   bud+40 proprete+5 bon+2 | g+1 c+2 d+2 e+1
+   > Des équipes de nettoyage supplémentaires sont recrutées.
+B) Baisser les tarifs des musées pour les Parisiens :: Partage.
+   bud+50 bon+3 achat+2 pop+2 | g+3 c+2 d0 e+1
+   > Les musées municipaux deviennent gratuits pour les habitants.
+C) Tout mettre en réserve :: Prudence.
+   bud+90 | g0 c+2 d+3 e0
+   > Les recettes sont mises de côté.
+
+=== cha-012 | chance | Un champion olympique devient ambassadeur de la Ville
+Un double médaillé olympique parisien propose de s’engager bénévolement pour la jeunesse.
+A) Lui confier un grand plan sport dans les quartiers :: Élan.
+   bud-15 bon+3 services+2 securite+2 pop+2 | g+3 c+2 d+1 e+1
+   > Des stages sportifs gratuits ouvrent dans 50 quartiers.
+B) En faire le visage de la candidature de Paris aux grands événements :: Rayonnement.
+   economie+3 pop+3 | g0 c+2 d+3 e0
+   > Le champion porte les couleurs de Paris à l’étranger.
+C) Lancer avec lui un programme contre le harcèlement :: Engagé.
+   bud-5 bon+3 services+2 pop+2 | g+2 c+3 d+1 e+1
+   > Le champion visite les collèges pour parler du harcèlement.
+
+=== cha-013 | chance | La Seine devient l’une des rivières les plus propres d’Europe
+Les analyses confirment une eau d’une qualité exceptionnelle. On peut se baigner presque partout.
+A) Ouvrir dix plages dans Paris :: Fête permanente.
+   bud-20 bon+6 ecologie+2 pop+3 | g+2 c+2 d+1 e+3
+   > Dix plages ouvrent le long de la Seine.
+B) Créer un label et attirer les touristes :: Économie.
+   bud-5 economie+4 pop+2 | g0 c+2 d+3 e+1
+   > Paris promeut sa « Seine propre » dans le monde entier.
+C) Protéger la biodiversité revenue :: Écologie.
+   ecologie+5 bon+2 pop+1 | g+1 c+1 d0 e+5
+   > Des réserves naturelles sont créées sur les berges.
+
+=== cha-014 | chance | Une start-up parisienne devient géante
+Une entreprise née dans un incubateur municipal est valorisée 10 milliards. Ses fondateurs veulent rendre la pareille.
+A) Leur proposer de financer un incubateur dans le 19e :: Effet boule de neige.
+   bud+10 economie+5 pop+2 | g+1 c+3 d+3 e0
+   > Un nouvel incubateur ouvre porte de la Villette.
+B) Leur demander de financer des logements étudiants :: Social.
+   logement+4 bon+2 pop+2 | g+3 c+2 d+1 e+1
+   > Cinq cents logements étudiants sont financés.
+C) Les inviter à verdir leurs bureaux et ceux de leurs voisins :: Écologie.
+   ecologie+3 economie+2 pop+1 | g+1 c+2 d+1 e+4
+   > Des toits végétalisés fleurissent dans le quartier.
+
+=== cha-015 | chance | Un hiver doux fait baisser les factures
+L’hiver le plus doux depuis un siècle fait chuter les dépenses de chauffage des bâtiments municipaux.
+A) Reverser les économies aux associations :: Solidarité.
+   bud+20 bon+3 services+2 | g+3 c+2 d0 e+1
+   > Les associations reçoivent une aide exceptionnelle.
+B) Isoler les écoles avec cet argent :: Investissement malin.
+   bud+10 ecologie+4 services+2 | g+1 c+2 d+1 e+4
+   > Cinquante écoles sont isolées.
+C) Garder l’argent en caisse :: Prudence.
+   bud+50 | g0 c+2 d+3 e0
+   > Les économies restent dans les comptes.
+
+=== cha-016 | chance | Un concours européen récompense la Ville
+Paris remporte le prix européen de la capitale verte, avec 30 millions d’euros à la clé.
+A) Planter une forêt urbaine :: Symbole.
+   bud+5 ecologie+6 bon+2 pop+2 | g+1 c+2 d0 e+5
+   > Une forêt de 20 000 arbres est plantée.
+B) Financer des vélos pour les familles modestes :: Mobilité et pouvoir d’achat.
+   bud+5 transports+3 achat+2 pop+2 | g+3 c+2 d0 e+3
+   > Dix mille vélos sont offerts.
+C) Compléter les panneaux solaires sur les écoles :: Énergie.
+   bud+10 ecologie+3 services+1 | g+1 c+2 d+1 e+4
+   > Les toits des écoles produisent de l’électricité.
+
+=== cha-017 | chance | Un grand concert gratuit est offert à Paris
+Une star internationale propose un concert gratuit devant la tour Eiffel, entièrement financé par sa tournée.
+A) Accepter avec une très grande sécurité :: Fête mémorable.
+   bud-10 bon+6 pop+4 | g+1 c+2 d+2 e0
+   > Un million de personnes chantent au Champ-de-Mars.
+B) Le déplacer dans un quartier populaire :: Partage.
+   bud-8 bon+5 pop+3 | g+4 c+2 d0 e+1
+   > Le concert a lieu au parc de la Villette.
+C) Demander un concert de soutien pour les sans-abri :: Solidarité.
+   bud+15 bon+3 services+2 pop+2 | g+3 c+2 d+1 e+1
+   > Le concert collecte 15 millions d’euros pour les sans-abri.
+
+=== cha-018 | chance | Un gisement de géothermie sous Paris
+Des forages révèlent une eau chaude abondante sous l’est parisien. Elle pourrait chauffer 200 000 logements.
+A) Lancer un réseau de chaleur public :: Énergie bon marché.
+   bud-80 rec+1.5x60 ecologie+5 achat+3 | g+3 c+2 d+1 e+5
+   > Les premiers immeubles sont raccordés.
+B) Confier l’exploitation à une entreprise :: Recettes immédiates.
+   bud+60 ecologie+3 | g-2 c+2 d+3 e+2
+   > Une entreprise paie pour exploiter le gisement.
+C) Chauffer d’abord les piscines et les écoles :: Services publics.
+   bud-30 services+3 ecologie+3 | g+2 c+2 d+1 e+4
+   > Les piscines deviennent chauffées gratuitement.
+
+=== cha-019 | chance | Un journal révèle ton action généreuse
+Une enquête raconte comment tu as aidé discrètement une famille sinistrée. L’histoire émeut tout le pays.
+A) Rester discret :: Humilité.
+   pop+5 coh+2 | g+1 c+2 d+1 e+1
+   > Le maire refuse de commenter. Sa popularité grimpe.
+B) Lancer un fonds de solidarité à ton nom :: Transformer l’élan.
+   bud-10 bon+3 pop+4 | g+3 c+2 d0 e+1
+   > Des milliers de Parisiens donnent au fonds.
+C) Faire une grande interview :: Exposition.
+   pop+3 | g0 c+1 d+1 e0
+   > Le maire raconte son engagement à la télévision.
+   ~30 pop-2 > Certains trouvent l’exercice un peu trop calculé.
+
+=== cha-020 | chance | Un accord surprise avec la Région
+La Région accepte de financer 50 % d’une nouvelle ligne de tramway que tu réclamais.
+A) Lancer immédiatement la ligne :: Saisir l’occasion.
+   bud-60 transports+6 ecologie+2 pop+2 | g+2 c+2 d+1 e+4
+   > Le chantier du tramway démarre.
+   +25 transports+3 pop+3 > La nouvelle ligne de tram est inaugurée.
+B) Utiliser l’argent pour moderniser les bus :: Plus rapide.
+   bud-20 transports+4 pop+1 | g+1 c+3 d+2 e+2
+   > Les bus deviennent électriques et plus fréquents.
+C) Négocier encore plus :: Pari.
+   transports+2 coh+1 | g0 c+2 d+1 e+1
+   > Les discussions continuent.
+   ~40 pop-2 > La Région retire finalement son offre.
+
+=== cha-021 | chance | Un concours de cuisine mondial s’installe à Paris
+Le plus grand concours culinaire du monde choisit Paris pour dix ans. Les restaurateurs sont ravis.
+A) Mettre en avant les marchés et les petits producteurs :: Local.
+   economie+3 bon+3 pop+2 | g+2 c+2 d+1 e+2
+   > Les marchés parisiens deviennent la vitrine du concours.
+B) Construire une halle gastronomique :: Investissement.
+   bud-40 rec+1x60 economie+5 | g0 c+2 d+3 e0
+   > Une halle de la gastronomie ouvrira aux Halles.
+C) Créer des cantines étoilées dans les écoles :: Pour les enfants.
+   bud-15 services+3 bon+3 pop+2 | g+3 c+2 d+1 e+2
+   > Des chefs étoilés cuisinent dans les cantines une fois par mois.
+
+=== cha-022 | chance | Une loterie nationale pour le patrimoine parisien
+Le gouvernement crée un loto du patrimoine dont une grande part revient aux monuments de Paris.
+A) Restaurer les églises et monuments :: Patrimoine.
+   bud+60 bon+3 economie+2 | g0 c+2 d+3 e0
+   > Vingt églises et monuments sont restaurés.
+B) Rénover les monuments des quartiers populaires :: Équité.
+   bud+50 bon+3 pop+3 | g+3 c+2 d0 e+1
+   > Les monuments de l’Est parisien retrouvent leur éclat.
+C) Ouvrir les monuments gratuitement aux familles :: Accès.
+   bud+40 bon+4 achat+1 | g+2 c+2 d+1 e+1
+   > Les monuments deviennent gratuits pour les moins de 26 ans.
+
+=== cha-023 | chance | Les loyers baissent enfin
+Pour la première fois depuis vingt ans, les loyers parisiens reculent nettement.
+A) Racheter des immeubles tant que les prix sont bas :: Opportunité.
+   bud-80 logement+6 pop+2 | g+4 c+2 d0 e+1
+   > La Ville achète 40 immeubles.
+B) S’en attribuer le mérite :: Communication.
+   pop+4 coh-1 | g0 c+1 d+1 e0
+   > Le maire salue « le résultat de sa politique ».
+   ~35 pop-3 > Les économistes rappellent que la baisse est nationale.
+C) Aider les jeunes à acheter leur premier logement :: Accession.
+   bud-30 logement+3 achat+3 pop+2 | g-1 c+3 d+3 e0
+   > Un prêt municipal à taux zéro est créé.
+
+=== cha-024 | chance | Des milliers de bénévoles se proposent
+Après un appel à l’engagement, 30 000 Parisiens s’inscrivent comme bénévoles pour leur ville.
+A) Les mobiliser pour la propreté et les parcs :: Ville plus belle.
+   bud-3 proprete+4 ecologie+2 bon+2 | g+1 c+2 d+2 e+3
+   > Des équipes de bénévoles entretiennent squares et rues.
+B) Les mobiliser pour les personnes âgées isolées :: Lien social.
+   bud-3 services+3 bon+4 | g+3 c+2 d+1 e+1
+   > Chaque senior isolé reçoit une visite par semaine.
+C) Les mobiliser pour l’aide aux devoirs :: Avenir.
+   bud-3 services+4 bon+2 pop+1 | g+3 c+2 d+1 e+1
+   > Des milliers d’élèves sont accompagnés chaque soir.
+
+=== cha-025 | chance | Une bonne surprise dans les comptes
+Les recettes des droits de mutation dépassent largement les prévisions grâce à un marché immobilier dynamique.
+A) Augmenter les budgets des quartiers :: Proximité.
+   bud+60 bon+3 pop+2 | g+2 c+2 d+1 e+1
+   > Chaque arrondissement reçoit une enveloppe supplémentaire.
+B) Baisser les tarifs des cantines et crèches :: Pouvoir d’achat.
+   bud+50 rec-0.4x60 achat+4 pop+2 | g+3 c+2 d0 e+1
+   > Les tarifs baissent pour toutes les familles.
+C) Rembourser la dette :: Sérieux.
+   bud+130 coh+1 | g-1 c+3 d+4 e0
+   > La dette recule nettement.
+
+=== cha-026 | chance | Un grand festival choisit Paris
+Un festival mondial d’arts de la rue choisit Paris pour dix ans, financé par ses sponsors.
+A) Installer le festival dans tous les arrondissements :: Partout.
+   bud-10 bon+5 economie+2 | g+2 c+2 d+1 e+1
+   > Des spectacles envahissent les places de chaque quartier.
+B) Le concentrer dans le centre historique :: Prestige.
+   economie+4 bon+2 pop+1 | g-1 c+2 d+3 e0
+   > Le festival se déroule autour de l’Hôtel de Ville.
+C) Exiger un festival zéro déchet :: Exemplaire.
+   bon+3 ecologie+3 pop+1 | g+1 c+2 d0 e+4
+   > Le festival devient une référence écologique.
+
+=== cha-027 | chance | Un ancien ministère libère un immense bâtiment
+L’État quitte un vaste bâtiment du 7e et propose de le céder à la Ville pour un euro symbolique.
+A) En faire des logements sociaux :: Mixité.
+   bud-50 logement+5 pop+2 | g+4 c+1 d-1 e+1
+   > Trois cents logements sociaux naîtront dans le 7e.
+   ~30 pop-2 > Des riverains du 7e lancent une pétition.
+B) Le transformer en lieu culturel et étudiant :: Vie de quartier.
+   bud-40 bon+4 services+2 | g+2 c+2 d+1 e+1
+   > Une maison des étudiants et des artistes ouvre.
+C) Le revendre au prix du marché :: Recettes énormes.
+   bud+180 | g-3 c+1 d+4 e-1
+   > Un fonds d’investissement rachète le bâtiment.
+
+=== cha-028 | chance | Le taux de chômage au plus bas
+Le chômage parisien atteint son plus bas niveau depuis 40 ans. Les recettes fiscales augmentent.
+A) Investir dans la formation des derniers chômeurs :: Ne laisser personne.
+   bud-15 economie+3 achat+2 pop+2 | g+3 c+2 d+1 e+1
+   > Un plan « zéro chômeur » cible les quartiers.
+B) Baisser les impôts des commerces :: Soutenir l’élan.
+   rec-0.5x60 bud+40 economie+4 pop+2 | g-2 c+2 d+4 e0
+   > Les petits commerces paient moins d’impôts.
+C) Mettre de côté les recettes supplémentaires :: Prudence.
+   bud+70 | g0 c+2 d+3 e0
+   > Les recettes en plus sont épargnées.
+
+=== cha-029 | chance | Un philanthrope finance des transports gratuits pour les jeunes
+Une fondation propose de financer pendant deux ans la gratuité des transports pour les moins de 18 ans.
+A) Accepter tout de suite :: Gratuit pour la Ville.
+   transports+3 achat+3 pop+3 | g+3 c+2 d+1 e+3
+   > Les jeunes voyagent gratuitement.
+   +30 rec-0.5x30 > À la fin du financement, la Ville décide de prolonger la gratuité à ses frais.
+B) Demander plutôt la gratuité pour les seniors modestes :: Solidarité.
+   transports+2 achat+3 bon+2 | g+3 c+2 d0 e+1
+   > Les seniors modestes voyagent gratuitement.
+C) Demander l’argent pour rénover les stations :: Durable.
+   bud+30 transports+3 | g0 c+3 d+2 e+1
+   > Vingt stations sont modernisées.
+
+=== cha-030 | chance | Une nuit des étoiles inoubliable
+Une pluie d’étoiles filantes exceptionnelle est annoncée. Les Parisiens demandent d’éteindre la ville.
+A) Éteindre toutes les lumières de Paris une nuit :: Magique.
+   bon+5 ecologie+2 pop+3 securite-1 | g+1 c+2 d0 e+4
+   > Paris s’éteint et des millions de gens regardent le ciel.
+B) Organiser des observations dans les parcs :: Encadré.
+   bud-3 bon+4 pop+2 | g+1 c+3 d+1 e+2
+   > Des astronomes accueillent le public dans les parcs.
+C) Lancer un plan durable contre la pollution lumineuse :: Héritage.
+   bud-10 rec+0.3x60 ecologie+4 bon+2 | g+1 c+2 d0 e+5
+   > Les éclairages inutiles seront coupés chaque nuit.

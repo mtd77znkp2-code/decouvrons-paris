@@ -11,7 +11,7 @@
 
   // Réglages d'équilibrage (vérifiés par tools/maire/test-moteur.mjs)
   var P = { domRepos: 42, domVit: 0.03, bonVit: 0.05, popVit: 0.04, usure: 0.22, detteImpop: 120,
-    cohRepos: 50, cohVit: 0.015, aliPlus: 0.8, aliMoins: 1.6, probleme: 4, ambMult: 2.5, ambSeuil: 58 };
+    cohRepos: 50, cohVit: 0.015, aliPlus: 0.8, aliMoins: 1.6, probleme: 3.5, ambMult: 2.5, ambSeuil: 58 };
 
   var LIGNES = {
     gauche: { nom: "Gauche", txt: "Services publics, solidarité et réduction des inégalités." },
@@ -30,6 +30,9 @@
     culture: "Culture et tourisme", quotidien: "Vie quotidienne", institutions: "Relations institutionnelles",
     crise: "Crises exceptionnelles"
   };
+  // Événements spéciaux, hors des 12 catégories : 3 catastrophes par partie, et une chance sur deux d'avoir un coup de chance
+  var SPECIAUX = { catastrophe: "Catastrophe", chance: "Coup de chance" };
+  var NB_CATASTROPHES = 3, PROBA_CHANCE = 0.5;
   // Domaine naturellement lié à chaque catégorie (pour favoriser les événements liés aux ambitions)
   var CAT_DOM = { securite: "securite", proprete: "proprete", logement: "logement", transports: "transports",
     ecologie: "ecologie", economie: "economie", services: "services", finances: "achat", quotidien: "achat" };
@@ -75,7 +78,7 @@
     if (!ev || typeof ev !== "object") return ["événement vide"];
     var id = ev.id || "?";
     if (!/^[a-z]{2,6}-\d{3,5}$/.test(ev.id || "")) err.push(id + " : identifiant invalide");
-    if (!CATS[ev.cat]) err.push(id + " : catégorie inconnue");
+    if (!CATS[ev.cat] && !SPECIAUX[ev.cat]) err.push(id + " : catégorie inconnue");
     if (!ev.titre || ev.titre.length < 6 || ev.titre.length > 90) err.push(id + " : titre manquant ou de mauvaise longueur");
     if (!ev.desc || ev.desc.length < 30 || ev.desc.length > 420) err.push(id + " : description manquante ou de mauvaise longueur");
     if (ev.cond) Object.keys(ev.cond).forEach(function (k) {
@@ -109,13 +112,21 @@
     var amb = (o.ambitions || []).filter(function (a, i, t) { return DOMAINES[a] && t.indexOf(a) === i; });
     if (amb.length !== 2) throw new Error("Il faut choisir exactement deux ambitions");
     var dom = {}; Object.keys(DOMAINES).forEach(function (k) { dom[k] = 50; });
-    return {
+    var st = {
       v: 1, rng: (o.graine >>> 0) || ((Math.random() * 4294967296) >>> 0), lots: o.lots || [],
       ligne: o.ligne, ambitions: amb, tour: 0, phase: "pret",
       pop: DEPART.pop, bon: DEPART.bon, coh: DEPART.coh, tresor: DEPART.tresor, dette: 0, dom: dom,
       prevus: [], recurrents: [], suites: [], vus: {}, flags: {}, nid: 1,
-      journal: [], historique: [], evenement: null, resultat: null, fin: null, cats: []
+      journal: [], historique: [], evenement: null, resultat: null, fin: null, cats: [], speciaux: [], special: null
     };
+    // Calendrier secret des événements spéciaux : une catastrophe par tiers du mandat, un éventuel coup de chance
+    for (var k = 0; k < NB_CATASTROPHES; k++) st.speciaux.push({ tour: 8 + k * 30 + Math.floor(rnd(st) * 24), type: "catastrophe" });
+    if (rnd(st) < PROBA_CHANCE) {
+      var t = 12 + Math.floor(rnd(st) * 76);
+      while (st.speciaux.some(function (s) { return Math.abs(s.tour - t) < 3; })) t += 3;
+      st.speciaux.push({ tour: t, type: "chance" });
+    }
+    return st;
   }
 
   // ---------- Argent : chaque mouvement est inscrit une seule fois au journal ----------
@@ -203,7 +214,7 @@
     st.suites = st.suites.filter(function (s) { return s.tour > st.tour || (base.parId[s.id] && !st.vus[s.id]); });
     var der = st.cats.slice(-2), total = 0, cand = [];
     base.liste.forEach(function (ev) {
-      if (st.vus[ev.id] || ev.suiteSeulement || !possible(st, ev)) return;
+      if (st.vus[ev.id] || ev.suiteSeulement || SPECIAUX[ev.cat] || !possible(st, ev)) return;
       var w = ev.poids || 1;
       if (CAT_DOM[ev.cat] && st.ambitions.indexOf(CAT_DOM[ev.cat]) >= 0) w *= 1.8;      // ambitions
       if (ev.cond && (ev.cond.amb || ev.cond.ligne)) w *= 1.5;                              // événements ciblés
@@ -261,12 +272,20 @@
     // 6. Financement et vérifications
     var ok = financement(st);
     if (verifierFin(st, !ok)) { st.notes = notes; return st; }
-    // 7. Nouvel événement
-    var ev = tirer(st, base);
+    // 7. Nouvel événement : d'abord un événement spécial s'il est prévu cette semaine
+    var ev = null; st.special = null;
+    (st.speciaux || []).forEach(function (s) {
+      if (ev || s.fait || s.tour > st.tour) return;
+      var pool = base.liste.filter(function (e) { return e.cat === s.type && !st.vus[e.id] && possible(st, e); });
+      s.fait = true;
+      if (pool.length) { ev = pool[Math.floor(rnd(st) * pool.length)]; st.special = s.type; }
+    });
+    if (!ev) ev = tirer(st, base);
     if (!ev) { st.phase = "fin"; st.fin = { gagne: false, raison: { type: "base", txt: "Plus aucun événement disponible." }, tour: st.tour }; return st; }
     st.vus[ev.id] = st.tour; st.cats.push(ev.cat); if (st.cats.length > 6) st.cats.shift();
     // Chaque événement est un problème qui pèse sur la ville tant qu'on ne le règle pas
-    if (CAT_DOM[ev.cat]) st.dom[CAT_DOM[ev.cat]] = borne(st.dom[CAT_DOM[ev.cat]] - P.probleme);
+    if (st.special) { /* les effets d'une catastrophe ou d'une chance sont dans les choix */ }
+    else if (CAT_DOM[ev.cat]) st.dom[CAT_DOM[ev.cat]] = borne(st.dom[CAT_DOM[ev.cat]] - P.probleme);
     else st.bon = borne(st.bon - P.probleme * (ev.cat === "crise" ? 0.8 : 0.3));
     st.evenement = ev.id; st.notes = notes; st.phase = "evenement";
     return st;
@@ -281,9 +300,10 @@
     // Cohérence politique : fidélité à sa ligne, sauf si une crise justifie le compromis
     var a = (c.ali && c.ali[{ gauche: "g", centre: "c", droite: "d", ecologie: "e" }[st.ligne]]) || 0;
     if (a) {
-      var dc = a > 0 ? a * P.aliPlus : a * (ev.cat === "crise" ? 0.8 : P.aliMoins);
+      var urgence = ev.cat === "crise" || ev.cat === "catastrophe";
+      var dc = a > 0 ? a * P.aliPlus : a * (urgence ? 0.8 : P.aliMoins);
       d = appliquer(st, { coh: Math.round(dc * 10) / 10 }, lib, d);
-      if (a <= -3 && ev.cat !== "crise" && rnd(st) < 0.6) { d = appliquer(st, { pop: -2 }, lib, d); extra.push("Une partie de ton électorat se sent trahie."); }
+      if (a <= -3 && !urgence && rnd(st) < 0.6) { d = appliquer(st, { pop: -2 }, lib, d); extra.push("Une partie de ton électorat se sent trahie."); }
       if (a >= 3 && st.coh > 75 && rnd(st) < 0.3) { d = appliquer(st, { pop: 1 }, lib, d); extra.push("Tes soutiens saluent une décision fidèle à tes engagements."); }
     }
     // Ambitions : agir sur ses priorités est remarqué
@@ -302,7 +322,7 @@
     if (c.suite) st.suites.push({ id: c.suite.id, tour: st.tour + c.suite.n });
     if (c.flag) st.flags[c.flag] = st.tour;
     var r = { ev: ev.id, i: i, d: d, surprise: surprise, extra: extra, rec: e && e.rec ? e.rec : null, dif: (c.dif || []).length };
-    st.historique.push({ tour: st.tour, ev: ev.id, titre: ev.titre, choix: c.t, d: d });
+    st.historique.push({ tour: st.tour, ev: ev.id, titre: ev.titre, choix: c.t, d: d, sp: st.special || undefined });
     var ok = financement(st);
     st.resultat = r; st.phase = "resultat";
     if (!verifierFin(st, !ok) && st.tour >= TOURS) { st.phase = "fin"; st.fin = { gagne: true, tour: st.tour }; }
@@ -316,7 +336,7 @@
     if (st0.phase !== "evenement" || base.parId[st0.evenement]) return st0;
     var st = copie(st0), ev = tirer(st, base);
     if (!ev) { st.phase = "fin"; st.fin = { gagne: false, raison: { type: "base", txt: "Plus aucun événement disponible." }, tour: st.tour }; return st; }
-    st.vus[ev.id] = st.tour; st.evenement = ev.id;
+    st.vus[ev.id] = st.tour; st.evenement = ev.id; st.special = null;
     return st;
   }
 
@@ -348,7 +368,7 @@
     return { liste: valides, parId: p, rejets: rejets };
   }
 
-  var API = { P: P, TAUX: TAUX, TOURS: TOURS, SEUIL: SEUIL, DEPART: DEPART, FONCT: FONCT, PLAFOND_DETTE: PLAFOND_DETTE, LIGNES: LIGNES, DOMAINES: DOMAINES, CATS: CATS,
+  var API = { SPECIAUX: SPECIAUX, NB_CATASTROPHES: NB_CATASTROPHES, P: P, TAUX: TAUX, TOURS: TOURS, SEUIL: SEUIL, DEPART: DEPART, FONCT: FONCT, PLAFOND_DETTE: PLAFOND_DETTE, LIGNES: LIGNES, DOMAINES: DOMAINES, CATS: CATS,
     nouvellePartie: nouvellePartie, debutTour: debutTour, choisir: choisir, reprendre: reprendre, bilan: bilan, valider: valider, indexer: indexer, engagements: engagements };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.Maire = API;
 })(this);

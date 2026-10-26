@@ -54,3 +54,11 @@ et dans l'administration est le total réel d'événements valides (`index.json`
 fidèle, parties reproductibles, finances cohérentes) puis simule des centaines de parties avec quatre stratégies
 (hasard, réfléchi, dépensier, populiste). Les réglages d'équilibrage sont dans `P` en haut de `public/maire/moteur.js`.
 Ces deux vérifications tournent automatiquement avant chaque mise en ligne : si l'une échoue, rien n'est publié.
+
+## Catastrophes et coups de chance
+
+Deux catégories spéciales, hors des 12 catégories et hors du compteur des événements ordinaires :
+`catastrophe` (fichier `20-catastrophes.txt`, identifiants `cat-NNN`) et `chance` (`21-chances.txt`, `cha-NNN`).
+Elles sont rangées dans `public/maire/data/speciaux.json`, chargé dans toutes les parties.
+Chaque partie a exactement 3 catastrophes (une par tiers du mandat) et une chance sur deux d'avoir un coup de chance ;
+le calendrier est tiré au hasard au début de la partie. Ils s'affichent en pop-up.

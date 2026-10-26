@@ -122,7 +122,7 @@
     maire:{one:"événement",many:"événements",noAdd:true,noEdit:true,noDel:true,noNum:true,
       cols:[
         {h:"Id",k:function(x){return x.id},c:function(x){return el("b","",x.id)}},
-        {h:"Catégorie",k:function(x){return x.cat},c:function(x){return el("span","ap-mut",window.Maire?Maire.CATS[x.cat]:x.cat)}},
+        {h:"Catégorie",k:function(x){return x.cat},c:function(x){return el("span",x.cat==="catastrophe"?"ap-warn":x.cat==="chance"?"ap-ok":"ap-mut",{catastrophe:"🚨 Catastrophe",chance:"🍀 Coup de chance"}[x.cat]||(window.Maire?Maire.CATS[x.cat]:x.cat))}},
         {h:"Événement",c:function(x){var d=el("div");d.appendChild(el("b","",x.titre));d.appendChild(el("p","ap-mut",x.desc));return d}},
         {h:"Choix",c:function(x){var u=el("ol","ap-scl");x.choix.forEach(function(c){u.appendChild(el("li","",c.t))});return u}},
         {h:"Particularités",c:function(x){var t=[];if(x.suiteSeulement)t.push("suite");if(x.cond)t.push("conditions");
@@ -157,7 +157,8 @@
   var MDB=null;
   function maireRows(){
     if(!MDB){MDB=[];fetch("maire/data/index.json",{cache:"no-cache"}).then(function(r){return r.json()}).then(function(ix){
-      return Promise.all(ix.lots.map(function(l){return fetch("maire/data/"+l.f).then(function(r){return r.json()})}));
+      var fs=ix.lots.map(function(l){return l.f});if(ix.speciaux)fs.push(ix.speciaux.f);
+      return Promise.all(fs.map(function(f){return fetch("maire/data/"+f).then(function(r){return r.json()})}));
     }).then(function(ls){MDB=[].concat.apply([],ls);apRender()}).catch(function(){MDB=null})}
     return MDB;
   }

@@ -1,0 +1,398 @@
+// Catastrophes : 3 par partie, en pop-up. Aucune bonne solution, seulement des choix difficiles.
+=== cat-001 | catastrophe | La crue centennale frappe Paris
+Comme en 1910, la Seine atteint 8 mètres au pont d’Austerlitz. Le métro est inondé, 200 000 foyers sont privés d’électricité et l’eau monte dans les rues du 15e et du 12e.
+A) Évacuer massivement les quartiers bas :: Des vies sauvées, une ville à l’arrêt.
+   bud-120 pop-3 bon-6 economie-6 transports-5 | g+1 c+2 d+1 e+1
+   > Trois cent mille Parisiens sont évacués vers des gymnases et des hôtels.
+   +6 pop+5 > Bilan : aucun mort. Les Parisiens saluent une évacuation exemplaire.
+B) Protéger d’abord les réseaux : métro, électricité, hôpitaux :: Sauver la ville, sacrifier des caves.
+   bud-90 bon-8 transports-2 logement-5 | g-1 c+3 d+2 e0
+   > Les ingénieurs bouchent les bouches de métro et protègent les centrales.
+   ~40 pop-6 > Des familles restées chez elles sont secourues en barque : la colère gronde.
+C) Laisser l’État piloter la crise :: Moins de dépenses, image de maire absent.
+   bud-30 pop-10 bon-7 | g-2 c0 d+1 e-2
+   > Le préfet prend les commandes. Le maire n’apparaît qu’en arrière-plan.
+
+=== cat-002 | catastrophe | Un immeuble s’effondre en pleine nuit
+Un immeuble de six étages du 18e s’effondre. Des habitants sont sous les décombres. Les immeubles voisins présentent des fissures.
+A) Évacuer tout le pâté de maisons et reloger 400 personnes :: Prudent mais très coûteux.
+   bud-60 rec-1x20 logement-4 bon-4 | g+3 c+2 d0 e+1
+   > Quatre cents habitants passent la nuit dans des hôtels réquisitionnés.
+B) Évacuer seulement les immeubles fissurés :: Moins cher, risque réel.
+   bud-25 logement-2 bon-3 | g0 c+2 d+2 e0
+   > Deux immeubles sont évacués, les autres restent habités.
+   ~35 pop-12 > Un second immeuble s’affaisse. Les familles accusent la mairie.
+C) Lancer l’inspection de tous les vieux immeubles de Paris :: Énorme chantier.
+   bud-150 logement+3 pop-2 | g+2 c+2 d0 e+1
+   > Dix mille immeubles anciens vont être inspectés.
+   +20 pop+4 > Les inspections révèlent 60 immeubles dangereux, évacués à temps.
+
+=== cat-003 | catastrophe | Un attentat dans le métro
+Une explosion dans une rame de la ligne 4 fait de nombreuses victimes. La ville est sous le choc et le monde entier regarde Paris.
+A) Suspendre les grands événements pendant un mois :: Sécurité, ville figée.
+   securite+5 bon-8 economie-6 pop-2 | g-1 c+2 d+3 e0
+   > Concerts, marchés et fêtes sont annulés jusqu’à nouvel ordre.
+B) Rassembler les Parisiens sur la place de la République :: Unité, risque sécuritaire.
+   bud-10 bon-3 pop+3 securite-3 | g+3 c+2 d-2 e+2
+   > Des centaines de milliers de personnes se rassemblent en silence.
+   ~25 pop-8 > Un mouvement de foule provoque des blessés lors du rassemblement.
+C) Financer un plan massif de vidéoprotection et d’agents :: Rassurer, à prix d’or.
+   bud-140 rec-1.5x40 securite+8 bon-4 | g-4 c+1 d+5 e-3
+   > Des milliers de caméras et 800 agents sont déployés.
+   ~40 coh-6 > Ta majorité dénonce une dérive sécuritaire.
+
+=== cat-004 | catastrophe | Une épidémie paralyse la capitale
+Un virus respiratoire très contagieux sature les hôpitaux parisiens. Les médecins demandent des mesures immédiates.
+A) Fermer écoles, bars et salles pendant trois semaines :: Freiner le virus, casser l’économie.
+   economie-10 bon-8 services-3 pop-3 | g+1 c+2 d0 e+1
+   > Paris tourne au ralenti.
+   +4 bon+5 > L’épidémie reflue nettement.
+B) Ouvrir des hôpitaux de campagne et tout garder ouvert :: Coûteux, pari sanitaire.
+   bud-110 services+3 bon-5 | g+2 c+2 d+1 e0
+   > Des hôpitaux de campagne sont montés dans les parcs.
+   ~45 pop-10 > Les urgences débordent : des images terribles circulent.
+C) Mettre à l’abri seulement les plus fragiles :: Équilibre fragile.
+   bud-40 services+1 bon-6 pop-4 | g+1 c+3 d+1 e+1
+   > Les maisons de retraite et les personnes isolées sont protégées.
+
+=== cat-005 | catastrophe | Le grand blackout de l’hiver
+Une panne du réseau électrique national plonge Paris dans le noir par −8 °C. Ascenseurs bloqués, feux éteints, chauffage coupé.
+A) Ouvrir 300 lieux chauffés avec des groupes électrogènes :: Sauver des vies, coûte cher.
+   bud-80 bon-4 services+2 | g+3 c+2 d+1 e-2
+   > Gymnases, mairies et églises deviennent des refuges chauffés.
+B) Réquisitionner hôtels et bureaux équipés de groupes :: Efficace, conflit avec les propriétaires.
+   bud-30 bon-5 economie-3 | g+2 c+1 d-2 e0
+   > Les hôtels de luxe accueillent les familles sans chauffage.
+   ~35 coh-4 > Les hôteliers attaquent la réquisition en justice.
+C) Concentrer les moyens sur les hôpitaux et la sécurité :: Priorités vitales, colère des familles.
+   bud-35 securite+2 bon-9 pop-5 | g-2 c+2 d+3 e0
+   > Pompiers et policiers patrouillent dans les rues noires.
+
+=== cat-006 | catastrophe | Le feu ravage le bois de Boulogne
+Après une sécheresse record, un incendie géant détruit des centaines d’hectares du bois de Boulogne. La fumée recouvre l’ouest parisien.
+A) Évacuer le 16e et mobiliser tous les pompiers :: Protéger les habitants.
+   bud-50 bon-6 ecologie-6 economie-2 | g+1 c+2 d+2 e+1
+   > Des milliers d’habitants quittent leur logement pour la nuit.
+B) Sacrifier une partie du bois pour sauver les habitations :: Pare-feu, pertes écologiques.
+   bud-30 ecologie-10 bon-4 | g0 c+2 d+3 e-4
+   > Des bulldozers ouvrent une large tranchée coupe-feu.
+   ~40 coh-4 > Les écologistes parlent d’un massacre évitable.
+C) Lancer immédiatement la reforestation massive :: Réparer, budget énorme.
+   bud-120 ecologie-3 pop+2 | g+1 c+1 d0 e+5
+   > Un million d’arbres seront replantés.
+   +25 ecologie+6 bon+3 > Les premières pousses du nouveau bois redonnent espoir.
+
+=== cat-007 | catastrophe | Une tornade traverse l’est parisien
+Une tornade rare traverse le 20e et le 11e : toits arrachés, voitures retournées, arbres couchés.
+A) Plan d’aide immédiat aux sinistrés :: Solidarité, facture lourde.
+   bud-90 bon-3 logement-3 | g+3 c+2 d+1 e+1
+   > Chaque foyer sinistré reçoit une aide d’urgence.
+B) Mobiliser les entreprises du BTP en urgence :: Rapide, prix gonflés.
+   bud-110 logement+1 bon-4 | g0 c+2 d+3 e0
+   > Les chantiers de réparation démarrent en 48 heures.
+   ~35 pop-5 > Une enquête révèle des factures multipliées par trois.
+C) Attendre l’indemnisation des assurances :: Économe, sinistrés abandonnés.
+   bud-15 bon-9 pop-8 logement-4 | g-3 c+1 d+2 e-1
+   > Les sinistrés attendent des semaines.
+
+=== cat-008 | catastrophe | Un déraillement à la gare de Lyon
+Un TGV déraille à l’entrée de la gare de Lyon. Le trafic ferroviaire vers le sud est coupé pour des semaines.
+A) Organiser un pont de bus vers la banlieue et les gares de secours :: Coûteux, indispensable.
+   bud-55 transports-4 bon-3 | g+2 c+2 d+1 e+1
+   > Des centaines de bus assurent les correspondances.
+B) Exiger de la SNCF qu’elle paie tout :: Bras de fer, lenteur.
+   transports-8 bon-5 pop-2 | g+1 c+1 d0 e0
+   > La SNCF promet, mais rien ne bouge pendant deux semaines.
+   ~40 pop-6 > Les voyageurs bloqués s’en prennent au maire.
+C) Accélérer les travaux en payant une partie :: Rouvrir vite.
+   bud-90 transports-2 economie+1 | g0 c+3 d+2 e+1
+   > La Ville finance les travaux de nuit.
+
+=== cat-009 | catastrophe | L’eau du robinet contaminée
+Une contamination bactérienne est détectée dans le réseau d’eau potable de cinq arrondissements. Il faut agir dans l’heure.
+A) Interdire l’eau du robinet et distribuer des bouteilles :: Sûr, logistique colossale.
+   bud-45 bon-7 services-2 ecologie-3 | g+1 c+2 d+1 e-1
+   > Des millions de bouteilles sont distribuées dans les rues.
+B) Chlorer massivement le réseau et rassurer :: Rapide, risque de cas.
+   bud-15 bon-3 | g0 c+2 d+2 e0
+   > L’eau a un goût de piscine, mais coule.
+   ~40 pop-12 > Des centaines d’intoxications sont signalées : scandale sanitaire.
+C) Remplacer en urgence les canalisations contaminées :: Long, définitif.
+   bud-130 bon-5 services+2 | g+2 c+1 d0 e+2
+   > Les rues sont éventrées pour changer les tuyaux.
+
+=== cat-010 | catastrophe | Des émeutes embrasent Paris
+Après plusieurs nuits de violences, des bâtiments publics brûlent dans cinq arrondissements. Les commerçants ferment.
+A) Imposer un couvre-feu municipal :: Ordre, libertés réduites.
+   securite+5 bon-6 economie-4 | g-5 c+1 d+5 e-3
+   > Paris est sous couvre-feu à 21 h.
+   ~40 coh-5 > Ta majorité se déchire sur le couvre-feu.
+B) Aller au contact des quartiers avec élus et médiateurs :: Apaiser, sans garantie.
+   bud-20 securite-3 bon-2 | g+4 c+2 d-3 e+2
+   > Le maire passe ses nuits dans les quartiers.
+   ~45 pop-7 > Une mairie annexe est incendiée malgré le dialogue.
+C) Débloquer un fonds de reconstruction immédiat :: Réparer, sans régler la cause.
+   bud-100 economie+2 bon-3 | g+1 c+2 d+1 e0
+   > Les commerces et écoles détruits seront reconstruits.
+
+=== cat-011 | catastrophe | Les banques coupent le crédit de la Ville
+Après une dégradation de sa note financière, plus aucune banque ne veut prêter à Paris. Les fournisseurs exigent d’être payés.
+A) Plan d’austérité brutal :: Les comptes, au prix de la colère.
+   rec+4x40 services-8 bon-6 pop-6 | g-5 c+2 d+4 e-2
+   > Embauches gelées, piscines fermées le dimanche, subventions coupées.
+B) Vendre des biens prestigieux de la Ville :: Argent rapide, patrimoine perdu.
+   bud+250 pop-5 bon-2 | g-3 c+2 d+3 e-1
+   > Des immeubles du centre et une partie d’un parc sont vendus.
+   ~35 pop-5 > La vente d’un hôtel particulier historique choque l’opinion.
+C) Hausse exceptionnelle de la taxe foncière :: Recettes sûres, impopulaire.
+   rec+3x60 pop-9 achat-4 | g+1 c0 d-4 e0
+   > La taxe foncière bondit de 15 %.
+
+=== cat-012 | catastrophe | La canicule de 48 °C
+Un dôme de chaleur fait grimper le thermomètre à 48 °C. Les hôpitaux reçoivent des centaines de personnes âgées.
+A) Ouvrir parcs, piscines et lieux climatisés jour et nuit :: Protéger, coût élevé.
+   bud-60 bon-4 services+2 securite-2 | g+3 c+2 d0 e+2
+   > Paris vit la nuit, dans les parcs et les piscines.
+B) Réquisitionner les centres commerciaux climatisés :: Ingénieux, conflit.
+   bud-15 bon-4 economie-3 | g+2 c+1 d-2 e0
+   > Les galeries marchandes accueillent les personnes fragiles.
+C) Envoyer les seniors isolés dans des hôtels du littoral :: Spectaculaire et très cher.
+   bud-90 bon-2 pop+1 | g+2 c+1 d0 e-2
+   > Des trains spéciaux emmènent 10 000 seniors en Normandie.
+   ~30 pop-6 > Des familles découvrent que leurs parents ont été envoyés sans prévenir.
+
+=== cat-013 | catastrophe | Un nuage toxique après l’incendie d’une usine
+Un entrepôt chimique brûle à Gennevilliers. Un panache noir se dirige vers Paris.
+A) Confiner tout Paris pendant 48 heures :: Prudence maximale.
+   economie-6 bon-5 securite+2 | g+1 c+2 d+1 e+2
+   > Les Parisiens restent enfermés, fenêtres closes.
+B) Confiner seulement le nord-ouest :: Ciblé, risqué.
+   economie-2 bon-3 | g0 c+3 d+2 e0
+   > Trois arrondissements sont confinés.
+   ~40 pop-9 > Des analyses montrent une pollution dans des quartiers non confinés.
+C) Distribuer des masques et analyser l’air partout :: Transparence coûteuse.
+   bud-40 bon-3 ecologie-2 | g+2 c+2 d+1 e+3
+   > Des capteurs publient la qualité de l’air en direct.
+
+=== cat-014 | catastrophe | Le métro paralysé par une inondation souterraine
+Une rupture de canalisation géante inonde trois stations de la ligne 1. Le cœur du réseau est à l’arrêt.
+A) Payer des travaux 24 h sur 24 :: Rouvrir vite.
+   bud-100 transports-3 | g0 c+2 d+2 e+1
+   > Les pompes et les ouvriers travaillent jour et nuit.
+B) Mettre en place des bus et vélos gratuits :: Alternative, sature la surface.
+   bud-40 transports-5 bon-3 ecologie+1 | g+2 c+1 d0 e+3
+   > Des navettes gratuites remplacent la ligne 1.
+C) Laisser la RATP gérer à son rythme :: Économie, colère des usagers.
+   transports-10 bon-5 pop-5 | g-1 c+1 d+1 e0
+   > La ligne 1 reste fermée deux mois.
+
+=== cat-015 | catastrophe | Une marée de déchets après six semaines de grève
+La grève des éboueurs dure depuis six semaines. 10 000 tonnes d’ordures s’entassent. Les rats envahissent les trottoirs.
+A) Céder aux revendications des grévistes :: Fin de la crise, coût durable.
+   rec-2x60 proprete+5 coh-2 | g+4 c+1 d-4 e+1
+   > Les camions repartent dès le lendemain.
+B) Faire appel à des entreprises privées :: Rapide, conflit social.
+   bud-50 proprete+4 pop-3 | g-5 c+2 d+4 e-1
+   > Des camions privés vident les rues.
+   ~45 coh-5 > Les syndicats bloquent les incinérateurs.
+C) Demander l’armée pour nettoyer :: Spectaculaire, polémique.
+   bud-20 proprete+5 pop-4 | g-4 c0 d+3 e-1
+   > Des soldats ramassent les ordures sous les caméras du monde entier.
+
+=== cat-016 | catastrophe | Un séisme secoue la région parisienne
+Un séisme rare, de magnitude 5, fissure des bâtiments anciens et provoque la chute de cheminées.
+A) Évacuer et inspecter toutes les écoles et hôpitaux :: Protéger les plus fragiles.
+   bud-70 services-3 bon-5 | g+2 c+2 d+1 e+1
+   > Les écoles ferment une semaine pour inspection.
+B) Inspecter seulement les bâtiments signalés :: Rapide, risque.
+   bud-20 bon-4 | g0 c+2 d+2 e0
+   > Seuls 500 bâtiments signalés sont inspectés.
+   ~35 pop-10 > Le plafond d’une salle de classe s’effondre une semaine plus tard.
+C) Plan de renforcement parasismique de la ville :: Investissement historique.
+   bud-160 logement+2 pop-1 | g+1 c+2 d+1 e+1
+   > Un plan sur dix ans est voté.
+   +20 pop+4 > Paris est citée en exemple par les grandes villes européennes.
+
+=== cat-017 | catastrophe | Un avion s’écrase sur un quartier
+Un avion de tourisme s’écrase sur des immeubles du 15e. Plusieurs bâtiments brûlent.
+A) Prendre en charge toutes les victimes et reloger :: Solidarité totale.
+   bud-60 bon-5 pop+2 | g+3 c+2 d+1 e+1
+   > Une cellule d’aide accompagne chaque famille touchée.
+B) Exiger l’interdiction des survols de Paris :: Réaction politique forte.
+   pop+1 bon-6 economie-2 | g+1 c+1 d0 e+3
+   > Le maire réclame la fin des vols de tourisme au-dessus de Paris.
+   ~40 coh-3 > L’aéroport du Bourget et ses salariés protestent vivement.
+C) Laisser les assureurs et l’enquête suivre leur cours :: Prudence juridique.
+   bon-8 pop-7 | g-2 c+1 d+1 e0
+   > Les familles attendent l’enquête.
+
+=== cat-018 | catastrophe | Une cyberattaque coupe tous les services
+Des pirates paralysent l’état civil, la paie des agents, les feux de circulation et les cantines.
+A) Payer la rançon en secret :: Rapide, scandale possible.
+   bud-50 services+2 coh-4 | g-3 c0 d-1 e-2
+   > Les systèmes redémarrent en deux jours.
+   ~50 pop-14 > Un journal révèle que la Ville a payé les pirates.
+B) Tout reconstruire sans payer :: Des semaines de chaos.
+   bud-90 services-8 bon-5 transports-3 | g+1 c+2 d+2 e+1
+   > Les agents travaillent au papier pendant un mois.
+C) Appeler l’armée et l’agence nationale de cybersécurité :: Expertise, perte de contrôle.
+   bud-40 services-4 bon-3 | g0 c+2 d+3 e0
+   > Des militaires spécialisés prennent la main sur les serveurs.
+
+=== cat-019 | catastrophe | Une gigantesque fuite de gaz à la Défense
+Une conduite de gaz principale cède. Un périmètre de 2 km doit être bouclé, jusqu’au 17e arrondissement.
+A) Évacuer tout le périmètre immédiatement :: Prudent, chaos.
+   bud-35 economie-6 bon-5 transports-3 | g+1 c+2 d+1 e+1
+   > Cent mille personnes sont évacuées en deux heures.
+B) Évacuer progressivement pour éviter la panique :: Calme, risque.
+   bud-15 bon-3 | g0 c+3 d+1 e0
+   > L’évacuation se fait quartier par quartier.
+   ~35 pop-12 > Une explosion blesse des habitants pas encore évacués.
+C) Couper le gaz de tout l’ouest parisien :: Sûr, sans chauffage.
+   bud-25 bon-7 economie-3 | g0 c+1 d+2 e+1
+   > Un demi-million de foyers sont privés de gaz pour une semaine.
+
+=== cat-020 | catastrophe | Une tempête de neige bloque la ville
+Soixante centimètres de neige paralysent Paris : aucun bus, des milliers d’automobilistes bloqués sur le périphérique.
+A) Louer tous les chasse-neige disponibles en Europe :: Rapide, ruineux.
+   bud-70 transports+2 bon-2 | g0 c+2 d+2 e-1
+   > Des chasse-neige arrivent d’Allemagne et de Suisse.
+B) Mobiliser les habitants avec des pelles :: Solidarité, lent.
+   bud-5 transports-5 bon-2 pop+1 | g+2 c+1 d0 e+2
+   > Les Parisiens déneigent leurs rues ensemble.
+   ~40 pop-6 > Des personnes âgées restent isolées plusieurs jours.
+C) Fermer la ville trois jours :: Prudent, économie arrêtée.
+   economie-8 bon-4 transports-4 | g0 c+1 d0 e+1
+   > Écoles, bureaux et commerces ferment.
+
+=== cat-021 | catastrophe | L’effondrement d’un pont sur la Seine
+Le pont de Bercy s’effondre partiellement pendant l’heure de pointe. Des véhicules tombent dans la Seine.
+A) Fermer tous les ponts anciens pour inspection :: Sécurité, embouteillages monstres.
+   bud-40 transports-10 bon-4 | g+1 c+2 d+1 e+1
+   > Douze ponts sont fermés une semaine.
+B) Inspecter de nuit en gardant les ponts ouverts :: Mobilité, risque.
+   bud-30 transports-3 bon-3 | g0 c+2 d+2 e0
+   > Les inspections ont lieu de 22 h à 6 h.
+   ~30 pop-12 > Un deuxième pont montre des fissures graves alors qu’il était ouvert.
+C) Lancer la reconstruction immédiate d’un nouveau pont :: Ambition, budget énorme.
+   bud-180 transports-4 pop+2 | g0 c+1 d+2 e+1
+   > Un concours d’architectes est lancé en urgence.
+   +30 transports+6 pop+3 > Le nouveau pont de Bercy est inauguré.
+
+=== cat-022 | catastrophe | Une intoxication massive dans les cantines
+Des milliers d’écoliers tombent malades après un repas servi dans les cantines de huit arrondissements.
+A) Suspendre toutes les cantines pendant l’enquête :: Prudence, familles en difficulté.
+   services-6 bon-5 achat-3 | g0 c+2 d+1 e0
+   > Les parents doivent préparer des repas pendant deux semaines.
+B) Rompre le contrat avec le prestataire et cuisiner en régie :: Reprendre la main, cher.
+   bud-60 rec-1x50 services+3 bon-3 | g+4 c+1 d-2 e+3
+   > La Ville reprend ses cuisines.
+C) Maintenir les cantines avec contrôles renforcés :: Continuité, risque.
+   bud-10 bon-3 | g0 c+2 d+2 e0
+   > Des inspecteurs surveillent chaque cuisine.
+   ~35 pop-13 > Un nouveau cas d’intoxication fait exploser la colère des parents.
+
+=== cat-023 | catastrophe | Un nuage de cendres volcaniques
+Une éruption en Islande cloue au sol tous les avions. Paris est envahie de voyageurs bloqués et les touristes annulent.
+A) Héberger gratuitement les voyageurs bloqués :: Hospitalité coûteuse.
+   bud-40 bon-2 pop+2 economie-3 | g+3 c+2 d0 e+1
+   > Gymnases et auberges accueillent 50 000 voyageurs.
+B) Aider les hôtels et restaurants touchés :: Soutenir l’économie.
+   bud-60 economie+1 bon-2 | g0 c+2 d+3 e0
+   > Un fonds d’urgence aide les professionnels du tourisme.
+C) Ne rien faire de particulier :: Pas d’argent public.
+   economie-8 bon-4 pop-3 | g-2 c+1 d+2 e0
+   > Les voyageurs dorment à Roissy et dans les gares.
+
+=== cat-024 | catastrophe | Une prise d’otages à l’Hôtel de Ville
+Un homme armé retient des agents municipaux dans une aile de l’Hôtel de Ville. Les négociations commencent.
+A) Laisser faire les forces d’intervention :: Rapide, risqué.
+   securite+3 bon-4 | g-1 c+2 d+4 e0
+   > Le RAID intervient au bout de trois heures.
+   ~30 pop-10 > Un agent est blessé lors de l’assaut.
+B) Négocier personnellement :: Courageux, imprévisible.
+   pop+3 bon-3 | g+2 c+2 d0 e+1
+   > Le maire entame lui-même le dialogue.
+   ~35 pop-6 > Les experts reprochent au maire d’avoir pris un risque inconsidéré.
+C) Renforcer ensuite la sécurité de tous les bâtiments publics :: Après la crise.
+   bud-50 rec-0.5x50 securite+5 bon-3 | g-2 c+2 d+3 e0
+   > Portiques et vigiles s’installent dans les mairies.
+
+=== cat-025 | catastrophe | La dette révèle un trou caché
+Un audit découvre 300 millions d’euros de dépenses non inscrites au budget par l’ancienne équipe. Il faut payer.
+A) Payer tout de suite :: Les comptes propres, la caisse vide.
+   bud-300 pop+1 | g0 c+3 d+2 e+1
+   > Le trou est comblé d’un coup.
+B) Étaler sur cinq ans :: Supportable, long.
+   rec-4x70 coh-1 | g+1 c+2 d+1 e0
+   > Le remboursement est étalé.
+C) Contester en justice une partie de la facture :: Pari juridique.
+   bud-100 pop-2 | g0 c+1 d+1 e0
+   > Un tiers est payé, le reste part devant les tribunaux.
+   ~45 bud-150 > La justice donne tort à la Ville : il faut payer le reste avec pénalités.
+
+=== cat-026 | catastrophe | Les hôpitaux de Paris en grève totale
+Médecins et infirmiers de l’AP-HP cessent le travail. Les urgences ne prennent plus que les cas vitaux.
+A) Verser une prime municipale aux soignants :: Rapide, hors de tes compétences.
+   bud-80 services+4 pop+2 coh-2 | g+3 c+1 d-2 e+1
+   > La grève est suspendue après l’annonce.
+B) Ouvrir des centres de santé municipaux d’urgence :: Alternative, coûteuse.
+   bud-60 services+2 bon-3 | g+2 c+2 d+1 e+1
+   > Des médecins de ville ouvrent des centres de garde.
+C) Faire pression sur l’État :: Ce n’est pas ton budget.
+   services-6 bon-6 pop-4 | g0 c+1 d+2 e0
+   > Le maire écrit au Premier ministre.
+   ~40 pop-6 > Un drame aux urgences fait la une de tous les journaux.
+
+=== cat-027 | catastrophe | Une pollution record étouffe la ville
+Un pic de pollution historique : l’air de Paris devient le plus pollué d’Europe pendant dix jours.
+A) Interdire toutes les voitures pendant une semaine :: Radical.
+   economie-6 ecologie+5 bon-3 pop-4 | g+1 c0 d-4 e+5
+   > Paris est vidée de ses voitures.
+   ~40 pop-5 > Les artisans et livreurs bloquent les portes de Paris.
+B) Transports gratuits et circulation alternée :: Compromis coûteux.
+   bud-45 ecologie+2 transports+1 bon-2 | g+2 c+3 d0 e+3
+   > Bus et métros sont gratuits dix jours.
+C) Recommander de rester chez soi :: Minimal.
+   bon-6 ecologie-3 pop-5 | g-2 c+1 d+2 e-4
+   > Les écoles annulent les sorties.
+
+=== cat-028 | catastrophe | Le Louvre en feu
+Un incendie se déclare dans les combles du Louvre. Des œuvres sont menacées. Le monde entier regarde.
+A) Envoyer tous les pompiers de Paris, quitte à dégarnir les quartiers :: Sauver le patrimoine.
+   bud-30 securite-4 bon-3 pop+2 | g0 c+2 d+2 e0
+   > Les œuvres sont évacuées une à une.
+   ~30 pop-8 > Un incendie d’appartement fait des victimes faute de pompiers disponibles.
+B) Lancer une souscription mondiale pour la reconstruction :: Élan, dépendance aux mécènes.
+   bud+60 bon-4 pop+1 | g-2 c+2 d+3 e0
+   > Les dons affluent de tous les pays.
+C) Reconstruire sur fonds publics, sans mécènes :: Indépendance, coût énorme.
+   bud-200 bon-2 pop+3 | g+3 c+1 d0 e+1
+   > La Ville finance seule une part de la reconstruction.
+
+=== cat-029 | catastrophe | Des inondations éclair après un orage historique
+En une heure, il tombe l’équivalent de deux mois de pluie. Les rues deviennent des torrents et des stations de métro sont noyées.
+A) Indemniser immédiatement commerces et habitants :: Aide rapide.
+   bud-90 bon-3 economie+1 | g+2 c+2 d+1 e+1
+   > Les dossiers d’indemnisation sont traités en dix jours.
+B) Créer des bassins de rétention dans les parcs :: Prévention durable.
+   bud-140 ecologie+3 bon-4 | g+1 c+2 d+1 e+4
+   > Des bassins géants sont creusés sous les squares.
+   +25 bon+4 > L’orage suivant ne provoque aucun dégât.
+C) Laisser les assureurs gérer :: Économie, colère.
+   bon-8 pop-7 economie-3 | g-2 c+1 d+2 e-1
+   > Les sinistrés attendent leurs indemnités.
+
+=== cat-030 | catastrophe | Des tours de logements sociaux menacées
+Des experts découvrent que des tours HLM du 13e ont un béton dégradé. 3 000 habitants vivent dans un danger potentiel.
+A) Évacuer et reloger tout le monde :: Sécurité, défi colossal.
+   bud-120 rec-1.5x30 logement-6 bon-4 | g+3 c+2 d+1 e+1
+   > Trois mille personnes sont relogées dans toute l’Île-de-France.
+B) Renforcer les tours avec les habitants à l’intérieur :: Moins cher, angoissant.
+   bud-60 logement-2 bon-5 | g0 c+2 d+2 e0
+   > Des étais d’acier entourent les tours.
+   ~30 pop-10 > Un balcon s’effondre pendant les travaux.
+C) Démolir et reconstruire un quartier neuf :: Projet géant.
+   bud-200 logement+2 pop-2 | g+2 c+1 d+1 e+2
+   > Un nouveau quartier sera construit en cinq ans.
+   +30 logement+6 pop+4 > Les premiers immeubles neufs accueillent les familles.

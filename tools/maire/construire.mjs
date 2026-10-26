@@ -99,7 +99,10 @@ const doublons = new Set();
 for (let i = 0; i < sig.length; i++) for (let j = i + 1; j < sig.length; j++) {
   if (sig[i].t === sig[j].t || (sig[i].m.size > 6 && proche(sig[i].m, sig[j].m) > 0.8)) { err.push(`${sig[j].id} : trop proche de ${sig[i].id}`); doublons.add(sig[j].id); }
 }
-const valides = base.liste.filter((ev) => !doublons.has(ev.id));
+const tousValides = base.liste.filter((ev) => !doublons.has(ev.id));
+// Catastrophes et coups de chance : un fichier à part, chargé dans toutes les parties
+const speciaux = tousValides.filter((ev) => Maire.SPECIAUX[ev.cat]);
+const valides = tousValides.filter((ev) => !Maire.SPECIAUX[ev.cat]);
 // Une suite doit rester dans le même lot que l'événement qui l'annonce : on garde les chaînes ensemble
 const groupes = [], dansGroupe = {}, cibles = new Set();
 valides.forEach((ev) => ev.choix.forEach((c) => { if (c.suite) cibles.add(c.suite.id); }));
@@ -124,12 +127,13 @@ if (lot.length) lots.push(lot);
 const parCat = {}; valides.forEach((ev) => { parCat[ev.cat] = (parCat[ev.cat] || 0) + 1; });
 const index = {
   total: valides.length, lots: lots.map((l, i) => ({ f: `lot-${String(i + 1).padStart(3, "0")}.json`, n: l.length })),
-  parCat, rejetes: tous.length - valides.length
+  parCat, rejetes: tous.length - tousValides.length,
+  speciaux: { f: "speciaux.json", catastrophe: speciaux.filter((e) => e.cat === "catastrophe").length, chance: speciaux.filter((e) => e.cat === "chance").length }
 };
-const sorties = { "index.json": JSON.stringify(index) };
+const sorties = { "index.json": JSON.stringify(index), "speciaux.json": JSON.stringify(speciaux) };
 lots.forEach((l, i) => { sorties[index.lots[i].f] = JSON.stringify(l); });
 
-console.log(`Événements lus : ${tous.length} · valides : ${valides.length} · rejetés : ${tous.length - valides.length}`);
+console.log(`Événements lus : ${tous.length} · valides : ${valides.length} (+ ${index.speciaux.catastrophe} catastrophes, ${index.speciaux.chance} coups de chance) · rejetés : ${index.rejetes}`);
 console.log("Par catégorie :", Object.entries(parCat).map(([k, v]) => `${Maire.CATS[k]} ${v}`).join(" · "));
 if (err.length) { console.log(`\n${err.length} problème(s) :`); err.slice(0, 80).forEach((e) => console.log(" - " + e)); }
 
