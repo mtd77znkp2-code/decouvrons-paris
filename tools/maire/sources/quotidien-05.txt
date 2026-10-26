@@ -1,0 +1,485 @@
+// Vie quotidienne, série 5
+=== quo-146 | quotidien | Le montage bruyant des marchés à l’aube
+Les barres métalliques des stands claquent dès 5 heures sous les fenêtres.
+A) Des structures silencieuses fournies par la Ville :: Équiper.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Le montage se fait en douceur.
+B) Retarder le montage à 6 h 30 :: Règle.
+   bon+1 economie-1 | g0 c+2 d+1 e0
+   > Les commerçants grognent mais s’adaptent.
+C) Rien :: Le marché d’abord.
+   bon-1 | g0 c+1 d+1 e0
+   > Les riverains se réveillent avant l’aube.
+
+=== quo-147 | quotidien | Les interphones en panne dans les HLM
+Les visiteurs, médecins et livreurs ne peuvent pas entrer.
+A) Remplacer tous les interphones :: Réparer.
+   bud-2 logement+1 | g0 c+2 d+1 e+1
+   > Les interphones sonnent à nouveau.
+B) Imposer au bailleur un délai de réparation :: Fermeté.
+   logement+1 | g0 c+2 d+2 e0
+   > Le bailleur répare en une semaine.
+C) Rien :: Bailleurs.
+   bon-1 | g0 c+1 d+1 e0
+   > Les habitants descendent ouvrir à chaque visite.
+
+=== quo-148 | quotidien | Les minuteries d’escalier trop courtes
+La lumière s’éteint entre deux étages, les seniors montent dans le noir.
+A) Des détecteurs de présence dans les immeubles sociaux :: Sécurité.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > La lumière suit les habitants.
+B) Allonger les minuteries :: Simple.
+   ecologie-1 bon+1 | g0 c+2 d+1 e0
+   > Les seniors ont le temps de monter.
+C) Rien :: Économie d’énergie.
+   bon-1 | g+1 c+1 d0 e0
+   > Une chute est signalée.
+
+=== quo-149 | quotidien | Les karaokés de rue
+Des groupes chantent au micro sur les places jusqu’à minuit.
+A) Interdire les amplis après 22 heures :: Calme.
+   bon+1 | g0 c+2 d+2 e0
+   > Les places retrouvent le silence.
+B) Des places réservées avec horaires :: Partager.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Le karaoké a lieu le vendredi sur une place.
+C) Rien :: Liberté.
+   bon-1 | g0 c+1 d+1 e0
+   > Les riverains appellent la police.
+
+=== quo-150 | quotidien | Les enceintes portables dans les parcs
+Chaque groupe de pique-nique a sa musique et les parcs deviennent bruyants.
+A) Interdire les enceintes :: Calme.
+   bon+1 | g0 c+2 d+2 e0
+   > Les parcs retrouvent le chant des oiseaux.
+B) Des zones musicales et des zones calmes :: Partager.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Chacun trouve son coin.
+C) Rien :: Liberté.
+   bon-1 | g0 c+1 d+1 e0
+   > Les musiques se superposent.
+
+=== quo-151 | quotidien | L’odeur de cannabis dans les cages d’escalier
+Des habitants se plaignent de l’odeur permanente dans leur immeuble.
+? distinct
+A) Des patrouilles dans les halls :: Fermeté.
+   securite+1 | g-1 c+2 d+2 e0
+   > Les fumeurs se déplacent.
+B) Une médiation avec les jeunes :: Dialogue.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Un local est ouvert pour les jeunes.
+C) Rien :: Police nationale.
+   bon-1 | g0 c+1 d+1 e0
+   > L’odeur persiste.
+
+=== quo-152 | quotidien | Des chariots de courses prêtés aux seniors
+Les seniors portent difficilement leurs courses jusqu’à chez eux.
+A) Des chariots en prêt dans les marchés :: Aider.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les seniors repartent avec un chariot.
+B) Une livraison solidaire des courses :: Service.
+   rec-0.01x60 bon+1 | g+1 c+2 d+1 e+1
+   > Des jeunes livrent les courses.
+C) Rien :: Familles.
+   bon-1 | g0 c+1 d+1 e0
+   > Les seniors achètent moins.
+
+=== quo-153 | quotidien | Un vin chaud de quartier en décembre
+Des associations veulent des soirées conviviales sur les places en hiver.
+A) Financer des soirées dans chaque arrondissement :: Convivialité.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les voisins se retrouvent autour d’un chaudron.
+B) Prêter du matériel :: Soutien.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les associations organisent.
+C) Rien :: Sécurité.
+   bon-1 | g0 c+1 d+1 e0
+   > Les places restent vides l’hiver.
+
+=== quo-154 | quotidien | Les annonces sonores des gares la nuit
+Les haut-parleurs des gares réveillent les riverains.
+A) Exiger une baisse du volume la nuit :: Calme.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les annonces se font plus douces.
+B) Des écrans à la place des annonces la nuit :: Alternative.
+   bon+1 | g0 c+2 d+1 e+1
+   > La nuit, les annonces deviennent visuelles.
+C) Rien :: SNCF.
+   bon-1 | g0 c+1 d+1 e0
+   > Les riverains dorment mal.
+
+=== quo-155 | quotidien | Les arbres trop proches des fenêtres
+Des platanes plongent des appartements dans l’ombre toute l’année.
+A) Élaguer régulièrement :: Lumière.
+   bud-1 bon+1 ecologie-1 | g0 c+2 d+1 e0
+   > La lumière revient dans les salons.
+B) Élaguer seulement l’hiver :: Compromis.
+   bud-1 | g+1 c+2 d+1 e+1
+   > Les arbres gardent leur ombre l’été.
+C) Rien :: Arbres.
+   bon-1 ecologie+1 | g+1 c+1 d0 e0
+   > Les habitants allument la lumière à midi.
+
+=== quo-156 | quotidien | Les parcs fermés les jours de vent
+Au moindre coup de vent, les parcs ferment et les familles restent dehors.
+? distinct
+A) Des capteurs pour fermer seulement les zones dangereuses :: Précision.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Seules les allées boisées ferment.
+B) Relever le seuil de fermeture :: Souplesse.
+   bon+1 securite-1 | g0 c+1 d+1 e0
+   > Les parcs restent ouverts plus souvent.
+C) Garder la règle :: Prudence.
+   bon-1 securite+1 | g0 c+2 d+1 e0
+   > Les grilles restent fermées.
+
+=== quo-157 | quotidien | L’arrosage automatique mouille les passants
+Les arroseurs des pelouses arrosent aussi les trottoirs et les bancs.
+A) Régler tous les arroseurs :: Précision.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > L’eau tombe enfin sur les pelouses.
+B) Arroser la nuit seulement :: Simple.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Les passants restent secs.
+C) Rien :: Fraîcheur.
+   bon-1 | g0 c+1 d+1 e0
+   > Les promeneurs sont trempés.
+
+=== quo-158 | quotidien | Les glaneurs des fins de marché
+Des personnes ramassent les invendus à la fin des marchés.
+A) Organiser une distribution des invendus :: Dignité.
+   bud-1 bon+1 ecologie+1 | g+2 c+2 d0 e+1
+   > Les invendus sont distribués proprement.
+B) Laisser faire en encadrant :: Tolérance.
+   bon+1 | g+1 c+2 d+1 e0
+   > Les glaneurs ramassent sans conflit.
+C) Interdire :: Propreté.
+   bon-1 proprete+1 | g-1 c+1 d+2 e0
+   > Les invendus partent à la benne.
+
+=== quo-159 | quotidien | Les paraboles sur les façades
+Des centaines d’antennes paraboliques défigurent les façades.
+A) Une antenne collective par immeuble :: Esthétique.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les façades se libèrent.
+B) Interdire les nouvelles paraboles :: Règle.
+   bon-1 | g0 c+2 d+2 e0
+   > Les habitants protestent.
+C) Rien :: Liberté.
+   bon-1 | g0 c+1 d+1 e0
+   > Les paraboles restent.
+
+=== quo-160 | quotidien | Les climatiseurs qui gouttent sur les passants
+L’eau des climatiseurs tombe sur les trottoirs tout l’été.
+A) Imposer des tuyaux d’évacuation :: Règle.
+   bon+1 | g0 c+2 d+2 e0
+   > Les gouttes disparaissent.
+B) Interdire les climatiseurs en façade :: Fermeté.
+   ecologie+1 bon-1 | g+1 c+2 d+1 e0
+   > Les façades se libèrent, les appartements chauffent.
+C) Rien :: Canicule.
+   bon-1 | g0 c+1 d+1 e0
+   > Les passants sont arrosés.
+
+=== quo-161 | quotidien | Les rues mortes des résidences secondaires
+Des rues entières ont leurs volets fermés onze mois par an.
+? distinct
+A) Inciter à louer à l’année :: Animer.
+   logement+1 | g+1 c+2 d+1 e+1
+   > Des logements reviennent sur le marché.
+B) Animer ces rues avec des événements :: Animation.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les rues s’animent ponctuellement.
+C) Rien :: Propriété.
+   logement-1 | g0 c+1 d+1 e0
+   > Les rues restent silencieuses.
+
+=== quo-162 | quotidien | Une brigade de nuit contre le bruit
+Les habitants ne savent pas qui appeler pour une fête trop bruyante à 2 heures.
+A) Une brigade municipale de nuit :: Intervenir.
+   rec-0.02x60 bon+1 securite+1 | g0 c+2 d+2 e0
+   > Les fêtes bruyantes sont calmées.
+B) Un numéro de signalement :: Simple.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les signalements remontent.
+C) Rien :: Police nationale.
+   bon-1 | g0 c+1 d+1 e0
+   > Les nuits blanches continuent.
+
+=== quo-163 | quotidien | Partager les parkings des supermarchés la nuit
+Les parkings des supermarchés sont vides la nuit, les rues saturées.
+? distinct
+A) Négocier l’ouverture aux riverains :: Partager.
+   rec+0.01x60 transports+1 | g0 c+2 d+1 e+1
+   > Les riverains se garent la nuit.
+B) Un parking gratuit pour les soignants de nuit :: Cibler.
+   services+1 | g+1 c+2 d+1 e+1
+   > Les infirmières se garent facilement.
+C) Rien :: Privé.
+   transports-1 | g0 c+1 d+1 e0
+   > Les rues restent saturées.
+
+=== quo-164 | quotidien | Les promeneurs de chiens professionnels
+Des promeneurs promènent dix chiens à la fois dans les parcs.
+A) Limiter à quatre chiens par promeneur :: Règle.
+   bon+1 | g0 c+2 d+2 e0
+   > Les meutes disparaissent.
+B) Un permis de promeneur :: Encadrer.
+   rec+0.01x60 | g0 c+2 d+1 e+1
+   > Les promeneurs sont formés.
+C) Rien :: Liberté.
+   bon-1 | g0 c+1 d+1 e0
+   > Les enfants ont peur.
+
+=== quo-165 | quotidien | Un journal de quartier gratuit
+Des habitants veulent un journal pour annoncer les fêtes et les petites annonces.
+A) Financer un journal par arrondissement :: Lien social.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les voisins découvrent ce qui se passe chez eux.
+B) Une page dans le magazine municipal :: Simple.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les annonces de quartier ont leur page.
+C) Rien :: Réseaux sociaux.
+   bon-1 | g0 c+1 d+1 e0
+   > Les annonces restent sur les groupes en ligne.
+
+=== quo-166 | quotidien | Les cabines photo d’identité disparaissent
+Il faut traverser l’arrondissement pour faire une photo d’identité.
+A) Des cabines dans les mairies :: Service.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Les photos se font sur place.
+B) Accepter les photos faites au téléphone :: Simplifier.
+   services+1 | g+1 c+2 d+1 e+1
+   > Les démarches se font depuis le canapé.
+C) Rien :: Marché.
+   bon-1 | g0 c+1 d+1 e0
+   > Les habitants courent après les cabines.
+
+=== quo-167 | quotidien | Le marché noir des rendez-vous en préfecture
+Des escrocs revendent des créneaux de rendez-vous administratifs.
+A) Porter plainte et sécuriser la prise de rendez-vous :: Fermeté.
+   bud-1 securite+1 | g0 c+2 d+2 e+1
+   > Les robots sont bloqués.
+B) Un accueil sans rendez-vous certains jours :: Alternative.
+   rec-0.01x60 bon+1 | g+1 c+2 d+1 e+1
+   > Les files se forment mais tout le monde passe.
+C) Rien :: État.
+   bon-1 | g0 c+1 d+1 e0
+   > Le trafic continue.
+
+=== quo-168 | quotidien | Les bus qui ne s’arrêtent pas
+Des bus pleins passent devant les arrêts sans s’arrêter.
+A) Plus de bus aux heures de pointe :: Renforcer.
+   bud-2 transports+1 | g+1 c+2 d+1 e+1
+   > Les bus s’arrêtent à nouveau.
+B) Un affichage du taux de remplissage :: Informer.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Les usagers savent quand le prochain bus arrive.
+C) Rien :: RATP.
+   transports-1 | g0 c+1 d+1 e0
+   > Les usagers attendent sous la pluie.
+
+=== quo-169 | quotidien | Les vestiaires collectifs des piscines
+Des usagers, notamment des adolescentes, n’osent plus se changer en vestiaire commun.
+? distinct
+A) Des cabines individuelles partout :: Intimité.
+   bud-2 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les adolescentes reviennent nager.
+B) Quelques cabines par piscine :: Compromis.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Les cabines sont prises d’assaut.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Des élèves sèchent la natation.
+
+=== quo-170 | quotidien | Les piscines ouvertes tôt le matin
+Les actifs voudraient nager avant le travail.
+A) Ouvrir à 7 heures en semaine :: Actifs.
+   rec-0.02x60 services+1 bon+1 | g0 c+2 d+1 e+1
+   > Les lignes d’eau se remplissent à l’aube.
+B) Dans une piscine par arrondissement :: Cibler.
+   rec-0.01x60 services+1 | g0 c+2 d+1 e+1
+   > Les lève-tôt ont leur piscine.
+C) Rien :: Personnel.
+   bon-1 | g0 c+1 d+1 e0
+   > Les actifs renoncent.
+
+=== quo-171 | quotidien | Le mobilier urbain anti-sans-abri
+Des bancs à accoudoirs et des pics empêchent de s’allonger.
+? distinct
+A) Retirer les dispositifs anti-sans-abri :: Dignité.
+   bon+1 | g+2 c+2 d0 e+1
+   > Les pics disparaissent.
+B) Les garder dans les lieux sensibles :: Compromis.
+   bon-1 | g0 c+1 d+1 e0
+   > Les associations protestent.
+C) En installer davantage :: Tranquillité.
+   bon-1 securite+1 | g-2 c+1 d+2 e0
+   > Les sans-abri sont repoussés plus loin.
+
+=== quo-172 | quotidien | Les rideaux de fer qui claquent à l’aube
+Les commerçants ouvrent leurs rideaux métalliques dans un vacarme.
+A) Aider à motoriser les rideaux :: Silence.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les rideaux s’ouvrent sans bruit.
+B) Une charte avec les commerçants :: Dialogue.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les commerçants font attention.
+C) Rien :: Commerce.
+   bon-1 | g0 c+1 d+1 e0
+   > Le vacarme continue.
+
+=== quo-173 | quotidien | Attendre trop longtemps au feu piéton
+Les piétons attendent deux minutes au feu et finissent par traverser au rouge.
+A) Raccourcir l’attente des piétons :: Priorité aux piétons.
+   bon+1 transports-1 | g+1 c+2 d+1 e+1
+   > Les piétons traversent plus souvent.
+B) Des boutons d’appel :: Technique.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les piétons appuient pour passer.
+C) Rien :: Circulation.
+   bon-1 securite-1 | g0 c+1 d+1 e0
+   > Les traversées au rouge se multiplient.
+
+=== quo-174 | quotidien | Des transats dans les parcs
+Les habitants réclament des chaises longues l’été.
+A) Mille transats en libre accès :: Détente.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les pelouses se couvrent de transats.
+B) Des transats en location :: Recettes.
+   rec+0.01x60 bon+1 | g0 c+2 d+1 e0
+   > Les transats coûtent un euro.
+C) Rien :: Vols.
+   bon-1 | g0 c+1 d+1 e0
+   > Les habitants apportent leur serviette.
+
+=== quo-175 | quotidien | Les jardinières interdites par les copropriétés
+Des syndics interdisent les plantes aux fenêtres.
+A) Une campagne pour les balcons fleuris :: Encourager.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les façades fleurissent.
+B) Un concours de balcons fleuris :: Émulation.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les habitants rivalisent de géraniums.
+C) Rien :: Copropriétés.
+   bon-1 | g0 c+1 d+1 e0
+   > Les façades restent grises.
+
+=== quo-176 | quotidien | Les rongeurs qui mangent les câbles des voitures
+Des fouines et des rats rongent les câbles des voitures garées dans la rue.
+A) Une dératisation ciblée :: Agir.
+   bud-1 proprete+1 | g0 c+2 d+1 e0
+   > Les dégâts diminuent.
+B) Informer sur les protections :: Prévenir.
+   bud-1 | g0 c+2 d+1 e+1
+   > Les automobilistes protègent leurs moteurs.
+C) Rien :: Assurances.
+   bon-1 | g0 c+1 d+1 e0
+   > Les garages font fortune.
+
+=== quo-177 | quotidien | Halloween dans les immeubles
+Des enfants sonnent chez les voisins, certains se plaignent.
+A) Un parcours d’Halloween organisé dans les squares :: Encadrer.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les enfants récoltent leurs bonbons en sécurité.
+B) Un autocollant pour les portes qui acceptent :: Simple.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les enfants savent où sonner.
+C) Rien :: Familles.
+   bon-1 | g0 c+1 d+1 e0
+   > Les conflits continuent.
+
+=== quo-178 | quotidien | Trouver un dentiste le dimanche
+Une rage de dents le dimanche oblige à attendre des heures aux urgences.
+A) Un cabinet dentaire de garde municipal :: Soigner.
+   bud-1 rec-0.01x60 services+1 | g+1 c+2 d+1 e+1
+   > Les urgences dentaires sont prises en charge.
+B) Une liste de dentistes de garde :: Informer.
+   services+1 | g0 c+2 d+1 e+1
+   > Les patients trouvent un dentiste.
+C) Rien :: Ordre des dentistes.
+   bon-1 | g0 c+1 d+1 e0
+   > Les patients souffrent jusqu’au lundi.
+
+=== quo-179 | quotidien | La foule des parents à la sortie de l’école
+À 16 h 30, les trottoirs devant les écoles sont bloqués par les poussettes et les trottinettes.
+A) Élargir les trottoirs devant les écoles :: Aménager.
+   bud-2 securite+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les parents attendent sans déborder sur la chaussée.
+B) Décaler les sorties par niveau :: Organiser.
+   services-1 securite+1 | g0 c+2 d+1 e+1
+   > Les petits sortent dix minutes avant les grands.
+C) Rien :: Ça ne dure qu’un quart d’heure.
+   securite-1 | g0 c+1 d+1 e0
+   > Une poussette frôle un scooter.
+=== quo-180 | quotidien | Des rampes dans les escaliers de rue
+Les longs escaliers de Belleville n’ont pas de rampe.
+A) Installer des rampes partout :: Accessibilité.
+   bud-1 securite+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les seniors montent en sécurité.
+B) Seulement les plus raides :: Cibler.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les pires escaliers sont équipés.
+C) Rien :: Patrimoine.
+   securite-1 | g0 c+1 d+1 e0
+   > Une personne âgée chute.
+
+=== quo-181 | quotidien | Les moteurs qui tournent à l’arrêt
+Des chauffeurs laissent tourner leur moteur des heures.
+A) Verbaliser :: Fermeté.
+   ecologie+1 | g+1 c+2 d+2 e0
+   > Les moteurs s’éteignent.
+B) Une campagne d’affichage :: Pédagogie.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les chauffeurs coupent le contact.
+C) Rien :: Tolérance.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les gaz d’échappement stagnent.
+
+=== quo-182 | quotidien | Les faux vendeurs de calendriers
+De faux pompiers et faux éboueurs vendent des calendriers aux seniors.
+A) Une campagne d’alerte :: Prévenir.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les seniors demandent la carte professionnelle.
+B) Un badge officiel pour les vrais :: Identifier.
+   bud-1 securite+1 | g0 c+2 d+2 e+1
+   > Les vrais vendeurs portent un badge.
+C) Rien :: Police.
+   securite-1 | g0 c+1 d+1 e0
+   > Les escrocs continuent.
+
+=== quo-183 | quotidien | Le prix des parkings d’hôpitaux pour les visiteurs
+Les familles de malades paient des fortunes pour se garer.
+A) Négocier un tarif réduit :: Solidarité.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les familles paient moins.
+B) Des navettes depuis les métros :: Alternative.
+   rec-0.01x60 transports+1 | g+1 c+2 d+1 e+1
+   > Les familles prennent la navette.
+C) Rien :: Hôpitaux.
+   bon-1 | g0 c+1 d+1 e0
+   > Les visites se raréfient.
+
+=== quo-184 | quotidien | Les pelouses interdites
+Des pelouses de jardins restent interdites au public.
+A) Ouvrir toutes les pelouses :: Liberté.
+   bon+1 ecologie-1 | g+1 c+2 d+1 e+1
+   > Les familles s’installent sur l’herbe.
+B) Les ouvrir par rotation :: Compromis.
+   bon+1 | g0 c+2 d+1 e+1
+   > L’herbe se repose à tour de rôle.
+C) Garder les interdictions :: Jardins.
+   bon-1 | g0 c+1 d+1 e0
+   > Les pelouses restent intactes et vides.
+
+=== quo-185 | quotidien | Les monte-meubles sur les trottoirs
+Les déménagements par la fenêtre bloquent les trottoirs pendant des heures.
+A) Des créneaux horaires obligatoires :: Organiser.
+   bon+1 | g0 c+2 d+2 e0
+   > Les monte-meubles travaillent tôt le matin.
+B) Une autorisation en ligne gratuite :: Simplifier.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les riverains sont prévenus à l’avance.
+C) Rien :: Il faut bien déménager.
+   bon-1 | g0 c+1 d+1 e0
+   > Les piétons passent sous les canapés suspendus.
