@@ -166,11 +166,19 @@
   // ---------- Écran principal ----------
   function jeu() {
     if (st.phase === "fin" && (finVue || !st.resultat)) return fin();
+    // La fenêtre ne remonte pas au changement de question : la carte du dossier reste à sa place
+    // (si son haut était sorti de l'écran, on le ramène juste en haut de l'écran)
+    var y = window.scrollY, avant = box.querySelector(".m-contenu > .m-dossier");
+    var pos = avant ? Math.max(8, avant.getBoundingClientRect().top) : null;
+    box.style.minHeight = box.offsetHeight + "px";
     box.innerHTML = ""; document.body.classList.remove("m-modal");
     ajout(box, tableau(), onglets());
     var c = h("div", "m-contenu");
     box.appendChild(c);
     ({ decision: dossier, finances: finances, ambitions: ambitions, historique: historique })[onglet](c);
+    box.style.minHeight = ""; window.scrollTo(0, y);
+    var apres = box.querySelector(".m-contenu > .m-dossier");
+    if (pos !== null && apres) window.scrollBy(0, apres.getBoundingClientRect().top - pos);
   }
   function variations(d, parent) {
     var l = h("ul", "m-delta");
@@ -255,7 +263,7 @@
       if (r.dif) carte.appendChild(h("p", "m-extra", "⏳ Cette décision aura encore des conséquences dans les semaines à venir."));
       carte.appendChild(st.phase === "fin"
         ? bouton("Voir le bilan du mandat", "btn m-go", function () { finVue = true; jeu(); haut(); })
-        : bouton("Semaine suivante →", "btn m-go", function () { st = M.debutTour(st, BASE); sauver(); jeu(); haut(); }));
+        : bouton("Semaine suivante →", "btn m-go", function () { st = M.debutTour(st, BASE); sauver(); jeu(); }));
     }
     if (st.special) {
       // Catastrophe ou coup de chance : la décision s'impose en pop-up, impossible de l'ignorer
