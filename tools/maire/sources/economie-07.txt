@@ -1,0 +1,298 @@
+// Économie, série 7
+=== econ-226 | economie | Les pressings ferment
+Les pressings disparaissent, les habitants traversent le quartier pour une chemise.
+A) Aider la reconversion vers des pressings écologiques :: Moderniser.
+   bud-1 economie+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les pressings passent au nettoyage à l’eau.
+B) Un loyer aidé :: Soutenir.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Quelques pressings tiennent.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+1 e0
+   > Les pressings ferment.
+
+=== econ-227 | economie | Les boutiques des couloirs du métro
+Les petites boutiques des stations ferment les unes après les autres.
+A) Des loyers réduits pour des commerces utiles :: Animer.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Cordonniers et fleuristes reviennent dans le métro.
+B) Des boutiques éphémères de créateurs :: Tester.
+   economie+1 | g0 c+2 d+1 e+1
+   > Les créateurs exposent dans les couloirs.
+C) Rien :: RATP.
+   economie-1 | g0 c+1 d+1 e0
+   > Les vitrines restent vides.
+
+=== econ-228 | economie | Les maroquiniers parisiens
+Les ateliers de sacs et ceintures en cuir peinent à recruter.
+A) Une école de maroquinerie avec les grandes maisons :: Former.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Des jeunes apprennent le métier.
+B) Des ateliers à loyer modéré :: Garder les artisans.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les ateliers restent à Paris.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+2 e0
+   > Les ateliers partent en province.
+
+=== econ-229 | economie | Un marché de pêcheurs en direct
+Des pêcheurs bretons proposent de vendre leur poisson directement aux Parisiens.
+A) Un marché hebdomadaire :: Circuit court.
+   bud-1 economie+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Le poisson arrive frais du matin.
+B) Des emplacements sur les marchés existants :: Simple.
+   economie+1 | g0 c+2 d+1 e+1
+   > Les pêcheurs rejoignent les marchés.
+C) Rien :: Poissonniers.
+   economie-1 | g0 c+1 d+1 e0
+   > Le projet ne voit pas le jour.
+
+=== econ-230 | economie | Des locaux pour les étudiants entrepreneurs
+Des étudiants lancent leur entreprise depuis leur chambre.
+A) Des bureaux gratuits dans les mairies :: Encourager.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Des projets prennent forme.
+B) Un concours de création d’entreprise :: Émulation.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Les lauréats reçoivent une aide.
+C) Rien :: Universités.
+   economie-1 | g0 c+1 d+1 e0
+   > Les étudiants partent ailleurs.
+
+=== econ-231 | economie | Les grossistes du quartier Popincourt
+Les grossistes en textile occupent les rues de camions et de cartons.
+A) Une zone logistique hors de Paris :: Déplacer.
+   bud-2 economie-1 bon+1 | g0 c+2 d+1 e+1
+   > Les camions quittent le quartier.
+B) Des horaires de livraison stricts :: Encadrer.
+   bon+1 | g0 c+2 d+2 e0
+   > Les livraisons se font tôt.
+C) Rien :: Commerce.
+   bon-1 economie+1 | g0 c+1 d+1 e0
+   > Les riverains se plaignent.
+
+=== econ-232 | economie | Des ateliers de confection clandestins
+Des ouvriers cousent dans des caves sans fenêtre pour des marques de mode.
+A) Des contrôles avec l’inspection du travail :: Protéger.
+   securite+1 economie-1 | g+1 c+2 d+2 e0
+   > Des ateliers sont fermés, des ouvriers protégés.
+B) Aider à régulariser les ateliers :: Accompagner.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Des ateliers deviennent légaux.
+C) Rien :: État.
+   bon-1 | g-1 c+1 d+1 e0
+   > L’exploitation continue.
+
+=== econ-233 | economie | Les torréfacteurs de quartier
+Les torréfacteurs artisanaux sont accusés d’enfumer les rues.
+A) Aider à installer des filtres :: Concilier.
+   bud-1 economie+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > L’odeur de café reste, la fumée disparaît.
+B) Les déplacer en zone d’activité :: Riverains.
+   economie-1 bon+1 | g0 c+2 d+1 e0
+   > Les torréfacteurs quittent le centre.
+C) Rien :: Artisanat.
+   bon-1 | g0 c+1 d+1 e0
+   > Les voisins toussent.
+
+=== econ-234 | economie | Une bourse des locaux vides pour les créateurs
+Des propriétaires de boutiques vides cherchent des occupants temporaires.
+A) Une plateforme municipale de mise en relation :: Animer.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Des créateurs occupent les vitrines vides.
+B) Un bonus fiscal pour les propriétaires prêteurs :: Inciter.
+   rec-0.01x60 economie+1 | g0 c+2 d+1 e+1
+   > Des boutiques se rouvrent.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+1 e0
+   > Les rideaux restent baissés.
+
+=== econ-235 | economie | Les commerçants points relais mal payés
+Les épiciers stockent des dizaines de colis pour quelques centimes chacun.
+A) Négocier avec les plateformes une meilleure rémunération :: Défendre.
+   coh+1 economie+1 | g+1 c+2 d+1 e+1
+   > Les commerçants touchent un peu plus.
+B) Des casiers municipaux pour soulager les commerces :: Équiper.
+   bud-2 economie+1 | g0 c+2 d+1 e+1
+   > Les colis vont dans des casiers.
+C) Rien :: Contrats privés.
+   economie-1 | g0 c+1 d+2 e0
+   > Des commerçants arrêtent le service.
+=== econ-236 | economie | Les restaurants qui font payer l’eau en carafe
+Des touristes se voient facturer la carafe d’eau, pourtant gratuite.
+A) Des contrôles et une information :: Faire respecter.
+   economie+1 | g0 c+2 d+2 e+1
+   > La carafe redevient gratuite.
+B) Un label des restaurants accueillants :: Valoriser.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les touristes choisissent les restaurants labellisés.
+C) Rien :: Anecdotique.
+   economie-1 | g0 c+1 d+1 e0
+   > Les avis négatifs se multiplient.
+=== econ-237 | economie | Une banque du temps entre habitants
+Une heure de bricolage contre une heure de cours de cuisine : pas d’argent, que du temps.
+A) Lancer une banque du temps municipale :: Solidarité.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les voisins échangent leurs talents.
+B) Soutenir une association :: Accompagner.
+   bon+1 | g+1 c+2 d+1 e+1
+   > L’association s’étend.
+C) Rien :: Gadget.
+   bon-1 | g0 c+1 d+1 e0
+   > Le projet reste confidentiel.
+
+=== econ-238 | economie | Vendre les légumes moches à bas prix
+Des fruits et légumes déformés sont jetés alors qu’ils sont parfaits.
+A) Un rayon « moches » sur les marchés :: Anti-gaspillage.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles achètent moins cher.
+B) Les servir dans les cantines :: Utiliser.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Les cantines économisent.
+C) Rien :: Commerce.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les légumes partent à la benne.
+
+=== econ-239 | economie | Les drogueries de quartier
+Les drogueries, où l’on trouve vis et savon noir, disparaissent.
+A) Un loyer aidé :: Proximité.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les drogueries tiennent bon.
+B) Les intégrer aux ressourceries :: Réinventer.
+   bud-1 economie+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les drogueries vendent aussi d’occasion.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+1 e0
+   > La dernière droguerie ferme.
+
+=== econ-240 | economie | Des supérettes sans caissier
+Des magasins automatiques ouvrent 24 heures sur 24, sans aucun employé.
+A) Les autoriser :: Innovation.
+   economie+1 bon-1 | g-1 c+1 d+2 e0
+   > Les supérettes automatiques se multiplient.
+B) Exiger un employé présent en journée :: Emploi.
+   economie+1 | g+1 c+2 d+1 e+1
+   > Un salarié accueille les clients.
+C) Les limiter :: Emploi.
+   economie-1 bon+1 | g+1 c+2 d+1 e0
+   > Peu d’automates ouvrent.
+
+=== econ-241 | economie | Les loueurs de costumes
+Les loueurs de costumes de théâtre et de cinéma ferment faute de clients.
+A) Les soutenir comme patrimoine du spectacle :: Préserver.
+   bud-1 economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les costumes restent accessibles aux compagnies.
+B) Une costumerie municipale partagée :: Mutualiser.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Les écoles et théâtres empruntent des costumes.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+1 e0
+   > Les stocks sont vendus.
+
+=== econ-242 | economie | Une centrale d’achat pour les petits commerçants
+Les petits commerces paient plus cher que les chaînes.
+A) Créer une centrale d’achat municipale :: Mutualiser.
+   bud-2 economie+1 | g+1 c+2 d+1 e+1
+   > Les commerçants achètent moins cher.
+B) Soutenir une coopérative de commerçants :: Accompagner.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > La coopérative grandit.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+2 e0
+   > Les chaînes l’emportent.
+
+=== econ-243 | economie | Des produits parisiens dans les boutiques des musées
+Les boutiques des musées vendent surtout des objets importés.
+A) Imposer une part de produits fabriqués à Paris :: Local.
+   economie+1 | g+1 c+2 d+1 e+1
+   > Des artisans vendent dans les musées.
+B) Un appel à créateurs :: Encourager.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Des objets parisiens rejoignent les rayons.
+C) Rien :: Concessionnaires.
+   economie-1 | g0 c+1 d+1 e0
+   > Les mugs importés continuent.
+
+=== econ-244 | economie | Les magasins bio ferment
+Après des années de croissance, les magasins bio ferment par dizaines.
+A) Aider les magasins bio indépendants :: Soutenir.
+   bud-1 economie+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les magasins de quartier résistent.
+B) Encourager le bio sur les marchés :: Alternative.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les producteurs bio prennent le relais.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+2 e0
+   > Les locaux restent vides.
+
+=== econ-245 | economie | Un guide des commerces de quartier
+Un guide en ligne des bonnes adresses aiderait les petits commerces.
+A) Un guide municipal par arrondissement :: Promouvoir.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Les habitants découvrent leurs voisins commerçants.
+B) Un guide rédigé par les habitants :: Participatif.
+   economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les recommandations affluent.
+C) Rien :: Applications privées.
+   economie-1 | g0 c+1 d+1 e0
+   > Les plateformes dominent.
+
+=== econ-246 | economie | Le retour des salles d’arcade
+Des jeunes entrepreneurs veulent rouvrir des salles de jeux vidéo rétro.
+A) Les aider à s’installer :: Loisirs.
+   bud-1 economie+1 bon+1 | g0 c+2 d+1 e+1
+   > Les bornes rétro attirent les jeunes.
+B) Les autoriser avec des horaires limités :: Encadrer.
+   economie+1 | g0 c+2 d+1 e+1
+   > Les salles ferment à 23 heures.
+C) Rien :: Commerce.
+   economie-1 | g0 c+1 d+1 e0
+   > Les projets échouent.
+
+=== econ-247 | economie | Les commerces éphémères à la mode
+Des boutiques de desserts à la mode ouvrent et ferment en quelques mois.
+A) Privilégier les baux longs pour les commerces durables :: Stabilité.
+   economie+1 | g0 c+2 d+1 e+1
+   > Les rues retrouvent des commerces stables.
+B) Laisser faire :: Dynamisme.
+   economie+1 bon-1 | g0 c+1 d+1 e0
+   > Les vitrines changent chaque saison.
+C) Un fonds pour aider les jeunes commerçants à durer :: Accompagner.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Des commerces passent le cap des deux ans.
+
+=== econ-248 | economie | Un atelier de souffleurs de verre
+Des souffleurs de verre cherchent un lieu pour travailler et transmettre.
+A) Les installer dans un ancien atelier municipal :: Artisanat.
+   bud-1 economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les visiteurs regardent naître les vases.
+B) Les aider à trouver un local privé :: Accompagner.
+   economie+1 | g0 c+2 d+1 e+1
+   > L’atelier s’installe.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+1 e0
+   > Les souffleurs partent à Murano.
+
+=== econ-249 | economie | Former des femmes aux métiers du bâtiment
+Les chantiers manquent de bras, les femmes y sont presque absentes.
+A) Des formations gratuites réservées :: Égalité.
+   bud-1 economie+1 bon+1 | g+2 c+2 d0 e+1
+   > Des femmes deviennent électriciennes et maçonnes.
+B) Des clauses dans les marchés publics :: Inciter.
+   economie+1 | g+1 c+2 d+1 e+1
+   > Les entreprises recrutent des femmes.
+C) Rien :: Entreprises.
+   economie-1 | g0 c+1 d+1 e0
+   > Les chantiers restent masculins.
+
+=== econ-250 | economie | Des particuliers vendent leurs plats faits maison
+Des habitants vendent des repas cuisinés chez eux via des applications.
+A) Un cadre légal avec formation à l’hygiène :: Encadrer.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Des cuisiniers amateurs deviennent entrepreneurs.
+B) Les interdire :: Santé.
+   securite+1 economie-1 | g-1 c+2 d+2 e0
+   > Les applications ferment.
+C) Rien :: Tolérance.
+   securite-1 | g0 c+1 d+1 e0
+   > Une intoxication fait parler.
