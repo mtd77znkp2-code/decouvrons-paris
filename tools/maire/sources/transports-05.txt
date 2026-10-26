@@ -1,0 +1,484 @@
+// Transports, série 5
+=== tra-146 | transports | Des navettes autonomes au bois de Vincennes
+Un constructeur propose des minibus sans chauffeur pour desservir le bois.
+A) Lancer l’expérimentation :: Innovation.
+   bud-2 transports+1 | g0 c+2 d+1 e+1
+   > Les navettes circulent au pas entre les lacs.
+B) Préférer un bus électrique classique :: Fiabilité.
+   rec-0.02x60 transports+1 | g+1 c+2 d+1 e+1
+   > Une ligne de bus dessert le bois.
+C) Refuser :: Laisser le bois tranquille.
+   ecologie+1 | g+1 c+1 d0 e0
+   > Le bois reste piéton et cycliste.
+
+=== tra-147 | transports | Un tramway le long de la Seine rive droite
+Les urbanistes proposent un tramway sur les quais hauts, de Bercy au Trocadéro.
+A) Lancer les études :: Ambition.
+   bud-5 transports+1 ecologie+1 | g+2 c+2 d0 e+1
+   ~50 transports+2 > Le tramway des quais est inauguré.
+   > Les études commencent.
+B) Un bus à haut niveau de service :: Moins cher.
+   bud-2 transports+1 | g+1 c+2 d+1 e+1
+   > Des bus rapides circulent sur les quais.
+C) Rien :: Trop cher.
+   transports-1 | g0 c+1 d+1 e0
+   > Les quais restent embouteillés.
+
+=== tra-148 | transports | Les hélicoptères touristiques au-dessus de Paris
+Des vols panoramiques survolent la ville et exaspèrent les riverains de l’héliport.
+A) Interdire les vols touristiques :: Calme.
+   bon+1 economie-1 | g+1 c+2 d+1 e+1
+   > Le ciel redevient silencieux.
+B) Limiter le nombre de vols :: Compromis.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les vols sont réduits de moitié.
+C) Laisser faire :: Tourisme.
+   economie+1 bon-1 | g-1 c+1 d+2 e0
+   > Les rotations continuent.
+
+=== tra-149 | transports | Les couloirs de correspondance interminables
+Changer de ligne à Châtelet impose dix minutes de marche dans des couloirs.
+A) Des tapis roulants neufs :: Confort.
+   bud-3 transports+1 | g0 c+2 d+1 e+1
+   > Les correspondances raccourcissent.
+B) Une meilleure signalétique :: Simple.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Les voyageurs se perdent moins.
+C) Rien :: RATP.
+   transports-1 | g0 c+1 d+1 e0
+   > Les voyageurs râlent.
+
+=== tra-150 | transports | Des portes palières sur les quais du métro
+Des portes vitrées empêcheraient chutes et suicides sur les voies.
+A) Équiper les lignes les plus fréquentées :: Sécurité.
+   bud-4 transports+1 securite+1 | g0 c+2 d+2 e+1
+   > Les accidents disparaissent sur ces lignes.
+B) Commencer par une ligne pilote :: Tester.
+   bud-2 securite+1 | g0 c+2 d+1 e+1
+   > Une ligne est équipée.
+C) Rien :: Coût.
+   securite-1 | g0 c+1 d+1 e0
+   > Les accidents continuent.
+
+=== tra-151 | transports | Payer le bus par carte bancaire
+Les touristes ne comprennent pas comment acheter un ticket de bus.
+A) Le paiement sans contact à bord :: Simplicité.
+   bud-2 transports+1 economie+1 | g0 c+2 d+1 e+1
+   > Les voyageurs paient d’un geste.
+B) Des distributeurs aux arrêts :: Intermédiaire.
+   bud-1 transports+1 | g0 c+2 d+1 e0
+   > Les arrêts s’équipent.
+C) Rien :: Application.
+   transports-1 | g0 c+1 d+1 e0
+   > Les touristes montent sans payer.
+
+=== tra-152 | transports | Les stations de taxi désertes
+On attend un taxi des heures à certaines stations le soir.
+A) Des bonus pour les taxis qui desservent ces stations :: Inciter.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Les taxis reviennent.
+B) Des navettes municipales le soir :: Service.
+   rec-0.02x60 transports+1 | g+1 c+2 d+1 e+1
+   > Des navettes relient les quartiers.
+C) Rien :: Marché.
+   transports-1 | g0 c+1 d+1 e0
+   > Les habitants rentrent à pied.
+
+=== tra-153 | transports | Les tourniquets du métro trop étroits
+Valises, poussettes et sacs de courses restent coincés dans les portillons.
+A) Des portillons larges dans chaque station :: Accessibilité.
+   bud-3 transports+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les voyageurs passent sans se contorsionner.
+B) Seulement dans les gares et stations touristiques :: Cibler.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Les touristes passent plus facilement.
+C) Rien :: Lutte contre la fraude.
+   bon-1 | g0 c+1 d+2 e0
+   > Les poussettes restent bloquées.
+=== tra-154 | transports | Les monoroues électriques sur les trottoirs
+Des monoroues filent à 30 km/h entre les piétons.
+A) Les interdire sur les trottoirs :: Sécurité.
+   securite+1 | g0 c+2 d+2 e0
+   > Les monoroues descendent sur la chaussée.
+B) Limiter leur vitesse :: Encadrer.
+   securite+1 | g+1 c+2 d+1 e+1
+   > Les monoroues ralentissent.
+C) Rien :: Nouvelles mobilités.
+   securite-1 | g0 c+1 d+1 e0
+   > Un piéton est renversé.
+
+=== tra-155 | transports | Des abris à vélos dans les rues
+Les habitants n’ont pas de local et gardent leur vélo dans l’appartement.
+A) Des boxes sécurisés dans chaque rue :: Équiper.
+   bud-3 transports+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les vélos dorment à l’abri.
+B) Des abris payants au mois :: Recettes.
+   rec+0.01x60 transports+1 | g0 c+2 d+1 e+1
+   > Les abris se remplissent.
+C) Rien :: Copropriétés.
+   transports-1 | g0 c+1 d+1 e0
+   > Les vélos encombrent les halls.
+
+=== tra-156 | transports | Les places de livraison occupées par des voitures
+Les livreurs se garent en double file faute de place libre.
+A) Des contrôles réguliers :: Fermeté.
+   transports+1 | g0 c+2 d+2 e0
+   > Les places se libèrent.
+B) Des places intelligentes réservables :: Technologie.
+   bud-2 transports+1 | g0 c+2 d+1 e+1
+   > Les livreurs réservent leur créneau.
+C) Rien :: Tolérance.
+   transports-1 | g0 c+1 d+1 e0
+   > La double file continue.
+
+=== tra-157 | transports | Le prolongement du RER E
+Le RER E doit traverser Paris vers l’ouest, mais les travaux prennent du retard.
+A) Cofinancer pour accélérer :: Priorité.
+   bud-5 transports+1 | g0 c+2 d+1 e+1
+   > Les travaux accélèrent.
+B) Pousser l’État et la Région :: Pression.
+   coh+1 | g0 c+2 d+1 e+1
+   > Le calendrier est tenu.
+C) Rien :: Pas notre compétence.
+   transports-1 | g0 c+1 d+1 e0
+   > Les retards s’accumulent.
+
+=== tra-158 | transports | Les quais du RER trop étroits
+À l’heure de pointe, les voyageurs s’entassent au bord des voies.
+A) Élargir les quais :: Sécurité.
+   bud-4 transports+1 securite+1 | g0 c+2 d+1 e+1
+   > Les quais respirent.
+B) Des agents pour réguler les flux :: Organiser.
+   rec-0.02x60 securite+1 | g0 c+2 d+2 e0
+   > Les flux sont canalisés.
+C) Rien :: SNCF.
+   securite-1 | g0 c+1 d+1 e0
+   > Un voyageur tombe sur les voies.
+
+=== tra-159 | transports | Traverser le périphérique à pied
+Les piétons doivent traverser des échangeurs dangereux pour aller en banlieue.
+A) Des passerelles piétonnes :: Relier.
+   bud-4 transports+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des passerelles enjambent le périphérique.
+B) Sécuriser les passages existants :: Pragmatisme.
+   bud-2 securite+1 | g0 c+2 d+1 e+1
+   > Les passages sont éclairés.
+C) Rien :: Coût.
+   securite-1 | g0 c+1 d+1 e0
+   > Le périphérique reste une frontière.
+
+=== tra-160 | transports | Les pistes trop étroites pour les vélos-cargos
+Les vélos-cargos ne peuvent pas doubler et bloquent les pistes.
+A) Élargir les pistes principales :: Adapter.
+   bud-3 transports+1 | g+1 c+2 d+1 e+1
+   > Les cargos et les vélos cohabitent.
+B) Des itinéraires conseillés pour les cargos :: Organiser.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Les cargos empruntent des rues calmes.
+C) Rien :: Patience.
+   transports-1 | g0 c+1 d+1 e0
+   > Les cyclistes s’énervent.
+
+=== tra-161 | transports | Piétonniser les abords de la tour Eiffel
+Les voitures traversent le site le plus visité du monde.
+A) Piétonniser le pont d’Iéna :: Ambition.
+   bud-3 transports-1 bon+1 | g+2 c+2 d0 e+1
+   > Un grand parc relie le Trocadéro au Champ-de-Mars.
+B) Piétonniser seulement le week-end :: Tester.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les familles profitent du pont le dimanche.
+C) Rien :: Circulation.
+   transports+1 bon-1 | g-1 c+1 d+2 e0
+   > Les voitures continuent.
+
+=== tra-162 | transports | Le fret ferroviaire jusqu’au cœur de Paris
+Des trains de marchandises pourraient livrer des entrepôts urbains.
+A) Rouvrir des gares de fret :: Logistique verte.
+   bud-4 transports+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Des trains livrent les supermarchés.
+B) Un entrepôt pilote :: Tester.
+   bud-2 ecologie+1 | g0 c+2 d+1 e+1
+   > Un premier entrepôt ouvre.
+C) Rien :: Camions.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les camions continuent.
+
+=== tra-163 | transports | Les bus électriques en panne l’hiver
+Par grand froid, des bus électriques tombent en panne de batterie.
+A) Des recharges en bout de ligne :: Adapter.
+   bud-2 transports+1 | g0 c+2 d+1 e+1
+   > Les bus tiennent la journée.
+B) Garder des bus de secours :: Prudence.
+   bud-1 transports+1 | g0 c+2 d+1 e0
+   > Les bus de secours prennent le relais.
+C) Rien :: Constructeur.
+   transports-1 | g0 c+1 d+1 e0
+   > Les voyageurs attendent dans le froid.
+
+=== tra-164 | transports | Des tickets moins chers en heures creuses
+Un tarif réduit en heures creuses pourrait désengorger les heures de pointe.
+A) Un tarif heures creuses :: Lisser.
+   rec-0.02x60 transports+1 | g+1 c+2 d+1 e+1
+   > Les voyageurs décalent leurs trajets.
+B) Négocier avec les entreprises des horaires décalés :: Organiser.
+   transports+1 | g0 c+2 d+1 e+1
+   > Des entreprises décalent leurs horaires.
+C) Rien :: Tarif unique.
+   transports-1 | g0 c+1 d+1 e0
+   > Les rames restent bondées.
+
+=== tra-165 | transports | Végétaliser les toits des abribus
+Des plantes sur les abribus rafraîchiraient l’air et nourriraient les abeilles.
+? distinct
+A) Végétaliser tous les abribus :: Verdir.
+   bud-2 ecologie+1 | g+2 c+2 d0 e+1
+   > Les abribus se couvrent de fleurs.
+B) Seulement les plus ensoleillés :: Cibler.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Cent abribus sont plantés.
+C) Rien :: Entretien.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les abribus restent nus.
+
+=== tra-166 | transports | Les voitures sans permis des adolescents
+Des adolescents roulent en voiturette électrique et encombrent les rues.
+A) Des contrôles de stationnement stricts :: Fermeté.
+   transports+1 | g0 c+2 d+2 e0
+   > Les voiturettes rentrent au garage.
+B) Une formation obligatoire :: Sécurité.
+   securite+1 | g0 c+2 d+1 e+1
+   > Les jeunes conducteurs sont formés.
+C) Rien :: Liberté.
+   transports-1 | g0 c+1 d+1 e0
+   > Les voiturettes se multiplient.
+
+=== tra-167 | transports | Les applications GPS envoient les voitures dans les petites rues
+Des rues résidentielles deviennent des raccourcis embouteillés.
+A) Un plan de circulation anti-transit :: Protéger.
+   transports-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les raccourcis sont coupés.
+B) Négocier avec les applications :: Dialogue.
+   transports+1 | g0 c+2 d+1 e+1
+   > Les applications évitent certaines rues.
+C) Rien :: Liberté de circuler.
+   bon-1 | g0 c+1 d+1 e0
+   > Les riverains manifestent.
+
+=== tra-168 | transports | Des passages piétons en trompe-l’œil
+Des passages peints en relief incitent les voitures à ralentir.
+? distinct
+A) En peindre devant les écoles :: Sécurité.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les voitures freinent.
+B) Tester sur quelques carrefours :: Prudence.
+   securite+1 | g0 c+2 d+1 e+1
+   > L’effet est mesuré.
+C) Rien :: Gadget.
+   securite-1 | g0 c+1 d+1 e0
+   > Rien ne change.
+
+=== tra-169 | transports | Les vieux scooters deux-temps
+Les scooters anciens polluent autant que cinquante voitures.
+A) Une prime à la casse :: Accompagner.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les vieux scooters disparaissent.
+B) Les interdire dans la zone à faibles émissions :: Fermeté.
+   ecologie+1 bon-1 | g+1 c+2 d+1 e0
+   > Les livreurs protestent.
+C) Rien :: Pouvoir d’achat.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les fumées bleues continuent.
+
+=== tra-170 | transports | Des consignes pour les valises des touristes
+Les touristes traînent leurs valises toute la journée avant leur train.
+A) Des consignes municipales dans les gares :: Service.
+   bud-2 rec+0.01x60 economie+1 | g0 c+2 d+1 e+1
+   > Les touristes visitent sans bagages.
+B) Laisser des commerçants faire consigne :: Partenariat.
+   economie+1 | g0 c+2 d+1 e+1
+   > Les commerces deviennent consignes.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+1 e0
+   > Les valises roulent sur les pavés.
+
+=== tra-171 | transports | Le stationnement des infirmières à domicile
+Les soignants passent des heures à chercher une place et prennent des amendes.
+A) Un macaron gratuit pour les soignants :: Soutenir.
+   rec-0.01x60 services+1 | g0 c+2 d+1 e+1
+   > Les soignants se garent facilement.
+B) Des vélos électriques prêtés :: Alternative.
+   bud-1 services+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les infirmières pédalent.
+C) Rien :: Règles communes.
+   services-1 | g0 c+1 d+1 e0
+   > Des soignants arrêtent les visites.
+
+=== tra-172 | transports | Un chantier de métro bloque une rue commerçante
+Trois ans de travaux menacent la survie des commerces.
+A) Indemniser les commerçants :: Solidarité.
+   bud-3 economie+1 | g0 c+2 d+1 e+1
+   > Les commerces tiennent.
+B) Réorganiser le chantier pour garder un passage :: Adapter.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Les clients passent.
+C) Rien :: Projet d’intérêt général.
+   economie-1 | g0 c+1 d+1 e0
+   > Des commerces ferment.
+
+=== tra-173 | transports | Le vélo dans le RER
+Les cyclistes veulent monter avec leur vélo dans le RER à toute heure.
+A) Des voitures dédiées aux vélos :: Intermodalité.
+   bud-2 transports+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les cyclistes montent à bord.
+B) Seulement hors heures de pointe :: Compromis.
+   transports+1 | g0 c+2 d+1 e+1
+   > Les vélos sont autorisés en journée.
+C) Rien :: Saturation.
+   transports-1 | g0 c+1 d+1 e0
+   > Les cyclistes restent à quai.
+
+=== tra-174 | transports | Des bus express sur le périphérique
+Une ligne de bus rapide ferait le tour de Paris par le périphérique.
+A) Une voie réservée et des bus express :: Ambition.
+   bud-3 transports+1 | g+1 c+2 d+1 e+1
+   > Le tour de Paris se fait en cinquante minutes.
+B) Une ligne d’essai sur un tronçon :: Tester.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Les premiers bus circulent.
+C) Rien :: Embouteillages.
+   transports-1 | g0 c+1 d+1 e0
+   > Le projet reste un rêve.
+
+=== tra-175 | transports | Les particules fines dans le métro
+L’air des stations contient plus de particules que les grands boulevards.
+A) Des ventilations neuves :: Santé.
+   bud-4 transports+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > L’air des stations s’améliore.
+B) Des freins moins polluants :: Technologie.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les rames neuves polluent moins.
+C) Rien :: RATP.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les voyageurs respirent mal.
+
+=== tra-176 | transports | Une navette vers les puces de Saint-Ouen
+Les visiteurs des puces se perdent entre le métro et le marché.
+A) Une navette électrique le week-end :: Tourisme.
+   rec-0.01x60 transports+1 economie+1 | g0 c+2 d+1 e+1
+   > Les chineurs arrivent facilement.
+B) Une signalétique depuis le métro :: Simple.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Le chemin est indiqué.
+C) Rien :: Saint-Ouen.
+   economie-1 | g0 c+1 d+1 e0
+   > Les touristes se perdent.
+
+=== tra-177 | transports | Des vélos partagés sans station
+Un opérateur veut déployer des vélos à déposer n’importe où.
+A) Autoriser avec des zones de dépôt :: Encadrer.
+   transports+1 | g0 c+2 d+1 e+1
+   > Les vélos se garent dans des zones.
+B) Refuser :: Protéger Vélib’.
+   transports-1 | g0 c+1 d+1 e0
+   > Vélib’ garde son monopole.
+C) Autoriser sans contrainte :: Liberté.
+   transports+1 proprete-1 | g-1 c+1 d+2 e0
+   > Les trottoirs se remplissent de vélos.
+
+=== tra-178 | transports | La priorité aux bus aux feux
+Les bus attendent aux feux rouges et perdent de précieuses minutes.
+A) Des feux qui passent au vert pour les bus :: Rapidité.
+   bud-2 transports+1 | g+1 c+2 d+1 e+1
+   > Les bus gagnent dix minutes par trajet.
+B) Seulement sur les lignes principales :: Cibler.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Les grandes lignes accélèrent.
+C) Rien :: Coût.
+   transports-1 | g0 c+1 d+1 e0
+   > Les bus restent lents.
+
+=== tra-179 | transports | Remettre des trains sur la Petite Ceinture
+Des passionnés veulent faire rouler des trains touristiques sur l’ancienne voie.
+A) Un train touristique le week-end :: Patrimoine.
+   bud-3 economie+1 bon+1 | g0 c+2 d+1 e+1
+   > Des familles redécouvrent la Petite Ceinture.
+B) Garder une promenade verte :: Nature.
+   ecologie+1 bon+1 | g+2 c+2 d0 e+1
+   > La voie reste un jardin linéaire.
+C) Rien :: SNCF.
+   bon-1 | g0 c+1 d+1 e0
+   > La voie reste fermée.
+
+=== tra-180 | transports | L’éclairage des pistes cyclables la nuit
+Des pistes cyclables traversent des zones obscures.
+? distinct
+A) Un éclairage LED dédié :: Sécurité.
+   bud-2 securite+1 transports+1 | g0 c+2 d+1 e+1
+   > Les pistes sont éclairées.
+B) Des plots lumineux au sol :: Discret.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les pistes brillent doucement.
+C) Rien :: Coût.
+   securite-1 | g0 c+1 d+1 e0
+   > Les cyclistes ont peur la nuit.
+
+=== tra-181 | transports | Des compteurs de vélos sur les pistes
+Des écrans affichant le nombre de cyclistes encourageraient le vélo.
+A) En installer sur les grands axes :: Motiver.
+   bud-1 transports+1 | g+1 c+2 d+1 e+1
+   > Les compteurs affichent des records.
+B) Publier les données en ligne :: Transparence.
+   transports+1 | g0 c+2 d+1 e+1
+   > Les données sont publiques.
+C) Rien :: Gadget.
+   bon-1 | g0 c+1 d+1 e0
+   > Rien ne change.
+
+=== tra-182 | transports | Le code de la rue enseigné aux collégiens
+Les collégiens circulent à vélo et trottinette sans connaître les règles.
+A) Des cours dans tous les collèges :: Éduquer.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les collégiens apprennent les règles.
+B) Un permis vélo :: Responsabiliser.
+   securite+1 | g0 c+2 d+1 e+1
+   > Les élèves passent leur permis vélo.
+C) Rien :: Parents.
+   securite-1 | g0 c+1 d+1 e0
+   > Les accidents continuent.
+
+=== tra-183 | transports | Les trottinettes dans les zones piétonnes
+Des trottinettes slaloment dans les rues piétonnes.
+A) Les interdire dans les zones piétonnes :: Protéger.
+   securite+1 | g0 c+2 d+2 e0
+   > Les piétons respirent.
+B) Limiter leur vitesse à 10 km/h :: Encadrer.
+   securite+1 | g+1 c+2 d+1 e+1
+   > Les trottinettes ralentissent.
+C) Rien :: Mobilité.
+   securite-1 | g0 c+1 d+1 e0
+   > Un enfant est percuté.
+
+=== tra-184 | transports | Un dépôt de bus à transformer
+Un vieux dépôt de bus en plein quartier pourrait être déplacé.
+A) Le déplacer et construire des logements :: Densifier.
+   bud-5 logement+1 | g+1 c+2 d+1 e+1
+   > Un nouveau quartier remplace le dépôt.
+B) Le couvrir et construire au-dessus :: Mixte.
+   bud-4 logement+1 transports+1 | g+1 c+2 d+1 e+1
+   > Des logements surplombent les bus.
+C) Rien :: Service.
+   transports+1 | g0 c+1 d+1 e0
+   > Le dépôt reste.
+
+=== tra-185 | transports | Les cars scolaires pour les sorties
+Les écoles ne trouvent plus de cars pour les sorties scolaires.
+? distinct
+A) Une flotte municipale de cars :: Service.
+   bud-3 services+1 | g+1 c+2 d+1 e+1
+   > Les sorties reprennent.
+B) Privilégier les sorties en métro :: Simplicité.
+   transports+1 | g0 c+2 d+1 e+1
+   > Les classes prennent le métro.
+C) Rien :: Écoles.
+   services-1 | g0 c+1 d+1 e0
+   > Les sorties sont annulées.
