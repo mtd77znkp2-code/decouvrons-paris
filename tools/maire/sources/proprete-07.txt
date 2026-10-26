@@ -1,0 +1,301 @@
+// Propreté, série 7
+=== pro-226 | proprete | Les canettes cachées dans les buissons
+Les jardiniers trouvent des centaines de canettes coincées dans les haies.
+A) Un nettoyage approfondi des massifs :: Nettoyer.
+   rec-0.01x60 proprete+1 | g0 c+2 d+1 e+1
+   > Les haies sont débarrassées.
+B) Une consigne pour les canettes :: Prévenir.
+   bud-1 proprete+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les canettes rapportent quelques centimes.
+C) Rien :: Coût.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les buissons deviennent des poubelles.
+
+=== pro-227 | proprete | Des bancs publics jamais lavés
+Taches, fientes et chewing-gums couvrent les bancs des places.
+A) Un lavage mensuel de tous les bancs :: Entretenir.
+   rec-0.01x60 proprete+1 bon+1 | g0 c+2 d+1 e+1
+   > Les bancs redeviennent accueillants.
+B) Des bancs en matériaux faciles à nettoyer :: Remplacer.
+   bud-2 proprete+1 | g0 c+2 d+1 e+1
+   > Les nouveaux bancs se lavent d’un coup d’éponge.
+C) Rien :: Coût.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les passants restent debout.
+=== pro-228 | proprete | La peinture versée dans les caniveaux
+Des artisans rincent leurs pots de peinture et de ciment dans les avaloirs.
+A) Des amendes lourdes :: Fermeté.
+   proprete+1 ecologie+1 | g0 c+2 d+2 e0
+   > Les rinçages sauvages cessent.
+B) Des points de collecte des résidus de chantier :: Équiper.
+   bud-1 proprete+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les artisans déposent leurs résidus.
+C) Rien :: Difficile à contrôler.
+   ecologie-1 | g0 c+1 d+1 e0
+   > La peinture finit dans la Seine.
+
+=== pro-229 | proprete | Les abords des lycées après la pause
+Papiers, canettes et mégots jonchent les trottoirs des lycées.
+A) Des poubelles et cendriers devant les lycées :: Équiper.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Les déchets finissent à la poubelle.
+B) Un projet de propreté avec les élèves :: Responsabiliser.
+   bon+1 proprete+1 | g+1 c+2 d+1 e+1
+   > Les lycéens prennent soin de leurs abords.
+C) Rien :: Région.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les riverains se plaignent.
+
+=== pro-230 | proprete | Distribuer des cendriers de poche
+Des millions de mégots finissent par terre chaque jour.
+A) Distribuer cent mille cendriers de poche :: Équiper.
+   bud-1 proprete+1 | g+1 c+2 d+1 e+1
+   > Les fumeurs gardent leurs mégots.
+B) Les faire financer par les buralistes :: Partenariat.
+   proprete+1 | g0 c+2 d+1 e+1
+   > Les buralistes les offrent.
+C) Rien :: Amendes.
+   proprete-1 | g0 c+1 d+2 e0
+   > Les mégots continuent de tomber.
+
+=== pro-231 | proprete | Les vidanges de voitures dans la rue
+Des mécaniciens improvisés vident l’huile des moteurs dans les caniveaux.
+A) Verbaliser et saisir :: Fermeté.
+   proprete+1 ecologie+1 | g0 c+2 d+2 e0
+   > Les garages sauvages disparaissent.
+B) Un garage solidaire encadré :: Alternative.
+   bud-1 economie+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les réparations se font proprement.
+C) Rien :: Difficile à prouver.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Des taches noires couvrent les trottoirs.
+
+=== pro-232 | proprete | Les barrières de chantier oubliées
+Des barrières et rubalises traînent des mois après la fin des travaux.
+A) Une amende par jour de retard :: Responsabiliser.
+   rec+0.01x60 proprete+1 | g0 c+2 d+2 e0
+   > Les entreprises récupèrent leur matériel.
+B) Les enlever et facturer :: Agir.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Les trottoirs sont dégagés.
+C) Rien :: Patience.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les barrières servent de dépotoir.
+
+=== pro-233 | proprete | Les déjections humaines dans certaines rues
+Faute de toilettes, certaines rues sont souillées chaque matin.
+A) Des toilettes ouvertes jour et nuit :: Dignité.
+   rec-0.02x60 proprete+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les rues sont propres le matin.
+B) Un nettoyage renforcé à l’aube :: Nettoyer.
+   rec-0.01x60 proprete+1 | g0 c+2 d+1 e0
+   > Les agents passent avant les écoliers.
+C) Rien :: Coût.
+   proprete-2 | g-1 c+1 d+1 e0
+   > Les riverains n’en peuvent plus.
+
+=== pro-234 | proprete | Les toilettes de chantier mal entretenues
+Les cabines de chantier débordent et sentent sur les trottoirs.
+A) Imposer un entretien quotidien :: Hygiène.
+   proprete+1 | g0 c+2 d+2 e0
+   > Les cabines sont propres.
+B) Les installer à l’intérieur des chantiers :: Déplacer.
+   proprete+1 | g0 c+2 d+1 e+1
+   > Les trottoirs sont libérés.
+C) Rien :: Temporaire.
+   proprete-1 | g0 c+1 d+1 e0
+   > L’odeur persiste tout l’été.
+
+=== pro-235 | proprete | Un bateau ramasse-déchets sur la Seine
+Un bateau équipé de filets pourrait collecter les déchets flottants.
+? distinct
+A) Acheter le bateau :: Agir.
+   bud-2 proprete+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Des tonnes de plastique sont repêchées.
+B) Le louer l’été :: Tester.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Le bateau navigue trois mois.
+C) Rien :: Voies navigables.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les déchets descendent vers la mer.
+
+=== pro-236 | proprete | Des filets aux sorties d’égouts
+Les déchets de rue partent dans la Seine par les déversoirs d’orage.
+A) Des filets sur tous les déversoirs :: Retenir.
+   bud-2 ecologie+1 proprete+1 | g+1 c+2 d+1 e+1
+   > Les filets se remplissent de bouteilles.
+B) Sur les plus gros seulement :: Prioriser.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > La moitié des déchets est retenue.
+C) Rien :: Coût.
+   ecologie-1 | g0 c+1 d+1 e0
+   > La Seine charrie les déchets.
+
+=== pro-237 | proprete | Une campagne de propreté avec des célébrités
+Des sportifs et chanteurs proposent de tourner des spots contre les incivilités.
+A) Lancer la campagne :: Sensibiliser.
+   bud-1 proprete+1 bon+1 | g0 c+2 d+1 e+1
+   > Les spots font le tour des réseaux.
+B) Une campagne avec des enfants des écoles :: Proximité.
+   bud-1 proprete+1 | g+1 c+2 d+1 e+1
+   > Les dessins d’enfants tapissent les abribus.
+C) Rien :: Les campagnes ne servent à rien.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les incivilités continuent.
+
+=== pro-238 | proprete | Des voitures bloquent la collecte des poubelles
+Les camions-bennes ne passent pas à cause des voitures garées en double file.
+A) Enlèvement en fourrière immédiat :: Fermeté.
+   proprete+1 | g0 c+2 d+2 e0
+   > Les camions circulent.
+B) Des créneaux de collecte affichés et respectés :: Organiser.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Les automobilistes libèrent la rue.
+C) Rien :: Patience.
+   proprete-1 | g0 c+1 d+1 e0
+   > Des rues ne sont pas collectées.
+
+=== pro-239 | proprete | Les couches jetées dans les corbeilles des squares
+Les corbeilles des aires de jeux débordent de couches sales.
+A) Des poubelles fermées près des aires de jeux :: Hygiène.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Les odeurs disparaissent.
+B) Des tables à langer avec poubelle dédiée :: Équiper.
+   bud-1 proprete+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les parents changent leurs bébés proprement.
+C) Rien :: Parents.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les mouches tournent autour des bancs.
+
+=== pro-240 | proprete | Les débris d’accident laissés sur la chaussée
+Après un accident, des éclats de plastique et de verre restent des jours.
+A) Une intervention systématique après chaque accident :: Réagir.
+   rec-0.01x60 proprete+1 securite+1 | g0 c+2 d+2 e+1
+   > La chaussée est nettoyée en une heure.
+B) Faire payer les assureurs :: Facturer.
+   rec+0.01x60 proprete+1 | g0 c+2 d+2 e0
+   > Les assureurs financent le nettoyage.
+C) Rien :: Collecte normale.
+   securite-1 | g0 c+1 d+1 e0
+   > Des cyclistes crèvent.
+
+=== pro-241 | proprete | Des déchets tombés des camions-bennes
+Les camions laissent tomber des sacs et des liquides pendant la collecte.
+A) Des bennes étanches :: Équiper.
+   bud-2 proprete+1 | g0 c+2 d+1 e+1
+   > Les rues restent propres après la collecte.
+B) Un balayage derrière chaque benne :: Méthode.
+   rec-0.01x60 proprete+1 | g0 c+2 d+1 e+1
+   > Un agent ramasse ce qui tombe.
+C) Rien :: Inévitable.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les jus de poubelle coulent dans la rue.
+
+=== pro-242 | proprete | Des bouteilles d’urine le long du périphérique
+Des chauffeurs pressés jettent leurs bouteilles sur les talus.
+A) Des aires de repos avec toilettes aux portes :: Alternative.
+   bud-2 proprete+1 | g+1 c+2 d+1 e+1
+   > Les chauffeurs s’arrêtent aux aires.
+B) Un ramassage régulier des talus :: Nettoyer.
+   rec-0.01x60 proprete+1 | g0 c+2 d+1 e0
+   > Les talus sont nettoyés chaque mois.
+C) Rien :: État.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les talus deviennent répugnants.
+
+=== pro-243 | proprete | Afficher les tonnes de déchets ramassées
+Des écrans montreraient chaque jour le volume ramassé dans le quartier.
+A) Installer des compteurs dans les rues :: Sensibiliser.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Les habitants prennent conscience.
+B) Publier les chiffres en ligne :: Transparence.
+   proprete+1 | g0 c+2 d+1 e+1
+   > Les quartiers se comparent.
+C) Rien :: Gadget.
+   bon-1 | g0 c+1 d+1 e0
+   > Les chiffres restent inconnus.
+
+=== pro-244 | proprete | Les déchets des réparateurs de téléphones
+Écrans et batteries usagés finissent dans les poubelles de rue.
+? distinct
+A) Une collecte spécialisée pour les réparateurs :: Recycler.
+   bud-1 proprete+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les batteries partent au recyclage.
+B) Des contrôles :: Fermeté.
+   proprete+1 | g0 c+2 d+2 e0
+   > Les réparateurs trient leurs déchets.
+C) Rien :: Petits commerces.
+   ecologie-1 securite-1 | g0 c+1 d+1 e0
+   > Une batterie prend feu dans une poubelle.
+
+=== pro-245 | proprete | Récompenser les habitants qui ramassent
+Une application donnerait des points aux habitants qui nettoient leur rue.
+A) Des points échangeables contre des entrées de piscine :: Motiver.
+   bud-1 proprete+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des familles ramassent les déchets le dimanche.
+B) Un simple classement des quartiers :: Émulation.
+   proprete+1 | g0 c+2 d+1 e+1
+   > Les quartiers rivalisent.
+C) Rien :: Service public.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les habitants attendent les agents.
+
+=== pro-246 | proprete | Un agent de propreté attitré par quartier
+Les habitants ne connaissent jamais l’agent qui nettoie leur rue.
+A) Un agent référent par quartier :: Proximité.
+   rec-0.02x60 proprete+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les habitants signalent directement à leur agent.
+B) Des équipes de secteur stables :: Organiser.
+   proprete+1 coh+1 | g0 c+2 d+1 e+1
+   > Les équipes connaissent leurs rues.
+C) Rien :: Rotation.
+   proprete-1 | g0 c+1 d+1 e0
+   > Le lien reste anonyme.
+
+=== pro-247 | proprete | Des balayeurs à vélo
+Des agents à vélo-cargo pourraient nettoyer les ruelles inaccessibles aux engins.
+A) Équiper des brigades à vélo :: Agilité.
+   bud-1 proprete+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les ruelles sont nettoyées.
+B) Un test dans un arrondissement :: Prudence.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Le test est concluant.
+C) Rien :: Engins.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les ruelles restent sales.
+
+=== pro-248 | proprete | Les trottoirs glissants après le marché
+Fruits écrasés et feuilles de salade rendent les trottoirs dangereux.
+A) Un lavage immédiat après le marché :: Réactivité.
+   rec-0.01x60 proprete+1 securite+1 | g0 c+2 d+1 e+1
+   > Les trottoirs sont propres à 14 heures.
+B) Obliger les marchands à nettoyer leur emplacement :: Responsabiliser.
+   proprete+1 economie-1 | g0 c+2 d+2 e0
+   > Les marchands balaient avant de partir.
+C) Rien :: Collecte du soir.
+   securite-1 | g0 c+1 d+1 e0
+   > Un passant glisse.
+
+=== pro-249 | proprete | Des poubelles parlantes pour les enfants
+Des corbeilles qui remercient quand on y jette un déchet amuseraient les enfants.
+A) En installer dans les squares :: Ludique.
+   bud-1 proprete+1 bon+1 | g0 c+2 d+1 e+1
+   > Les enfants ramassent tout ce qu’ils trouvent.
+B) Une seule pour tester :: Prudence.
+   proprete+1 | g0 c+2 d+1 e+1
+   > Le test fait sourire.
+C) Rien :: Gadget.
+   bon-1 | g0 c+1 d+1 e0
+   > Les corbeilles restent muettes.
+
+=== pro-250 | proprete | Les écoliers nettoient leur quartier
+Des enseignants proposent une demi-journée de ramassage avec les élèves.
+A) Une journée annuelle dans toutes les écoles :: Éduquer.
+   bud-1 proprete+1 services+1 | g+1 c+2 d+1 e+1
+   > Les enfants ramassent des tonnes de déchets.
+B) Seulement les écoles volontaires :: Encourager.
+   proprete+1 | g0 c+2 d+1 e+1
+   > Quelques classes participent.
+C) Refuser :: Ce n’est pas le rôle des enfants.
+   bon-1 | g0 c+1 d+2 e0
+   > Les élèves restent en classe.
