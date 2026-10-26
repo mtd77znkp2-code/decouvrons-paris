@@ -1,0 +1,305 @@
+// Transports, série 7
+=== tra-226 | transports | Les bus qui partent en avance
+Des bus passent avant l’heure affichée, les voyageurs les ratent.
+A) Imposer le respect des horaires :: Fiabilité.
+   transports+1 | g0 c+2 d+2 e+1
+   > Les bus partent à l’heure.
+B) Afficher le temps réel partout :: Informer.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Les voyageurs voient arriver le bus.
+C) Rien :: RATP.
+   transports-1 | g0 c+1 d+1 e0
+   > Les voyageurs regardent le bus s’éloigner.
+
+=== tra-227 | transports | Les stations Vélib’ vides en haut des collines
+Personne ne remonte les vélos à Belleville ou Montmartre.
+A) Des camions de rééquilibrage plus fréquents :: Service.
+   rec-0.01x60 transports+1 | g0 c+2 d+1 e+1
+   > Les stations du haut sont remplies.
+B) Un bonus pour qui remonte un vélo :: Inciter.
+   bud-1 transports+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les cyclistes gagnent des minutes gratuites.
+C) Rien :: Opérateur.
+   transports-1 | g0 c+1 d+1 e0
+   > Les stations du haut restent vides.
+
+=== tra-228 | transports | Les places de livraison ouvertes aux riverains la nuit
+Les places de livraison sont vides la nuit pendant que les riverains tournent.
+? distinct
+A) Les ouvrir de 20 h à 7 h :: Partager.
+   transports+1 bon+1 | g0 c+2 d+1 e+1
+   > Les riverains se garent la nuit.
+B) Seulement le dimanche :: Tester.
+   bon+1 | g0 c+2 d+1 e+1
+   > Le dimanche, les places sont partagées.
+C) Rien :: Livraisons d’abord.
+   bon-1 | g0 c+1 d+1 e0
+   > Les places restent vides la nuit.
+
+=== tra-229 | transports | Les vieux trains du RER
+Des rames de quarante ans tombent en panne chaque semaine.
+A) Cofinancer de nouvelles rames :: Investir.
+   bud-5 transports+1 | g0 c+2 d+1 e+1
+   > Les nouvelles rames arrivent.
+B) Faire pression sur la Région :: Exiger.
+   coh+1 | g0 c+2 d+1 e+1
+   > Le calendrier est accéléré.
+C) Rien :: Région.
+   transports-1 | g0 c+1 d+1 e0
+   > Les pannes continuent.
+
+=== tra-230 | transports | Des vélobus pour aller à l’école
+Des parents accompagnent des groupes d’enfants à vélo sur un trajet fixe.
+? distinct
+A) Sécuriser les itinéraires :: Encourager.
+   bud-1 transports+1 securite+1 | g+1 c+2 d+1 e+1
+   > Des cortèges d’enfants à vélo sillonnent les rues.
+B) Former les parents accompagnateurs :: Former.
+   bud-1 transports+1 | g+1 c+2 d+1 e+1
+   > Les vélobus se multiplient.
+C) Rien :: Parents.
+   transports-1 | g0 c+1 d+1 e0
+   > Les enfants restent en voiture.
+
+=== tra-231 | transports | Une onde verte pour les cyclistes
+Des feux synchronisés à 20 km/h permettraient aux vélos de ne plus s’arrêter.
+A) Sur les grands axes cyclables :: Fluidité.
+   bud-2 transports+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les cyclistes enchaînent les feux verts.
+B) Un axe test :: Prudence.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Un boulevard est synchronisé.
+C) Rien :: Voitures.
+   transports-1 | g-1 c+1 d+2 e0
+   > Les cyclistes s’arrêtent à chaque feu.
+
+=== tra-232 | transports | Une navette vers le bois de Boulogne le week-end
+Les familles sans voiture ont du mal à rejoindre le bois.
+? distinct
+A) Une navette gratuite le week-end :: Accès à la nature.
+   rec-0.01x60 transports+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles pique-niquent au bord des lacs.
+B) Renforcer les bus existants :: Simple.
+   rec-0.01x60 transports+1 | g0 c+2 d+1 e+1
+   > Les bus passent plus souvent.
+C) Rien :: Métro proche.
+   bon-1 | g0 c+1 d+1 e0
+   > Le bois reste lointain pour beaucoup.
+
+=== tra-233 | transports | Supprimer les horodateurs
+La plupart des automobilistes paient déjà par téléphone.
+A) Supprimer les horodateurs :: Moderniser.
+   rec+0.02x60 bon-1 | g0 c+2 d+2 e0
+   > Les trottoirs se libèrent.
+B) En garder un par rue :: Compromis.
+   rec+0.01x60 | g0 c+2 d+1 e+1
+   > Les personnes sans smartphone peuvent payer.
+C) Rien :: Inclusion.
+   bon+1 | g0 c+1 d+1 e0
+   > Les horodateurs restent.
+
+=== tra-234 | transports | Les plaques illisibles pour échapper aux radars
+Des conducteurs masquent leurs plaques pour éviter amendes et péages.
+? distinct
+A) Des contrôles ciblés :: Fermeté.
+   securite+1 rec+0.01x60 | g0 c+2 d+2 e0
+   > Les plaques redeviennent lisibles.
+B) Des caméras intelligentes :: Technologie.
+   bud-1 securite+1 | g-1 c+2 d+2 e0
+   > Les fraudeurs sont repérés.
+C) Rien :: Police nationale.
+   securite-1 | g0 c+1 d+1 e0
+   > La fraude se répand.
+
+=== tra-235 | transports | Le métro gratuit le soir du Nouvel An
+Des centaines de milliers de fêtards prennent le volant après minuit.
+? distinct
+A) Métro gratuit et ouvert toute la nuit :: Sécurité.
+   bud-1 securite+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les fêtards rentrent en métro.
+B) Ouvert toute la nuit mais payant :: Compromis.
+   transports+1 | g0 c+2 d+1 e+1
+   > Le métro tourne jusqu’à l’aube.
+C) Rien :: Coût.
+   securite-1 | g0 c+1 d+1 e0
+   > Les accidents se multiplient.
+
+=== tra-236 | transports | Des pistes cyclables dessinées sur les trottoirs
+Pour aller vite, on propose de peindre des pistes sur les trottoirs larges.
+A) Peindre les pistes :: Rapide.
+   bud-1 transports+1 bon-1 | g0 c+1 d+1 e0
+   > Piétons et cyclistes se frôlent.
+B) Prendre plutôt sur la chaussée :: Partager.
+   bud-2 transports+1 | g+1 c+2 d0 e+1
+   > Les voitures perdent une voie.
+C) Rien :: Piétons.
+   transports-1 | g0 c+1 d+1 e0
+   > Les cyclistes restent sur la route.
+
+=== tra-237 | transports | Les livreurs à scooter sur les pistes cyclables
+Des scooters thermiques empruntent les pistes pour gagner du temps.
+A) Verbaliser :: Fermeté.
+   securite+1 | g0 c+2 d+2 e0
+   > Les scooters quittent les pistes.
+B) Des bordures pour fermer les pistes :: Aménager.
+   bud-2 securite+1 | g0 c+2 d+1 e+1
+   > Les scooters ne passent plus.
+C) Rien :: Tolérance.
+   securite-1 | g0 c+1 d+1 e0
+   > Les cyclistes sont frôlés.
+
+=== tra-238 | transports | Publier la carte des accidents
+Une carte des carrefours les plus dangereux aiderait à prioriser les travaux.
+A) Publier et agir sur les dix pires carrefours :: Transparence.
+   bud-2 securite+1 | g+1 c+2 d+1 e+1
+   > Les carrefours noirs sont réaménagés.
+B) Publier sans engagement :: Informer.
+   securite+1 | g0 c+2 d+1 e+1
+   > Les associations s’emparent de la carte.
+C) Rien :: Préfecture.
+   securite-1 | g0 c+1 d+1 e0
+   > Les accidents continuent aux mêmes endroits.
+
+=== tra-239 | transports | La peinture des pistes glissante sous la pluie
+Les marquages au sol font glisser les cyclistes par temps humide.
+A) Une peinture antidérapante :: Sécurité.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les chutes diminuent.
+B) Réduire les grandes surfaces peintes :: Simplifier.
+   securite+1 | g0 c+2 d+1 e+1
+   > Seuls les pictogrammes restent.
+C) Rien :: Coût.
+   securite-1 | g0 c+1 d+1 e0
+   > Les cyclistes glissent.
+
+=== tra-240 | transports | Le Vélib’ inclus dans le passe Navigo
+Les abonnés aux transports voudraient un seul abonnement.
+A) Inclure le Vélib’ dans le passe :: Simplicité.
+   rec-0.03x60 transports+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les abonnés prennent le vélo.
+B) Une réduction pour les abonnés :: Compromis.
+   rec-0.01x60 transports+1 | g0 c+2 d+1 e+1
+   > Le Vélib’ coûte moitié moins.
+C) Rien :: Opérateurs différents.
+   transports-1 | g0 c+1 d+1 e0
+   > Deux abonnements restent nécessaires.
+
+=== tra-241 | transports | Des voies réservées aux véhicules propres
+Une voie serait réservée aux bus, taxis et voitures électriques.
+A) Sur les grands axes :: Inciter.
+   ecologie+1 transports-1 | g+1 c+2 d+1 e+1
+   > Les électriques circulent plus vite.
+B) Seulement aux heures de pointe :: Compromis.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Les voies sont réservées le matin.
+C) Rien :: Égalité.
+   ecologie-1 | g0 c+1 d+2 e0
+   > Toutes les voitures roulent ensemble.
+
+=== tra-242 | transports | Les bus gratuits pour les enfants
+Les familles paient cher les trajets des enfants de plus de quatre ans.
+A) Gratuité jusqu’à 11 ans :: Familles.
+   rec-0.02x60 bon+1 transports+1 | g+1 c+2 d+1 e+1
+   > Les familles prennent le bus.
+B) Gratuité le week-end seulement :: Loisirs.
+   rec-0.01x60 bon+1 | g+1 c+2 d+1 e+1
+   > Les sorties du dimanche se font en bus.
+C) Rien :: Tarif réduit existant.
+   bon-1 | g0 c+1 d+2 e0
+   > Les familles prennent la voiture.
+
+=== tra-243 | transports | Des arrêts de bus déplacés sans prévenir
+Pendant les travaux, les arrêts bougent et les voyageurs attendent au mauvais endroit.
+A) Une signalétique obligatoire :: Informer.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Des panneaux indiquent l’arrêt provisoire.
+B) Des alertes sur l’application :: Numérique.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Les voyageurs sont prévenus.
+C) Rien :: Chantiers.
+   transports-1 | g0 c+1 d+1 e0
+   > Les seniors ratent leur bus.
+
+=== tra-244 | transports | Des vélos-cargos en libre-service
+Les familles voudraient emprunter un vélo-cargo pour les courses.
+A) Une flotte de vélos-cargos partagés :: Partager.
+   bud-2 transports+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les familles transportent leurs courses à vélo.
+B) Un prêt en mairie à la journée :: Tester.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Les vélos-cargos sont réservés chaque week-end.
+C) Rien :: Coût.
+   transports-1 | g0 c+1 d+1 e0
+   > Les familles prennent la voiture.
+
+=== tra-245 | transports | Des feux piétons avec compte à rebours
+Les piétons ne savent pas s’ils ont le temps de traverser.
+A) Équiper les grands carrefours :: Rassurer.
+   bud-2 securite+1 | g0 c+2 d+1 e+1
+   > Les piétons traversent sereinement.
+B) Près des écoles et résidences seniors :: Cibler.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les plus fragiles sont protégés.
+C) Rien :: Coût.
+   securite-1 | g0 c+1 d+1 e0
+   > Les piétons courent.
+
+=== tra-246 | transports | Des abonnements pour les travailleurs de nuit
+Les agents de nettoyage et soignants de nuit paient des taxis faute de transports.
+A) Un service de navettes de nuit :: Desservir.
+   rec-0.03x60 transports+1 bon+1 | g+2 c+2 d0 e+1
+   > Les travailleurs de nuit rentrent en navette.
+B) Des chèques taxi :: Aider.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Les trajets de nuit sont remboursés.
+C) Rien :: Employeurs.
+   bon-1 | g-1 c+1 d+1 e0
+   > Les travailleurs de nuit marchent des heures.
+
+=== tra-247 | transports | Interdire les trottinettes partagées aux mineurs
+Des adolescents roulent à deux sur des trottinettes de location.
+A) Vérifier l’âge à la location :: Sécurité.
+   securite+1 | g0 c+2 d+2 e0
+   > Les mineurs ne peuvent plus louer.
+B) Une formation obligatoire :: Éduquer.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les jeunes passent un permis trottinette.
+C) Rien :: Opérateurs.
+   securite-1 | g0 c+1 d+1 e0
+   > Un accident grave survient.
+
+=== tra-248 | transports | Des pistes cyclables qui s’arrêtent net
+Des pistes s’interrompent au milieu d’un carrefour, laissant les cyclistes seuls.
+A) Combler toutes les discontinuités :: Continuité.
+   bud-3 transports+1 securite+1 | g+1 c+2 d+1 e+1
+   > Le réseau cyclable devient continu.
+B) Les dix pires en priorité :: Prioriser.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Les ruptures les plus dangereuses sont traitées.
+C) Rien :: Coût.
+   securite-1 | g0 c+1 d+1 e0
+   > Les cyclistes improvisent.
+
+=== tra-249 | transports | Redessiner tout le réseau de bus
+Le réseau de bus date de plusieurs décennies et ne suit plus les besoins.
+A) Une refonte complète :: Moderniser.
+   bud-2 transports+1 | g+1 c+2 d+1 e+1
+   > Les nouvelles lignes desservent mieux les quartiers.
+B) Ajuster quelques lignes :: Prudence.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Les lignes saturées sont renforcées.
+C) Rien :: Habitudes.
+   transports-1 | g0 c+1 d+1 e0
+   > Les bus suivent des trajets d’un autre temps.
+
+=== tra-250 | transports | La circulation inter-files des motos
+Les motos remontent les files de voitures à vive allure.
+A) L’interdire :: Sécurité.
+   securite+1 bon-1 | g0 c+2 d+2 e0
+   > Les motards protestent.
+B) L’encadrer avec une vitesse limitée :: Encadrer.
+   securite+1 | g0 c+2 d+1 e+1
+   > Les motos ralentissent entre les files.
+C) Rien :: Fluidité.
+   securite-1 | g0 c+1 d+1 e0
+   > Les accidents de rétroviseur se multiplient.
