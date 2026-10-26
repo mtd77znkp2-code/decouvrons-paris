@@ -1,0 +1,487 @@
+// Écologie, série 4
+=== ecol-106 | ecologie | Plus aucun espace vert bétonné
+Des écologistes demandent qu’aucun espace vert ou de pleine terre ne soit plus jamais construit.
+A) Adopter la règle dans le plan d’urbanisme :: Protéger les sols.
+   ecologie+3 logement-1 | g+1 c+1 d-1 e+5
+   > Les espaces de pleine terre sont sanctuarisés.
+B) Compenser chaque mètre carré bétonné par un mètre carré rendu à la nature :: Équilibre.
+   bud-5 ecologie+2 | g+1 c+3 d+1 e+3
+   > Chaque construction finance un espace débitumé.
+C) Rien :: Besoin de logements.
+   ecologie-1 logement+1 | g0 c0 d+2 e-3
+   > Rien ne change.
+
+=== ecol-107 | ecologie | Publier le bilan carbone de la Ville chaque année
+Des associations demandent un bilan carbone public de toutes les activités de la Ville.
+A) Bilan annuel public et objectifs chiffrés :: Transparence.
+   bud-2 ecologie+2 coh+1 | g+1 c+3 d+1 e+4
+   > Le premier bilan carbone est publié.
+   ~30 pop-1 > Le bilan révèle des émissions plus fortes que prévu.
+B) Bilan interne seulement :: Prudence.
+   bud-1 ecologie+1 | g0 c+2 d+2 e+1
+   > Un bilan est réalisé discrètement.
+C) Rien :: Bureaucratie.
+   ecologie-1 | g-1 c0 d+2 e-3
+   > Rien n’est mesuré.
+
+=== ecol-108 | ecologie | Des vêtements de travail recyclés
+Les uniformes des agents sont jetés chaque année. Ils pourraient être recyclés ou fabriqués en matières durables.
+A) Uniformes durables et recyclage :: Exemplarité.
+   bud-2 ecologie+2 | g+1 c+3 d+1 e+3
+   > Les uniformes sont recyclés.
+B) Réparer avant de remplacer :: Sobriété.
+   rec+0.02x60 ecologie+1 | g+1 c+3 d+1 e+2
+   > Un atelier de couture répare les uniformes.
+C) Rien :: Coût.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== ecol-109 | ecologie | Des toilettes qui recyclent l’urine
+Des toilettes séparant l’urine permettraient d’en faire un engrais naturel.
+A) Équiper un nouveau quartier :: Innovation.
+   bud-8 ecologie+2 | g+1 c+2 d0 e+4
+   > Un quartier pilote recycle son urine en engrais.
+   ~30 pop-1 > Le projet fait sourire certains habitants.
+B) Équiper les toilettes publiques :: Test.
+   bud-3 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les sanisettes récupèrent l’urine.
+C) Rien :: Gadget.
+   ecologie-1 | g0 c+1 d+1 e-1
+   > Le projet est abandonné.
+
+=== ecol-110 | ecologie | Réutiliser l’eau des douches et lavabos
+Les eaux grises des immeubles neufs pourraient alimenter les toilettes.
+A) L’imposer dans les immeubles neufs :: Économie d’eau.
+   ecologie+2 logement-1 | g+1 c+2 d0 e+4
+   > Les immeubles neufs recyclent leurs eaux.
+B) Équiper les bâtiments publics :: Exemplarité.
+   bud-8 ecologie+2 | g+1 c+3 d+1 e+3
+   > Les gymnases recyclent l’eau des douches.
+C) Rien :: Coût.
+   ecologie-1 | g0 c0 d+2 e-2
+   > Rien ne change.
+
+=== ecol-111 | ecologie | Une ferme verticale dans une tour de bureaux
+Une start-up veut transformer une tour de bureaux vide en ferme verticale.
+A) Soutenir le projet :: Agriculture urbaine.
+   bud-5 ecologie+2 economie+1 | g+1 c+2 d+2 e+3
+   > Des salades poussent dans une tour.
+B) Préférer des logements :: Priorité.
+   logement+2 | g+2 c+2 d+1 e0
+   > La tour devient des logements.
+C) Rien :: Projet privé.
+   economie-1 | g0 c0 d+1 e-1
+   > La tour reste vide.
+
+=== ecol-112 | ecologie | Éteindre les monuments à 1 h du matin
+Les monuments sont éclairés toute la nuit.
+A) Extinction à 1 h :: Sobriété.
+   rec+0.05x60 ecologie+2 | g+1 c+2 d-1 e+4
+   > Les monuments s’éteignent dans la nuit.
+   ~25 economie-1 > Des touristes se plaignent de ne plus voir la ville illuminée.
+B) Éteindre seulement les monuments secondaires :: Compromis.
+   rec+0.02x60 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les grands monuments restent éclairés.
+C) Rien :: Ville Lumière.
+   ecologie-1 bon+1 | g-1 c0 d+3 e-2
+   > Les monuments brillent toute la nuit.
+
+=== ecol-113 | ecologie | Un label biodiversité pour les immeubles
+Un label pourrait récompenser les copropriétés qui accueillent oiseaux, insectes et plantes.
+A) Créer le label avec une aide financière :: Inciter.
+   bud-3 ecologie+2 | g+1 c+3 d+2 e+3
+   > Des centaines d’immeubles se labellisent.
+B) Label sans aide :: Symbolique.
+   bud-1 ecologie+1 | g0 c+3 d+1 e+2
+   > Le label est créé.
+C) Rien :: Gadget.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien n’est fait.
+
+=== ecol-114 | ecologie | Des crapauds bloquent un chantier
+Des crapauds protégés sont découverts sur un chantier d’école. Le chantier est arrêté.
+A) Déplacer les crapauds et reprendre le chantier :: Compromis.
+   bud-3 ecologie+1 | g0 c+3 d+2 e+2
+   > Les crapauds sont déplacés dans une mare.
+B) Revoir le projet pour garder une mare :: Biodiversité.
+   bud-8 ecologie+2 services-1 | g+1 c+2 d0 e+4
+   > L’école aura sa mare pédagogique.
+C) Contester la protection :: Besoin d’école.
+   ecologie-1 services+1 | g0 c0 d+3 e-3
+   > La Ville conteste en justice.
+
+=== ecol-115 | ecologie | La sobriété numérique de la Ville
+Les serveurs, les mails et les écrans de la Ville consomment énormément d’électricité.
+A) Plan de sobriété numérique :: Réduire.
+   bud-2 rec+0.05x60 ecologie+1 | g+1 c+3 d+2 e+3
+   > Les serveurs inutiles sont éteints.
+B) Formation des agents :: Sensibiliser.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les agents trient leurs mails.
+C) Rien :: Négligeable.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== ecol-116 | ecologie | Du plomb dans les potagers partagés
+Des analyses révèlent du plomb dans la terre de plusieurs jardins partagés.
+A) Remplacer la terre et cultiver en bacs :: Sécurité.
+   bud-5 ecologie+1 bon+1 | g+1 c+3 d+1 e+2
+   > Les jardins sont cultivés en bacs.
+B) Interdire les légumes et garder les fleurs :: Prudence.
+   bon-1 | g0 c+2 d+1 e+1
+   > Seules les fleurs sont autorisées.
+C) Informer sans agir :: Liberté.
+   pop-1 | g0 c0 d+1 e-1
+   > Les jardiniers continuent.
+
+=== ecol-117 | ecologie | Les égouts débordent dans la Seine
+À chaque gros orage, les égouts débordent et rejettent des eaux sales dans la Seine.
+A) Construire de grands bassins de stockage :: Protéger la Seine.
+   bud-50 ecologie+3 | g+1 c+2 d+1 e+4
+   > Des bassins géants retiennent les eaux.
+B) Désimperméabiliser les rues :: Solution naturelle.
+   bud-20 ecologie+2 | g+1 c+3 d+1 e+4
+   > La pluie s’infiltre davantage.
+C) Rien :: Coût énorme.
+   ecologie-1 | g0 c0 d+2 e-3
+   > La Seine reste polluée après chaque orage.
+
+=== ecol-118 | ecologie | Des nichoirs à martinets sur les immeubles
+Les martinets disparaissent faute de trous dans les façades rénovées.
+A) Nichoirs obligatoires lors des ravalements :: Biodiversité.
+   ecologie+2 | g+1 c+2 d0 e+3
+   > Chaque façade rénovée accueille des nichoirs.
+B) Nichoirs sur les bâtiments publics :: Exemplarité.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les écoles accueillent des martinets.
+C) Rien :: Pas prioritaire.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Les martinets continuent de disparaître.
+
+=== ecol-119 | ecologie | Une ferme pédagogique dans chaque arrondissement
+Les enfants parisiens n’ont jamais vu une vache ou une poule.
+A) Créer des fermes pédagogiques :: Découverte.
+   bud-8 rec-0.1x60 ecologie+1 bon+2 | g+1 c+2 d+2 e+3
+   > Les écoles visitent les fermes.
+B) Une grande ferme au bois de Vincennes :: Centralisé.
+   bud-4 ecologie+1 bon+1 | g+1 c+3 d+1 e+2
+   > La ferme accueille les classes.
+C) Rien :: Coût.
+   bon-1 | g0 c0 d+1 e-1
+   > Rien n’est créé.
+
+=== ecol-120 | ecologie | Des poulaillers dans les écoles
+Des écoles veulent installer des poules pour manger les restes de cantine.
+A) Autoriser et accompagner :: Pédagogie et déchets.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+3
+   > Des poules mangent les restes.
+   ~25 proprete-1 > Des rats sont attirés dans une école.
+B) Seulement dans les écoles avec jardin :: Prudence.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Quelques écoles adoptent des poules.
+C) Refuser :: Hygiène.
+   ecologie-1 | g0 c+1 d+2 e-1
+   > Les poules sont interdites.
+
+=== ecol-121 | ecologie | Réviser le plan climat
+Les objectifs du plan climat ne seront pas atteints. Il faut le réviser.
+A) Objectifs plus ambitieux et budget dédié :: Accélérer.
+   rec-0.5x60 ecologie+3 | g+1 c+1 d-2 e+5
+   > Le plan climat est renforcé.
+B) Objectifs réalistes et progressifs :: Pragmatisme.
+   rec-0.2x60 ecologie+2 | g+1 c+3 d+1 e+2
+   > Le plan est ajusté.
+C) Repousser les objectifs :: Réalisme budgétaire.
+   ecologie-1 coh-1 | g-1 c+1 d+3 e-4
+   > Les objectifs sont repoussés.
+
+=== ecol-122 | ecologie | Planter des forêts hors de Paris
+Paris n’a pas la place de compenser ses émissions. Elle pourrait financer des forêts en Île-de-France.
+A) Financer 1 000 hectares de forêt :: Compenser.
+   bud-15 ecologie+2 | g+1 c+3 d+1 e+3
+   > Une forêt parisienne est plantée dans l’Essonne.
+B) Préférer réduire les émissions :: Priorité.
+   coh+1 ecologie+1 | g+1 c+2 d0 e+3
+   > L’argent va aux économies d’énergie.
+C) Rien :: Pas de compensation.
+   ecologie-1 | g0 c0 d+2 e-2
+   > Rien n’est fait.
+
+=== ecol-123 | ecologie | Un écoquartier sur une friche
+Une grande friche ferroviaire pourrait devenir un écoquartier exemplaire.
+A) Écoquartier sans voitures, bois et énergie locale :: Exemplarité.
+   bud-40 ecologie+3 logement+2 | g+2 c+2 d0 e+5
+   > L’écoquartier sort de terre.
+   +30 pop+2 > L’écoquartier est cité dans le monde entier.
+B) Quartier classique avec quelques innovations :: Équilibre.
+   bud-20 logement+2 ecologie+1 | g+1 c+3 d+2 e+1
+   > Un quartier mixte est construit.
+C) Vendre aux promoteurs :: Recettes.
+   bud+40 logement+1 ecologie-1 | g-3 c+1 d+4 e-2
+   > Les promoteurs construisent.
+
+=== ecol-124 | ecologie | Des refuges de calme
+Des urbanistes proposent de créer des « zones de calme » sans bruit de circulation.
+A) Créer vingt refuges de calme :: Santé.
+   bud-4 bon+2 ecologie+1 | g+1 c+2 d+1 e+3
+   > Des jardins calmes sont aménagés.
+B) Zones silencieuses dans les parcs existants :: Simple.
+   bud-1 bon+1 | g+1 c+3 d+1 e+2
+   > Certaines allées deviennent silencieuses.
+C) Rien :: Ville animée.
+   bon-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== ecol-125 | ecologie | Des tortues abandonnées dans les lacs
+Des tortues exotiques relâchées dans les lacs des parcs détruisent la faune locale.
+A) Capturer les tortues et créer un refuge :: Protéger.
+   bud-2 ecologie+2 | g+1 c+3 d+1 e+3
+   > Les tortues sont recueillies.
+B) Campagne contre les abandons :: Prévenir.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les animaleries informent les acheteurs.
+C) Rien :: Pas prioritaire.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Les tortues prolifèrent.
+
+=== ecol-126 | ecologie | Des sentiers nature dans Paris
+Des naturalistes proposent des sentiers balisés pour découvrir la faune et la flore de Paris.
+A) Créer dix sentiers avec panneaux :: Découverte.
+   bud-2 ecologie+1 bon+1 | g+1 c+2 d+1 e+3
+   > Les familles découvrent la nature en ville.
+B) Application de balade nature :: Numérique.
+   bud-1 ecologie+1 | g0 c+3 d+1 e+2
+   > Une application guide les promeneurs.
+C) Rien :: Pas prioritaire.
+   bon-1 | g0 c0 d+1 e-1
+   > Rien n’est fait.
+
+=== ecol-127 | ecologie | Recenser les arbres remarquables
+Des arbres centenaires de Paris ne sont pas protégés.
+A) Inventaire et protection juridique :: Patrimoine vivant.
+   bud-2 ecologie+2 | g+1 c+3 d+1 e+3
+   > Deux cents arbres remarquables sont protégés.
+B) Plaques d’information :: Valoriser.
+   bud-1 ecologie+1 bon+1 | g+1 c+3 d+1 e+2
+   > Les arbres remarquables ont leur plaque.
+C) Rien :: Les arbres sont déjà gérés.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== ecol-128 | ecologie | Les fuites d’eau dans les bâtiments municipaux
+Les bâtiments municipaux gaspillent des millions de litres d’eau à cause de fuites.
+A) Compteurs intelligents et chasse aux fuites :: Économies.
+   bud-5 rec+0.1x60 ecologie+2 | g+1 c+3 d+2 e+3
+   > Les fuites sont repérées.
+B) Réparations au fil de l’eau :: Économique.
+   bud-2 ecologie+1 | g0 c+2 d+1 e+1
+   > Les fuites signalées sont réparées.
+C) Rien :: Négligeable.
+   ecologie-1 | g0 c0 d+1 e-2
+   > Les fuites continuent.
+
+=== ecol-129 | ecologie | Des panneaux solaires flottants
+Des panneaux solaires flottants pourraient être installés sur les lacs du bois de Vincennes.
+? distinct
+A) Installer :: Énergie verte.
+   bud-12 rec+0.1x80 ecologie+2 bon-1 | g0 c+2 d+1 e+2
+   > Les panneaux produisent de l’électricité.
+   ~30 pop-1 > Des promeneurs regrettent la vue sur le lac.
+B) Plutôt sur un bassin de stockage d’eau :: Discret.
+   bud-10 ecologie+2 | g+1 c+3 d+1 e+3
+   > Un réservoir est couvert de panneaux.
+C) Refuser :: Paysage.
+   ecologie-1 | g0 c+1 d+1 e-1
+   > Le projet est rejeté.
+
+=== ecol-130 | ecologie | Les portes ouvertes chauffées des magasins
+Des magasins laissent leurs portes ouvertes en hiver avec le chauffage à fond.
+A) Interdire et sanctionner :: Sobriété.
+   ecologie+2 economie-1 | g+1 c+2 d0 e+3
+   > Les portes doivent rester fermées.
+B) Campagne avec les commerçants :: Convaincre.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Une charte est signée.
+C) Rien :: Liberté du commerce.
+   ecologie-1 economie+1 | g-1 c0 d+3 e-2
+   > Les portes restent ouvertes.
+
+=== ecol-131 | ecologie | Les agents ne prennent plus l’avion pour les courts trajets
+Les agents prennent l’avion pour Lyon ou Bordeaux alors que le train est plus rapide.
+A) Interdire l’avion pour les trajets de moins de quatre heures en train :: Exemplarité.
+   ecologie+1 rec+0.02x60 | g+1 c+2 d0 e+4
+   > Les agents voyagent en train.
+B) Recommander le train :: Souplesse.
+   ecologie+1 | g+1 c+3 d+1 e+2
+   > La plupart choisissent le train.
+C) Rien :: Liberté.
+   ecologie-1 | g0 c0 d+2 e-2
+   > Rien ne change.
+
+=== ecol-132 | ecologie | Des barquettes plastique dans les cantines
+Les repas des cantines sont réchauffés dans des barquettes en plastique.
+A) Passer à l’inox dans toutes les cantines :: Santé.
+   bud-15 ecologie+2 services+1 | g+2 c+2 d+1 e+4
+   > Les barquettes plastique disparaissent.
+B) Barquettes en carton en attendant :: Transition.
+   bud-4 ecologie+1 | g+1 c+3 d+1 e+2
+   > Le plastique est remplacé par du carton.
+C) Rien :: Normes respectées.
+   pop-1 | g0 c0 d+2 e-2
+   > Les parents s’inquiètent.
+
+=== ecol-133 | ecologie | Des jardins de pluie dans les rues
+Des fossés plantés le long des trottoirs pourraient absorber la pluie.
+A) Créer cinquante jardins de pluie :: Ville éponge.
+   bud-8 ecologie+3 | g+1 c+2 d+1 e+4
+   > Des jardins absorbent la pluie.
+B) Dix jardins tests :: Prudence.
+   bud-2 ecologie+1 | g+1 c+3 d+1 e+2
+   > Dix rues sont équipées.
+C) Rien :: Stationnement.
+   ecologie-1 | g0 c0 d+2 e-2
+   > Rien ne change.
+
+=== ecol-134 | ecologie | Un label restaurant durable
+Des restaurants proposent des produits locaux et sans gaspillage. Ils demandent un label.
+A) Créer le label et le promouvoir :: Valoriser.
+   bud-2 ecologie+1 economie+1 | g+1 c+3 d+2 e+3
+   > Le label attire les clients.
+B) Réduction de redevance de terrasse pour les labellisés :: Inciter.
+   rec-0.05x60 ecologie+2 | g+1 c+2 d+2 e+3
+   > Les restaurants durables paient moins.
+C) Rien :: Les labels existent.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien n’est créé.
+
+=== ecol-135 | ecologie | L’ambroisie arrive à Paris
+L’ambroisie, une plante très allergisante, apparaît sur les friches parisiennes.
+A) Arrachage systématique :: Santé.
+   bud-2 ecologie+1 services+1 | g+1 c+3 d+2 e+2
+   > Les plants sont arrachés.
+B) Signalement par les habitants :: Participatif.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Une application permet de signaler.
+C) Rien :: Pas encore grave.
+   services-1 | g0 c0 d+1 e-1
+   > L’ambroisie se répand.
+
+=== ecol-136 | ecologie | Des arbres qui font éternuer
+Certains arbres plantés en ville, comme les bouleaux et cyprès, provoquent de fortes allergies.
+A) Ne plus planter d’arbres allergisants :: Santé.
+   ecologie+1 bon+1 | g+1 c+3 d+1 e+1
+   > Les essences allergisantes ne sont plus plantées.
+B) Diversifier les essences :: Équilibre.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les plantations sont variées.
+C) Rien :: Les arbres d’abord.
+   bon-1 | g0 c0 d0 e+1
+   > Rien ne change.
+
+=== ecol-137 | ecologie | Les bois piétinés
+Le piétinement abîme les sols des bois de Boulogne et de Vincennes. Les arbres en souffrent.
+A) Clôturer des parcelles en régénération :: Protéger.
+   bud-3 ecologie+2 bon-1 | g0 c+2 d+1 e+4
+   > Des zones sont mises au repos.
+B) Chemins balisés :: Canaliser.
+   bud-2 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les promeneurs suivent les chemins.
+C) Rien :: Liberté de promenade.
+   ecologie-1 bon+1 | g0 c0 d+1 e-2
+   > Les sols continuent de s’abîmer.
+
+=== ecol-138 | ecologie | Végétaliser les toits des gares
+Les grandes verrières et toits des gares pourraient accueillir de la végétation.
+A) Proposer un partenariat à la SNCF :: Coopérer.
+   bud-5 ecologie+2 | g+1 c+3 d+1 e+3
+   > Un toit de gare devient jardin.
+B) Pression publique sur la SNCF :: Exiger.
+   ecologie+1 coh+1 | g+1 c+1 d0 e+2
+   > Le maire interpelle la SNCF.
+C) Rien :: Pas notre propriété.
+   ecologie-1 | g0 c+1 d+1 e-1
+   > Rien ne change.
+
+=== ecol-139 | ecologie | L’éclairage des stades le soir
+Les stades municipaux restent éclairés même sans match.
+A) Extinction automatique :: Sobriété.
+   bud-2 rec+0.05x60 ecologie+1 | g0 c+3 d+2 e+2
+   > Les projecteurs s’éteignent quand le terrain est vide.
+B) LED basse consommation :: Moderniser.
+   bud-6 rec+0.05x60 ecologie+1 | g0 c+3 d+2 e+2
+   > Les projecteurs sont remplacés.
+C) Rien :: Sécurité.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== ecol-140 | ecologie | De l’eau chaude solaire dans les HLM
+Des chauffe-eau solaires sur les toits des HLM réduiraient les factures des locataires.
+A) Équiper cent immeubles :: Pouvoir d’achat et climat.
+   bud-20 ecologie+2 achat+1 | g+2 c+2 d+1 e+4
+   > Les locataires paient moins leur eau chaude.
+B) Dix immeubles pilotes :: Tester.
+   bud-4 ecologie+1 | g+1 c+3 d+1 e+2
+   > Un test est lancé.
+C) Rien :: Coût.
+   ecologie-1 | g0 c0 d+1 e-2
+   > Rien ne change.
+
+=== ecol-141 | ecologie | Un éco-score pour les événements de la Ville
+Les événements municipaux pourraient être notés selon leur impact écologique.
+A) Noter tous les événements et supprimer les pires :: Exigence.
+   ecologie+2 bon-1 | g+1 c+2 d-1 e+4
+   > Les événements polluants sont repensés.
+B) Noter sans obligation :: Informer.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les organisateurs connaissent leur score.
+C) Rien :: Fêtes d’abord.
+   ecologie-1 bon+1 | g0 c0 d+1 e-2
+   > Rien ne change.
+
+=== ecol-142 | ecologie | Des herbes aromatiques en libre-service
+Des bacs d’herbes aromatiques pourraient être plantés dans la rue, à cueillir librement.
+A) Installer des bacs dans chaque quartier :: Partage.
+   bud-2 ecologie+1 bon+1 | g+2 c+2 d+1 e+3
+   > Basilic et menthe poussent dans la rue.
+B) Confier aux habitants volontaires :: Participatif.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Des habitants entretiennent les bacs.
+C) Rien :: Gadget.
+   bon-1 | g0 c0 d+1 e-1
+   > Rien n’est planté.
+
+=== ecol-143 | ecologie | Une ferme municipale pour les cantines
+La Ville possède des terres agricoles en Île-de-France. Elles pourraient nourrir les cantines.
+A) Créer une régie agricole bio :: Autonomie alimentaire.
+   bud-15 rec-0.2x60 ecologie+3 services+1 | g+3 c+1 d-1 e+5
+   > Les cantines servent les légumes de la ferme municipale.
+B) Louer les terres à des agriculteurs bio :: Partenariat.
+   rec+0.05x60 ecologie+2 | g+1 c+3 d+2 e+3
+   > Des agriculteurs cultivent pour les cantines.
+C) Vendre les terres :: Recettes.
+   bud+25 ecologie-1 | g-2 c+1 d+3 e-2
+   > Les terres sont vendues.
+
+=== ecol-144 | ecologie | Des pergolas végétales dans les rues
+Des pergolas couvertes de plantes grimpantes pourraient ombrager les rues étroites.
+A) Installer dans cinquante rues :: Fraîcheur.
+   bud-8 ecologie+2 bon+1 | g+1 c+2 d+1 e+3
+   > Des rues deviennent des tunnels de verdure.
+B) Quelques rues tests :: Tester.
+   bud-2 ecologie+1 bon+1 | g+1 c+3 d+1 e+2
+   > Dix rues sont équipées.
+C) Rien :: Encombrement.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien n’est fait.
+
+=== ecol-145 | ecologie | Réutiliser l’eau des piscines
+L’eau des piscines vidées chaque année part aux égouts. Elle pourrait servir au nettoyage des rues.
+A) Récupérer l’eau des piscines :: Économie d’eau.
+   bud-4 ecologie+2 proprete+1 | g+1 c+3 d+1 e+3
+   > L’eau des piscines nettoie les rues.
+B) Vider moins souvent les piscines :: Sobriété.
+   rec+0.02x60 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les vidanges sont espacées.
+C) Rien :: Normes sanitaires.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.

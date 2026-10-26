@@ -39,6 +39,7 @@ C) Signaler à la préfecture :: Procédure classique.
 
 === log-029 | logement | Une tour de bureaux à transformer en logements
 Une tour de bureaux vide du 15e pourrait accueillir 400 logements, mais la transformation coûte cher.
+? distinct
 A) Racheter la tour et la transformer :: Logements rapidement.
    bud-90 logement+4 | g+3 c+2 d0 e+2
    > Le chantier de transformation commence.
