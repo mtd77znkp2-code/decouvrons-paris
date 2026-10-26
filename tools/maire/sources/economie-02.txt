@@ -219,6 +219,7 @@ C) Laisser les maisons de luxe s’en charger :: Privé.
 
 === econ-044 | economie | Les boîtes de nuit ferment
 Les clubs parisiens ferment les uns après les autres. Les jeunes partent faire la fête à Berlin.
+? distinct
 A) Créer un statut de « lieu culturel de nuit » :: Protéger la nuit.
    economie+2 bon+1 | g+1 c+2 d+1 e+1
    > Les clubs bénéficient d’une protection contre les plaintes.
@@ -365,6 +366,7 @@ C) Laisser faire :: Le commerce évolue.
 
 === econ-056 | economie | Rénover une halle de marché couvert
 Le marché couvert d’un quartier tombe en ruine. Les commerçants veulent rester.
+? distinct
 A) Rénover en gardant les commerçants :: Patrimoine vivant.
    bud-25 economie+2 bon+1 | g+2 c+2 d+1 e+1
    > La halle est rénovée.

@@ -1,0 +1,485 @@
+// Crises exceptionnelles, série 3
+=== cri-066 | crise | Une tempête solaire perturbe les réseaux
+Une tempête solaire perturbe le GPS et les télécommunications. Les feux connectés et les applications de transport tombent en panne.
+A) Basculer les feux en mode manuel avec des agents aux carrefours :: Réagir.
+   bud-3 securite+1 transports+1 | g0 c+2 d+2 e0
+   > Des agents règlent la circulation.
+B) Recommander de rester chez soi :: Prudence.
+   economie-1 transports+1 | g+1 c+2 d+1 e+1
+   > La ville tourne au ralenti.
+C) Laisser les systèmes redémarrer seuls :: Attendre.
+   transports-2 | g0 c+1 d+1 e0
+   > Les embouteillages durent toute la journée.
+
+=== cri-067 | crise | L’eau d’une piscine contaminée
+Des nageurs tombent malades après une contamination de l’eau d’une piscine municipale.
+A) Fermer toutes les piscines pour contrôle :: Prudence.
+   services-2 securite+1 | g0 c+2 d+1 e+1
+   > Les piscines ferment trois jours.
+B) Fermer la piscine concernée et renforcer les contrôles :: Proportionné.
+   bud-2 services-1 securite+1 | g+1 c+3 d+1 e+1
+   > Les contrôles deviennent quotidiens.
+C) Minimiser l’incident :: Éviter la panique.
+   pop-2 | g-1 c0 d0 e-1
+   > La mairie parle de « cas isolés ».
+   ~40 pop-3 > De nouveaux cas apparaissent.
+
+=== cri-068 | crise | La bronchiolite sature les hôpitaux pour enfants
+Une épidémie de bronchiolite sature les services pédiatriques. Des bébés sont transférés en province.
+A) Ouvrir des centres de consultation pédiatrique le week-end :: Désengorger.
+   bud-5 services+2 | g+2 c+2 d+1 e+1
+   > Des pédiatres reçoivent le week-end.
+B) Campagne de prévention dans les crèches :: Prévenir.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Les gestes barrières sont rappelés.
+C) Interpeller l’État :: Compétence de l’ARS.
+   bon-1 coh+1 | g0 c+1 d+1 e0
+   > Le maire écrit au ministre.
+
+=== cri-069 | crise | Un incendie dans un hôpital
+Un incendie se déclare dans un hôpital parisien. Des patients doivent être évacués.
+A) Mobiliser gymnases et hôtels pour accueillir les patients :: Solidarité.
+   bud-6 services+1 pop+1 | g+2 c+2 d+1 e+1
+   > Les patients sont accueillis en urgence.
+B) Laisser l’AP-HP gérer avec ses moyens :: Compétence.
+   pop-1 | g0 c+1 d+1 e0
+   > L’AP-HP répartit les patients.
+C) Cofinancer la reconstruction rapide :: Rebâtir.
+   bud-25 services+2 | g+1 c+2 d+1 e0
+   > Le service détruit sera reconstruit en un an.
+
+=== cri-070 | crise | Une tribune s’effondre lors d’un match
+Une tribune provisoire s’effondre lors d’un match amateur. Il y a des blessés.
+A) Contrôler toutes les tribunes provisoires :: Sécurité.
+   bud-3 securite+2 | g0 c+3 d+2 e0
+   > Toutes les installations sont vérifiées.
+B) Interdire les tribunes provisoires :: Radical.
+   securite+2 bon-1 | g0 c+1 d+2 e0
+   > Les tribunes provisoires sont interdites.
+C) Ouvrir une enquête et indemniser :: Responsabilité.
+   bud-3 pop+1 | g+1 c+2 d+1 e0
+   > Les victimes sont indemnisées.
+
+=== cri-071 | crise | Un arbre s’abat sur un marché
+Un grand platane s’abat sur les étals d’un marché un dimanche matin.
+A) Expertiser tous les arbres des marchés :: Prévenir.
+   bud-4 securite+2 | g0 c+3 d+2 e+1
+   > Les arbres fragiles sont repérés.
+B) Abattre les arbres douteux :: Prudence.
+   securite+2 ecologie-2 | g0 c+1 d+2 e-3
+   > Des dizaines d’arbres sont abattus.
+C) Soutenir les victimes et commerçants :: Solidarité.
+   bud-2 bon+1 | g+2 c+2 d+1 e+1
+   > Les victimes reçoivent de l’aide.
+
+=== cri-072 | crise | Un nouveau virus respiratoire
+Un nouveau virus se propage. Les autorités sanitaires recommandent le masque dans les transports.
+A) Distribuer des masques dans le métro :: Prévenir.
+   bud-4 services+1 securite+1 | g+1 c+3 d+1 e+1
+   > Des masques sont distribués.
+B) Masque obligatoire dans les bâtiments municipaux :: Exemplarité.
+   securite+1 bon-1 | g+1 c+2 d+1 e+1
+   > Les agents et visiteurs portent le masque.
+C) Simple recommandation :: Liberté.
+   securite-1 bon+1 | g0 c+1 d+2 e0
+   > Peu de gens portent le masque.
+   ~40 pop-2 > L’épidémie flambe.
+
+=== cri-073 | crise | Des violences après une finale de football
+Après une finale, des centaines de supporters cassent des vitrines sur les Champs-Élysées.
+A) Indemniser rapidement les commerçants :: Soutien.
+   bud-5 economie+1 | g+1 c+2 d+2 e0
+   > Les commerçants sont aidés.
+B) Exiger un dispositif policier beaucoup plus fort la prochaine fois :: Sécurité.
+   securite+2 | g-2 c+1 d+4 e0
+   > Le préfet promet un renfort.
+C) Interdire les rassemblements sur les Champs les soirs de match :: Radical.
+   securite+1 bon-1 | g-1 c+1 d+3 e0
+   > Les Champs-Élysées sont fermés.
+
+=== cri-074 | crise | Des cas de dengue à Paris
+Des cas de dengue transmis localement par le moustique tigre sont détectés.
+A) Démoustication ciblée autour des cas :: Agir vite.
+   bud-3 securite+1 ecologie-1 | g0 c+3 d+2 e-1
+   > Les quartiers concernés sont traités.
+B) Campagne pour supprimer les eaux stagnantes :: Prévention.
+   bud-2 securite+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les habitants vident leurs soucoupes.
+C) Simple information :: Calme.
+   securite-1 bud-1 | g0 c+1 d+1 e0
+   > Les cas se multiplient.
+
+=== cri-075 | crise | Tous les feux de circulation en panne
+Une panne informatique éteint tous les feux tricolores de Paris en pleine heure de pointe.
+A) Policiers et agents à tous les grands carrefours :: Réagir.
+   bud-3 securite+2 | g0 c+2 d+3 e0
+   > Les carrefours sont gérés à la main.
+B) Interdire la circulation des voitures pour la journée :: Sécurité.
+   transports-2 securite+2 | g+1 c+1 d-2 e+3
+   > Les voitures restent garées.
+C) Attendre la réparation :: Patience.
+   securite-2 | g0 c0 d+1 e0
+   > Des accidents se produisent.
+
+=== cri-076 | crise | Un camion percute une terrasse
+Un camion perd ses freins et percute une terrasse de café. Il y a plusieurs blessés.
+A) Plots de protection devant toutes les terrasses :: Protéger.
+   bud-10 securite+2 | g0 c+2 d+2 e0
+   > Des plots sont installés.
+B) Interdire les poids lourds dans les rues commerçantes :: Prévenir.
+   securite+2 economie-1 | g+1 c+1 d0 e+2
+   > Les poids lourds sont interdits.
+C) Soutenir les victimes :: Solidarité.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Une cellule d’aide est ouverte.
+
+=== cri-077 | crise | Une fuite de gaz dans une école
+Une odeur de gaz oblige à évacuer une école élémentaire en pleine matinée.
+A) Contrôler les installations de toutes les écoles :: Prévenir.
+   bud-6 securite+2 services+1 | g+1 c+3 d+1 e+1
+   > Toutes les écoles sont vérifiées.
+B) Remplacer le gaz par l’électricité dans les écoles :: Supprimer le risque.
+   bud-20 securite+2 ecologie+1 | g+1 c+2 d+1 e+3
+   > Les chaudières au gaz des écoles sont remplacées.
+C) Réparer la fuite :: Simple.
+   securite+1 bud-1 | g0 c+1 d+1 e0
+   > La fuite est réparée.
+
+=== cri-078 | crise | Des touristes bloqués dans les ascenseurs de la tour Eiffel
+Une panne bloque des dizaines de touristes plusieurs heures dans les ascenseurs de la tour Eiffel.
+A) Exiger une modernisation des ascenseurs :: Sécurité.
+   bud-10 securite+1 economie+1 | g0 c+3 d+2 e0
+   > Les ascenseurs seront remplacés.
+B) Communiquer pour rassurer les touristes :: Image.
+   bud-1 economie+1 | g0 c+2 d+1 e0
+   > Les touristes reçoivent des excuses et des billets offerts.
+C) Rien de particulier :: Incident isolé.
+   economie-1 | g0 c+1 d+1 e0
+   > L’incident fait le tour du monde.
+
+=== cri-079 | crise | Une averse de grêle brise les verrières
+Une averse de grêle d’une rare violence brise des verrières, des vitres et des voitures.
+A) Fonds d’urgence pour les sinistrés :: Solidarité.
+   bud-10 bon+1 | g+2 c+2 d+1 e+1
+   > Les sinistrés reçoivent une aide.
+B) Réparer en priorité les écoles et équipements :: Services publics.
+   bud-8 services+1 | g+1 c+3 d+1 e0
+   > Les écoles rouvrent rapidement.
+C) Laisser faire les assurances :: Économie.
+   pop-1 | g-1 c+1 d+2 e0
+   > Les sinistrés attendent.
+
+=== cri-080 | crise | Une pénurie de vaccins pour enfants
+Une rupture de stock de vaccins obligatoires bloque les inscriptions en crèche.
+A) Accepter provisoirement les enfants non vaccinés :: Souplesse.
+   services+1 securite-1 | g+1 c+2 d0 e+1
+   > Les inscriptions se font avec un délai.
+B) Réserver les doses aux centres municipaux :: Priorité.
+   services+1 | g+1 c+2 d+1 e0
+   > Les centres municipaux vaccinent en priorité.
+C) Suspendre les inscriptions :: Règle.
+   services-2 bon-1 | g-1 c+1 d+2 e0
+   > Les familles attendent.
+
+=== cri-081 | crise | Une batterie prend feu dans un parking souterrain
+Une voiture électrique prend feu dans un parking souterrain. L’incendie est difficile à éteindre.
+? distinct
+A) Interdire la recharge dans les parkings souterrains :: Sécurité.
+   securite+2 ecologie-1 | g0 c+2 d+2 e-2
+   > La recharge se fait en surface.
+B) Équiper les parkings de détecteurs et sprinklers :: Investir.
+   bud-15 securite+2 | g0 c+3 d+2 e+1
+   > Les parkings sont équipés.
+C) Rien :: Incident rare.
+   securite-1 | g0 c0 d+1 e+1
+   > Rien ne change.
+
+=== cri-082 | crise | Des cas de tuberculose dans un lycée
+Plusieurs élèves d’un lycée sont atteints de tuberculose.
+A) Dépistage de tous les élèves et du personnel :: Santé publique.
+   bud-3 services+2 | g+1 c+3 d+1 e+1
+   > Tout le lycée est dépisté.
+B) Fermer le lycée une semaine :: Prudence.
+   services-1 securite+1 | g0 c+2 d+1 e0
+   > Le lycée ferme.
+C) Laisser l’ARS gérer :: Compétence.
+   pop-1 | g0 c+1 d+1 e0
+   > Les parents s’inquiètent.
+
+=== cri-083 | crise | Plus d’hôtels pour les familles sans abri
+Pendant un grand salon international, les hôtels refusent les familles hébergées par l’aide d’urgence.
+A) Ouvrir des gymnases en urgence :: Mettre à l’abri.
+   bud-3 services+1 | g+3 c+2 d0 e+1
+   > Les familles dorment dans des gymnases.
+B) Réquisitionner des chambres :: Fermeté.
+   bud-5 services+1 economie-1 | g+3 c0 d-3 e+1
+   > Des chambres sont réquisitionnées.
+C) Laisser les associations trouver des solutions :: Pas de dépense.
+   pop-2 | g-3 c0 d+2 e-1
+   > Des familles dorment dehors.
+
+=== cri-084 | crise | Une nappe de fioul sur la Seine
+Une péniche accidentée déverse du fioul dans la Seine.
+A) Barrages flottants et pompage d’urgence :: Limiter les dégâts.
+   bud-8 ecologie+2 | g+1 c+2 d+1 e+3
+   > La pollution est contenue.
+B) Faire payer l’armateur :: Responsabilité.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+2
+   > L’armateur est poursuivi.
+   +15 bud+8 > L’armateur rembourse le nettoyage.
+C) Laisser les services de l’État intervenir :: Compétence.
+   ecologie-1 | g0 c+1 d+1 e-2
+   > La nappe s’étend jusqu’en aval.
+
+=== cri-085 | crise | La fumée d’incendies lointains recouvre Paris
+Des incendies de forêt dans l’ouest de la France envoient une épaisse fumée sur Paris.
+A) Annuler les activités sportives en plein air :: Protéger.
+   services-1 securite+1 | g0 c+2 d+1 e+2
+   > Les activités sont suspendues.
+B) Distribuer des masques aux personnes fragiles :: Ciblé.
+   bud-2 services+1 | g+1 c+3 d+1 e+1
+   > Les personnes fragiles sont équipées.
+C) Simple information :: Calme.
+   bon-1 | g0 c+1 d+1 e0
+   > Les Parisiens toussent.
+
+=== cri-086 | crise | Une passerelle piétonne s’effondre
+Une passerelle piétonne au-dessus d’un canal s’effondre heureusement sans victime.
+A) Inspecter toutes les passerelles :: Prévenir.
+   bud-6 securite+2 | g0 c+3 d+2 e+1
+   > Toutes les passerelles sont auscultées.
+B) Reconstruire rapidement :: Rétablir.
+   bud-10 transports+1 | g0 c+2 d+2 e+1
+   > Une nouvelle passerelle est construite.
+C) Fermer les passerelles anciennes :: Prudence.
+   securite+1 transports-1 | g0 c+1 d+1 e0
+   > Les vieilles passerelles sont fermées.
+
+=== cri-087 | crise | Des polluants éternels dans l’eau
+Des analyses révèlent des traces de polluants éternels dans l’eau de certains quartiers.
+A) Installer des filtres au charbon actif :: Protéger la santé.
+   bud-20 ecologie+2 services+1 | g+1 c+2 d+1 e+4
+   > Les usines de traitement sont équipées.
+B) Publier les analyses et rassurer :: Transparence.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les résultats sont publiés.
+C) Attendre les normes nationales :: Prudence réglementaire.
+   pop-2 | g0 c+1 d+2 e-2
+   > La polémique enfle.
+
+=== cri-088 | crise | Des chiens empoisonnés dans un parc
+Des appâts empoisonnés ont tué plusieurs chiens dans un parc.
+A) Fouiller le parc et porter plainte :: Réagir.
+   bud-1 securite+1 | g0 c+3 d+2 e+1
+   > Le parc est fouillé.
+B) Fermer le parc temporairement :: Prudence.
+   securite+1 bon-1 | g0 c+2 d+1 e0
+   > Le parc ferme une semaine.
+C) Caméras dans le parc :: Identifier.
+   bud-3 securite+1 | g-1 c+2 d+3 e0
+   > L’auteur est identifié.
+
+=== cri-089 | crise | Un transformateur électrique explose
+Un transformateur explose dans une rue, privant un quartier d’électricité pendant deux jours.
+A) Groupes électrogènes pour les personnes fragiles :: Protéger.
+   bud-3 services+1 bon+1 | g+2 c+2 d+1 e0
+   > Les personnes sous assistance médicale sont équipées.
+B) Exiger un plan d’investissement au distributeur :: Prévenir.
+   securite+1 coh+1 | g+1 c+2 d+1 e+1
+   > Le distributeur annonce des travaux.
+C) Attendre le rétablissement :: Patience.
+   bon-1 | g0 c+1 d+1 e0
+   > Le quartier reste dans le noir.
+
+=== cri-090 | crise | Des coupures d’électricité tournantes
+Le gestionnaire du réseau annonce des coupures tournantes de deux heures pendant la vague de froid.
+A) Plan de sobriété massif de la Ville :: Montrer l’exemple.
+   ecologie+2 bon-1 | g+1 c+2 d+1 e+3
+   > Les bâtiments publics réduisent leur consommation.
+B) Protéger les hôpitaux et personnes fragiles :: Priorités.
+   bud-3 services+1 | g+2 c+2 d+1 e+1
+   > Les publics fragiles sont protégés.
+C) Rien :: Compétence nationale.
+   pop-2 | g0 c+1 d+1 e-1
+   > Les coupures surprennent les habitants.
+
+=== cri-091 | crise | Des rats dans une crèche
+Des rats sont découverts dans une crèche municipale. Les parents sont furieux.
+A) Fermer et traiter toutes les crèches du quartier :: Prudence.
+   bud-3 services-1 proprete+1 | g0 c+2 d+1 e0
+   > Les crèches sont traitées.
+B) Fermer seulement la crèche concernée :: Proportionné.
+   bud-1 proprete+1 | g0 c+3 d+1 e0
+   > La crèche ferme deux semaines.
+C) Rassurer les parents :: Communication.
+   pop-2 | g0 c+1 d0 e0
+   > La crèche reste ouverte.
+
+=== cri-092 | crise | Une intoxication dans un restaurant populaire
+Une salmonellose touche cinquante clients d’un restaurant très fréquenté.
+A) Contrôles sanitaires renforcés dans tous les restaurants :: Prévenir.
+   rec-0.1x40 securite+1 | g+1 c+3 d+1 e+1
+   > Les contrôles se multiplient.
+B) Fermer le restaurant et accompagner les victimes :: Réagir.
+   bud-1 securite+1 | g+1 c+2 d+1 e0
+   > Le restaurant ferme.
+C) Laisser les services de l’État :: Compétence.
+   pop-1 | g0 c+1 d+1 e0
+   > Rien de plus n’est fait.
+
+=== cri-093 | crise | Deux bateaux se percutent sur la Seine
+Un bateau-mouche percute une péniche. Des passagers tombent à l’eau.
+A) Limiter la vitesse et le nombre de bateaux :: Sécurité.
+   securite+2 economie-1 | g+1 c+2 d+1 e+2
+   > La navigation est encadrée.
+B) Soutenir les victimes et ouvrir une enquête :: Responsabilité.
+   bud-2 pop+1 | g+1 c+2 d+1 e+1
+   > Une enquête est ouverte.
+C) Rien :: Accident rare.
+   securite-1 | g0 c0 d+2 e0
+   > La navigation reprend.
+
+=== cri-094 | crise | Les paiements par carte en panne
+Une panne nationale empêche les paiements par carte. Les commerces ne peuvent plus vendre.
+A) Ouvrir des distributeurs de secours dans les mairies :: Aider.
+   bud-2 economie+1 | g+1 c+2 d+1 e0
+   > Des espèces sont disponibles en mairie.
+B) Rendre les transports gratuits pour la journée :: Geste.
+   bud-3 transports+1 bon+1 | g+2 c+1 d0 e+2
+   > Le métro est gratuit.
+C) Attendre :: Panne nationale.
+   economie-1 | g0 c+1 d+1 e0
+   > La journée est perdue pour les commerces.
+
+=== cri-095 | crise | Les dépôts de bus bloqués par une grève
+Des grévistes bloquent les dépôts de bus. Aucun bus ne circule.
+A) Médiation entre RATP et syndicats :: Apaiser.
+   coh+1 transports+1 | g+2 c+2 d0 e+1
+   > Le blocage est levé.
+B) Demander l’évacuation des dépôts :: Ordre.
+   coh-1 transports+1 | g-3 c+1 d+4 e0
+   > Les dépôts sont libérés par la police.
+C) Navettes de remplacement :: Pallier.
+   bud-4 transports+1 | g0 c+2 d+1 e+1
+   > Des cars privés remplacent les bus.
+
+=== cri-096 | crise | Des lettres contenant une poudre blanche
+Des enveloppes contenant une poudre suspecte arrivent à l’Hôtel de Ville et dans les mairies.
+A) Confinement et analyses :: Prudence.
+   bud-2 securite+2 services-1 | g0 c+2 d+2 e0
+   > Les bâtiments sont confinés.
+B) Renforcer le tri du courrier :: Prévenir.
+   bud-3 securite+1 | g0 c+3 d+2 e0
+   > Le courrier passe par un centre sécurisé.
+C) Rester calme et attendre les analyses :: Calme.
+   securite-1 | g0 c+1 d+1 e0
+   > Les services continuent de fonctionner.
+
+=== cri-097 | crise | Un nuage de sable du Sahara
+Un nuage de sable du Sahara rend l’air irrespirable et couvre la ville de poussière orange.
+A) Alerte santé et activités en intérieur :: Protéger.
+   services+1 bon-1 | g+1 c+3 d+1 e+1
+   > Les écoles gardent les enfants à l’intérieur.
+B) Nettoyage intensif des rues :: Effacer.
+   bud-3 proprete+2 | g0 c+2 d+2 e0
+   > Les rues sont lavées.
+C) Rien :: Phénomène naturel.
+   bon-1 | g0 c+1 d+1 e0
+   > La poussière reste des jours.
+
+=== cri-098 | crise | Une alerte dans une centrale nucléaire
+Un incident dans une centrale nucléaire normande inquiète les Parisiens, même si aucun rejet n’est détecté.
+A) Distribuer des pastilles d’iode par précaution :: Rassurer.
+   bud-4 services+1 | g0 c+2 d+1 e+2
+   > Les pharmacies distribuent des pastilles.
+B) Informer en continu avec des experts :: Transparence.
+   bud-1 pop+1 | g+1 c+3 d+1 e+1
+   > Les mesures sont publiées heure par heure.
+C) Attendre les informations officielles :: Prudence.
+   pop-1 | g0 c+1 d+1 e0
+   > Les rumeurs se répandent.
+
+=== cri-099 | crise | Des échafaudages arrachés par le vent
+Une tempête arrache des échafaudages qui tombent sur la chaussée.
+A) Contrôle de tous les échafaudages :: Prévenir.
+   bud-3 securite+2 | g0 c+3 d+2 e0
+   > Les échafaudages sont vérifiés.
+B) Interdire les échafaudages les jours de vent fort :: Règle.
+   securite+1 logement-1 | g0 c+2 d+1 e0
+   > Les chantiers s’arrêtent les jours de tempête.
+C) Poursuivre les entreprises en faute :: Sanction.
+   bud-1 securite+1 | g0 c+2 d+2 e0
+   > Les entreprises sont poursuivies.
+
+=== cri-100 | crise | Le prix de la baguette flambe
+Une mauvaise récolte fait flamber le prix de la farine. La baguette dépasse 1,80 €.
+A) Aider les boulangers modestes :: Soutien.
+   bud-5 achat+1 economie+1 | g+1 c+2 d+2 e0
+   > Les boulangers reçoivent une aide.
+B) Pain à prix solidaire dans les épiceries sociales :: Ciblé.
+   bud-2 achat+1 | g+3 c+2 d0 e+1
+   > Les familles modestes paient moins.
+C) Rien :: Marché mondial.
+   achat-1 | g-1 c0 d+2 e0
+   > Le prix continue de grimper.
+
+=== cri-101 | crise | Une coupure d’internet géante
+Une panne d’un grand opérateur prive un million de Parisiens d’internet pendant deux jours.
+? distinct
+A) Wifi gratuit dans tous les bâtiments publics :: Aider.
+   bud-2 services+1 | g+1 c+3 d+1 e+1
+   > Les mairies et bibliothèques ouvrent leur wifi.
+B) Exiger une indemnisation des abonnés :: Pression.
+   achat+1 coh+1 | g+2 c+2 d0 e0
+   > L’opérateur rembourse un mois.
+C) Rien :: Problème privé.
+   bon-1 | g0 c+1 d+1 e0
+   > Les habitants patientent.
+
+=== cri-102 | crise | Une odeur suspecte évacue une station de métro
+Une odeur chimique provoque l’évacuation d’une grande station de métro et des malaises.
+A) Enquête et mesures de l’air :: Comprendre.
+   bud-2 securite+1 | g+1 c+3 d+1 e+1
+   > Une fuite de produit de nettoyage est identifiée.
+B) Renforcer les capteurs dans les stations :: Prévenir.
+   bud-8 securite+2 | g0 c+3 d+2 e+1
+   > Des capteurs surveillent l’air des stations.
+C) Rouvrir rapidement :: Continuité.
+   securite-1 transports+1 | g0 c+1 d+1 e0
+   > La station rouvre.
+
+=== cri-103 | crise | Un marché couvert prend feu
+Un incendie détruit une partie d’un marché couvert historique.
+A) Reconstruire à l’identique :: Patrimoine.
+   bud-25 economie+1 bon+1 | g+1 c+2 d+2 e0
+   > Le marché sera reconstruit.
+B) Marché provisoire et aide aux commerçants :: Urgence.
+   bud-6 economie+2 | g+1 c+3 d+1 e+1
+   > Les commerçants s’installent sous des barnums.
+C) Laisser les assurances :: Économie.
+   economie-2 | g-1 c0 d+2 e0
+   > Les commerçants attendent.
+
+=== cri-104 | crise | Les urgences d’un hôpital ferment la nuit
+Faute de médecins, les urgences d’un hôpital de l’est parisien ferment la nuit.
+A) Centre médical de nuit municipal :: Pallier.
+   bud-6 rec-0.2x60 services+2 | g+3 c+2 d+1 e+1
+   > Un centre de soins ouvre la nuit.
+B) Navettes vers les autres urgences :: Organiser.
+   rec-0.1x60 services+1 | g+1 c+3 d+1 e0
+   > Des navettes transportent les patients.
+C) Interpeller l’État :: Compétence.
+   services-1 coh+1 | g0 c+1 d+1 e0
+   > Les urgences restent fermées.
+
+=== cri-105 | crise | Un car de touristes en feu sur le périphérique
+Un car de touristes prend feu sur le périphérique. Le trafic est bloqué des heures.
+A) Accueillir les touristes et les rassurer :: Image de Paris.
+   bud-2 economie+1 bon+1 | g+1 c+2 d+1 e0
+   > Les touristes sont pris en charge.
+B) Contrôle technique renforcé des cars :: Prévenir.
+   securite+2 | g0 c+3 d+2 e+1
+   > Les cars sont contrôlés à l’entrée de Paris.
+C) Rien :: Accident isolé.
+   transports-1 | g0 c+1 d+1 e0
+   > Rien ne change.

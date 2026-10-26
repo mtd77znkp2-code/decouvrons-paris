@@ -425,6 +425,7 @@ C) Réduire les récréations dans la cour :: Apaiser.
 
 === quo-101 | quotidien | Des coupures d’électricité annoncées trop tard
 Des habitants découvrent des coupures pour travaux la veille seulement.
+? distinct
 A) Alertes par SMS une semaine avant :: Prévenir.
    bud-1 services+1 bon+1 | g+1 c+3 d+2 e0
    > Les habitants sont prévenus à temps.
