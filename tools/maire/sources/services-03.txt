@@ -1,0 +1,489 @@
+// Services publics, série 3
+=== ser-066 | services | Vacciner gratuitement contre la grippe
+Les personnes fragiles ne se font pas vacciner contre la grippe faute de médecin traitant.
+A) Vaccination gratuite dans toutes les mairies :: Prévention.
+   bud-4 services+2 | g+2 c+3 d+1 e+1
+   > Des centres de vaccination ouvrent dans les mairies.
+B) Campagne avec les pharmacies :: Partenariat.
+   bud-1 services+1 | g+1 c+3 d+2 e0
+   > Les pharmacies vaccinent sans rendez-vous.
+C) Rien :: Assurance maladie.
+   services-1 | g-1 c+1 d+1 e0
+   > Rien ne change.
+   ~35 pop-1 > L’épidémie de grippe sature les urgences.
+
+=== ser-067 | services | Un camion de dépistage du cancer du sein
+Les femmes des quartiers populaires se font moins dépister.
+A) Mammographe mobile dans les quartiers :: Aller vers.
+   bud-4 rec-0.1x60 services+2 | g+3 c+2 d+1 e+1
+   > Le camion de dépistage sillonne les quartiers.
+B) Campagne d’information et rendez-vous facilités :: Inciter.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Des rendez-vous sont proposés en mairie.
+C) Rien :: Le dispositif national existe.
+   services-1 | g-1 c+1 d+1 e0
+   > Rien ne change.
+
+=== ser-068 | services | Les centres de planification familiale débordés
+Les centres de planification familiale ont des délais de plusieurs semaines.
+A) Renforcer les centres :: Accès aux droits.
+   rec-0.2x60 services+2 | g+3 c+2 d-1 e+2
+   > Les délais tombent à quelques jours.
+B) Consultations en ligne :: Rapide.
+   bud-2 services+1 | g+1 c+3 d+1 e+1
+   > Des consultations à distance sont proposées.
+C) Rien :: Budget.
+   services-1 | g-2 c0 d+2 e0
+   > Les délais restent longs.
+
+=== ser-069 | services | Des préservatifs gratuits pour les jeunes
+Les infections sexuellement transmissibles augmentent chez les jeunes.
+A) Distributeurs gratuits dans les lycées et lieux jeunes :: Prévention.
+   bud-2 services+1 | g+2 c+2 d0 e+2
+   > Des distributeurs sont installés.
+   ~25 pop-1 > Des associations familiales protestent.
+B) Dépistages gratuits et anonymes :: Santé.
+   bud-2 services+2 | g+2 c+3 d+1 e+1
+   > Des centres de dépistage ouvrent le soir.
+C) Rien :: Pas le rôle de la Ville.
+   services-1 | g-2 c0 d+3 e-1
+   > Rien ne change.
+
+=== ser-070 | services | Une maison de naissance
+Des sages-femmes proposent une maison de naissance pour des accouchements moins médicalisés.
+A) Soutenir l’ouverture :: Choix des femmes.
+   bud-5 services+1 bon+1 | g+2 c+2 d0 e+2
+   > La maison de naissance ouvre.
+B) Seulement adossée à une maternité :: Sécurité.
+   bud-3 services+1 | g+1 c+3 d+1 e+1
+   > La maison de naissance s’installe près d’un hôpital.
+C) Refuser :: Prudence médicale.
+   services-1 | g-1 c+1 d+2 e-1
+   > Le projet est abandonné.
+
+=== ser-071 | services | Garder les enfants malades
+Quand un enfant est malade, les parents doivent poser un congé. Certains perdent leur emploi.
+A) Service de garde d’enfants malades à domicile :: Aider les parents.
+   rec-0.3x60 services+2 achat+1 | g+3 c+2 d+1 e+1
+   > Des auxiliaires gardent les enfants malades.
+B) Aide financière pour une garde privée :: Liberté.
+   rec-0.1x60 achat+1 | g+1 c+3 d+2 e0
+   > Une aide rembourse une partie de la garde.
+C) Rien :: Les parents s’organisent.
+   bon-1 | g-2 c0 d+2 e0
+   > Rien ne change.
+
+=== ser-072 | services | Les dortoirs des maternelles
+Les petits de maternelle dorment serrés dans des salles trop petites et bruyantes.
+A) Aménager de vrais dortoirs :: Bien-être.
+   bud-12 services+2 | g+2 c+2 d+1 e+1
+   > Les dortoirs sont rénovés.
+B) Siestes échelonnées :: Organisation.
+   services+1 | g+1 c+3 d+1 e+1
+   > Les enfants dorment par petits groupes.
+C) Rien :: Pas de locaux.
+   services-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-073 | services | Les classes vertes et de neige disparaissent
+Les classes de découverte sont devenues trop chères. Beaucoup d’élèves ne partent jamais.
+A) Financer une classe de découverte pour chaque élève :: Égalité.
+   rec-0.5x60 services+2 bon+1 | g+3 c+2 d+1 e+2
+   > Chaque élève part au moins une fois.
+B) Centres de vacances municipaux à prix réduit :: Utiliser nos centres.
+   rec-0.2x60 services+1 | g+2 c+3 d+1 e+1
+   > Les centres de la Ville accueillent les classes.
+C) Rien :: Budget.
+   bon-1 | g-2 c0 d+2 e0
+   > Les classes vertes deviennent rares.
+
+=== ser-074 | services | Accueillir les enfants autistes
+Les enfants autistes ont peu de places dans les écoles et les centres de loisirs.
+A) Unités spécialisées dans les écoles :: Inclusion.
+   bud-10 rec-0.2x60 services+2 | g+3 c+2 d+1 e+1
+   > Des unités d’accueil ouvrent.
+B) Former les animateurs :: Accompagner.
+   bud-2 services+1 | g+2 c+3 d+1 e+1
+   > Les animateurs sont formés.
+C) Rien :: Compétence de l’État.
+   services-1 | g-2 c+1 d+2 e0
+   > Les familles restent sans solution.
+
+=== ser-075 | services | Cuisiner contre l’obésité des enfants
+Un enfant parisien sur six est en surpoids, surtout dans les quartiers populaires.
+A) Ateliers cuisine et sport dans les écoles :: Prévention.
+   rec-0.2x60 services+2 bon+1 | g+2 c+2 d+1 e+2
+   > Les enfants apprennent à cuisiner.
+B) Supprimer les distributeurs de sucreries :: Interdire.
+   services+1 economie-1 | g+1 c+2 d0 e+2
+   > Les distributeurs disparaissent des équipements municipaux.
+C) Rien :: Responsabilité des familles.
+   services-1 | g-2 c0 d+3 e0
+   > Rien ne change.
+
+=== ser-076 | services | Le sport sur ordonnance
+Des médecins prescrivent de l’activité physique, mais les patients ne savent pas où aller.
+A) Créneaux encadrés gratuits dans les gymnases :: Santé.
+   rec-0.2x60 services+2 bon+1 | g+2 c+2 d+1 e+1
+   > Les patients font du sport encadré.
+B) Partenariat avec les clubs :: S’appuyer sur l’existant.
+   rec-0.1x60 services+1 | g+1 c+3 d+2 e+1
+   > Les clubs accueillent les patients.
+C) Rien :: Pas notre rôle.
+   services-1 | g-1 c+1 d+1 e0
+   > Rien ne change.
+
+=== ser-077 | services | Un bibliobus dans les quartiers
+Des quartiers sont loin de toute bibliothèque.
+A) Bibliobus dans dix quartiers :: Lecture pour tous.
+   bud-4 rec-0.1x60 services+1 bon+1 | g+2 c+2 d+1 e+1
+   > Le bibliobus passe chaque semaine.
+B) Boîtes à livres et points de prêt chez les commerçants :: Léger.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Des commerçants prêtent des livres.
+C) Rien :: Les bibliothèques existent.
+   services-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-078 | services | Une école de la deuxième chance
+Des milliers de jeunes ont quitté l’école sans diplôme.
+A) Créer une école de la deuxième chance :: Raccrocher.
+   bud-10 rec-0.3x60 services+2 economie+1 | g+3 c+2 d+1 e+1
+   > Des jeunes décrocheurs reprennent une formation.
+B) Financer les associations de raccrochage :: Soutenir.
+   rec-0.1x60 services+1 | g+2 c+3 d+1 e+1
+   > Les associations accompagnent les jeunes.
+C) Rien :: Compétence de l’État.
+   services-1 | g-2 c+1 d+2 e0
+   > Rien ne change.
+
+=== ser-079 | services | Des crèches partagées avec les entreprises
+Des entreprises proposent de financer des places de crèche pour leurs salariés dans les crèches municipales.
+A) Accepter des places réservées :: Financement.
+   rec+0.1x60 services+1 | g-1 c+3 d+3 e0
+   > Des places sont financées par les entreprises.
+   ~30 pop-1 > Des parents dénoncent une crèche à deux vitesses.
+B) Construire des crèches cofinancées :: Plus de places.
+   bud-10 services+2 | g+1 c+3 d+2 e0
+   > De nouvelles crèches ouvrent.
+C) Refuser :: Égalité d’accès.
+   services-1 | g+2 c0 d-2 e0
+   > Les entreprises ne participent pas.
+
+=== ser-080 | services | La prime de Noël des plus modestes
+Le centre d’action sociale peut verser une prime de fin d’année aux familles modestes.
+A) Doubler la prime :: Solidarité.
+   bud-6 achat+2 bon+1 | g+3 c+1 d0 e+1
+   > Les familles modestes reçoivent 200 €.
+B) Bons pour des activités de loisirs :: Ciblé.
+   bud-3 bon+1 achat+1 | g+2 c+2 d+1 e+1
+   > Les familles reçoivent des bons loisirs.
+C) Supprimer la prime :: Économie.
+   bud+3 achat-2 pop-1 | g-3 c+1 d+3 e0
+   > La prime disparaît.
+
+=== ser-081 | services | Des interprètes dans les services publics
+Des habitants ne parlent pas français et ne comprennent pas leurs démarches.
+A) Interprétariat par téléphone dans tous les guichets :: Accès aux droits.
+   rec-0.1x60 services+2 | g+3 c+2 d-1 e+1
+   > Les guichets accèdent à des interprètes.
+B) Documents traduits dans les principales langues :: Simple.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Les formulaires sont traduits.
+C) Tout en français :: Langue de la République.
+   services-1 | g-3 c+1 d+3 e0
+   > Rien ne change.
+
+=== ser-082 | services | La langue des signes en mairie
+Les personnes sourdes ne peuvent pas échanger avec les agents d’accueil.
+A) Visio-interprétation dans toutes les mairies :: Accessibilité.
+   bud-2 rec-0.05x60 services+1 | g+2 c+3 d+1 e+1
+   > Un interprète est disponible en vidéo.
+B) Former des agents :: Humain.
+   bud-2 services+1 | g+2 c+2 d+1 e+1
+   > Des agents apprennent la langue des signes.
+C) Rien :: Budget.
+   pop-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-083 | services | Des livres audio pour les malvoyants
+Les bibliothèques ont peu de livres audio et en gros caractères.
+A) Créer un fonds important et le livrer à domicile :: Lecture pour tous.
+   bud-3 services+1 bon+1 | g+2 c+2 d+1 e+1
+   > Les malvoyants reçoivent des livres chez eux.
+B) Enrichir le catalogue numérique :: Économique.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Des livres audio sont accessibles en ligne.
+C) Rien :: Pas prioritaire.
+   pop-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-084 | services | Des jeunes en service civique à la Ville
+Des centaines de jeunes veulent faire un service civique dans les services de la Ville.
+A) Accueillir 1 000 volontaires :: Engagement.
+   rec-0.2x60 services+2 bon+1 | g+2 c+3 d+2 e+1
+   > Les volontaires aident dans les écoles et les parcs.
+B) Accueillir 200 volontaires :: Prudent.
+   rec-0.05x60 services+1 | g+1 c+3 d+1 e+1
+   > Deux cents jeunes sont accueillis.
+C) Refuser :: Pas d’emploi déguisé.
+   services-1 | g+1 c0 d0 e0
+   > Les jeunes vont ailleurs.
+
+=== ser-085 | services | Des crèches gérées par les parents
+Des parents veulent créer des crèches associatives qu’ils géreraient eux-mêmes.
+A) Prêter des locaux et subventionner :: Initiative.
+   bud-3 rec-0.1x60 services+2 | g+2 c+2 d+2 e+2
+   > Des crèches parentales ouvrent.
+B) Aide au démarrage seulement :: Coup de pouce.
+   bud-2 services+1 | g+1 c+3 d+2 e+1
+   > Une aide finance l’installation.
+C) Priorité aux crèches municipales :: Service public.
+   bud-10 services+1 | g+2 c+1 d-1 e0
+   > Une crèche municipale est construite.
+
+=== ser-086 | services | Les assistantes maternelles isolées
+Les assistantes maternelles travaillent seules chez elles, sans formation ni lieu d’échange.
+A) Relais petite enfance dans chaque arrondissement :: Accompagner.
+   bud-4 rec-0.1x60 services+2 | g+2 c+3 d+1 e+1
+   > Des relais accueillent les assistantes maternelles.
+B) Formation gratuite :: Qualité.
+   bud-2 services+1 | g+1 c+3 d+1 e+1
+   > Des formations sont proposées.
+C) Rien :: Professions libérales.
+   services-1 | g-1 c0 d+2 e0
+   > Rien ne change.
+
+=== ser-087 | services | Des ateliers mémoire pour les seniors
+Les seniors veulent entretenir leur mémoire et prévenir les maladies.
+A) Ateliers dans tous les clubs seniors :: Prévention.
+   rec-0.1x60 services+1 bon+1 | g+2 c+2 d+1 e+1
+   > Les ateliers font le plein.
+B) Application de jeux de mémoire :: Numérique.
+   bud-1 services+1 | g0 c+3 d+1 e+1
+   > Une application est proposée.
+C) Rien :: Pas prioritaire.
+   bon-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-088 | services | Des accueils de jour pour les malades d’Alzheimer
+Les familles de malades d’Alzheimer n’ont aucun répit.
+A) Ouvrir cinq accueils de jour :: Soulager les familles.
+   bud-10 rec-0.3x60 services+2 bon+1 | g+3 c+2 d+1 e+1
+   > Les malades sont accueillis en journée.
+B) Gardes à domicile financées :: Rester chez soi.
+   rec-0.2x60 services+1 | g+2 c+3 d+1 e+1
+   > Des gardes viennent à domicile.
+C) Rien :: Compétence de la Région.
+   bon-1 | g-2 c+1 d+2 e0
+   > Les familles restent seules.
+
+=== ser-089 | services | Une maison des adolescents
+Les adolescents en souffrance ne savent pas à qui parler.
+A) Ouvrir une maison des adolescents par quartier :: Écoute.
+   bud-8 rec-0.3x60 services+2 | g+3 c+2 d+1 e+1
+   > Des maisons des adolescents ouvrent.
+B) Une seule maison centrale :: Économique.
+   bud-3 rec-0.1x60 services+1 | g+1 c+3 d+1 e+1
+   > Une maison ouvre au centre de Paris.
+C) Rien :: Les services existants suffisent.
+   services-1 | g-1 c0 d+2 e0
+   > Rien ne change.
+
+=== ser-090 | services | Mourir chez soi
+Les malades en fin de vie qui souhaitent mourir chez eux manquent de soins à domicile.
+A) Équipes de soins palliatifs à domicile :: Dignité.
+   rec-0.3x60 services+2 | g+2 c+2 d+1 e+1
+   > Des équipes accompagnent les malades chez eux.
+B) Aide aux familles qui accompagnent :: Soutien.
+   rec-0.1x60 services+1 bon+1 | g+2 c+3 d+1 e+1
+   > Les aidants reçoivent une aide.
+C) Rien :: Compétence de l’État.
+   services-1 | g-1 c+1 d+1 e0
+   > Rien ne change.
+
+=== ser-091 | services | Des créneaux de piscine réservés
+Des associations demandent des créneaux de piscine réservés aux femmes. D’autres y voient une atteinte à la mixité.
+A) Accepter quelques créneaux :: Répondre à la demande.
+   services+1 coh-1 | g+1 c0 d-3 e0
+   > Des créneaux sont réservés.
+   ~40 pop-2 > Une polémique nationale éclate.
+B) Refuser au nom de la mixité :: Principe.
+   services-1 coh+1 | g-1 c+2 d+3 e0
+   > Les créneaux restent mixtes.
+C) Proposer des cours de natation adultes pour débutants :: Alternative.
+   rec-0.05x60 services+1 | g+1 c+3 d+1 e+1
+   > Des cours pour adultes débutants sont proposés.
+
+=== ser-092 | services | Les gymnases fermés le dimanche
+Les gymnases municipaux sont fermés le dimanche alors que les clubs manquent de créneaux.
+A) Ouvrir le dimanche avec des gardiens :: Plus de sport.
+   rec-0.2x60 services+2 bon+1 | g+2 c+2 d+1 e+1
+   > Les gymnases ouvrent le dimanche.
+B) Confier les clés aux clubs :: Responsabiliser.
+   services+1 securite-1 | g0 c+3 d+2 e+1
+   > Les clubs gèrent l’ouverture.
+C) Rien :: Coût.
+   services-1 | g-1 c0 d+1 e0
+   > Les gymnases restent fermés.
+
+=== ser-093 | services | Un pass sport pour chaque enfant
+Le sport en club coûte cher. Des enfants n’en font jamais.
+A) Pass sport de 100 € par enfant :: Sport pour tous.
+   rec-0.4x60 services+2 achat+1 | g+3 c+2 d+1 e+1
+   > Des milliers d’enfants s’inscrivent dans un club.
+B) Pass réservé aux familles modestes :: Ciblé.
+   rec-0.15x60 services+1 achat+1 | g+2 c+3 d+1 e+1
+   > Les enfants modestes accèdent au sport.
+C) Rien :: Le pass national existe.
+   services-1 | g-1 c+1 d+2 e0
+   > Rien ne change.
+
+=== ser-094 | services | Des terrains de basket de rue
+Les jeunes réclament des terrains de basket en accès libre dans leurs quartiers.
+A) Construire vingt terrains :: Sport libre.
+   bud-12 bon+2 services+1 | g+2 c+2 d+1 e+1
+   > Des terrains colorés apparaissent.
+   ~25 bon-1 > Les riverains se plaignent du bruit des ballons le soir.
+B) Rénover les terrains existants :: Économique.
+   bud-4 bon+1 | g+1 c+3 d+1 e+1
+   > Les vieux terrains sont refaits.
+C) Rien :: Gymnases existants.
+   bon-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-095 | services | Les jeunes aidants
+Des enfants s’occupent d’un parent malade et décrochent à l’école.
+A) Repérage dans les écoles et aide à domicile :: Protéger ces enfants.
+   rec-0.2x60 services+2 | g+3 c+2 d+1 e+1
+   > Les jeunes aidants sont accompagnés.
+B) Groupes de parole et séjours de répit :: Soutien.
+   rec-0.1x60 services+1 bon+1 | g+2 c+3 d+1 e+1
+   > Les jeunes aidants partent en vacances.
+C) Rien :: Sujet trop rare.
+   services-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-096 | services | Des protections périodiques gratuites
+Des femmes sans-abri et des étudiantes ne peuvent pas acheter de protections périodiques.
+A) Distributeurs gratuits dans les bâtiments publics :: Dignité.
+   bud-2 rec-0.05x60 services+1 bon+1 | g+3 c+2 d0 e+2
+   > Des distributeurs gratuits sont installés.
+B) Distribution par les associations :: Ciblé.
+   rec-0.05x60 services+1 | g+2 c+3 d+1 e+1
+   > Les associations distribuent les protections.
+C) Rien :: Pas notre rôle.
+   pop-1 | g-2 c0 d+2 e0
+   > Rien ne change.
+
+=== ser-097 | services | Un numéro unique pour les seniors
+Les seniors ne savent pas qui appeler pour une aide, un portage de repas ou une sortie.
+A) Numéro unique avec des conseillers dédiés :: Simplifier.
+   rec-0.1x60 services+2 bon+1 | g+2 c+3 d+1 e+1
+   > Un seul numéro répond à toutes les questions.
+B) Guide papier envoyé à chaque senior :: Informer.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Un guide est distribué.
+C) Rien :: Les services existent.
+   services-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== ser-098 | services | Prêter du matériel médical
+Fauteuils roulants, déambulateurs et lits médicalisés coûtent cher pour un usage temporaire.
+A) Service de prêt municipal :: Solidarité.
+   bud-4 services+1 achat+1 | g+2 c+3 d+1 e+2
+   > Le matériel est prêté gratuitement.
+B) Partenariat avec des ressourceries :: Réemploi.
+   bud-1 services+1 ecologie+1 | g+1 c+3 d+1 e+3
+   > Le matériel est reconditionné et revendu à bas prix.
+C) Rien :: Sécurité sociale.
+   achat-1 | g-1 c+1 d+1 e0
+   > Rien ne change.
+
+=== ser-099 | services | Des certificats médicaux sportifs gratuits
+Les familles paient une consultation pour obtenir le certificat médical de sport.
+A) Visites médicales gratuites dans les centres de santé :: Sport pour tous.
+   rec-0.1x60 services+1 achat+1 | g+2 c+2 d+1 e+1
+   > Les certificats sont gratuits.
+B) Rien :: Les médecins de ville s’en chargent.
+   achat-1 | g-1 c+1 d+2 e0
+   > Rien ne change.
+C) Bilans de santé gratuits pour les jeunes sportifs :: Prévention.
+   rec-0.2x60 services+2 | g+2 c+2 d+1 e+1
+   > Les jeunes ont un bilan complet.
+
+=== ser-100 | services | Des mois d’attente chez l’orthophoniste
+Les enfants attendent un an pour voir un orthophoniste.
+A) Orthophonistes salariés dans les centres de santé :: Réduire l’attente.
+   rec-0.3x60 services+2 | g+3 c+2 d+1 e+1
+   > Des orthophonistes rejoignent les centres municipaux.
+B) Aide à l’installation des orthophonistes :: Incitation.
+   bud-3 services+1 | g+1 c+3 d+2 e0
+   > Des orthophonistes s’installent à Paris.
+C) Rien :: Compétence de l’État.
+   services-1 | g-2 c+1 d+2 e0
+   > Les délais restent longs.
+
+=== ser-101 | services | Des vacances pour les seniors
+Beaucoup de seniors modestes ne sont jamais partis en vacances depuis leur retraite.
+A) Séjours municipaux à prix très réduit :: Partir.
+   rec-0.3x30 bon+2 services+1 | g+3 c+2 d+1 e+1
+   > Des seniors partent à la mer.
+B) Sorties à la journée :: Économique.
+   rec-0.1x30 bon+1 | g+2 c+3 d+1 e+1
+   > Des excursions sont organisées.
+C) Rien :: Budget.
+   bon-1 | g-2 c0 d+2 e0
+   > Rien ne change.
+
+=== ser-102 | services | Le transport des élèves handicapés
+Les enfants handicapés passent parfois trois heures par jour en taxi pour aller à l’école.
+? distinct
+A) Réorganiser les tournées et ajouter des véhicules :: Réduire les trajets.
+   rec-0.3x60 services+2 | g+2 c+3 d+1 e+1
+   > Les trajets sont raccourcis.
+B) Scolariser plus près de chez eux :: Inclusion.
+   bud-6 services+1 | g+2 c+2 d+1 e+1
+   > Des classes adaptées ouvrent dans les quartiers.
+C) Rien :: Coût.
+   services-1 | g-1 c0 d+1 e0
+   > Les longs trajets continuent.
+
+=== ser-103 | services | Ouvrir les cours d’école le samedi
+Les cours d’école sont vides le samedi alors que les familles manquent d’espace.
+? distinct
+A) Ouvrir toutes les cours le samedi avec des gardiens :: Espace pour les familles.
+   rec-0.2x60 bon+2 | g+2 c+2 d+1 e+2
+   > Les cours deviennent des parcs le samedi.
+B) Quelques cours tests :: Prudence.
+   rec-0.05x60 bon+1 | g+1 c+3 d+1 e+1
+   > Vingt cours ouvrent.
+C) Rien :: Sécurité des écoles.
+   bon-1 | g-1 c0 d+2 e0
+   > Les cours restent fermées.
+
+=== ser-104 | services | Une maternité menacée de fermeture
+L’Agence régionale de santé veut fermer une maternité de l’est parisien.
+? distinct
+A) Mobilisation contre la fermeture :: Défendre le service.
+   pop+2 coh+1 | g+3 c+1 d0 e+1
+   > Une pétition réunit 100 000 signatures.
+   ~45 services-2 > La maternité ferme quand même.
+B) Proposer un centre périnatal de proximité :: Compromis.
+   bud-5 services+1 | g+1 c+3 d+1 e+1
+   > Un centre de suivi de grossesse est maintenu.
+C) Accepter :: Sécurité médicale.
+   services-2 pop-1 | g-2 c+1 d+2 e0
+   > La maternité ferme.
+
+=== ser-105 | services | Des stages de remise à niveau l’été
+Après l’année scolaire, des élèves en difficulté perdent encore plus pendant l’été.
+A) Stages gratuits de remise à niveau :: Égalité des chances.
+   rec-0.2x20 services+2 | g+2 c+3 d+2 e+1
+   > Des milliers d’élèves suivent des stages.
+B) Ateliers ludiques dans les centres de loisirs :: Apprendre en jouant.
+   rec-0.1x20 services+1 bon+1 | g+2 c+2 d+1 e+1
+   > Les centres de loisirs proposent des ateliers.
+C) Rien :: Vacances.
+   services-1 | g-1 c0 d+1 e0
+   > Rien ne change.
