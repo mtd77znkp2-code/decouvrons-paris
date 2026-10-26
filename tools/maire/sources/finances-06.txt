@@ -1,0 +1,485 @@
+// Finances, série 6
+=== fin-146 | finances | Les impayés des hôpitaux envers la Ville
+L’AP-HP doit des millions à la Ville pour des loyers et de l’eau jamais réglés.
+A) Exiger le paiement immédiat :: Rigueur.
+   bud+6 services-1 | g-1 c+2 d+2 e0
+   > L’AP-HP paie mais réduit certains services.
+B) Effacer la dette contre des places de crèche pour soignants :: Échange.
+   services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les infirmières obtiennent des places de crèche.
+C) Un échéancier sur dix ans :: Compromis.
+   rec+0.05x60 | g0 c+2 d+1 e+1
+   > L’hôpital rembourse peu à peu.
+=== fin-147 | finances | La redevance des trottinettes et vélos en libre-service
+Les opérateurs paient peu pour occuper les trottoirs avec leurs engins.
+A) Tripler la redevance :: Faire payer l’espace public.
+   rec+0.2x60 transports-1 | g+1 c+2 d+1 e+1
+   > Un opérateur se retire, les autres paient.
+B) Une redevance liée aux stationnements gênants :: Responsabiliser.
+   rec+0.1x60 proprete+1 | g+1 c+3 d+1 e+1
+   > Les engins mal garés coûtent cher aux opérateurs.
+C) Ne pas toucher :: Mobilité.
+   transports+1 | g0 c+1 d+1 e0
+   > Les trottoirs restent encombrés.
+
+=== fin-148 | finances | Vendre les certificats d’économie d’énergie
+Les travaux d’isolation des écoles donnent droit à des certificats revendables aux énergéticiens.
+A) Les vendre au meilleur prix :: Recette.
+   bud+8 | g0 c+2 d+2 e0
+   > La vente rapporte plusieurs millions.
+B) Les réinvestir dans d’autres rénovations :: Effet boule de neige.
+   ecologie+1 services+1 | g+2 c+3 d0 e+2
+   > Dix écoles de plus sont isolées.
+C) Les garder en réserve :: Attendre de meilleurs prix.
+   bud-1 | g0 c+1 d+1 e0
+   > Les certificats dorment dans un tiroir.
+
+=== fin-149 | finances | Un contrat de performance pour l’éclairage public
+Un groupe propose de rénover tous les lampadaires et de se payer sur les économies d’électricité.
+? distinct
+A) Signer pour quinze ans :: Moderniser sans dépenser.
+   rec-0.1x60 ecologie+1 securite+1 | g+1 c+2 d+2 e+1
+   > Les rues passent aux LED.
+B) Rénover en régie avec un emprunt :: Garder la main.
+   bud-15 rec+0.15x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > La Ville rénove elle-même.
+C) Refuser :: Prudence.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les vieux lampadaires restent.
+
+=== fin-150 | finances | Les arrêts maladie des agents explosent
+L’absentéisme coûte des dizaines de millions en remplacements.
+A) Un plan santé et prévention au travail :: Soigner.
+   bud-5 rec+0.1x60 services+1 | g+1 c+2 d+1 e+1
+   ~30 rec+0.1x40 > L’absentéisme recule nettement.
+   > Des médecins du travail sont recrutés.
+B) Des contrôles médicaux systématiques :: Contrôler.
+   rec+0.05x60 bon-1 | g-1 c+2 d+2 e0
+   > Les syndicats protestent.
+C) Laisser faire :: Pas de conflit.
+   rec-0.1x40 | g0 c0 d+1 e0
+   > Les remplacements coûtent toujours plus.
+
+=== fin-151 | finances | Les frais bancaires de la Ville
+Un audit découvre que la Ville paie des frais bancaires très élevés.
+A) Lancer un appel d’offres bancaire :: Mettre en concurrence.
+   rec+0.05x60 | g0 c+3 d+2 e0
+   > Les frais baissent de moitié.
+B) Passer par la banque publique :: Public.
+   rec+0.03x60 | g+1 c+2 d0 e+1
+   > La Caisse des dépôts reprend les comptes.
+C) Rien :: Pas le temps.
+   rec-0.01x60 | g0 c0 d+1 e0
+   > Les frais continuent.
+
+=== fin-152 | finances | Vendre la chaleur des égouts
+Les eaux usées sont tièdes : une entreprise veut récupérer cette chaleur pour chauffer des immeubles.
+A) Céder la chaleur contre une redevance :: Recette verte.
+   rec+0.1x60 ecologie+1 | g+1 c+2 d+2 e+1
+   > Des immeubles sont chauffés grâce aux égouts.
+B) L’utiliser pour chauffer les piscines municipales :: Économie d’énergie.
+   bud-6 rec+0.1x60 ecologie+1 | g+2 c+2 d+1 e+2
+   > Les piscines se chauffent à l’eau des égouts.
+C) Ne rien faire :: Prudence technique.
+   ecologie-1 | g0 c+1 d+1 e0
+   > La chaleur part dans la Seine.
+
+=== fin-153 | finances | Les rez-de-chaussée commerciaux des bailleurs sociaux
+Des centaines de boutiques appartenant aux bailleurs restent vides.
+A) Les louer à bas prix aux artisans :: Animer.
+   rec+0.03x60 economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des ateliers ouvrent dans les quartiers.
+B) Les louer au plus offrant :: Recettes.
+   rec+0.1x60 | g-1 c+2 d+2 e0
+   > Des enseignes nationales s’installent.
+C) Les transformer en logements :: Loger.
+   bud-4 logement+1 | g+1 c+2 d+1 e+1
+   > Des studios remplacent les vitrines.
+
+=== fin-154 | finances | Faire payer les mariages le samedi
+Les mariages du samedi mobilisent beaucoup d’agents et d’heures supplémentaires.
+? distinct
+A) Un tarif pour les mariages du samedi après-midi :: Recette.
+   rec+0.02x60 bon-1 | g-1 c+2 d+2 e0
+   > Les couples grincent des dents.
+B) Rester gratuit :: Service public.
+   rec-0.01x60 bon+1 | g+1 c+2 d0 e+1
+   > Les mariages restent gratuits.
+C) Limiter le nombre de cérémonies le samedi :: Organiser.
+   bon-1 | g0 c+2 d+1 e0
+   > Les couples réservent des mois à l’avance.
+
+=== fin-155 | finances | Le tarif des salles municipales
+Les associations et particuliers louent les salles à des prix très variables selon l’arrondissement.
+? distinct
+A) Une grille unique et transparente :: Équité.
+   rec+0.02x60 | g+1 c+3 d+1 e+1
+   > Le même tarif s’applique partout.
+B) Gratuité pour les associations :: Vie associative.
+   rec-0.03x60 bon+1 | g+2 c+2 d0 e+1
+   > Les associations réservent plus souvent.
+C) Augmenter tous les tarifs :: Recettes.
+   rec+0.05x60 bon-1 | g-1 c+1 d+2 e0
+   > Les salles se vident.
+
+=== fin-156 | finances | Revendre l’électricité des toits solaires
+Les panneaux solaires des écoles produisent plus que nécessaire l’été.
+A) Revendre le surplus au réseau :: Recette.
+   rec+0.03x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Le surplus rapporte chaque mois.
+B) Le donner aux familles modestes voisines :: Solidarité.
+   bon+1 ecologie+1 | g+2 c+2 d0 e+1
+   > Une communauté d’énergie est créée.
+C) Stocker dans des batteries :: Autonomie.
+   bud-5 rec+0.04x60 ecologie+1 | g+1 c+2 d+1 e+2
+   > Les écoles deviennent autonomes.
+=== fin-157 | finances | Le coût des élections
+Organiser les scrutins mobilise des milliers d’agents et de bénévoles payés.
+A) Recruter des bénévoles citoyens :: Économiser.
+   rec+0.01x60 bon+1 | g+1 c+2 d+1 e+1
+   > Les bureaux de vote sont tenus par des citoyens.
+B) Regrouper les bureaux de vote :: Rationaliser.
+   rec+0.02x60 bon-1 | g0 c+2 d+2 e0
+   > Les électeurs marchent un peu plus.
+C) Maintenir l’organisation :: Démocratie.
+   rec-0.01x60 | g0 c+1 d+1 e0
+   > Les élections se passent sans changement.
+=== fin-158 | finances | Les taxis des cadres de la Ville
+Un rapport révèle des centaines de milliers d’euros de courses en taxi.
+A) Les supprimer au profit du vélo et du métro :: Exemplarité.
+   rec+0.02x60 bon+1 | g+1 c+3 d+1 e+1
+   > Les cadres prennent le métro.
+B) Plafonner les dépenses :: Encadrer.
+   rec+0.01x60 | g0 c+3 d+1 e0
+   > Les abus diminuent.
+C) Rien :: Contraintes du métier.
+   bon-1 | g0 c+1 d+1 e0
+   > La presse s’en empare.
+
+=== fin-159 | finances | Les abonnements logiciels de la Ville
+Les licences informatiques coûtent de plus en plus cher chaque année.
+A) Passer aux logiciels libres :: Souveraineté.
+   bud-5 rec+0.1x60 | g+2 c+2 d0 e+2
+   > La migration est longue mais rentable.
+B) Renégocier en groupement avec d’autres villes :: Négocier.
+   rec+0.05x60 | g0 c+3 d+2 e+1
+   > Les prix baissent un peu.
+C) Garder les contrats :: Simplicité.
+   rec-0.02x60 | g0 c+1 d+1 e0
+   > Les factures augmentent.
+
+=== fin-160 | finances | Les aides au ravalement de façade
+Les copropriétés repoussent les ravalements obligatoires faute de moyens.
+A) Une aide de 20 % des travaux :: Embellir.
+   bud-8 bon+1 logement+1 | g+1 c+2 d+1 e+1
+   > Les façades retrouvent leur éclat.
+B) Une aide liée à l’isolation :: Combiner.
+   bud-6 ecologie+1 logement+1 | g+2 c+2 d0 e+2
+   > Les ravalements isolent les immeubles.
+C) Imposer les travaux sans aide :: Règle.
+   bon-1 | g-1 c+2 d+2 e0
+   > Les copropriétaires s’endettent.
+=== fin-161 | finances | Un emprunt auprès des Parisiens
+Des obligations citoyennes permettraient aux Parisiens de prêter à leur ville.
+A) Lancer un emprunt citoyen pour les écoles :: Participation.
+   bud+20 rec-0.1x60 bon+1 | g+1 c+2 d+1 e+1
+   > L’emprunt est souscrit en une journée.
+B) Le réserver aux projets climat :: Vert.
+   bud+15 rec-0.08x60 ecologie+1 | g+2 c+2 d0 e+1
+   > Les Parisiens financent des toits solaires.
+C) Emprunter auprès des banques :: Classique.
+   bud+20 rec-0.12x60 | g0 c+2 d+2 e0
+   > L’emprunt bancaire est signé.
+
+=== fin-162 | finances | Les droits de place des forains
+Les fêtes foraines occupent l’espace public pour un tarif très bas.
+A) Augmenter les droits de place :: Recettes.
+   rec+0.05x60 bon-1 | g-1 c+2 d+2 e0
+   > Les forains augmentent le prix des manèges.
+B) Indexer sur la fréquentation :: Équité.
+   rec+0.03x60 | g0 c+3 d+1 e+1
+   > Les grandes fêtes paient plus.
+C) Maintenir :: Tradition.
+   bon+1 | g0 c+1 d+1 e0
+   > Les forains sont soulagés.
+
+=== fin-163 | finances | Le coût de la mise à l’abri l’hiver
+Le plan grand froid coûte deux fois plus que prévu cette année.
+A) Débloquer une rallonge :: Humanité.
+   bud-8 bon+1 | g+2 c+2 d0 e+1
+   > Personne ne dort dehors par grand froid.
+B) Demander à l’État de rembourser :: Compétence.
+   bud-3 | g0 c+2 d+1 e0
+   > L’État rembourse une partie.
+C) Rester dans l’enveloppe :: Rigueur.
+   bon-2 | g-1 c+1 d+2 e0
+   > Des personnes restent à la rue.
+
+=== fin-164 | finances | Vendre des terres de la Ville en banlieue
+La Ville possède des terres agricoles en Île-de-France qu’elle loue peu cher.
+A) Les vendre :: Recette exceptionnelle.
+   bud+25 ecologie-1 | g-1 c+1 d+2 e0
+   > Des promoteurs les achètent.
+B) Les louer à des maraîchers bio :: Circuit court.
+   rec+0.03x60 ecologie+1 | g+2 c+2 d0 e+1
+   > Des légumes bio arrivent dans les cantines.
+C) Les garder en l’état :: Patrimoine.
+   ecologie+1 | g0 c+1 d+1 e0
+   > Rien ne change.
+
+=== fin-165 | finances | Les honoraires des consultants
+La Ville dépense des millions en cabinets de conseil.
+A) Les réduire de moitié :: Compter sur ses agents.
+   rec+0.1x60 services-1 | g+1 c+2 d+1 e+1
+   > Les agents reprennent les dossiers.
+B) Créer un service interne de conseil :: Internaliser.
+   bud-3 rec+0.08x60 | g+1 c+2 d+1 e+1
+   > Une équipe d’experts est recrutée.
+C) Garder les consultants :: Expertise.
+   rec-0.05x60 | g-1 c+1 d+2 e0
+   > Les factures continuent.
+
+=== fin-166 | finances | Le budget des cimetières
+Les cimetières parisiens coûtent cher et rapportent de moins en moins.
+A) Augmenter le prix des concessions :: Recettes.
+   rec+0.05x60 bon-1 | g-1 c+2 d+2 e0
+   > Les familles protestent.
+B) Valoriser les cimetières comme lieux de promenade :: Patrimoine.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Les visites guidées attirent du monde.
+C) Rien :: Respect.
+   rec-0.01x60 | g0 c+1 d+1 e0
+   > Le déficit se creuse.
+
+=== fin-167 | finances | Un chèque énergie municipal
+Les factures d’électricité étranglent les familles modestes.
+A) Un chèque de 200 € par foyer modeste :: Protéger.
+   bud-12 bon+2 | g+2 c+1 d0 e0
+   > Cent mille familles reçoivent le chèque.
+B) Financer des travaux d’isolation plutôt :: Durable.
+   bud-8 ecologie+1 logement+1 | g+2 c+2 d0 e+2
+   > Les factures baissent durablement.
+C) Rien :: Compétence de l’État.
+   bon-1 | g-1 c+1 d+2 e0
+   > Les familles se débrouillent.
+
+=== fin-168 | finances | Les factures de téléphone des services
+Des milliers de lignes inutilisées sont toujours payées.
+A) Un grand ménage des abonnements :: Économiser.
+   rec+0.05x60 | g0 c+3 d+2 e0
+   > Trois mille lignes sont résiliées.
+B) Passer à la téléphonie par internet :: Moderniser.
+   bud-2 rec+0.08x60 | g0 c+2 d+1 e+1
+   > Les standards passent au numérique.
+C) Rien :: Pas le temps.
+   rec-0.01x60 | g0 c0 d+1 e0
+   > Les factures continuent.
+
+=== fin-169 | finances | Le prix de la carte de stationnement résident
+Le stationnement résidentiel coûte à peine quelques euros par jour.
+A) Le doubler :: Recettes.
+   rec+0.15x60 bon-1 transports+1 | g+1 c+2 d+1 e+1
+   > Des résidents se séparent de leur voiture.
+B) Tarif selon la taille du véhicule :: Équité.
+   rec+0.1x60 ecologie+1 | g+2 c+2 d0 e+1
+   > Les SUV paient plus cher.
+C) Ne pas toucher :: Pouvoir d’achat.
+   bon+1 | g-1 c+1 d+2 e0
+   > Les résidents sont soulagés.
+
+=== fin-170 | finances | Les amendes des terrasses illégales
+Des cafés agrandissent leurs terrasses sans payer.
+A) Multiplier les contrôles :: Recettes.
+   rec+0.03x60 economie-1 | g0 c+3 d+2 e0
+   > Les terrasses rentrent dans le rang.
+B) Régulariser contre redevance :: Pragmatisme.
+   rec+0.05x60 | g-1 c+2 d+2 e0
+   > Les terrasses restent mais paient.
+C) Fermer les yeux :: Commerce.
+   economie+1 bon-1 | g-1 c0 d+1 e0
+   > Les trottoirs rétrécissent.
+=== fin-171 | finances | Rembourser des subventions européennes
+Bruxelles réclame des fonds mal utilisés sur un vieux projet.
+A) Rembourser et tourner la page :: Responsabilité.
+   bud-10 | g0 c+3 d+1 e+1
+   > La Ville rembourse.
+B) Contester devant la Cour de justice :: Défendre.
+   bud-1 | g0 c+1 d+1 e0
+   ~25 bud-12 > La Ville perd et paie les intérêts.
+   > La procédure est engagée.
+C) Négocier un étalement :: Compromis.
+   rec-0.1x60 | g0 c+2 d+1 e+1
+   > Le remboursement est étalé.
+
+=== fin-172 | finances | La sécurité des bâtiments municipaux
+Les contrats de gardiennage des bâtiments ont doublé en cinq ans.
+A) Recruter des agents municipaux :: Internaliser.
+   bud-2 rec+0.05x60 securite+1 | g+1 c+2 d+1 e+1
+   > Les agents remplacent les vigiles privés.
+B) Remplacer par de la vidéosurveillance :: Technologie.
+   bud-6 rec+0.08x60 | g-1 c+2 d+2 e0
+   > Les caméras remplacent les gardiens.
+C) Rien :: Sécurité d’abord.
+   rec-0.03x60 | g0 c+1 d+1 e0
+   > Les coûts continuent de monter.
+
+=== fin-173 | finances | Les dépenses imprévues de la canicule
+La canicule a fait exploser les dépenses de brumisateurs, d’eau et d’agents.
+A) Créer une ligne budgétaire climat :: Anticiper.
+   bud-5 ecologie+1 | g+1 c+3 d+1 e+1
+   > Le budget anticipe les étés chauds.
+B) Prélever sur d’autres budgets :: Ajuster.
+   bud-3 services-1 | g0 c+2 d+1 e0
+   > Des projets sont décalés.
+C) Emprunter :: Reporter.
+   rec-0.05x60 | g0 c+1 d+1 e0
+   > La dette augmente.
+
+=== fin-174 | finances | La retraite complémentaire des élus
+Les cotisations de retraite des élus sont payées par la Ville.
+A) Les plafonner :: Exemplarité.
+   rec+0.02x60 bon+1 | g+1 c+3 d+1 e+1
+   > Les élus râlent en silence.
+B) Les maintenir :: Légalité.
+   bon-1 | g0 c+1 d+1 e0
+   > La presse s’en empare.
+C) Les supprimer :: Coup d’éclat.
+   rec+0.03x60 bon+1 coh-1 | g+1 c+1 d+1 e0
+   > Des élus de ta majorité protestent.
+
+=== fin-175 | finances | Des terrains achetés et jamais utilisés
+La Ville possède des terrains achetés il y a vingt ans pour des projets abandonnés.
+A) Les vendre :: Recettes.
+   bud+15 | g0 c+2 d+2 e0
+   > Les terrains sont vendus.
+B) Y construire des logements :: Utiliser.
+   bud-10 logement+2 | g+2 c+2 d0 e+1
+   > Des logements sortent de terre.
+C) Les transformer en jardins :: Verdir.
+   bud-3 ecologie+1 | g+2 c+2 d0 e+1
+   > Des jardins remplacent les friches.
+
+=== fin-176 | finances | Les droits d’auteur des fêtes municipales
+La Ville paie cher la musique diffusée dans ses fêtes.
+A) Négocier un forfait annuel :: Économiser.
+   rec+0.02x60 | g0 c+3 d+1 e+1
+   > Le forfait réduit la facture.
+B) Programmer des artistes libres de droits :: Alternative.
+   rec+0.01x60 bon-1 | g+1 c+2 d0 e+1
+   > Les fêtes découvrent de nouveaux artistes.
+C) Payer :: Respect des artistes.
+   rec-0.01x60 | g0 c+1 d+1 e0
+   > La facture continue.
+
+=== fin-177 | finances | Le prix des repas des seniors
+Les restaurants pour seniors coûtent cher et accueillent peu de monde.
+? distinct
+A) Les ouvrir aux familles :: Mutualiser.
+   rec+0.02x60 bon+1 | g+1 c+2 d+1 e+1
+   > Les restaurants se remplissent.
+B) Augmenter les tarifs :: Recettes.
+   rec+0.03x60 bon-1 | g-1 c+2 d+2 e0
+   > Certains seniors arrêtent de venir.
+C) Maintenir :: Solidarité.
+   rec-0.01x60 bon+1 | g+1 c+1 d0 e0
+   > Le déficit continue.
+
+=== fin-178 | finances | Vendre le bois des arbres abattus
+Des milliers d’arbres malades sont abattus chaque année et finissent broyés.
+? distinct
+A) Vendre le bois aux ébénistes :: Recette.
+   rec+0.01x60 economie+1 | g0 c+2 d+1 e+1
+   > Le bois parisien devient du mobilier.
+B) Le donner aux écoles pour des ateliers :: Pédagogie.
+   bon+1 | g+1 c+2 d0 e+1
+   > Les élèves sculptent le bois de leur quartier.
+C) Continuer à broyer :: Simplicité.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Le bois finit en copeaux.
+
+=== fin-179 | finances | Les loyers payés à l’État
+La Ville loue à l’État des bâtiments pour ses services à des prix élevés.
+A) Racheter les bâtiments :: Propriété.
+   bud-20 rec+0.2x60 | g0 c+2 d+2 e0
+   > La Ville devient propriétaire.
+B) Négocier une baisse :: Discuter.
+   rec+0.05x60 | g0 c+2 d+1 e+1
+   > L’État accepte une petite baisse.
+C) Déménager dans des locaux municipaux :: Économiser.
+   bud-4 rec+0.1x60 services-1 | g0 c+2 d+1 e+1
+   > Les services déménagent.
+
+=== fin-180 | finances | Un audit externe des comptes
+L’opposition réclame un audit indépendant des comptes de la Ville.
+A) Commander l’audit :: Transparence.
+   bud-1 bon+1 coh+1 | g+1 c+3 d+1 e+1
+   > L’audit ne révèle que des erreurs mineures.
+B) Le confier à la chambre régionale des comptes :: Officiel.
+   bon+1 | g0 c+3 d+1 e+1
+   > Le rapport arrive dans deux ans.
+C) Refuser :: Confiance.
+   bon-1 | g0 c+1 d+1 e0
+   > L’opposition crie à l’opacité.
+
+=== fin-181 | finances | Le journal municipal coûte cher
+Le magazine de la Ville est imprimé à un million d’exemplaires.
+A) Passer au numérique :: Économiser.
+   rec+0.03x60 ecologie+1 bon-1 | g+1 c+2 d+1 e+1
+   > Les seniors regrettent la version papier.
+B) Réduire la fréquence :: Compromis.
+   rec+0.02x60 | g0 c+2 d+1 e+1
+   > Le magazine devient trimestriel.
+C) Maintenir :: Informer.
+   rec-0.01x60 | g0 c+1 d+1 e0
+   > Le magazine arrive chaque mois.
+
+=== fin-182 | finances | Le nettoyage après les manifestations
+Chaque grande manifestation coûte des centaines de milliers d’euros de nettoyage.
+A) Facturer aux organisateurs :: Responsabiliser.
+   rec+0.02x60 bon-1 | g-1 c+2 d+2 e0
+   > Les syndicats protestent.
+B) Demander à l’État de rembourser :: Maintien de l’ordre.
+   rec+0.01x60 | g0 c+2 d+1 e0
+   > L’État paie une partie.
+C) Payer :: Liberté de manifester.
+   rec-0.01x60 bon+1 | g+1 c+1 d0 e+1
+   > La Ville nettoie.
+
+=== fin-183 | finances | Une avance de trésorerie aux théâtres
+Plusieurs théâtres municipaux ne peuvent plus payer leurs salaires.
+A) Accorder une avance remboursable :: Soutenir.
+   bud-5 bon+1 | g+1 c+2 d+1 e+1
+   ~30 bud+4 > Les théâtres remboursent l’avance.
+   > Les salaires sont payés.
+B) Imposer un plan de redressement :: Rigueur.
+   bud-2 bon-1 | g0 c+3 d+2 e0
+   > Les théâtres réduisent leurs programmations.
+C) Refuser :: Responsabilité.
+   bon-2 | g-1 c+1 d+2 e0
+   > Un théâtre ferme.
+
+=== fin-184 | finances | Les stations-service sur la voie publique
+Des stations-service occupent des terrains municipaux pour un loyer symbolique.
+? distinct
+A) Augmenter les loyers :: Recettes.
+   rec+0.03x60 | g0 c+2 d+2 e0
+   > Les stations paient plus.
+B) Les transformer en bornes de recharge :: Transition.
+   bud-4 ecologie+1 | g+2 c+2 d0 e+1
+   > Les pompes laissent place aux bornes.
+C) Ne pas toucher :: Service.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les stations continuent.
+
+=== fin-185 | finances | Une réserve pour les grands procès
+La Ville risque plusieurs condamnations lourdes dans les prochaines années.
+A) Provisionner dès maintenant :: Prudence.
+   bud-10 | g0 c+3 d+2 e+1
+   > Une réserve est constituée.
+B) Attendre les jugements :: Optimisme.
+   bud-1 | g0 c+1 d+1 e0
+   ~40 bud-15 > Un jugement tombe, la facture est lourde.
+   > Les procès continuent.
+C) Négocier des transactions :: Apaiser.
+   bud-6 | g0 c+2 d+1 e+1
+   > Plusieurs procès sont arrêtés.

@@ -6,7 +6,7 @@
 
   var TOURS = 100, SEUIL = 30;
   var DEPART = { pop: 58, bon: 58, coh: 70, tresor: 1000 };
-  var FONCT = { recettes: 200, depenses: 206 };          // fonctionnement courant (M€ par semaine), légèrement déficitaire
+  var FONCT = { recettes: 200, depenses: 207 };          // fonctionnement courant (M€ par semaine), légèrement déficitaire
   var PLAFOND_DETTE = 1000, TAUX = 0.003;               // emprunt autorisé et intérêts par semaine
 
   // Réglages d'équilibrage (vérifiés par tools/maire/test-moteur.mjs)
