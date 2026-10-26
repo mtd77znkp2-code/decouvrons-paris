@@ -1,0 +1,488 @@
+// Économie, série 6
+=== econ-186 | economie | Les tailleurs sur mesure du Sentier
+Les derniers tailleurs ferment, faute d’apprentis et face aux loyers.
+A) Une école de tailleurs avec la Ville :: Transmettre.
+   bud-2 economie+1 | g+1 c+2 d+1 e+1
+   > Des jeunes apprennent à couper un costume.
+B) Un loyer aidé pour les ateliers :: Soutenir.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Les tailleurs restent au Sentier.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+2 e0
+   > Le savoir-faire disparaît.
+
+=== econ-187 | economie | Un salon de l’agriculture urbaine
+Les fermes sur les toits veulent un salon pour se faire connaître.
+? distinct
+A) Le financer au Carreau du Temple :: Promouvoir.
+   bud-1 economie+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Des milliers de visiteurs découvrent les fermes urbaines.
+B) Un simple marché des producteurs urbains :: Modeste.
+   economie+1 | g0 c+2 d+1 e+1
+   > Les légumes des toits se vendent.
+C) Rien :: Niche.
+   economie-1 | g0 c+1 d+1 e0
+   > Les fermes restent confidentielles.
+
+=== econ-188 | economie | Une école d’animation publique
+Les studios d’animation recrutent à l’étranger faute de diplômés.
+A) Ouvrir une école gratuite :: Former.
+   bud-3 economie+1 | g+1 c+2 d+1 e+1
+   > Des jeunes des quartiers deviennent animateurs.
+B) Des bourses pour les écoles privées :: Aider.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Des élèves modestes accèdent aux écoles.
+C) Rien :: Privé.
+   economie-1 | g0 c+1 d+1 e0
+   > Les studios partent à Montréal.
+
+=== econ-189 | economie | Les grandes enseignes de mode ferment
+Des magasins de vêtements de grandes chaînes ferment rue de Rivoli.
+A) Aider de jeunes créateurs à reprendre les locaux :: Renouveler.
+   bud-2 economie+1 | g+1 c+2 d+1 e+1
+   > Des boutiques de créateurs ouvrent.
+B) Des boutiques éphémères :: Animer.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Les vitrines changent chaque mois.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+2 e0
+   > Les vitrines restent vides.
+
+=== econ-190 | economie | Les guides-conférenciers précaires
+Les guides touristiques diplômés sont concurrencés par des guides improvisés.
+A) Réserver les visites municipales aux guides diplômés :: Qualité.
+   economie+1 | g+1 c+2 d+1 e+1
+   > Les visites gagnent en qualité.
+B) Un label pour les guides :: Valoriser.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Les touristes choisissent les guides labellisés.
+C) Rien :: Liberté.
+   economie-1 | g0 c+1 d+2 e0
+   > Les guides diplômés changent de métier.
+
+=== econ-191 | economie | Les techniciens du spectacle sans contrat
+Les techniciens enchaînent des contrats d’un jour dans les salles municipales.
+A) Des contrats plus longs dans les salles de la Ville :: Stabiliser.
+   rec-0.02x60 economie+1 coh+1 | g+1 c+2 d+1 e+1
+   > Les techniciens respirent.
+B) Un groupement d’employeurs culturel :: Mutualiser.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les salles partagent leurs techniciens.
+C) Rien :: Secteur.
+   economie-1 | g0 c+1 d+1 e0
+   > Les techniciens quittent le métier.
+
+=== econ-192 | economie | Des ateliers de fabrication numérique
+Imprimantes 3D et découpe laser permettraient aux habitants de fabriquer et réparer.
+A) Un atelier par arrondissement :: Fabriquer.
+   bud-3 economie+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les habitants impriment des pièces détachées.
+B) Dans les médiathèques :: Mutualiser.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les médiathèques s’équipent.
+C) Rien :: Associations.
+   economie-1 | g0 c+1 d+1 e0
+   > Les objets cassés partent à la poubelle.
+
+=== econ-193 | economie | Les boucheries cherchent des apprentis
+Les bouchers ne trouvent plus de jeunes pour reprendre le métier.
+A) Une campagne et des stages dans les collèges :: Attirer.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Des jeunes découvrent le métier.
+B) Une prime à l’embauche d’apprentis :: Inciter.
+   bud-2 economie+1 | g0 c+2 d+1 e+1
+   > Des apprentis signent.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+1 e0
+   > Des boucheries ferment.
+
+=== econ-194 | economie | Faciliter l’embauche des réfugiés
+Des réfugiés qualifiés ne trouvent pas de travail faute de reconnaissance de leurs diplômes.
+A) Un service d’accompagnement :: Insertion.
+   bud-1 economie+1 bon+1 | g+2 c+2 d0 e+1
+   > Des médecins et ingénieurs retrouvent un emploi.
+B) Des cours de français professionnel :: Former.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les réfugiés progressent en français.
+C) Rien :: État.
+   economie-1 | g-1 c+1 d+2 e0
+   > Des diplômés font la plonge.
+
+=== econ-195 | economie | Les ongleries et les conditions de travail
+Des salons de manucure emploient des femmes sans contrat dans des vapeurs toxiques.
+A) Des contrôles avec l’inspection du travail :: Protéger.
+   securite+1 economie-1 | g+1 c+2 d+2 e0
+   > Des salons sont fermés.
+B) Aider à installer des ventilations :: Santé.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les salariées respirent mieux.
+C) Rien :: État.
+   bon-1 | g0 c+1 d+1 e0
+   > Les abus continuent.
+
+=== econ-196 | economie | Les disquaires indépendants
+Le retour du vinyle fait renaître des disquaires, mais les loyers les menacent.
+A) Un loyer aidé :: Culture.
+   bud-1 economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les disquaires restent ouverts.
+B) Une fête annuelle des disquaires :: Promouvoir.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Les bacs à vinyles se vident.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+1 e0
+   > Un disquaire ferme.
+
+=== econ-197 | economie | Aider à rénover les vitrines
+Des vitrines défraîchies donnent une impression d’abandon.
+A) Une aide de 50 % pour les petits commerces :: Embellir.
+   bud-2 economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les rues retrouvent de l’éclat.
+B) Un concours de vitrines rénovées :: Émuler.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Les commerçants rivalisent.
+C) Rien :: Commerçants.
+   economie-1 | g0 c+1 d+1 e0
+   > Les vitrines restent ternes.
+
+=== econ-198 | economie | Une distillerie veut s’installer en ville
+Un artisan veut distiller du gin dans un ancien entrepôt.
+A) Accepter avec des normes de sécurité :: Produire.
+   economie+1 securite-1 | g0 c+2 d+2 e0
+   > Le gin parisien se vend dans les bars.
+B) L’installer en zone d’activité :: Prudence.
+   economie+1 | g0 c+2 d+1 e+1
+   > La distillerie ouvre près du périphérique.
+C) Refuser :: Risque d’incendie.
+   securite+1 economie-1 | g0 c+2 d+1 e0
+   > L’artisan part en Normandie.
+
+=== econ-199 | economie | Un panier anti-inflation avec les commerçants
+Les prix flambent, les familles modestes renoncent aux produits frais.
+A) Négocier un panier à prix bloqué :: Pouvoir d’achat.
+   bud-2 bon+2 | g+2 c+2 d0 e+1
+   > Un panier de fruits et légumes à dix euros.
+B) Des bons d’achat pour les familles modestes :: Aider.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles reçoivent des bons.
+C) Rien :: Marché.
+   bon-1 | g-1 c+1 d+2 e0
+   > Les familles mangent moins de légumes.
+
+=== econ-200 | economie | Une coopérative de livreurs
+Des livreurs veulent créer leur propre coopérative face aux plateformes.
+A) Soutenir le lancement :: Économie sociale.
+   bud-1 economie+1 bon+1 | g+2 c+2 d0 e+1
+   > Les livreurs deviennent associés.
+B) Leur confier les livraisons de la Ville :: Commande publique.
+   economie+1 | g+1 c+2 d+1 e+1
+   > La coopérative livre les mairies.
+C) Rien :: Marché.
+   economie-1 | g-1 c+1 d+2 e0
+   > Les plateformes gardent la main.
+
+=== econ-201 | economie | La Foire de Paris perd des visiteurs
+La grande foire commerciale du printemps attire de moins en moins.
+A) La réinventer avec la Ville :: Relancer.
+   bud-2 economie+1 | g0 c+2 d+1 e+1
+   > La foire se tourne vers la réparation et le local.
+B) Laisser l’organisateur gérer :: Privé.
+   economie-1 | g0 c+2 d+1 e0
+   > La foire continue de décliner.
+C) Récupérer les halls pour d’autres usages :: Reconvertir.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les halls accueillent d’autres événements.
+
+=== econ-202 | economie | Des billets de théâtre à moitié prix le jour même
+Les théâtres privés ont des places vides chaque soir.
+A) Des kiosques municipaux de billets à moitié prix :: Remplir les salles.
+   bud-1 economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les files se forment devant les kiosques.
+B) Une application de dernière minute :: Numérique.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Les places se vendent en ligne.
+C) Rien :: Théâtres privés.
+   economie-1 | g0 c+1 d+1 e0
+   > Les salles restent à moitié vides.
+=== econ-203 | economie | Les fleuristes de quartier
+Les fleuristes ferment face aux bouquets de supermarché.
+A) Un loyer aidé :: Proximité.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les fleuristes tiennent.
+B) Acheter les fleurs de la Ville chez eux :: Commande locale.
+   economie+1 | g+1 c+2 d+1 e+1
+   > Les fleuristes fournissent les mairies.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+1 e0
+   > Un fleuriste ferme par mois.
+
+=== econ-204 | economie | La contrefaçon vendue dans les rues
+Faux sacs et fausses montres envahissent les abords des grands magasins.
+A) Des saisies et des contrôles :: Fermeté.
+   securite+1 economie+1 | g-1 c+2 d+2 e0
+   > Les étals disparaissent.
+B) Une campagne auprès des touristes :: Informer.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les touristes achètent moins de contrefaçons.
+C) Rien :: Douane.
+   economie-1 | g0 c+1 d+1 e0
+   > Les marques protestent.
+
+=== econ-205 | economie | Les salons de tatouage se multiplient
+Des rues entières se couvrent de salons de tatouage.
+A) Limiter leur nombre par rue :: Diversité.
+   economie-1 | g0 c+2 d+2 e0
+   > Les ouvertures ralentissent.
+B) Laisser faire :: Liberté.
+   economie+1 | g+1 c+1 d0 e0
+   > Les tatoueurs prospèrent.
+C) Contrôler l’hygiène :: Santé.
+   securite+1 | g0 c+2 d+1 e+1
+   > Des salons insalubres sont fermés.
+
+=== econ-206 | economie | Interdire la vente d’animaux en animalerie
+Des chiots et chatons sont vendus en vitrine dans des conditions douteuses.
+A) Interdire la vente en vitrine :: Bien-être animal.
+   economie-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les vitrines se vident d’animaux.
+B) Des contrôles vétérinaires stricts :: Encadrer.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Les animaleries s’améliorent.
+C) Rien :: Commerce.
+   ecologie-1 | g-1 c+1 d+2 e0
+   > Les associations protestent.
+
+=== econ-207 | economie | Les réparateurs de téléphones
+De petites boutiques réparent écrans et batteries, mais sans garantie.
+A) Un label de qualité :: Confiance.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Les clients choisissent les réparateurs labellisés.
+B) Un bonus réparation :: Encourager.
+   bud-2 economie+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les Parisiens réparent au lieu de racheter.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+1 e0
+   > Les téléphones cassés partent à la poubelle.
+
+=== econ-208 | economie | Les bateliers manquent de bras
+Les compagnies fluviales ne trouvent pas de marins pour leurs bateaux.
+A) Une formation avec un lycée professionnel :: Former.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Des jeunes deviennent bateliers.
+B) Une campagne de recrutement :: Attirer.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Des candidats se présentent.
+C) Rien :: Compagnies.
+   economie-1 transports-1 | g0 c+1 d+1 e0
+   > Des bateaux restent à quai.
+
+=== econ-209 | economie | Les femmes de chambre des palaces en grève
+Les femmes de chambre d’un palace réclament des salaires dignes.
+A) Soutenir publiquement les grévistes :: Solidarité.
+   pop+1 coh+1 economie-1 | g+2 c+1 d-1 e+1
+   > Les grévistes obtiennent une hausse.
+B) Proposer une médiation :: Dialogue.
+   coh+1 | g+1 c+2 d+1 e+1
+   > Un accord est trouvé.
+C) Rester neutre :: Conflit privé.
+   pop-1 | g-1 c+1 d+2 e0
+   > La grève dure des mois.
+
+=== econ-210 | economie | Les commerces fermés le lundi
+De nombreux commerces de quartier ferment le lundi, les rues sont mortes.
+? distinct
+A) Encourager l’ouverture le lundi par une aide :: Animer.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Des commerçants ouvrent le lundi.
+B) Des marchés le lundi :: Compenser.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les marchés animent le début de semaine.
+C) Rien :: Repos des commerçants.
+   economie-1 | g0 c+1 d+1 e0
+   > Les rues restent mortes le lundi.
+
+=== econ-211 | economie | Un fonds municipal pour les jeunes entreprises
+Des créateurs d’entreprise ne trouvent pas de financement.
+? distinct
+A) Créer un fonds d’investissement :: Soutenir.
+   bud-5 economie+2 | g0 c+2 d+2 e0
+   ~40 bud+3 > Des entreprises remboursent et grandissent.
+   > Le fonds investit dans cinquante projets.
+B) Des prêts d’honneur sans intérêt :: Modeste.
+   bud-2 economie+1 | g+1 c+2 d+1 e+1
+   > Des projets démarrent.
+C) Rien :: Banques.
+   economie-1 | g0 c+1 d+1 e0
+   > Les créateurs vont à Lyon.
+
+=== econ-212 | economie | Des sous-traitants jamais payés
+Des petites entreprises n’ont pas été payées par un grand groupe pour un chantier de la Ville.
+? distinct
+A) Payer directement les sous-traitants :: Protéger.
+   bud-3 economie+1 | g+1 c+2 d+1 e+1
+   > Les PME sont sauvées.
+B) Exclure le grand groupe des marchés :: Sanctionner.
+   economie+1 coh+1 | g+1 c+2 d+2 e0
+   > Le groupe paie ses dettes.
+C) Rien :: Contrat privé.
+   economie-1 | g0 c+1 d+1 e0
+   > Des PME font faillite.
+
+=== econ-213 | economie | Les boutiques de rachat d’or
+Des boutiques de rachat d’or se multiplient dans les quartiers populaires.
+A) Contrôler leur origine :: Vigilance.
+   securite+1 | g0 c+2 d+2 e0
+   > Des recels sont découverts.
+B) Limiter leur nombre :: Diversité.
+   economie-1 | g0 c+2 d+1 e0
+   > Les ouvertures cessent.
+C) Rien :: Commerce.
+   economie+1 | g0 c+1 d+1 e0
+   > Les boutiques prospèrent.
+
+=== econ-214 | economie | Le concours de la meilleure baguette
+Le concours désigne le boulanger qui fournit l’Élysée, mais il manque de moyens.
+A) En faire une grande fête populaire :: Fierté.
+   bud-1 economie+1 bon+1 | g0 c+2 d+1 e+1
+   > Des milliers de Parisiens goûtent les baguettes.
+B) Ajouter une catégorie bio :: Moderniser.
+   bud-1 economie+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les boulangers bio concourent.
+C) Garder la formule :: Tradition.
+   economie-1 | g0 c+1 d+1 e0
+   > Le concours reste confidentiel.
+
+=== econ-215 | economie | Une foire d’art accessible à tous
+Des galeristes proposent une foire où toutes les œuvres coûtent moins de 500 euros.
+A) Accueillir la foire gratuitement :: Démocratiser.
+   bud-1 economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des Parisiens achètent leur première œuvre.
+B) Louer un lieu à prix coûtant :: Soutien.
+   economie+1 | g0 c+2 d+1 e+1
+   > La foire a lieu.
+C) Rien :: Privé.
+   economie-1 | g0 c+1 d+1 e0
+   > La foire part à Bruxelles.
+
+=== econ-216 | economie | Des épiceries ambulantes dans les quartiers sans commerce
+Des camions-épiceries proposent de desservir les quartiers sans magasin.
+A) Des emplacements gratuits :: Proximité.
+   bud-1 economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les seniors font leurs courses au pied de chez eux.
+B) Des emplacements payants :: Recettes.
+   rec+0.01x60 economie+1 | g0 c+2 d+1 e+1
+   > Les camions s’installent.
+C) Rien :: Supermarchés.
+   bon-1 | g0 c+1 d+1 e0
+   > Les seniors marchent loin.
+
+=== econ-217 | economie | Baisser la taxe des petits commerces
+Les petits commerçants paient la même taxe que les grandes enseignes.
+A) Une exonération pour les petits commerces :: Soutenir.
+   rec-0.03x60 economie+1 | g+1 c+2 d+1 e+1
+   > Les commerçants respirent.
+B) Augmenter la taxe des grandes surfaces :: Rééquilibrer.
+   rec+0.02x60 economie+1 | g+1 c+2 d+1 e0
+   > Les hypermarchés paient plus.
+C) Rien :: Recettes.
+   economie-1 | g0 c+1 d+2 e0
+   > Des commerces ferment.
+
+=== econ-218 | economie | Le Mondial de l’automobile veut rester à Paris
+Le salon de l’automobile hésite à partir à l’étranger.
+A) Le retenir avec une aide :: Attractivité.
+   bud-2 economie+1 ecologie-1 | g-1 c+2 d+2 e0
+   > Le salon reste à la porte de Versailles.
+B) Exiger qu’il soit consacré aux mobilités propres :: Conditions.
+   economie+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Le salon se transforme.
+C) Le laisser partir :: Moins de voitures.
+   economie-1 | g+1 c+1 d0 e+1
+   > Le salon part à Munich.
+
+=== econ-219 | economie | Un centre commercial de quartier à l’abandon
+Un petit centre commercial des années 70 a perdu la moitié de ses boutiques.
+A) Le racheter et le transformer :: Revitaliser.
+   bud-5 economie+1 logement+1 | g+1 c+2 d+1 e+1
+   > Logements et commerces remplacent le centre.
+B) Aider les commerçants restants :: Soutenir.
+   bud-2 economie+1 | g0 c+2 d+1 e+1
+   > Les commerçants tiennent.
+C) Rien :: Copropriété.
+   economie-1 | g0 c+1 d+1 e0
+   > Le centre se vide.
+
+=== econ-220 | economie | Des chèques cadeaux pour le commerce local
+Les chèques cadeaux des entreprises sont dépensés dans les grandes chaînes.
+? distinct
+A) Un chèque cadeau utilisable seulement dans les commerces parisiens :: Local.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les commerçants de quartier en profitent.
+B) Offrir ces chèques aux agents à Noël :: Exemple.
+   bud-2 economie+1 coh+1 | g0 c+2 d+1 e+1
+   > Les agents dépensent dans leur quartier.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+1 e0
+   > Les chaînes captent les chèques.
+
+=== econ-221 | economie | Les ateliers sous-traitants du luxe
+Les petits ateliers qui fabriquent pour les grandes maisons sont pressurés.
+? distinct
+A) Une charte avec les maisons de luxe :: Équité.
+   economie+1 coh+1 | g+1 c+2 d+1 e+1
+   > Les maisons s’engagent sur les prix.
+B) Aider les ateliers à se regrouper :: Mutualiser.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les ateliers négocient ensemble.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+2 e0
+   > Des ateliers ferment.
+
+=== econ-222 | economie | Le camping du bois de Boulogne
+Le seul camping de Paris est vieillissant et cher.
+? distinct
+A) Le rénover avec des prix abordables :: Tourisme pour tous.
+   bud-2 economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles campent à Paris.
+B) Le confier à un exploitant haut de gamme :: Recettes.
+   rec+0.03x60 | g-1 c+2 d+2 e0
+   > Le camping devient un glamping.
+C) Rien :: Concession.
+   economie-1 | g0 c+1 d+1 e0
+   > Les campeurs le désertent.
+
+=== econ-223 | economie | Les hôtels triplent leurs prix pendant les grands événements
+Les prix des chambres explosent pendant les salons et les grandes compétitions.
+A) Un observatoire des prix et une mise en garde :: Transparence.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Les abus sont dénoncés.
+B) Des hébergements alternatifs chez l’habitant :: Alternative.
+   economie+1 | g+1 c+2 d+1 e+1
+   > Les Parisiens hébergent des visiteurs.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+2 e0
+   > Les visiteurs logent en banlieue.
+
+=== econ-224 | economie | Un bonus réparation pour les appareils
+Réparer un lave-linge coûte presque aussi cher que d’en racheter un.
+A) Un bonus municipal de 50 euros :: Réparer.
+   bud-2 economie+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les réparateurs ont du travail.
+B) Une liste de réparateurs agréés :: Informer.
+   economie+1 | g0 c+2 d+1 e+1
+   > Les habitants trouvent un réparateur.
+C) Rien :: État.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les appareils partent à la casse.
+
+=== econ-225 | economie | Les rabatteurs des salons de coiffure de Château-d’Eau
+Des rabatteurs harcèlent les passants pour les attirer dans les salons.
+? distinct
+A) Verbaliser le racolage :: Fermeté.
+   securite+1 economie-1 | g-1 c+2 d+2 e0
+   > Les trottoirs se calment.
+B) Une charte avec les salons :: Dialogue.
+   economie+1 | g+1 c+2 d+1 e+1
+   > Les salons rappellent leurs rabatteurs.
+C) Rien :: Commerce.
+   bon-1 | g0 c+1 d+1 e0
+   > Les passants changent de trottoir.
