@@ -1,0 +1,482 @@
+// Logement, série 5
+=== log-146 | logement | La moisissure dans les logements sociaux
+Des familles vivent avec des murs noirs d’humidité, les enfants font de l’asthme.
+A) Un plan d’urgence de traitement :: Santé.
+   bud-4 logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Ventilations et isolants sont posés.
+B) Contraindre le bailleur à agir :: Fermeté.
+   logement+1 | g0 c+2 d+2 e0
+   > Le bailleur traite les cas les plus graves.
+C) Des déshumidificateurs distribués :: Pansement.
+   bud-1 | g0 c+1 d+1 e0
+   > L’humidité revient.
+
+=== log-147 | logement | Les termites dans le nord-est parisien
+Des termites dévorent les charpentes de vieux immeubles.
+A) Un traitement obligatoire par quartier :: Éradiquer.
+   bud-3 logement+1 | g0 c+2 d+2 e+1
+   > Les termites reculent.
+B) Aider seulement les copropriétés pauvres :: Cibler.
+   bud-1 logement+1 | g+1 c+2 d+1 e+1
+   > Les immeubles modestes sont traités.
+C) Rien :: Propriétaires.
+   logement-1 | g0 c+1 d+1 e0
+   > Un plancher s’effondre.
+
+=== log-148 | logement | Héberger un étudiant chez un senior
+Des seniors seuls ont des chambres vides, des étudiants n’ont rien.
+A) Une plateforme municipale de mise en relation :: Solidarité.
+   bud-1 logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Mille binômes se forment.
+B) Une prime aux seniors qui hébergent :: Encourager.
+   bud-2 logement+1 | g+1 c+2 d+1 e+1
+   > Les chambres se libèrent.
+C) Laisser les associations faire :: Subsidiarité.
+   logement-1 | g0 c+1 d+1 e0
+   > Quelques binômes se forment.
+
+=== log-149 | logement | Un arrêté de péril sur un immeuble habité
+Un immeuble menace de s’écrouler, cinquante familles y vivent encore.
+A) Évacuer et reloger tout le monde :: Sécurité.
+   bud-4 logement-1 securite+1 | g+1 c+2 d+2 e+1
+   > Les familles sont mises à l’abri.
+B) Étayer en urgence et laisser les habitants :: Compromis.
+   bud-2 | g0 c+1 d+1 e0
+   ~15 securite-2 > Un escalier cède.
+   > Les étais soutiennent les murs.
+C) Poursuivre le propriétaire :: Justice.
+   bud-1 securite-1 | g0 c+1 d+2 e0
+   > La procédure prend des mois.
+
+=== log-150 | logement | Les chambres sous les toits en canicule
+Les chambres de service atteignent 40 degrés en été.
+A) Des aides pour isoler les combles :: Rénover.
+   bud-3 logement+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les combles sont isolés.
+B) Ouvrir des salles fraîches :: Urgence.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les habitants dorment au frais.
+C) Rien :: Propriétaires.
+   bon-1 | g0 c+1 d+1 e0
+   > Les malaises se multiplient.
+
+=== log-151 | logement | Transformer un ancien hôpital en logements
+Un hôpital déménage et libère un vaste ensemble de bâtiments.
+A) Cent pour cent de logements sociaux :: Social.
+   bud-5 logement+2 | g+2 c+2 d0 e+1
+   > Huit cents familles sont logées.
+B) Un quartier mixte avec commerces et équipements :: Équilibre.
+   bud-3 logement+1 economie+1 | g+1 c+2 d+1 e+1
+   > Un nouveau quartier vivant naît.
+C) Vendre au plus offrant :: Recettes.
+   bud+10 logement-1 | g-1 c+1 d+2 e0
+   > Des appartements de luxe sont construits.
+
+=== log-152 | logement | Un parking souterrain transformé en logements
+Un parking presque vide pourrait accueillir des logements éclairés par des patios.
+? distinct
+A) Tenter le projet :: Innovation.
+   bud-3 logement+1 | g+1 c+2 d+1 e+1
+   > Des lofts lumineux remplacent les places.
+B) En faire des ateliers et locaux associatifs :: Prudence.
+   bud-2 economie+1 | g+1 c+2 d+1 e+1
+   > Des ateliers s’installent.
+C) Garder le parking :: Voitures.
+   logement-1 | g-1 c+1 d+1 e0
+   > Le parking reste vide.
+
+=== log-153 | logement | Loger les policiers près de leur commissariat
+Les policiers vivent loin et refusent les postes parisiens.
+A) Réserver des logements sociaux aux policiers :: Sécurité.
+   logement-1 securite+1 | g0 c+2 d+2 e0
+   > Les postes vacants se remplissent.
+B) Construire des résidences dédiées :: Investir.
+   bud-4 securite+1 | g0 c+2 d+2 e+1
+   > Une résidence ouvre dans le 19e.
+C) Rien :: Compétence de l’État.
+   securite-1 | g0 c+1 d+1 e0
+   > Les commissariats manquent d’agents.
+
+=== log-154 | logement | Les familles monoparentales prioritaires
+Les mères seules avec enfants attendent des années un logement social.
+? distinct
+A) Les rendre prioritaires :: Protéger.
+   logement+1 bon+1 | g+2 c+2 d0 e+1
+   > Des milliers de familles sont relogées.
+B) Des logements dédiés avec crèche :: Accompagner.
+   bud-3 logement+1 services+1 | g+1 c+2 d+1 e+1
+   > Une résidence avec crèche ouvre.
+C) Garder les critères actuels :: Équité.
+   bon-1 | g0 c+1 d+1 e0
+   > Les associations protestent.
+
+=== log-155 | logement | Les nouveaux quartiers sans commerces
+Les quartiers neufs n’ont ni boulangerie ni café, les habitants s’ennuient.
+A) Imposer des loyers commerciaux bas :: Animer.
+   rec-0.02x60 economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des commerces ouvrent.
+B) Une halle provisoire :: Tester.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Une halle accueille des commerçants.
+C) Laisser le marché faire :: Patience.
+   bon-1 | g0 c+1 d+1 e0
+   > Les rez-de-chaussée restent vides.
+
+=== log-156 | logement | Les façades inflammables des tours
+Un incendie à l’étranger révèle que des tours parisiennes ont le même bardage.
+A) Remplacer tous les bardages :: Sécurité.
+   bud-6 securite+1 logement+1 | g0 c+2 d+2 e+1
+   > Les tours sont sécurisées.
+B) Des détecteurs et des exercices :: Prévenir.
+   bud-2 securite+1 | g0 c+2 d+1 e+1
+   > Les habitants savent évacuer.
+C) Rien :: Normes respectées.
+   securite-1 | g0 c+1 d+1 e0
+   > Les habitants s’inquiètent.
+
+=== log-157 | logement | L’amiante dans les immeubles sociaux
+Des diagnostics révèlent de l’amiante dans des centaines de logements.
+A) Un désamiantage complet :: Santé.
+   bud-6 logement+1 | g+1 c+2 d+1 e+1
+   > Les logements sont assainis.
+B) Encapsuler et surveiller :: Prudence.
+   bud-2 | g0 c+2 d+1 e0
+   > L’amiante est confiné.
+C) Rien :: Pas de danger immédiat.
+   bon-2 | g-1 c+1 d+1 e0
+   > Les locataires portent plainte.
+
+=== log-158 | logement | Des colocations pour adultes handicapés
+Des parents âgés cherchent un logement pour leurs enfants handicapés adultes.
+A) Créer des colocations accompagnées :: Inclusion.
+   bud-3 logement+1 services+1 | g+2 c+2 d0 e+1
+   > Des colocations ouvrent avec des éducateurs.
+B) Soutenir les associations qui le font :: Accompagner.
+   bud-1 logement+1 | g+1 c+2 d+1 e+1
+   > Quelques projets voient le jour.
+C) Rien :: Département.
+   bon-1 | g0 c+1 d+1 e0
+   > Les parents s’inquiètent pour l’avenir.
+
+=== log-159 | logement | Des investisseurs étrangers achètent des immeubles entiers
+Des fonds rachètent des immeubles et augmentent les loyers à chaque relocation.
+A) Préempter les immeubles mis en vente :: Protéger.
+   bud-8 logement+1 | g+2 c+2 d0 e+1
+   > La Ville rachète trois immeubles.
+B) Renforcer l’encadrement des loyers :: Réguler.
+   logement+1 economie-1 | g+1 c+2 d+1 e+1
+   > Les loyers sont contrôlés.
+C) Rien :: Libre marché.
+   logement-1 economie+1 | g-1 c+1 d+2 e0
+   > Les locataires partent.
+
+=== log-160 | logement | Des logements au-dessus des écoles
+Les écoles d’un étage pourraient accueillir des logements en surélévation.
+A) Surélever les écoles :: Densifier.
+   bud-4 logement+1 | g+1 c+2 d+1 e+1
+   > Des logements pour enseignants apparaissent.
+B) Seulement lors des rénovations :: Opportunité.
+   bud-2 logement+1 | g0 c+2 d+1 e+1
+   > Quelques écoles sont surélevées.
+C) Rien :: Écoles.
+   logement-1 | g0 c+1 d+1 e0
+   > Les écoles restent basses.
+
+=== log-161 | logement | Des logements au-dessus des supermarchés
+Des supermarchés d’un seul niveau occupent de grands terrains.
+A) Imposer la construction de logements :: Densifier.
+   logement+2 economie-1 | g+1 c+2 d+1 e+1
+   > Les enseignes s’associent à des bailleurs.
+B) Négocier au cas par cas :: Dialogue.
+   logement+1 | g0 c+2 d+1 e+1
+   > Deux projets démarrent.
+C) Rien :: Commerces.
+   logement-1 | g0 c+1 d+1 e0
+   > Rien ne change.
+
+=== log-162 | logement | Des maisons de retraite municipales abordables
+Une place en maison de retraite coûte plus de 4 000 € par mois.
+A) Construire des établissements publics :: Service public.
+   bud-6 services+1 bon+1 | g+2 c+2 d0 e+1
+   > Deux établissements ouvrent.
+B) Aider les familles :: Solidarité.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles respirent.
+C) Rien :: Département.
+   bon-1 | g0 c+1 d+1 e0
+   > Les seniors partent en province.
+
+=== log-163 | logement | La rénovation bloquée par les copropriétaires
+Des copropriétés refusent de voter l’isolation par peur des coûts.
+A) Une avance des travaux par la Ville :: Débloquer.
+   bud-4 logement+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les votes passent.
+B) Des conseillers en assemblée générale :: Convaincre.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Certaines copropriétés votent.
+C) Rien :: Démocratie.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les passoires thermiques restent.
+
+=== log-164 | logement | Les cafards dans les cités
+Les cafards infestent des tours entières.
+A) Une désinsectisation de toute la tour :: Éradiquer.
+   bud-2 logement+1 | g0 c+2 d+2 e+1
+   > Les cafards disparaissent.
+B) Traiter appartement par appartement :: Cibler.
+   bud-1 | g0 c+1 d+1 e0
+   > Les cafards passent d’un appartement à l’autre.
+C) Rien :: Locataires.
+   bon-1 logement-1 | g0 c+1 d+1 e0
+   > Les locataires se sentent abandonnés.
+
+=== log-165 | logement | Un loyer selon la performance énergétique
+Les propriétaires de passoires louent au même prix que les logements isolés.
+A) Plafonner les loyers des passoires :: Inciter.
+   logement+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les propriétaires isolent.
+B) Un bonus pour les logements rénovés :: Récompenser.
+   bud-2 ecologie+1 | g0 c+2 d+1 e+1
+   > Les rénovations augmentent.
+C) Rien :: Loi nationale.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les locataires paient le chauffage.
+
+=== log-166 | logement | Le permis de diviser les logements
+Des propriétaires découpent de grands appartements en studios minuscules.
+A) Exiger une autorisation :: Contrôler.
+   logement+1 | g0 c+2 d+2 e+1
+   > Les divisions abusives sont bloquées.
+B) Autoriser avec une taille minimale :: Encadrer.
+   logement+1 | g+1 c+2 d+1 e+1
+   > Les studios font au moins 20 m².
+C) Rien :: Offre de logements.
+   logement-1 | g-1 c+1 d+2 e0
+   > Les studios de 10 m² se multiplient.
+
+=== log-167 | logement | Des crèches au pied des immeubles sociaux
+Les bailleurs ont des locaux vides au rez-de-chaussée.
+A) Transformer les locaux en crèches :: Services.
+   bud-2 services+1 logement+1 | g+1 c+2 d+1 e+1
+   > Des crèches ouvrent au pied des tours.
+B) Des assistantes maternelles regroupées :: Souplesse.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Des maisons d’assistantes maternelles s’installent.
+C) Rien :: Bailleurs.
+   services-1 | g0 c+1 d+1 e0
+   > Les locaux restent vides.
+
+=== log-168 | logement | Construire des logements parisiens en banlieue
+La Ville propose de financer des logements dans les communes voisines.
+A) Signer des accords avec les communes :: Métropole.
+   bud-4 logement+1 coh+1 | g+1 c+2 d+1 e+1
+   > Des logements sociaux parisiens sortent de terre en banlieue.
+B) Seulement si les communes le demandent :: Respect.
+   bud-2 logement+1 | g0 c+2 d+1 e+1
+   > Quelques projets démarrent.
+C) Rien :: Paris d’abord.
+   logement-1 | g0 c+1 d+1 e0
+   > Les listes d’attente s’allongent.
+
+=== log-169 | logement | Aider les seniors à déménager en province
+Des retraités rêvent de partir mais craignent les démarches.
+A) Un service d’accompagnement :: Libérer des logements.
+   bud-1 logement+1 | g0 c+2 d+1 e+1
+   > Des grands logements se libèrent.
+B) Une prime au départ :: Encourager.
+   bud-3 logement+1 | g0 c+1 d+2 e0
+   > Les départs augmentent.
+C) Rien :: Libre choix.
+   logement-1 | g0 c+1 d+1 e0
+   > Rien ne change.
+
+=== log-170 | logement | Rénover les cages d’escalier
+Peintures écaillées et éclairage cassé dans les cages d’escalier des cités.
+A) Un plan de rénovation :: Dignité.
+   bud-3 logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les cages d’escalier sont rénovées.
+B) Des fresques réalisées par les habitants :: Participatif.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les murs s’animent.
+C) Rien :: Bailleurs.
+   bon-1 | g0 c+1 d+1 e0
+   > Les escaliers restent sinistres.
+
+=== log-171 | logement | Les compteurs d’eau individuels
+Les locataires paient l’eau au forfait, sans être incités à économiser.
+A) Installer des compteurs individuels :: Responsabiliser.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > La consommation baisse.
+B) Seulement dans les nouveaux immeubles :: Progressif.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Les nouveaux immeubles s’équipent.
+C) Rien :: Coût.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Le gaspillage continue.
+
+=== log-172 | logement | Les vide-ordures fermés
+Les bailleurs ferment les vide-ordures, les seniors doivent descendre leurs sacs.
+A) Les rouvrir et les entretenir :: Service.
+   bud-1 bon+1 | g0 c+2 d+1 e0
+   > Les seniors respirent.
+B) Un ramassage à domicile pour les seniors :: Accompagner.
+   rec-0.01x60 bon+1 | g+1 c+2 d+1 e+1
+   > Les gardiens passent chercher les sacs.
+C) Rien :: Hygiène.
+   bon-1 | g0 c+1 d+1 e0
+   > Les sacs s’entassent sur les paliers.
+
+=== log-173 | logement | Les ventilations bouchées
+Les VMC des logements sociaux ne fonctionnent plus.
+A) Un contrôle de toutes les ventilations :: Santé.
+   bud-2 logement+1 | g0 c+2 d+2 e+1
+   > L’air circule à nouveau.
+B) Intervenir sur signalement :: Cibler.
+   bud-1 | g0 c+1 d+1 e0
+   > Les cas signalés sont réparés.
+C) Rien :: Bailleurs.
+   logement-1 | g0 c+1 d+1 e0
+   > Les moisissures reviennent.
+
+=== log-174 | logement | Des HLM sous-occupés après le départ des enfants
+Des couples âgés vivent seuls dans des cinq-pièces pendant que des familles s’entassent.
+A) Proposer un logement plus petit avec déménagement payé :: Échanger.
+   bud-1 logement+1 | g0 c+2 d+1 e+1
+   > Des grands logements se libèrent pour les familles.
+B) Imposer un surloyer de sous-occupation :: Inciter.
+   logement+1 bon-1 | g-1 c+2 d+2 e0
+   > Les seniors protestent mais certains déménagent.
+C) Ne rien imposer :: Respect du foyer.
+   logement-1 | g+1 c+1 d0 e0
+   > Les familles nombreuses attendent toujours.
+=== log-175 | logement | Les maisons de ville à démolir
+Des promoteurs veulent démolir des petites maisons pour construire des immeubles.
+A) Protéger les maisons :: Patrimoine.
+   logement-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les maisons restent.
+B) Autoriser avec des logements sociaux :: Densifier.
+   logement+1 | g0 c+2 d+1 e+1
+   > Des immeubles mixtes remplacent les maisons.
+C) Laisser faire :: Marché.
+   logement+1 bon-1 | g-1 c+1 d+2 e0
+   > Les maisons disparaissent.
+
+=== log-176 | logement | Les logements de fonction des gardiens de parc
+Les gardiens de parc logés sur place sont de moins en moins nombreux.
+A) Rénover les logements de fonction :: Présence.
+   bud-2 securite+1 | g0 c+2 d+1 e+1
+   > Les gardiens reviennent dans les parcs.
+B) Les transformer en logements sociaux :: Loger.
+   bud-1 logement+1 | g+1 c+2 d+1 e+1
+   > Des familles emménagent.
+C) Les vendre :: Recettes.
+   bud+3 securite-1 | g-1 c+1 d+2 e0
+   > Les parcs perdent leurs gardiens.
+
+=== log-177 | logement | Les loyers des chambres d’hôpital pour soignants
+Des soignants dorment dans leur voiture faute de logement.
+A) Des résidences pour soignants :: Soigner.
+   bud-4 logement+1 services+1 | g+1 c+2 d+1 e+1
+   > Une résidence ouvre près de l’hôpital.
+B) Réserver des logements sociaux :: Priorité.
+   logement-1 services+1 | g0 c+2 d+1 e+1
+   > Les soignants obtiennent des logements.
+C) Rien :: AP-HP.
+   services-1 | g0 c+1 d+1 e0
+   > Les soignants démissionnent.
+
+=== log-178 | logement | Les cours d’immeuble fermées aux enfants
+Des copropriétés interdisent aux enfants de jouer dans les cours.
+A) Des aires de jeux dans les cours sociales :: Jouer.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les cours s’animent.
+B) Une médiation avec les copropriétés :: Dialogue.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Des horaires de jeux sont fixés.
+C) Rien :: Copropriétés.
+   bon-1 | g0 c+1 d+1 e0
+   > Les enfants restent enfermés.
+
+=== log-179 | logement | Les logements des travailleurs de nuit
+Les travailleurs de nuit ne trouvent pas de logement près de leur lieu de travail.
+A) Des résidences dédiées :: Loger.
+   bud-3 logement+1 | g+1 c+2 d+1 e+1
+   > Une résidence ouvre.
+B) Une priorité dans les attributions :: Priorité.
+   logement+1 | g0 c+2 d+1 e+1
+   > Les travailleurs de nuit sont prioritaires.
+C) Rien :: Employeurs.
+   logement-1 | g0 c+1 d+1 e0
+   > Les travailleurs de nuit dorment dans les transports.
+
+=== log-180 | logement | Les clés des logements sociaux perdues
+Les attributions prennent des mois car les états des lieux traînent.
+A) Une équipe dédiée aux états des lieux :: Accélérer.
+   rec-0.01x60 logement+1 | g0 c+2 d+1 e+1
+   > Les logements sont attribués plus vite.
+B) Des pénalités pour les bailleurs lents :: Fermeté.
+   logement+1 | g0 c+2 d+2 e0
+   > Les délais diminuent.
+C) Rien :: Bailleurs.
+   logement-1 | g0 c+1 d+1 e0
+   > Des logements restent vides.
+
+=== log-181 | logement | Les immeubles sans ascenseur
+Les personnes à mobilité réduite ne peuvent pas monter chez elles.
+A) Des aides pour installer des ascenseurs :: Accessibilité.
+   bud-4 logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des ascenseurs sont installés.
+B) Des échanges de logement vers le rez-de-chaussée :: Adapter.
+   logement+1 | g+1 c+2 d+1 e+1
+   > Des familles déménagent.
+C) Rien :: Propriétaires.
+   bon-1 | g0 c+1 d+1 e0
+   > Les seniors restent bloqués.
+
+=== log-182 | logement | Les jardins privés convoités par les promoteurs
+Des jardins intérieurs pourraient accueillir des immeubles.
+A) Protéger tous les jardins :: Verdir.
+   ecologie+1 logement-1 | g+1 c+2 d+1 e+1
+   > Les jardins restent.
+B) Autoriser des constructions basses :: Compromis.
+   logement+1 | g0 c+2 d+1 e+1
+   > Des maisons basses sont construites.
+C) Laisser faire :: Marché.
+   logement+1 ecologie-1 | g-1 c+1 d+2 e0
+   > Les jardins disparaissent.
+
+=== log-183 | logement | Des chambres d’urgence pour les jeunes à la rue
+Des jeunes de 18 ans se retrouvent à la rue après une rupture familiale.
+A) Des chambres d’urgence dédiées :: Protéger.
+   bud-2 logement+1 bon+1 | g+2 c+2 d0 e+1
+   > Des jeunes sont mis à l’abri.
+B) Des familles d’accueil bénévoles :: Solidarité.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Des familles accueillent des jeunes.
+C) Rien :: État.
+   bon-1 | g0 c+1 d+1 e0
+   > Les jeunes dorment dehors.
+
+=== log-184 | logement | Les loyers des petites surfaces
+Les studios ont des loyers au mètre carré exorbitants.
+A) Plafonner les loyers des petites surfaces :: Réguler.
+   logement+1 economie-1 | g+1 c+2 d+1 e+1
+   > Les loyers des studios baissent.
+B) Construire plus de studios sociaux :: Offre.
+   bud-4 logement+1 | g+1 c+2 d+1 e+1
+   > Des studios sociaux sortent de terre.
+C) Rien :: Marché.
+   logement-1 | g-1 c+1 d+2 e0
+   > Les étudiants paient cher.
+
+=== log-185 | logement | Un concours pour des HLM remarquables
+Les logements sociaux neufs sont souvent ternes et vite dégradés.
+A) Un grand concours d’architecture :: Beauté.
+   bud-2 logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des immeubles sociaux primés sortent de terre.
+B) Imposer des matériaux durables :: Qualité.
+   bud-1 logement+1 | g0 c+2 d+1 e+1
+   > Les nouveaux HLM vieillissent mieux.
+C) Construire au moindre coût :: Quantité.
+   logement+1 bon-1 | g-1 c+1 d+2 e0
+   > Plus de logements, mais sans charme.
