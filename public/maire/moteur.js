@@ -10,7 +10,7 @@
   var PLAFOND_DETTE = 1000, TAUX = 0.003;               // emprunt autorisé et intérêts par semaine
 
   // Réglages d'équilibrage (vérifiés par tools/maire/test-moteur.mjs)
-  var P = { domRepos: 42, domVit: 0.03, bonVit: 0.05, popVit: 0.04, usure: 0.22, detteImpop: 120,
+  var P = { domRepos: 44, domVit: 0.03, bonVit: 0.05, popVit: 0.04, usure: 0.22, detteImpop: 120,
     cohRepos: 50, cohVit: 0.015, aliPlus: 0.8, aliMoins: 1.6, probleme: 3.7, ambMult: 2.5, ambSeuil: 56, problemeAmb: 0.5 };
 
   var LIGNES = {
