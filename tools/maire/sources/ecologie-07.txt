@@ -1,0 +1,303 @@
+// Écologie, série 7
+=== ecol-226 | ecologie | Les toits végétalisés qui meurent sans arrosage
+Des toitures plantées à grands frais sont devenues des tapis de mousse brûlée.
+A) Un contrat d’entretien et d’arrosage :: Entretenir.
+   rec-0.02x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les toits reverdissent.
+B) Replanter avec des espèces résistantes à la sécheresse :: Adapter.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les orpins remplacent les gazons.
+C) Laisser faire :: Coût.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les toits redeviennent gris.
+
+=== ecol-227 | ecologie | Des champignonnières dans les parkings
+Des parkings vides pourraient accueillir des cultures de champignons.
+A) Louer des niveaux à des cultivateurs :: Agriculture urbaine.
+   rec+0.01x60 ecologie+1 economie+1 | g+1 c+2 d+1 e+1
+   > Des pleurotes poussent sous les rues.
+B) Un projet pilote avec une association d’insertion :: Insertion.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des jeunes apprennent la culture.
+C) Rien :: Parkings.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les parkings restent vides.
+
+=== ecol-228 | ecologie | Le port de l’Arsenal pollué
+Les bateaux de plaisance rejettent huiles et eaux grises dans le bassin.
+A) Des bornes de vidange obligatoires :: Dépolluer.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > L’eau du bassin s’éclaircit.
+B) Des contrôles et des amendes :: Fermeté.
+   ecologie+1 | g0 c+2 d+2 e0
+   > Les plaisanciers s’équipent.
+C) Rien :: Gestionnaire du port.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Des irisations flottent sur l’eau.
+
+=== ecol-229 | ecologie | Des jardins secs qui se passent d’arrosage
+Des pelouses assoiffées pourraient être remplacées par des plantes méditerranéennes.
+A) Transformer les pelouses peu utilisées :: Adapter.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Lavandes et graminées fleurissent sans eau.
+B) Seulement les ronds-points et talus :: Cibler.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Les ronds-points deviennent méditerranéens.
+C) Garder les pelouses :: Habitudes.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les arrosages continuent tout l’été.
+
+=== ecol-230 | ecologie | Les feux d’artifice affolent les oiseaux
+Les explosions font fuir les oiseaux nicheurs des parcs voisins.
+? distinct
+A) Des spectacles de drones à la place :: Silence.
+   bud-1 ecologie+1 bon-1 | g+1 c+2 d+1 e+1
+   > Les oiseaux dorment tranquilles.
+B) Éloigner les tirs des parcs :: Compromis.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Les tirs se font au-dessus de la Seine.
+C) Rien :: Tradition.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Des nids sont abandonnés.
+
+=== ecol-231 | ecologie | Une ceinture maraîchère autour de Paris
+Les terres agricoles proches disparaissent sous le béton.
+A) Acheter des terres pour des maraîchers :: Nourrir.
+   bud-5 ecologie+1 economie+1 | g+2 c+2 d0 e+1
+   > Des légumes de proximité arrivent dans les cantines.
+B) Des contrats d’achat avec les agriculteurs voisins :: Soutenir.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les maraîchers ont des débouchés garantis.
+C) Rien :: Hors de Paris.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les terres sont loties.
+
+=== ecol-232 | ecologie | Un sentier pieds nus dans un parc
+Des parcours de sable, d’herbe et d’écorces à parcourir pieds nus.
+A) En créer un dans chaque bois :: Sensations.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les enfants marchent dans la boue en riant.
+B) Un seul test :: Prudence.
+   bon+1 | g0 c+2 d+1 e+1
+   > Le sentier est pris d’assaut.
+C) Rien :: Hygiène.
+   bon-1 | g0 c+1 d+1 e0
+   > Les chaussures restent aux pieds.
+
+=== ecol-233 | ecologie | Des lombricomposteurs pour les appartements
+Des habitants sans cour veulent composter chez eux.
+A) Distribuer des lombricomposteurs gratuits :: Composter.
+   bud-1 ecologie+1 proprete+1 | g+1 c+2 d+1 e+1
+   > Les vers recyclent les épluchures.
+B) Des ateliers de formation :: Apprendre.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les habitants apprennent à composter.
+C) Rien :: Bacs collectifs.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les épluchures vont à la poubelle.
+
+=== ecol-234 | ecologie | La Seine au plus bas en été
+Le débit de la Seine baisse, la qualité de l’eau aussi.
+A) Réduire les prélèvements d’eau de la Ville :: Sobriété.
+   ecologie+1 bon-1 | g+1 c+2 d+1 e+1
+   > Les fontaines décoratives sont coupées.
+B) Demander des lâchers des lacs-réservoirs :: Coopérer.
+   coh+1 ecologie+1 | g0 c+2 d+1 e+1
+   > Le débit remonte.
+C) Rien :: Climat.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les poissons étouffent.
+
+=== ecol-235 | ecologie | Des mésanges contre les chenilles processionnaires
+Les mésanges mangent les chenilles urticantes et évitent les traitements.
+? distinct
+A) Installer des nichoirs dans tous les parcs touchés :: Nature.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les mésanges font le ménage.
+B) Combiner nichoirs et pièges :: Mixte.
+   bud-1 ecologie+1 securite+1 | g0 c+2 d+1 e+1
+   > Les chenilles reculent.
+C) Traiter chimiquement :: Rapidité.
+   ecologie-1 securite+1 | g-1 c+2 d+2 e0
+   > Les chenilles meurent, les insectes aussi.
+
+=== ecol-236 | ecologie | Des coccinelles plutôt que des pesticides
+Les jardiniers proposent de lâcher des coccinelles contre les pucerons.
+A) Généraliser la lutte biologique :: Nature.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les rosiers sont débarrassés des pucerons.
+B) Des ateliers pour les habitants :: Partager.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les balcons accueillent des coccinelles.
+C) Rien :: Pucerons tolérés.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les massifs sont envahis.
+
+=== ecol-237 | ecologie | Des terrasses de café végétalisées
+Des cafés proposent d’entourer leurs terrasses de bacs plantés.
+A) Une aide aux terrasses végétalisées :: Verdir.
+   bud-1 ecologie+1 economie+1 | g+1 c+2 d+1 e+1
+   > Les terrasses deviennent des jardins.
+B) Une redevance réduite pour les terrasses vertes :: Inciter.
+   rec-0.01x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les cafés plantent.
+C) Rien :: Commerce.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les terrasses restent en plastique.
+
+=== ecol-238 | ecologie | Une maison du climat pour conseiller les habitants
+Les habitants ne savent pas comment isoler, trier ou réduire leur énergie.
+A) Ouvrir une maison du climat :: Conseiller.
+   bud-2 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des milliers d’habitants sont conseillés.
+B) Des permanences en mairie :: Proximité.
+   rec-0.01x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les conseillers tournent dans les mairies.
+C) Rien :: Site internet.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les habitants restent perdus.
+
+=== ecol-239 | ecologie | Les vêtements des objets trouvés
+Des milliers de vêtements oubliés finissent détruits chaque année.
+? distinct
+A) Les donner à des associations :: Solidarité.
+   ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les manteaux oubliés réchauffent des sans-abri.
+B) Une grande vente annuelle :: Recettes.
+   bud+1 ecologie+1 | g0 c+2 d+1 e+1
+   > Les Parisiens achètent des vêtements à un euro.
+C) Rien :: Procédure.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les vêtements sont détruits.
+
+=== ecol-240 | ecologie | Des plantes dans les bureaux de la Ville
+Des agents réclament des plantes pour améliorer leur cadre de travail.
+A) Des plantes dans tous les bureaux :: Bien-être.
+   bud-1 coh+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les bureaux verdissent.
+B) Des boutures des serres municipales :: Économie.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Les serres fournissent les bureaux.
+C) Rien :: Gadget.
+   coh-1 | g0 c+1 d+1 e0
+   > Les bureaux restent gris.
+
+=== ecol-241 | ecologie | Un pacte climat avec les grandes entreprises
+Des groupes installés à Paris proposent des engagements communs.
+A) Un pacte avec des objectifs chiffrés :: Exiger.
+   ecologie+1 economie+1 | g+1 c+2 d+1 e+1
+   > Les entreprises publient leurs progrès.
+B) Une charte volontaire :: Souplesse.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Les entreprises signent.
+C) Rien :: Greenwashing.
+   ecologie-1 | g+1 c+1 d0 e+1
+   > Chacun agit seul.
+
+=== ecol-242 | ecologie | Des bâches sur les bassins la nuit
+Les piscines perdent beaucoup de chaleur la nuit.
+A) Équiper toutes les piscines :: Économiser.
+   bud-2 rec+0.03x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les factures de chauffage baissent.
+B) Les piscines extérieures seulement :: Cibler.
+   bud-1 rec+0.02x60 ecologie+1 | g0 c+2 d+1 e+1
+   > Les bassins découverts gardent la chaleur.
+C) Rien :: Coût.
+   ecologie-1 | g0 c+1 d+1 e0
+   > La chaleur s’envole chaque nuit.
+
+=== ecol-243 | ecologie | Des arbres plantés dans des fosses trop petites
+Les racines étouffent dans des fosses d’un mètre carré.
+A) Agrandir les fosses :: Laisser respirer.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les arbres poussent mieux.
+B) Des fosses continues sous les trottoirs :: Innover.
+   bud-3 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les racines se rejoignent sous le trottoir.
+C) Rien :: Place.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les arbres restent chétifs.
+
+=== ecol-244 | ecologie | Arroser les rues à l’eau non potable pendant la canicule
+Mouiller la chaussée rafraîchirait les rues de quelques degrés.
+? distinct
+A) Arroser les rues les plus chaudes :: Rafraîchir.
+   rec-0.01x60 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les rues fument de fraîcheur.
+B) Seulement autour des écoles et résidences seniors :: Cibler.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les plus fragiles respirent.
+C) Rien :: Gaspillage.
+   bon-1 | g0 c+1 d+1 e0
+   > Les rues restent brûlantes.
+
+=== ecol-245 | ecologie | Des jachères fleuries pour les pollinisateurs
+Des terrains en attente de travaux pourraient être semés de fleurs.
+A) Semer toutes les friches :: Biodiversité.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les abeilles sauvages butinent les friches.
+B) Laisser les habitants semer :: Participer.
+   ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des bombes à graines fleurissent la ville.
+C) Rien :: Friches.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les friches restent nues.
+
+=== ecol-246 | ecologie | Réutiliser les mâchefers d’incinération dans les routes
+Les résidus des incinérateurs pourraient remplacer le gravier des sous-couches de chaussée.
+A) Les utiliser dans les chantiers de voirie :: Économie circulaire.
+   bud+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les carrières sont moins sollicitées.
+B) Après des tests de pollution :: Prudence.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Les analyses rassurent.
+C) Refuser :: Risque sanitaire.
+   ecologie-1 | g+1 c+1 d0 e+1
+   > Les mâchefers partent en décharge.
+=== ecol-247 | ecologie | Des bornes électriques pour les marchés
+Les commerçants des marchés font tourner des groupes électrogènes bruyants.
+A) Installer des bornes sur toutes les places de marché :: Silence.
+   bud-2 ecologie+1 economie+1 | g+1 c+2 d+1 e+1
+   > Les marchés deviennent silencieux.
+B) Les grands marchés d’abord :: Prioriser.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Les grands marchés sont équipés.
+C) Rien :: Commerçants.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les groupes continuent de pétarader.
+
+=== ecol-248 | ecologie | Des chouettes dans les parcs
+Des nichoirs pourraient faire revenir les chouettes, grandes mangeuses de rats.
+A) Installer des nichoirs à chouettes :: Nature.
+   bud-1 ecologie+1 proprete+1 | g+1 c+2 d+1 e+1
+   > Les chouettes chassent les rongeurs.
+B) Un test au bois de Vincennes :: Prudence.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Un couple s’installe.
+C) Rien :: Gadget.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les rats prospèrent.
+
+=== ecol-249 | ecologie | Ouvrir les jardins des écoles l’été
+Les potagers des écoles meurent pendant les vacances faute d’arrosage.
+A) Confier les jardins aux familles l’été :: Partager.
+   ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles récoltent les tomates.
+B) Un arrosage automatique :: Technique.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Les potagers survivent à l’été.
+C) Rien :: Fermeture estivale.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les potagers sèchent.
+
+=== ecol-250 | ecologie | Un toit-jardin sur l’Hôtel de Ville
+Le grand toit de l’Hôtel de Ville pourrait devenir un jardin.
+A) Aménager un jardin ouvert au public :: Symbole.
+   bud-3 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les Parisiens visitent le toit fleuri.
+B) Un potager pour les agents :: Modeste.
+   bud-1 ecologie+1 coh+1 | g0 c+2 d+1 e+1
+   > Les agents jardinent à la pause.
+C) Rien :: Patrimoine.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Le toit reste en zinc.
