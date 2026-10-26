@@ -1,0 +1,485 @@
+// Culture et tourisme, série 2
+=== cul-026 | culture | Les clubs de jazz de Saint-Germain
+Les derniers clubs de jazz historiques de Saint-Germain-des-Prés risquent de fermer.
+A) Racheter les murs d’un club mythique :: Patrimoine musical.
+   bud-15 bon+1 economie+1 | g+1 c+2 d+2 e0
+   > La Ville devient propriétaire d’une cave de jazz.
+B) Subventionner une programmation de jeunes musiciens :: Soutien artistique.
+   rec-0.1x60 bon+1 | g+2 c+2 d0 e+1
+   > Les clubs accueillent de jeunes talents.
+C) Laisser faire :: Le marché décide.
+   bon-1 | g-1 c0 d+2 e0
+   > Les caves deviennent des bars à cocktails.
+
+=== cul-027 | culture | Faut-il continuer Paris Plages ?
+Paris Plages coûte cher et certains le jugent dépassé depuis que l’on peut se baigner dans la Seine.
+A) Le réinventer autour de la baignade :: Moderniser.
+   bud-8 bon+2 ecologie+1 | g+1 c+2 d+1 e+2
+   > Paris Plages devient un festival de l’eau.
+B) Le garder tel quel :: Tradition populaire.
+   bud-5 bon+1 | g+2 c+1 d0 e0
+   > Le sable revient sur les quais.
+C) Le supprimer :: Économie.
+   bud+5 bon-2 | g-2 c+1 d+2 e0
+   > Pas de Paris Plages cet été.
+
+=== cul-028 | culture | Ouvrir les lieux fermés aux Journées du patrimoine
+Les Parisiens veulent visiter les salons de l’Hôtel de Ville, les réservoirs d’eau et les ateliers municipaux.
+A) Ouvrir trente lieux insolites :: Fierté parisienne.
+   bud-3 bon+2 pop+1 | g+1 c+2 d+1 e+1
+   > Des files se forment devant les réservoirs de Montsouris.
+B) Visites virtuelles toute l’année :: Accès permanent.
+   bud-4 bon+1 | g+1 c+3 d+1 e+1
+   > Des visites en ligne sont proposées.
+C) Garder le programme habituel :: Simple.
+   bon-1 | g0 c+1 d+1 e0
+   > Les mêmes lieux ouvrent que l’an dernier.
+
+=== cul-029 | culture | Une statue contestée
+Des militants demandent le retrait de la statue d’un personnage lié à l’esclavage.
+A) Retirer la statue et la placer au musée :: Rupture.
+   bud-1 coh+1 pop-1 | g+4 c0 d-4 e+2
+   > La statue rejoint un musée avec une explication.
+   ~35 pop-2 > Une partie de l’opinion dénonce une réécriture de l’histoire.
+B) Ajouter une plaque explicative :: Contextualiser.
+   bud-1 | g+1 c+3 d+1 e+1
+   > Une plaque raconte l’histoire complète du personnage.
+C) Ne rien changer :: Histoire assumée.
+   pop+1 coh-1 | g-4 c0 d+4 e-2
+   > La statue reste en place.
+
+=== cul-030 | culture | Plus de rues aux noms de femmes
+Seules 6 % des rues parisiennes portent le nom d’une femme.
+A) Renommer des rues et places :: Égalité.
+   bud-2 bon+1 | g+3 c+1 d-2 e+2
+   > Dix rues prennent le nom de femmes célèbres.
+   ~30 pop-1 > Les riverains doivent changer leurs papiers et protestent.
+B) Donner des noms de femmes aux nouveaux lieux seulement :: Progressif.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Les nouveaux jardins et écoles portent des noms de femmes.
+C) Garder les noms existants :: Tradition.
+   coh-1 | g-2 c0 d+3 e-1
+   > Rien ne change.
+
+=== cul-031 | culture | Les cabarets de Pigalle en difficulté
+Les cabarets historiques de Pigalle perdent leur public et menacent de fermer.
+A) Aide exceptionnelle et promotion internationale :: Patrimoine du spectacle.
+   bud-6 economie+2 | g0 c+2 d+2 e0
+   > Une campagne remet les cabarets à la mode.
+B) Soutenir la nouvelle génération de cabarets :: Renouveau.
+   bud-3 economie+1 bon+1 | g+2 c+2 d0 e+1
+   > Des cabarets modernes s’installent.
+C) Pas d’argent public :: Entreprises privées.
+   economie-1 | g-1 c0 d+2 e0
+   > Un cabaret ferme.
+
+=== cul-032 | culture | Les concerts géants abîment le Champ-de-Mars
+Les concerts à 100 000 personnes laissent les pelouses du Champ-de-Mars en terre battue.
+A) Limiter à deux grands concerts par an :: Préserver.
+   ecologie+1 economie-1 | g0 c+2 d+1 e+3
+   > Les grands concerts sont rationnés.
+B) Facturer la remise en état aux organisateurs :: Responsabiliser.
+   rec+0.2x60 ecologie+1 | g+1 c+3 d+2 e+2
+   > Les organisateurs paient le réengazonnement.
+C) Les concerts avant tout :: Fête.
+   bon+1 ecologie-2 | g0 c0 d+2 e-3
+   > Les concerts continuent.
+
+=== cul-033 | culture | Les faux guides touristiques
+Des guides non déclarés racontent n’importe quoi aux touristes et pratiquent des prix abusifs.
+A) Carte professionnelle obligatoire et contrôles :: Qualité.
+   securite+1 economie+1 | g0 c+3 d+2 e0
+   > Les guides doivent afficher leur carte.
+B) Former des guides parmi les habitants :: Authenticité.
+   bud-3 economie+1 bon+1 | g+2 c+2 d+1 e+1
+   > Des Parisiens deviennent « greeters » bénévoles.
+C) Laisser faire :: Liberté.
+   economie-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== cul-034 | culture | Des visites des toits de Paris
+Des entreprises proposent des visites illégales sur les toits de zinc. Un touriste a chuté.
+A) Créer des terrasses panoramiques officielles :: Encadrer.
+   bud-10 economie+2 securite+1 | g0 c+3 d+2 e0
+   > Trois toits municipaux deviennent des belvédères.
+B) Interdire et sanctionner :: Sécurité.
+   securite+2 economie-1 | g-1 c+1 d+3 e0
+   > Les visites illégales sont poursuivies.
+C) Tolérer :: Attraction.
+   economie+1 securite-1 | g0 c0 d+1 e0
+   > Les visites continuent.
+   ~30 pop-2 > Un nouvel accident fait la une.
+
+=== cul-035 | culture | Les places de l’Opéra trop chères
+Une place à l’Opéra coûte jusqu’à 200 €. Les Parisiens modestes n’y vont jamais.
+A) Acheter des places pour les offrir aux jeunes et aux modestes :: Ouvrir l’Opéra.
+   rec-0.2x60 bon+2 | g+3 c+2 d0 e+1
+   > Des milliers de places sont offertes.
+B) Retransmissions gratuites sur écran géant :: Partage.
+   bud-3 bon+2 | g+2 c+2 d+1 e+1
+   > Les opéras sont projetés sur le parvis de l’Hôtel de Ville.
+C) Pas notre rôle :: Opéra national.
+   bon-1 | g-1 c+1 d+2 e0
+   > Rien ne change.
+
+=== cul-036 | culture | Le marathon de Paris change de parcours
+Les organisateurs veulent faire passer le marathon par les quartiers populaires de l’est.
+A) Accepter le nouveau parcours :: Fête dans tout Paris.
+   bud-2 bon+2 transports-1 | g+2 c+2 d0 e+1
+   > Le marathon traverse Belleville et Ménilmontant.
+B) Garder le parcours classique :: Monuments.
+   economie+1 | g0 c+2 d+2 e0
+   > Le marathon reste sur les grands axes.
+C) Réduire la fermeture des rues à quatre heures :: Moins de gêne.
+   transports+1 bon-1 | g0 c+2 d+2 e0
+   > Les coureurs les plus lents sont arrêtés plus tôt.
+
+=== cul-037 | culture | Le Tour de France coûte cher à la Ville
+L’arrivée du Tour de France sur les Champs-Élysées mobilise des centaines d’agents.
+A) Négocier une participation des organisateurs :: Partage des coûts.
+   rec+0.1x60 | g+1 c+3 d+1 e0
+   > Les organisateurs paient une partie des frais.
+B) Garder l’arrivée telle quelle :: Prestige.
+   bud-3 bon+1 economie+1 | g0 c+1 d+3 e0
+   > Les Champs-Élysées restent la grande arrivée.
+C) Proposer une arrivée dans les quartiers de l’est :: Partager la fête.
+   bud-4 bon+2 | g+3 c+1 d-1 e+1
+   > L’arrivée se fera place de la Nation.
+
+=== cul-038 | culture | Les bals des pompiers du 14-Juillet
+Les casernes de pompiers ne peuvent plus organiser leurs bals faute de bénévoles et de sécurité.
+A) Financer la sécurité des bals :: Tradition populaire.
+   bud-3 bon+2 | g+1 c+2 d+2 e0
+   > Les bals des pompiers sont sauvés.
+B) Organiser de grands bals sur les places :: Ville en fête.
+   bud-6 bon+2 securite-1 | g+2 c+2 d0 e+1
+   > Des bals géants ont lieu dans chaque arrondissement.
+C) Laisser les pompiers décider :: Pas notre rôle.
+   bon-1 | g-1 c0 d+1 e0
+   > Plusieurs bals sont annulés.
+
+=== cul-039 | culture | Le cinéma en plein air de la Villette
+Le cinéma en plein air de la Villette attire des milliers de spectateurs, mais son budget est menacé.
+A) Le financer et l’étendre à d’autres parcs :: Culture gratuite.
+   rec-0.1x30 bon+2 | g+2 c+2 d0 e+1
+   > Des projections ont lieu dans cinq parcs.
+B) Le maintenir à la Villette seulement :: Tradition.
+   rec-0.05x30 bon+1 | g+1 c+2 d+1 e0
+   > Le festival est maintenu.
+C) Le rendre payant :: Autofinancement.
+   rec+0.05x30 bon-1 | g-2 c+1 d+2 e0
+   > Les séances deviennent payantes.
+
+=== cul-040 | culture | Une jauge pour le Louvre
+Le Louvre accueille plus de visiteurs qu’il ne peut en recevoir. Le personnel se met en grève.
+A) Soutenir une jauge et la réservation obligatoire :: Confort de visite.
+   economie-1 bon+1 | g+1 c+3 d+1 e+1
+   > Le Louvre limite ses entrées à 30 000 par jour.
+B) Ouvrir le soir pour étaler les visites :: Plus de créneaux.
+   economie+1 bon+1 | g0 c+2 d+2 e0
+   > Le Louvre ouvre jusqu’à 22 h trois fois par semaine.
+C) Pas notre musée :: Compétence de l’État.
+   economie-1 | g0 c+1 d+1 e0
+   > La grève continue.
+
+=== cul-041 | culture | Les portraitistes de la place du Tertre
+Les peintres de la place du Tertre se disputent les emplacements et se plaignent des faux artistes.
+A) Vérifier que les peintres sont vraiment artistes :: Qualité.
+   economie+1 bon+1 | g0 c+3 d+2 e0
+   > Un jury vérifie le travail des peintres.
+B) Tirage au sort des emplacements :: Équité.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Les emplacements sont tirés au sort chaque année.
+C) Ne rien changer :: Tradition.
+   bon-1 | g0 c0 d+1 e0
+   > Les disputes continuent.
+
+=== cul-042 | culture | Les musiciens du métro
+Les musiciens du métro doivent passer une audition. Ceux qui jouent sans autorisation sont expulsés.
+A) Doubler le nombre d’autorisations :: Musique partout.
+   bon+2 | g+2 c+2 d0 e+1
+   > Plus de musiciens jouent dans les couloirs.
+B) Créer des scènes dans les grandes stations :: Organiser.
+   bud-3 bon+2 | g+1 c+3 d+1 e+1
+   > Des petites scènes sont installées.
+C) Réduire les autorisations :: Calme dans le métro.
+   bon-1 | g-1 c+1 d+2 e0
+   > Le métro devient plus silencieux.
+
+=== cul-043 | culture | Une résidence d’écrivains
+Une fondation propose de créer une résidence pour écrivains étrangers dans un hôtel particulier municipal.
+A) Accepter :: Rayonnement littéraire.
+   bud-3 bon+1 economie+1 | g+1 c+2 d+2 e+1
+   > Des écrivains du monde entier viennent écrire à Paris.
+B) Ouvrir aussi des ateliers d’écriture pour les habitants :: Partage.
+   bud-5 bon+2 | g+3 c+2 d0 e+1
+   > Les écrivains animent des ateliers dans les quartiers.
+C) Vendre l’hôtel particulier :: Recettes.
+   bud+25 bon-1 | g-2 c+1 d+3 e-1
+   > Le bâtiment est vendu.
+
+=== cul-044 | culture | Sauver une ancienne usine
+Une usine du 19e siècle doit être démolie. Des associations veulent la transformer en lieu culturel.
+A) Racheter et créer un lieu culturel :: Patrimoine industriel.
+   bud-40 bon+2 economie+1 | g+2 c+2 d0 e+2
+   > L’usine devient une fabrique d’arts.
+   +25 pop+2 > Le nouveau lieu attire des milliers de visiteurs.
+B) Garder la façade et construire des logements derrière :: Compromis.
+   bud-5 logement+1 | g0 c+3 d+2 e+1
+   > La façade est conservée.
+C) Laisser démolir :: Pas d’argent.
+   bon-1 | g-2 c0 d+2 e-2
+   > L’usine est démolie.
+
+=== cul-045 | culture | Une rue au nom d’un artiste disparu
+Les fans d’un chanteur populaire décédé demandent une rue à son nom.
+A) Donner son nom à une rue de son quartier :: Hommage populaire.
+   bud-1 pop+2 bon+1 | g+1 c+2 d+1 e0
+   > Une rue porte désormais son nom.
+B) Attendre cinq ans comme le veut l’usage :: Règle.
+   pop-1 | g0 c+2 d+1 e0
+   > Le maire promet un hommage plus tard.
+C) Une fresque à son effigie :: Original.
+   bud-2 pop+1 bon+1 | g+1 c+2 d+1 e+1
+   > Une fresque géante est peinte.
+
+=== cul-046 | culture | Une plaque commémorative contestée
+Une plaque en hommage à un ancien maire est contestée en raison de ses positions passées.
+A) Retirer la plaque :: Rupture.
+   coh+1 pop-1 | g+3 c0 d-3 e+1
+   > La plaque est retirée.
+B) Ajouter une explication historique :: Nuance.
+   bud-1 | g+1 c+3 d+1 e+1
+   > Un texte complète la plaque.
+C) Ne rien changer :: Respect de l’histoire.
+   coh-1 | g-3 c0 d+3 e-1
+   > La plaque reste.
+
+=== cul-047 | culture | Le musée des égouts
+Le musée des égouts de Paris, très apprécié, a besoin de travaux importants.
+A) Rénover et agrandir le musée :: Curiosité parisienne.
+   bud-12 economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Le musée rouvre avec un nouveau parcours.
+B) Créer des visites des réservoirs d’eau en plus :: Nouveau parcours.
+   bud-6 economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les réservoirs secrets s’ouvrent aux visiteurs.
+C) Fermer le musée :: Économie.
+   bud+2 bon-1 | g-1 c+1 d+1 e0
+   > Le musée ferme.
+
+=== cul-048 | culture | Des guinguettes au bord de l’eau
+Des associations veulent ouvrir des guinguettes le long du canal de l’Ourcq.
+A) Accepter cinq guinguettes :: Fête populaire.
+   bon+2 economie+1 | g+2 c+2 d+1 e+1
+   > Les guinguettes animent les berges.
+   ~30 bon-1 > Les riverains se plaignent du bruit le samedi soir.
+B) Guinguettes jusqu’à 22 h seulement :: Compromis.
+   bon+1 economie+1 | g+1 c+3 d+1 e+1
+   > Les guinguettes ferment tôt.
+C) Refuser :: Calme.
+   bon-1 | g-1 c0 d+2 e0
+   > Les berges restent tranquilles.
+
+=== cul-049 | culture | Un centre pour la danse
+Les compagnies de danse n’ont pas de lieu pour répéter et partent en banlieue.
+A) Créer un grand centre chorégraphique :: Ambition.
+   bud-30 bon+1 economie+1 | g+2 c+2 d0 e+1
+   > Un centre de la danse ouvre.
+B) Prêter des gymnases le soir :: Économique.
+   bud-1 bon+1 | g+1 c+3 d+1 e+1
+   > Les compagnies répètent dans les gymnases.
+C) Pas de lieu :: Priorités.
+   bon-1 | g-1 c0 d+1 e0
+   > Les compagnies partent.
+
+=== cul-050 | culture | Des terrains de pétanque sur les places
+Des habitants demandent des terrains de pétanque sur les places du quartier.
+A) Créer cinquante terrains :: Convivialité.
+   bud-3 bon+2 | g+1 c+2 d+2 e+1
+   > Les boulistes envahissent les places.
+B) Quelques terrains dans les grands parcs :: Mesuré.
+   bud-1 bon+1 | g0 c+3 d+1 e+1
+   > Dix terrains sont aménagés.
+C) Pas de terrains :: Places pour tous.
+   bon-1 | g0 c0 d0 e0
+   > Les boulistes jouent sur les trottoirs.
+
+=== cul-051 | culture | Rendre les musées accessibles aux sourds
+Les musées municipaux n’ont presque aucune visite en langue des signes.
+A) Visites en langue des signes dans tous les musées :: Inclusion.
+   rec-0.1x60 bon+1 services+1 | g+2 c+2 d+1 e+1
+   > Des guides sourds animent des visites.
+B) Applications avec vidéos en langue des signes :: Numérique.
+   bud-3 services+1 | g+1 c+3 d+1 e+1
+   > Une application accompagne la visite.
+C) Plus tard :: Pas prioritaire.
+   pop-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== cul-052 | culture | Des spectacles de marionnettes gratuits
+Les théâtres de marionnettes des jardins publics ferment faute de public payant.
+A) Spectacles gratuits subventionnés :: Pour les enfants.
+   rec-0.1x60 bon+2 | g+2 c+2 d+1 e+1
+   > Les marionnettes jouent gratuitement le mercredi.
+B) Aider à moderniser les spectacles :: Renouveau.
+   bud-2 bon+1 | g+1 c+3 d+1 e+1
+   > De nouveaux spectacles attirent les familles.
+C) Laisser fermer :: Le public a changé.
+   bon-1 | g-1 c0 d+1 e0
+   > Les théâtres de marionnettes ferment.
+
+=== cul-053 | culture | La grande roue de la Concorde
+La grande roue revient chaque hiver sur la place de la Concorde. Des architectes la jugent laide.
+A) La garder :: Attraction populaire.
+   bon+1 economie+1 | g0 c+2 d+2 e0
+   > La grande roue tourne pour les fêtes.
+B) La déplacer dans un quartier populaire :: Partager.
+   bon+1 | g+2 c+2 d0 e+1
+   > La roue s’installe porte de la Villette.
+C) La supprimer :: Patrimoine dégagé.
+   bon-1 economie-1 | g0 c+1 d+1 e+1
+   > La place retrouve sa perspective.
+
+=== cul-054 | culture | Les églises de la Ville coûtent cher
+La Ville est propriétaire de 96 églises. Beaucoup ont besoin de travaux urgents.
+A) Plan de restauration sur dix ans :: Patrimoine.
+   bud-50 bon+1 | g0 c+2 d+3 e0
+   > Un grand plan de restauration démarre.
+B) Faire appel au mécénat :: Partager le coût.
+   bud-10 bon+1 | g-1 c+3 d+2 e0
+   > Des mécènes financent une partie des travaux.
+C) Ouvrir les églises à des concerts payants :: Recettes.
+   rec+0.1x60 bon+1 | g+1 c+2 d0 e0
+   > Les églises accueillent des concerts.
+
+=== cul-055 | culture | Des bals populaires toute l’année
+Des habitants veulent faire revivre les bals populaires sur les places.
+A) Un bal par mois dans chaque arrondissement :: Fête de quartier.
+   bud-4 bon+2 | g+2 c+2 d+1 e+1
+   > Les bals reviennent.
+B) Bals l’été seulement :: Saison.
+   bud-2 bon+1 | g+1 c+3 d+1 e+1
+   > Les bals ont lieu en juillet et en août.
+C) Laisser les associations organiser :: Pas d’argent.
+   bon-1 | g-1 c0 d+1 e0
+   > Quelques bals ont lieu.
+
+=== cul-056 | culture | Un passe culture pour les jeunes Parisiens
+Les jeunes Parisiens vont peu au théâtre et dans les musées.
+A) Passe gratuit pour tous les musées et théâtres municipaux :: Accès à la culture.
+   rec-0.3x60 bon+2 | g+3 c+2 d0 e+1
+   > Les 15-25 ans entrent gratuitement.
+B) Crédit de 50 € par an :: Liberté de choix.
+   rec-0.2x60 bon+1 achat+1 | g+1 c+3 d+1 e0
+   > Chaque jeune reçoit un crédit culture.
+C) Rien de plus :: Le passe national existe.
+   bon-1 | g-1 c+1 d+2 e0
+   > Rien ne change.
+
+=== cul-057 | culture | Les influenceurs bloquent une rue colorée
+Une petite rue aux maisons colorées est envahie par des influenceurs qui se photographient à longueur de journée.
+A) Interdire les séances photo à certaines heures :: Calme des habitants.
+   bon+1 | g+1 c+2 d+1 e0
+   > Les photos sont interdites le week-end.
+B) Faire payer les séances professionnelles :: Recettes.
+   rec+0.05x60 bon+1 | g0 c+2 d+2 e0
+   > Les shootings professionnels deviennent payants.
+C) Laisser faire :: Liberté.
+   bon-1 | g0 c0 d0 e0
+   > Les habitants restent assiégés.
+
+=== cul-058 | culture | Les manèges anciens menacés
+Les manèges de chevaux de bois des jardins publics sont vétustes. Leurs propriétaires ne peuvent pas payer les réparations.
+A) Restaurer les manèges historiques :: Patrimoine enfantin.
+   bud-5 bon+1 | g+1 c+2 d+2 e0
+   > Les manèges retrouvent leurs couleurs.
+B) Les racheter et les gérer en régie :: Service public.
+   bud-8 rec-0.1x60 bon+1 | g+2 c+1 d0 e0
+   > La Ville devient propriétaire.
+C) Remplacer par des jeux modernes :: Changement.
+   bon-1 bud-3 | g0 c+2 d+1 e0
+   > Les manèges disparaissent.
+
+=== cul-059 | culture | La Fashion Week bloque les rues
+Pendant la semaine de la mode, des rues entières sont fermées pour des défilés.
+A) Faire payer les fermetures de rues :: Recettes.
+   rec+0.2x60 economie-1 | g+2 c+2 d0 e+1
+   > Les maisons de couture paient l’occupation.
+B) Ouvrir des défilés au public :: Partager.
+   bud-2 bon+1 economie+1 | g+2 c+2 d+1 e0
+   > Un défilé gratuit a lieu sur les quais.
+C) Faciliter les défilés :: Industrie du luxe.
+   economie+2 bon-1 | g-2 c+1 d+3 e-1
+   > Les fermetures de rues se multiplient.
+
+=== cul-060 | culture | Une ancienne gare de la petite ceinture
+Une gare abandonnée de la petite ceinture peut devenir un lieu culturel ou un restaurant.
+A) Lieu culturel associatif :: Pour le quartier.
+   bud-10 bon+2 | g+3 c+2 d0 e+1
+   > La gare devient une salle de concert et de jeux.
+B) Restaurant privé avec redevance :: Recettes.
+   rec+0.2x60 economie+1 | g-1 c+2 d+3 e0
+   > Un restaurant s’installe dans la gare.
+C) Les deux : restaurant et salle associative :: Mixte.
+   bud-3 rec+0.1x60 bon+1 | g+1 c+3 d+1 e+1
+   > La gare accueille un café et une salle commune.
+
+=== cul-061 | culture | Des chorales municipales
+Des habitants veulent chanter ensemble mais les chorales sont complètes.
+A) Créer une chorale dans chaque arrondissement :: Lien social.
+   rec-0.1x60 bon+2 | g+2 c+2 d+1 e+1
+   > Des chefs de chœur sont recrutés.
+B) Prêter des salles aux chorales existantes :: Simple.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Les chorales s’agrandissent.
+C) Pas prioritaire :: Budget.
+   bon-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== cul-062 | culture | Les cadenas d’amour reviennent sur les ponts
+Les touristes accrochent à nouveau des cadenas sur les ponts. Leur poids a déjà fait tomber des grilles.
+A) Panneaux de verre anti-cadenas :: Protéger.
+   bud-4 securite+1 | g0 c+3 d+2 e0
+   > Les parapets sont recouverts de verre.
+B) Un « mur des amoureux » prévu pour ça :: Canaliser.
+   bud-2 bon+1 economie+1 | g+1 c+2 d+1 e+1
+   > Un mur dédié accueille les cadenas.
+C) Couper les cadenas régulièrement :: Entretien.
+   securite+1 rec-0.05x60 | g0 c+2 d+1 e0
+   > Les cadenas sont retirés chaque mois.
+
+=== cul-063 | culture | Les tournages exaspèrent les riverains
+Une série à succès est tournée dans la même rue depuis trois mois. Les riverains n’en peuvent plus.
+A) Limiter les tournages à deux semaines par rue et par an :: Protéger les habitants.
+   bon+1 economie-1 | g+1 c+2 d0 e+1
+   > Les tournages sont rationnés.
+B) Indemniser les riverains :: Compenser.
+   rec+0.05x60 bon+1 | g+1 c+3 d+1 e0
+   > Les producteurs paient une compensation aux habitants.
+C) Les tournages font rayonner Paris :: Économie.
+   economie+1 bon-1 | g-1 c+1 d+2 e0
+   > Le tournage continue.
+
+=== cul-064 | culture | Le marché aux timbres des Champs-Élysées
+Le marché aux timbres et aux cartes postales, installé depuis 150 ans près des Champs-Élysées, perd ses derniers marchands.
+A) Le relancer avec des animations pour les jeunes collectionneurs :: Tradition vivante.
+   bud-2 bon+1 economie+1 | g+1 c+2 d+2 e0
+   > Des ateliers attirent de jeunes collectionneurs.
+B) L’ouvrir aux cartes à collectionner et aux vinyles :: Moderniser.
+   bud-1 economie+1 bon+1 | g+1 c+3 d+1 e+1
+   > Le marché devient un rendez-vous des collectionneurs.
+C) Le laisser disparaître :: Évolution.
+   bon-1 | g-1 c0 d+1 e0
+   > Le marché s’éteint.
+=== cul-065 | culture | Un nouveau festival de musique au parc de Bercy
+Un producteur propose un festival rock de trois jours au parc de Bercy.
+A) Accepter avec une redevance :: Recettes et fête.
+   bud+6 bon+1 ecologie-1 | g0 c+2 d+2 e-1
+   > Le festival attire 60 000 personnes.
+   ~30 pop-1 > Les riverains de Bercy se plaignent du bruit jusqu’à minuit.
+B) Accepter avec fin des concerts à 22 h :: Compromis.
+   bud+3 bon+1 | g+1 c+3 d+1 e0
+   > Les concerts s’arrêtent à 22 h.
+C) Refuser :: Protéger le parc.
+   bon-1 ecologie+1 | g0 c+1 d0 e+2
+   > Le festival va à Vincennes.

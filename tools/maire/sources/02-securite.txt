@@ -326,6 +326,7 @@ C) Laisser faire et mobiliser la police :: Pas de dépense.
 
 === sec-025 | securite | La police municipale manque de locaux
 Les agents travaillent dans des locaux vétustes et dispersés. Ils réclament un vrai siège.
+? distinct
 A) Construire un siège moderne :: Investissement lourd.
    bud-45 securite+3 | g-1 c+1 d+3 e-1
    > Un siège moderne ouvre dans le 12e.

@@ -1,0 +1,489 @@
+// Services publics, série 2
+=== ser-026 | services | Des classes de maternelle surchargées
+Certaines classes de maternelle comptent 30 enfants de trois ans. Les enseignants sont épuisés.
+A) Financer des assistants maternels supplémentaires :: Soulager.
+   rec-0.5x60 services+3 bon+1 | g+3 c+2 d+1 e+1
+   > Chaque classe chargée reçoit un adulte de plus.
+B) Ouvrir de nouvelles classes dans des locaux provisoires :: Dédoubler.
+   bud-20 services+2 | g+2 c+2 d+1 e0
+   > Des classes s’installent dans des modulaires.
+C) Demander à l’État plus d’enseignants :: Compétence nationale.
+   coh+1 | g+1 c+1 d+1 e0
+   > Le maire écrit au ministre.
+   ~45 bon-1 > Rien ne change à la rentrée.
+
+=== ser-027 | services | Les élèves handicapés sans accompagnant
+Des enfants handicapés ne peuvent pas aller à l’école faute d’accompagnant.
+A) Recruter des accompagnants municipaux sur le temps périscolaire :: Agir vite.
+   rec-0.4x60 services+2 bon+1 | g+3 c+2 d+1 e+1
+   > Les enfants sont accompagnés aussi à la cantine et au centre de loisirs.
+B) Former des animateurs au handicap :: Compétences.
+   bud-4 services+1 | g+2 c+3 d+1 e+1
+   > Les animateurs sont formés.
+C) Renvoyer vers l’Éducation nationale :: Pas notre rôle.
+   bon-1 | g-2 c+1 d+2 e0
+   > Les familles restent sans solution.
+
+=== ser-028 | services | Les centres de protection maternelle et infantile ferment
+Faute de médecins, des centres de PMI ferment. Des femmes enceintes n’ont plus de suivi gratuit.
+A) Revaloriser les salaires des médecins de PMI :: Attirer.
+   rec-0.4x60 services+3 | g+3 c+2 d0 e+1
+   > Les centres retrouvent des médecins.
+B) Regrouper les centres :: Rationaliser.
+   rec+0.2x60 services-1 | g-2 c+2 d+2 e0
+   > Les centres fusionnent.
+   ~35 pop-1 > Des mères doivent traverser Paris avec leur bébé.
+C) Téléconsultations avec des sages-femmes :: Moderne.
+   bud-3 services+1 | g+1 c+3 d+1 e0
+   > Des consultations à distance sont proposées.
+
+=== ser-029 | services | Un centre dentaire municipal
+Les soins dentaires coûtent si cher que des Parisiens renoncent à se soigner.
+A) Ouvrir trois centres dentaires à tarifs sociaux :: Santé pour tous.
+   bud-20 rec-0.3x60 services+3 achat+1 | g+4 c+2 d0 e+1
+   > Des centres dentaires ouvrent sans dépassement d’honoraires.
+B) Bus dentaire dans les quartiers :: Mobile.
+   bud-5 services+1 | g+2 c+2 d+1 e+1
+   > Un bus dentaire sillonne les quartiers.
+C) Ne rien faire :: Pas notre compétence.
+   services-1 | g-2 c+1 d+2 e0
+   > Les soins dentaires restent hors de portée.
+
+=== ser-030 | services | Des équipes de santé pour les sans-abri
+Les personnes à la rue meurent en moyenne trente ans plus tôt. Les soins arrivent trop tard.
+A) Créer des équipes médicales mobiles :: Aller vers.
+   rec-0.3x60 services+2 | g+4 c+2 d0 e+2
+   > Des médecins et infirmiers tournent la nuit.
+B) Ouvrir un centre de soins dédié :: Lieu fixe.
+   bud-10 rec-0.2x60 services+2 | g+3 c+2 d0 e+1
+   > Un centre de soins ouvre près de la gare de Lyon.
+C) Financer les associations existantes :: Soutien.
+   rec-0.1x60 services+1 | g+2 c+3 d+1 e+1
+   > Les associations reçoivent une aide.
+
+=== ser-031 | services | Les conservatoires refusent des milliers d’enfants
+Les conservatoires de musique et de danse tirent au sort les élèves. Des milliers d’enfants restent sur liste d’attente.
+A) Ouvrir un conservatoire dans chaque arrondissement :: Accès à la culture.
+   bud-40 rec-0.4x60 services+3 bon+1 | g+3 c+2 d+1 e+1
+   > De nouveaux conservatoires ouvrent.
+B) Cours collectifs dans les écoles :: Plus d’enfants.
+   rec-0.2x60 services+2 | g+2 c+3 d+1 e+1
+   > Des orchestres à l’école se créent.
+C) Augmenter les tarifs pour financer plus de places :: Autofinancement.
+   rec+0.1x60 services+1 achat-1 | g-2 c+2 d+2 e0
+   > Les tarifs augmentent, l’offre aussi.
+
+=== ser-032 | services | Les billes de caoutchouc des terrains synthétiques
+Les terrains de foot synthétiques sont remplis de billes de pneus broyés. Des parents s’inquiètent.
+A) Remplacer par du liège sur tous les terrains :: Santé et environnement.
+   bud-20 ecologie+2 services+1 | g+1 c+2 d+1 e+4
+   > Les terrains passent au liège naturel.
+B) Remplacer au fil des rénovations :: Progressif.
+   bud-5 ecologie+1 | g0 c+3 d+2 e+2
+   > Les terrains rénovés sont équipés de liège.
+C) Garder les terrains :: Pas de preuve de danger.
+   pop-1 | g0 c+1 d+2 e-2
+   > Les billes restent.
+
+=== ser-033 | services | Les cimetières parisiens sont pleins
+Il n’y a presque plus de places dans les cimetières parisiens. Les familles attendent des mois.
+A) Ouvrir un nouveau cimetière paysager en banlieue :: Espace.
+   bud-30 services+2 | g+1 c+2 d+1 e+1
+   > Un nouveau cimetière est aménagé.
+B) Reprendre les concessions abandonnées :: Libérer des places.
+   bud-3 services+1 | g0 c+3 d+2 e0
+   > Les tombes abandonnées sont reprises.
+   ~30 pop-1 > Une famille découvre que la tombe d’un aïeul a été reprise.
+C) Encourager la crémation et les jardins du souvenir :: Alternative.
+   bud-4 services+1 ecologie+1 | g+1 c+2 d0 e+2
+   > Des jardins du souvenir sont créés.
+
+=== ser-034 | services | Les mariages du samedi saturés
+Les couples attendent un an pour se marier un samedi dans les mairies d’arrondissement.
+A) Ouvrir les mairies le dimanche pour les mariages :: Répondre à la demande.
+   rec-0.2x60 services+2 bon+1 | g+1 c+2 d+1 e0
+   > Les mariages sont possibles le dimanche.
+B) Célébrer dans des lieux insolites :: Original.
+   bud-2 services+1 bon+2 | g+1 c+2 d+1 e+1
+   > On peut se marier dans un parc ou un musée municipal.
+C) Garder l’organisation :: Pas de dépense.
+   services-1 | g0 c+1 d+1 e0
+   > Les délais restent longs.
+
+=== ser-035 | services | Les colonies de vacances municipales
+Des milliers d’enfants parisiens ne partent jamais en vacances.
+A) Doubler les places en colonies à tarif social :: Vacances pour tous.
+   rec-0.5x50 services+2 bon+2 | g+4 c+2 d0 e+1
+   > Dix mille enfants partent cet été.
+B) Séjours courts à la campagne :: Moins cher.
+   rec-0.2x50 services+1 bon+1 | g+2 c+3 d+1 e+1
+   > Des week-ends à la ferme sont proposés.
+C) Garder l’offre actuelle :: Budget.
+   bon-1 | g-2 c+1 d+2 e0
+   > Beaucoup d’enfants restent à Paris.
+
+=== ser-036 | services | Le portage de repas aux seniors
+Les personnes âgées qui ne peuvent plus cuisiner attendent des semaines le portage de repas.
+A) Doubler le service de portage :: Répondre aux besoins.
+   rec-0.4x60 services+2 bon+1 | g+3 c+2 d+1 e+1
+   > Les repas sont livrés dès la semaine suivante.
+B) Restaurants seniors dans les quartiers :: Sortir de chez soi.
+   bud-6 rec-0.2x60 services+1 bon+2 | g+2 c+2 d+1 e+1
+   > Des restaurants pour seniors ouvrent.
+C) Confier au privé :: Moins cher.
+   rec-0.1x60 services+1 | g-3 c+2 d+3 e0
+   > Une entreprise livre les repas.
+   ~30 pop-1 > Les repas sont jugés immangeables.
+
+=== ser-037 | services | Une maison de retraite municipale mise en cause
+Des familles dénoncent des négligences dans une maison de retraite gérée par la Ville.
+A) Audit indépendant et sanctions :: Transparence.
+   bud-2 services+1 coh+1 | g+2 c+3 d+2 e+1
+   > Un audit révèle des manques de personnel.
+   ~40 pop-2 > Le rapport d’audit est accablant.
+B) Recruter massivement des soignants :: Réparer.
+   rec-0.6x60 services+3 | g+3 c+2 d0 e+1
+   > Cinquante soignants sont recrutés.
+C) Contester les accusations :: Défense.
+   pop-3 | g-2 c0 d+1 e-1
+   > La direction dément.
+
+=== ser-038 | services | Le mercredi à l’école ou au centre de loisirs
+Les parents sont divisés : école le mercredi matin, ou journée entière de loisirs.
+A) Mercredi entier en centre de loisirs gratuit :: Activités.
+   rec-0.4x60 services+2 bon+1 | g+3 c+1 d0 e+1
+   > Les enfants passent le mercredi en activités.
+B) Retour de l’école le mercredi matin :: Apprentissages.
+   services+1 bon-1 | g0 c+2 d+2 e0
+   > Les élèves retournent en classe le mercredi.
+C) Consultation des parents école par école :: Démocratie.
+   bud-1 bon+1 | g+1 c+3 d+1 e+1
+   > Chaque école choisit son organisation.
+
+=== ser-039 | services | Les fournitures scolaires gratuites
+La rentrée coûte plus de 200 € par enfant en fournitures. Certaines familles n’y arrivent pas.
+A) Fournir gratuitement toutes les fournitures :: Égalité.
+   rec-0.3x30 achat+3 services+1 | g+4 c+1 d-1 e+1
+   > Chaque élève reçoit son kit de rentrée.
+B) Aide pour les familles modestes :: Ciblé.
+   rec-0.1x30 achat+2 | g+2 c+3 d+1 e0
+   > Une allocation de rentrée est versée.
+C) Rien de plus :: Allocation de l’État suffisante.
+   achat-1 | g-2 c+1 d+2 e0
+   > Les familles paient.
+
+=== ser-040 | services | Un ordinateur pour chaque collégien
+Les collégiens sans ordinateur à la maison prennent du retard.
+A) Offrir un ordinateur à chaque collégien :: Égalité numérique.
+   bud-30 services+2 achat+1 | g+3 c+2 d+1 e0
+   > Les élèves de sixième reçoivent un ordinateur.
+B) Prêter des ordinateurs reconditionnés :: Économique et écologique.
+   bud-8 services+1 ecologie+1 | g+2 c+3 d+1 e+2
+   > Des ordinateurs remis à neuf sont prêtés.
+C) Salles informatiques ouvertes le soir :: Collectif.
+   rec-0.2x60 services+1 | g+1 c+2 d+1 e+1
+   > Les collèges ouvrent leurs salles informatiques.
+
+=== ser-041 | services | Le harcèlement scolaire
+Le suicide d’un collégien harcelé bouleverse Paris. Les parents réclament des mesures.
+A) Un psychologue dans chaque collège :: Écoute.
+   rec-0.5x60 services+3 | g+3 c+2 d+1 e+1
+   > Des psychologues sont recrutés.
+B) Formation de tous les animateurs et un numéro d’alerte :: Repérer.
+   bud-4 services+1 | g+1 c+3 d+1 e+1
+   > Les adultes apprennent à repérer le harcèlement.
+C) Exclure plus facilement les harceleurs :: Sanction.
+   services+1 | g-2 c+1 d+4 e0
+   > Le règlement des activités municipales est durci.
+
+=== ser-042 | services | Les enfants ne savent plus nager
+Un enfant sur deux entre en sixième sans savoir nager. Les créneaux scolaires manquent.
+A) Réserver les piscines aux écoles le matin :: Priorité aux enfants.
+   services+2 bon-1 | g+2 c+2 d+1 e0
+   > Les nageurs adultes perdent des créneaux matinaux.
+B) Bassins mobiles dans les cours d’école l’été :: Original.
+   bud-10 services+2 bon+1 | g+2 c+2 d+1 e+1
+   > Des bassins démontables s’installent dans les écoles.
+C) Stages gratuits pendant les vacances :: Complément.
+   rec-0.2x30 services+1 | g+1 c+3 d+1 e0
+   > Des stages de natation sont proposés.
+
+=== ser-043 | services | Les clubs seniors ferment
+Les clubs où les retraités se retrouvent pour jouer aux cartes ferment faute d’animateurs.
+A) Recruter des animateurs :: Lien social.
+   rec-0.3x60 services+1 bon+2 | g+3 c+2 d+1 e+1
+   > Les clubs rouvrent avec des activités variées.
+B) Les confier aux associations :: Partenariat.
+   rec-0.1x60 services+1 bon+1 | g+1 c+3 d+2 e+1
+   > Des associations reprennent les clubs.
+C) Les fermer :: Économie.
+   rec+0.1x60 bon-2 | g-3 c+1 d+2 e0
+   > Les clubs ferment.
+
+=== ser-044 | services | Des cours de français pour adultes
+Des milliers d’adultes étrangers attendent une place en cours de français.
+A) Ouvrir des cours du soir dans les écoles :: Intégration.
+   rec-0.3x60 services+2 economie+1 | g+4 c+2 d-1 e+1
+   > Les écoles accueillent des cours du soir.
+B) Financer les associations de formation :: Soutien.
+   rec-0.1x60 services+1 | g+2 c+3 d0 e+1
+   > Les associations ouvrent plus de places.
+C) Ce n’est pas le rôle de la Ville :: Compétence de l’État.
+   services-1 | g-3 c+1 d+3 e-1
+   > Les listes d’attente s’allongent.
+
+=== ser-045 | services | Des ludothèques dans les quartiers
+Les familles réclament des lieux où emprunter des jeux comme on emprunte des livres.
+A) Ouvrir une ludothèque par arrondissement :: Jouer ensemble.
+   bud-8 rec-0.2x60 services+1 bon+2 | g+2 c+2 d+1 e+1
+   > Vingt ludothèques ouvrent.
+B) Ajouter des jeux dans les bibliothèques :: Économique.
+   bud-2 services+1 bon+1 | g+1 c+3 d+1 e+1
+   > Les bibliothèques prêtent des jeux.
+C) Pas prioritaire :: D’autres urgences.
+   bon-1 | g-1 c0 d+1 e0
+   > Rien n’est fait.
+
+=== ser-046 | services | Les aires de jeux vétustes
+Des toboggans rouillés et des balançoires cassées sont fermés dans des dizaines de squares.
+A) Rénover toutes les aires de jeux :: Grand plan.
+   bud-25 services+2 bon+2 | g+2 c+2 d+1 e+1
+   > Toutes les aires de jeux sont refaites.
+B) Aires en bois et matériaux naturels :: Écologique.
+   bud-20 services+1 bon+1 ecologie+1 | g+1 c+2 d0 e+3
+   > Des aires de jeux en bois remplacent le plastique.
+C) Réparer les plus abîmées :: Économique.
+   bud-5 services+1 | g0 c+3 d+2 e0
+   > Les jeux dangereux sont réparés.
+
+=== ser-047 | services | Les éducateurs de rue menacés
+Le financement des éducateurs de prévention dans les quartiers est réduit de moitié.
+A) La Ville compense entièrement :: Prévention.
+   rec-0.4x60 securite+2 services+1 | g+4 c+2 d0 e+1
+   > Les éducateurs restent sur le terrain.
+B) Compenser en partie :: Compromis.
+   rec-0.2x60 securite+1 | g+2 c+3 d+1 e+1
+   > La moitié des postes est sauvée.
+C) Ne pas compenser :: Rigueur.
+   rec+0.1x60 securite-2 | g-3 c+1 d+3 e-1
+   > Les éducateurs quittent les quartiers.
+   ~40 pop-2 > Une rixe éclate dans un quartier abandonné par les éducateurs.
+
+=== ser-048 | services | L’aide aux démarches en ligne
+Les démarches administratives sont toutes en ligne. Les personnes âgées et précaires sont perdues.
+A) Conseillers numériques dans chaque mairie :: Accompagner.
+   rec-0.3x60 services+2 | g+3 c+2 d+1 e+1
+   > Des conseillers aident à remplir les démarches.
+B) Ateliers d’initiation au numérique :: Former.
+   rec-0.1x60 services+1 | g+2 c+3 d+1 e+1
+   > Des cours d’informatique sont proposés.
+C) Garder un guichet papier pour tout :: Alternative.
+   rec-0.2x60 services+1 bon+1 | g+2 c+1 d+1 e0
+   > Toutes les démarches restent possibles au guichet.
+
+=== ser-049 | services | Un dispensaire vétérinaire pour les plus modestes
+Des personnes âgées et sans-abri ne peuvent pas soigner leur animal, souvent leur seul compagnon.
+A) Ouvrir un dispensaire vétérinaire solidaire :: Solidarité.
+   bud-5 rec-0.1x60 services+1 bon+1 | g+3 c+2 d+1 e+2
+   > Le dispensaire soigne les animaux à prix réduit.
+B) Chèques vétérinaires pour les bénéficiaires d’aides :: Ciblé.
+   rec-0.1x60 bon+1 | g+2 c+3 d+1 e+1
+   > Des chèques sont distribués.
+C) Pas notre rôle :: Priorités humaines.
+   bon-1 | g-1 c0 d+2 e-1
+   > Rien n’est fait.
+
+=== ser-050 | services | Les centres de santé mentale débordés
+Les centres médico-psychologiques ont des délais de six mois pour les adultes en souffrance.
+? distinct
+A) Financer des psychologues dans les centres de santé municipaux :: Répondre à l’urgence.
+   rec-0.5x60 services+3 bon+1 | g+3 c+2 d+1 e+1
+   > Les délais tombent à trois semaines.
+B) Ligne d’écoute municipale 24 h/24 :: Accessible.
+   rec-0.2x60 services+1 bon+1 | g+2 c+3 d+1 e+1
+   > Une ligne d’écoute répond jour et nuit.
+C) Interpeller l’État :: Compétence nationale.
+   coh+1 | g0 c+1 d+2 e0
+   > Le maire écrit au ministre de la Santé.
+
+=== ser-051 | services | Des épiceries solidaires
+Des familles qui travaillent ne parviennent plus à se nourrir correctement.
+A) Ouvrir dix épiceries solidaires :: Aide alimentaire digne.
+   bud-6 rec-0.3x60 achat+2 bon+1 | g+4 c+2 d0 e+1
+   > Des épiceries vendent à 20 % du prix.
+B) Subventionner les banques alimentaires :: Soutien aux associations.
+   rec-0.2x60 achat+1 | g+2 c+3 d+1 e+1
+   > Les associations distribuent plus de colis.
+C) Chèque alimentation pour les familles modestes :: Liberté de choix.
+   rec-0.4x40 achat+3 | g+3 c+2 d0 e0
+   > Un chèque mensuel est versé.
+
+=== ser-052 | services | Une bagagerie pour les sans-abri
+Les personnes à la rue se font voler leurs affaires et ne peuvent pas aller à un entretien d’embauche avec leurs sacs.
+A) Ouvrir des bagageries dans chaque arrondissement :: Dignité.
+   bud-4 rec-0.1x60 services+1 | g+3 c+2 d+1 e+1
+   > Des consignes gratuites ouvrent.
+B) Une seule grande bagagerie centrale :: Économique.
+   bud-2 services+1 | g+2 c+3 d+1 e0
+   > Une bagagerie ouvre près de la gare de l’Est.
+C) Pas prioritaire :: Budget.
+   bon-1 | g-2 c0 d+2 e0
+   > Rien n’est fait.
+
+=== ser-053 | services | Des crèches ouvertes la nuit
+Les infirmières, agents de nettoyage et soignants de nuit n’ont aucune solution de garde.
+A) Ouvrir deux crèches à horaires étendus :: Pour ceux qui font tourner la ville.
+   bud-10 rec-0.4x60 services+2 achat+1 | g+4 c+2 d+1 e+1
+   > Des crèches ouvrent de 5 h à 23 h.
+B) Aide pour une garde à domicile :: Souple.
+   rec-0.2x60 achat+1 | g+2 c+3 d+1 e0
+   > Une aide finance une baby-sitter de nuit.
+C) Pas de crèche de nuit :: Bien-être des enfants.
+   services-1 | g-1 c+1 d+2 e0
+   > Les parents se débrouillent.
+
+=== ser-054 | services | Des animateurs périscolaires sans formation
+Les centres de loisirs recrutent des animateurs sans diplôme. Des incidents se multiplient.
+A) Financer le diplôme d’animateur :: Qualité.
+   rec-0.3x60 services+2 securite+1 | g+2 c+3 d+1 e+1
+   > Les animateurs sont formés et diplômés.
+B) Recruter des animateurs titulaires :: Stabilité.
+   rec-0.5x60 services+2 | g+3 c+2 d0 e+1
+   > Les animateurs obtiennent des contrats stables.
+C) Contrôles renforcés seulement :: Surveiller.
+   bud-1 securite+1 | g0 c+2 d+2 e0
+   > Des inspections sont menées.
+
+=== ser-055 | services | Les allergies alimentaires à la cantine
+Les enfants allergiques ne peuvent pas manger à la cantine. Leurs parents doivent venir les chercher à midi.
+A) Cuisines équipées pour les régimes spéciaux :: Inclusion.
+   bud-10 rec-0.2x60 services+2 | g+2 c+2 d+1 e+1
+   > Les cantines servent des repas sans allergènes.
+B) Autoriser les paniers-repas avec un espace réservé :: Simple.
+   bud-2 services+1 | g+1 c+3 d+1 e0
+   > Les enfants allergiques mangent leur repas apporté.
+C) Ne rien changer :: Sécurité.
+   bon-1 | g-1 c+1 d+1 e0
+   > Les parents continuent de venir à midi.
+
+=== ser-056 | services | Les médecins scolaires disparaissent
+Il ne reste qu’un médecin scolaire pour 10 000 élèves. Les bilans de santé ne sont plus faits.
+A) Recruter des médecins municipaux pour les écoles :: Santé des enfants.
+   rec-0.4x60 services+3 | g+3 c+2 d+1 e+1
+   > Les bilans de santé reprennent.
+B) Bilans par des infirmières et des médecins de ville :: Partenariat.
+   rec-0.2x60 services+2 | g+1 c+3 d+2 e+1
+   > Des médecins de ville viennent dans les écoles.
+C) C’est le travail de l’État :: Pas notre budget.
+   services-1 | g-1 c+1 d+2 e0
+   > Les bilans ne sont plus faits.
+
+=== ser-057 | services | Le service des objets trouvés débordé
+Le service des objets trouvés croule sous les téléphones et les clés. Les délais sont interminables.
+A) Créer un site de recherche en ligne :: Moderne.
+   bud-3 services+2 | g0 c+3 d+2 e+1
+   > Les objets trouvés sont consultables en ligne.
+B) Embaucher des agents :: Service humain.
+   rec-0.1x60 services+1 | g+2 c+2 d0 e0
+   > Le service est renforcé.
+C) Donner les objets non réclamés aux associations après trois mois :: Solidaire.
+   bud-1 services+1 bon+1 | g+2 c+2 d+1 e+2
+   > Les objets non réclamés sont donnés.
+
+=== ser-058 | services | Des bibliothèques avec automates de prêt
+Pour ouvrir plus longtemps, des bibliothèques pourraient fonctionner le soir avec des automates, sans personnel.
+A) Ouvrir le soir en libre-service :: Horaires élargis.
+   bud-8 services+2 | g0 c+3 d+2 e+1
+   > Les bibliothèques ouvrent jusqu’à 22 h avec un badge.
+   ~25 securite-1 > Des dégradations sont commises le soir.
+B) Recruter des bibliothécaires :: Service humain.
+   rec-0.4x60 services+2 | g+3 c+2 d0 e+1
+   > Des bibliothécaires assurent les soirées.
+C) Garder les horaires :: Économie.
+   services-1 | g0 c+1 d+1 e0
+   > Les bibliothèques ferment à 19 h.
+
+=== ser-059 | services | Louer des salles municipales pour les fêtes de famille
+Les familles ne trouvent pas de salle abordable pour les mariages, baptêmes et anniversaires.
+A) Ouvrir les salles municipales à petit prix :: Service rendu.
+   rec+0.1x60 bon+2 | g+2 c+2 d+1 e+1
+   > Les salles se louent le week-end.
+   ~25 bon-1 > Les voisins se plaignent du bruit des fêtes.
+B) Réserver aux familles modestes :: Ciblé.
+   bon+1 | g+3 c+2 d0 e+1
+   > Les salles sont prêtées sous condition de revenus.
+C) Ne pas louer :: Éviter les nuisances.
+   bon-1 | g-1 c0 d+2 e0
+   > Les salles restent fermées le week-end.
+
+=== ser-060 | services | Un skatepark réclamé par les jeunes
+Les skateurs se font chasser des places et demandent un vrai skatepark.
+A) Construire un grand skatepark :: Espace pour les jeunes.
+   bud-15 bon+2 services+1 | g+2 c+2 d+1 e+1
+   > Un skatepark ouvre sous le métro aérien.
+B) Aménager des modules sur plusieurs places :: Partage de l’espace.
+   bud-5 bon+1 | g+1 c+3 d+1 e+1
+   > Des modules de skate apparaissent sur quatre places.
+C) Interdire le skate sur les places :: Calme.
+   bon-1 securite+1 | g-2 c0 d+3 e0
+   > Les skateurs sont verbalisés.
+
+=== ser-061 | services | Les proches aidants épuisés
+Des milliers de Parisiens s’occupent seuls d’un parent malade ou handicapé, au bord de l’épuisement.
+A) Créer des places de répit et des gardes à domicile :: Souffler.
+   rec-0.4x60 services+2 bon+1 | g+3 c+2 d+1 e+1
+   > Les aidants peuvent prendre des vacances.
+B) Maison des aidants avec conseils et groupes de parole :: Accompagner.
+   bud-4 rec-0.1x60 services+1 bon+1 | g+2 c+3 d+1 e+1
+   > Une maison des aidants ouvre.
+C) Pas de dispositif spécial :: Budget.
+   bon-1 | g-2 c+1 d+2 e0
+   > Les aidants restent seuls.
+
+=== ser-062 | services | Des défibrillateurs partout
+Un homme meurt d’un arrêt cardiaque dans un square. Le défibrillateur le plus proche était à un kilomètre.
+A) Installer 1 000 défibrillateurs :: Sauver des vies.
+   bud-8 services+2 securite+1 | g+1 c+3 d+2 e+1
+   > Des défibrillateurs sont posés dans toute la ville.
+B) Former les habitants aux gestes qui sauvent :: Mobiliser.
+   bud-2 services+1 | g+2 c+2 d+1 e+1
+   > Des milliers d’habitants sont formés.
+C) Équiper seulement les bâtiments publics :: Minimum légal.
+   bud-3 services+1 | g0 c+2 d+1 e0
+   > Les bâtiments municipaux sont équipés.
+
+=== ser-063 | services | Du sport en plein air pour les seniors
+Les seniors demandent des cours de gymnastique gratuits dans les parcs.
+A) Cours gratuits dans tous les grands parcs :: Santé.
+   rec-0.2x60 services+1 bon+2 | g+2 c+2 d+1 e+2
+   > Des coachs animent des séances chaque matin.
+B) Installer des agrès adaptés :: Équipement.
+   bud-5 services+1 bon+1 | g+1 c+3 d+1 e+1
+   > Des appareils de gym sont installés.
+C) Pas prioritaire :: Budget.
+   bon-1 | g-1 c0 d+1 e0
+   > Rien n’est fait.
+
+=== ser-064 | services | Une permanence juridique gratuite
+Des locataires, salariés et familles ne connaissent pas leurs droits faute de pouvoir payer un avocat.
+A) Permanences d’avocats gratuites dans chaque mairie :: Accès au droit.
+   rec-0.2x60 services+2 | g+3 c+2 d+1 e+1
+   > Des avocats reçoivent gratuitement.
+B) Plateforme juridique en ligne :: Économique.
+   bud-3 services+1 | g+1 c+3 d+1 e0
+   > Des réponses juridiques sont disponibles en ligne.
+C) Laisser faire les associations :: Pas notre rôle.
+   services-1 | g-1 c+1 d+2 e0
+   > Rien ne change.
+
+=== ser-065 | services | Les familles monoparentales en difficulté
+Une famille parisienne sur quatre est monoparentale. Beaucoup de mères seules vivent sous le seuil de pauvreté.
+A) Priorité en crèche et aide financière :: Soutien concret.
+   rec-0.4x60 achat+2 services+1 | g+4 c+2 d0 e+1
+   > Les parents seuls passent en priorité.
+B) Réseau d’entraide et de garde partagée :: Solidarité.
+   bud-3 bon+1 services+1 | g+2 c+3 d+1 e+1
+   > Une plateforme met en relation les parents.
+C) Pas de dispositif spécifique :: Égalité de traitement.
+   achat-1 | g-2 c+1 d+2 e0
+   > Rien ne change.

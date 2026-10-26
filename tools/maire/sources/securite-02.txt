@@ -450,6 +450,7 @@ C) Le proposer à prix réduit :: Compromis.
 
 === sec-062 | securite | La police municipale peine à recruter
 La moitié des postes ouverts dans la police municipale restent vacants faute de candidats.
+? distinct
 A) Augmenter les salaires de 15 % :: Attractivité.
    rec-0.6x60 securite+2 | g0 c+2 d+3 e0
    > Les candidatures doublent.

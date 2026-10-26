@@ -344,6 +344,7 @@ C) Mettre de côté les recettes supplémentaires :: Prudence.
 
 === cha-029 | chance | Un philanthrope finance des transports gratuits pour les jeunes
 Une fondation propose de financer pendant deux ans la gratuité des transports pour les moins de 18 ans.
+? distinct
 A) Accepter tout de suite :: Gratuit pour la Ville.
    transports+3 achat+3 pop+3 | g+3 c+2 d+1 e+3
    > Les jeunes voyagent gratuitement.
