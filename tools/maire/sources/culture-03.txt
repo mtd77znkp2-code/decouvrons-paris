@@ -1,0 +1,488 @@
+// Culture et tourisme, série 3
+=== cul-066 | culture | Conserver les fresques des Jeux olympiques
+Des fresques peintes pour les Jeux olympiques s’abîment. Faut-il les restaurer ?
+? distinct
+A) Restaurer et protéger :: Mémoire des Jeux.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > Les fresques sont restaurées.
+B) Les remplacer par de nouvelles œuvres :: Renouveler.
+   bud-2 bon+1 | g+1 c+2 d0 e+1
+   > De nouveaux artistes peignent les murs.
+C) Les laisser s’effacer :: Œuvres éphémères.
+   bon-1 | g0 c+1 d+1 e0
+   > Les fresques disparaissent.
+
+=== cul-067 | culture | Les anneaux olympiques sur la tour Eiffel
+Les anneaux olympiques installés sur la tour Eiffel divisent : symbole de fierté ou défiguration ?
+A) Les garder définitivement :: Souvenir des Jeux.
+   bon+1 pop+1 | g+1 c+2 d0 e0
+   > Les anneaux restent sur la tour.
+   ~30 pop-2 > Les héritiers de Gustave Eiffel protestent.
+B) Les déplacer au pied de la tour :: Compromis.
+   bud-3 bon+1 | g0 c+3 d+1 e+1
+   > Les anneaux sont exposés au Champ-de-Mars.
+C) Les retirer :: Respect du monument.
+   pop-1 | g-1 c+1 d+2 e0
+   > La tour retrouve sa silhouette.
+
+=== cul-068 | culture | La vasque olympique aux Tuileries
+La vasque olympique pourrait être rallumée chaque été dans le jardin des Tuileries.
+A) La rallumer chaque été :: Tradition nouvelle.
+   bud-3 bon+2 economie+1 | g+1 c+2 d+1 e0
+   > La vasque s’élève chaque soir d’été.
+B) La rallumer pour les grands événements seulement :: Sobriété.
+   bud-1 bon+1 | g+1 c+3 d+1 e+1
+   > La vasque s’allume le 14-Juillet.
+C) L’envoyer dans un musée :: Patrimoine.
+   bon-1 bud-1 | g0 c+1 d+1 e+1
+   > La vasque rejoint un musée.
+
+=== cul-069 | culture | Un musée du street art
+Paris compte des centaines d’artistes de rue reconnus mondialement, mais aucun musée dédié.
+A) Créer un musée dans un ancien entrepôt :: Reconnaître un art.
+   bud-25 bon+1 economie+2 | g+2 c+2 d0 e+1
+   > Le musée du street art ouvre dans le 13e.
+B) Parcours d’art dans les rues :: Gratuit.
+   bud-2 bon+1 economie+1 | g+1 c+3 d+1 e+1
+   > Un parcours balisé relie les œuvres.
+C) Rien :: L’art de rue doit rester dans la rue.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== cul-070 | culture | Le Cirque d’Hiver menacé
+Le Cirque d’Hiver, salle historique, risque d’être vendu à un promoteur.
+A) Racheter le bâtiment :: Patrimoine.
+   bud-40 bon+1 | g+1 c+2 d+2 e0
+   > La Ville rachète le Cirque d’Hiver.
+B) Le classer pour empêcher sa démolition :: Protéger.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Le bâtiment est protégé.
+C) Laisser vendre :: Marché.
+   bon-1 | g-1 c0 d+2 e0
+   > Le cirque est vendu.
+
+=== cul-071 | culture | Des spectacles aux arènes de Lutèce
+Les arènes gallo-romaines de Lutèce pourraient accueillir des spectacles l’été.
+A) Saison de spectacles gratuits :: Faire revivre le lieu.
+   bud-3 bon+2 | g+2 c+2 d+1 e+1
+   > Théâtre et concerts animent les arènes.
+B) Spectacles payants :: Autofinancement.
+   rec+0.05x30 bon+1 | g0 c+2 d+2 e0
+   > Une saison payante est lancée.
+C) Rien :: Protéger le site.
+   bon-1 | g0 c+1 d+1 e+1
+   > Les arènes restent calmes.
+
+=== cul-072 | culture | Une grande exposition dans un musée de la Ville
+Un grand musée étranger propose de prêter ses chefs-d’œuvre pour une exposition événement.
+A) Organiser l’exposition :: Événement.
+   bud-8 economie+2 bon+1 | g0 c+2 d+2 e0
+   > L’exposition attire 800 000 visiteurs.
+B) Exposition gratuite pour les Parisiens le dimanche :: Partager.
+   bud-10 bon+2 | g+2 c+2 d+1 e+1
+   > Les Parisiens visitent gratuitement le dimanche.
+C) Refuser :: Trop coûteux.
+   economie-1 | g0 c+1 d+1 e0
+   > L’exposition va à Londres.
+
+=== cul-073 | culture | Des places de concert pour les écoles
+Les élèves des quartiers populaires n’ont jamais assisté à un concert symphonique.
+A) Concerts réservés aux scolaires :: Découverte.
+   rec-0.1x60 bon+1 services+1 | g+3 c+2 d+1 e+1
+   > Des milliers d’élèves découvrent l’orchestre.
+B) Orchestres qui jouent dans les écoles :: Aller vers.
+   rec-0.1x60 bon+1 | g+2 c+3 d+1 e+1
+   > Des musiciens jouent dans les cours.
+C) Rien :: Compétence de l’Éducation nationale.
+   bon-1 | g-1 c+1 d+1 e0
+   > Rien ne change.
+
+=== cul-074 | culture | Un festival de littérature
+Les éditeurs proposent un grand festival du livre dans les jardins de Paris.
+A) Festival gratuit dans dix jardins :: Lecture pour tous.
+   bud-4 bon+2 | g+2 c+2 d+1 e+1
+   > Des auteurs lisent dans les jardins.
+B) Un salon unique dans un grand lieu :: Prestige.
+   bud-3 bon+1 economie+1 | g0 c+3 d+2 e0
+   > Un salon littéraire s’installe au Grand Palais.
+C) Rien :: Les éditeurs s’en chargent.
+   bon-1 | g0 c0 d+1 e0
+   > Rien n’est organisé.
+
+=== cul-075 | culture | La fête des vendanges de Montmartre
+La fête des vendanges attire des centaines de milliers de personnes dans des rues étroites.
+A) Étendre la fête à tout le 18e :: Répartir la foule.
+   bud-3 bon+2 securite-1 | g+1 c+2 d+1 e+1
+   > La fête s’étend aux quartiers voisins.
+B) Limiter la jauge :: Sécurité.
+   securite+1 bon-1 | g0 c+2 d+2 e0
+   > L’accès est filtré.
+C) Garder la formule :: Tradition.
+   securite-1 bon+1 | g0 c+1 d+1 e0
+   > La fête se déroule comme chaque année.
+
+=== cul-076 | culture | Le défilé du Nouvel An chinois
+Le défilé du Nouvel An chinois du 13e attire de plus en plus de monde.
+A) Soutenir un grand défilé :: Diversité culturelle.
+   bud-3 bon+2 economie+1 | g+2 c+2 d+1 e+1
+   > Le défilé devient un événement majeur.
+B) Aider l’organisation sans l’agrandir :: Modéré.
+   bud-1 bon+1 | g+1 c+3 d+1 e+1
+   > Le défilé garde sa taille.
+C) Rien :: Les associations s’en chargent.
+   bon-1 | g-1 c0 d+1 e0
+   > Le défilé se réduit.
+
+=== cul-077 | culture | Le parcours de la Marche des fiertés
+Les organisateurs de la Marche des fiertés demandent un parcours plus long et un soutien de la Ville.
+A) Soutenir pleinement :: Égalité.
+   bud-2 bon+1 pop+1 | g+3 c+2 d-1 e+2
+   > L’Hôtel de Ville se pare de couleurs.
+B) Soutien logistique seulement :: Neutralité.
+   bon+1 bud-1 | g+1 c+3 d+1 e+1
+   > La Ville fournit barrières et nettoyage.
+C) Aucun soutien particulier :: Neutralité stricte.
+   pop-1 | g-3 c0 d+3 e-1
+   > Les organisateurs dénoncent un désengagement.
+
+=== cul-078 | culture | Le carnaval tropical
+Le carnaval tropical rassemble les communautés antillaises et sud-américaines chaque été.
+A) L’accueillir sur les Champs-Élysées :: Visibilité.
+   bud-4 bon+2 securite-1 | g+2 c+2 d0 e+1
+   > Le carnaval défile sur la plus belle avenue.
+B) Le garder dans l’est parisien :: Ancrage local.
+   bud-2 bon+1 | g+1 c+3 d+1 e+1
+   > Le carnaval reste sur son parcours habituel.
+C) Réduire le soutien :: Économie.
+   bud+1 bon-1 | g-2 c+1 d+2 e0
+   > Le carnaval se fait plus discret.
+
+=== cul-079 | culture | Le salon du livre veut quitter Paris
+Le grand salon du livre menace de partir à cause du coût de la location.
+? distinct
+A) Proposer le Grand Palais à prix réduit :: Retenir.
+   bud-5 bon+1 economie+1 | g0 c+2 d+2 e0
+   > Le salon reste à Paris.
+B) Le transformer en festival dans les quartiers :: Réinventer.
+   bud-3 bon+2 | g+2 c+2 d0 e+1
+   > Le salon devient un festival décentralisé.
+C) Le laisser partir :: Pas de subvention.
+   bon-1 | g0 c+1 d+1 e0
+   > Le salon part à Lyon.
+
+=== cul-080 | culture | La maison de Victor Hugo à rénover
+La maison de Victor Hugo, place des Vosges, a besoin de travaux importants.
+A) Rénovation complète :: Patrimoine littéraire.
+   bud-15 bon+1 economie+1 | g+1 c+2 d+2 e0
+   > La maison rouvre rénovée.
+B) Rénovation légère :: Économique.
+   bon+1 bud-5 | g0 c+3 d+1 e0
+   > Les salles sont rafraîchies.
+C) Fermer temporairement sans travaux :: Attendre.
+   bon-1 | g-1 c0 d+1 e0
+   > La maison ferme.
+
+=== cul-081 | culture | La Ruche, cité d’artistes
+La Ruche, cité d’artistes historique, a besoin de travaux. Les artistes craignent d’être expulsés.
+A) Rénover en gardant les artistes :: Lieu vivant.
+   bud-10 bon+1 | g+2 c+2 d+1 e+1
+   > Les ateliers sont rénovés.
+B) Créer un musée dans une partie du lieu :: Valoriser.
+   bud-8 economie+1 bon+1 | g0 c+2 d+2 e0
+   > Un musée raconte l’histoire de la Ruche.
+C) Laisser les propriétaires décider :: Privé.
+   bon-1 | g-1 c0 d+2 e0
+   > Les artistes partent.
+
+=== cul-082 | culture | Les enseignes historiques des commerces
+Les vieilles enseignes peintes et les devantures anciennes disparaissent à chaque changement de commerce.
+A) Protéger les devantures historiques :: Patrimoine.
+   bon+1 economie-1 | g+1 c+2 d+1 e+1
+   > Les devantures remarquables sont protégées.
+B) Aider à restaurer les enseignes :: Incitation.
+   bud-3 bon+1 | g+1 c+3 d+2 e0
+   > Des enseignes anciennes sont restaurées.
+C) Rien :: Liberté des commerçants.
+   bon-1 | g-1 c0 d+2 e0
+   > Les enseignes disparaissent.
+
+=== cul-083 | culture | Les petits théâtres privés ferment
+Plusieurs petits théâtres privés ferment faute de public.
+A) Aide aux théâtres privés :: Diversité culturelle.
+   rec-0.2x60 bon+1 economie+1 | g+1 c+2 d+1 e+1
+   > Un fonds soutient les petites salles.
+B) Billets à prix réduits pour les jeunes :: Nouveau public.
+   rec-0.1x60 bon+1 | g+2 c+3 d+1 e+1
+   > Les jeunes vont au théâtre pour 10 €.
+C) Rien :: Entreprises privées.
+   bon-1 | g-1 c0 d+2 e0
+   > Les théâtres ferment.
+
+=== cul-084 | culture | Des plaques pour les enfants déportés
+Des associations demandent des plaques dans toutes les écoles d’où des enfants ont été déportés.
+A) Poser les plaques dans toutes les écoles :: Mémoire.
+   bud-1 pop+1 coh+1 | g+2 c+2 d+2 e+1
+   > Les plaques sont inaugurées avec les élèves.
+B) Programme pédagogique avec les écoles :: Transmettre.
+   bud-1 bon+1 | g+2 c+3 d+1 e+1
+   > Les élèves découvrent l’histoire de leur école.
+C) Plaque unique à l’Hôtel de Ville :: Symbole.
+   coh-1 bud-1 | g0 c+2 d+2 e0
+   > Une plaque est posée à l’Hôtel de Ville.
+
+=== cul-085 | culture | Un tableau célèbre mis aux enchères
+Un tableau représentant Paris au XIXe siècle est mis aux enchères. La Ville peut l’acheter.
+A) L’acheter pour le musée Carnavalet :: Patrimoine.
+   bud-12 bon+1 | g0 c+2 d+2 e0
+   > Le tableau rejoint les collections parisiennes.
+B) Souscription publique :: Participatif.
+   bud-3 bon+1 pop+1 | g+1 c+3 d+1 e+1
+   > Les Parisiens financent l’achat.
+C) Laisser partir :: Trop cher.
+   bon-1 | g0 c+1 d+1 e0
+   > Le tableau part chez un collectionneur.
+
+=== cul-086 | culture | Les maisons d’écrivains peu fréquentées
+Les maisons de Balzac et d’autres écrivains attirent peu de visiteurs.
+A) Programme d’animations et de lectures :: Faire revivre.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > Des lectures et concerts attirent un nouveau public.
+B) Les regrouper sous un même billet :: Promotion.
+   bud-1 bon+1 economie+1 | g0 c+3 d+2 e0
+   > Un pass des maisons d’écrivains est créé.
+C) Réduire les horaires :: Économie.
+   rec+0.05x60 bon-1 | g-1 c+1 d+2 e0
+   > Les maisons ouvrent trois jours par semaine.
+
+=== cul-087 | culture | Le festival de jazz du Parc floral
+Le festival de jazz gratuit du Parc floral manque de financement.
+A) Garantir le financement :: Tradition gratuite.
+   bud-3 bon+2 | g+2 c+2 d+1 e+1
+   > Le festival est sauvé.
+B) Rendre une partie des concerts payante :: Autofinancement.
+   rec+0.05x30 bon+1 | g0 c+2 d+2 e0
+   > Les grandes têtes d’affiche sont payantes.
+C) Arrêter le festival :: Économie.
+   bud+2 bon-2 | g-1 c+1 d+1 e0
+   > Le festival s’arrête.
+
+=== cul-088 | culture | Les photos de la tour Eiffel illuminée
+L’éclairage de la tour Eiffel est protégé par des droits : les photos commerciales sont payantes.
+A) Libérer les droits :: Image libre de Paris.
+   rec-0.1x60 bon+1 | g+2 c+2 d0 e+1
+   > Les photos deviennent libres.
+B) Garder les droits pour les usages commerciaux seulement :: Compromis.
+   rec+0.05x60 | g0 c+3 d+2 e0
+   > Les particuliers peuvent partager leurs photos.
+C) Faire payer davantage :: Recettes.
+   rec+0.1x60 pop-1 | g-2 c+1 d+2 e0
+   > Les droits augmentent.
+
+=== cul-089 | culture | La Bibliothèque historique de la Ville
+La Bibliothèque historique de la Ville de Paris est peu connue et ses collections s’abîment.
+A) Numériser les collections :: Ouvrir à tous.
+   bud-6 bon+1 services+1 | g+1 c+3 d+1 e+1
+   > Des milliers de documents sont en ligne.
+B) Expositions grand public :: Faire connaître.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > Une exposition révèle les trésors de la bibliothèque.
+C) Rien :: Pas prioritaire.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== cul-090 | culture | Un battle géant de danse hip-hop
+Des danseurs proposent un championnat international de hip-hop sur le parvis de l’Hôtel de Ville.
+A) Accueillir le championnat :: Culture urbaine.
+   bud-3 bon+2 economie+1 | g+2 c+2 d0 e+1
+   > Le battle attire des danseurs du monde entier.
+B) L’organiser dans un gymnase :: Prudence.
+   bud-1 bon+1 | g+1 c+3 d+1 e+1
+   > Le battle a lieu en salle.
+C) Refuser :: Pas de lieu adapté.
+   bon-1 | g-1 c0 d+2 e0
+   > Le championnat va à Lyon.
+
+=== cul-091 | culture | Rénover la tour Montparnasse
+La tour Montparnasse doit être rénovée. Certains veulent la démolir.
+? distinct
+A) Soutenir une rénovation verte et une terrasse publique :: Transformer.
+   bud-20 bon+1 ecologie+1 | g+1 c+2 d+2 e+2
+   > La tour sera végétalisée avec un belvédère gratuit.
+B) Demander sa démolition :: Supprimer une verrue.
+   pop+1 coh-1 | g0 c0 d+1 e+1
+   > Le maire réclame la démolition.
+   ~40 pop-1 > Les propriétaires refusent et la polémique dure.
+C) Laisser les propriétaires décider :: Privé.
+   bon-1 | g-1 c+1 d+2 e0
+   > La tour est rénovée sans changement.
+
+=== cul-092 | culture | Les kiosques à musique des jardins
+Les kiosques à musique des jardins sont abandonnés et dégradés.
+A) Restaurer et programmer des concerts gratuits :: Faire revivre.
+   bud-4 bon+2 | g+1 c+2 d+2 e+1
+   > Des concerts ont lieu chaque dimanche.
+B) Les confier aux conservatoires :: Jeunes musiciens.
+   bud-2 bon+1 services+1 | g+2 c+2 d+1 e+1
+   > Les élèves des conservatoires jouent dans les kiosques.
+C) Les démonter :: Économie.
+   bud+1 bon-1 | g-1 c+1 d+1 e0
+   > Les kiosques disparaissent.
+
+=== cul-093 | culture | Un festival des lanternes
+Un festival de sculptures lumineuses géantes pourrait illuminer un parc l’hiver.
+A) Organiser le festival au Jardin des Plantes :: Spectacle.
+   bud-4 bon+2 economie+1 | g+1 c+2 d+1 e0
+   > Des lanternes géantes attirent les familles.
+   ~25 ecologie-1 > Les naturalistes dénoncent la lumière pour les animaux.
+B) Version plus sobre :: Compromis.
+   bud-2 bon+1 | g+1 c+3 d+1 e+1
+   > Quelques lanternes à LED sont installées.
+C) Refuser :: Énergie.
+   bon-1 | g0 c0 d0 e+2
+   > Le festival n’a pas lieu.
+
+=== cul-094 | culture | Les répliques de la statue de la Liberté
+Paris possède plusieurs répliques de la statue de la Liberté. Une ville américaine veut en acheter une.
+A) Vendre une réplique :: Recettes.
+   bud+5 pop-1 | g-1 c+2 d+2 e0
+   > Une réplique part aux États-Unis.
+B) Prêter pour quelques années :: Diplomatie.
+   bud+1 bon+1 | g0 c+3 d+2 e0
+   > La réplique est prêtée.
+C) Refuser :: Patrimoine.
+   pop+1 | g+1 c+1 d+1 e0
+   > Les répliques restent à Paris.
+
+=== cul-095 | culture | Les cinémas d’art et d’essai
+Les cinémas d’art et d’essai peinent à programmer des films exigeants.
+A) Subvention à la programmation :: Diversité du cinéma.
+   rec-0.1x60 bon+1 | g+2 c+2 d0 e+1
+   > Les cinémas programment plus de films d’auteur.
+B) Ciné-clubs pour les jeunes :: Nouveau public.
+   bud-2 bon+1 | g+2 c+3 d+1 e+1
+   > Des ciné-clubs ouvrent dans les cinémas.
+C) Rien :: Le CNC s’en charge.
+   bon-1 | g-1 c+1 d+2 e0
+   > Rien ne change.
+
+=== cul-096 | culture | Un musée pour les enfants
+Paris n’a pas de grand musée pensé pour les tout-petits, où l’on touche et l’on joue.
+A) Créer un musée des enfants :: Éveil.
+   bud-20 bon+2 services+1 | g+2 c+2 d+1 e+1
+   > Un musée interactif ouvre pour les 2-10 ans.
+B) Espaces enfants dans les musées existants :: Économique.
+   bud-5 bon+1 | g+1 c+3 d+1 e+1
+   > Chaque musée municipal a son coin enfants.
+C) Rien :: Les musées sont pour tous.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+=== cul-097 | culture | Une sculpture géante place Vendôme
+Une sculpture d’art contemporain géante installée place Vendôme provoque la polémique.
+A) Maintenir l’œuvre :: Liberté de création.
+   pop-1 bon+1 | g+2 c+1 d-2 e+1
+   > L’œuvre reste un mois.
+   ~30 pop-1 > L’œuvre est vandalisée.
+B) Retirer l’œuvre :: Apaiser.
+   pop+1 coh-1 | g-2 c+1 d+3 e0
+   > L’œuvre est démontée.
+C) Organiser un débat public :: Dialogue.
+   bon+1 bud-1 | g+1 c+3 d+1 e+1
+   > Un débat réunit artistes et habitants.
+
+=== cul-098 | culture | Les cloches des églises gênent des riverains
+Des nouveaux habitants se plaignent des cloches qui sonnent dès 7 h du matin.
+A) Défendre les cloches :: Patrimoine sonore.
+   bon+1 pop+1 | g-1 c+1 d+3 e0
+   > Les cloches continuent de sonner.
+B) Décaler la première sonnerie à 8 h :: Compromis.
+   bon+1 | g+1 c+3 d+1 e0
+   > Les cloches sonnent une heure plus tard.
+C) Supprimer les sonneries matinales :: Calme.
+   bon-1 | g+1 c+1 d-2 e0
+   > Les cloches se taisent le matin.
+
+=== cul-099 | culture | Des fresques des années 1980 effacées
+Des fresques murales célèbres des années 1980 sont effacées lors de ravalements.
+A) Protéger les fresques remarquables :: Patrimoine récent.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Une liste de fresques protégées est publiée.
+B) Les faire repeindre par les artistes :: Restaurer.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > Les artistes repeignent leurs œuvres.
+C) Laisser faire :: Propriété privée.
+   bon-1 | g-1 c0 d+2 e0
+   > Les fresques disparaissent.
+
+=== cul-100 | culture | Déménager la Foire du Trône ?
+Les riverains du bois de Vincennes demandent que la Foire du Trône déménage.
+A) Déplacer la foire sur un terrain bétonné :: Protéger le bois.
+   bud-5 ecologie+2 bon-1 | g+1 c+2 d0 e+3
+   > La foire s’installe sur un parking.
+B) Réduire sa durée :: Compromis.
+   ecologie+1 economie-1 | g0 c+3 d+1 e+1
+   > La foire dure trois semaines au lieu de huit.
+C) La garder telle quelle :: Tradition populaire.
+   ecologie-1 bon+1 | g0 c+1 d+2 e-2
+   > La foire reste sur la pelouse.
+
+=== cul-101 | culture | Le Festival d’Automne
+Le Festival d’Automne demande plus de financement pour des spectacles dans les quartiers.
+A) Augmenter la subvention :: Culture exigeante.
+   rec-0.1x60 bon+1 | g+2 c+2 d0 e+1
+   > Des spectacles ont lieu dans les quartiers.
+B) Subvention stable :: Équilibre.
+   bon+1 | g0 c+3 d+1 e0
+   > La subvention ne change pas.
+C) Baisser la subvention :: Économie.
+   rec+0.05x60 bon-1 | g-2 c+1 d+2 e0
+   > Le festival réduit sa programmation.
+
+=== cul-102 | culture | Une péniche culturelle
+Une association veut transformer une péniche en salle de spectacle flottante.
+A) Accorder un amarrage gratuit :: Soutien.
+   bud-1 bon+2 | g+2 c+2 d+1 e+1
+   > La péniche culturelle ouvre.
+B) Amarrage payant :: Recettes.
+   rec+0.02x60 bon+1 | g0 c+3 d+2 e0
+   > La péniche paie son emplacement.
+C) Refuser :: Quais saturés.
+   bon-1 | g0 c+1 d+1 e0
+   > La péniche va ailleurs.
+
+=== cul-103 | culture | Les jardins des musées ouverts à tous
+Les jardins de certains musées sont réservés aux visiteurs payants.
+? distinct
+A) Ouvrir les jardins gratuitement :: Espaces verts pour tous.
+   rec-0.05x60 bon+2 ecologie+1 | g+2 c+2 d+1 e+2
+   > Les jardins des musées deviennent publics.
+B) Gratuits le dimanche seulement :: Compromis.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Les jardins sont gratuits le dimanche.
+C) Garder l’accès payant :: Sécurité des collections.
+   bon-1 | g-1 c+1 d+2 e0
+   > Rien ne change.
+
+=== cul-104 | culture | Un concours photo des Parisiens
+Des photographes proposent un grand concours pour raconter Paris vu par ses habitants.
+A) Organiser le concours avec une exposition sur les grilles :: Fierté.
+   bud-1 bon+2 | g+1 c+2 d+2 e+1
+   > Les photos s’affichent sur les grilles des jardins.
+B) Concours en ligne :: Simple.
+   bud-1 bon+1 | g0 c+3 d+1 e+1
+   > Des milliers de photos sont publiées.
+C) Rien :: Pas prioritaire.
+   bon-1 | g0 c0 d+1 e0
+   > Rien n’est fait.
+
+=== cul-105 | culture | Des concerts au pied des immeubles
+Des musiciens proposent des concerts dans les cours d’immeubles sociaux.
+A) Programme de concerts dans les cités :: Culture de proximité.
+   rec-0.1x60 bon+2 | g+3 c+2 d0 e+1
+   > Des concerts animent les cours le week-end.
+   ~25 bon-1 > Des locataires se plaignent du bruit.
+B) Quelques concerts pilotes :: Tester.
+   bud-1 bon+1 | g+1 c+3 d+1 e+1
+   > Cinq concerts sont organisés.
+C) Rien :: Les salles de concert existent.
+   bon-1 | g-1 c0 d+1 e0
+   > Rien n’est fait.
