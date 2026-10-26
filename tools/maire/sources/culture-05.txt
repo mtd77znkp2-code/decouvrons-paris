@@ -1,0 +1,483 @@
+// Culture et tourisme, série 5
+=== cul-146 | culture | La Cinémathèque à l’étroit
+La Cinémathèque manque de place pour ses collections de films et d’affiches.
+A) Lui céder un bâtiment municipal :: Patrimoine du cinéma.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > Des milliers de bobines trouvent un abri.
+B) Des projections hors les murs dans les quartiers :: Diffuser.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les classiques passent dans les gymnases.
+C) Ne rien faire :: État.
+   bon-1 | g0 c+1 d+1 e0
+   > Des archives se dégradent.
+
+=== cul-147 | culture | Un lieu des cultures numériques en difficulté
+Un centre d’art numérique municipal perd son public et accumule les dettes.
+A) Le relancer avec un nouveau projet :: Relancer.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > Les jeunes reviennent pour les expositions immersives.
+B) Le confier à un exploitant privé :: Déléguer.
+   rec+0.01x60 | g-1 c+2 d+2 e0
+   > Le lieu devient payant.
+C) Le fermer :: Économie.
+   bud+1 bon-1 | g-1 c+1 d+2 e0
+   > Les artistes numériques perdent leur maison.
+
+=== cul-148 | culture | Le Centquatre déborde
+Le centre culturel du 19e est pris d’assaut par les danseurs et les artistes.
+A) Ouvrir une annexe dans un bâtiment voisin :: Accueillir.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > Une seconde halle ouvre aux danseurs.
+B) Réguler les horaires de répétition :: Organiser.
+   bon-1 | g0 c+2 d+1 e0
+   > Les danseurs réservent leur créneau.
+C) Laisser faire :: Liberté.
+   bon-1 | g0 c+1 d+1 e0
+   > Les halls sont saturés.
+
+=== cul-149 | culture | Une grande fête de la Seine
+Des associations proposent une journée où le fleuve devient une scène géante.
+A) Financer une fête sur tous les quais :: Célébrer.
+   bud-3 bon+2 economie+1 | g+1 c+2 d+1 e0
+   > Des milliers de bateaux décorés défilent.
+B) Une fête modeste sur un seul quai :: Sobriété.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Le quai de la Tournelle est en fête.
+C) Refuser :: Sécurité.
+   bon-1 | g0 c+1 d+1 e0
+   > Le fleuve reste calme.
+
+=== cul-150 | culture | Une plaque pour les héros du quotidien
+Des habitants veulent honorer une infirmière, un boulanger, un instituteur de leur quartier.
+A) Une plaque par arrondissement chaque année :: Reconnaissance.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les habitants votent pour leur héros.
+B) Une cérémonie annuelle à l’Hôtel de Ville :: Hommage.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les héros du quotidien sont décorés.
+C) Refuser :: Réserver les plaques aux célébrités.
+   bon-1 | g0 c+1 d+1 e0
+   > Les habitants sont déçus.
+
+=== cul-151 | culture | Des cours de dessin gratuits dans les musées
+Des artistes proposent d’apprendre à dessiner devant les œuvres.
+A) Des cours chaque dimanche :: Transmettre.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Des carnets se remplissent devant les statues.
+B) Seulement pour les scolaires :: Cibler.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Les classes dessinent au musée.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Les musées restent silencieux.
+
+=== cul-152 | culture | Un festival dans chaque arrondissement
+Les maires d’arrondissement veulent chacun leur festival.
+? distinct
+A) Un budget pour chaque arrondissement :: Proximité.
+   bud-4 bon+2 coh+1 | g+1 c+2 d+1 e+1
+   > Vingt festivals animent l’été.
+B) Un festival tournant :: Mutualiser.
+   bud-2 bon+1 | g0 c+2 d+1 e+1
+   > Le festival change de quartier chaque semaine.
+C) Refuser :: Grands événements d’abord.
+   coh-1 | g0 c+1 d+1 e0
+   > Les maires d’arrondissement protestent.
+
+=== cul-153 | culture | Rebaptiser une station de métro
+Des habitants veulent donner le nom d’une résistante à leur station.
+? distinct
+A) Lancer une consultation :: Démocratie.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > La station porte désormais son nom.
+B) Ajouter le nom sans remplacer l’ancien :: Compromis.
+   bon+1 | g0 c+2 d+1 e+1
+   > La station a un double nom.
+C) Refuser :: Habitudes des voyageurs.
+   bon-1 | g0 c+1 d+1 e0
+   > Le nom ne change pas.
+
+=== cul-154 | culture | Numériser les archives de Paris
+Des millions de documents historiques ne sont consultables que sur place.
+A) Un grand plan de numérisation :: Partager.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > Les registres anciens sont en ligne.
+B) Numériser les plus demandés :: Cibler.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les généalogistes sont ravis.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Les chercheurs font la queue.
+
+=== cul-155 | culture | Un chapiteau pour le cirque contemporain
+Les compagnies de cirque n’ont nulle part où planter leur chapiteau.
+A) Un terrain permanent pour les chapiteaux :: Accueillir.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Les compagnies se succèdent toute l’année.
+B) Un terrain l’été seulement :: Saison.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Le cirque revient chaque été.
+C) Refuser :: Pas de place.
+   bon-1 | g0 c+1 d+1 e0
+   > Les compagnies jouent en banlieue.
+
+=== cul-156 | culture | Des résidences d’artistes dans les écoles
+Des artistes proposent de créer dans une salle de classe pendant un an.
+A) Une résidence par arrondissement :: Création.
+   bud-2 bon+1 services+1 | g+1 c+2 d+1 e+1
+   > Les élèves voient naître une œuvre.
+B) Des interventions ponctuelles :: Souplesse.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les artistes passent une semaine dans les écoles.
+C) Rien :: Programmes scolaires.
+   bon-1 | g0 c+1 d+1 e0
+   > Les écoles restent sans artistes.
+
+=== cul-157 | culture | Une salle pour les musiques électroniques
+Les collectifs de musique électronique cherchent un lieu légal.
+A) Ouvrir une salle municipale :: Encadrer.
+   bud-3 bon+1 economie+1 | g+1 c+2 d+1 e+1
+   > Les fêtes se déroulent en sécurité.
+B) Autoriser des friches temporaires :: Souplesse.
+   bud-1 bon+1 | g+1 c+2 d+1 e0
+   > Des fêtes animent les friches.
+C) Refuser :: Bruit.
+   bon-1 securite-1 | g0 c+1 d+1 e0
+   > Les fêtes sauvages se multiplient.
+
+=== cul-158 | culture | Un pass musées pour les Parisiens
+Les Parisiens visitent peu leurs propres musées.
+A) Un pass annuel à prix réduit :: Encourager.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Les Parisiens redécouvrent leurs musées.
+B) Une journée gratuite par mois :: Simple.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les musées sont bondés le premier dimanche.
+C) Rien :: Tarifs actuels.
+   bon-1 | g0 c+1 d+1 e0
+   > Les musées restent touristiques.
+
+=== cul-159 | culture | Une crèche de Noël dans une mairie
+Un maire d’arrondissement installe une crèche dans le hall de la mairie.
+A) Demander son retrait :: Laïcité.
+   coh+1 pop-1 | g+1 c+2 d+1 e0
+   > La crèche est retirée.
+B) Tolérer comme tradition culturelle :: Tolérance.
+   coh-1 pop+1 | g-1 c+1 d+2 e0
+   > Les défenseurs de la laïcité protestent.
+C) La déplacer dans un lieu associatif :: Compromis.
+   bon+1 | g0 c+2 d+1 e+1
+   > La crèche s’installe chez une association.
+
+=== cul-160 | culture | Un sapin de Noël géant sur le parvis
+Un sponsor offre un sapin de trente mètres devant l’Hôtel de Ville.
+A) Accepter avec le logo du sponsor :: Gratuit.
+   bon+1 | g-1 c+1 d+2 e0
+   > Le sapin brille, le logo aussi.
+B) Payer un sapin plus modeste :: Indépendance.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Un sapin parisien décore le parvis.
+C) Un sapin en bois recyclé :: Écologie.
+   bud-1 ecologie+1 bon-1 | g+2 c+2 d0 e+1
+   > Le sapin en bois divise.
+
+=== cul-161 | culture | L’éclairage artistique des ponts
+Des artistes proposent de mettre en lumière les ponts de Paris.
+A) Illuminer tous les ponts :: Spectacle.
+   bud-3 bon+1 economie+1 | g0 c+2 d+1 e0
+   > La Seine scintille la nuit.
+B) Quelques ponts avec des LED sobres :: Sobriété.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Trois ponts sont mis en valeur.
+C) Refuser :: Pollution lumineuse.
+   ecologie+1 | g+1 c+1 d0 e+1
+   > Les ponts restent dans l’ombre.
+
+=== cul-162 | culture | Un artiste veut emballer un monument
+Un célèbre artiste veut emballer l’Arc de triomphe de tissu argenté.
+A) Accepter, il paie tout :: Audace.
+   bon+1 economie+1 | g+1 c+2 d+1 e0
+   > Des millions de visiteurs viennent voir l’œuvre.
+B) Accepter sur un monument moins sensible :: Compromis.
+   bon+1 | g0 c+2 d+1 e+1
+   > Le pont Neuf est emballé.
+C) Refuser :: Respect.
+   bon-1 | g-1 c+1 d+1 e0
+   > L’artiste part à Berlin.
+
+=== cul-163 | culture | L’aquarium du Trocadéro en difficulté
+L’aquarium de la Ville perd des visiteurs et ses bassins vieillissent.
+A) Le rénover :: Relancer.
+   bud-3 bon+1 | g0 c+2 d+1 e+1
+   > Les bassins neufs attirent les familles.
+B) Le transformer en centre sur la biodiversité marine :: Réinventer.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les écoliers découvrent les océans.
+C) Le fermer :: Économie.
+   bud+1 bon-1 | g-1 c+1 d+2 e0
+   > Les poissons partent dans d’autres aquariums.
+
+=== cul-164 | culture | Le théâtre national joue dans les cités
+La Comédie-Française propose des représentations au pied des immeubles.
+A) Financer une tournée dans les quartiers :: Culture pour tous.
+   bud-2 bon+2 | g+2 c+2 d0 e+1
+   > Molière se joue au pied des tours.
+B) Une seule date symbolique :: Geste.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > La représentation fait salle comble.
+C) Refuser :: Sécurité.
+   bon-1 | g-1 c+1 d+1 e0
+   > Le projet est abandonné.
+
+=== cul-165 | culture | Des lectures à voix haute dans les jardins
+Des comédiens proposent de lire des romans dans les jardins l’été.
+A) Une saison de lectures :: Partage.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les promeneurs s’allongent pour écouter.
+B) Des lectures pour enfants seulement :: Cibler.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les enfants écoutent des contes.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Les jardins restent silencieux.
+
+=== cul-166 | culture | Un spectacle de lumière sur les façades
+Un studio propose des projections monumentales sur les façades des monuments.
+A) Un spectacle chaque soir d’été :: Attractivité.
+   bud-3 economie+1 bon+1 | g0 c+2 d+1 e0
+   > Les foules affluent chaque soir.
+B) Un spectacle pour les grandes occasions :: Exceptionnel.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Le 14-Juillet, les façades s’animent.
+C) Refuser :: Sobriété.
+   ecologie+1 | g+1 c+1 d0 e+1
+   > Les façades restent sobres.
+
+=== cul-167 | culture | Restaurer les vitraux des églises
+Des vitraux anciens se fissurent et risquent de tomber.
+A) Un plan de restauration :: Patrimoine.
+   bud-3 bon+1 | g0 c+2 d+1 e+1
+   > Les vitraux retrouvent leurs couleurs.
+B) Une souscription publique :: Mobiliser.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les dons financent les premiers vitraux.
+C) Attendre :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   ~30 bud-3 > Un vitrail tombe, la réparation coûte plus cher.
+   > Les vitraux se fissurent.
+
+=== cul-168 | culture | La Cité universitaire et ses pavillons
+Les pavillons des pays du monde ont besoin de rénovations coûteuses.
+A) Cofinancer la rénovation :: Rayonnement.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > Les étudiants du monde entier sont mieux logés.
+B) Ouvrir le parc au public :: Partager.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les Parisiens découvrent le parc.
+C) Rien :: Fondation.
+   bon-1 | g0 c+1 d+1 e0
+   > Les pavillons se dégradent.
+
+=== cul-169 | culture | L’opéra retransmis place de la Bastille
+L’Opéra propose de retransmettre une première sur écran géant.
+A) Financer la retransmission :: Culture pour tous.
+   bud-1 bon+2 | g+1 c+2 d+1 e+1
+   > Des milliers de spectateurs pique-niquent devant l’écran.
+B) Retransmettre dans les mairies :: Proximité.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les salles des fêtes se remplissent.
+C) Refuser :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > L’opéra reste réservé aux initiés.
+
+=== cul-170 | culture | Les orgues de Barbarie de Montmartre
+Les joueurs d’orgue de Barbarie disparaissent des rues.
+A) Une autorisation et une aide :: Tradition.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les orgues résonnent à nouveau.
+B) Un festival annuel :: Valoriser.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les orgues se retrouvent place du Tertre.
+C) Rien :: Folklore.
+   bon-1 | g0 c+1 d+1 e0
+   > Les derniers orgues se taisent.
+
+=== cul-171 | culture | Un mémorial pour les victimes d’une épidémie
+Des familles demandent un lieu pour se souvenir de leurs proches.
+A) Un mémorial dans un jardin :: Mémoire.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Un jardin du souvenir est inauguré.
+B) Une plaque symbolique :: Sobriété.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Une plaque est posée à l’Hôtel de Ville.
+C) Refuser :: Tourner la page.
+   bon-1 | g0 c+1 d+1 e0
+   > Les familles sont blessées.
+
+=== cul-172 | culture | Commémorer la Commune de Paris
+L’anniversaire de la Commune divise les élus.
+A) Une grande commémoration :: Mémoire.
+   bud-1 coh+1 pop-1 | g+2 c+2 d0 e+1
+   > Des milliers de personnes défilent.
+B) Une exposition historique :: Pédagogie.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > L’exposition explique les événements.
+C) Rien :: Éviter la polémique.
+   coh-1 | g-1 c+1 d+1 e0
+   > Ton silence est critiqué.
+
+=== cul-173 | culture | Une galerie municipale pour les amateurs
+Des peintres amateurs n’ont nulle part où exposer.
+A) Ouvrir une galerie gratuite :: Encourager.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les amateurs exposent à tour de rôle.
+B) Des expositions dans les mairies :: Simple.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les mairies accrochent leurs talents.
+C) Rien :: Galeries privées.
+   bon-1 | g0 c+1 d+1 e0
+   > Les toiles restent au grenier.
+
+=== cul-174 | culture | Un concours de vitrines de Noël
+Les commerçants veulent rivaliser avec les grands magasins.
+A) Un concours avec prix :: Animer.
+   bud-1 economie+1 bon+1 | g0 c+2 d+1 e+1
+   > Les rues se parent de vitrines féeriques.
+B) Un parcours des vitrines :: Promouvoir.
+   economie+1 | g0 c+2 d+1 e+1
+   > Les familles suivent le parcours.
+C) Rien :: Commerçants.
+   economie-1 | g0 c+1 d+1 e0
+   > Les vitrines restent banales.
+
+=== cul-175 | culture | Un musée du jouet
+Un collectionneur veut léguer des milliers de jouets anciens à la Ville.
+A) Créer un musée :: Patrimoine.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles découvrent les jouets d’antan.
+B) Une exposition temporaire :: Prudence.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > L’exposition fait un carton.
+C) Refuser :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Les jouets partent à Bruxelles.
+
+=== cul-176 | culture | Des guides de rue anciens sans-abri
+Une association forme d’anciens sans-abri à guider des visites de leur quartier.
+A) Soutenir le projet :: Insertion.
+   bud-1 bon+1 economie+1 | g+2 c+2 d0 e+1
+   > Les visites font découvrir un autre Paris.
+B) L’inscrire dans l’office du tourisme :: Visibilité.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les touristes réservent ces visites.
+C) Rien :: Associations.
+   bon-1 | g0 c+1 d+1 e0
+   > Le projet reste confidentiel.
+
+=== cul-177 | culture | Des panneaux d’histoire dans les rues
+Les passants ignorent l’histoire des lieux qu’ils traversent.
+A) Des panneaux dans tous les quartiers :: Transmettre.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Les passants s’arrêtent pour lire.
+B) Une application géolocalisée :: Numérique.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Le téléphone raconte l’histoire des rues.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Les rues restent muettes.
+
+=== cul-178 | culture | Un festival de théâtre de rue
+Des compagnies veulent investir les places pendant une semaine.
+A) Financer le festival :: Fête.
+   bud-2 bon+2 | g+1 c+2 d+1 e+1
+   > Les places deviennent des scènes.
+B) Prêter les places sans financer :: Soutien.
+   bon+1 | g+1 c+2 d+1 e0
+   > Quelques compagnies jouent au chapeau.
+C) Refuser :: Sécurité.
+   bon-1 | g0 c+1 d+1 e0
+   > Les compagnies partent à Aurillac.
+
+=== cul-179 | culture | Un festival de dessin à la craie
+Des artistes veulent couvrir une place de dessins à la craie.
+A) Organiser le festival :: Éphémère.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > La place devient une fresque géante.
+B) L’ouvrir aux enfants :: Participer.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les enfants dessinent avec les artistes.
+C) Refuser :: Propreté.
+   bon-1 | g0 c+1 d+1 e0
+   > La place reste grise.
+
+=== cul-180 | culture | Un concert pour la paix devant l’Hôtel de Ville
+Des musiciens proposent un concert gratuit pour la paix dans le monde.
+A) L’organiser :: Symbole.
+   bud-2 bon+1 pop+1 | g+1 c+2 d+1 e+1
+   > Cent mille personnes chantent ensemble.
+B) Le soutenir sans financer :: Soutien.
+   bon+1 | g+1 c+2 d+1 e0
+   > Le concert a lieu sur une petite scène.
+C) Refuser :: Sécurité.
+   bon-1 | g0 c+1 d+2 e0
+   > Le concert se fait ailleurs.
+
+=== cul-181 | culture | Des concerts dans les hôpitaux et maisons de retraite
+Des musiciens proposent de jouer pour les malades et les résidents.
+A) Financer une saison de concerts :: Réconfort.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les résidents chantent avec les musiciens.
+B) Mettre en relation bénévoles et établissements :: Réseau.
+   bon+1 | g0 c+2 d+1 e+1
+   > Des bénévoles jouent chaque semaine.
+C) Rien :: Établissements.
+   bon-1 | g0 c+1 d+1 e0
+   > Les couloirs restent silencieux.
+
+=== cul-182 | culture | Une fête de la langue française
+Des associations veulent une semaine de jeux, dictées et poésie.
+A) Une grande dictée sur le parvis :: Fête.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Dix mille personnes font la dictée.
+B) Des ateliers dans les bibliothèques :: Proximité.
+   bud-1 bon+1 services+1 | g+1 c+2 d+1 e+1
+   > Les bibliothèques jouent avec les mots.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > La semaine passe inaperçue.
+
+=== cul-183 | culture | Un prix littéraire de la Ville
+La Ville pourrait récompenser chaque année un roman sur Paris.
+A) Créer un prix doté :: Littérature.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Le prix révèle une jeune autrice.
+B) Un prix voté par les lecteurs des bibliothèques :: Participation.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les lecteurs votent en masse.
+C) Rien :: Trop de prix.
+   bon-1 | g0 c+1 d+1 e0
+   > Le projet est abandonné.
+
+=== cul-184 | culture | Accueillir la cérémonie des César
+Le cinéma français cherche un lieu pour sa cérémonie.
+A) Offrir un lieu prestigieux :: Prestige.
+   bud-2 bon+1 economie+1 | g0 c+2 d+1 e0
+   > La cérémonie se tient à l’Hôtel de Ville.
+B) Proposer un théâtre municipal :: Sobriété.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > La cérémonie a lieu au Châtelet.
+C) Rien :: Privé.
+   bon-1 | g0 c+1 d+1 e0
+   > La cérémonie part à Cannes.
+
+=== cul-185 | culture | Une maison de la poésie
+Les poètes cherchent un lieu de lectures et de rencontres.
+A) Ouvrir une maison de la poésie :: Création.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Des lectures ont lieu chaque soir.
+B) Des soirées poésie dans les cafés :: Proximité.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les cafés accueillent des poètes.
+C) Rien :: Niche.
+   bon-1 | g0 c+1 d+1 e0
+   > Les poètes se retrouvent en appartement.
