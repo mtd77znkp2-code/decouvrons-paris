@@ -1,0 +1,485 @@
+// Écologie, série 6
+=== ecol-186 | ecologie | Réduire la consommation d’eau des Parisiens
+Chaque Parisien consomme plus de cent litres d’eau par jour.
+A) Distribuer des kits économiseurs d’eau :: Économiser.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > La consommation baisse de dix pour cent.
+B) Un prix de l’eau progressif :: Responsabiliser.
+   rec+0.02x60 ecologie+1 bon-1 | g+1 c+2 d+1 e0
+   > Les gros consommateurs paient plus.
+C) Rien :: L’eau ne manque pas.
+   ecologie-1 | g-1 c+1 d+2 e0
+   > Les nappes baissent.
+
+=== ecol-187 | ecologie | Les lâchers de lanternes célestes
+Des lanternes en papier enflammées s’envolent lors des fêtes et retombent sur les toits.
+A) Interdire les lanternes :: Sécurité.
+   ecologie+1 securite+1 bon-1 | g0 c+2 d+2 e+1
+   > Le ciel reste sans flammes.
+B) Proposer des lumières au sol à la place :: Alternative.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les fêtes s’illuminent autrement.
+C) Rien :: Tradition.
+   securite-1 | g0 c+1 d+1 e0
+   > Une lanterne enflamme un balcon.
+
+=== ecol-188 | ecologie | Des silures géants dans la Seine
+Des poissons de deux mètres prolifèrent et inquiètent les nageurs.
+A) Autoriser la pêche intensive :: Réguler.
+   ecologie-1 bon+1 | g-1 c+1 d+2 e0
+   > Les pêcheurs se régalent.
+B) Étudier leur impact :: Science.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les scientifiques les jugent inoffensifs.
+C) Rien :: Nature.
+   bon-1 | g+1 c+1 d0 e+1
+   > Les rumeurs vont bon train.
+
+=== ecol-189 | ecologie | Les ragondins des berges
+Des ragondins creusent les berges des canaux et fragilisent les quais.
+A) Les capturer :: Protéger les quais.
+   bud-1 ecologie-1 | g-1 c+2 d+2 e0
+   > Les ragondins sont déplacés.
+B) Renforcer les berges :: Aménager.
+   bud-2 | g+1 c+2 d+1 e+1
+   > Les berges résistent.
+C) Rien :: Nature.
+   securite-1 | g+1 c+1 d0 e+1
+   > Un morceau de quai s’effondre.
+
+=== ecol-190 | ecologie | Un label pour les hôtels durables
+Les hôtels gaspillent eau, énergie et petits flacons.
+A) Créer un label avec avantages :: Encourager.
+   bud-1 ecologie+1 economie+1 | g+1 c+2 d+1 e+1
+   > Les touristes choisissent les hôtels labellisés.
+B) Interdire les mini-flacons :: Règle.
+   ecologie+1 economie-1 | g+1 c+2 d+1 e0
+   > Les distributeurs remplacent les flacons.
+C) Rien :: Hôtellerie.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Le gaspillage continue.
+
+=== ecol-191 | ecologie | Ouvrir les serres municipales au public
+Les serres qui produisent les fleurs de la Ville sont fermées aux visiteurs.
+A) Les ouvrir le week-end :: Partager.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles découvrent les orchidées.
+B) Des ateliers de jardinage :: Apprendre.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les habitants apprennent à bouturer.
+C) Rien :: Production.
+   bon-1 | g0 c+1 d+1 e0
+   > Les serres restent fermées.
+
+=== ecol-192 | ecologie | Une grainothèque municipale
+Des habitants veulent échanger des graines de variétés anciennes.
+A) Une grainothèque dans chaque bibliothèque :: Partager.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les graines circulent entre jardiniers.
+B) Un seul lieu central :: Simple.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > La grainothèque ouvre au jardin des Plantes.
+C) Rien :: Associations.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les variétés anciennes se perdent.
+
+=== ecol-193 | ecologie | Les sources oubliées de Belleville
+Des aqueducs anciens alimentaient Paris en eau de source.
+A) Restaurer et ouvrir les regards :: Patrimoine.
+   bud-2 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les visiteurs descendent dans les aqueducs.
+B) Utiliser l’eau pour arroser les jardins :: Utile.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les jardins sont arrosés à l’eau de source.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Les sources restent oubliées.
+
+=== ecol-194 | ecologie | Le désherbage chimique des voies ferrées
+Les herbicides utilisés sur les voies ruissellent vers les jardins voisins.
+A) Exiger un désherbage mécanique :: Santé.
+   ecologie+1 coh-1 | g+1 c+2 d+1 e+1
+   > Les voies sont désherbées sans chimie.
+B) Laisser pousser une végétation basse :: Nature.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Les talus fleurissent.
+C) Rien :: SNCF.
+   ecologie-1 | g-1 c+1 d+1 e0
+   > Les riverains s’inquiètent.
+
+=== ecol-195 | ecologie | Des chaussées claires contre la chaleur
+L’asphalte noir accumule la chaleur et réchauffe les rues.
+A) Des revêtements clairs dans les rues les plus chaudes :: Rafraîchir.
+   bud-3 ecologie+1 | g+1 c+2 d+1 e+1
+   > La température au sol baisse.
+B) Un test sur une rue :: Prudence.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > L’expérience est mesurée.
+C) Rien :: Coût.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les rues restent brûlantes.
+
+=== ecol-196 | ecologie | Des refuges pour oiseaux dans les écoles
+Des écoles veulent devenir refuges pour la faune.
+A) Nichoirs, haies et mares dans toutes les écoles :: Biodiversité.
+   bud-2 ecologie+1 services+1 | g+2 c+2 d0 e+1
+   > Les mésanges reviennent dans les cours.
+B) Seulement dans les écoles volontaires :: Encourager.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Cent écoles se lancent.
+C) Rien :: Programmes.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les cours restent bétonnées.
+
+=== ecol-197 | ecologie | La chaleur des fours de boulangerie
+Les fours chauffent toute la nuit et la chaleur part dans la rue.
+A) Aider à récupérer la chaleur pour l’immeuble :: Économie circulaire.
+   bud-2 ecologie+1 economie+1 | g+1 c+2 d+1 e+1
+   > Les voisins du boulanger chauffent moins.
+B) Un test avec quelques boulangeries :: Prudence.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Trois boulangeries s’équipent.
+C) Rien :: Anecdotique.
+   ecologie-1 | g0 c+1 d+1 e0
+   > La chaleur continue de s’échapper.
+
+=== ecol-198 | ecologie | Laisser les feuilles mortes dans les massifs
+Les feuilles ramassées à grands frais pourraient nourrir le sol des jardins.
+A) Les laisser dans les massifs et sous les haies :: Nature.
+   rec+0.01x60 ecologie+1 bon-1 | g+1 c+2 d+1 e+1
+   > Les hérissons hivernent sous les tas de feuilles.
+B) Les composter dans chaque parc :: Recycler.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Le compost nourrit les plates-bandes.
+C) Tout ramasser :: Propreté.
+   proprete+1 ecologie-1 | g-1 c+2 d+2 e0
+   > Les allées sont nettes, les sols s’appauvrissent.
+=== ecol-199 | ecologie | Les fours à bois des pizzerias
+Les fours à bois des restaurants enfument les cours d’immeubles.
+A) Imposer des filtres :: Air pur.
+   ecologie+1 economie-1 | g+1 c+2 d+1 e+1
+   > Les fumées diminuent.
+B) Aider à passer aux fours électriques :: Accompagner.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les pizzaiolos s’adaptent.
+C) Rien :: Tradition.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les voisins ferment leurs fenêtres.
+
+=== ecol-200 | ecologie | Le périphérique fermé un dimanche pour une fête
+Des associations veulent fermer le périphérique aux voitures une journée.
+A) Organiser la fête :: Symbole.
+   bud-2 ecologie+1 bon+1 transports-1 | g+2 c+1 d0 e+1
+   > Des milliers de cyclistes font le tour de Paris.
+B) Seulement une portion :: Compromis.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Un tronçon devient piste de danse.
+C) Refuser :: Circulation.
+   transports+1 | g-1 c+1 d+2 e0
+   > Le périphérique reste aux voitures.
+
+=== ecol-201 | ecologie | Une coulée verte entre les grands parcs
+Relier les parcs par des rues plantées permettrait aux animaux de circuler.
+A) Un grand plan de corridors :: Biodiversité.
+   bud-4 ecologie+2 | g+2 c+2 d0 e+1
+   > Les oiseaux passent de parc en parc.
+B) Une première coulée test :: Commencer.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Une rue est entièrement plantée.
+C) Rien :: Coût.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les parcs restent isolés.
+
+=== ecol-202 | ecologie | Les restaurants jettent leurs invendus
+Des tonnes de nourriture partent à la poubelle chaque soir.
+A) Une plateforme de dons des invendus :: Solidarité.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les associations récupèrent les repas.
+B) Obliger les grands restaurants à donner :: Règle.
+   ecologie+1 economie-1 | g+1 c+2 d+1 e0
+   > Les restaurants s’organisent.
+C) Rien :: Commerce.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les poubelles débordent de pain.
+
+=== ecol-203 | ecologie | Des écoles qui visent le zéro déchet
+Des écoles veulent supprimer les emballages et trier à la source.
+? distinct
+A) Accompagner toutes les écoles :: Généraliser.
+   bud-2 ecologie+1 services+1 | g+1 c+2 d+1 e+1
+   > Les goûters arrivent sans emballage.
+B) Un concours entre écoles :: Émulation.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les écoles rivalisent.
+C) Rien :: Programmes.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les poubelles des écoles débordent.
+
+=== ecol-204 | ecologie | Une grande fête de la nature
+Des associations proposent un week-end d’animations dans tous les parcs.
+A) Organiser la fête :: Sensibiliser.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des milliers d’enfants découvrent les insectes.
+B) Soutenir les associations sans organiser :: Soutien.
+   bon+1 | g0 c+2 d+1 e+1
+   > Quelques animations ont lieu.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > La fête n’a pas lieu.
+
+=== ecol-205 | ecologie | Des bains de forêt au bois de Vincennes
+Des soignants proposent des promenades thérapeutiques en forêt pour les patients stressés.
+A) Des séances gratuites encadrées :: Santé.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les patients reviennent apaisés.
+B) Des panneaux pour se balader seul :: Simple.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Des parcours sont balisés.
+C) Rien :: Mode passagère.
+   bon-1 | g0 c+1 d+1 e0
+   > Le projet est abandonné.
+
+=== ecol-206 | ecologie | Dépolluer un terrain avec des plantes
+Des plantes peuvent absorber les métaux d’un sol pollué, lentement mais sans travaux.
+A) Tester sur une friche :: Innovation.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Des tournesols dépolluent la friche.
+B) Excaver la terre comme d’habitude :: Rapidité.
+   bud-3 | g0 c+2 d+2 e0
+   > La friche est dépolluée en un mois.
+C) Rien :: Attendre.
+   ecologie-1 | g0 c+1 d+1 e0
+   > La friche reste fermée.
+
+=== ecol-207 | ecologie | Les objets publicitaires en plastique de la Ville
+La Ville distribue des stylos, gourdes et sacs en plastique lors des événements.
+A) Supprimer les objets publicitaires :: Sobriété.
+   rec+0.01x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les stands deviennent sobres.
+B) Seulement des objets utiles et durables :: Compromis.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Les gourdes remplacent les stylos.
+C) Rien :: Communication.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les objets finissent à la poubelle.
+
+=== ecol-208 | ecologie | Un plan de mobilité pour les agents
+Des milliers d’agents viennent travailler en voiture.
+A) Une prime vélo et un abonnement remboursé :: Encourager.
+   rec-0.02x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les parkings des agents se vident.
+B) Supprimer les places de parking des agents :: Fermeté.
+   ecologie+1 coh-1 | g+1 c+2 d+1 e0
+   > Les syndicats protestent.
+C) Rien :: Liberté.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les voitures restent.
+
+=== ecol-209 | ecologie | Des réceptions officielles végétariennes
+Les buffets de l’Hôtel de Ville sont très carnés.
+A) Des buffets végétariens par défaut :: Exemplarité.
+   ecologie+1 bon-1 | g+1 c+2 d+1 e+1
+   > Les invités découvrent une cuisine inventive.
+B) Moitié végétarien :: Compromis.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Les buffets s’équilibrent.
+C) Rien :: Tradition.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les plateaux de charcuterie continuent.
+
+=== ecol-210 | ecologie | Réemployer les vieux pavés
+Des milliers de pavés de granit sont stockés après les chantiers.
+A) Les réutiliser dans les nouveaux aménagements :: Réemploi.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Les places retrouvent leurs pavés.
+B) Les vendre aux particuliers :: Recettes.
+   bud+1 ecologie+1 | g0 c+2 d+1 e+1
+   > Les Parisiens achètent un morceau de leur rue.
+C) Les concasser :: Simple.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les pavés deviennent du remblai.
+
+=== ecol-211 | ecologie | Un concours du quartier le plus vert
+Les quartiers rivaliseraient pour planter et fleurir leurs rues.
+A) Organiser le concours avec prix :: Émulation.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les rues se couvrent de fleurs.
+B) Une simple carte des initiatives :: Valoriser.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Les initiatives sont mises en lumière.
+C) Rien :: Gadget.
+   bon-1 | g0 c+1 d+1 e0
+   > Les rues restent grises.
+
+=== ecol-212 | ecologie | Des jardiniers municipaux à vélo-cargo
+Les jardiniers se déplacent en camionnette entre les squares.
+? distinct
+A) Équiper les équipes de vélos-cargos :: Exemplarité.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les jardiniers pédalent entre les squares.
+B) Des camionnettes électriques :: Compromis.
+   bud-2 ecologie+1 | g0 c+2 d+1 e+1
+   > Les camionnettes deviennent silencieuses.
+C) Rien :: Matériel lourd.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les camionnettes continuent.
+
+=== ecol-213 | ecologie | Broyer les branches sur place pour pailler
+Les branches d’élagage partent en camion pour être broyées loin.
+A) Broyer sur place et pailler les massifs :: Circulaire.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les massifs gardent l’humidité.
+B) Donner le broyat aux habitants :: Partager.
+   ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les jardiniers amateurs se servent.
+C) Rien :: Organisation.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les camions continuent leurs allers-retours.
+
+=== ecol-214 | ecologie | Les peintures au plomb des ponts métalliques
+Le décapage des vieilles peintures disperse du plomb.
+? distinct
+A) Décaper sous confinement total :: Santé.
+   bud-3 ecologie+1 securite+1 | g+1 c+2 d+2 e+1
+   > Les chantiers sont bâchés hermétiquement.
+B) Recouvrir sans décaper :: Prudence.
+   bud-1 | g0 c+2 d+1 e0
+   > Le plomb reste sous la nouvelle peinture.
+C) Rien :: Coût.
+   ecologie-1 bon-1 | g0 c+1 d+1 e0
+   > Des riverains s’inquiètent.
+
+=== ecol-215 | ecologie | Des stations météo dans les écoles
+Les élèves pourraient mesurer température et pollution dans leur cour.
+A) Équiper toutes les écoles :: Sciences.
+   bud-2 ecologie+1 services+1 | g+1 c+2 d+1 e+1
+   > Les élèves publient leurs mesures.
+B) Quelques écoles pilotes :: Tester.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Dix écoles mesurent leur air.
+C) Rien :: Programmes.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les données manquent.
+
+=== ecol-216 | ecologie | Régénérer la forêt du bois de Vincennes
+Les vieux chênes meurent de sécheresse et la forêt s’éclaircit.
+? distinct
+A) Replanter des essences adaptées :: Anticiper.
+   bud-3 ecologie+2 | g+1 c+2 d+1 e+1
+   > De jeunes arbres prennent racine.
+B) Laisser la forêt se régénérer seule :: Nature.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Des clairières apparaissent.
+C) Rien :: Coût.
+   ecologie-1 | g0 c+1 d+1 e0
+   > La forêt s’appauvrit.
+
+=== ecol-217 | ecologie | La Seine trop chaude pour les poissons
+L’été, la Seine dépasse 27 degrés et les poissons manquent d’oxygène.
+? distinct
+A) Ombrager les berges avec des arbres :: Rafraîchir.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les poissons trouvent des zones fraîches.
+B) Oxygéner l’eau par des bulleurs :: Technique.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Les poissons respirent mieux.
+C) Rien :: Climat.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Des poissons morts flottent.
+
+=== ecol-218 | ecologie | Des plantes grimpantes au pied des façades
+Des habitants veulent planter des glycines au pied de leur immeuble.
+A) Les autoriser et creuser des fosses :: Verdir.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les façades se couvrent de verdure.
+B) Seulement sur les façades sans patrimoine :: Prudence.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Quelques rues verdissent.
+C) Refuser :: Entretien.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les façades restent nues.
+
+=== ecol-219 | ecologie | Classer un bois en parc naturel
+Les associations veulent un statut de protection pour le bois de Vincennes.
+A) Demander le classement :: Protéger.
+   ecologie+2 economie-1 | g+2 c+2 d0 e+1
+   > Le bois devient réserve.
+B) Protéger seulement certaines zones :: Compromis.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Des zones calmes sont créées.
+C) Rien :: Loisirs.
+   ecologie-1 | g-1 c+1 d+2 e0
+   > Les activités se multiplient.
+
+=== ecol-220 | ecologie | Des lampadaires à lumière ambrée
+La lumière blanche des LED perturbe les insectes nocturnes.
+A) Passer à des LED ambrées :: Biodiversité.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les papillons de nuit reviennent.
+B) Seulement près des parcs :: Cibler.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Les parcs sont éclairés en ambre.
+C) Rien :: Coût.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les insectes tournent autour des lampes.
+
+=== ecol-221 | ecologie | Les élus sans voiture pendant un mois
+Une association défie les élus de se déplacer un mois sans voiture.
+? distinct
+A) Relever le défi avec toute l’équipe :: Exemplarité.
+   ecologie+1 pop+1 coh-1 | g+1 c+2 d+1 e+1
+   > Les adjoints découvrent les bus de nuit.
+B) Seulement le maire :: Symbole.
+   ecologie+1 pop+1 | g0 c+2 d+1 e+1
+   > Ton vélo devient célèbre.
+C) Refuser :: Agenda chargé.
+   pop-1 | g-1 c+1 d+1 e0
+   > L’association dénonce ton hypocrisie.
+=== ecol-222 | ecologie | Chauffer des logements avec la chaleur du métro
+L’air chaud des tunnels pourrait chauffer des immeubles voisins.
+? distinct
+A) Un projet pilote :: Innovation.
+   bud-3 ecologie+1 logement+1 | g+1 c+2 d+1 e+1
+   > Un immeuble se chauffe grâce au métro.
+B) Une étude d’abord :: Prudence.
+   bud-1 | g0 c+2 d+1 e+1
+   > L’étude est lancée.
+C) Rien :: Complexité.
+   ecologie-1 | g0 c+1 d+1 e0
+   > La chaleur se perd.
+
+=== ecol-223 | ecologie | Laisser des arbres morts pour les insectes
+Les arbres morts sont des refuges pour les insectes et les oiseaux.
+A) Laisser des troncs morts dans les bois :: Biodiversité.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Les pics-verts reviennent.
+B) Seulement dans les zones fermées au public :: Prudence.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Des îlots de bois mort sont créés.
+C) Tout évacuer :: Sécurité.
+   securite+1 ecologie-1 | g-1 c+2 d+2 e0
+   > Les bois sont nets.
+
+=== ecol-224 | ecologie | Des potagers sur les toits des supermarchés
+Les toits plats des supermarchés pourraient accueillir des potagers.
+A) Imposer des toits cultivés :: Agriculture urbaine.
+   ecologie+1 economie-1 | g+1 c+2 d+1 e+1
+   > Des légumes poussent au-dessus des rayons.
+B) Encourager par une aide :: Inciter.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Quelques enseignes se lancent.
+C) Rien :: Privé.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les toits restent gris.
+
+=== ecol-225 | ecologie | Des écrevisses américaines dans les lacs
+Une espèce invasive détruit la faune des lacs du bois de Boulogne.
+A) Une campagne de piégeage :: Agir.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Les écrevisses reculent.
+B) Vidanger un lac :: Radical.
+   bud-2 ecologie+1 bon-1 | g0 c+2 d+2 e0
+   > Le lac est vidé et nettoyé.
+C) Rien :: Coût.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les grenouilles disparaissent.
