@@ -1,0 +1,485 @@
+// Économie, série 3
+=== econ-066 | economie | Une banque alimentaire pour les étudiants
+Des étudiants font la queue aux distributions alimentaires. Les universités demandent de l’aide.
+A) Épiceries solidaires sur les campus :: Aide directe.
+   bud-4 rec-0.1x60 achat+2 | g+3 c+2 d0 e+1
+   > Des épiceries solidaires ouvrent près des facultés.
+B) Repas à 1 € dans les restaurants municipaux :: Accès large.
+   rec-0.3x60 achat+2 | g+3 c+1 d0 e+1
+   > Les étudiants mangent pour un euro.
+C) Rien :: Compétence des universités.
+   achat-1 | g-2 c+1 d+2 e0
+   > Les files s’allongent.
+
+=== econ-067 | economie | Le marché de Rungis veut une antenne dans Paris
+Le marché de gros de Rungis propose d’ouvrir un entrepôt de distribution en plein Paris.
+? distinct
+A) Accepter sur un ancien site ferroviaire :: Logistique urbaine.
+   economie+2 transports+1 | g0 c+3 d+2 e+1
+   > Un entrepôt de produits frais ouvre près d’une gare.
+B) Imposer des livraisons électriques :: Condition écologique.
+   economie+1 ecologie+1 | g+1 c+2 d+1 e+3
+   > Les livraisons partent en véhicules propres.
+C) Refuser :: Pas de camions en plus.
+   economie-1 | g0 c+1 d-1 e+1
+   > L’entrepôt reste en banlieue.
+
+=== econ-068 | economie | Les artisans du meuble du faubourg Saint-Antoine
+Les derniers ébénistes du faubourg Saint-Antoine sont chassés par la hausse des loyers.
+A) Préempter des ateliers pour les artisans :: Savoir-faire.
+   bud-15 economie+2 | g+2 c+2 d+1 e+1
+   > Des ateliers sont réservés aux ébénistes.
+B) Créer une école d’ébénisterie :: Transmission.
+   bud-8 economie+1 services+1 | g+1 c+3 d+2 e+1
+   > Une école forme de jeunes artisans.
+C) Laisser faire :: Évolution du quartier.
+   economie-1 | g-2 c0 d+2 e0
+   > Les ateliers deviennent des boutiques.
+
+=== econ-069 | economie | La concurrence des plateformes de réservation
+Les restaurateurs paient 25 % de commission aux plateformes de réservation et de livraison.
+A) Plateforme municipale sans commission :: Alternative publique.
+   bud-6 economie+2 | g+3 c+1 d0 e+1
+   > Une plateforme publique est lancée.
+   ~40 economie-1 > Peu de clients l’utilisent.
+B) Coopérative de restaurateurs soutenue par la Ville :: Accompagner.
+   bud-3 economie+1 | g+2 c+3 d+1 e+1
+   > Les restaurateurs créent leur propre service.
+C) Rien :: Marché.
+   economie-1 | g-2 c0 d+3 e0
+   > Rien ne change.
+
+=== econ-070 | economie | Les marchés couverts ouvrent le soir
+Les actifs ne peuvent pas faire leurs courses au marché, fermé à 13 h.
+A) Ouvrir les marchés couverts jusqu’à 20 h :: Adapter.
+   rec-0.1x60 economie+1 bon+1 | g+1 c+2 d+2 e+1
+   > Les marchés couverts ouvrent le soir.
+B) Un marché du soir par arrondissement :: Ciblé.
+   bud-2 economie+1 | g+1 c+3 d+1 e+1
+   > Un marché du soir s’installe dans chaque quartier.
+C) Rien :: Les commerçants décident.
+   economie-1 | g0 c0 d+2 e0
+   > Les horaires ne changent pas.
+
+=== econ-071 | economie | Les jeunes diplômés partent à l’étranger
+Les jeunes diplômés parisiens partent travailler à Londres, Berlin ou Montréal.
+A) Logements à prix réduits pour jeunes actifs :: Retenir.
+   bud-15 logement+1 economie+1 | g+1 c+3 d+1 e+1
+   > Des logements sont réservés aux jeunes actifs.
+B) Campagne « Reviens à Paris » :: Attirer.
+   bud-3 economie+1 | g0 c+2 d+2 e0
+   > Une campagne vise les expatriés.
+C) Rien :: Mobilité normale.
+   economie-1 | g0 c0 d+1 e0
+   > Les départs continuent.
+
+=== econ-072 | economie | Les salons de coiffure à bas prix
+Des salons de coiffure à 5 € se multiplient. Les coiffeurs installés dénoncent du travail dissimulé.
+A) Contrôles du travail dissimulé :: Faire respecter le droit.
+   securite+1 economie+1 | g+1 c+2 d+2 e0
+   > Des salons sont contrôlés.
+B) Aider la régularisation des salons :: Intégrer.
+   bud-1 economie+1 | g+2 c+3 d0 e0
+   > Un accompagnement aide les salons à se mettre en règle.
+C) Rien :: Concurrence.
+   economie-1 achat+1 | g-1 c0 d+2 e0
+   > Les salons continuent.
+
+=== econ-073 | economie | Un salon du jeu vidéo
+Un grand salon international du jeu vidéo hésite entre Paris et Cologne.
+A) Offrir le parc des expositions à prix réduit :: Attirer.
+   bud-8 economie+2 bon+1 | g0 c+2 d+3 e0
+   > Le salon choisit Paris.
+B) Proposer un partenariat avec les écoles :: Formation.
+   bud-3 economie+1 | g+1 c+3 d+1 e0
+   > Le salon s’associe aux écoles du numérique.
+C) Ne rien offrir :: Pas de subvention.
+   economie-1 | g0 c+1 d+1 e0
+   > Le salon part à Cologne.
+
+=== econ-074 | economie | Les boutiques de téléphonie et de vapotage partout
+Dans certaines rues, la moitié des commerces sont des boutiques de téléphones ou de cigarettes électroniques.
+A) Plafonner certains types de commerces par rue :: Diversité commerciale.
+   economie+1 bon+1 | g+1 c+2 d0 e+1
+   > Un plafond est fixé.
+   ~30 economie-1 > Des commerçants attaquent la règle en justice.
+B) Aider l’installation de commerces manquants :: Incitation.
+   bud-5 economie+2 | g+1 c+3 d+2 e0
+   > Une aide attire boulangers et fromagers.
+C) Rien :: Liberté du commerce.
+   bon-1 | g-1 c0 d+3 e0
+   > Rien ne change.
+
+=== econ-075 | economie | Le prix des fleurs du marché aux fleurs
+Le marché aux fleurs de l’île de la Cité est en travaux. Les fleuristes ont perdu leurs clients.
+A) Indemniser les fleuristes :: Soutien.
+   bud-3 economie+1 | g+1 c+2 d+2 e0
+   > Les fleuristes reçoivent une aide.
+B) Marché provisoire sur le parvis :: Continuer.
+   bud-2 economie+1 bon+1 | g+1 c+3 d+1 e+1
+   > Le marché s’installe sur un autre site.
+C) Rien :: Travaux nécessaires.
+   economie-1 | g0 c0 d+1 e0
+   > Plusieurs fleuristes ferment.
+
+=== econ-076 | economie | Des tiers-lieux de travail dans les quartiers
+Des habitants veulent des espaces de travail partagés près de chez eux pour éviter le métro.
+A) Ouvrir des espaces de travail dans les mairies :: Proximité.
+   bud-5 economie+1 transports+1 | g+1 c+3 d+2 e+2
+   > Des espaces de coworking ouvrent dans les mairies.
+B) Soutenir les tiers-lieux associatifs :: Initiative locale.
+   bud-3 economie+1 bon+1 | g+2 c+2 d+1 e+2
+   > Des associations ouvrent des tiers-lieux.
+C) Rien :: Le privé s’en charge.
+   economie-1 | g-1 c0 d+2 e0
+   > Rien ne change.
+
+=== econ-077 | economie | Les foires et salons de quartier
+Les foires commerciales de quartier ont disparu. Des commerçants veulent les relancer.
+A) Foire annuelle dans chaque arrondissement :: Animer.
+   bud-3 economie+1 bon+1 | g+1 c+2 d+2 e0
+   > Les foires reviennent.
+B) Foire unique tournante :: Économique.
+   bud-1 economie+1 | g0 c+3 d+1 e0
+   > Une foire change de quartier chaque mois.
+C) Rien :: Pas rentable.
+   economie-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== econ-078 | economie | Les créateurs de bijoux du Marais menacés
+Les créateurs indépendants du Marais sont remplacés par de grandes enseignes.
+A) Réserver des boutiques aux créateurs :: Diversité.
+   bud-6 economie+2 | g+2 c+2 d+1 e+1
+   > Des boutiques sont réservées aux créateurs.
+B) Marché des créateurs le dimanche :: Vitrine.
+   bud-1 economie+1 bon+1 | g+1 c+3 d+1 e+1
+   > Un marché des créateurs attire les visiteurs.
+C) Rien :: Le marché décide.
+   economie-1 | g-2 c0 d+3 e0
+   > Les créateurs partent.
+
+=== econ-079 | economie | Une enseigne de luxe veut privatiser une rue
+Une marque de luxe veut fermer une rue un jour par semaine pour ses clients VIP.
+A) Accepter contre une redevance élevée :: Recettes.
+   bud+5 pop-2 | g-3 c+1 d+3 e-1
+   > La rue est fermée le mardi.
+B) Refuser :: L’espace public est à tous.
+   economie-1 pop+1 | g+2 c+2 d-1 e+1
+   > La demande est rejetée.
+C) Autoriser seulement pour un événement annuel :: Compromis.
+   bud+1 economie+1 | g0 c+3 d+2 e0
+   > Un événement par an est autorisé.
+
+=== econ-080 | economie | Des cours de programmation pour les chômeurs
+Les entreprises du numérique manquent de développeurs.
+A) École municipale de programmation gratuite :: Reconversion.
+   bud-10 rec-0.2x60 economie+3 | g+2 c+2 d+2 e+1
+   > Des centaines de chômeurs deviennent développeurs.
+B) Bourses pour les écoles existantes :: Financer.
+   rec-0.1x60 economie+2 | g+1 c+3 d+2 e0
+   > Les bourses ouvrent des formations.
+C) Rien :: Compétence de l’État.
+   economie-1 | g-1 c+1 d+2 e0
+   > Rien ne change.
+
+=== econ-081 | economie | Un marché d’intérêt national pour l’artisanat
+Les artisans franciliens veulent un grand marché couvert permanent pour vendre leurs produits.
+A) Créer un grand marché des artisans :: Vitrine.
+   bud-25 economie+2 bon+1 | g+1 c+2 d+2 e+1
+   > Un marché des artisans ouvre dans une ancienne halle.
+B) Marché mensuel en plein air :: Économique.
+   bud-2 economie+1 | g+1 c+3 d+1 e+1
+   > Un marché a lieu chaque mois.
+C) Rien :: Pas prioritaire.
+   economie-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== econ-082 | economie | Les terrasses d’hiver chauffées
+Les cafés veulent garder leurs terrasses l’hiver avec des bâches et des chauffages.
+A) Autoriser avec chauffage électrique limité :: Compromis.
+   economie+1 ecologie-1 | g0 c+3 d+2 e-1
+   > Les terrasses restent ouvertes l’hiver.
+B) Autoriser sans chauffage :: Plaids et couvertures.
+   economie+1 | g+1 c+2 d+1 e+2
+   > Les cafés distribuent des plaids.
+C) Fermer les terrasses l’hiver :: Espace public.
+   bon+1 economie-1 | g+1 c+1 d-2 e+1
+   > Les terrasses rentrent en novembre.
+
+=== econ-083 | economie | Une zone franche dans le nord-est
+Des entreprises pourraient être exonérées d’impôts locaux si elles s’installent dans le nord-est parisien.
+A) Créer la zone franche :: Attirer l’emploi.
+   rec-0.4x60 economie+3 | g0 c+2 d+3 e0
+   > Des entreprises s’installent à la porte de la Chapelle.
+B) Exonérer seulement les entreprises qui embauchent localement :: Ciblé.
+   rec-0.2x60 economie+2 | g+2 c+3 d+1 e0
+   > Les embauches locales sont récompensées.
+C) Refuser :: Égalité fiscale.
+   economie-1 | g+1 c0 d-1 e0
+   > Pas de zone franche.
+
+=== econ-084 | economie | Les grandes surfaces ouvertes 24 h sur 24
+Une enseigne veut ouvrir des supermarchés jour et nuit avec des caisses automatiques.
+A) Autoriser :: Service.
+   economie+1 bon-1 | g-2 c+1 d+3 e-1
+   > Des supermarchés ne ferment plus.
+B) Autoriser jusqu’à minuit seulement :: Compromis.
+   economie+1 | g0 c+3 d+2 e0
+   > Les supermarchés ferment à minuit.
+C) Refuser :: Protéger le sommeil et l’emploi.
+   economie-1 bon+1 | g+2 c+1 d-2 e+1
+   > La demande est rejetée.
+
+=== econ-085 | economie | Des commerces solidaires de seconde main
+Des ressourceries proposent d’ouvrir des magasins dans les rues commerçantes.
+A) Loyers réduits pour les ressourceries :: Économie circulaire.
+   rec-0.1x60 economie+1 ecologie+2 achat+1 | g+2 c+2 d+1 e+4
+   > Des ressourceries s’installent dans les rues commerçantes.
+B) Ouvrir une grande ressourcerie municipale :: Vitrine.
+   bud-8 ecologie+2 economie+1 | g+2 c+2 d0 e+3
+   > Une grande ressourcerie ouvre.
+C) Rien :: Le marché décide.
+   ecologie-1 | g-1 c0 d+2 e-2
+   > Rien ne change.
+
+=== econ-086 | economie | Les vendeurs de journaux à la criée
+Des vendeurs d’un journal solidaire demandent des emplacements officiels.
+A) Leur réserver des emplacements :: Insertion.
+   bon+1 economie+1 | g+3 c+2 d0 e+1
+   > Des vendeurs ont leur place attitrée.
+B) Les aider à créer une coopérative :: Accompagner.
+   bud-1 economie+1 | g+2 c+3 d+1 e+1
+   > Une coopérative est créée.
+C) Rien :: Pas de régime spécial.
+   bon-1 | g-1 c0 d+2 e0
+   > Les vendeurs continuent sans autorisation.
+
+=== econ-087 | economie | Une crise dans la filière des cafés-tabacs
+Les cafés-tabacs perdent leur clientèle et ferment dans plusieurs quartiers.
+A) Les aider à diversifier leurs services :: Moderniser.
+   bud-4 economie+1 services+1 | g+1 c+3 d+2 e0
+   > Les cafés-tabacs deviennent relais poste et points colis.
+B) Baisser les redevances de terrasse :: Soutien.
+   rec-0.1x60 economie+1 | g0 c+2 d+3 e0
+   > Les cafés-tabacs paient moins.
+C) Rien :: Évolution.
+   bon-1 | g-1 c0 d+1 e+1
+   > Plusieurs cafés ferment.
+
+=== econ-088 | economie | Un marché pour les produits des prisons
+Les détenus fabriquent des objets de qualité. Une boutique pourrait les vendre.
+A) Ouvrir une boutique solidaire :: Réinsertion.
+   bud-2 economie+1 securite+1 | g+3 c+2 d0 e+1
+   > Une boutique vend les créations des détenus.
+B) Vendre en ligne seulement :: Discret.
+   bud-1 economie+1 | g+1 c+3 d+1 e0
+   > Une boutique en ligne est créée.
+C) Refuser :: Pas le rôle de la Ville.
+   coh-1 | g-2 c0 d+2 e0
+   > Le projet est abandonné.
+
+=== econ-089 | economie | Le travail du dimanche dans les zones touristiques
+Les grands magasins veulent ouvrir tous les dimanches dans de nouvelles zones touristiques.
+A) Étendre les zones touristiques :: Commerce.
+   economie+2 bon-1 | g-3 c+1 d+4 e-1
+   > Les magasins ouvrent le dimanche dans dix nouveaux quartiers.
+B) Ouverture avec salaire doublé obligatoire :: Contrepartie.
+   economie+1 achat+1 | g+1 c+3 d+1 e0
+   > Les salariés du dimanche sont payés double.
+C) Refuser :: Repos dominical.
+   economie-1 bon+1 | g+3 c0 d-3 e+1
+   > Les zones restent inchangées.
+
+=== econ-090 | economie | Les chefs étoilés quittent Paris
+Plusieurs chefs étoilés ferment leurs restaurants parisiens à cause des loyers.
+A) Loyers réduits dans des lieux prestigieux de la Ville :: Gastronomie.
+   rec-0.1x60 economie+2 | g-1 c+2 d+3 e0
+   > Des chefs s’installent dans des pavillons municipaux.
+B) Concours pour jeunes chefs dans les quartiers :: Nouvelle génération.
+   bud-3 economie+1 bon+1 | g+2 c+2 d+1 e+1
+   > De jeunes chefs ouvrent dans l’est parisien.
+C) Rien :: Le luxe se débrouille.
+   economie-1 | g+1 c0 d-1 e0
+   > Les chefs partent.
+
+=== econ-091 | economie | Les vendeurs ambulants de glaces
+Des vendeurs ambulants de glaces sans autorisation envahissent les parcs l’été.
+A) Créer des licences de vendeurs ambulants :: Encadrer.
+   rec+0.05x60 economie+1 | g+1 c+3 d+2 e0
+   > Des vendeurs déclarés s’installent.
+B) Interdire et saisir :: Ordre.
+   securite+1 bon-1 | g-2 c+1 d+3 e0
+   > Les vendeurs illégaux sont chassés.
+C) Tolérer :: Petit commerce.
+   proprete-1 bon+1 | g+1 c0 d-1 e0
+   > Les vendeurs restent.
+
+=== econ-092 | economie | Les entreprises de la mode payent mal les ouvriers
+Une enquête révèle des ateliers de confection clandestins dans le Sentier.
+A) Contrôles et fermetures :: Faire respecter le droit.
+   securite+1 economie-1 | g+2 c+2 d+1 e+1
+   > Des ateliers clandestins sont fermés.
+B) Aider à la régularisation et à l’embauche légale :: Accompagner.
+   bud-3 economie+1 | g+2 c+3 d0 e+1
+   > Des ateliers se mettent en règle.
+C) Laisser faire l’inspection du travail :: Compétence de l’État.
+   coh-1 | g-1 c+1 d+1 e0
+   > Rien ne change.
+
+=== econ-093 | economie | Un festival du commerce local
+Les commerçants proposent une semaine de promotions dans toute la ville pour attirer les clients.
+A) Financer la communication :: Soutien.
+   bud-3 economie+2 | g0 c+3 d+3 e0
+   > La semaine du commerce attire des milliers de clients.
+B) Bons d’achat municipaux à dépenser localement :: Pouvoir d’achat et commerce.
+   bud-10 economie+2 achat+2 | g+2 c+2 d+1 e+1
+   > Chaque foyer reçoit un bon de 20 €.
+C) Rien :: Aux commerçants d’organiser.
+   economie-1 | g0 c0 d+2 e0
+   > Rien n’est fait.
+
+=== econ-094 | economie | Les cordonniers et retoucheurs disparaissent
+Les petits métiers de la réparation disparaissent des quartiers.
+A) Bonus réparation financé par la Ville :: Soutenir.
+   rec-0.1x60 economie+1 ecologie+1 | g+1 c+3 d+2 e+3
+   > Les réparations sont en partie remboursées.
+B) Locaux à prix réduits pour ces métiers :: Garder les savoir-faire.
+   rec-0.1x60 economie+1 | g+2 c+2 d+1 e+1
+   > Des cordonniers s’installent.
+C) Rien :: Évolution.
+   economie-1 | g-1 c0 d+1 e-1
+   > Les échoppes ferment.
+
+=== econ-095 | economie | Les salles de sport à bas prix
+Des salles de sport à 10 € par mois remplacent les commerces des rues commerçantes.
+A) Limiter leur implantation en rez-de-chaussée :: Diversité commerciale.
+   bon+1 economie-1 | g+1 c+2 d0 e+1
+   > Les salles de sport doivent s’installer en étage.
+B) Laisser faire : c’est bon pour la santé :: Santé.
+   economie-1 bon+1 | g0 c+2 d+2 e0
+   > Les salles se multiplient.
+C) Sport gratuit en plein air en alternative :: Service public.
+   rec-0.1x60 bon+1 | g+2 c+2 d0 e+1
+   > Des coachs municipaux animent des séances gratuites.
+
+=== econ-096 | economie | Une vitrine en ligne pour les commerces de quartier
+Les petits commerçants n’ont pas de site internet et perdent les clients qui achètent en ligne.
+A) Plateforme municipale gratuite de vente en ligne :: Numérique pour tous.
+   bud-6 economie+2 | g+2 c+3 d+1 e+1
+   > Les commerces de quartier vendent en ligne.
+B) Formations au numérique pour les commerçants :: Accompagner.
+   bud-2 economie+1 | g+1 c+3 d+2 e0
+   > Des ateliers forment les commerçants.
+C) Rien :: Chacun s’adapte.
+   economie-1 | g-1 c0 d+2 e0
+   > Rien ne change.
+=== econ-097 | economie | Une entreprise veut tester des livraisons par robots
+Des robots livreurs autonomes pourraient circuler sur les trottoirs.
+A) Autoriser un test :: Innovation.
+   economie+1 bon-1 | g-1 c+2 d+3 e0
+   > Des robots livrent dans le 13e.
+   ~35 pop-1 > Les robots encombrent les trottoirs.
+B) Refuser :: Trottoirs aux piétons.
+   economie-1 bon+1 | g+2 c+1 d-2 e+1
+   > Les robots sont interdits.
+C) Autoriser sur les pistes cyclables seulement :: Compromis.
+   transports-1 economie+1 | g0 c+2 d+2 e0
+   > Les robots roulent sur les pistes.
+
+=== econ-098 | economie | Les marchés de nuit asiatiques
+Des associations veulent organiser des marchés de nuit de street-food asiatique l’été.
+A) Autoriser dans plusieurs quartiers :: Animation.
+   bud-2 economie+1 bon+2 | g+1 c+2 d+1 e+1
+   > Les marchés de nuit attirent les foules.
+   ~25 bon-1 > Les riverains se plaignent du bruit.
+B) Un seul marché sur une grande place :: Encadré.
+   bud-1 economie+1 bon+1 | g+1 c+3 d+1 e+1
+   > Un marché de nuit s’installe place de la République.
+C) Refuser :: Tranquillité.
+   bon-1 | g-1 c0 d+2 e0
+   > La demande est rejetée.
+
+=== econ-099 | economie | Les vignerons urbains
+Des vignes plantées dans Paris pourraient produire un vin vendu au profit des associations.
+A) Développer un vignoble municipal :: Original.
+   bud-3 economie+1 bon+1 | g+1 c+2 d+2 e+2
+   > Le vin de Paris est vendu aux enchères.
+B) Confier à des vignerons privés :: Rentable.
+   rec+0.05x60 economie+1 | g-1 c+2 d+3 e+1
+   > Des vignerons louent les parcelles.
+C) Rien :: Gadget.
+   bon-1 | g0 c0 d+1 e0
+   > Le projet est abandonné.
+
+=== econ-100 | economie | Les entreprises qui licencient après avoir reçu des aides
+Une entreprise subventionnée par la Ville annonce des licenciements massifs.
+A) Exiger le remboursement des aides :: Fermeté.
+   bud+4 pop+2 | g+3 c+1 d-1 e+1
+   > L’entreprise rembourse les aides.
+   ~30 economie-1 > D’autres entreprises hésitent à s’installer.
+B) Conditionner désormais toutes les aides à l’emploi :: Prévenir.
+   coh+1 | g+2 c+3 d0 e+1
+   > Les aides seront liées au maintien de l’emploi.
+C) Rien :: Respect des contrats.
+   pop-2 | g-2 c0 d+3 e0
+   > L’entreprise garde les aides.
+
+=== econ-101 | economie | Une crise des taxis-motos
+Les taxis-motos réclament des emplacements de prise en charge devant les gares.
+A) Créer des emplacements :: Organiser.
+   bud-1 transports+1 economie+1 | g0 c+3 d+2 e0
+   > Des places leur sont réservées.
+B) Refuser :: Sécurité.
+   economie-1 securite+1 | g0 c+1 d0 e+1
+   > Les taxis-motos restent sans emplacement.
+C) Emplacements contre motos électriques :: Condition écologique.
+   transports+1 ecologie+1 | g+1 c+2 d+1 e+3
+   > Seuls les taxis-motos électriques ont accès.
+
+=== econ-102 | economie | Un fonds pour les entreprises de la transition écologique
+Des start-up de l’écologie cherchent des financements pour se développer.
+A) Créer un fonds municipal d’investissement :: Soutenir.
+   bud-20 economie+2 ecologie+2 | g+1 c+2 d+1 e+4
+   > Le fonds investit dans vingt entreprises.
+B) Prix et concours d’innovation :: Visibilité.
+   bud-2 economie+1 ecologie+1 | g0 c+3 d+2 e+2
+   > Un concours récompense les meilleures idées.
+C) Rien :: Les banques sont là pour ça.
+   economie-1 | g-1 c0 d+2 e-2
+   > Rien ne change.
+
+=== econ-103 | economie | Les grandes chaînes de café remplacent les bistrots
+Des chaînes internationales de café s’installent à chaque coin de rue.
+A) Limiter les chaînes dans certains quartiers :: Préserver le caractère.
+   economie-1 bon+1 | g+2 c+1 d-2 e+1
+   > Les chaînes sont limitées dans le centre historique.
+B) Aider les bistrots indépendants :: Soutien.
+   rec-0.1x60 economie+1 | g+1 c+3 d+1 e+1
+   > Une aide soutient les bistrots.
+C) Rien :: Liberté.
+   bon-1 | g-2 c0 d+3 e0
+   > Les chaînes s’installent.
+
+=== econ-104 | economie | Le loyer d’un marché historique augmente
+Le loyer du marché des Enfants-Rouges, le plus ancien de Paris, augmente fortement.
+A) Geler le loyer :: Patrimoine.
+   rec-0.05x60 economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les commerçants respirent.
+B) Hausse progressive :: Compromis.
+   rec+0.05x60 | g0 c+3 d+2 e0
+   > La hausse est étalée sur cinq ans.
+C) Appliquer la hausse :: Recettes.
+   rec+0.1x60 economie-1 | g-2 c+1 d+2 e0
+   > Des commerçants quittent le marché.
+
+=== econ-105 | economie | Des contrats de travail pour les artistes de rue
+Les artistes de rue gagnent peu et sans protection sociale.
+A) Programme municipal rémunéré d’artistes de rue :: Culture et emploi.
+   rec-0.2x60 bon+2 economie+1 | g+3 c+1 d0 e+1
+   > Des artistes sont payés pour animer les places.
+B) Autorisations et emplacements gratuits :: Encadrer.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Les artistes ont des emplacements officiels.
+C) Rien :: Liberté artistique.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
