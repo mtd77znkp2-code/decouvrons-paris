@@ -1,0 +1,484 @@
+// Relations institutionnelles, série 5
+=== ins-146 | institutions | Des séances du Conseil en visioconférence
+Des élus demandent à pouvoir siéger à distance.
+? distinct
+A) Autoriser la visio pour tous :: Modernité.
+   bud-1 coh-1 | g+1 c+2 d+1 e+1
+   > Les bancs du Conseil se vident.
+B) Seulement pour raison médicale :: Compromis.
+   coh+1 | g0 c+2 d+1 e+1
+   > Les élus malades votent à distance.
+C) Refuser :: Présence.
+   coh+1 pop-1 | g0 c+2 d+2 e0
+   > Les élus doivent venir.
+
+=== ins-147 | institutions | Un élu épinglé pour ses impôts
+Un adjoint aurait oublié de déclarer des revenus importants.
+A) Lui demander de démissionner :: Exemplarité.
+   pop+1 coh-1 | g+1 c+2 d+2 e+1
+   > L’adjoint quitte ses fonctions.
+B) Attendre la décision de justice :: Présomption.
+   coh+1 pop-1 | g0 c+2 d+1 e0
+   > La presse s’acharne.
+C) Le défendre publiquement :: Solidarité.
+   pop-2 | g0 c0 d+1 e-1
+   > Le scandale te rattrape.
+
+=== ins-148 | institutions | L’État veut transférer des policiers à la Ville
+Le gouvernement propose de confier des missions de police nationale à la Ville.
+A) Accepter avec les moyens financiers :: Pouvoir.
+   securite+1 coh+1 | g0 c+2 d+2 e0
+   > La police municipale grandit.
+B) Accepter sans compensation :: Ambition.
+   bud-4 securite+2 | g-1 c+1 d+2 e0
+   > La Ville paie la facture.
+C) Refuser :: Compétence de l’État.
+   securite-1 | g+1 c+2 d0 e+1
+   > L’État garde la main.
+
+=== ins-149 | institutions | Le corps diplomatique se plaint
+Les ambassadeurs écrivent pour dénoncer la saleté et l’insécurité de leur quartier.
+A) Un plan spécial pour le quartier des ambassades :: Image.
+   bud-2 proprete+1 securite+1 | g-1 c+2 d+2 e0
+   > Les ambassades sont satisfaites.
+B) Répondre que tous les quartiers sont traités pareil :: Égalité.
+   pop+1 | g+1 c+2 d0 e+1
+   > Les Parisiens apprécient.
+C) Ignorer :: Priorités.
+   pop-1 | g0 c+1 d+1 e0
+   > L’affaire fait la une de la presse étrangère.
+
+=== ins-150 | institutions | Un jumelage proposé par une capitale autoritaire
+Un régime autoritaire propose un jumelage avec de gros investissements.
+A) Refuser :: Principes.
+   pop+1 economie-1 | g+2 c+2 d0 e+1
+   > Les défenseurs des droits humains saluent ta décision.
+B) Accepter en parlant des droits humains :: Dialogue.
+   economie+1 coh-1 | g0 c+1 d+1 e0
+   > Le jumelage est signé sous les critiques.
+C) Accepter pour les investissements :: Pragmatisme.
+   economie+2 pop-2 | g-2 c0 d+2 e-1
+   > Les manifestants défilent devant l’Hôtel de Ville.
+
+=== ins-151 | institutions | L’État impose un couvre-feu sanitaire
+Face à une épidémie, l’État décide un couvre-feu à 21 heures.
+A) Le soutenir publiquement :: Responsabilité.
+   coh+1 economie-1 | g0 c+2 d+2 e+1
+   > Les rues se vident le soir.
+B) Demander des aides pour les commerces :: Défendre.
+   bud-2 economie+1 | g+1 c+2 d+1 e+1
+   > Les restaurateurs reçoivent une aide.
+C) Le critiquer :: Libertés.
+   pop+1 coh-1 | g+1 c0 d0 e0
+   > L’État te reproche ton manque de solidarité.
+
+=== ins-152 | institutions | Une consultation en ligne truquée
+Des milliers de votes d’une consultation viennent de robots.
+A) Annuler et recommencer :: Intégrité.
+   bud-1 pop+1 | g+1 c+3 d+1 e+1
+   > La nouvelle consultation est sécurisée.
+B) Retirer les votes frauduleux :: Corriger.
+   coh+1 | g0 c+2 d+1 e+1
+   > Le résultat est corrigé.
+C) Garder le résultat :: Calendrier.
+   pop-2 | g0 c0 d+1 e-1
+   > L’opposition crie au scandale.
+
+=== ins-153 | institutions | Un dîner à l’Élysée pour négocier
+Le président t’invite à dîner pour parler du financement des transports.
+A) Y aller et négocier ferme :: Obtenir.
+   coh+1 | g0 c+2 d+1 e+1
+   ~20 bud+5 > L’État débloque des crédits.
+   > Le dîner se passe bien.
+B) Y aller avec les maires de banlieue :: Front commun.
+   coh+1 pop+1 | g+1 c+2 d+1 e+1
+   > Les maires parlent d’une seule voix.
+C) Décliner :: Indépendance.
+   pop+1 coh-1 | g+1 c+1 d0 e0
+   > L’Élysée est vexé.
+
+=== ins-154 | institutions | L’État veut décider de l’avenir des Champs-Élysées
+Le gouvernement veut piloter le réaménagement de l’avenue.
+A) Coopérer :: Partenariat.
+   coh+1 | g0 c+2 d+1 e+1
+   > Le projet avance ensemble.
+B) Défendre la compétence de la Ville :: Autonomie.
+   pop+1 coh-1 | g+1 c+1 d0 e0
+   > Le bras de fer commence.
+C) Laisser faire l’État :: Économie.
+   bud+2 pop-1 | g-1 c+1 d+2 e0
+   > L’État paie et décide.
+
+=== ins-155 | institutions | Une motion de défiance contre un adjoint
+L’opposition dépose une motion contre ton adjoint aux transports.
+A) Défendre ton adjoint :: Loyauté.
+   coh+1 pop-1 | g0 c+2 d+1 e0
+   > La motion est rejetée.
+B) Le remplacer discrètement :: Apaiser.
+   coh-1 pop+1 | g0 c+1 d+1 e0
+   > Un nouvel adjoint est nommé.
+C) Laisser le Conseil voter librement :: Démocratie.
+   pop+1 coh-1 | g+1 c+2 d+1 e+1
+   > Le vote est serré.
+
+=== ins-156 | institutions | Un adjoint ment à la presse
+Un adjoint a donné de faux chiffres sur un chantier.
+A) Le désavouer publiquement :: Vérité.
+   pop+1 coh-1 | g+1 c+3 d+1 e+1
+   > L’adjoint présente ses excuses.
+B) Rectifier sans le désavouer :: Discrétion.
+   coh+1 | g0 c+2 d+1 e0
+   > Les vrais chiffres sont publiés.
+C) Laisser passer :: Calme.
+   pop-1 | g0 c0 d+1 e-1
+   > Les journalistes trouvent d’autres erreurs.
+
+=== ins-157 | institutions | Un ancien adjoint embauché par un prestataire
+Un ancien adjoint travaille désormais pour une entreprise qui a des contrats avec la Ville.
+A) Revoir tous les contrats de l’entreprise :: Vigilance.
+   bud-1 pop+1 | g+1 c+3 d+1 e+1
+   > Les contrats sont audités.
+B) Instaurer un délai avant de passer au privé :: Règle.
+   coh+1 pop+1 | g+1 c+2 d+1 e+1
+   > Les futurs anciens élus devront attendre trois ans.
+C) Rien :: Liberté de travailler.
+   pop-1 | g0 c+1 d+1 e0
+   > Les soupçons de conflit d’intérêts grandissent.
+
+=== ins-158 | institutions | Créer une commission de déontologie
+Des élus proposent une commission indépendante pour contrôler les élus.
+A) La créer avec de vrais pouvoirs :: Transparence.
+   bud-1 pop+1 coh-1 | g+1 c+3 d+1 e+1
+   > La commission épluche les déclarations.
+B) Une commission consultative :: Prudence.
+   coh+1 | g0 c+2 d+1 e+1
+   > La commission rend des avis.
+C) Refuser :: Les électeurs jugent.
+   pop-1 | g0 c+1 d+1 e0
+   > L’opposition dénonce l’opacité.
+
+=== ins-159 | institutions | Une plainte contre toi pour diffamation
+Un promoteur porte plainte après tes déclarations à la télévision.
+A) Maintenir tes propos :: Courage.
+   pop+1 bud-1 | g+1 c+2 d0 e+1
+   > Le procès s’annonce.
+B) Présenter des excuses :: Apaiser.
+   pop-1 coh+1 | g0 c+2 d+1 e0
+   > La plainte est retirée.
+C) Négocier un accord :: Discrétion.
+   bud-1 | g0 c+1 d+1 e0
+   > L’affaire s’éteint.
+
+=== ins-160 | institutions | Un influenceur lance un défi au maire
+Un influenceur aux millions d’abonnés te défie de passer une nuit dans une cité.
+A) Relever le défi :: Proximité.
+   pop+1 | g+1 c+2 d+1 e+1
+   > La vidéo fait des millions de vues.
+B) Proposer plutôt un débat :: Sérieux.
+   pop+1 coh+1 | g0 c+2 d+1 e+1
+   > Le débat est regardé par les jeunes.
+C) Ignorer :: Dignité.
+   pop-1 | g0 c+1 d+1 e0
+   > L’influenceur se moque de toi.
+
+=== ins-161 | institutions | Parrainer un candidat à la présidentielle
+Plusieurs candidats sollicitent ta signature de maire.
+A) Parrainer ton camp :: Loyauté.
+   coh+1 pop-1 | g0 c+2 d+1 e0
+   > Ton parrainage est publié.
+B) Parrainer un petit candidat au nom du pluralisme :: Démocratie.
+   pop+1 coh-1 | g+1 c+1 d0 e+1
+   > Ton geste est discuté.
+C) Ne parrainer personne :: Neutralité.
+   coh-1 | g0 c+1 d+1 e0
+   > On te reproche de te cacher.
+
+=== ins-162 | institutions | Le défilé du 14-Juillet déplacé
+L’État veut déplacer le défilé militaire dans l’Est parisien.
+A) Accepter :: Ouvrir à l’Est.
+   bon+1 transports-1 | g0 c+2 d+1 e+1
+   > Le défilé passe sur le cours de Vincennes.
+B) Négocier le partage des frais :: Conditions.
+   coh+1 bud-1 | g0 c+2 d+1 e0
+   > L’État paie la moitié.
+C) Refuser :: Tradition.
+   pop-1 | g0 c+1 d+2 e0
+   > Le défilé reste sur les Champs.
+
+=== ins-163 | institutions | Une rivalité avec Lyon
+Lyon veut attirer un grand événement international convoité par Paris.
+A) Se battre pour l’obtenir :: Ambition.
+   bud-2 pop+1 economie+1 | g0 c+2 d+1 e0
+   > Paris l’emporte de justesse.
+B) Proposer de le partager :: Coopération.
+   coh+1 | g+1 c+2 d+1 e+1
+   > Les deux villes se répartissent les épreuves.
+C) Laisser Lyon l’accueillir :: Décentralisation.
+   pop-1 | g+1 c+1 d0 e+1
+   > Lyon remercie Paris.
+
+=== ins-164 | institutions | Bruxelles menace de sanctions pour la pollution de l’air
+L’Union européenne menace la France d’amendes à cause de l’air parisien.
+A) Un plan antipollution ambitieux :: Agir.
+   bud-3 ecologie+2 transports-1 | g+2 c+2 d0 e+1
+   > Les niveaux de pollution baissent.
+B) Rejeter la faute sur l’État :: Défense.
+   pop-1 | g0 c+1 d+1 e0
+   > Le ping-pong institutionnel continue.
+C) Des mesures symboliques :: Communication.
+   ecologie+1 | g0 c+1 d+1 e0
+   > Bruxelles reste insatisfait.
+
+=== ins-165 | institutions | Un arrêté anti-mendicité contesté
+Un maire d’arrondissement prend un arrêté contre la mendicité.
+A) Le faire retirer :: Solidarité.
+   coh-1 bon+1 | g+2 c+2 d0 e+1
+   > L’arrêté est abrogé.
+B) Le soutenir :: Ordre.
+   coh+1 bon-1 | g-2 c+1 d+2 e0
+   > Les associations portent plainte.
+C) Laisser le tribunal trancher :: Droit.
+   coh-1 | g0 c+2 d+1 e0
+   > Le tribunal annule l’arrêté.
+
+=== ins-166 | institutions | Publier l’agenda des élus
+Les associations de transparence réclament les rendez-vous des adjoints.
+A) Publier tous les agendas :: Transparence.
+   pop+1 coh-1 | g+1 c+3 d+1 e+1
+   > Les rendez-vous avec les lobbys sont visibles.
+B) Publier seulement les rendez-vous avec les entreprises :: Compromis.
+   pop+1 | g0 c+2 d+1 e+1
+   > Les rencontres d’affaires sont publiées.
+C) Refuser :: Vie privée.
+   pop-1 | g0 c+1 d+1 e0
+   > Les soupçons persistent.
+
+=== ins-167 | institutions | La Ville et l’Église se disputent le parvis de Notre-Dame
+Le diocèse et la Ville ne s’entendent pas sur l’aménagement du parvis.
+A) Un projet commun :: Dialogue.
+   coh+1 | g0 c+2 d+1 e+1
+   > Un compromis est trouvé.
+B) Imposer le projet de la Ville :: Autorité.
+   pop+1 coh-1 | g+1 c+1 d+1 e0
+   > Le diocèse proteste.
+C) Laisser le diocèse décider :: Apaiser.
+   pop-1 | g-1 c+1 d+1 e0
+   > Le parvis devient plus solennel.
+
+=== ins-168 | institutions | Un rapporteur de l’ONU critique le mal-logement
+Un rapport international pointe la situation des sans-abri à Paris.
+A) Un plan d’urgence :: Répondre.
+   bud-3 logement+1 bon+1 | g+2 c+2 d0 e+1
+   > Des places d’hébergement sont créées.
+B) Rejeter la faute sur l’État :: Défense.
+   pop-1 | g0 c+1 d+1 e0
+   > La presse internationale reprend le rapport.
+C) Inviter le rapporteur à visiter :: Transparence.
+   pop+1 | g+1 c+2 d+1 e+1
+   > Le rapporteur salue certaines actions.
+
+=== ins-169 | institutions | Les moyens des groupes d’opposition
+L’opposition réclame plus de collaborateurs et de locaux.
+A) Augmenter leurs moyens :: Démocratie.
+   bud-1 pop+1 coh-1 | g+1 c+2 d+1 e+1
+   > L’opposition salue un geste démocratique.
+B) Une hausse limitée :: Compromis.
+   coh+1 | g0 c+2 d+1 e+1
+   > L’opposition obtient un bureau.
+C) Refuser :: Économies.
+   pop-1 | g0 c+1 d+2 e0
+   > L’opposition dénonce un mépris.
+
+=== ins-170 | institutions | Relancer les conseils de quartier
+Les conseils de quartier ne réunissent plus que quelques retraités.
+A) Leur donner un budget propre :: Pouvoir d’agir.
+   bud-2 pop+1 | g+1 c+2 d+1 e+1
+   > Les jeunes reviennent aux réunions.
+B) Tirer au sort leurs membres :: Renouveler.
+   pop+1 coh-1 | g+1 c+2 d+1 e+1
+   > Des habitants découvrent la vie locale.
+C) Les supprimer :: Efficacité.
+   pop-1 | g-1 c+1 d+2 e0
+   > Les habitants perdent un lieu de parole.
+
+=== ins-171 | institutions | Publier le patrimoine des adjoints
+Les journalistes réclament la déclaration de patrimoine de tous les adjoints.
+A) Publier tout :: Transparence.
+   pop+1 coh-1 | g+1 c+3 d+1 e+1
+   > Les déclarations sont en ligne.
+B) Seulement pour les adjoints aux finances et à l’urbanisme :: Cibler.
+   pop+1 | g0 c+2 d+1 e+1
+   > Les adjoints sensibles publient.
+C) Refuser :: Vie privée.
+   pop-1 | g0 c+1 d+1 e0
+   > Les soupçons persistent.
+
+=== ins-172 | institutions | Te présenter à l’élection présidentielle ?
+Ton parti te pousse à te présenter à la présidentielle.
+A) Te présenter :: Ambition nationale.
+   pop+1 coh-2 | g0 c0 d+1 e0
+   > Les Parisiens craignent d’être délaissés.
+B) Refuser et rester maire :: Paris d’abord.
+   pop+1 coh+1 | g0 c+3 d+1 e+1
+   > Les Parisiens apprécient ta loyauté.
+C) Laisser planer le doute :: Stratégie.
+   coh-1 | g0 c+1 d+1 e0
+   > Les rumeurs vont bon train.
+
+=== ins-173 | institutions | L’opposition exclue d’une inauguration
+Les élus d’opposition ne sont pas invités à l’inauguration d’une école.
+A) Présenter des excuses :: Respect.
+   pop+1 coh-1 | g+1 c+2 d+1 e+1
+   > L’incident est clos.
+B) Assumer :: Fermeté.
+   coh+1 pop-1 | g0 c+1 d+1 e0
+   > L’opposition dénonce un sectarisme.
+C) Une règle d’invitation pour tous les élus :: Règle.
+   pop+1 | g0 c+2 d+1 e+1
+   > Toutes les inaugurations seront ouvertes.
+
+=== ins-174 | institutions | L’Hôtel-Dieu vendu à un promoteur
+L’hôpital historique pourrait devenir hôtel de luxe.
+A) Bloquer la vente par le plan d’urbanisme :: Patrimoine.
+   pop+1 coh-1 | g+1 c+2 d+1 e+1
+   > L’hôpital reste un lieu public.
+B) Négocier une partie publique :: Compromis.
+   coh+1 | g0 c+2 d+1 e+1
+   > Une maison de santé ouvre dans une aile.
+C) Laisser faire :: Propriété de l’hôpital.
+   pop-1 | g-1 c+1 d+2 e0
+   > Un palace remplace les salles d’hôpital.
+
+=== ins-175 | institutions | Les maires ruraux dénoncent les privilèges de Paris
+Une tribune accuse Paris d’absorber l’argent public.
+A) Proposer une coopération avec les campagnes :: Solidarité.
+   bud-1 coh+1 | g+1 c+2 d+1 e+1
+   > Des cantines parisiennes achètent aux fermes.
+B) Répondre chiffres à l’appui :: Défense.
+   pop+1 | g0 c+2 d+1 e0
+   > Le débat s’apaise.
+C) Ignorer :: Mépris.
+   pop-1 | g0 c+1 d+1 e0
+   > Le Paris-bashing continue.
+
+=== ins-176 | institutions | Attaquer l’État en justice pour inaction climatique
+Des associations proposent à la Ville de se joindre à leur recours.
+A) Se joindre au recours :: Engagement.
+   bud-1 ecologie+1 coh-1 | g+2 c+2 d0 e+1
+   > Le tribunal donne raison aux plaignants.
+B) Soutenir sans plaider :: Prudence.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > La Ville apporte son soutien moral.
+C) Refuser :: Relations avec l’État.
+   coh+1 pop-1 | g-1 c+2 d+1 e0
+   > Les écologistes sont déçus.
+
+=== ins-177 | institutions | Un vœu sur un conflit international divise le Conseil
+Ta majorité veut voter un texte sur une guerre à l’étranger.
+A) Le soutenir :: Engagement.
+   coh+1 pop-1 | g+1 c+2 d0 e+1
+   > Le vœu est adopté, l’opposition quitte la salle.
+B) Proposer un texte consensuel :: Rassembler.
+   coh+1 pop+1 | g0 c+2 d+1 e+1
+   > Le texte est voté à l’unanimité.
+C) Refuser :: Pas notre rôle.
+   coh-1 | g-1 c+2 d+1 e0
+   > Ta majorité est divisée.
+
+=== ins-178 | institutions | Quel drapeau sur la façade de l’Hôtel de Ville ?
+Des élus veulent afficher un drapeau de soutien à une cause.
+A) L’afficher :: Engagement.
+   coh+1 pop-1 | g+1 c+1 d0 e+1
+   > Le drapeau flotte, la polémique aussi.
+B) Afficher seulement les drapeaux officiels :: Neutralité.
+   pop+1 coh-1 | g-1 c+2 d+2 e0
+   > Ta majorité grogne.
+C) Une illumination aux couleurs de la cause :: Compromis.
+   bon+1 | g0 c+2 d+1 e+1
+   > La façade s’illumine le soir.
+
+=== ins-179 | institutions | Ton directeur de cabinet démissionne
+Ton bras droit claque la porte en dénonçant des méthodes de travail.
+A) Le remplacer vite par un fidèle :: Stabilité.
+   coh+1 | g0 c+2 d+1 e0
+   > Le cabinet se remet au travail.
+B) Revoir l’organisation du cabinet :: Écouter.
+   coh+1 pop+1 | g+1 c+2 d+1 e+1
+   > Le climat s’améliore.
+C) Minimiser :: Communication.
+   pop-1 | g0 c+1 d+1 e0
+   > Il publie une tribune assassine.
+
+=== ins-180 | institutions | L’OCDE veut agrandir son siège
+L’organisation internationale veut construire dans le 16e arrondissement.
+A) Accepter :: Rayonnement.
+   economie+1 bon-1 | g0 c+2 d+2 e0
+   > Le siège s’agrandit, les riverains protestent.
+B) Exiger un jardin public :: Contrepartie.
+   economie+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Un jardin public accompagne l’extension.
+C) Refuser :: Riverains.
+   economie-1 | g0 c+1 d+1 e0
+   > L’OCDE regarde vers d’autres capitales.
+
+=== ins-181 | institutions | L’opposition attaque le budget au tribunal
+L’opposition saisit le tribunal administratif contre le budget voté.
+A) Défendre le budget :: Légalité.
+   bud-1 coh+1 | g0 c+2 d+1 e+1
+   > Le tribunal valide le budget.
+B) Corriger les points contestés :: Prudence.
+   coh+1 | g0 c+3 d+1 e+1
+   > Le budget est amendé.
+C) Dénoncer une manœuvre :: Riposte.
+   pop+1 coh-1 | g0 c+1 d+1 e0
+   ~20 bud-2 > Le tribunal annule une partie du budget.
+   > La bataille juridique continue.
+
+=== ins-182 | institutions | Un vote annulé pour erreur de bouton
+Des élus de ta majorité ont voté par erreur contre un projet clé.
+A) Revoter :: Rectifier.
+   coh+1 pop-1 | g0 c+2 d+1 e0
+   > Le projet est adopté au second vote.
+B) Accepter le résultat :: Respect du vote.
+   pop+1 coh-1 | g+1 c+2 d+1 e+1
+   > Le projet est reporté.
+C) Revoir le système de vote :: Fiabilité.
+   bud-1 coh+1 | g0 c+2 d+1 e+1
+   > Un nouveau boîtier de vote est installé.
+
+=== ins-183 | institutions | Un échange avec New York sur la police de proximité
+New York propose d’échanger des policiers pour partager les méthodes.
+A) Accepter :: Apprendre.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Des policiers parisiens partent à Brooklyn.
+B) Un échange limité aux experts :: Prudence.
+   securite+1 | g0 c+2 d+1 e+1
+   > Des rapports sont échangés.
+C) Refuser :: Modèles différents.
+   securite-1 | g0 c+1 d+1 e0
+   > Rien ne change.
+
+=== ins-184 | institutions | Encadrer l’intelligence artificielle dans les services
+Des services utilisent l’intelligence artificielle sans règles.
+A) Une charte éthique stricte :: Encadrer.
+   bud-1 coh+1 | g+1 c+3 d+1 e+1
+   > Les usages sont encadrés.
+B) Encourager l’usage pour gagner du temps :: Efficacité.
+   services+1 | g-1 c+2 d+2 e0
+   > Les agents gagnent du temps, les syndicats s’inquiètent.
+C) Interdire :: Prudence.
+   services-1 | g+1 c+1 d0 e+1
+   > Les agents reviennent aux méthodes anciennes.
+
+=== ins-185 | institutions | La justice suspend un grand permis de construire
+Le tribunal suspend le permis d’un grand projet urbain contesté.
+? distinct
+A) Faire appel :: Défendre.
+   bud-1 coh+1 | g0 c+2 d+2 e0
+   > La cour d’appel valide le permis.
+B) Revoir le projet :: Écouter.
+   bud-2 pop+1 | g+1 c+2 d+1 e+1
+   > Le projet est redessiné.
+C) Abandonner le projet :: Renoncer.
+   pop-1 coh-1 | g+1 c+1 d0 e0
+   > Le terrain reste en friche.
