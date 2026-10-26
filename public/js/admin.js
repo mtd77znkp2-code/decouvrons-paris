@@ -571,5 +571,21 @@
     write(LB.db.doc("config/maintenance").set(o,{merge:true}),on?"Jeu mis en maintenance.":"Jeu de nouveau ouvert à tous.").catch(function(){});
   };
   $("apBack").onclick=function(){apClose();window.scrollTo(0,0)};
+  // Infos légales : nom de l'éditeur, directeur de la publication et e-mail, affichés sur les pages légales
+  $("apLegal").onclick=function(){
+    var ref=LB.db.doc("config/legal"),nm=inp("",80),di=inp("",80),em=inp("",120);
+    nm.placeholder="ex : Prénom Nom";di.placeholder="Laisse vide si c’est la même personne";em.placeholder="ex : contact@exemple.fr";em.type="email";
+    var p=el("p","ap-mut","Ces informations s’affichent sur les pages Mentions légales et Confidentialité (en bas du site). Elles sont publiques.");
+    var sv=el("button","btn","Enregistrer");sv.type="submit";
+    var err=dlg("Infos légales",[p,fld("Éditeur du site (prénom et nom)",nm),fld("Directeur de la publication",di),fld("E-mail de contact",em)],[sv]);
+    ref.get().then(function(s){var d=s.exists?s.data():{};nm.value=d.nom||"";di.value=d.directeur||"";em.value=d.email||""}).catch(function(){});
+    sv.onclick=function(){
+      var n=nm.value.trim(),e=em.value.trim();
+      if(!n){err.textContent="Indique le nom de l’éditeur du site.";return}
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){err.textContent="Indique une adresse e-mail valide.";return}
+      sv.disabled=true;
+      write(ref.set({nom:n,directeur:di.value.trim()||n,email:e,maj:Date.now()}),"Infos légales enregistrées.").then(function(){$("apDlg").close()}).catch(function(){sv.disabled=false;err.textContent="L’enregistrement a échoué."});
+    };
+  };
   $("apDlg").addEventListener("click",function(e){if(e.target===this)this.close()});
 })();
