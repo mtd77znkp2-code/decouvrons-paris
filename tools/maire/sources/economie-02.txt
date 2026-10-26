@@ -1,0 +1,487 @@
+// Économie, série 2 (identifiants econ-)
+=== econ-026 | economie | Les loyers commerciaux s’envolent
+Les propriétaires de boutiques doublent les loyers au renouvellement des baux. Les commerçants partent.
+A) Racheter des murs commerciaux pour louer à prix modéré :: Foncière publique.
+   bud-40 economie+3 | g+3 c+2 d0 e+1
+   > Une foncière municipale achète cent boutiques.
+B) Négocier une charte avec les grands propriétaires :: Dialogue.
+   economie+1 | g0 c+3 d+2 e0
+   > Quelques propriétaires s’engagent à modérer les hausses.
+C) Laisser faire le marché :: Liberté.
+   economie-1 | g-2 c0 d+3 e0
+   > Les loyers continuent de grimper.
+
+=== econ-027 | economie | Des boutiques éphémères dans les locaux vides
+Des créateurs veulent occuper les vitrines vides quelques mois pour tester leur activité.
+A) Créer un programme de boutiques éphémères :: Animer les rues.
+   bud-3 economie+2 bon+1 | g+1 c+3 d+2 e+1
+   > Des créateurs s’installent pour trois mois.
+B) Subventionner les loyers pendant un an :: Aider à démarrer.
+   rec-0.2x50 economie+2 | g+2 c+2 d+1 e+1
+   > Les jeunes créateurs ont un an pour se lancer.
+C) Ne pas intervenir :: Pas notre rôle.
+   economie-1 | g-1 c0 d+2 e0
+   > Les vitrines restent vides.
+
+=== econ-028 | economie | Les entrepôts de livraison ultra-rapide
+Des « dark stores » remplacent des supérettes : rideaux baissés, livreurs qui attendent dehors.
+A) Les interdire en rez-de-chaussée :: Préserver la rue.
+   economie-1 bon+1 | g+2 c+1 d-2 e+2
+   > Les dark stores doivent fermer ou déménager.
+B) Les autoriser seulement dans les zones d’activité :: Encadrer.
+   economie+1 | g0 c+3 d+1 e+1
+   > Les entrepôts migrent vers les portes de Paris.
+C) Les laisser s’installer :: Nouveaux services.
+   economie+2 bon-1 | g-3 c+1 d+3 e-1
+   > Les dark stores se multiplient.
+
+=== econ-029 | economie | Les cuisines fantômes enfument les cours d’immeubles
+Des cuisines qui ne préparent que pour la livraison s’installent dans des caves et enfument les voisins.
+A) Contrôles sanitaires et fermetures :: Ferme.
+   securite+1 bon+1 economie-1 | g+1 c+2 d+1 e+1
+   > Plusieurs cuisines sont fermées.
+B) Les regrouper dans des halles dédiées :: Organiser.
+   bud-8 economie+2 | g0 c+3 d+2 e+1
+   > Une halle de cuisines partagées ouvre.
+C) Laisser faire :: Emplois.
+   economie+1 bon-1 | g-2 c0 d+3 e-1
+   > Les cuisines restent dans les caves.
+
+=== econ-030 | economie | Les librairies indépendantes menacées
+Trois librairies de quartier ferment en un mois face à la vente en ligne.
+A) Loyer réduit dans les locaux municipaux :: Soutien.
+   rec-0.1x60 economie+1 bon+1 | g+2 c+2 d+1 e+1
+   > Des librairies s’installent dans des locaux de la Ville.
+B) Les bibliothèques achètent chez les libraires du quartier :: Commande publique.
+   economie+2 | g+2 c+3 d+1 e+1
+   > Les achats de livres de la Ville soutiennent les libraires.
+C) Ne rien faire :: Le marché.
+   economie-1 | g-2 c0 d+2 e0
+   > Les librairies continuent de fermer.
+
+=== econ-031 | economie | Les marchés de producteurs d’Île-de-France
+Des agriculteurs franciliens veulent vendre directement aux Parisiens.
+A) Créer dix marchés de producteurs :: Circuits courts.
+   bud-3 economie+1 ecologie+2 achat+1 | g+2 c+2 d+1 e+4
+   > Les maraîchers vendent sur les places.
+B) Réserver une part des cantines aux producteurs locaux :: Commande publique.
+   rec-0.2x60 economie+2 ecologie+1 | g+2 c+2 d+1 e+3
+   > Les cantines achètent aux fermes d’Île-de-France.
+C) Laisser les marchés actuels :: Statu quo.
+   economie-1 | g-1 c0 d+1 e-1
+   > Les producteurs restent loin des Parisiens.
+
+=== econ-032 | economie | Des incubateurs dans les quartiers populaires
+Les incubateurs de start-up sont tous dans les beaux quartiers. Les jeunes entrepreneurs de l’est s’en sentent exclus.
+A) Ouvrir trois incubateurs dans le nord-est :: Égalité des chances.
+   bud-12 economie+2 bon+1 | g+3 c+2 d+1 e+1
+   > Des incubateurs ouvrent à Belleville et à la Chapelle.
+B) Bourses pour entrer dans les incubateurs existants :: Ciblé.
+   bud-3 economie+1 | g+2 c+3 d+1 e0
+   > Des jeunes des quartiers rejoignent les grands incubateurs.
+C) Laisser faire :: Le talent trouve sa place.
+   bon-1 | g-2 c0 d+2 e0
+   > Rien ne change.
+
+=== econ-033 | economie | Acheter aux entreprises de l’économie solidaire
+La Ville pourrait réserver une part de ses achats aux entreprises d’insertion et aux coopératives.
+A) Réserver 10 % des achats publics :: Levier social.
+   rec-0.2x60 economie+2 bon+1 | g+4 c+2 d-1 e+2
+   > Les entreprises solidaires remportent des marchés.
+B) Bonus dans les appels d’offres :: Incitation.
+   economie+1 | g+2 c+3 d+1 e+1
+   > Un critère social est ajouté.
+C) Choisir le moins cher :: Économie.
+   rec+0.1x60 | g-3 c+1 d+3 e-1
+   > Le prix reste le seul critère.
+
+=== econ-034 | economie | Des chômeurs embauchés grâce aux chantiers publics
+Les chantiers de la Ville pourraient imposer l’embauche de chômeurs de longue durée.
+A) Imposer 10 % d’heures d’insertion :: Emploi.
+   rec-0.1x60 economie+2 achat+1 | g+3 c+2 d0 e+1
+   > Des centaines de chômeurs retrouvent du travail.
+B) Le demander sans l’imposer :: Souplesse.
+   economie+1 | g+1 c+3 d+2 e0
+   > Quelques entreprises jouent le jeu.
+C) Ne rien imposer :: Coût des travaux.
+   economie-1 | g-2 c0 d+3 e0
+   > Les chantiers embauchent comme avant.
+
+=== econ-035 | economie | Les boulangers et plombiers manquent
+Les artisans ne trouvent plus d’apprentis. Des boulangeries ferment faute de repreneur.
+A) Créer une école municipale des métiers :: Former.
+   bud-20 economie+3 | g+2 c+2 d+2 e+1
+   > Une école forme boulangers, plombiers et électriciens.
+B) Prime pour les apprentis parisiens :: Inciter.
+   rec-0.3x60 economie+2 achat+1 | g+1 c+3 d+2 e0
+   > Les apprentis reçoivent une prime mensuelle.
+C) Campagne pour valoriser ces métiers :: Communication.
+   bud-2 economie+1 | g0 c+2 d+2 e0
+   > Des affiches mettent en avant les artisans.
+
+=== econ-036 | economie | Des apprentis dans les services de la Ville
+La Ville emploie peu d’apprentis alors que des milliers de jeunes en cherchent.
+A) Recruter 1 000 apprentis :: Donner leur chance.
+   rec-0.5x60 economie+2 services+1 | g+3 c+2 d+1 e+1
+   > Mille jeunes rejoignent les services municipaux.
+B) Recruter 300 apprentis :: Prudent.
+   rec-0.2x60 economie+1 | g+1 c+3 d+1 e0
+   > Trois cents apprentis sont embauchés.
+C) Pas de budget :: Rigueur.
+   economie-1 | g-2 c+1 d+2 e0
+   > Aucun recrutement supplémentaire.
+
+=== econ-037 | economie | Le palais des congrès vieillit
+Le palais des congrès perd des grands événements au profit de Barcelone et Milan.
+A) Rénovation complète :: Rester dans la course.
+   bud-70 economie+3 | g-1 c+2 d+3 e0
+   > Le palais des congrès sera entièrement rénové.
+   +25 rec+0.5x50 > Les grands congrès reviennent à Paris.
+B) Rénovation légère :: Minimum.
+   bud-20 economie+1 | g0 c+3 d+1 e0
+   > Les salles sont rafraîchies.
+C) Le transformer en logements et bureaux :: Changer d’usage.
+   bud+30 logement+1 economie-1 | g+2 c+1 d-1 e+1
+   > Le palais des congrès sera reconverti.
+
+=== econ-038 | economie | Des ateliers « fabriqué à Paris »
+Des fabricants de vêtements, de meubles et de chaussures veulent revenir produire dans Paris.
+A) Réserver des locaux d’activité à loyer réduit :: Relocaliser.
+   bud-10 rec-0.1x60 economie+2 | g+2 c+2 d+2 e+2
+   > Des ateliers s’installent dans le 11e et le 20e.
+B) Créer un label « Fabriqué à Paris » :: Visibilité.
+   bud-2 economie+1 | g+1 c+3 d+2 e+1
+   > Le label est lancé.
+C) Ne rien faire :: Les coûts sont trop élevés à Paris.
+   economie-1 | g-1 c0 d+2 e-1
+   > La production reste à l’étranger.
+
+=== econ-039 | economie | Des commerces soupçonnés de blanchiment
+Dans une rue, des boutiques toujours vides restent ouvertes depuis des années. La police soupçonne du blanchiment.
+A) Contrôles fiscaux et administratifs conjoints :: Fermeté.
+   securite+2 economie+1 | g0 c+2 d+3 e0
+   > Plusieurs commerces sont fermés.
+B) Préempter les murs pour installer de vrais commerces :: Reconquête.
+   bud-15 economie+2 | g+2 c+2 d+1 e+1
+   > La Ville rachète des boutiques.
+C) Laisser la police enquêter :: Discrétion.
+   economie-1 | g0 c+1 d+1 e0
+   > L’enquête prendra des années.
+
+=== econ-040 | economie | Les kiosques à journaux disparaissent
+Les kiosquiers ferment un à un faute de lecteurs de journaux papier.
+A) Transformer les kiosques en points de services :: Moderniser.
+   bud-6 economie+1 services+1 | g+1 c+3 d+2 e+1
+   > Les kiosques vendent aussi café, billets et colis.
+B) Baisser la redevance des kiosquiers :: Soutien.
+   rec-0.1x60 economie+1 | g+2 c+2 d+1 e0
+   > Les kiosquiers paient moins.
+C) Laisser fermer :: Évolution.
+   bon-1 | g-1 c0 d+2 e0
+   > Les kiosques disparaissent.
+
+=== econ-041 | economie | Les sièges sociaux partent à la Défense
+Des grandes entreprises quittent le centre de Paris pour des tours plus modernes en banlieue.
+A) Faciliter la rénovation des immeubles de bureaux :: Retenir.
+   bud-5 economie+2 | g-1 c+3 d+3 e0
+   > Les permis de rénovation sont accélérés.
+B) Transformer les bureaux libérés en logements :: Opportunité.
+   bud-10 logement+2 economie-1 | g+3 c+2 d0 e+2
+   > Les bureaux vides deviennent des appartements.
+C) Ne pas intervenir :: Marché.
+   economie-1 | g0 c0 d+2 e0
+   > Les entreprises partent.
+
+=== econ-042 | economie | Le CV anonyme pour les jeunes des quartiers
+Les jeunes de certains quartiers sont moins souvent rappelés après une candidature.
+A) Imposer le CV anonyme à la Ville et ses partenaires :: Exemplarité.
+   bud-1 economie+1 bon+1 | g+3 c+2 d0 e+1
+   > Les candidatures deviennent anonymes.
+B) Opérations de « testing » des entreprises :: Révéler.
+   bud-2 economie+1 | g+3 c+2 d-2 e+1
+   > Les résultats des tests sont rendus publics.
+   ~30 economie-1 > Des entreprises épinglées protestent.
+C) Forums d’emploi dans les quartiers :: Rapprocher.
+   bud-2 economie+1 | g+1 c+3 d+2 e0
+   > Les entreprises viennent recruter dans les quartiers.
+
+=== econ-043 | economie | Les écoles de mode manquent d’ateliers
+Les étudiants en mode partent à Londres faute d’ateliers abordables à Paris.
+A) Créer un campus de la mode :: Capitale de la mode.
+   bud-25 economie+2 | g0 c+2 d+3 e0
+   > Un campus de la mode est créé dans le 13e.
+B) Ateliers partagés pour jeunes créateurs :: Soutien ciblé.
+   bud-5 economie+1 | g+1 c+3 d+1 e+1
+   > Des ateliers partagés ouvrent.
+C) Laisser les maisons de luxe s’en charger :: Privé.
+   economie-1 | g-1 c0 d+2 e0
+   > Les jeunes créateurs partent.
+
+=== econ-044 | economie | Les boîtes de nuit ferment
+Les clubs parisiens ferment les uns après les autres. Les jeunes partent faire la fête à Berlin.
+A) Créer un statut de « lieu culturel de nuit » :: Protéger la nuit.
+   economie+2 bon+1 | g+1 c+2 d+1 e+1
+   > Les clubs bénéficient d’une protection contre les plaintes.
+   ~30 pop-1 > Des riverains dénoncent un « permis de faire du bruit ».
+B) Prêter des lieux municipaux pour des soirées :: Animation.
+   bud-3 bon+2 economie+1 | g+2 c+2 d0 e+1
+   > Des soirées ont lieu dans des bâtiments municipaux.
+C) Ne rien faire :: Tranquillité.
+   economie-1 bon+1 | g-1 c0 d+2 e0
+   > Encore un club ferme.
+
+=== econ-045 | economie | Un grand magasin historique en difficulté
+Un grand magasin du boulevard Haussmann annonce des centaines de licenciements.
+A) Aider à la reconversion des salariés :: Accompagner.
+   bud-8 economie+1 achat+1 | g+3 c+2 d0 e0
+   > Une cellule de reclassement est ouverte.
+B) Faciliter l’arrivée d’un repreneur :: Sauver le magasin.
+   bud-3 economie+2 | g0 c+3 d+3 e0
+   > Un repreneur est trouvé.
+C) Ne pas intervenir :: Marché.
+   economie-2 pop-1 | g-3 c0 d+2 e0
+   > Le magasin licencie.
+
+=== econ-046 | economie | Les licences de taxi
+Les taxis parisiens ont payé leur licence très cher. Ils demandent une compensation face aux VTC.
+A) Racheter une partie des licences :: Solidarité.
+   bud-30 economie+1 | g+1 c+2 d+1 e0
+   > La Ville rachète 500 licences.
+B) Plus de voies réservées aux taxis :: Avantage concret.
+   transports+1 economie+1 | g0 c+3 d+2 e0
+   > Les taxis gagnent l’accès à de nouvelles voies.
+C) Laisser la concurrence jouer :: Marché.
+   economie-1 | g-1 c+1 d+2 e0
+   > Les taxis se mettent en grève.
+
+=== econ-047 | economie | Taxer les entrepôts de vente en ligne
+Les géants de la vente en ligne ne paient presque pas d’impôts locaux, contrairement aux commerces.
+A) Créer une taxe sur les surfaces logistiques :: Équité.
+   rec+0.6x60 economie+1 | g+3 c+1 d-2 e+2
+   > Les entrepôts paient une taxe.
+   ~30 economie-1 > Un géant du commerce en ligne déménage hors de Paris.
+B) Taxer les livraisons de colis :: Rendement.
+   rec+0.4x60 achat-1 | g+1 c+1 d-1 e+2
+   > Chaque livraison coûte quelques centimes de plus.
+C) Pas de nouvelle taxe :: Prudence.
+   economie-1 | g-2 c+1 d+3 e-1
+   > Rien ne change.
+
+=== econ-048 | economie | Un campus pour les entreprises du numérique
+Les jeunes entreprises du numérique demandent un grand lieu à loyers bas.
+A) Transformer une ancienne halle en campus numérique :: Vitrine.
+   bud-35 economie+3 | g0 c+2 d+3 e0
+   > Une halle accueille mille entrepreneurs.
+B) Prêter des étages de bâtiments municipaux :: Économique.
+   bud-5 economie+1 | g+1 c+3 d+1 e+1
+   > Des étages vides accueillent des start-up.
+C) Laisser les entreprises louer au prix du marché :: Pas d’aide.
+   economie-1 | g-1 c0 d+2 e0
+   > Les start-up s’installent en banlieue.
+
+=== econ-049 | economie | L’attribution des emplacements de food trucks
+Les food trucks se disputent les meilleurs emplacements. L’attribution paraît opaque.
+A) Tirage au sort public :: Transparence.
+   bud-1 economie+1 pop+1 | g+1 c+3 d+1 e+1
+   > Les emplacements sont attribués par tirage au sort.
+B) Enchères :: Recettes.
+   rec+0.2x60 economie+1 | g-2 c+1 d+3 e0
+   > Les meilleurs emplacements vont aux plus offrants.
+C) Priorité aux cuisines locales et durables :: Qualité.
+   economie+1 ecologie+1 | g+1 c+2 d0 e+3
+   > Les food trucks locaux sont favorisés.
+
+=== econ-050 | economie | Les bars à chicha dans les rues résidentielles
+Des bars à chicha s’installent dans des rues calmes. Les riverains se plaignent de la fumée et du bruit.
+A) Limiter leur nombre par quartier :: Encadrer.
+   bon+1 economie-1 | g0 c+2 d+2 e+1
+   > Un quota est fixé.
+B) Contrôles de sécurité et d’horaires :: Faire respecter.
+   securite+1 bon+1 | g0 c+3 d+2 e0
+   > Les contrôles se multiplient.
+C) Laisser faire :: Commerce.
+   economie+1 bon-1 | g-1 c0 d+2 e-1
+   > Les bars à chicha restent ouverts tard.
+
+=== econ-051 | economie | Les agences remplacent les commerces de bouche
+Banques, agences immobilières et opticiens remplacent bouchers et fromagers.
+A) Protéger les commerces alimentaires dans le plan d’urbanisme :: Règle.
+   economie+1 bon+1 | g+2 c+2 d-1 e+1
+   > Les rez-de-chaussée alimentaires ne peuvent plus changer d’usage.
+B) Aider l’installation des commerçants de bouche :: Incitation.
+   bud-6 economie+2 | g+1 c+3 d+2 e0
+   > Une aide finance l’installation de nouveaux commerces.
+C) Laisser faire :: Liberté du commerce.
+   bon-1 | g-2 c0 d+3 e0
+   > Les agences continuent de s’installer.
+
+=== econ-052 | economie | Des emplois pour les seniors
+Des retraités veulent travailler quelques heures par semaine. Des entreprises cherchent des tuteurs.
+A) Créer une plateforme d’emplois seniors :: Lien entre générations.
+   bud-2 economie+1 bon+1 | g+1 c+3 d+2 e+1
+   > Des seniors deviennent tuteurs dans les entreprises.
+B) Recruter des seniors pour l’aide aux devoirs :: Utile.
+   rec-0.1x60 services+1 bon+1 | g+2 c+2 d+1 e+1
+   > Des retraités aident les élèves le soir.
+C) Ne pas s’en occuper :: Pas prioritaire.
+   bon-1 | g0 c0 d+1 e0
+   > Rien n’est fait.
+
+=== econ-053 | economie | Une arène pour le jeu vidéo
+Les organisateurs de compétitions de jeux vidéo veulent une salle permanente à Paris.
+A) Construire une arène :: Capitale de l’e-sport.
+   bud-40 economie+2 bon+1 | g-1 c+2 d+3 e0
+   > Une arène de 5 000 places sera construite.
+B) Adapter une salle existante :: Moins cher.
+   bud-10 economie+1 bon+1 | g0 c+3 d+2 e0
+   > Une salle de concert est équipée.
+C) Refuser :: Pas une priorité.
+   economie-1 | g+1 c0 d-1 e+1
+   > Les compétitions vont à Lyon.
+
+=== econ-054 | economie | Trop de vide-greniers
+Les vide-greniers se multiplient chaque week-end. Les commerçants dénoncent une concurrence déloyale.
+A) Limiter à un par quartier et par mois :: Équilibre.
+   economie+1 bon-1 | g-1 c+2 d+2 e0
+   > Les vide-greniers sont plafonnés.
+B) Les encourager : c’est du réemploi :: Écologie.
+   bon+1 ecologie+1 | g+1 c+1 d-1 e+3
+   > Les vide-greniers continuent.
+C) Réserver une partie aux habitants du quartier :: Contre les professionnels.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Les revendeurs professionnels sont écartés.
+
+=== econ-055 | economie | Les bistrots parisiens au patrimoine mondial
+Les cafés parisiens sont candidats au patrimoine culturel immatériel. Beaucoup ferment.
+A) Aider les bistrots traditionnels :: Préserver un art de vivre.
+   rec-0.2x60 economie+1 bon+1 | g+1 c+2 d+2 e0
+   > Un fonds aide les bistrots menacés.
+B) Soutenir la candidature et communiquer :: Rayonnement.
+   bud-2 economie+1 pop+1 | g0 c+3 d+2 e0
+   > Paris défend la candidature.
+C) Laisser faire :: Le commerce évolue.
+   bon-1 | g-1 c0 d+1 e0
+   > Les bistrots continuent de fermer.
+
+=== econ-056 | economie | Rénover une halle de marché couvert
+Le marché couvert d’un quartier tombe en ruine. Les commerçants veulent rester.
+A) Rénover en gardant les commerçants :: Patrimoine vivant.
+   bud-25 economie+2 bon+1 | g+2 c+2 d+1 e+1
+   > La halle est rénovée.
+B) Confier à un opérateur privé qui en fera un food court :: Rentable.
+   bud+10 economie+2 bon-1 | g-3 c+1 d+3 e0
+   > La halle devient un lieu gastronomique branché.
+   ~35 pop-1 > Les anciens commerçants sont remplacés par des enseignes chères.
+C) Fermer la halle :: Économie.
+   bud+5 economie-1 bon-1 | g-1 c0 d+1 e0
+   > La halle ferme.
+
+=== econ-057 | economie | Des agents intérimaires à la Ville
+Les services municipaux recourent de plus en plus aux intérimaires, plus chers et moins formés.
+A) Titulariser les intérimaires de longue date :: Stabiliser.
+   rec-0.3x60 services+2 | g+3 c+1 d-1 e+1
+   > Des centaines d’intérimaires deviennent agents.
+B) Réduire l’intérim :: Économie.
+   rec+0.2x60 services-1 | g0 c+2 d+2 e0
+   > L’intérim baisse, des services ralentissent.
+C) Garder la souplesse de l’intérim :: Flexibilité.
+   rec-0.1x60 | g-2 c+1 d+2 e0
+   > Rien ne change.
+
+=== econ-058 | economie | Un microcrédit pour les entrepreneurs des quartiers
+Les banques refusent de prêter aux créateurs d’entreprise sans apport.
+A) Créer un fonds de microcrédit municipal :: Coup de pouce.
+   bud-10 economie+2 achat+1 | g+3 c+2 d+1 e+1
+   > Des centaines de petites entreprises démarrent.
+   ~20 bud-3 > Quelques prêts ne sont pas remboursés.
+B) Garantir les prêts bancaires :: Partager le risque.
+   bud-3 economie+1 | g+1 c+3 d+2 e0
+   > Les banques prêtent avec la garantie de la Ville.
+C) Ne pas intervenir :: Pas de risque.
+   economie-1 | g-2 c0 d+2 e0
+   > Les créateurs restent sans financement.
+
+=== econ-059 | economie | Les vendeurs de souvenirs au pied de la tour Eiffel
+Les boutiques de souvenirs vendent des tours Eiffel fabriquées à l’autre bout du monde.
+A) Promouvoir les souvenirs fabriqués en France :: Qualité.
+   bud-2 economie+1 | g+1 c+3 d+2 e+2
+   > Des boutiques proposent des souvenirs locaux.
+B) Taxer les souvenirs importés vendus sur le domaine public :: Recettes.
+   rec+0.1x60 economie-1 | g+2 c+1 d-1 e+2
+   > Les kiosques de souvenirs paient une redevance plus élevée.
+C) Laisser faire :: Les touristes achètent ce qu’ils veulent.
+   economie+1 | g-1 c0 d+2 e-1
+   > Rien ne change.
+
+=== econ-060 | economie | Des voitures sans chauffeur veulent rouler à Paris
+Une entreprise demande à tester des taxis autonomes dans les rues parisiennes.
+A) Accepter un test sur un quartier :: Innovation.
+   economie+2 securite-1 | g-1 c+2 d+3 e0
+   > Des taxis sans chauffeur circulent dans le 13e.
+   ~30 pop-2 > Un taxi autonome bloque une ambulance : la vidéo choque.
+B) Refuser :: Prudence.
+   economie-1 | g+1 c0 d-1 e+1
+   > Le test se fera à Londres.
+C) Accepter seulement pour des navettes de bus :: Service public.
+   bud-5 transports+1 economie+1 | g+1 c+3 d+1 e+1
+   > Des minibus autonomes desservent un quartier.
+
+=== econ-061 | economie | Les boutiques de cigarettes électroniques
+Les boutiques de cigarettes électroniques et de cannabis légal se multiplient près des lycées.
+A) Interdire leur installation près des écoles :: Protéger les jeunes.
+   securite+1 economie-1 | g+1 c+2 d+2 e+1
+   > Un périmètre de protection est créé.
+B) Contrôler la vente aux mineurs :: Faire respecter.
+   securite+1 | g0 c+3 d+2 e0
+   > Des contrôles sont organisés.
+C) Laisser faire :: Commerce légal.
+   economie+1 | g-1 c0 d+2 e-1
+   > Les boutiques continuent d’ouvrir.
+
+=== econ-062 | economie | Les salariés des sous-traitants de la Ville
+Les agents de nettoyage des sous-traitants sont payés au minimum et changent d’employeur à chaque contrat.
+A) Imposer de bons salaires dans les contrats :: Justice sociale.
+   rec-0.4x60 bon+1 | g+4 c+1 d-2 e+1
+   > Les sous-traitants doivent mieux payer.
+B) Réintégrer le nettoyage en régie :: Service public.
+   rec-0.6x60 services+1 proprete+1 | g+4 c0 d-3 e+1
+   > Les agents deviennent salariés de la Ville.
+C) Garder les contrats actuels :: Coûts maîtrisés.
+   bon-1 | g-3 c+1 d+3 e0
+   > Rien ne change.
+
+=== econ-063 | economie | Une prime pour les commerces accessibles
+De nombreux commerces sont inaccessibles aux fauteuils roulants à cause d’une marche.
+A) Financer des rampes pour tous les commerces :: Accessibilité.
+   bud-10 economie+1 services+1 | g+2 c+3 d+1 e+1
+   > Des milliers de rampes sont installées.
+B) Rampes amovibles prêtées gratuitement :: Économique.
+   bud-3 services+1 | g+1 c+3 d+1 e+1
+   > Les commerçants reçoivent une rampe pliante.
+C) Laisser les commerçants se mettre aux normes :: Leur responsabilité.
+   pop-1 | g-1 c+1 d+2 e0
+   > Les commerces restent inaccessibles.
+
+=== econ-064 | economie | La fermeture d’une imprimerie historique
+Une imprimerie du 14e, dernière de Paris, va fermer. Les ouvriers proposent de la reprendre en coopérative.
+A) Aider la reprise en coopérative :: Emploi et savoir-faire.
+   bud-6 economie+2 | g+4 c+2 d0 e+1
+   > Les ouvriers reprennent l’imprimerie.
+B) Commander les impressions de la Ville à l’imprimerie :: Commande publique.
+   rec-0.1x60 economie+1 | g+2 c+3 d+1 e+1
+   > La Ville devient le premier client.
+C) Laisser fermer :: Le marché.
+   economie-1 bon-1 | g-3 c0 d+2 e0
+   > L’imprimerie ferme.
+
+=== econ-065 | economie | Les livreurs à vélo attendent sous la pluie
+Les livreurs attendent les commandes dehors, sur les trottoirs, sans abri ni toilettes.
+A) Ouvrir des maisons des livreurs :: Dignité.
+   bud-5 rec-0.1x60 bon+1 | g+4 c+2 d0 e+2
+   > Des lieux d’accueil ouvrent dans chaque arrondissement.
+B) Faire payer les plateformes :: Responsabiliser.
+   rec+0.1x60 | g+3 c+1 d-2 e+1
+   > Les plateformes financent des abris.
+C) Pas notre rôle :: Les plateformes doivent gérer.
+   bon-1 | g-2 c0 d+3 e0
+   > Les livreurs restent dehors.

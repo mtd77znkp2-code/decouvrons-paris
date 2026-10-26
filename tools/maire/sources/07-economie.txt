@@ -152,18 +152,17 @@ C) Ne rien faire :: Le marché décide.
    economie-1 | g-1 c0 d+2 e-1
    > Les ateliers continuent de fermer.
 
-=== eco-113 | economie | Les bouquinistes des quais en danger
-Les bouquinistes vendent de moins en moins de livres. Certains se mettent à vendre des souvenirs en plastique.
-A) Les aider financièrement :: Préserve un symbole.
-   bud-2 economie+1 bon+1 | g+2 c+2 d+1 e+1
-   > Les bouquinistes reçoivent une aide pour rénover leurs boîtes.
-B) Imposer 75 % de livres anciens :: Authenticité, revenus en baisse.
-   economie-1 bon+1 | g0 c+1 d+1 e+1
-   > Les porte-clés tour Eiffel sont limités.
-C) Laisser faire :: Liberté commerciale.
-   economie+1 bon-1 | g-1 c0 d+2 e-1
-   > Les souvenirs remplacent peu à peu les livres.
-
+=== eco-113 | economie | Les antiquaires du Carré Rive Gauche
+Les antiquaires du quartier historique ferment, remplacés par des boutiques de mode.
+A) Aider les antiquaires par des loyers réduits :: Préserver.
+   rec-0.1x60 economie+1 | g+1 c+2 d+2 e0
+   > Les antiquaires restent dans le quartier.
+B) Organiser un grand salon annuel :: Attirer les clients.
+   bud-3 economie+2 | g0 c+3 d+2 e0
+   > Un salon des antiquaires attire les collectionneurs.
+C) Laisser le quartier évoluer :: Liberté.
+   economie-1 | g-1 c0 d+2 e0
+   > Les antiquaires disparaissent peu à peu.
 === eco-114 | economie | Les grands hôtels demandent moins de taxes
 Les hôteliers estiment que les taxes parisiennes les rendent moins compétitifs que Londres ou Rome.
 A) Baisser la taxe de séjour :: Attractivité, recettes en baisse.
@@ -251,19 +250,17 @@ C) Laisser faire :: Pas d’intervention.
    bon-1 | g-1 c0 d+1 e-1
    > Rien ne change.
 
-=== eco-121 | economie | Une crise touristique frappe Paris
-? suite
-Les annulations s’enchaînent après une série de grèves et de mauvaises images. Hôtels et restaurants s’inquiètent.
-A) Campagne mondiale « Paris vous attend » :: Coûteux, peut relancer.
-   bud-15 economie+3 | g0 c+2 d+3 e0
-   > La campagne passe sur toutes les chaînes internationales.
-B) Soutenir les petits commerces touchés :: Ciblé et social.
-   bud-10 economie+2 achat+1 | g+3 c+2 d0 e+1
-   > Un fonds aide les commerces les plus touchés.
-C) Attendre que ça passe :: Pas de dépense.
-   economie-3 | g0 c0 d0 e0
-   > La saison touristique est catastrophique.
-
+=== eco-121 | economie | Une crise de l’hôtellerie parisienne
+Les hôtels indépendants font faillite face aux chaînes et aux plateformes de location.
+A) Fonds de soutien aux hôtels indépendants :: Aider.
+   bud-15 economie+2 | g0 c+2 d+3 e0
+   > Les hôtels familiaux reçoivent une aide.
+B) Transformer des hôtels en logements :: Reconversion.
+   bud-10 logement+2 economie-1 | g+3 c+2 d-1 e+1
+   > Des hôtels deviennent des résidences.
+C) Laisser faire :: Le marché.
+   economie-1 | g-2 c0 d+2 e0
+   > Les faillites continuent.
 === eco-122 | economie | Les grèves dans les transports se multiplient
 Une série de grèves paralyse les transports chaque semaine. Les commerçants perdent beaucoup.
 ? apres=10
