@@ -159,6 +159,7 @@ C) Porter plainte contre les organisateurs :: Responsabiliser.
 
 === pro-039 | proprete | Les décharges sauvages du bois de Vincennes
 Des déchets s’accumulent dans les sous-bois : matelas, pneus, électroménager.
+? distinct
 A) Grande opération de nettoyage avec les habitants :: Mobilisation.
    bud-3 proprete+2 ecologie+1 bon+1 | g+2 c+2 d+1 e+3
    > Mille bénévoles nettoient le bois.

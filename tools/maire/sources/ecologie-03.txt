@@ -1,0 +1,489 @@
+// Écologie, série 3
+=== ecol-066 | ecologie | Les perruches envahissent les parcs
+Des milliers de perruches exotiques colonisent les parcs et chassent les oiseaux locaux.
+? distinct
+A) Régulation des populations :: Protéger les espèces locales.
+   bud-2 ecologie+1 bon-1 | g0 c+2 d+2 e+1
+   > Des nids sont retirés.
+   ~30 pop-1 > Des amoureux des oiseaux protestent.
+B) Nichoirs pour les espèces locales :: Aider les autres oiseaux.
+   bud-2 ecologie+1 | g+1 c+3 d+1 e+3
+   > Des nichoirs pour mésanges sont installés.
+C) Laisser faire la nature :: Nouvel écosystème.
+   ecologie-1 | g0 c0 d0 e-1
+   > Les perruches prospèrent.
+
+=== ecol-067 | ecologie | Le bruit des avions d’Orly
+Les habitants du sud de Paris se plaignent des avions qui passent à basse altitude.
+A) Exiger un couvre-feu plus strict à Orly :: Calme.
+   bon+1 coh+1 economie-1 | g+1 c+1 d-1 e+3
+   > Le maire réclame la fin des vols tardifs.
+B) Aider l’isolation phonique des logements :: Protéger.
+   bud-10 bon+1 logement+1 | g+1 c+3 d+1 e+1
+   > Des fenêtres antibruit sont subventionnées.
+C) Rien :: Compétence de l’État.
+   bon-1 | g0 c+1 d+1 e-1
+   > Les avions continuent de passer.
+
+=== ecol-068 | ecologie | Chauffer les piscines au soleil
+Les piscines municipales sont chauffées au gaz. Des panneaux solaires pourraient prendre le relais.
+A) Équiper toutes les piscines :: Transition.
+   bud-30 rec+0.2x80 ecologie+3 | g+1 c+2 d+1 e+4
+   > Les piscines se chauffent au soleil.
+B) Équiper trois piscines pilotes :: Tester.
+   bud-8 ecologie+1 | g+1 c+3 d+1 e+2
+   > Trois piscines sont équipées.
+C) Rien :: Coût.
+   ecologie-1 | g0 c0 d+1 e-2
+   > Les piscines restent au gaz.
+
+=== ecol-069 | ecologie | Les pesticides dans les jardinières privées
+La Ville n’utilise plus de pesticides, mais des particuliers en répandent sur leurs balcons et jardins.
+A) Campagne et échange gratuit de produits naturels :: Accompagner.
+   bud-2 ecologie+2 | g+1 c+3 d+1 e+3
+   > Les habitants rapportent leurs pesticides.
+B) Interdire la vente à Paris :: Radical.
+   ecologie+2 economie-1 | g+1 c+1 d-1 e+4
+   > Les jardineries ne vendent plus de pesticides.
+C) Rien :: Liberté.
+   ecologie-1 | g0 c0 d+2 e-2
+   > Rien ne change.
+
+=== ecol-070 | ecologie | Louer des sapins de Noël en pot
+Des millions de sapins coupés finissent à la poubelle. Une entreprise propose de louer des sapins en pot.
+A) Partenariat et promotion :: Noël durable.
+   bud-1 ecologie+2 | g+1 c+3 d+1 e+3
+   > Les sapins en pot sont replantés après les fêtes.
+B) Planter les sapins loués dans les parcs :: Forêt de Noël.
+   bud-2 ecologie+2 bon+1 | g+1 c+2 d+1 e+3
+   > Les sapins rejoignent un bois municipal.
+C) Rien :: Tradition.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== ecol-071 | ecologie | Réensauvager un quai de Seine
+Un quai bétonné pourrait redevenir une berge naturelle avec des roseaux et des oiseaux.
+A) Transformer le quai :: Nature en ville.
+   bud-20 ecologie+3 bon+1 | g+1 c+2 d0 e+5
+   > Le quai devient une berge sauvage.
+   ~30 transports-1 > Les cyclistes perdent un itinéraire.
+B) Végétaliser seulement le bord :: Compromis.
+   bud-6 ecologie+1 | g+1 c+3 d+1 e+2
+   > Des plantes aquatiques bordent le quai.
+C) Garder le quai :: Promenade.
+   ecologie-1 | g0 c+1 d+2 e-2
+   > Le quai reste bétonné.
+
+=== ecol-072 | ecologie | Des algues toxiques dans les lacs du bois
+Des cyanobactéries rendent les lacs du bois de Boulogne dangereux pour les chiens et les enfants.
+A) Curer et oxygéner les lacs :: Traiter.
+   bud-10 ecologie+2 | g+1 c+2 d+1 e+3
+   > Les lacs sont nettoyés.
+B) Interdire l’accès et attendre :: Prudence.
+   ecologie+1 bon-1 | g0 c+2 d+1 e+1
+   > Les lacs sont interdits.
+C) Planter des plantes épuratrices :: Solution naturelle.
+   bud-4 ecologie+2 | g+1 c+2 d0 e+4
+   > Des roseaux filtrent l’eau.
+
+=== ecol-073 | ecologie | Un objectif de 50 % d’ombre
+Des climatologues proposent que la moitié des rues soit ombragée d’ici 2040.
+A) Adopter l’objectif avec un plan d’arbres :: Ambition.
+   bud-30 ecologie+3 bon+1 | g+1 c+2 d0 e+5
+   > Un plan de 100 000 arbres est voté.
+B) Objectif de 30 % :: Réaliste.
+   bud-12 ecologie+2 | g+1 c+3 d+1 e+3
+   > Un objectif plus modeste est adopté.
+C) Pas d’objectif chiffré :: Prudence.
+   ecologie-1 | g0 c+1 d+2 e-2
+   > Les arbres sont plantés au cas par cas.
+
+=== ecol-074 | ecologie | Les pressings au solvant toxique
+Des pressings utilisent encore un solvant cancérigène qui pollue les logements voisins.
+A) Aider à passer au nettoyage à l’eau :: Accompagner.
+   bud-4 ecologie+2 economie+1 | g+1 c+3 d+2 e+3
+   > Les pressings changent de machines.
+B) Interdire le solvant sous deux ans :: Contrainte.
+   ecologie+2 economie-1 | g+1 c+2 d0 e+4
+   > Les pressings ont deux ans pour changer.
+C) Rien :: Loi nationale.
+   ecologie-1 | g0 c0 d+2 e-2
+   > Rien ne change.
+
+=== ecol-075 | ecologie | Des éoliennes sur les toits
+Des petites éoliennes silencieuses pourraient produire de l’électricité sur les toits des immeubles.
+A) Équiper les toits municipaux :: Énergie locale.
+   bud-10 ecologie+2 | g+1 c+2 d+1 e+3
+   > Des éoliennes tournent sur les toits.
+   ~30 bon-1 > Des voisins se plaignent d’un bourdonnement.
+B) Un toit pilote :: Tester.
+   bud-2 ecologie+1 | g+1 c+3 d+1 e+2
+   > Une éolienne est installée sur une mairie.
+C) Refuser :: Paysage.
+   ecologie-1 bon+1 | g0 c+1 d+2 e-2
+   > Les toits restent sans éoliennes.
+
+=== ecol-076 | ecologie | Les poissons reviennent dans la Seine
+La Seine abrite à nouveau des dizaines d’espèces de poissons. Les pêcheurs se multiplient.
+A) Créer des réserves où la pêche est interdite :: Protéger.
+   ecologie+2 bon-1 | g0 c+2 d0 e+4
+   > Des zones de reproduction sont protégées.
+B) Pêche no-kill obligatoire :: Équilibre.
+   ecologie+1 | g+1 c+3 d+1 e+2
+   > Les poissons doivent être relâchés.
+C) Laisser pêcher librement :: Loisir populaire.
+   ecologie-1 bon+1 | g+1 c0 d+2 e-2
+   > Les pêcheurs gardent leurs prises.
+
+=== ecol-077 | ecologie | La géothermie sous les écoles
+Des forages dans les cours d’école pourraient chauffer et rafraîchir les bâtiments.
+? distinct
+A) Équiper cinquante écoles :: Transition.
+   bud-40 rec+0.3x80 ecologie+3 services+1 | g+1 c+2 d+1 e+4
+   > Les écoles sont chauffées par le sous-sol.
+B) Équiper les écoles neuves seulement :: Progressif.
+   bud-5 ecologie+1 | g0 c+3 d+1 e+2
+   > Les nouvelles écoles sont géothermiques.
+C) Rien :: Coût.
+   ecologie-1 | g0 c0 d+1 e-2
+   > Les écoles restent au gaz.
+
+=== ecol-078 | ecologie | L’air des salles de classe
+Des capteurs révèlent que l’air des classes est très confiné. Les enfants se fatiguent.
+A) Capteurs de CO₂ et purificateurs dans toutes les classes :: Santé.
+   bud-12 services+2 ecologie+1 | g+2 c+2 d+1 e+2
+   > Chaque classe a son capteur.
+B) Consignes d’aération toutes les heures :: Simple.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Les enseignants aèrent régulièrement.
+C) Rien :: Pas prioritaire.
+   services-1 | g-1 c0 d+1 e-1
+   > Rien ne change.
+
+=== ecol-079 | ecologie | Le gaspillage dans les cantines
+Un tiers des repas des cantines finit à la poubelle.
+A) Pesée des déchets et menus revus avec les enfants :: Réduire.
+   bud-2 ecologie+2 services+1 | g+1 c+3 d+1 e+3
+   > Le gaspillage baisse de moitié.
+B) Donner les restes aux associations :: Solidarité.
+   bud-1 ecologie+1 achat+1 | g+3 c+2 d0 e+2
+   > Les plats non servis sont donnés.
+C) Rien :: Normal.
+   ecologie-1 | g0 c0 d+1 e-2
+   > Le gaspillage continue.
+
+=== ecol-080 | ecologie | Des micro-forêts dans les quartiers
+Des forêts très denses sur 200 m² poussent dix fois plus vite qu’une plantation classique.
+A) Planter cinquante micro-forêts :: Nature rapide.
+   bud-8 ecologie+3 bon+1 | g+1 c+2 d+1 e+5
+   > Des micro-forêts poussent partout.
+B) Cinq micro-forêts pilotes :: Tester.
+   bud-2 ecologie+1 | g+1 c+3 d+1 e+2
+   > Cinq micro-forêts sont plantées.
+C) Rien :: Les parcs suffisent.
+   ecologie-1 | g0 c+1 d+1 e-1
+   > Rien n’est planté.
+
+=== ecol-081 | ecologie | Les chats errants et les oiseaux
+Des colonies de chats errants déciment les oiseaux des parcs.
+A) Stériliser et adopter :: Réguler humainement.
+   bud-3 ecologie+1 bon+1 | g+1 c+3 d+1 e+2
+   > Les chats sont stérilisés.
+B) Interdire de nourrir les chats :: Limiter.
+   ecologie+1 bon-1 | g0 c+2 d+2 e+1
+   > Les nourrissages sont interdits.
+C) Laisser faire :: Les chats font partie de la ville.
+   ecologie-1 bon+1 | g+1 c0 d0 e-2
+   > Les colonies grandissent.
+
+=== ecol-082 | ecologie | Des panneaux solaires sur les parkings
+Les grands parkings à ciel ouvert pourraient être couverts d’ombrières solaires.
+? distinct
+A) Équiper tous les parkings municipaux :: Énergie et ombre.
+   bud-20 rec+0.2x80 ecologie+3 | g+1 c+3 d+2 e+4
+   > Des ombrières produisent de l’électricité.
+B) Les imposer aux supermarchés :: Contrainte.
+   ecologie+2 economie-1 | g+1 c+2 d0 e+3
+   > Les parkings des supermarchés doivent s’équiper.
+C) Rien :: Coût.
+   ecologie-1 | g0 c0 d+1 e-2
+   > Les parkings restent nus.
+
+=== ecol-083 | ecologie | Une plante invasive sur la petite ceinture
+La renouée du Japon étouffe toute la végétation de la petite ceinture.
+A) Arrachage massif :: Lutte.
+   bud-4 ecologie+2 | g0 c+3 d+1 e+3
+   > Des équipes arrachent la renouée.
+B) Faire pâturer des chèvres :: Écologique.
+   bud-2 ecologie+2 bon+1 | g+1 c+2 d+1 e+4
+   > Des chèvres mangent la renouée.
+C) Laisser faire :: Coût.
+   ecologie-1 | g0 c0 d+1 e-2
+   > La renouée gagne du terrain.
+
+=== ecol-084 | ecologie | Ouvrir la petite ceinture aux promeneurs
+La petite ceinture, ancienne voie ferrée, pourrait devenir une promenade nature de 30 km.
+A) Ouvrir toute la petite ceinture :: Grande promenade.
+   bud-50 ecologie+2 bon+3 | g+2 c+2 d+1 e+3
+   > Une promenade de 30 km traverse Paris.
+   +30 pop+3 > La promenade devient un lieu emblématique.
+B) Ouvrir quelques tronçons :: Progressif.
+   bud-12 bon+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Trois tronçons sont ouverts.
+C) Garder la petite ceinture sauvage :: Biodiversité.
+   bon-1 ecologie+1 | g0 c+1 d0 e+3
+   > La petite ceinture reste fermée.
+
+=== ecol-085 | ecologie | Des arbres adaptés au climat de 2050
+Les platanes et marronniers souffrent de la chaleur. Il faut choisir des espèces adaptées au climat futur.
+A) Planter des essences méditerranéennes :: Anticiper.
+   bud-5 ecologie+2 | g+1 c+3 d+1 e+3
+   > Chênes verts et micocouliers remplacent les arbres morts.
+B) Garder les essences traditionnelles :: Paysage parisien.
+   ecologie-1 bon+1 | g0 c+1 d+2 e-1
+   > Les platanes sont replantés.
+C) Mélanger les essences :: Diversité.
+   bud-4 ecologie+2 | g+1 c+3 d+1 e+3
+   > Les rues mêlent plusieurs espèces.
+
+=== ecol-086 | ecologie | Des parkings qui laissent passer la pluie
+Les parkings bétonnés empêchent la pluie de s’infiltrer et aggravent les inondations.
+A) Revêtements perméables dans tous les parkings publics :: Infiltrer.
+   bud-15 ecologie+2 | g+1 c+3 d+1 e+3
+   > Les parkings absorbent la pluie.
+B) Les imposer dans les nouveaux parkings :: Progressif.
+   ecologie+1 | g0 c+3 d+2 e+2
+   > Les nouveaux parkings seront perméables.
+C) Rien :: Coût.
+   ecologie-1 | g0 c0 d+1 e-2
+   > Rien ne change.
+
+=== ecol-087 | ecologie | Les fontaines ornementales pendant la sécheresse
+Les fontaines des places consomment beaucoup d’eau alors que la sécheresse menace.
+A) Les couper l’été :: Sobriété.
+   ecologie+1 bon-1 | g0 c+2 d0 e+3
+   > Les fontaines s’arrêtent.
+B) Les passer en circuit fermé :: Investir.
+   bud-8 ecologie+2 | g+1 c+3 d+1 e+3
+   > Les fontaines recyclent leur eau.
+C) Les garder :: Fraîcheur.
+   ecologie-1 bon+1 | g0 c0 d+2 e-2
+   > Les fontaines coulent.
+
+=== ecol-088 | ecologie | Végétaliser les ponts
+Les ponts de Paris sont très minéraux. Des jardinières pourraient y apporter fraîcheur et fleurs.
+A) Jardinières sur dix ponts :: Embellir.
+   bud-5 ecologie+1 bon+1 | g+1 c+2 d+1 e+2
+   > Les ponts fleurissent.
+B) Un pont-jardin piéton :: Projet phare.
+   bud-25 ecologie+2 bon+2 | g+1 c+2 d0 e+4
+   > Un pont devient un jardin suspendu.
+C) Rien :: Patrimoine.
+   ecologie-1 | g0 c+1 d+2 e-1
+   > Les ponts restent minéraux.
+
+=== ecol-089 | ecologie | Des moutons dans les parcs
+Des moutons pourraient tondre les pelouses à la place des tondeuses.
+A) Éco-pâturage dans vingt parcs :: Écologique et populaire.
+   bud-3 ecologie+2 bon+2 | g+1 c+2 d+1 e+4
+   > Les moutons font le bonheur des enfants.
+B) Un parc pilote :: Tester.
+   bud-1 ecologie+1 bon+1 | g+1 c+3 d+1 e+2
+   > Des moutons tondent le parc de la Villette.
+C) Rien :: Les tondeuses marchent bien.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== ecol-090 | ecologie | Les barbecues sauvages dans les bois
+L’été, des barbecues sauvages dans les bois de Boulogne et de Vincennes risquent de déclencher des incendies.
+A) Interdire et verbaliser :: Prévenir le feu.
+   securite+1 ecologie+1 bon-1 | g0 c+2 d+2 e+2
+   > Les barbecues sont interdits et contrôlés.
+B) Créer des aires de barbecue aménagées :: Encadrer.
+   bud-4 bon+2 securite+1 | g+2 c+2 d+1 e+1
+   > Des aires équipées accueillent les familles.
+C) Tolérer :: Loisir populaire.
+   ecologie-1 bon+1 | g+1 c0 d0 e-2
+   > Les barbecues continuent.
+   ~20 ecologie-2 pop-2 > Un départ de feu brûle plusieurs hectares.
+=== ecol-091 | ecologie | Afficher la qualité de l’air partout
+Les Parisiens ne savent pas quand l’air est pollué.
+A) Panneaux d’affichage en temps réel :: Informer.
+   bud-4 ecologie+1 | g+1 c+3 d+1 e+2
+   > La qualité de l’air s’affiche dans la rue.
+B) Alertes par SMS :: Simple.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+1
+   > Les habitants reçoivent des alertes.
+C) Rien :: Les applications existent.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== ecol-092 | ecologie | Des écoles neuves passives
+Les nouvelles écoles pourraient être construites sans besoin de chauffage.
+A) Imposer le standard passif :: Exemplarité.
+   rec-0.2x60 ecologie+3 services+1 | g+1 c+2 d0 e+4
+   > Les écoles neuves seront passives.
+B) Viser le standard basse consommation :: Compromis.
+   rec-0.05x60 ecologie+1 | g0 c+3 d+2 e+2
+   > Les écoles seront économes.
+C) Construire au moindre coût :: Budget.
+   ecologie-1 | g0 c0 d+2 e-2
+   > Les normes minimales suffisent.
+
+=== ecol-093 | ecologie | Des lampadaires solaires
+Des lampadaires autonomes à panneaux solaires pourraient éclairer les parcs sans câble.
+A) Équiper tous les parcs :: Autonomie.
+   bud-12 ecologie+2 | g+1 c+3 d+1 e+3
+   > Les parcs s’éclairent au soleil.
+B) Quelques allées tests :: Tester.
+   bud-2 ecologie+1 | g0 c+3 d+1 e+2
+   > Une allée est équipée.
+C) Rien :: Coût.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== ecol-094 | ecologie | La pêche dans les canaux
+Des pêcheurs demandent l’autorisation de pêcher dans le canal Saint-Martin.
+A) Autoriser la pêche no-kill :: Loisir encadré.
+   bon+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les pêcheurs s’installent le long du canal.
+B) Interdire :: Protéger les poissons.
+   bon-1 ecologie+1 | g0 c+1 d0 e+3
+   > La pêche reste interdite.
+C) Autoriser sans conditions :: Liberté.
+   bon+1 ecologie-1 | g0 c0 d+2 e-2
+   > La pêche est libre.
+
+=== ecol-095 | ecologie | Se baigner dans le canal de l’Ourcq
+Le bassin de la Villette accueille la baignade l’été. Les habitants demandent un deuxième site.
+A) Ouvrir un second site de baignade :: Fraîcheur.
+   bud-6 bon+2 ecologie+1 | g+2 c+2 d+1 e+2
+   > Un nouveau bassin de baignade ouvre.
+B) Allonger la saison du site existant :: Simple.
+   rec-0.05x20 bon+1 | g+1 c+3 d+1 e+1
+   > La baignade dure jusqu’en septembre.
+C) Rien :: Qualité de l’eau incertaine.
+   bon-1 | g0 c+1 d+1 e0
+   > Un seul site reste ouvert.
+
+=== ecol-096 | ecologie | Des jardins thérapeutiques dans les hôpitaux
+Les patients des hôpitaux n’ont aucun espace vert. Des médecins demandent des jardins.
+A) Financer dix jardins thérapeutiques :: Soigner par la nature.
+   bud-6 ecologie+1 services+1 bon+1 | g+2 c+2 d+1 e+3
+   > Des jardins ouvrent dans les hôpitaux.
+B) Prêter des jardiniers municipaux :: Aide en nature.
+   rec-0.05x60 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les jardiniers de la Ville aident les hôpitaux.
+C) Rien :: Compétence de l’AP-HP.
+   bon-1 | g0 c+1 d+1 e-1
+   > Rien ne change.
+
+=== ecol-097 | ecologie | Des hôtels à insectes
+Les insectes pollinisateurs disparaissent de la ville.
+A) Installer des hôtels à insectes dans tous les parcs :: Biodiversité.
+   bud-2 ecologie+2 | g+1 c+2 d+1 e+3
+   > Des abris à insectes apparaissent.
+B) Ateliers avec les écoles pour les fabriquer :: Pédagogie.
+   bud-1 ecologie+1 bon+1 | g+2 c+2 d+1 e+3
+   > Les élèves construisent des hôtels à insectes.
+C) Rien :: Gadget.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien n’est fait.
+
+=== ecol-098 | ecologie | Les chauves-souris et l’éclairage des parcs
+Les chauves-souris désertent les parcs trop éclairés la nuit.
+A) Éteindre les parcs la nuit :: Trame noire.
+   ecologie+2 securite-1 | g0 c+1 d-1 e+4
+   > Les parcs sont plongés dans le noir.
+B) Lumière ambrée et tamisée :: Compromis.
+   bud-4 ecologie+1 | g+1 c+3 d+1 e+2
+   > Des éclairages adaptés sont posés.
+C) Rien :: Sécurité.
+   ecologie-1 securite+1 | g0 c0 d+2 e-2
+   > Rien ne change.
+
+=== ecol-099 | ecologie | Un moratoire sur l’abattage des arbres
+Des associations demandent l’arrêt de tout abattage d’arbre, même malade, pendant un an.
+A) Accepter le moratoire :: Protéger.
+   ecologie+1 securite-1 | g+1 c0 d-2 e+4
+   > Aucun arbre n’est abattu.
+   ~30 pop-2 > Une branche d’arbre malade tombe sur une voiture.
+B) Expertise indépendante avant chaque abattage :: Transparence.
+   bud-2 ecologie+1 | g+1 c+3 d+1 e+2
+   > Chaque abattage est justifié publiquement.
+C) Refuser :: Sécurité.
+   ecologie-1 securite+1 | g0 c+1 d+2 e-2
+   > Les abattages continuent.
+
+=== ecol-100 | ecologie | Des parcs sans tabac
+Des parents demandent l’interdiction de fumer dans les parcs et les aires de jeux.
+A) Interdire dans tous les parcs :: Santé et propreté.
+   proprete+1 ecologie+1 bon-1 | g+1 c+2 d0 e+3
+   > Les parcs deviennent non-fumeurs.
+B) Interdire seulement près des jeux :: Compromis.
+   proprete+1 | g+1 c+3 d+1 e+1
+   > Les aires de jeux deviennent sans tabac.
+C) Rien :: Liberté.
+   proprete-1 bon+1 | g0 c0 d+2 e-1
+   > Rien ne change.
+
+=== ecol-101 | ecologie | Des forages pour arroser les parcs
+Des nappes souterraines pourraient arroser les parcs sans utiliser d’eau potable.
+A) Forer sous les grands parcs :: Économiser l’eau potable.
+   bud-10 rec+0.1x60 ecologie+2 | g+1 c+3 d+1 e+3
+   > Les parcs sont arrosés avec l’eau de la nappe.
+B) Étude préalable sur les nappes :: Prudence.
+   ecologie+1 bud-1 | g0 c+3 d+1 e+1
+   > Une étude est lancée.
+C) Rien :: L’eau potable suffit.
+   ecologie-1 | g0 c0 d+1 e-2
+   > Rien ne change.
+
+=== ecol-102 | ecologie | Une piscine naturelle
+Une piscine filtrée par des plantes, sans chlore, pourrait être créée dans un parc.
+A) Construire la piscine naturelle :: Innovation.
+   bud-25 ecologie+2 bon+2 | g+1 c+2 d+1 e+4
+   > Une piscine naturelle ouvre.
+B) Transformer un bassin existant :: Économique.
+   bud-8 ecologie+1 bon+1 | g+1 c+3 d+1 e+2
+   > Un bassin devient naturel.
+C) Rien :: Les piscines classiques suffisent.
+   bon-1 | g0 c0 d+1 e-1
+   > Rien n’est fait.
+
+=== ecol-103 | ecologie | Le kérosène du défilé aérien
+Des militants dénoncent la pollution du défilé aérien du 14-Juillet.
+A) Demander un défilé aérien réduit :: Symbole écologique.
+   coh+1 bon-1 | g+1 c0 d-3 e+4
+   > Le maire demande moins d’avions.
+   ~40 pop-2 > Une partie de l’opinion dénonce un manque de respect pour l’armée.
+B) Proposer des spectacles de drones en complément :: Innovation.
+   bud-2 bon+1 | g+1 c+2 d0 e+2
+   > Un spectacle de drones clôt la journée.
+C) Ne pas s’en mêler :: Tradition nationale.
+   ecologie-1 | g-1 c+1 d+3 e-2
+   > Rien ne change.
+
+=== ecol-104 | ecologie | Les gobelets de café à emporter
+Des millions de gobelets de café jetables finissent à la poubelle chaque année.
+A) Réduction obligatoire pour les clients avec leur tasse :: Inciter.
+   ecologie+2 achat+1 | g+1 c+3 d+1 e+3
+   > Les cafés offrent une remise aux clients équipés.
+B) Gobelets consignés dans toute la ville :: Système commun.
+   bud-5 ecologie+2 | g+1 c+2 d+1 e+4
+   > Un réseau de gobelets consignés est lancé.
+C) Rien :: Commerce.
+   ecologie-1 | g0 c0 d+2 e-2
+   > Les gobelets jetables restent.
+
+=== ecol-105 | ecologie | Des fruits venus par avion dans les cantines
+Des fruits exotiques arrivent par avion pour les cantines, alors que des fruits locaux existent.
+A) Fruits locaux et de saison uniquement :: Bilan carbone.
+   ecologie+2 economie+1 bon-1 | g+1 c+2 d+1 e+4
+   > Les cantines servent des pommes et des poires d’Île-de-France.
+B) Interdire seulement le transport aérien :: Compromis.
+   ecologie+1 | g+1 c+3 d+1 e+2
+   > Les fruits arrivent par bateau.
+C) Rien :: Diversité des menus.
+   ecologie-1 bon+1 | g0 c0 d+1 e-2
+   > Rien ne change.

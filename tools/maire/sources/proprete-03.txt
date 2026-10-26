@@ -49,6 +49,7 @@ C) Fermer les squares concernés la nuit :: Sécurité.
 
 === pro-070 | proprete | Les déchets flottants du canal de l’Ourcq
 Bouteilles, sacs et ballons flottent sur le canal de l’Ourcq.
+? distinct
 A) Bateau-nettoyeur quotidien :: Efficace.
    bud-6 rec-0.1x60 proprete+2 ecologie+1 | g+1 c+3 d+1 e+2
    > Un bateau ramasse les déchets chaque jour.
