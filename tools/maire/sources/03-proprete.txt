@@ -246,6 +246,7 @@ C) Attendre le rapport des services :: Prudent, mais lent.
 
 === pro-020 | proprete | Les campements laissent des déchets
 Des campements de personnes à la rue génèrent des déchets que personne ne ramasse.
+? distinct
 A) Nettoyer et proposer des hébergements :: Humain et propre, coûteux.
    bud-12 proprete+3 logement+1 services+2 | g+4 c+2 d0 e+2
    > Les occupants sont orientés vers des hébergements, le site est nettoyé.

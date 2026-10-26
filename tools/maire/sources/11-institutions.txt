@@ -115,20 +115,18 @@ C) Passer en force :: Autorité.
    > Le budget passe de justesse et les alliés boudent.
    ~40 coh-2 > Deux adjoints démissionnent.
 
-=== ins-010 | institutions | Un rapport de la Cour des comptes
-La Cour des comptes publie un rapport sévère sur la dette de la Ville.
-? detteMin=1
-A) Annoncer un plan d’économies :: Rassurer.
-   rec+0.6x60 services-1 bon-1 | g-2 c+3 d+3 e0
-   > Un plan de rigueur est annoncé.
-B) Contester les conclusions :: Défense.
-   pop-1 | g+1 c-1 d-2 e0
-   > Le maire conteste le rapport.
-   ~35 pop-2 > Les médias reprennent le rapport en boucle.
-C) Vendre des immeubles de la Ville :: Désendetter.
-   bud+60 logement-1 | g-3 c+2 d+3 e-1
-   > Des immeubles sont vendus aux enchères.
-
+=== ins-010 | institutions | Le Sénat veut plafonner les dépenses des grandes villes
+Une proposition de loi limiterait la hausse des dépenses de fonctionnement de Paris à 1 % par an.
+A) Mobiliser les maires des grandes villes contre la loi :: Front commun.
+   coh+2 pop+1 | g+3 c+1 d-2 e+2
+   > Lyon, Marseille et Bordeaux signent une tribune avec Paris.
+   ~40 rec-0.3x40 > La loi passe quand même : certaines dépenses doivent être gelées.
+B) Anticiper en réduisant déjà les dépenses :: Prendre les devants.
+   rec+0.5x60 services-2 bon-1 | g-3 c+2 d+4 e-1
+   > Un plan d’économies est lancé avant même le vote.
+C) Négocier une exception pour Paris capitale :: Diplomatie.
+   coh+1 | g0 c+3 d+1 e0
+   > Les sénateurs envisagent un statut particulier.
 === ins-011 | institutions | Le jumelage avec une ville étrangère
 Une grande ville étrangère propose un jumelage, mais son gouvernement est critiqué pour les droits humains.
 A) Accepter le jumelage :: Économie.
@@ -181,19 +179,18 @@ C) Organiser une consultation en ligne :: Rapide.
    bud-1 coh+1 | g+1 c+3 d+1 e+1
    > Une consultation en ligne recueille 80 000 avis.
 
-=== ins-015 | institutions | La police municipale armée ?
-Votre majorité est divisée sur l’armement de la police municipale.
-A) Armer la police municipale :: Sécurité.
-   bud-10 securite+3 | g-4 c+1 d+5 e-3
-   > Les policiers municipaux sont équipés d’armes.
-   ~25 pop-2 > Un tir lors d’une interpellation provoque une polémique.
-B) Refuser :: Prévention.
-   securite-1 | g+3 c+1 d-4 e+3
-   > La police municipale reste non armée.
-C) Équiper de caméras-piétons et pistolets à impulsion :: Intermédiaire.
-   bud-5 securite+2 | g0 c+3 d+2 e0
-   > Des pistolets à impulsion sont distribués.
-
+=== ins-015 | institutions | Un élu de ta majorité passe à l’opposition
+Un adjoint très médiatique quitte ta majorité et rejoint l’opposition avec deux conseillers.
+A) Le remplacer par une figure de la société civile :: Renouveau.
+   pop+2 coh-1 | g+1 c+2 d+1 e+1
+   > Une cheffe d’entreprise respectée devient adjointe.
+B) Dénoncer sa trahison publiquement :: Resserrer les rangs.
+   coh+3 pop-1 | g+1 c-1 d+1 e+1
+   > Le maire fustige « un opportuniste ».
+   ~35 pop-2 > L’ancien adjoint publie des messages privés embarrassants.
+C) Négocier pour récupérer les deux conseillers :: Limiter la casse.
+   bud-5 coh+1 | g0 c+3 d+1 e0
+   > Les deux conseillers reviennent contre des délégations.
 === ins-016 | institutions | Paris et la banlieue : le périphérique
 Les maires de banlieue reprochent à Paris de décider seul de l’avenir du périphérique.
 A) Créer une conférence métropolitaine :: Coopération.

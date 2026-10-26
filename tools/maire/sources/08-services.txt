@@ -1,6 +1,7 @@
 // Services publics : écoles, crèches, santé, piscines, bibliothèques, administration
 === ser-001 | services | Les crèches manquent de personnel
 Des sections de crèche ferment faute d’auxiliaires de puériculture. Des parents ne peuvent plus travailler.
+? distinct
 A) Augmenter les salaires du personnel des crèches :: Attractivité, coût durable.
    rec-1.2x50 services+4 bon+2 | g+4 c+1 d-2 e+1
    > Les recrutements repartent.

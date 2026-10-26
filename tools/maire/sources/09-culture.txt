@@ -91,19 +91,17 @@ C) Taxer fortement les locations :: Recettes.
    rec+0.6x60 logement+1 | g+2 c+3 d0 e+1
    > Chaque nuitée est taxée.
 
-=== cul-008 | culture | Un festival électro au bois de Vincennes
-Des organisateurs veulent un festival géant de trois jours dans le bois de Vincennes.
-A) Accepter avec une redevance élevée :: Recettes, nuisances.
-   bud+12 bon+1 ecologie-2 | g0 c+2 d+2 e-3
-   > Cent mille festivaliers viennent danser.
-   ~35 pop-2 > Les riverains de Saint-Mandé comptent les jours de bruit.
-B) Refuser pour protéger le bois :: Nature.
-   ecologie+1 bon-1 | g0 c0 d-1 e+3
-   > Le festival part à Marseille.
-C) Accepter sur un terrain déjà bétonné :: Compromis.
-   bud+5 bon+1 | g+1 c+3 d+1 e0
-   > Le festival s’installe sur un parking de la porte de Versailles.
-
+=== cul-008 | culture | Les musées ouverts la nuit
+Des Parisiens qui travaillent tard réclament des musées ouverts jusqu’à minuit.
+A) Ouvrir les musées municipaux jusqu’à minuit le vendredi :: Accès pour tous.
+   rec-0.3x50 bon+2 | g+2 c+2 d+1 e+1
+   > Les musées de la Ville vivent la nuit.
+B) Organiser des nocturnes thématiques payantes :: Recettes.
+   rec+0.1x50 bon+1 economie+1 | g0 c+3 d+2 e0
+   > Des nocturnes avec concerts affichent complet.
+C) Garder les horaires actuels :: Économie.
+   bon-1 | g-1 c+1 d+1 e0
+   > Rien ne change.
 === cul-009 | culture | Le musée Carnavalet veut s’agrandir
 Le musée de l’histoire de Paris manque de place pour ses collections.
 A) Acheter l’hôtel particulier voisin :: Patrimoine, coût élevé.

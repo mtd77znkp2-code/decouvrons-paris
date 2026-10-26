@@ -280,7 +280,7 @@ C) Ne rien taxer :: Pas de nouvel impôt.
 
 === fin-022 | finances | Le budget des fêtes de fin d’année
 Illuminations, marchés de Noël, patinoires : l’opposition juge les dépenses excessives en période de difficultés.
-? apres=20
+? apres=20 distinct
 A) Maintenir les festivités :: La ville brille, l’opposition critique.
    bud-15 bon+3 economie+2 | g0 c+1 d0 e-1
    > Paris scintille. Les commerçants font de bonnes affaires.

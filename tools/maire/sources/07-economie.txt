@@ -129,6 +129,7 @@ C) Laisser les chefs l’organiser seuls :: Sans dépense.
 
 === eco-111 | economie | Les livreurs à vélo veulent un statut
 Les livreurs des plateformes réclament de meilleures conditions de travail et une aide de la ville.
+? distinct
 A) Créer une coopérative municipale de livraison :: Original, coûteux.
    bud-10 economie+1 achat+1 | g+4 c+1 d-3 e+3
    > Une coopérative de livreurs salariés voit le jour.

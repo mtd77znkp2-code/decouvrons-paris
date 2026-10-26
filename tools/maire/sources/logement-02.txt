@@ -1,0 +1,497 @@
+// Logement, série 2
+=== log-026 | logement | Les « compléments de loyer » abusifs
+Des propriétaires contournent l’encadrement des loyers en ajoutant un « complément » pour une vue ou un balcon.
+A) Contrôler systématiquement les annonces :: Faire respecter la règle.
+   rec-0.2x50 logement+2 achat+1 | g+4 c+1 d-3 e+1
+   > Une cellule épluche les annonces en ligne.
+B) Aider les locataires à contester gratuitement :: Accompagner.
+   bud-2 logement+1 achat+1 | g+3 c+2 d-1 e+1
+   > Des juristes aident les locataires à saisir la commission.
+C) Tolérer les compléments justifiés :: Souplesse.
+   logement-1 | g-2 c+2 d+3 e0
+   > Les compléments restent possibles.
+
+=== log-027 | logement | La colocation des jeunes actifs
+Les jeunes actifs se tournent vers la colocation, mais les propriétaires préfèrent les couples.
+A) Garantie municipale pour les colocataires :: Rassurer les bailleurs.
+   bud-3 logement+2 | g+2 c+3 d+1 e+1
+   > La Ville se porte garante des colocations.
+   ~20 bud-4 > Quelques colocations laissent des impayés à la charge de la Ville.
+B) Créer des colocations dans le parc social :: Offre publique.
+   bud-6 logement+2 bon+1 | g+3 c+2 d0 e+1
+   > Des grands appartements sociaux deviennent des colocations.
+C) Laisser le marché s’organiser :: Pas d’intervention.
+   logement-1 | g-2 c0 d+2 e0
+   > Les jeunes se débrouillent seuls.
+
+=== log-028 | logement | Des caves louées comme logements
+Des familles vivent dans des caves et des sous-sols sans fenêtre loués 600 € par mois.
+A) Opérations coup de poing et relogement :: Protéger.
+   bud-8 logement+1 securite+1 | g+3 c+2 d+1 e+1
+   > Des dizaines de familles sont relogées.
+B) Poursuivre les propriétaires jusqu’au bout :: Sanctionner.
+   bud-2 logement+1 | g+3 c+2 d+1 e0
+   > Les propriétaires sont traînés en justice.
+   +12 bud+5 > Les amendes rapportent à la Ville.
+C) Signaler à la préfecture :: Procédure classique.
+   logement-1 | g-1 c+1 d+1 e0
+   > Le dossier suit son cours lentement.
+
+=== log-029 | logement | Une tour de bureaux à transformer en logements
+Une tour de bureaux vide du 15e pourrait accueillir 400 logements, mais la transformation coûte cher.
+A) Racheter la tour et la transformer :: Logements rapidement.
+   bud-90 logement+4 | g+3 c+2 d0 e+2
+   > Le chantier de transformation commence.
+   +25 logement+2 pop+2 > Les premiers locataires emménagent dans l’ancienne tour.
+B) Aider le propriétaire à transformer :: Partenariat.
+   bud-25 logement+2 | g0 c+3 d+2 e+1
+   > Le propriétaire transforme avec l’aide de la Ville.
+C) Laisser la tour vide :: Pas d’argent public.
+   logement-1 | g-2 c0 d+1 e-1
+   > La tour reste vide.
+
+=== log-030 | logement | Acheter son logement sans payer le terrain
+Le bail réel solidaire permet d’acheter les murs à moitié prix pendant que la Ville garde le terrain.
+A) Lancer 2 000 logements en bail solidaire :: Accession abordable.
+   bud-30 logement+3 achat+2 | g+2 c+3 d+2 e+1
+   > Des familles deviennent propriétaires à prix réduit.
+B) Tester sur 200 logements :: Prudence.
+   bud-5 logement+1 | g+1 c+3 d+1 e+1
+   > Une expérimentation démarre dans le 19e.
+C) Préférer le logement social classique :: Location.
+   bud-20 logement+2 | g+3 c0 d-2 e+1
+   > La Ville construit des logements à louer.
+
+=== log-031 | logement | Des petites maisons sur les toits
+Des architectes proposent d’installer des habitations légères sur les toits plats des immeubles.
+A) Autoriser et encourager :: Densifier sans bétonner.
+   logement+2 economie+1 | g+1 c+3 d+2 e+2
+   > Des petites maisons poussent sur les toits.
+   ~30 pop-1 > Des voisins dénoncent la perte de vue sur les toits de Paris.
+B) Réserver aux logements étudiants :: Ciblé.
+   bud-8 logement+2 | g+2 c+2 d+1 e+2
+   > Des studios étudiants s’installent sur les toits municipaux.
+C) Interdire pour protéger le paysage :: Patrimoine.
+   bon+1 logement-1 | g-1 c+1 d+2 e0
+   > Les toits de Paris restent intacts.
+
+=== log-032 | logement | Des sans-abri dorment dans les halls d’immeubles sociaux
+Les locataires d’une cité retrouvent chaque matin des personnes endormies dans leur hall.
+A) Ouvrir un accueil de nuit à proximité :: Solution humaine.
+   bud-6 rec-0.3x50 services+1 logement+1 | g+4 c+2 d0 e+2
+   > Un accueil de nuit ouvre à deux rues.
+B) Installer des digicodes et des portes renforcées :: Sécuriser.
+   bud-5 securite+1 logement+1 | g-2 c+2 d+3 e0
+   > Les halls sont fermés la nuit.
+C) Envoyer des maraudes chaque soir :: Accompagner.
+   rec-0.2x50 services+1 | g+3 c+2 d+1 e+1
+   > Des équipes proposent un hébergement chaque soir.
+
+=== log-033 | logement | Les logements adaptés au handicap manquent
+Des personnes en fauteuil attendent des années un logement accessible.
+A) Adapter 1 000 logements sociaux :: Grand plan.
+   bud-40 logement+2 services+1 | g+3 c+2 d+1 e+1
+   > Mille logements sont rendus accessibles.
+B) Imposer 10 % de logements accessibles dans le neuf :: Règle.
+   logement+1 economie-1 | g+2 c+2 d0 e+1
+   > Les promoteurs doivent prévoir des logements adaptés.
+C) Aider les propriétaires privés à adapter :: Incitation.
+   bud-10 logement+1 | g0 c+3 d+2 e0
+   > Une prime finance les travaux d’accessibilité.
+
+=== log-034 | logement | Les commerces vides au pied des HLM
+Les locaux commerciaux en rez-de-chaussée des logements sociaux restent vides depuis des années.
+A) Loyers très bas pour les commerces de proximité :: Animer le quartier.
+   rec-0.2x60 economie+2 bon+1 | g+2 c+3 d+1 e+1
+   > Une boulangerie et une librairie s’installent.
+B) Les transformer en locaux associatifs :: Lien social.
+   bud-5 bon+2 services+1 | g+3 c+2 d0 e+1
+   > Les associations du quartier s’y installent.
+C) Les vendre :: Recettes.
+   bud+20 economie+1 | g-2 c+2 d+3 e0
+   > Les locaux sont vendus à des investisseurs.
+
+=== log-035 | logement | Le permis de louer dans les quartiers dégradés
+Dans certaines rues, les logements loués sont souvent indignes. La Ville peut exiger une autorisation avant toute location.
+A) Imposer le permis de louer dans dix quartiers :: Contrôle.
+   rec-0.2x50 logement+2 | g+3 c+2 d-2 e+1
+   > Chaque logement est visité avant d’être loué.
+   ~30 logement-1 > Des propriétaires retirent leurs biens du marché.
+B) L’imposer dans un quartier test :: Prudent.
+   rec-0.1x50 logement+1 | g+1 c+3 d0 e+1
+   > Le quartier de Château-Rouge sert de test.
+C) Refuser : trop de bureaucratie :: Simplicité.
+   logement-1 | g-3 c0 d+3 e0
+   > Aucun permis n’est exigé.
+
+=== log-036 | logement | Vendre des HLM à leurs locataires
+Des locataires de longue date veulent acheter leur logement social.
+A) Ouvrir la vente aux locataires :: Accession.
+   bud+30 logement-1 achat+1 | g-3 c+2 d+4 e0
+   > Les premiers locataires deviennent propriétaires.
+   ~30 coh-1 > Ta majorité reproche la réduction du parc social.
+B) Vendre seulement si un logement neuf remplace chaque vente :: Équilibre.
+   bud+10 logement+1 | g0 c+3 d+2 e0
+   > Chaque vente finance un nouveau logement.
+C) Refuser toute vente :: Protéger le parc social.
+   logement+1 | g+3 c0 d-3 e+1
+   > Les logements restent sociaux.
+
+=== log-037 | logement | Les logements de fonction des enseignants
+Les jeunes enseignants refusent les postes à Paris faute de pouvoir s’y loger.
+A) Réserver 500 logements aux enseignants :: Attirer.
+   bud-15 logement+1 services+2 | g+2 c+2 d+1 e+1
+   > Des logements sont réservés aux enseignants débutants.
+B) Prime de logement pour les enseignants :: Aide directe.
+   rec-0.3x60 services+1 | g+1 c+2 d+1 e0
+   > Une prime mensuelle est versée.
+C) Ce n’est pas le rôle de la Ville :: Compétence de l’État.
+   services-1 | g-1 c+1 d+2 e0
+   > Les postes restent vacants.
+
+=== log-038 | logement | Des logements sociaux dans les beaux quartiers
+Le 7e, le 8e et le 16e comptent très peu de logements sociaux. La loi impose 25 %.
+A) Racheter des immeubles haussmanniens pour les transformer :: Mixité.
+   bud-80 logement+3 | g+5 c0 d-4 e+1
+   > Des familles modestes s’installent avenue Foch.
+   ~40 pop-2 > Les riverains du 16e lancent un recours.
+B) Construire sur les rares terrains disponibles :: Plus lent.
+   bud-40 logement+2 | g+3 c+2 d-1 e0
+   > Trois petits programmes sont lancés.
+C) Accepter de rester sous les 25 % dans ces quartiers :: Réalisme.
+   coh-1 | g-4 c+1 d+4 e-1
+   > Les beaux quartiers restent peu mixtes.
+
+=== log-039 | logement | Des cabanes de jardins ouvriers habitées
+Des personnes vivent toute l’année dans des cabanes de jardins familiaux, sans eau ni électricité.
+A) Proposer un relogement digne :: Humain.
+   bud-3 logement+1 services+1 | g+3 c+2 d0 e+1
+   > Les habitants sont relogés.
+B) Évacuer et fermer les cabanes la nuit :: Règlement.
+   securite+1 bon-1 | g-3 c+1 d+3 e0
+   > Les cabanes sont fermées.
+C) Tolérer et équiper en eau :: Pragmatique.
+   bud-2 logement+1 | g+2 c+1 d-2 e+1
+   > Un point d’eau est installé.
+
+=== log-040 | logement | Des résidences pour seniors autonomes
+Des seniors veulent des résidences avec services, entre chez soi et maison de retraite.
+A) Construire cinq résidences municipales :: Offre publique.
+   bud-60 logement+2 services+2 | g+3 c+2 d+1 e+1
+   > Cinq résidences seniors sont lancées.
+   +25 bon+2 > Les premières résidences ouvrent et affichent complet.
+B) Confier au privé avec des loyers plafonnés :: Partenariat.
+   bud-10 logement+1 | g0 c+3 d+3 e0
+   > Un groupe privé construit avec des loyers encadrés.
+C) Aider le maintien à domicile plutôt :: Rester chez soi.
+   rec-0.3x60 services+2 | g+2 c+2 d+1 e+1
+   > Des aides à domicile sont renforcées.
+
+=== log-041 | logement | L’habitat participatif
+Des groupes d’habitants veulent concevoir eux-mêmes leur immeuble, avec des espaces partagés.
+A) Réserver des terrains à l’habitat participatif :: Innovation sociale.
+   bud-10 logement+2 bon+1 | g+2 c+2 d0 e+3
+   > Cinq terrains sont réservés à des groupes d’habitants.
+B) Accompagner les projets sans terrain dédié :: Soutien léger.
+   bud-2 logement+1 | g+1 c+3 d+1 e+2
+   > Un guichet conseille les groupes.
+C) Priorité aux bailleurs sociaux classiques :: Efficacité.
+   bud-5 logement+1 | g0 c+1 d+1 e-1
+   > Les terrains vont aux bailleurs.
+
+=== log-042 | logement | Occuper les bâtiments en attente de travaux
+Des bâtiments municipaux restent vides des années avant leur chantier. Des associations proposent d’y loger des personnes temporairement.
+A) Généraliser l’occupation temporaire :: Utile et peu coûteux.
+   bud-3 logement+2 bon+1 | g+3 c+2 d0 e+2
+   > Cinq cents personnes sont hébergées dans des bâtiments vides.
+B) Réserver ces lieux aux artistes et associations :: Vie culturelle.
+   bud-2 bon+2 economie+1 | g+2 c+2 d+1 e+1
+   > Des tiers-lieux animés ouvrent.
+C) Garder les bâtiments fermés :: Pas de risque.
+   logement-1 | g-2 c+1 d+2 e-1
+   > Les bâtiments restent vides.
+
+=== log-043 | logement | Les charges de chauffage collectif explosent
+Dans les immeubles chauffés au gaz, les charges ont doublé. Des locataires ne peuvent plus payer.
+A) Chèque énergie municipal :: Aide immédiate.
+   bud-15 achat+3 | g+3 c+2 d0 e0
+   > Les ménages modestes reçoivent une aide.
+B) Raccorder les immeubles au chauffage urbain :: Long terme.
+   bud-40 achat+1 ecologie+3 | g+2 c+2 d+1 e+4
+   > Des milliers de logements sont raccordés.
+C) Négocier avec les fournisseurs :: Discussion.
+   achat+1 | g0 c+3 d+2 e0
+   > Un accord réduit légèrement les prix.
+
+=== log-044 | logement | Des logements étudiants dans des conteneurs
+Une entreprise propose des studios dans des conteneurs maritimes empilés, posés en six mois.
+A) Accepter sur un terrain provisoire :: Rapide.
+   bud-12 logement+2 | g0 c+3 d+2 e+1
+   > Trois cents studios sont installés.
+   ~30 pop-1 > Les étudiants se plaignent de la chaleur en été.
+B) Préférer des résidences en bois :: Plus durable.
+   bud-30 logement+2 ecologie+1 | g+2 c+2 d0 e+3
+   > Une résidence en bois est lancée.
+C) Refuser : pas de logement au rabais :: Dignité.
+   logement-1 coh+1 | g+2 c0 d-1 e0
+   > Le projet est rejeté.
+
+=== log-045 | logement | Une cité en réhabilitation depuis sept ans
+Les habitants d’une cité vivent dans les travaux depuis sept ans. Le chantier n’en finit pas.
+A) Payer des équipes supplémentaires pour finir :: Accélérer.
+   bud-25 logement+2 bon+1 | g+2 c+2 d+1 e0
+   > Le chantier se termine en un an.
+B) Baisser les loyers pendant les travaux :: Compenser.
+   rec-0.3x40 achat+1 bon+1 | g+3 c+2 d0 e+1
+   > Les locataires paient moins jusqu’à la fin.
+C) Changer d’entreprise :: Reprendre le contrôle.
+   bud-5 logement+1 | g0 c+2 d+2 e0
+   > Une nouvelle entreprise reprend le chantier.
+   ~40 bon-1 > Le changement provoque six mois de retard supplémentaires.
+
+=== log-046 | logement | Les parkings vides des immeubles sociaux
+Les parkings souterrains des HLM sont vides à 60 %. Ils servent parfois aux trafics.
+A) Les transformer en locaux vélos et ateliers :: Reconversion.
+   bud-12 transports+1 economie+1 securite+1 | g+2 c+2 d+1 e+3
+   > Des ateliers d’artisans et des garages à vélos s’installent.
+B) Les louer à bas prix aux riverains :: Recettes.
+   rec+0.2x60 | g0 c+3 d+2 e-1
+   > Les places sont louées aux habitants du quartier.
+C) Les murer :: Sécurité.
+   bud-3 securite+1 | g-1 c+1 d+3 e0
+   > Les parkings sont fermés.
+
+=== log-047 | logement | Des familles logées à l’hôtel depuis des années
+Des milliers de familles vivent dans des chambres d’hôtel, payées par l’aide d’urgence, sans cuisine.
+A) Construire des logements passerelles :: Sortir de l’hôtel.
+   bud-50 logement+3 services+1 | g+4 c+2 d0 e+1
+   > Des logements temporaires dignes remplacent les hôtels.
+B) Louer des appartements privés en intermédiation :: Rapide.
+   rec-0.5x50 logement+2 | g+2 c+3 d+1 e+1
+   > Des propriétaires louent à des associations.
+C) Continuer avec les hôtels :: Statu quo.
+   bon-1 | g-2 c0 d+1 e0
+   > Les familles restent à l’hôtel.
+
+=== log-048 | logement | Le droit de préemption sur un immeuble vendu
+Un immeuble de 40 logements du 11e est vendu à un fonds. La Ville peut le racheter en priorité.
+A) Préempter et en faire du logement social :: Protéger les locataires.
+   bud-60 logement+3 | g+4 c+1 d-3 e+1
+   > La Ville rachète l’immeuble.
+B) Préempter puis revendre une partie :: Équilibre financier.
+   bud-25 logement+1 | g+1 c+3 d+1 e0
+   > La moitié des logements deviennent sociaux.
+C) Laisser la vente se faire :: Marché libre.
+   logement-1 | g-3 c+1 d+3 e0
+   > Le fonds achète l’immeuble.
+   ~40 pop-1 > Les locataires reçoivent des congés pour vente.
+
+=== log-049 | logement | Les riverains bloquent un projet de logements sociaux
+Des riverains attaquent en justice un projet de 80 logements sociaux qui remplacerait un parking.
+A) Maintenir le projet :: Fermeté.
+   logement+2 pop-1 | g+3 c+1 d-2 e+1
+   > Le projet est maintenu.
+   ~35 pop-1 > Le recours retarde le chantier de deux ans.
+B) Réduire la hauteur et ajouter un jardin :: Compromis.
+   bud-5 logement+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Le projet est revu à la baisse avec un jardin public.
+C) Abandonner le projet :: Apaiser.
+   logement-1 pop+1 coh-1 | g-3 c+1 d+2 e0
+   > Le parking reste en place.
+
+=== log-050 | logement | Une cotation pour attribuer les logements sociaux
+Les demandeurs ne comprennent pas pourquoi d’autres passent avant eux.
+A) Système de points publics et automatique :: Transparence.
+   bud-3 pop+2 logement+1 | g+2 c+3 d+2 e+1
+   > Chaque demandeur voit son nombre de points.
+B) Commissions avec des habitants tirés au sort :: Démocratie.
+   bud-1 pop+1 | g+3 c+2 d0 e+2
+   > Des citoyens participent aux attributions.
+C) Garder le système actuel :: Expérience.
+   pop-1 | g-1 c0 d+1 e0
+   > Les attributions restent opaques.
+
+=== log-051 | logement | Échanger son logement social
+Des familles dans des logements trop petits voudraient échanger avec des seniors dans des appartements trop grands.
+A) Plateforme d’échange entre locataires :: Simple et malin.
+   bud-2 logement+2 | g+2 c+3 d+2 e+1
+   > Des centaines d’échanges sont réalisés.
+B) Prime de déménagement pour les seniors :: Inciter.
+   bud-5 logement+2 | g+1 c+2 d+2 e0
+   > Les seniors reçoivent une aide pour déménager.
+C) Ne rien imposer :: Respect des locataires.
+   logement-1 | g0 c0 d0 e0
+   > Les situations restent bloquées.
+
+=== log-052 | logement | Démolir une barre d’immeubles ?
+Une barre de 300 logements est jugée irrécupérable. Les habitants sont partagés.
+A) Démolir et reconstruire de petits immeubles :: Renouveau.
+   bud-80 logement+2 bon-1 | g+1 c+2 d+2 e0
+   > La démolition est programmée.
+   +30 logement+3 pop+2 > Un nouveau quartier à taille humaine remplace la barre.
+B) Rénover lourdement :: Garder les habitants sur place.
+   bud-50 logement+2 ecologie+1 | g+3 c+2 d0 e+3
+   > La barre est entièrement rénovée.
+C) Consulter les habitants par vote :: Démocratie.
+   bud-1 coh+1 | g+2 c+2 d0 e+2
+   > Les habitants votent pour la rénovation.
+
+=== log-053 | logement | Les familles nombreuses entassées
+Des familles de six personnes vivent dans 25 m². Les enfants font leurs devoirs dans la salle de bain.
+A) Priorité aux familles suroccupées :: Urgence.
+   logement+2 pop+1 | g+3 c+2 d0 e+1
+   > Les familles suroccupées passent en tête.
+B) Construire de grands logements familiaux :: Adapter l’offre.
+   bud-40 logement+2 | g+2 c+2 d+1 e+1
+   > Des T5 et T6 sont construits.
+C) Ouvrir des salles d’étude le soir pour les enfants :: Soulager.
+   rec-0.2x50 services+1 bon+1 | g+2 c+2 d+1 e+1
+   > Les bibliothèques accueillent les élèves le soir.
+
+=== log-054 | logement | Les immeubles neufs mal isolés du bruit
+Les locataires d’immeubles récents entendent tout de leurs voisins.
+A) Imposer des normes acoustiques renforcées :: Qualité.
+   logement+1 bon+1 economie-1 | g+1 c+2 d0 e+1
+   > Les futurs immeubles seront mieux isolés.
+B) Financer des travaux dans les immeubles existants :: Réparer.
+   bud-20 logement+1 bon+1 | g+2 c+2 d+1 e0
+   > Des cloisons acoustiques sont posées.
+C) Médiation entre voisins :: Simple.
+   bud-1 bon+1 | g+1 c+2 d+1 e0
+   > Des médiateurs interviennent.
+
+=== log-055 | logement | La Ville garante des étudiants étrangers
+Les étudiants étrangers ne trouvent pas de logement sans garant français.
+A) Créer une garantie municipale :: Attractivité.
+   bud-4 logement+1 economie+1 | g+2 c+3 d+1 e+1
+   > La Ville se porte garante.
+   ~20 bud-3 > Quelques impayés sont à la charge de la Ville.
+B) Réserver des chambres dans les résidences :: Offre ciblée.
+   bud-6 logement+1 | g+1 c+2 d+1 e0
+   > Des chambres sont réservées aux étudiants internationaux.
+C) Laisser les universités gérer :: Pas notre rôle.
+   economie-1 | g-1 c+1 d+2 e0
+   > Les étudiants se débrouillent.
+
+=== log-056 | logement | Du plomb dans les vieilles peintures
+Des enfants sont intoxiqués au plomb dans des immeubles anciens dégradés.
+A) Dépistage massif et travaux d’urgence :: Santé.
+   bud-15 logement+2 services+1 | g+3 c+2 d+1 e+2
+   > Des centaines d’enfants sont dépistés et des logements traités.
+B) Obliger les propriétaires à faire les travaux :: Responsabiliser.
+   logement+1 | g+2 c+2 d0 e+1
+   > Les propriétaires reçoivent des injonctions.
+   ~35 pop-2 > Des travaux tardent et de nouveaux cas apparaissent.
+C) Informer les familles :: Minimum.
+   bud-1 | g-1 c+1 d+1 e0
+   > Des brochures sont distribuées.
+
+=== log-057 | logement | Des ateliers-logements pour les artistes
+Les artistes quittent Paris faute d’ateliers abordables.
+A) Créer 200 ateliers-logements municipaux :: Garder les artistes.
+   bud-30 logement+1 bon+1 economie+1 | g+2 c+2 d0 e+1
+   > Des ateliers ouvrent à Belleville et à la Villette.
+B) Aider les artistes à louer des ateliers :: Aide ciblée.
+   rec-0.2x60 bon+1 | g+2 c+2 d0 e+1
+   > Une aide au loyer est créée.
+C) Les artistes doivent se débrouiller :: Pas prioritaire.
+   bon-1 | g-2 c0 d+2 e0
+   > Les ateliers continuent de disparaître.
+
+=== log-058 | logement | Des petites maisons dans les dents creuses
+Des terrains minuscules entre deux immeubles restent vides. On pourrait y poser des petites maisons.
+? distinct
+A) Lancer un concours d’architecture :: Créatif.
+   bud-4 logement+1 bon+1 | g+1 c+3 d+1 e+2
+   > Vingt petites maisons originales sont dessinées.
+B) Les transformer en jardins :: Nature.
+   bud-3 ecologie+2 bon+1 | g+1 c+1 d0 e+4
+   > Les dents creuses deviennent des jardins de poche.
+C) Les vendre à des particuliers :: Recettes.
+   bud+10 logement+1 | g-2 c+2 d+3 e0
+   > Les terrains sont vendus.
+
+=== log-059 | logement | La fin des chaudières au fioul
+Des centaines d’immeubles se chauffent encore au fioul, très polluant.
+A) Aider massivement à changer de chauffage :: Transition.
+   bud-30 ecologie+3 logement+1 | g+2 c+2 d+1 e+4
+   > Des centaines de chaudières sont remplacées.
+B) Interdire le fioul dans cinq ans :: Contrainte.
+   ecologie+2 pop-1 | g+1 c+1 d-2 e+4
+   > Les copropriétés ont cinq ans pour changer.
+C) Laisser faire le temps :: Pas de contrainte.
+   ecologie-1 | g-1 c0 d+2 e-3
+   > Les chaudières au fioul continuent de fumer.
+
+=== log-060 | logement | Les jeunes couples veulent acheter
+Les jeunes couples parisiens ne peuvent plus acheter même un deux-pièces.
+A) Prêt municipal à taux zéro :: Aide à l’achat.
+   bud-20 achat+2 logement+1 | g-1 c+3 d+3 e0
+   > Un prêt aidé est proposé aux primo-accédants.
+B) Construire des logements à prix maîtrisés :: Offre.
+   bud-35 logement+2 | g+2 c+3 d+1 e+1
+   > Des appartements sont vendus 30 % sous le prix du marché.
+C) Ce n’est pas le rôle de la Ville :: Marché.
+   achat-1 | g-2 c0 d+2 e0
+   > Les jeunes couples partent en banlieue.
+
+=== log-061 | logement | Les loyers des chambres d’étudiants dans les résidences privées
+Les résidences étudiantes privées facturent 900 € la chambre de 15 m².
+A) Plafonner les loyers dans les nouvelles résidences :: Encadrer.
+   logement+1 achat+1 | g+3 c+2 d-2 e+1
+   > Les futures résidences auront des loyers plafonnés.
+B) Construire des résidences publiques :: Concurrence publique.
+   bud-35 logement+2 | g+3 c+2 d0 e+1
+   > Mille chambres publiques sont lancées.
+C) Aide au loyer pour les boursiers :: Ciblé.
+   rec-0.3x60 achat+2 | g+2 c+2 d+1 e0
+   > Les boursiers reçoivent une aide mensuelle.
+
+=== log-062 | logement | Un incendie révèle des logements surpeuplés
+Après un incendie, les pompiers découvrent 40 personnes dans un appartement de 80 m².
+A) Contrôle de tous les logements signalés :: Prévenir.
+   rec-0.2x50 logement+1 securite+1 | g+2 c+2 d+2 e+1
+   > Des inspections ont lieu dans tout l’arrondissement.
+B) Héberger d’urgence les occupants :: Solidarité.
+   bud-4 services+1 | g+3 c+2 d0 e+1
+   > Les familles sont hébergées.
+C) Poursuivre le loueur :: Sanction.
+   bud-1 logement+1 | g+1 c+2 d+2 e0
+   > Le loueur est poursuivi.
+
+=== log-063 | logement | Des immeubles qui se fissurent à cause d’un chantier
+Les travaux d’une gare du Grand Paris fissurent des immeubles voisins.
+A) Reloger les habitants et exiger des indemnités :: Protéger.
+   bud-10 logement-1 bon+1 | g+2 c+2 d+1 e+1
+   > Les habitants sont relogés pendant les travaux.
+B) Exiger l’arrêt du chantier :: Bras de fer.
+   transports-1 pop+1 | g+1 c0 d0 e+1
+   > Le chantier est suspendu un mois.
+C) Faire confiance aux experts du chantier :: Laisser faire.
+   bon-1 | g-1 c+1 d+1 e0
+   > Les travaux continuent.
+   ~35 pop-3 > Un mur s’effondre dans une cour.
+
+=== log-064 | logement | Le bail mobilité détourné
+Le bail mobilité, prévu pour les stagiaires, est utilisé pour louer à n’importe qui sans protection.
+A) Contrôler et sanctionner les abus :: Faire respecter.
+   rec-0.1x50 logement+1 | g+3 c+2 d-1 e0
+   > Les abus sont traqués.
+B) Demander au Parlement de restreindre ce bail :: Politique.
+   coh+1 | g+2 c+1 d-1 e0
+   > Le maire écrit aux députés.
+C) Accepter : cela libère des logements :: Souplesse.
+   achat-1 logement+1 | g-3 c+1 d+3 e0
+   > Le bail mobilité reste utilisé largement.
+
+=== log-065 | logement | Les gardiennes de la loge transformée en studio
+Des bailleurs transforment les anciennes loges de gardien en studios loués très cher.
+A) Interdire la transformation des loges :: Préserver.
+   logement-1 bon+1 | g+2 c+1 d-2 e0
+   > Les loges doivent rester des loges.
+B) Accepter si un gardien est maintenu dans l’immeuble :: Compromis.
+   logement+1 | g0 c+3 d+1 e0
+   > Les studios ne sont autorisés qu’avec un gardien sur place.
+C) Accepter : un logement de plus :: Pragmatique.
+   logement+1 bon-1 | g-2 c+1 d+3 e0
+   > Les loges deviennent des studios.

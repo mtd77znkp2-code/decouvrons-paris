@@ -13,19 +13,18 @@ C) Campagne de prévention :: Doux.
    > Des affiches rappellent les règles.
    ~40 bon-1 > Un nouvel accident relance la colère des piétons.
 
-=== quo-002 | quotidien | Les rats dans les jardins publics
-Des familles fuient les squares envahis de rats.
-A) Lancer une grande opération de dératisation :: Efficace, polémique.
-   bud-6 proprete+2 bon+1 | g0 c+2 d+2 e-2
-   > Les squares sont traités.
-   ~30 coh-1 > Les défenseurs des animaux protestent devant l’Hôtel de Ville.
-B) Poubelles fermées et nettoyage renforcé :: À la racine.
-   bud-8 rec-0.2x40 proprete+2 | g+1 c+2 d+1 e+2
-   > Les poubelles deviennent étanches.
-C) Fermer les squares le soir :: Simple, mal vécu.
-   proprete+1 bon-1 | g-1 c+1 d+2 e0
-   > Les squares ferment à 19 h.
-
+=== quo-002 | quotidien | Le moustique tigre s’installe à Paris
+Le moustique tigre est désormais présent dans tous les arrondissements. Les piqûres gâchent les soirées d’été.
+A) Démoustication chimique des parcs :: Efficace, polémique.
+   bud-4 bon+1 ecologie-2 | g0 c+1 d+2 e-4
+   > Les parcs sont traités.
+B) Traquer les eaux stagnantes et informer :: Prévention.
+   bud-3 bon+1 ecologie+1 | g+1 c+3 d+1 e+3
+   > Soucoupes, gouttières et bâches sont vidées partout.
+C) Lâcher des moustiques mâles stériles :: Innovation.
+   bud-8 ecologie+1 bon+1 | g+1 c+2 d0 e+2
+   > Des millions de mâles stériles sont relâchés.
+   ~30 pop-1 > Des habitants paniquent en voyant des nuages de moustiques.
 === quo-003 | quotidien | Les boulangeries ferment le dimanche
 Plusieurs quartiers n’ont plus de boulangerie ouverte le dimanche ni en août.
 A) Créer un planning d’ouverture obligatoire :: Service garanti.
@@ -63,19 +62,18 @@ C) Créer des espaces canins clôturés :: Pour les chiens.
    bud-5 proprete+1 bon+1 | g+1 c+2 d+1 e+1
    > Des parcs à chiens ouvrent dans chaque arrondissement.
 
-=== quo-006 | quotidien | Les toilettes publiques manquent
-Touristes et habitants se plaignent de l’absence de toilettes publiques.
-A) Installer 300 nouvelles sanisettes :: Confort.
-   bud-15 rec-0.2x60 proprete+2 bon+1 | g+2 c+2 d+1 e+1
-   > De nouvelles toilettes gratuites apparaissent partout.
-B) Payer les cafés pour ouvrir leurs toilettes :: Malin et peu cher.
-   rec-0.1x50 proprete+1 | g+1 c+3 d+2 e0
-   > Un autocollant signale les cafés partenaires.
-C) Installer des urinoirs écologiques :: Rapide, limité.
-   bud-3 proprete+1 | g0 c+1 d+1 e+2
-   > Des urinoirs à compost sont posés.
-   ~35 pop-1 > Ces urinoirs ouverts choquent les riverains de l’île Saint-Louis.
-
+=== quo-006 | quotidien | Les boîtes aux lettres débordent de publicité
+Les Parisiens reçoivent des kilos de prospectus chaque mois, même avec un autocollant « Stop pub ».
+A) Interdire la distribution sans accord explicite :: Écologique.
+   proprete+2 ecologie+2 economie-1 | g+2 c+1 d-2 e+4
+   > Seules les boîtes « Oui pub » reçoivent des prospectus.
+   ~25 pop-1 > Des distributeurs perdent leur emploi et manifestent.
+B) Verbaliser les distributeurs qui ignorent le Stop pub :: Faire respecter.
+   rec-0.1x40 proprete+1 | g+1 c+3 d+1 e+2
+   > Des contrôles sont organisés dans les halls.
+C) Ne rien faire :: Liberté du commerce.
+   proprete-1 | g-1 c0 d+2 e-2
+   > Les prospectus continuent d’affluer.
 === quo-007 | quotidien | Les colis volés dans les halls
 Les vols de colis dans les halls d’immeubles se multiplient.
 A) Installer des consignes municipales :: Service public.
@@ -101,18 +99,18 @@ C) Distribuer des ventilateurs :: Rapide, symbolique.
    bud-2 bon+1 | g+1 c+1 d+1 e-1
    > Dix mille ventilateurs sont distribués.
 
-=== quo-009 | quotidien | Les marchés alimentaires en déclin
-Certains marchés de plein air perdent leurs commerçants.
-A) Baisser les droits de place :: Soutien.
-   rec-0.1x50 economie+1 achat+1 | g+1 c+2 d+2 e+1
-   > Les commerçants paient moins cher leur emplacement.
-B) Créer des marchés en soirée :: Nouveaux clients.
-   bud-2 bon+1 economie+1 | g+1 c+2 d+1 e+1
-   > Des marchés du soir s’installent.
-C) Regrouper les marchés :: Rationaliser.
-   rec+0.1x50 bon-1 | g-1 c+2 d+2 e0
-   > Trois marchés fusionnent.
-
+=== quo-009 | quotidien | Les deux-roues trafiqués qui hurlent la nuit
+Des scooters au pot trafiqué réveillent des quartiers entiers en pleine nuit.
+A) Installer des radars sonores :: Technologie.
+   bud-6 bon+1 securite+1 | g0 c+3 d+2 e+2
+   > Des radars sonores verbalisent les engins trop bruyants.
+B) Opérations de police et saisie des engins :: Ferme.
+   rec-0.2x40 securite+2 bon+1 | g-2 c+1 d+4 e0
+   > Des dizaines de scooters sont saisis.
+C) Aider à changer les pots d’échappement :: Pédagogique.
+   bud-2 bon+1 | g+2 c+2 d0 e+1
+   > Une prime aide à remettre un pot d’origine.
+   ~40 bon-1 > Peu de conducteurs jouent le jeu.
 === quo-010 | quotidien | Les embouteillages des livraisons
 Les camionnettes de livraison bloquent les rues tous les matins.
 A) Livraisons uniquement avant 8 h :: Fluidité, coût pour les commerces.
@@ -126,43 +124,41 @@ C) Créer plus d’aires de livraison :: Simple.
    bud-4 transports+1 | g0 c+2 d+2 e0
    > Les aires de livraison doublent.
 
-=== quo-011 | quotidien | Les gardiens d’immeubles disparaissent
-Les bailleurs suppriment les gardiens. Les locataires se sentent abandonnés.
-A) Financer des gardiens dans les HLM :: Lien social.
-   rec-0.5x50 logement+2 securite+1 bon+1 | g+4 c+1 d0 e+1
-   > Des gardiens reviennent dans les cités.
-B) Remplacer par une conciergerie numérique :: Moderne, froid.
-   bud-4 logement+1 bon-1 | g-2 c+2 d+2 e0
-   > Une application remplace la loge.
-C) Créer des gardiens partagés entre immeubles :: Compromis.
-   rec-0.2x50 logement+1 | g+2 c+2 d+1 e0
-   > Un gardien s’occupe de trois immeubles.
-
-=== quo-012 | quotidien | La solitude des personnes âgées
-Une étude révèle qu’un Parisien âgé sur trois ne parle à personne pendant des jours.
-A) Créer un réseau de visites à domicile :: Humain.
-   rec-0.3x50 services+2 bon+2 | g+3 c+2 d+1 e+1
-   > Des visiteurs bénévoles et salariés passent chaque semaine.
-B) Lancer un numéro d’appel gratuit :: Simple.
-   rec-0.1x50 services+1 bon+1 | g+2 c+2 d+1 e0
-   > Le « Allô Voisins » répond 7 jours sur 7.
-C) Créer des colocations jeunes-seniors :: Malin.
-   bud-2 logement+1 bon+1 | g+2 c+3 d+1 e+1
-   > Des étudiants logent chez des seniors contre un peu de présence.
-
-=== quo-013 | quotidien | Les poussettes dans le métro
-Les parents ne peuvent pas circuler dans le métro faute d’ascenseurs.
-A) Exiger des ascenseurs dans 20 stations :: Grand chantier.
-   bud-40 transports+3 bon+1 | g+2 c+2 d+1 e+1
-   > Vingt stations auront des ascenseurs.
-   +30 pop+2 > Les premiers ascenseurs sont inaugurés.
-B) Créer des agents d’aide aux poussettes :: Humain.
-   rec-0.2x40 transports+1 bon+1 | g+2 c+2 d0 e0
-   > Des agents aident les parents dans les escaliers.
-C) Renforcer les bus accessibles :: Alternative.
-   rec-0.2x50 transports+1 | g+1 c+2 d+1 e+1
-   > Les bus deviennent la solution pour les familles.
-
+=== quo-011 | quotidien | Les vols de vélos en série
+Un vélo est volé toutes les dix minutes à Paris. Beaucoup renoncent à en acheter un.
+A) Construire des parkings à vélos sécurisés :: Solution durable.
+   bud-18 transports+2 securite+1 | g+1 c+2 d+1 e+3
+   > Des abris fermés apparaissent près des gares et des écoles.
+B) Créer une brigade contre le recel de vélos :: Répression.
+   rec-0.2x40 securite+2 | g-1 c+2 d+3 e+1
+   > Une brigade traque les vélos volés revendus en ligne.
+C) Marquer gratuitement tous les vélos :: Dissuasif.
+   bud-3 securite+1 | g+1 c+3 d+1 e+2
+   > Des ateliers gravent un numéro sur chaque cadre.
+=== quo-012 | quotidien | Les ados n’ont nulle part où se retrouver
+Les adolescents se rassemblent dans les halls et les escaliers faute de lieux qui leur sont destinés.
+A) Ouvrir des espaces jeunes tard le soir :: Encadrer.
+   rec-0.4x50 securite+1 bon+1 services+1 | g+3 c+2 d0 e+1
+   > Des espaces jeunes ouvrent jusqu’à 23 h.
+B) Installer des terrains de sport éclairés :: Simple et apprécié.
+   bud-10 bon+1 securite+1 | g+2 c+2 d+1 e+1
+   > Des city-stades s’allument le soir.
+   ~25 pop-1 > Des riverains se plaignent du bruit du ballon.
+C) Interdire les regroupements dans les halls :: Ordre.
+   securite+1 bon-1 | g-4 c0 d+4 e-1
+   > Les rassemblements dans les halls sont verbalisés.
+=== quo-013 | quotidien | Les bureaux de poste ferment
+La Poste ferme des bureaux dans plusieurs quartiers. Les personnes âgées sont désemparées.
+A) Ouvrir des points poste dans les mairies :: Service public.
+   rec-0.2x50 services+2 bon+1 | g+3 c+2 d0 e+1
+   > Des guichets postaux s’installent dans les mairies.
+B) Négocier des relais chez les commerçants :: Partenariat.
+   bud-1 services+1 | g0 c+3 d+2 e0
+   > Des épiceries deviennent relais poste.
+C) Protester auprès de La Poste :: Symbolique.
+   coh+1 | g+1 c+1 d0 e0
+   > Le maire écrit au président de La Poste.
+   ~45 bon-1 > Les fermetures continuent malgré tout.
 === quo-014 | quotidien | Le prix des cantines d’entreprise
 Les salariés parisiens se plaignent de déjeuners à 18 € en moyenne.
 A) Ouvrir des restaurants municipaux à 6 € :: Pouvoir d’achat.

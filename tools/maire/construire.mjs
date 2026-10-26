@@ -51,6 +51,7 @@ function lireFichier(f, err) {
       for (const tok of m[1].split(/\s+/).filter(Boolean)) {
         const k = tok.split("=");
         if (tok === "suite") ev.suiteSeulement = true;
+        else if (tok === "distinct") ev.distinct = true;   // titre proche d'un autre, mais sujet différent (vérifié à la main)
         else if (k[0] === "poids") ev.poids = Number(k[1]);
         else if (k[0] === "ligne") c.ligne = k[1].split(",");
         else if (k[0] === "amb" || k[0] === "flag" || k[0] === "sansFlag") c[k[0]] = k[1];
@@ -94,10 +95,17 @@ for (const ev of tous) { if (vus[ev.id]) err.push(`${ev.id} : identifiant en dou
 const base = Maire.indexer(tous);
 base.rejets.forEach((r) => err.push(...r.err));
 // Titres identiques ou descriptions presque identiques = doublon
-const sig = base.liste.map((ev) => ({ id: ev.id, t: ev.titre.toLowerCase(), m: mots(ev.titre + " " + ev.desc) }));
+// Mots vides fréquents des titres, ignorés pour comparer les sujets
+const VIDES = new Set(["paris", "ville", "parisien", "parisiens", "parisienne", "dans", "pour", "avec", "sans", "plus", "trop", "veut", "veulent", "menace", "demande", "propose", "proposition", "nouveau", "nouvelle", "grand", "grande", "quartier", "quartiers", "logement", "logements", "sociaux", "social", "sociale", "immeuble", "immeubles"]);
+const motsTitre = (t) => new Set([...mots(t)].filter((w) => !VIDES.has(w)));
+const sig = base.liste.map((ev) => ({ id: ev.id, t: ev.titre.toLowerCase(), m: mots(ev.titre + " " + ev.desc), mt: motsTitre(ev.titre), libre: !!ev.distinct }));
+const lies = (a, b) => [a, b].some((x, k) => base.parId[x].choix.some((c) => c.suite && c.suite.id === [a, b][1 - k]));
+base.liste.forEach((ev) => { delete ev.distinct; });
 const doublons = new Set();
 for (let i = 0; i < sig.length; i++) for (let j = i + 1; j < sig.length; j++) {
-  if (sig[i].t === sig[j].t || (sig[i].m.size > 6 && proche(sig[i].m, sig[j].m) > 0.8)) { err.push(`${sig[j].id} : trop proche de ${sig[i].id}`); doublons.add(sig[j].id); }
+  // Même titre, texte presque identique, ou titres qui partagent l'essentiel de leurs mots (même sujet)
+  if (sig[i].t === sig[j].t || (sig[i].m.size > 6 && proche(sig[i].m, sig[j].m) > 0.8) ||
+    (!sig[i].libre && !sig[j].libre && !lies(sig[i].id, sig[j].id) && sig[i].mt.size >= 2 && sig[j].mt.size >= 2 && proche(sig[i].mt, sig[j].mt) >= 0.66)) { err.push(`${sig[j].id} : trop proche de ${sig[i].id}`); doublons.add(sig[j].id); }
 }
 const tousValides = base.liste.filter((ev) => !doublons.has(ev.id));
 // Catastrophes et coups de chance : un fichier à part, chargé dans toutes les parties

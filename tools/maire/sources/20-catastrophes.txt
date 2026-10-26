@@ -226,19 +226,18 @@ C) Laisser les assureurs et l’enquête suivre leur cours :: Prudence juridique
    bon-8 pop-7 | g-2 c+1 d+1 e0
    > Les familles attendent l’enquête.
 
-=== cat-018 | catastrophe | Une cyberattaque coupe tous les services
-Des pirates paralysent l’état civil, la paie des agents, les feux de circulation et les cantines.
-A) Payer la rançon en secret :: Rapide, scandale possible.
-   bud-50 services+2 coh-4 | g-3 c0 d-1 e-2
-   > Les systèmes redémarrent en deux jours.
-   ~50 pop-14 > Un journal révèle que la Ville a payé les pirates.
-B) Tout reconstruire sans payer :: Des semaines de chaos.
-   bud-90 services-8 bon-5 transports-3 | g+1 c+2 d+2 e+1
-   > Les agents travaillent au papier pendant un mois.
-C) Appeler l’armée et l’agence nationale de cybersécurité :: Expertise, perte de contrôle.
-   bud-40 services-4 bon-3 | g0 c+2 d+3 e0
-   > Des militaires spécialisés prennent la main sur les serveurs.
-
+=== cat-018 | catastrophe | Le marché de Rungis ravagé par les flammes
+Un incendie géant détruit une grande partie du marché de Rungis, qui nourrit Paris. Les rayons se vident et les prix flambent.
+A) Créer des marchés d’urgence avec les producteurs d’Île-de-France :: Nourrir la ville.
+   bud-60 achat-3 bon-4 economie-2 | g+2 c+2 d+1 e+3
+   > Des marchés de producteurs ouvrent sur les grandes places.
+B) Bloquer les prix des produits de base :: Protéger les familles.
+   bud-40 achat+1 economie-6 bon-3 | g+4 c0 d-4 e+1
+   > Le prix du pain, du lait et des légumes est gelé.
+   ~40 pop-6 > Des commerçants ferment, faute de pouvoir vendre à perte.
+C) Laisser le marché s’adapter :: Pas d’argent public.
+   achat-7 bon-6 pop-6 | g-3 c+1 d+3 e-1
+   > Les prix bondissent pendant six semaines.
 === cat-019 | catastrophe | Une gigantesque fuite de gaz à la Défense
 Une conduite de gaz principale cède. Un périmètre de 2 km doit être bouclé, jusqu’au 17e arrondissement.
 A) Évacuer tout le périmètre immédiatement :: Prudent, chaos.
