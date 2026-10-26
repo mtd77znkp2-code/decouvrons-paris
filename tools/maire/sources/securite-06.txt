@@ -1,0 +1,487 @@
+// Sécurité, série 6
+=== sec-186 | securite | Des agressions dans les toilettes publiques
+Des usagers sont agressés dans les sanisettes, devenues des lieux de deal.
+? distinct
+A) Des toilettes surveillées avec gardien :: Présence.
+   rec-0.03x60 securite+1 | g0 c+2 d+2 e+1
+   > Les toilettes retrouvent leur usage.
+B) Des portes qui s’ouvrent automatiquement au bout de quinze minutes :: Technique.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les squats de sanisettes cessent.
+C) Fermer les toilettes problématiques :: Fermer.
+   proprete-1 securite+1 | g-1 c+1 d+2 e0
+   > Les passants n’ont plus de toilettes.
+
+=== sec-187 | securite | Des marches exploratoires avec les habitantes
+Des femmes proposent de parcourir leur quartier la nuit pour repérer les lieux qui font peur.
+A) Organiser des marches dans chaque arrondissement :: Écouter.
+   bud-1 securite+1 bon+1 | g+2 c+2 d0 e+1
+   > Des lampadaires et des bancs sont déplacés.
+B) Une marche test dans un quartier :: Expérimenter.
+   securite+1 | g+1 c+2 d+1 e+1
+   > Les premières recommandations sont appliquées.
+C) Rien :: Police.
+   bon-1 | g0 c+1 d+1 e0
+   > Les habitantes se sentent ignorées.
+
+=== sec-188 | securite | Des agents dans les bus de nuit
+Les conducteurs de bus de nuit subissent insultes et menaces.
+A) Un agent de sécurité dans chaque bus de nuit :: Protéger.
+   rec-0.04x60 securite+1 transports+1 | g0 c+2 d+2 e0
+   > Les trajets de nuit se calment.
+B) Des caméras et un bouton d’alerte :: Technique.
+   bud-2 securite+1 | g0 c+2 d+1 e+1
+   > Les incidents sont mieux traités.
+C) Rien :: RATP.
+   transports-1 | g0 c+1 d+1 e0
+   > Des lignes de nuit sont supprimées.
+
+=== sec-189 | securite | Les vols sur les chantiers la nuit
+Des bandes volent outils et matériaux sur les chantiers publics.
+A) Des gardiens et des clôtures renforcées :: Protéger.
+   bud-2 securite+1 | g0 c+2 d+2 e0
+   > Les vols diminuent.
+B) Des traceurs sur les machines :: Technique.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Plusieurs machines volées sont retrouvées.
+C) Rien :: Assurances.
+   bud-2 | g0 c+1 d+1 e0
+   > Les chantiers prennent du retard.
+
+=== sec-190 | securite | Des statues en bronze volées
+Des voleurs de métaux découpent des statues des jardins pour les revendre.
+A) Remplacer les originaux par des copies :: Protéger.
+   bud-2 securite+1 | g0 c+2 d+1 e+1
+   > Les originaux rejoignent un musée.
+B) Des alarmes sur les statues :: Surveiller.
+   bud-1 securite+1 | g0 c+2 d+2 e0
+   > Un vol est déjoué en pleine nuit.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Un socle vide remplace une statue de 1900.
+
+=== sec-191 | securite | Des bagarres dans les piscines l’été
+Des groupes de jeunes se battent et menacent les maîtres-nageurs.
+A) Des agents de sécurité aux entrées :: Fermeté.
+   rec-0.02x60 securite+1 | g-1 c+2 d+2 e0
+   > Le calme revient au bord des bassins.
+B) Des médiateurs et des activités encadrées :: Prévention.
+   bud-1 securite+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des tournois de water-polo occupent les jeunes.
+C) Fermer les piscines concernées :: Prudence.
+   bon-2 | g-1 c+1 d+1 e0
+   > Les familles n’ont plus où nager.
+
+=== sec-192 | securite | Une agression raciste filmée
+Une vidéo montre un homme insulté et frappé pour sa couleur de peau dans le métro.
+A) Porter plainte au nom de la Ville et soutenir la victime :: Fermeté.
+   securite+1 pop+1 | g+1 c+2 d+1 e+1
+   > L’agresseur est interpellé.
+B) Une campagne contre le racisme :: Éduquer.
+   bud-1 bon+1 | g+2 c+2 d0 e+1
+   > Les affiches couvrent le métro.
+C) Laisser la justice faire :: Discrétion.
+   pop-1 | g0 c+1 d+1 e0
+   > Ton silence est remarqué.
+
+=== sec-193 | securite | Des cambriolages de pharmacies
+Des pharmacies sont braquées pour leurs médicaments opiacés.
+A) Des patrouilles ciblées la nuit :: Surveiller.
+   rec-0.02x60 securite+1 | g0 c+2 d+2 e0
+   > Les braquages diminuent.
+B) Aider les pharmacies à s’équiper de coffres :: Prévenir.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les médicaments sensibles sont enfermés.
+C) Rien :: Police nationale.
+   securite-1 | g0 c+1 d+1 e0
+   > Une pharmacie ferme définitivement.
+
+=== sec-194 | securite | Protéger les journalistes en manifestation
+Des journalistes sont blessés lors des manifestations parisiennes.
+A) Un espace protégé pour la presse :: Liberté de la presse.
+   bud-1 securite+1 | g+2 c+2 d0 e+1
+   > Les journalistes travaillent plus sereinement.
+B) Demander au préfet des consignes claires :: Dialogue.
+   coh+1 | g+1 c+2 d+1 e+1
+   > Le préfet rappelle les règles.
+C) Rien :: Préfecture.
+   pop-1 | g0 c+1 d+1 e0
+   > Les syndicats de journalistes protestent.
+
+=== sec-195 | securite | Les arnaques au faux conseiller bancaire
+Des escrocs appellent les seniors en se faisant passer pour leur banque.
+? distinct
+A) Des ateliers de prévention dans les clubs seniors :: Prévenir.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les seniors raccrochent au nez des escrocs.
+B) Un numéro municipal pour vérifier un appel :: Service.
+   rec-0.01x60 securite+1 | g0 c+2 d+1 e+1
+   > Les seniors appellent avant de donner leurs codes.
+C) Rien :: Banques.
+   securite-1 | g0 c+1 d+1 e0
+   > Des seniors perdent leurs économies.
+
+=== sec-196 | securite | Des agents de sécurité privée sans formation
+Des vigiles de magasins et d’événements interviennent sans formation sérieuse.
+A) Exiger une formation pour les marchés de la Ville :: Qualité.
+   bud-1 securite+1 | g+1 c+2 d+2 e+1
+   > Les vigiles sont mieux formés.
+B) Des contrôles réguliers :: Vérifier.
+   securite+1 | g0 c+2 d+2 e0
+   > Des sociétés sont écartées.
+C) Rien :: État.
+   securite-1 | g0 c+1 d+1 e0
+   > Une intervention tourne mal.
+
+=== sec-197 | securite | Des cambriolages pendant les obsèques
+Des voleurs lisent les avis de décès et cambriolent pendant les enterrements.
+A) Une patrouille au domicile pendant les obsèques sur demande :: Protéger.
+   rec-0.01x60 securite+1 bon+1 | g0 c+2 d+2 e+1
+   > Les familles sont rassurées.
+B) Conseiller de ne pas publier l’adresse :: Prévenir.
+   securite+1 | g0 c+2 d+1 e+1
+   > Les avis de décès deviennent plus discrets.
+C) Rien :: Police.
+   securite-1 | g0 c+1 d+1 e0
+   > Les cambriolages continuent.
+
+=== sec-198 | securite | Les scooters de livraison trop rapides
+Des livreurs pressés roulent à toute allure dans les rues piétonnes.
+A) Des contrôles de vitesse ciblés :: Fermeté.
+   securite+1 | g0 c+2 d+2 e0
+   > Les livreurs ralentissent.
+B) Négocier avec les plateformes des délais réalistes :: Dialogue.
+   securite+1 economie-1 | g+1 c+2 d+1 e+1
+   > Les plateformes allongent les délais.
+C) Rien :: Commerce.
+   securite-1 | g0 c+1 d+1 e0
+   > Un piéton est renversé.
+
+=== sec-199 | securite | La conduite sous l’emprise de drogues
+Les accidents liés au cannabis et à la cocaïne au volant augmentent.
+A) Des contrôles salivaires fréquents :: Fermeté.
+   bud-1 securite+1 | g0 c+2 d+2 e0
+   > Des conducteurs sont arrêtés chaque nuit.
+B) Une campagne de prévention :: Éduquer.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les jeunes conducteurs sont sensibilisés.
+C) Rien :: Préfecture.
+   securite-1 | g0 c+1 d+1 e0
+   > Un accident mortel fait la une.
+
+=== sec-200 | securite | Les passages souterrains inquiétants la nuit
+Les piétons évitent les passages sous les voies, sombres et isolés.
+? distinct
+A) Les éclairer et les peindre :: Rassurer.
+   bud-2 securite+1 | g+1 c+2 d+1 e+1
+   > Les passages deviennent lumineux.
+B) Les fermer la nuit :: Prudence.
+   securite+1 bon-1 | g0 c+2 d+2 e0
+   > Les piétons font des détours.
+C) Rien :: Coût.
+   securite-1 | g0 c+1 d+1 e0
+   > Une agression a lieu dans un passage.
+
+=== sec-201 | securite | Des feux de broussailles sur les talus du périphérique
+Les talus secs prennent feu en été, la fumée gêne les automobilistes.
+A) Débroussailler avant l’été :: Prévenir.
+   bud-1 securite+1 | g0 c+2 d+2 e+1
+   > Les départs de feu diminuent.
+B) Planter des espèces peu inflammables :: Durable.
+   bud-2 ecologie+1 securite+1 | g+1 c+2 d+1 e+1
+   > Les talus verdissent.
+C) Rien :: État.
+   securite-1 | g0 c+1 d+1 e0
+   > Un incendie bloque le périphérique.
+
+=== sec-202 | securite | Le vol des défibrillateurs
+Des défibrillateurs publics disparaissent de leurs boîtiers.
+A) Des boîtiers verrouillés avec code donné par le 15 :: Protéger.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les vols cessent.
+B) Les remplacer et porter plainte :: Réparer.
+   bud-1 | g0 c+2 d+2 e0
+   > De nouveaux défibrillateurs sont installés.
+C) Rien :: Coût.
+   securite-1 | g0 c+1 d+1 e0
+   > Un défibrillateur manque lors d’un malaise.
+
+=== sec-203 | securite | Des médecins agressés dans leur cabinet
+Des généralistes menacent de quitter les quartiers populaires après des agressions.
+A) Des boutons d’alerte reliés à la police :: Protéger.
+   bud-1 securite+1 services+1 | g0 c+2 d+2 e+1
+   > Les médecins se sentent soutenus.
+B) Des cabinets regroupés dans des centres de santé sécurisés :: Regrouper.
+   bud-3 services+1 | g+1 c+2 d+1 e+1
+   > Un centre de santé ouvre avec un accueil sécurisé.
+C) Rien :: Ordre des médecins.
+   services-1 | g0 c+1 d+1 e0
+   > Un médecin ferme son cabinet.
+
+=== sec-204 | securite | Des stalactites tombent des toits
+Après une vague de froid, des pics de glace se détachent des gouttières.
+A) Fermer les trottoirs exposés :: Prudence.
+   securite+1 bon-1 | g0 c+2 d+2 e+1
+   > Des rubalises bordent les façades.
+B) Envoyer des équipes pour faire tomber la glace :: Agir.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les gouttières sont dégagées.
+C) Rien :: Ça fondra.
+   securite-1 | g0 c+1 d+1 e0
+   > Un passant est blessé à la tête.
+
+=== sec-205 | securite | Des voitures bloquent la sortie des pompiers
+Des véhicules garés devant les casernes retardent les départs en intervention.
+A) Enlèvement immédiat en fourrière :: Fermeté.
+   securite+1 | g0 c+2 d+2 e0
+   > Les sorties sont dégagées.
+B) Des plots devant les casernes :: Aménager.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Plus personne ne peut se garer.
+C) Rien :: Civisme.
+   securite-1 | g0 c+1 d+1 e0
+   > Un camion de pompiers perd cinq minutes.
+
+=== sec-206 | securite | L’attaque d’un fourgon blindé
+Des malfaiteurs attaquent un fourgon de transport de fonds en pleine rue.
+A) Exiger des horaires et itinéraires variables :: Prévenir.
+   securite+1 | g0 c+2 d+2 e0
+   > Les transporteurs changent leurs habitudes.
+B) Des zones de livraison sécurisées pour les fonds :: Aménager.
+   bud-2 securite+1 | g0 c+2 d+1 e+1
+   > Les fourgons stationnent dans des cours fermées.
+C) Rien :: Police nationale.
+   securite-1 | g0 c+1 d+1 e0
+   > Les riverains sont choqués.
+
+=== sec-207 | securite | Des vols de chiens dans les parcs
+Des chiens de race sont volés en pleine promenade pour être revendus.
+? distinct
+A) Des campagnes d’identification obligatoire :: Prévenir.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les chiens volés sont retrouvés plus vite.
+B) Des patrouilles dans les parcs :: Présence.
+   rec-0.01x60 securite+1 | g0 c+2 d+2 e0
+   > Les vols diminuent.
+C) Rien :: Police.
+   securite-1 | g0 c+1 d+1 e0
+   > Les propriétaires ont peur.
+
+=== sec-208 | securite | Un marché aux objets volés
+Chaque dimanche, des objets volés sont revendus sous un pont.
+A) Démanteler le marché :: Fermeté.
+   securite+1 bon-1 | g-1 c+2 d+2 e0
+   > Le marché disparaît.
+B) Un marché légal de seconde main à côté :: Alternative.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les vendeurs honnêtes migrent.
+C) Rien :: Tolérance.
+   securite-1 | g0 c+1 d+1 e0
+   > Les receleurs prospèrent.
+
+=== sec-209 | securite | Des gardiens de parc la nuit
+Des parcs ouverts la nuit en été manquent de surveillance.
+A) Recruter des gardiens de nuit :: Présence.
+   rec-0.03x60 securite+1 | g0 c+2 d+2 e+1
+   > Les parcs restent sûrs la nuit.
+B) Des rondes de la police municipale :: Patrouille.
+   securite+1 | g0 c+2 d+2 e0
+   > Les agents passent plusieurs fois par nuit.
+C) Fermer les parcs la nuit :: Prudence.
+   bon-1 | g-1 c+1 d+1 e0
+   > Les habitants perdent leur fraîcheur nocturne.
+
+=== sec-210 | securite | Des cambriolages par les échafaudages
+Les voleurs grimpent sur les échafaudages pour entrer par les fenêtres.
+A) Imposer des alarmes sur les échafaudages :: Prévenir.
+   securite+1 | g0 c+2 d+2 e+1
+   > Les entreprises s’équipent.
+B) Des patrouilles près des chantiers :: Surveiller.
+   rec-0.01x60 securite+1 | g0 c+2 d+2 e0
+   > Les cambriolages diminuent.
+C) Rien :: Assurances.
+   securite-1 | g0 c+1 d+1 e0
+   > Les habitants des étages se barricadent.
+
+=== sec-211 | securite | Le vol des câbles de recharge
+Des câbles de bornes de recharge sont volés pour leur cuivre.
+A) Des câbles antivol :: Protéger.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les bornes fonctionnent à nouveau.
+B) Des caméras près des bornes :: Surveiller.
+   bud-1 securite+1 | g-1 c+2 d+2 e0
+   > Les voleurs sont filmés.
+C) Rien :: Opérateur.
+   transports-1 | g0 c+1 d+1 e0
+   > Les voitures électriques ne peuvent plus charger.
+
+=== sec-212 | securite | Des bandes de jeunes au Forum des Halles
+Des groupes de jeunes se battent dans le centre commercial le samedi.
+? distinct
+A) Des patrouilles renforcées :: Fermeté.
+   securite+1 | g-1 c+2 d+2 e0
+   > Le calme revient.
+B) Des éducateurs et une salle de sport ouverte :: Prévention.
+   bud-2 securite+1 bon+1 | g+2 c+2 d0 e+1
+   > Les jeunes ont un lieu à eux.
+C) Rien :: Gestionnaire privé.
+   securite-1 | g0 c+1 d+1 e0
+   > Une bagarre fait des blessés.
+
+=== sec-213 | securite | Des distributeurs de billets dynamités
+Des bandes font exploser des distributeurs la nuit.
+? distinct
+A) Exiger des systèmes d’encre :: Prévenir.
+   securite+1 | g0 c+2 d+2 e0
+   > Les billets volés sont tachés et inutilisables.
+B) Des patrouilles près des distributeurs :: Surveiller.
+   rec-0.01x60 securite+1 | g0 c+2 d+2 e0
+   > Une bande est arrêtée.
+C) Rien :: Banques.
+   securite-1 | g0 c+1 d+1 e0
+   > Un immeuble est endommagé par une explosion.
+
+=== sec-214 | securite | Des bombes lacrymogènes chez les collégiens
+Des élèves aspergent leurs camarades de gaz au collège.
+A) Interdire la vente aux mineurs :: Fermeté.
+   securite+1 | g0 c+2 d+2 e0
+   > Les magasins retirent les bombes.
+B) Des ateliers de prévention :: Éduquer.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les élèves comprennent les risques.
+C) Rien :: Éducation nationale.
+   securite-1 | g0 c+1 d+1 e0
+   > Une classe est évacuée.
+
+=== sec-215 | securite | Saisir les voitures des trafiquants
+Des dealers roulent en voitures de luxe dans les quartiers.
+A) Demander la confiscation systématique :: Frapper au portefeuille.
+   securite+1 | g-1 c+2 d+2 e0
+   > Les voitures saisies sont vendues.
+B) Donner les véhicules saisis aux associations :: Symbole.
+   securite+1 bon+1 | g+1 c+2 d+1 e+1
+   > Une voiture de dealer devient minibus associatif.
+C) Rien :: Justice.
+   securite-1 | g0 c+1 d+1 e0
+   > Les trafiquants paradent.
+
+=== sec-216 | securite | Contrôler le casier judiciaire des animateurs
+Un animateur condamné a travaillé dans un centre de loisirs.
+A) Contrôler tous les animateurs :: Protéger.
+   bud-1 securite+1 services+1 | g0 c+3 d+2 e+1
+   > Plusieurs dossiers sont écartés.
+B) Contrôler seulement les nouveaux :: Progressif.
+   securite+1 | g0 c+2 d+1 e+1
+   > Les recrutements sont vérifiés.
+C) Rien :: Confiance.
+   bon-2 | g-1 c+1 d+1 e0
+   > Les parents sont inquiets.
+
+=== sec-217 | securite | Des appartements squattés pendant les vacances
+Des familles rentrent de vacances et trouvent leur logement occupé.
+A) Une procédure d’expulsion accélérée avec le préfet :: Fermeté.
+   securite+1 | g-1 c+2 d+2 e0
+   > Les propriétaires récupèrent leur logement.
+B) Un service de surveillance des logements :: Prévenir.
+   rec-0.01x60 securite+1 | g0 c+2 d+1 e+1
+   > Les patrouilles passent devant les logements signalés.
+C) Rien :: Justice.
+   securite-1 | g0 c+1 d+1 e0
+   > Les procédures durent des mois.
+
+=== sec-218 | securite | Des fêtes clandestines dans les catacombes
+Des centaines de jeunes descendent dans les galeries interdites pour faire la fête.
+A) Murer les accès clandestins :: Fermer.
+   bud-2 securite+1 | g0 c+2 d+2 e0
+   > Les fêtes cessent.
+B) Une brigade spécialisée :: Surveiller.
+   rec-0.02x60 securite+1 | g0 c+2 d+2 e+1
+   > Les fêtards sont reconduits à la surface.
+C) Rien :: Tradition.
+   securite-1 | g+1 c+1 d0 e0
+   > Un jeune se perd sous terre.
+
+=== sec-219 | securite | Des serrures de commerces bouchées à la colle
+Des vandales collent les serrures des commerces la nuit.
+A) Des patrouilles nocturnes :: Surveiller.
+   rec-0.01x60 securite+1 | g0 c+2 d+2 e0
+   > Les vandales sont pris.
+B) Aider à installer des rideaux électriques :: Équiper.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Les commerçants changent leurs fermetures.
+C) Rien :: Assurances.
+   economie-1 | g0 c+1 d+1 e0
+   > Les commerçants ouvrent en retard.
+
+=== sec-220 | securite | Des poussettes volées dans les halls
+Les familles laissent leur poussette en bas et la retrouvent volée.
+A) Des locaux à poussettes sécurisés :: Équiper.
+   bud-2 securite+1 | g+1 c+2 d+1 e+1
+   > Les poussettes sont à l’abri.
+B) Des antivols distribués :: Simple.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les poussettes sont attachées.
+C) Rien :: Bailleurs.
+   bon-1 | g0 c+1 d+1 e0
+   > Les familles montent leur poussette au cinquième.
+
+=== sec-221 | securite | Partager les images des caméras avec les commerçants
+Les commerçants veulent voir les images des caméras de la Ville après un vol.
+A) Accepter avec une procédure encadrée :: Coopérer.
+   securite+1 | g-1 c+2 d+2 e0
+   > Les commerçants obtiennent les images.
+B) Seulement via la police :: Encadrer.
+   securite+1 | g0 c+2 d+1 e+1
+   > Les demandes passent par le commissariat.
+C) Refuser :: Vie privée.
+   economie-1 | g+1 c+1 d0 e+1
+   > Les commerçants protestent.
+
+=== sec-222 | securite | Le casque à vélo pour les enfants
+Des enfants se blessent gravement en tombant à vélo sans casque.
+? distinct
+A) Distribuer des casques gratuits :: Protéger.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Des milliers d’enfants s’équipent.
+B) Une campagne dans les écoles :: Éduquer.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les enfants portent leur casque.
+C) Rien :: Loi nationale.
+   securite-1 | g0 c+1 d+1 e0
+   > Un enfant est grièvement blessé.
+
+=== sec-223 | securite | Des promeneurs sur les berges inondées
+Pendant les crues, des curieux descendent sur les quais submergés.
+A) Fermer les accès et verbaliser :: Fermeté.
+   securite+1 | g0 c+2 d+2 e0
+   > Les berges restent vides.
+B) Des agents pour faire de la prévention :: Informer.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les promeneurs remontent.
+C) Rien :: Responsabilité.
+   securite-1 | g0 c+1 d+1 e0
+   > Un promeneur est emporté.
+
+=== sec-224 | securite | Des jeunes marchent sur les voies ferrées
+Des adolescents empruntent les voies pour se filmer et raccourcir leur chemin.
+A) Clôturer les accès :: Protéger.
+   bud-2 securite+1 | g0 c+2 d+2 e+1
+   > Les voies sont fermées.
+B) Des interventions dans les collèges :: Éduquer.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les élèves mesurent le danger.
+C) Rien :: SNCF.
+   securite-1 | g0 c+1 d+1 e0
+   > Un adolescent est percuté.
+
+=== sec-225 | securite | Des enfants laissés seuls dans des voitures
+Pendant la canicule, des enfants sont oubliés dans des voitures au soleil.
+A) Une campagne d’alerte l’été :: Prévenir.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les parents sont sensibilisés.
+B) Autoriser les agents à briser les vitres :: Agir.
+   securite+1 | g0 c+2 d+2 e0
+   > Un enfant est sauvé.
+C) Rien :: Parents.
+   securite-1 | g0 c+1 d+1 e0
+   > Un drame survient.
