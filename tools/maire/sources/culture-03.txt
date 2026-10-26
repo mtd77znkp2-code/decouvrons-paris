@@ -158,7 +158,7 @@ C) Réduire le soutien :: Économie.
    > Le carnaval se fait plus discret.
 
 === cul-079 | culture | Le salon du livre veut quitter Paris
-Le grand salon du livre menace de partir à cause du coût de la location.
+Les éditeurs jugent le rendez-vous parisien trop cher et étudient une installation à Lyon dès l’an prochain.
 ? distinct
 A) Proposer le Grand Palais à prix réduit :: Retenir.
    bud-5 bon+1 economie+1 | g0 c+2 d+2 e0
