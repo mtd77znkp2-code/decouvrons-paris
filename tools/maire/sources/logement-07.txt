@@ -1,0 +1,303 @@
+// Logement, série 7
+=== log-226 | logement | Transformer des garages en studios
+Des box de garage vides en rez-de-chaussée pourraient devenir de petits logements.
+A) Autoriser avec des normes strictes :: Loger.
+   logement+1 | g0 c+2 d+1 e+1
+   > Des studios lumineux remplacent les garages.
+B) Les réserver aux étudiants :: Cibler.
+   bud-1 logement+1 | g+1 c+2 d+1 e+1
+   > Des étudiants emménagent.
+C) Interdire :: Qualité de vie.
+   logement-1 | g0 c+1 d+2 e0
+   > Les garages restent vides.
+
+=== log-227 | logement | Des HLM sans fibre internet
+Des résidences sociales n’ont toujours pas la fibre, les enfants font leurs devoirs sur téléphone.
+A) Financer le raccordement :: Égalité numérique.
+   bud-2 logement+1 services+1 | g+1 c+2 d+1 e+1
+   > Les résidences sont raccordées.
+B) Exiger des opérateurs qu’ils raccordent :: Pression.
+   coh+1 | g0 c+2 d+1 e+1
+   > Les opérateurs accélèrent.
+C) Rien :: Bailleurs.
+   bon-1 | g0 c+1 d+1 e0
+   > Les familles restent mal connectées.
+
+=== log-228 | logement | Autoriser la colocation dans les logements sociaux
+Des jeunes veulent partager un grand HLM, mais la règle l’interdit presque.
+A) Ouvrir des HLM à la colocation :: Innover.
+   logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des jeunes partagent des quatre-pièces.
+B) Seulement pour les logements difficiles à louer :: Cibler.
+   logement+1 | g0 c+2 d+1 e+1
+   > Les logements vacants trouvent preneur.
+C) Rien :: Familles d’abord.
+   bon-1 | g0 c+1 d+1 e0
+   > Les jeunes restent sans solution.
+
+=== log-229 | logement | Les jeunes adultes coincés chez leurs parents
+À trente ans, des milliers de Parisiens vivent encore dans leur chambre d’enfant.
+? distinct
+A) Un contingent de logements pour les moins de 30 ans :: Émanciper.
+   bud-2 logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des jeunes prennent leur envol.
+B) Une aide au premier loyer :: Coup de pouce.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Les dépôts de garantie sont avancés.
+C) Rien :: Marché.
+   bon-1 | g-1 c+1 d+2 e0
+   > Les jeunes quittent Paris.
+
+=== log-230 | logement | Supprimer l’obligation de parkings dans les immeubles neufs
+Les promoteurs doivent construire des parkings qui restent vides.
+A) Supprimer l’obligation :: Moins cher.
+   logement+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les logements coûtent moins cher à construire.
+B) Remplacer par des locaux vélos :: Transition.
+   logement+1 transports+1 | g+1 c+2 d+1 e+1
+   > Les sous-sols accueillent des vélos.
+C) Garder la règle :: Voitures.
+   logement-1 | g-1 c+1 d+2 e0
+   > Les parkings restent vides.
+
+=== log-231 | logement | Des logements insonorisés pour musiciens
+Les musiciens se font expulser à cause du bruit de leurs répétitions.
+A) Une résidence de musiciens insonorisée :: Culture.
+   bud-3 logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les violonistes répètent à toute heure.
+B) Des studios de répétition en bas des HLM :: Mutualiser.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les musiciens répètent sans gêner.
+C) Rien :: Voisinage.
+   bon-1 | g0 c+1 d+1 e0
+   > Les musiciens partent en banlieue.
+
+=== log-232 | logement | Loger des étudiants l’été dans les logements vacants
+Des logements sociaux restent vides entre deux attributions pendant l’été.
+A) Des baux d’été pour étudiants et stagiaires :: Utiliser.
+   logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les stagiaires trouvent un toit pour l’été.
+B) Pour les saisonniers seulement :: Cibler.
+   logement+1 economie+1 | g0 c+2 d+1 e+1
+   > Les saisonniers sont logés.
+C) Rien :: Complexité.
+   logement-1 | g0 c+1 d+1 e0
+   > Les logements restent vides.
+
+=== log-233 | logement | Un fonds pour les locataires en difficulté passagère
+Après un licenciement, des familles accumulent des retards de loyer.
+A) Un fonds d’avance remboursable :: Prévenir l’expulsion.
+   bud-3 logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des expulsions sont évitées.
+B) Un accompagnement budgétaire :: Conseiller.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les familles reprennent pied.
+C) Rien :: Fonds existants.
+   bon-1 | g-1 c+1 d+2 e0
+   > Des familles sont expulsées.
+
+=== log-234 | logement | Une agence immobilière sociale municipale
+Une agence louerait des logements privés à prix modéré avec garanties pour les propriétaires.
+A) Créer l’agence :: Mobiliser le privé.
+   bud-2 logement+1 | g+1 c+2 d+1 e+1
+   > Des centaines de propriétaires confient leur bien.
+B) Soutenir les agences associatives :: Accompagner.
+   bud-1 logement+1 | g0 c+2 d+1 e+1
+   > Les associations développent leur parc.
+C) Rien :: Marché.
+   logement-1 | g0 c+1 d+1 e0
+   > Les logements vides le restent.
+
+=== log-235 | logement | Les frais d’agence abusifs
+Des agences facturent des frais illégaux aux locataires.
+A) Des contrôles et des signalements :: Protéger.
+   logement+1 | g0 c+2 d+2 e0
+   > Des agences sont sanctionnées.
+B) Un simulateur de frais légaux :: Informer.
+   bud-1 logement+1 | g0 c+2 d+1 e+1
+   > Les locataires connaissent leurs droits.
+C) Rien :: État.
+   bon-1 | g0 c+1 d+1 e0
+   > Les abus continuent.
+
+=== log-236 | logement | Des visites d’appartement à cinquante candidats
+Les candidats font la queue dans l’escalier pour un studio.
+A) Une plateforme de candidature équitable :: Organiser.
+   bud-1 logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les dossiers sont tirés au sort.
+B) Construire davantage :: Offre.
+   bud-3 logement+1 | g+1 c+2 d+1 e+1
+   > Des logements s’ajoutent au parc.
+C) Rien :: Marché.
+   bon-1 | g-1 c+1 d+2 e0
+   > Les files continuent.
+
+=== log-237 | logement | Les propriétaires qui exigent trois garants
+Des propriétaires demandent des garanties impossibles aux jeunes.
+A) Une garantie municipale gratuite :: Rassurer.
+   bud-2 logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les jeunes décrochent leur bail.
+B) Promouvoir la garantie publique existante :: Informer.
+   bud-1 logement+1 | g0 c+2 d+1 e+1
+   > Les propriétaires découvrent la garantie publique.
+C) Rien :: Liberté contractuelle.
+   bon-1 | g-1 c+1 d+2 e0
+   > Les jeunes restent sans logement.
+
+=== log-238 | logement | Les locations sans bail
+Des propriétaires louent au noir, sans contrat, à des personnes fragiles.
+A) Des contrôles et des poursuites :: Fermeté.
+   logement+1 | g0 c+2 d+2 e0
+   > Des propriétaires sont condamnés.
+B) Aider les locataires à régulariser :: Protéger.
+   bud-1 logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des baux sont signés.
+C) Rien :: Difficile à prouver.
+   logement-1 | g0 c+1 d+1 e0
+   > Les locataires restent sans droits.
+
+=== log-239 | logement | Un nouvel immeuble prive les voisins de lumière
+Un immeuble de huit étages va plonger une rue dans l’ombre.
+A) Imposer une hauteur réduite :: Lumière.
+   logement-1 bon+1 | g+1 c+2 d+1 e+1
+   > L’immeuble perd deux étages.
+B) Exiger une étude d’ensoleillement :: Mesurer.
+   bud-1 | g0 c+2 d+1 e+1
+   > Le projet est redessiné.
+C) Rien :: Permis valide.
+   logement+1 bon-1 | g-1 c+1 d+2 e0
+   > Les voisins vivent dans l’ombre.
+
+=== log-240 | logement | Surélever les HLM pour financer leur rénovation
+Ajouter des étages permettrait de financer l’isolation des immeubles.
+A) Lancer un programme de surélévations :: Densifier.
+   bud-2 logement+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les nouveaux étages paient les travaux.
+B) Seulement là où les locataires sont d’accord :: Concertation.
+   bud-1 logement+1 | g+1 c+2 d+1 e+1
+   > Quelques résidences votent oui.
+C) Rien :: Nuisances.
+   logement-1 | g0 c+1 d+1 e0
+   > Les rénovations attendent.
+
+=== log-241 | logement | Une église désaffectée transformée en logements
+Une église sans fidèles pourrait accueillir des appartements.
+A) Des logements sociaux dans l’église :: Loger.
+   bud-4 logement+1 coh-1 | g+1 c+2 d+1 e+1
+   > Des familles vivent sous les voûtes.
+B) Un lieu culturel :: Patrimoine.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > L’église devient salle de concert.
+C) La laisser fermée :: Respect.
+   bon-1 | g0 c+1 d+1 e0
+   > L’église se dégrade.
+
+=== log-242 | logement | Des résidences universitaires vétustes
+Des chambres de 9 m² avec douches sur le palier accueillent encore des étudiants.
+A) Cofinancer la rénovation :: Dignité.
+   bud-4 logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les chambres sont modernisées.
+B) Construire une résidence neuve :: Offre.
+   bud-5 logement+2 | g+1 c+2 d+1 e+1
+   > Cinq cents chambres neuves ouvrent.
+C) Rien :: Crous.
+   bon-1 | g0 c+1 d+1 e0
+   > Les étudiants s’entassent.
+
+=== log-243 | logement | Des HLM surchauffés l’hiver
+Le chauffage collectif atteint 26 degrés, les locataires ouvrent les fenêtres.
+A) Réguler le chauffage :: Économiser.
+   bud-1 ecologie+1 logement+1 | g+1 c+2 d+1 e+1
+   > Les charges baissent.
+B) Des robinets thermostatiques :: Équiper.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Chacun règle sa température.
+C) Rien :: Confort.
+   ecologie-1 | g0 c+1 d+1 e0
+   > La chaleur s’échappe par les fenêtres.
+
+=== log-244 | logement | Les bailleurs injoignables
+Les locataires attendent des semaines une réponse pour une fuite ou une panne.
+A) Un médiateur municipal du logement social :: Défendre.
+   rec-0.01x60 logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les réclamations sont traitées.
+B) Des délais de réponse obligatoires :: Fermeté.
+   logement+1 | g0 c+2 d+2 e0
+   > Les bailleurs s’organisent.
+C) Rien :: Bailleurs.
+   bon-1 | g0 c+1 d+1 e0
+   > Les locataires désespèrent.
+
+=== log-245 | logement | Les conflits de charges dans les copropriétés mixtes
+Propriétaires privés et bailleur social se disputent le partage des charges.
+A) Une médiation et une grille claire :: Apaiser.
+   bud-1 logement+1 | g0 c+2 d+1 e+1
+   > Les charges sont réparties équitablement.
+B) Séparer les bâtiments dans les futurs projets :: Anticiper.
+   logement+1 | g-1 c+2 d+2 e0
+   > Les futures copropriétés sont distinctes.
+C) Rien :: Copropriétés.
+   bon-1 | g0 c+1 d+1 e0
+   > Les assemblées tournent au pugilat.
+
+=== log-246 | logement | Une chambre d’amis partagée dans l’immeuble
+Plutôt qu’une pièce de plus par logement, une chambre commune pour les invités.
+A) L’imposer dans les nouveaux HLM :: Mutualiser.
+   logement+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles réservent la chambre d’amis.
+B) Un test dans une résidence :: Prudence.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > La chambre est réservée tous les week-ends.
+C) Rien :: Gadget.
+   bon-1 | g0 c+1 d+1 e0
+   > Les invités dorment sur le canapé.
+
+=== log-247 | logement | Construire sur les talus du périphérique
+Des terrains en bordure du périphérique pourraient accueillir des logements.
+? distinct
+A) Des immeubles protégés du bruit :: Densifier.
+   bud-4 logement+2 ecologie-1 | g0 c+2 d+1 e+1
+   > Des immeubles écrans s’élèvent.
+B) Des bureaux plutôt que des logements :: Santé.
+   economie+1 | g0 c+2 d+1 e+1
+   > Les bureaux protègent les quartiers derrière.
+C) Laisser les talus verts :: Nature.
+   ecologie+1 | g+1 c+1 d0 e+1
+   > Les talus restent des refuges pour la faune.
+
+=== log-248 | logement | Des logements au-dessus des stations de métro
+Les édicules et bâtiments techniques du métro pourraient être surélevés.
+? distinct
+A) Un programme avec la RATP :: Innover.
+   bud-3 logement+1 | g+1 c+2 d+1 e+1
+   > Des immeubles poussent sur les stations.
+B) Un premier projet test :: Prudence.
+   bud-1 logement+1 | g0 c+2 d+1 e+1
+   > Une station accueille vingt logements.
+C) Rien :: Complexité.
+   logement-1 | g0 c+1 d+1 e0
+   > Le projet reste dans les cartons.
+
+=== log-249 | logement | Un observatoire public des loyers
+Personne ne sait vraiment combien coûtent les loyers quartier par quartier.
+A) Publier toutes les données :: Transparence.
+   bud-1 logement+1 | g+1 c+2 d+1 e+1
+   > Les locataires comparent leurs loyers.
+B) Un rapport annuel :: Simple.
+   logement+1 | g0 c+2 d+1 e+1
+   > Le rapport fait la une.
+C) Rien :: Agences.
+   logement-1 | g0 c+1 d+1 e0
+   > L’opacité profite aux abus.
+
+=== log-250 | logement | Remplacer les fenêtres des HLM anciens
+Des fenêtres simple vitrage laissent passer le froid et le bruit.
+A) Un grand plan de remplacement :: Confort.
+   bud-4 logement+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les factures de chauffage baissent.
+B) Prioriser les résidences les plus froides :: Cibler.
+   bud-2 logement+1 | g0 c+2 d+1 e+1
+   > Les pires logements sont traités.
+C) Rien :: Bailleurs.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les locataires calfeutrent avec du scotch.
