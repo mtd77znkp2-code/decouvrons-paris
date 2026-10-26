@@ -1,0 +1,490 @@
+// Finances, série 7
+=== fin-186 | finances | Regrouper les services dans un seul bâtiment
+Les directions de la Ville sont éparpillées dans quarante immeubles loués.
+A) Construire un grand siège administratif :: Rationaliser.
+   bud-30 rec+0.3x60 | g0 c+3 d+2 e+1
+   > Les loyers disparaissent après le déménagement.
+B) Regrouper dans les bâtiments déjà possédés :: Économe.
+   bud-8 rec+0.15x60 services-1 | g0 c+2 d+2 e+1
+   > Les agents se serrent un peu.
+C) Garder l’organisation actuelle :: Stabilité.
+   rec-0.05x60 | g0 c+1 d+1 e0
+   > Les loyers continuent de peser.
+
+=== fin-187 | finances | Faire payer l’usage du nom « Paris »
+Des marques utilisent le nom de la ville sur leurs produits sans rien verser.
+? distinct
+A) Déposer la marque et vendre des licences :: Recettes.
+   rec+0.05x60 bon-1 | g-1 c+2 d+2 e0
+   > Des entreprises paient pour écrire « Paris » sur leurs boîtes.
+B) Un label officiel pour les produits fabriqués à Paris :: Valoriser.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Le label distingue les vrais produits parisiens.
+C) Laisser faire :: Le nom appartient à tous.
+   bon+1 | g+1 c+1 d0 e0
+   > Les boutiques de souvenirs continuent.
+
+=== fin-188 | finances | Vendre des œuvres d’art dormant dans les réserves
+Des milliers d’œuvres de la Ville ne sont jamais exposées.
+A) En vendre une partie aux enchères :: Recettes.
+   bud+12 bon-1 | g-1 c+1 d+2 e0
+   > Un tableau part pour plusieurs millions.
+B) Les louer à des entreprises et ambassades :: Valoriser.
+   rec+0.05x60 | g0 c+2 d+2 e+1
+   > Les œuvres décorent des halls d’entreprises.
+C) Les prêter gratuitement aux écoles et hôpitaux :: Partager.
+   bud-1 bon+1 | g+2 c+2 d0 e+1
+   > Des toiles égayent les couloirs d’hôpital.
+
+=== fin-189 | finances | Les garanties d’emprunt des bailleurs sociaux
+La Ville garantit des milliards de prêts de ses bailleurs, un risque énorme.
+A) Plafonner les nouvelles garanties :: Prudence.
+   logement-1 | g-1 c+3 d+2 e0
+   > Les constructions ralentissent.
+B) Les faire payer aux bailleurs :: Rémunérer le risque.
+   rec+0.05x60 logement-1 | g0 c+2 d+2 e0
+   > Les bailleurs paient une commission.
+C) Continuer à garantir :: Construire.
+   logement+1 | g+1 c+1 d0 e+1
+   ~60 bud-10 > Un bailleur fait défaut, la Ville paie.
+   > Les chantiers continuent.
+
+=== fin-190 | finances | Des cartes bancaires pour les achats des services
+Les petits achats passent par des bons de commande qui prennent des semaines.
+A) Équiper les services de cartes d’achat :: Simplifier.
+   rec+0.03x60 services+1 | g0 c+2 d+2 e+1
+   > Les achats se font en un clic.
+B) Avec des plafonds et des contrôles :: Encadrer.
+   rec+0.02x60 | g0 c+3 d+1 e+1
+   > Les dépenses sont tracées.
+C) Garder les bons de commande :: Prudence.
+   services-1 | g0 c+1 d+1 e0
+   > Les écoles attendent leurs feutres.
+
+=== fin-191 | finances | Capter la hausse des prix autour des nouvelles gares
+Les terrains autour des gares du Grand Paris prennent de la valeur grâce à l’argent public.
+A) Une taxe sur les plus-values foncières :: Juste retour.
+   rec+0.15x60 economie-1 | g+2 c+2 d0 e+1
+   > Les promoteurs paient une part de la hausse.
+B) Acheter des terrains avant la hausse :: Anticiper.
+   bud-20 rec+0.1x60 | g+1 c+2 d+1 e+1
+   > La Ville revend ou construit plus tard.
+C) Laisser le marché :: Libéral.
+   economie+1 | g-1 c+1 d+2 e0
+   > Les promoteurs empochent la hausse.
+
+=== fin-192 | finances | Louer les salons de l’Hôtel de Ville
+Des entreprises veulent louer les salons dorés pour des soirées privées.
+A) Louer à prix fort :: Recettes.
+   rec+0.05x60 bon-1 | g-1 c+2 d+2 e0
+   > Les galas se succèdent sous les lustres.
+B) Louer seulement aux associations et fondations :: Sélectif.
+   rec+0.01x60 bon+1 | g+1 c+2 d+1 e+1
+   > Les salons accueillent des causes utiles.
+C) Refuser :: Maison commune.
+   bon+1 | g+1 c+1 d0 e0
+   > Les salons restent réservés aux cérémonies.
+
+=== fin-193 | finances | Un budget qui mesure l’égalité femmes-hommes
+Des élus veulent savoir si chaque euro profite autant aux femmes qu’aux hommes.
+A) Analyser tout le budget sous cet angle :: Égalité.
+   bud-1 bon+1 | g+2 c+2 d0 e+1
+   > Les équipements sportifs se rééquilibrent.
+B) Analyser seulement les subventions :: Cibler.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les associations sportives féminines obtiennent plus.
+C) Refuser :: Complexité.
+   bon-1 | g-1 c+1 d+2 e0
+   > Le sujet est classé.
+
+=== fin-194 | finances | Le retard d’entretien des écoles
+Des toitures et chaudières d’écoles n’ont pas été entretenues depuis des années.
+? distinct
+A) Un grand plan de rattrapage :: Investir.
+   bud-25 services+2 | g+1 c+2 d+1 e+1
+   > Cent écoles sont rénovées.
+B) Réparer le plus urgent :: Prioriser.
+   bud-10 services+1 | g0 c+2 d+1 e+1
+   > Les toitures qui fuient sont refaites.
+C) Reporter encore :: Économiser.
+   bud+3 services-1 | g-1 c+1 d+2 e0
+   ~30 bud-15 > Une chaudière lâche en plein hiver.
+   > Les travaux attendent.
+
+=== fin-195 | finances | Le gros entretien des ponts
+Plusieurs ponts de la Ville ont besoin de travaux lourds dans les dix ans.
+A) Provisionner chaque année :: Anticiper.
+   rec-0.1x60 securite+1 | g0 c+3 d+2 e+1
+   > Une réserve est constituée.
+B) Emprunter le moment venu :: Reporter.
+   securite-1 | g0 c+1 d+1 e0
+   ~50 bud-20 > Les travaux arrivent tous en même temps.
+   > Rien ne change pour l’instant.
+C) Demander à l’État de cofinancer :: Partager.
+   bud-5 coh+1 | g0 c+2 d+1 e+1
+   > L’État accepte un tiers.
+
+=== fin-196 | finances | Un prêt de la Banque européenne d’investissement
+La banque européenne propose un prêt à taux très bas pour la rénovation énergétique.
+A) Emprunter le maximum :: Saisir l’occasion.
+   bud+40 rec-0.4x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Des écoles et piscines sont rénovées.
+B) Emprunter une partie :: Prudence.
+   bud+20 rec-0.2x60 | g0 c+3 d+1 e+1
+   > Les projets prioritaires sont financés.
+C) Refuser :: Pas de nouvelle dette.
+   ecologie-1 | g-1 c+2 d+2 e0
+   > Les rénovations attendent.
+
+=== fin-197 | finances | Les loyers impayés des clubs sportifs
+Des clubs ne paient plus l’occupation des stades municipaux depuis des années.
+A) Exiger le paiement :: Rigueur.
+   bud+3 bon-1 | g-1 c+2 d+2 e0
+   > Les clubs paient, certains réduisent leurs activités.
+B) Échelonner sur cinq ans :: Compromis.
+   rec+0.02x60 | g0 c+2 d+1 e+1
+   > Les clubs remboursent peu à peu.
+C) Effacer la dette :: Soutien au sport.
+   bon+1 | g+1 c+1 d0 e0
+   > Les clubs respirent.
+
+=== fin-198 | finances | Le coût des places de crèche achetées au privé
+La Ville réserve des berceaux dans des crèches privées à prix fort.
+A) Construire des crèches municipales :: Investir.
+   bud-15 rec+0.1x60 services+1 | g+2 c+2 d0 e+1
+   > Les crèches publiques ouvrent dans trois ans.
+B) Renégocier les prix :: Négocier.
+   rec+0.05x60 | g0 c+2 d+2 e+1
+   > Les tarifs baissent légèrement.
+C) Continuer :: Rapidité.
+   rec-0.05x60 services+1 | g-1 c+1 d+2 e0
+   > Les places restent chères.
+
+=== fin-199 | finances | Les primes des cadres dirigeants
+Un rapport révèle des primes très élevées pour certains directeurs.
+A) Plafonner les primes :: Exemplarité.
+   rec+0.02x60 bon+1 coh-1 | g+1 c+3 d+1 e+1
+   > Les primes sont rabotées.
+B) Les lier à des objectifs :: Performance.
+   coh+1 | g0 c+2 d+2 e+1
+   > Les primes dépendent des résultats.
+C) Ne rien changer :: Attirer les talents.
+   bon-1 | g-1 c+1 d+2 e0
+   > La presse s’en empare.
+
+=== fin-200 | finances | Augmenter les plus bas salaires de la Ville
+Des agents d’entretien et de cantine gagnent à peine le minimum.
+A) Une hausse de 100 € par mois :: Justice sociale.
+   rec-0.15x60 bon+1 coh+1 | g+2 c+2 d0 e+1
+   > Les agents les plus modestes respirent.
+B) Une prime annuelle :: Ponctuel.
+   bud-5 bon+1 | g+1 c+2 d+1 e+1
+   > Une prime est versée en décembre.
+C) Rien :: Contrainte budgétaire.
+   coh-1 bon-1 | g-1 c+1 d+2 e0
+   > Les syndicats préparent une grève.
+
+=== fin-201 | finances | La contribution de Paris au Grand Paris Express
+L’État demande à Paris de financer davantage le nouveau métro régional.
+A) Payer la part demandée :: Solidarité.
+   bud-20 transports+1 coh+1 | g+1 c+2 d+1 e+1
+   > Les travaux avancent.
+B) Négocier une part réduite :: Négocier.
+   bud-8 | g0 c+2 d+1 e+1
+   > L’État accepte un compromis.
+C) Refuser :: Paris a déjà son métro.
+   coh-1 | g-1 c+1 d+2 e0
+   > Les communes voisines t’accusent d’égoïsme.
+
+=== fin-202 | finances | Les dividendes d’une société d’économie mixte
+Une société d’aménagement de la Ville fait de gros bénéfices.
+A) Verser des dividendes à la Ville :: Recettes.
+   bud+8 | g-1 c+2 d+2 e0
+   > Les caisses de la Ville en profitent.
+B) Réinvestir dans des logements :: Utilité.
+   logement+1 | g+1 c+2 d+1 e+1
+   > Des logements supplémentaires sont lancés.
+C) Baisser ses tarifs :: Redistribuer.
+   bon+1 | g+1 c+2 d+1 e0
+   > Les loyers de ses locaux baissent.
+
+=== fin-203 | finances | Rembourser une partie de la dette en avance
+Une bonne année permettrait de rembourser des emprunts plus tôt.
+A) Rembourser massivement :: Désendetter.
+   bud-30 rec+0.3x60 | g-1 c+3 d+2 e0
+   > Les frais financiers baissent durablement.
+B) Rembourser un peu :: Équilibre.
+   bud-10 rec+0.1x60 | g0 c+3 d+1 e+1
+   > La dette recule légèrement.
+C) Investir plutôt :: Projets.
+   services+1 | g+1 c+1 d0 e+1
+   > Des équipements sont lancés.
+
+=== fin-204 | finances | Un budget rectificatif à mi-année
+Les recettes sont inférieures aux prévisions, il faut corriger le budget.
+? distinct
+A) Couper dans les investissements :: Rigueur.
+   bud+8 services-1 | g-1 c+3 d+2 e0
+   > Des projets sont décalés.
+B) Emprunter la différence :: Continuer.
+   bud+8 rec-0.1x60 | g+1 c+1 d0 e0
+   > La dette augmente.
+C) Répartir l’effort :: Équilibre.
+   bud+4 bon-1 | g0 c+2 d+1 e+1
+   > Chaque direction fait un petit effort.
+
+=== fin-205 | finances | Des millions votés mais jamais dépensés
+Des crédits restent bloqués dans des projets qui n’avancent pas.
+A) Les réaffecter à des projets prêts :: Efficacité.
+   services+1 | g0 c+3 d+1 e+1
+   > Des projets prêts démarrent enfin.
+B) Les rendre au budget général :: Assainir.
+   bud+10 | g-1 c+3 d+2 e0
+   > La trésorerie gonfle.
+C) Les laisser :: Patience.
+   bon-1 | g0 c+1 d+1 e0
+   > Les projets dorment toujours.
+
+=== fin-206 | finances | Faire certifier les comptes de la Ville
+Un cabinet indépendant pourrait certifier les comptes comme dans une entreprise.
+A) Lancer la certification :: Transparence.
+   bud-2 coh+1 bon+1 | g0 c+3 d+2 e+1
+   > Les comptes sont certifiés après deux ans d’efforts.
+B) Un audit partiel :: Prudence.
+   bud-1 | g0 c+2 d+1 e+1
+   > Quelques services sont audités.
+C) Refuser :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > L’opposition parle d’opacité.
+
+=== fin-207 | finances | Un péage pour les autocars de tourisme
+Les autocars de touristes entrent dans Paris gratuitement et polluent.
+A) Un péage de 100 € par car :: Recettes.
+   rec+0.15x60 economie-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les cars paient ou restent en périphérie.
+B) Un péage pour les cars diesel seulement :: Écologie.
+   rec+0.08x60 ecologie+1 | g+2 c+2 d0 e+1
+   > Les cars électriques entrent gratuitement.
+C) Rien :: Tourisme.
+   economie+1 | g-1 c+1 d+2 e0
+   > Les cars continuent d’affluer.
+
+=== fin-208 | finances | Les cadeaux protocolaires offerts par la Ville
+Montres, porcelaines et livres d’art sont offerts aux délégations étrangères.
+A) Les remplacer par des objets d’artisans parisiens modestes :: Sobriété.
+   rec+0.01x60 economie+1 | g+1 c+2 d+1 e+1
+   > Les délégations repartent avec un objet fait à Paris.
+B) Les supprimer :: Économies.
+   rec+0.02x60 coh-1 | g0 c+2 d+2 e0
+   > Le protocole grince des dents.
+C) Garder la tradition :: Prestige.
+   rec-0.01x60 | g0 c+1 d+1 e0
+   > Les cadeaux continuent.
+=== fin-209 | finances | La publicité sur les vélos en libre-service
+L’opérateur propose de financer les vélos par de la publicité sur les cadres.
+A) Accepter :: Recettes.
+   rec+0.05x60 bon-1 | g-1 c+2 d+2 e0
+   > Les vélos affichent des marques.
+B) Seulement des messages d’intérêt général :: Compromis.
+   rec+0.01x60 | g+1 c+2 d+1 e+1
+   > Les vélos portent des campagnes de santé.
+C) Refuser :: Ville sans pub.
+   bon+1 | g+1 c+1 d0 e+1
+   > Les vélos restent sobres.
+
+=== fin-210 | finances | Un legs pour les pauvres de Paris mal utilisé
+Un vieux legs destiné aux pauvres dort sur un compte depuis des décennies.
+A) Le distribuer aux associations :: Fidélité au testament.
+   bon+2 | g+2 c+2 d0 e+1
+   > Des repas et des nuits d’hôtel sont financés.
+B) Créer une fondation pour le gérer :: Durable.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > La fondation finance des projets chaque année.
+C) Le verser au budget social :: Simplicité.
+   bud+5 | g-1 c+1 d+2 e0
+   > Le legs disparaît dans le budget.
+
+=== fin-211 | finances | Une taxe pour la prévention des inondations
+La loi permet de lever une taxe pour protéger contre les crues.
+A) Lever la taxe :: Protéger.
+   rec+0.1x60 bon-1 securite+1 | g0 c+2 d+1 e+1
+   > Des digues et bassins sont financés.
+B) Financer sur le budget général :: Pas de nouvel impôt.
+   bud-10 securite+1 | g+1 c+2 d0 e+1
+   > Les travaux démarrent.
+C) Rien :: Attendre.
+   bon-1 | g0 c+1 d+1 e0
+   ~50 bud-15 > Une crue fait de gros dégâts.
+   > Le risque reste entier.
+
+=== fin-212 | finances | Un achat groupé d’électricité pour les Parisiens
+La Ville pourrait négocier un tarif pour tous les foyers volontaires.
+A) Organiser l’achat groupé :: Pouvoir d’achat.
+   bud-1 bon+2 | g+1 c+2 d+1 e+1
+   > Cent mille foyers économisent sur leur facture.
+B) Seulement de l’électricité verte :: Écologie.
+   bud-1 bon+1 ecologie+1 | g+2 c+2 d0 e+1
+   > Les foyers passent au vert.
+C) Rien :: Marché.
+   bon-1 | g0 c+1 d+2 e0
+   > Les factures restent élevées.
+
+=== fin-213 | finances | Payer la cantine en espèces
+Des familles sans compte bancaire ne peuvent pas payer la cantine en ligne.
+A) Rouvrir des guichets d’encaissement :: Inclusion.
+   rec-0.01x60 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles paient au guichet.
+B) Un paiement chez les buralistes :: Partenariat.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les familles paient au bureau de tabac.
+C) Tout en ligne :: Modernité.
+   rec+0.01x60 bon-1 | g-1 c+2 d+2 e0
+   > Des impayés s’accumulent.
+
+=== fin-214 | finances | L’État paie la Ville avec des mois de retard
+Des compensations dues par l’État n’arrivent pas, la trésorerie s’assèche.
+A) Lancer un recours :: Défendre.
+   bud-1 coh+1 | g0 c+2 d+1 e+1
+   ~20 bud+8 > L’État finit par payer.
+   > Le recours est déposé.
+B) Emprunter à court terme en attendant :: Tenir.
+   bud+5 rec-0.05x60 | g0 c+2 d+1 e0
+   > La trésorerie est sauvée.
+C) Retarder les paiements aux fournisseurs :: Reporter.
+   economie-1 | g-1 c+1 d+1 e0
+   > Des PME fournisseuses souffrent.
+
+=== fin-215 | finances | Des entreprises prêtent leurs salariés à la Ville
+Des grandes entreprises proposent du mécénat de compétences.
+A) Accepter des ingénieurs et informaticiens :: Expertise.
+   services+1 | g0 c+2 d+2 e+1
+   > Des projets numériques avancent.
+B) Avec une charte contre les conflits d’intérêts :: Encadrer.
+   services+1 coh+1 | g+1 c+2 d+1 e+1
+   > Les missions sont encadrées.
+C) Refuser :: Indépendance.
+   services-1 | g+1 c+1 d0 e0
+   > La Ville se débrouille seule.
+
+=== fin-216 | finances | Des bureaux municipaux vides depuis des années
+La Ville paie l’entretien de bureaux qu’elle n’utilise plus.
+? distinct
+A) Les vendre :: Recettes.
+   bud+10 | g-1 c+2 d+2 e0
+   > Les bureaux sont vendus.
+B) Les transformer en logements :: Loger.
+   bud-6 logement+1 | g+1 c+2 d+1 e+1
+   > Des familles emménagent.
+C) Les prêter aux associations :: Vie locale.
+   rec-0.01x60 bon+1 | g+1 c+2 d+1 e+1
+   > Des associations s’installent.
+
+=== fin-217 | finances | Externaliser la paie des agents
+Un prestataire propose de gérer la paie des agents moins cher.
+? distinct
+A) Externaliser :: Économies.
+   rec+0.05x60 coh-1 | g-1 c+2 d+2 e0
+   > Les erreurs de paie se multiplient la première année.
+B) Moderniser le service interne :: Garder la main.
+   bud-3 rec+0.03x60 | g+1 c+2 d+1 e+1
+   > Le logiciel de paie est remplacé.
+C) Rien :: Stabilité.
+   rec-0.01x60 | g0 c+1 d+1 e0
+   > Le service continue comme avant.
+
+=== fin-218 | finances | Payer les avocats des agents mis en cause
+Des agents poursuivis pour leur travail demandent que la Ville paie leur défense.
+A) Accorder la protection systématiquement :: Soutenir.
+   bud-2 coh+1 | g+1 c+2 d+1 e+1
+   > Les agents se sentent soutenus.
+B) Au cas par cas :: Prudence.
+   bud-1 | g0 c+2 d+1 e+1
+   > Une commission examine chaque demande.
+C) Refuser :: Responsabilité individuelle.
+   coh-1 | g-1 c+1 d+2 e0
+   > Les syndicats protestent.
+
+=== fin-219 | finances | Qui paie la baignade dans la Seine ?
+La surveillance des baignades coûte cher chaque été.
+A) La Ville paie tout :: Gratuité.
+   rec-0.05x60 bon+1 | g+1 c+2 d+1 e+1
+   > Les Parisiens nagent gratuitement.
+B) Un accès payant symbolique :: Participation.
+   rec-0.02x60 | g0 c+2 d+1 e+1
+   > L’entrée coûte un euro.
+C) Réduire la saison :: Économie.
+   bon-1 | g-1 c+2 d+2 e0
+   > Les baignades ne durent qu’un mois.
+
+=== fin-220 | finances | Chauffer l’Hôtel de Ville coûte une fortune
+Le bâtiment historique est une passoire thermique.
+A) Rénover le bâtiment :: Investir.
+   bud-15 rec+0.1x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les factures baissent de moitié.
+B) Baisser le chauffage à 18 degrés :: Sobriété.
+   rec+0.03x60 coh-1 | g+1 c+2 d+1 e+1
+   > Les agents travaillent en pull.
+C) Rien :: Patrimoine.
+   rec-0.02x60 | g0 c+1 d+1 e0
+   > Les factures continuent.
+
+=== fin-221 | finances | Les subventions culturelles sans évaluation
+Des compagnies reçoivent les mêmes subventions depuis vingt ans.
+A) Un audit et des contrats d’objectifs :: Rigueur.
+   rec+0.03x60 bon-1 | g0 c+3 d+2 e+1
+   > Des subventions sont réorientées.
+B) Un appel à projets ouvert :: Renouveler.
+   bon+1 | g+1 c+2 d+1 e+1
+   > De jeunes compagnies émergent.
+C) Rien :: Fidélité.
+   rec-0.01x60 | g0 c+1 d+1 e0
+   > Les mêmes compagnies sont financées.
+
+=== fin-222 | finances | Vendre les données de mobilité de la Ville
+Des entreprises veulent acheter les données anonymisées des capteurs de trafic.
+A) Vendre :: Recettes.
+   rec+0.03x60 bon-1 | g-1 c+2 d+2 e0
+   > Les données rapportent de l’argent.
+B) Les ouvrir gratuitement à tous :: Données publiques.
+   economie+1 | g+1 c+2 d+1 e+1
+   > Des start-up créent des applications.
+C) Les garder :: Prudence.
+   economie-1 | g0 c+1 d+1 e0
+   > Les données dorment.
+
+=== fin-223 | finances | La facture du traitement des déchets explose
+Le syndicat qui traite les ordures augmente fortement ses tarifs.
+A) Payer et répercuter sur la taxe :: Transparence.
+   rec+0.05x60 bon-1 | g0 c+2 d+2 e0
+   > La taxe sur les ordures augmente.
+B) Réduire les déchets à la source :: Prévention.
+   bud-3 ecologie+1 | g+2 c+2 d0 e+1
+   > Le tri progresse, la facture baisse ensuite.
+C) Absorber sans rien dire :: Discrétion.
+   rec-0.08x60 | g0 c+1 d+1 e0
+   > Le budget se creuse.
+
+=== fin-224 | finances | Accepter des dons en cryptomonnaie
+Des mécènes veulent donner en cryptomonnaie pour des projets de la Ville.
+A) Accepter et convertir aussitôt :: Pragmatisme.
+   bud+3 | g0 c+2 d+2 e0
+   > Les dons sont convertis en euros.
+B) Refuser :: Prudence.
+   bon-1 | g0 c+2 d+1 e+1
+   > Les mécènes donnent ailleurs.
+C) Garder les cryptomonnaies :: Pari.
+   bud+3 | g-1 c0 d+2 e-1
+   ~30 bud-4 > Le cours s’effondre.
+   > La Ville détient des cryptomonnaies.
+
+=== fin-225 | finances | Une contribution volontaire des grandes fortunes
+Des milliardaires proposent de verser une contribution pour les sans-abri.
+A) Accepter et créer un fonds dédié :: Solidarité.
+   bud+8 bon+1 | g0 c+2 d+1 e+1
+   > Des centres d’hébergement sont financés.
+B) Accepter en exigeant la transparence :: Encadrer.
+   bud+5 bon+1 | g+1 c+2 d+1 e+1
+   > Les dons sont publiés.
+C) Refuser au nom de l’impôt :: Principe.
+   bon-1 | g+2 c+1 d-1 e0
+   > Les milliardaires donnent à d’autres villes.
