@@ -306,6 +306,7 @@ C) Pas de terrains :: Places pour tous.
 
 === cul-051 | culture | Rendre les musées accessibles aux sourds
 Les musées municipaux n’ont presque aucune visite en langue des signes.
+? distinct
 A) Visites en langue des signes dans tous les musées :: Inclusion.
    rec-0.1x60 bon+1 services+1 | g+2 c+2 d+1 e+1
    > Des guides sourds animent des visites.

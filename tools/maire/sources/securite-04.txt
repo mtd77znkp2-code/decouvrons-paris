@@ -1,0 +1,487 @@
+// Sécurité, série 4
+=== sec-106 | securite | Les faux plombiers qui ruinent les habitants
+Des dépanneurs facturent 2 000 € une simple fuite ou une porte claquée.
+A) Liste municipale d’artisans de confiance :: Protéger.
+   bud-2 securite+1 achat+1 | g+1 c+3 d+2 e0
+   > Un annuaire d’artisans vérifiés est publié.
+B) Poursuivre les escrocs :: Sanctionner.
+   bud-1 securite+2 | g0 c+2 d+3 e0
+   > Plusieurs réseaux sont poursuivis.
+C) Campagne d’information :: Prévenir.
+   bud-1 securite+1 | g+1 c+2 d+1 e0
+   > Des conseils sont distribués.
+
+=== sec-107 | securite | Des feux dans les halls d’immeubles
+Des incendies volontaires de poubelles se multiplient dans les halls d’une cité.
+A) Locaux poubelles fermés et détecteurs :: Sécuriser.
+   bud-5 securite+2 logement+1 | g0 c+3 d+2 e0
+   > Les locaux sont sécurisés.
+B) Médiateurs de nuit :: Présence.
+   rec-0.2x40 securite+1 bon+1 | g+2 c+2 d0 e+1
+   > Des médiateurs veillent la nuit.
+C) Caméras dans les halls :: Identifier.
+   bud-4 securite+2 | g-1 c+2 d+3 e0
+   > Les auteurs sont identifiés.
+
+=== sec-108 | securite | Des sans-abri agressés
+Des personnes à la rue sont agressées la nuit, parfois filmées pour les réseaux sociaux.
+A) Maraudes de nuit renforcées :: Protéger.
+   rec-0.2x60 securite+1 services+1 | g+3 c+2 d0 e+1
+   > Des équipes passent toute la nuit.
+B) Plus de places d’hébergement :: Mettre à l’abri.
+   bud-8 services+2 | g+3 c+2 d0 e+1
+   > De nouvelles places ouvrent.
+C) Enquêtes contre les agresseurs :: Sanction.
+   securite+1 | g0 c+2 d+3 e0
+   > Les auteurs sont poursuivis.
+
+=== sec-109 | securite | Les vols à la portière aux feux rouges
+Des voleurs ouvrent les portières des voitures arrêtées au feu pour arracher les sacs.
+A) Patrouilles aux carrefours ciblés :: Dissuasion.
+   rec-0.2x40 securite+2 | g-1 c+2 d+3 e0
+   > Les vols diminuent.
+B) Campagne : verrouiller ses portes :: Prévenir.
+   bud-1 securite+1 | g+1 c+2 d+1 e0
+   > Des panneaux rappellent de verrouiller.
+C) Caméras aux carrefours :: Surveiller.
+   bud-4 securite+2 | g-1 c+2 d+3 e0
+   > Les auteurs sont identifiés.
+
+=== sec-110 | securite | Des lasers pointés sur les hélicoptères
+Des lasers sont pointés sur les hélicoptères de la police et du SAMU depuis les toits.
+A) Enquêtes et sanctions exemplaires :: Fermeté.
+   securite+2 | g0 c+2 d+3 e0
+   > Plusieurs auteurs sont arrêtés.
+B) Interdire la vente de lasers puissants :: À la source.
+   securite+1 economie-1 | g+1 c+2 d+2 e+1
+   > Les lasers puissants sont interdits.
+C) Rien :: Police nationale.
+   securite-1 | g0 c+1 d+1 e0
+   > Les incidents continuent.
+
+=== sec-111 | securite | Les cyclistes percutés par des portières
+Des cyclistes sont gravement blessés par des portières ouvertes sans regarder.
+A) Pistes cyclables éloignées des places de stationnement :: Aménager.
+   bud-10 securite+2 transports+1 | g+1 c+2 d0 e+3
+   > Les pistes sont décalées.
+B) Campagne « regarde avant d’ouvrir » :: Sensibiliser.
+   bud-1 securite+1 | g+1 c+3 d+1 e+1
+   > Une campagne choc est lancée.
+C) Rien :: Responsabilité individuelle.
+   securite-1 | g0 c0 d+2 e-1
+   > Les accidents continuent.
+
+=== sec-112 | securite | Les fausses quêtes dans la rue
+Des faux bénévoles collectent de l’argent au nom d’associations qui n’existent pas.
+A) Badge municipal obligatoire pour les quêteurs :: Contrôler.
+   bud-1 securite+1 | g0 c+3 d+2 e0
+   > Les quêteurs doivent porter un badge.
+B) Contrôles de police :: Sanctionner.
+   securite+2 | g-1 c+2 d+3 e0
+   > Les faux quêteurs sont interpellés.
+C) Rien :: Les gens sont libres de donner.
+   securite-1 | g0 c0 d0 e0
+   > Les arnaques continuent.
+
+=== sec-113 | securite | Les pickpockets des marchés
+Les pickpockets profitent de la foule des marchés du dimanche.
+A) Agents en civil sur les marchés :: Prendre sur le fait.
+   rec-0.1x60 securite+2 | g0 c+2 d+3 e0
+   > Plusieurs voleurs sont arrêtés.
+B) Annonces et affiches :: Prévenir.
+   bud-1 securite+1 | g+1 c+2 d+1 e0
+   > Les clients sont avertis.
+C) Rien :: Pas prioritaire.
+   securite-1 | g0 c0 d0 e0
+   > Les vols continuent.
+
+=== sec-114 | securite | Des fêtes géantes dans des appartements loués
+Des appartements loués pour une nuit accueillent des fêtes de 200 personnes qui terrorisent les voisins.
+A) Sanctionner les propriétaires et plateformes :: Responsabiliser.
+   bon+1 logement+1 | g+2 c+2 d0 e+1
+   > Les plateformes doivent bloquer les fêtes.
+B) Numéro d’alerte et intervention rapide :: Réagir.
+   rec-0.1x60 bon+1 securite+1 | g0 c+3 d+2 e0
+   > Une équipe intervient la nuit.
+C) Rien :: Police nationale.
+   bon-1 | g0 c+1 d+1 e0
+   > Les fêtes continuent.
+
+=== sec-115 | securite | Des élus d’arrondissement insultés et menacés
+Des élus locaux reçoivent insultes et menaces sur les réseaux sociaux et lors de réunions.
+A) Plainte systématique et protection :: Soutenir les élus.
+   bud-1 coh+1 | g+1 c+2 d+2 e+1
+   > Chaque menace donne lieu à une plainte.
+B) Formation à la gestion des conflits :: Prévenir.
+   bud-1 coh+1 | g+1 c+3 d+1 e+1
+   > Les élus sont formés.
+C) Rien :: Cela fait partie du mandat.
+   coh-1 | g0 c0 d0 e0
+   > Les élus démotivés démissionnent.
+
+=== sec-116 | securite | Un trafic de chiots de race
+Des chiots malades vendus illégalement sont saisis dans un appartement.
+A) Contrôles des ventes d’animaux en ligne :: Lutter.
+   securite+1 ecologie+1 | g+1 c+3 d+2 e+2
+   > Les annonces sont surveillées.
+B) Refuge et adoption des animaux saisis :: Protéger.
+   bud-2 bon+1 | g+1 c+2 d+1 e+2
+   > Les chiots sont adoptés.
+C) Rien :: Police nationale.
+   securite-1 | g0 c+1 d+1 e0
+   > Les trafics continuent.
+
+=== sec-117 | securite | Le vol à l’étalage organisé
+Des bandes organisées dévalisent les magasins à la chaîne et revendent sur internet.
+A) Cellule commune police et commerçants :: Coopérer.
+   bud-2 securite+2 economie+1 | g0 c+3 d+3 e0
+   > Plusieurs réseaux sont démantelés.
+B) Aider les commerçants à s’équiper :: Prévenir.
+   bud-3 securite+1 economie+1 | g0 c+3 d+2 e0
+   > Des portiques antivol sont subventionnés.
+C) Rien :: Aux commerçants de se protéger.
+   economie-1 | g-1 c0 d+2 e0
+   > Les vols continuent.
+
+=== sec-118 | securite | La sécurité dans les centres d’hébergement
+Des rixes éclatent dans un grand centre d’hébergement. Les résidents ont peur.
+A) Plus de personnel et des chambres plus petites :: Apaiser.
+   rec-0.3x60 securite+1 services+1 | g+3 c+2 d0 e+1
+   > Le centre est réorganisé.
+B) Agents de sécurité :: Ordre.
+   rec-0.2x60 securite+2 | g-1 c+2 d+3 e0
+   > Des vigiles sont postés.
+C) Fermer le centre :: Radical.
+   services-2 securite+1 | g-3 c0 d+3 e-1
+   > Les résidents sont dispersés.
+
+=== sec-119 | securite | Les agents de stationnement agressés
+Les agents qui verbalisent le stationnement sont régulièrement insultés et frappés.
+A) Caméras-piétons et binômes :: Protéger.
+   bud-3 securite+1 | g0 c+3 d+2 e0
+   > Les agents patrouillent à deux.
+B) Plainte systématique :: Fermeté.
+   coh+1 securite+1 | g0 c+2 d+3 e0
+   > Chaque agression est poursuivie.
+C) Réduire les contrôles dans les quartiers tendus :: Prudence.
+   rec-0.05x60 securite-1 | g0 c+1 d-2 e0
+   > Les contrôles diminuent.
+
+=== sec-120 | securite | Les braquages de joailleries
+Plusieurs joailleries de la place Vendôme sont braquées en quelques mois.
+A) Poste de police municipale permanent :: Présence.
+   rec-0.2x60 securite+2 economie+1 | g-1 c+2 d+4 e0
+   > Un poste est installé sur la place.
+B) Coopération avec les joailliers pour la sécurité :: Partager.
+   securite+1 economie+1 | g0 c+3 d+3 e0
+   > Les joailliers financent des vigiles.
+C) Rien :: Entreprises riches.
+   economie-1 | g+2 c0 d-2 e0
+   > Les braquages continuent.
+
+=== sec-121 | securite | Un laboratoire clandestin de drogue
+La police découvre un laboratoire de drogue dans une cave. Des produits toxiques ont été déversés.
+A) Dépollution et information des voisins :: Protéger.
+   bud-3 securite+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > La cave est dépolluée.
+B) Contrôle des caves d’immeubles :: Prévenir.
+   bud-1 securite+1 | g0 c+2 d+2 e0
+   > Les bailleurs contrôlent les caves.
+C) Laisser la police gérer :: Compétence.
+   securite-1 | g0 c+1 d+1 e0
+   > Les voisins restent inquiets.
+
+=== sec-122 | securite | Des livreurs agressés pour leurs vélos
+Des livreurs à vélo sont agressés pour leur vélo électrique et leur sac.
+A) Points de pause sécurisés pour livreurs :: Protéger.
+   bud-3 securite+1 | g+2 c+2 d+1 e+1
+   > Des abris sécurisés sont installés.
+B) Enquêtes contre les receleurs :: Sanctionner.
+   securite+2 | g0 c+2 d+3 e0
+   > Des réseaux de receleurs sont démantelés.
+C) Rien :: Plateformes responsables.
+   securite-1 | g-1 c0 d+2 e0
+   > Les agressions continuent.
+
+=== sec-123 | securite | Des caméras dans les écoles ?
+Après une intrusion, des parents réclament des caméras dans les cours d’école.
+A) Caméras aux entrées seulement :: Compromis.
+   bud-4 securite+1 | g0 c+3 d+2 e0
+   > Les entrées sont filmées.
+B) Caméras dans les cours :: Sécurité maximale.
+   bud-8 securite+2 | g-3 c0 d+4 e-1
+   > Les cours sont filmées.
+   ~35 pop-2 > Des parents et enseignants dénoncent la surveillance des enfants.
+C) Pas de caméras, des gardiens :: Présence humaine.
+   rec-0.2x60 securite+1 | g+2 c+2 d0 e+1
+   > Des gardiens surveillent les entrées.
+
+=== sec-124 | securite | Le risque d’incendie dans les squats
+Des squats d’immeubles sont équipés de branchements électriques sauvages. Un incendie menace.
+A) Mise en sécurité électrique et accompagnement :: Protéger.
+   bud-3 securite+1 logement+1 | g+2 c+2 d0 e+1
+   > Les installations sont sécurisées.
+B) Évacuation et relogement :: Prudence.
+   bud-5 securite+2 | g0 c+2 d+2 e0
+   > Les occupants sont relogés.
+C) Rien :: Bâtiment privé.
+   securite-1 | g-1 c0 d+2 e0
+   > Le risque demeure.
+
+=== sec-125 | securite | Les plaques d’égout volées
+Des plaques d’égout en fonte sont volées et revendues. Des trous béants apparaissent.
+? distinct
+A) Plaques antivol verrouillées :: Prévenir.
+   bud-6 securite+2 | g0 c+3 d+2 e0
+   > Les plaques sont verrouillées.
+B) Contrôle des ferrailleurs :: Recel.
+   securite+1 | g0 c+2 d+3 e0
+   > Les ferrailleurs sont contrôlés.
+C) Remplacer au cas par cas :: Réagir.
+   securite-1 bud-2 | g0 c+1 d+1 e0
+   > Les vols continuent.
+
+=== sec-126 | securite | Les vols dans les boîtes aux lettres
+Des voleurs pêchent les chéquiers et cartes bancaires dans les boîtes aux lettres.
+? distinct
+A) Aider à installer des boîtes sécurisées :: Équiper.
+   bud-3 securite+1 | g+1 c+3 d+2 e0
+   > Des boîtes renforcées sont installées.
+B) Campagne d’information :: Prévenir.
+   bud-1 securite+1 | g+1 c+2 d+1 e0
+   > Les habitants sont avertis.
+C) Rien :: Compétence des banques.
+   securite-1 | g0 c+1 d+1 e0
+   > Les vols continuent.
+
+=== sec-127 | securite | La police municipale à vélo électrique
+Les agents à pied ne peuvent pas couvrir les grands quartiers. Des vélos électriques sont proposés.
+A) Équiper toute la police municipale :: Mobilité.
+   bud-5 securite+2 ecologie+1 | g0 c+3 d+2 e+2
+   > Les agents patrouillent à vélo.
+B) Équiper une brigade :: Tester.
+   bud-1 securite+1 | g0 c+3 d+1 e+1
+   > Une brigade cycliste est créée.
+C) Préférer des voitures :: Rapidité.
+   bud-6 securite+1 ecologie-1 | g0 c+1 d+3 e-2
+   > De nouvelles voitures sont achetées.
+
+=== sec-128 | securite | La police municipale la nuit
+La police municipale cesse son service à 2 h. Les nuits sont sans présence.
+A) Service 24 h sur 24 :: Présence permanente.
+   rec-0.6x60 securite+3 | g-1 c+2 d+4 e0
+   > La police municipale tourne toute la nuit.
+B) Jusqu’à 4 h le week-end :: Ciblé.
+   rec-0.2x60 securite+1 | g0 c+3 d+2 e0
+   > Les nuits du week-end sont couvertes.
+C) Garder les horaires :: Budget.
+   securite-1 | g+1 c0 d-2 e0
+   > Rien ne change.
+
+=== sec-129 | securite | Des patrouilles mixtes
+Le préfet propose des patrouilles communes police nationale et police municipale.
+A) Accepter :: Efficacité.
+   securite+2 coh-1 | g-1 c+3 d+3 e0
+   > Les patrouilles mixtes sont lancées.
+B) Accepter dans certains quartiers seulement :: Prudence.
+   securite+1 | g0 c+3 d+2 e0
+   > Des patrouilles mixtes ont lieu dans trois quartiers.
+C) Refuser :: Indépendance de la police municipale.
+   securite-1 coh+1 | g+1 c0 d-1 e+1
+   > Chaque police garde ses missions.
+
+=== sec-130 | securite | Les incivilités dans les bibliothèques
+Les bibliothécaires subissent des insultes et des bagarres le soir.
+A) Agents de médiation dans les bibliothèques :: Apaiser.
+   rec-0.2x60 securite+1 services+1 | g+2 c+2 d+1 e+1
+   > Des médiateurs sont présents.
+B) Vigiles à l’entrée :: Sécurité.
+   rec-0.2x60 securite+2 | g-2 c+2 d+3 e0
+   > Des vigiles filtrent les entrées.
+C) Fermer plus tôt :: Prudence.
+   services-1 securite+1 | g0 c+1 d+1 e0
+   > Les bibliothèques ferment à 19 h.
+
+=== sec-131 | securite | Des vols de nourriture par nécessité
+Des vols de nourriture par des personnes en grande précarité augmentent dans les supérettes.
+A) Développer l’aide alimentaire :: Répondre à la cause.
+   bud-5 achat+2 | g+4 c+2 d-1 e+1
+   > Les distributions alimentaires sont renforcées.
+B) Sanctions :: Faire respecter la loi.
+   pop-1 securite+1 | g-3 c+1 d+4 e0
+   > Les vols sont poursuivis.
+C) Bons alimentaires distribués par les commerçants :: Partenariat.
+   bud-3 achat+1 economie+1 | g+2 c+3 d+1 e+1
+   > Les commerçants distribuent des bons.
+
+=== sec-132 | securite | Des violences dans un foyer de jeunes
+Des violences éclatent dans un foyer de jeunes placés. Les éducateurs sont débordés.
+? distinct
+A) Plus d’éducateurs :: Encadrer.
+   rec-0.3x60 securite+1 services+2 | g+3 c+2 d+1 e+1
+   > Le foyer est renforcé.
+B) Petits foyers à taille humaine :: Réorganiser.
+   bud-10 services+2 | g+2 c+2 d+1 e+1
+   > Le grand foyer est divisé en petites unités.
+C) Intervention de la police :: Ordre.
+   securite+1 services-1 | g-2 c+1 d+3 e0
+   > La police intervient.
+
+=== sec-133 | securite | Des enfants tombent des fenêtres
+Chaque été, des enfants tombent par des fenêtres ouvertes. Plusieurs drames ont eu lieu.
+? distinct
+A) Bloque-fenêtres gratuits pour les familles :: Protéger.
+   bud-2 securite+2 | g+2 c+3 d+1 e+1
+   > Des milliers de bloque-fenêtres sont distribués.
+B) Campagne de prévention estivale :: Sensibiliser.
+   bud-1 securite+1 | g+1 c+3 d+1 e+1
+   > Des affiches alertent les parents.
+C) Rien :: Responsabilité des parents.
+   securite-1 | g-1 c0 d+2 e0
+   > Les accidents continuent.
+
+=== sec-134 | securite | Les fausses alertes incendie
+Des alarmes incendie déclenchées par jeu obligent à évacuer des immeubles en pleine nuit.
+A) Amendes pour les auteurs :: Sanctionner.
+   securite+1 | g0 c+2 d+3 e0
+   > Les auteurs sont sanctionnés.
+B) Alarmes avec caméra :: Identifier.
+   bud-2 securite+1 | g0 c+3 d+2 e0
+   > Les déclencheurs sont filmés.
+C) Rien :: Rare.
+   bon-1 | g0 c0 d+1 e0
+   > Les fausses alertes continuent.
+
+=== sec-135 | securite | Des noyades dans le canal l’été
+Des jeunes se baignent dans le canal Saint-Martin, interdit à la baignade. Deux se sont noyés.
+A) Ouvrir un site de baignade surveillé à proximité :: Alternative.
+   bud-6 securite+2 bon+1 | g+2 c+2 d+1 e+2
+   > Un bassin surveillé ouvre.
+B) Interdiction stricte et surveillance :: Faire respecter.
+   rec-0.1x20 securite+2 | g-1 c+2 d+3 e0
+   > Des agents surveillent les quais.
+C) Panneaux d’avertissement :: Informer.
+   bud-1 securite+1 | g0 c+2 d+1 e0
+   > Des panneaux sont posés.
+
+=== sec-136 | securite | La lecture automatique des plaques
+Des caméras pourraient lire les plaques d’immatriculation pour retrouver les voitures volées.
+A) Installer la lecture automatique :: Efficacité.
+   bud-5 securite+2 | g-2 c+2 d+3 e0
+   > Des voitures volées sont retrouvées.
+   ~30 coh-1 > Des associations dénoncent un fichage.
+B) Seulement aux entrées de Paris :: Ciblé.
+   bud-2 securite+1 | g0 c+3 d+2 e0
+   > Les portes de Paris sont équipées.
+C) Refuser :: Libertés.
+   securite-1 coh+1 | g+3 c0 d-3 e+1
+   > Pas de lecture de plaques.
+
+=== sec-137 | securite | Des fraudes aux aides de la Ville
+Un audit révèle des fraudes aux aides sociales municipales.
+A) Contrôles renforcés :: Rigueur.
+   rec+0.1x60 coh+1 | g-2 c+2 d+4 e0
+   > Les fraudeurs sont sanctionnés.
+B) Simplifier les aides pour réduire les erreurs :: Clarté.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Les aides sont simplifiées.
+C) Minimiser : la fraude est marginale :: Protéger les bénéficiaires.
+   pop-1 | g+2 c0 d-3 e0
+   > Rien ne change.
+
+=== sec-138 | securite | Des objets jetés depuis les fenêtres
+Des bouteilles et des objets sont jetés depuis les fenêtres d’une tour sur les passants.
+A) Enquête et sanctions :: Fermeté.
+   securite+2 | g0 c+2 d+3 e0
+   > Les auteurs sont identifiés.
+B) Filets et auvents de protection :: Protéger.
+   bud-4 securite+1 | g0 c+3 d+1 e0
+   > Des auvents protègent les entrées.
+C) Rien :: Difficile à prouver.
+   securite-1 | g0 c0 d+1 e0
+   > Les jets continuent.
+
+=== sec-139 | securite | Des commerçants rackettés
+Des commerçants d’une rue paient une « protection » à une bande pour ne pas être vandalisés.
+A) Plainte collective accompagnée par la Ville :: Briser le silence.
+   bud-1 securite+2 economie+1 | g+1 c+2 d+3 e0
+   > La bande est démantelée.
+B) Présence policière renforcée :: Dissuasion.
+   rec-0.2x40 securite+2 | g-1 c+2 d+4 e0
+   > La rue est surveillée.
+C) Rien :: Personne ne porte plainte.
+   economie-1 | g0 c0 d+1 e0
+   > Le racket continue.
+
+=== sec-140 | securite | Des touristes asiatiques ciblés
+Des bandes ciblent les touristes asiatiques, réputés transporter de l’argent liquide.
+A) Policiers parlant chinois dans les zones touristiques :: Accueil et sécurité.
+   rec-0.1x60 securite+2 economie+1 | g+1 c+3 d+2 e0
+   > Des agents multilingues patrouillent.
+B) Campagne d’information dans les hôtels :: Prévenir.
+   bud-1 securite+1 | g+1 c+3 d+1 e0
+   > Les hôtels préviennent leurs clients.
+C) Rien :: Police nationale.
+   economie-1 | g0 c+1 d+1 e0
+   > Les agressions continuent.
+
+=== sec-141 | securite | L’alcool au volant le week-end
+Les accidents liés à l’alcool explosent le week-end à la sortie des bars.
+A) Contrôles d’alcoolémie massifs :: Dissuasion.
+   securite+2 | g0 c+2 d+3 e+1
+   > Les contrôles se multiplient.
+B) Navettes gratuites de nuit le week-end :: Alternative.
+   rec-0.2x60 securite+1 transports+1 | g+2 c+2 d0 e+2
+   > Des navettes ramènent les fêtards.
+C) Campagne de prévention :: Doux.
+   bud-1 securite+1 | g+1 c+2 d+1 e0
+   > Des affiches rappellent les dangers.
+
+=== sec-142 | securite | Des cours d’autodéfense pour les femmes
+Des associations proposent des cours d’autodéfense gratuits pour les femmes.
+A) Financer des cours dans chaque arrondissement :: Autonomie.
+   rec-0.1x60 securite+1 bon+1 | g+2 c+2 d+2 e+1
+   > Des milliers de femmes suivent les cours.
+B) Cours dans les gymnases avec les clubs :: Partenariat.
+   bud-1 securite+1 | g+1 c+3 d+1 e+1
+   > Les clubs proposent des séances.
+C) Rien :: Ce n’est pas aux femmes de s’adapter.
+   securite-1 coh+1 | g+1 c0 d0 e+1
+   > Le projet est refusé.
+
+=== sec-143 | securite | Les arnaques aux faux petits-enfants
+Des escrocs appellent des seniors en se faisant passer pour leurs petits-enfants en détresse.
+? distinct
+A) Ateliers de prévention dans les clubs seniors :: Former.
+   bud-1 securite+1 | g+1 c+3 d+1 e+1
+   > Les seniors apprennent à repérer les arnaques.
+B) Numéro d’alerte avec la police :: Réagir.
+   bud-1 securite+2 | g0 c+3 d+2 e0
+   > Les seniors peuvent vérifier un appel suspect.
+C) Rien :: Police nationale.
+   securite-1 | g0 c+1 d+1 e0
+   > Les arnaques continuent.
+
+=== sec-144 | securite | Des chutes sur les voies du métro
+Des voyageurs tombent sur les voies dans les stations bondées.
+A) Cofinancer des portes palières :: Sécurité.
+   bud-30 securite+2 transports+1 | g+1 c+3 d+2 e+1
+   > Des portes protègent les quais.
+B) Agents de régulation aux heures de pointe :: Présence.
+   rec-0.1x60 securite+1 | g+1 c+2 d+1 e0
+   > Des agents régulent la foule.
+C) Rien :: Compétence de la RATP.
+   securite-1 | g0 c+1 d+1 e0
+   > Les accidents continuent.
+
+=== sec-145 | securite | Des bousculades aux soldes
+L’ouverture des soldes provoque des bousculades et des blessés devant les grands magasins.
+A) Imposer des files d’attente encadrées :: Organiser.
+   securite+2 | g0 c+3 d+2 e0
+   > Des barrières encadrent les files.
+B) Faire payer la sécurité aux magasins :: Responsabiliser.
+   rec+0.02x60 securite+1 | g+1 c+2 d+1 e0
+   > Les magasins financent des agents.
+C) Rien :: Événement privé.
+   securite-1 | g0 c0 d+2 e0
+   > Les bousculades continuent.
