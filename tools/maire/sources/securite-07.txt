@@ -1,0 +1,304 @@
+// Sécurité, série 7
+=== sec-226 | securite | Les vols dans les caves des restaurants
+Des cambrioleurs vident les caves à vin des restaurants par les soupiraux.
+A) Des patrouilles nocturnes ciblées :: Surveiller.
+   rec-0.01x60 securite+1 | g0 c+2 d+2 e0
+   > Une bande est arrêtée.
+B) Aider à poser des grilles et alarmes :: Équiper.
+   bud-1 securite+1 economie+1 | g0 c+2 d+1 e+1
+   > Les soupiraux sont renforcés.
+C) Rien :: Assurances.
+   economie-1 | g0 c+1 d+1 e0
+   > Les restaurateurs se découragent.
+
+=== sec-227 | securite | Des jeunes recrutés pour des cambriolages
+Des réseaux recrutent des adolescents sur les réseaux sociaux pour cambrioler.
+A) Des interventions dans les collèges :: Prévenir.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les élèves repèrent les pièges.
+B) Signaler les comptes recruteurs :: Poursuivre.
+   securite+1 | g0 c+2 d+2 e0
+   > Des comptes sont fermés.
+C) Rien :: Police nationale.
+   securite-1 | g0 c+1 d+1 e0
+   > Des adolescents sont arrêtés.
+
+=== sec-228 | securite | Les vols de téléphones par des cyclistes
+Des voleurs à vélo arrachent les téléphones des passants.
+? distinct
+A) Des patrouilles à vélo :: Présence.
+   rec-0.01x60 securite+1 | g0 c+2 d+2 e0
+   > Les voleurs sont pris en flagrant délit.
+B) Une campagne de prévention :: Informer.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les passants rangent leur téléphone.
+C) Rien :: Police nationale.
+   securite-1 | g0 c+1 d+1 e0
+   > Les vols continuent.
+
+=== sec-229 | securite | Les rixes entre automobilistes
+Des disputes de circulation finissent en bagarres sur la chaussée.
+A) Des contrôles et sanctions :: Fermeté.
+   securite+1 | g0 c+2 d+2 e0
+   > Les conducteurs agressifs sont poursuivis.
+B) Apaiser la circulation dans les zones tendues :: Aménager.
+   bud-1 securite+1 transports-1 | g+1 c+2 d+1 e+1
+   > Les carrefours tendus sont réaménagés.
+C) Rien :: Code de la route.
+   securite-1 | g0 c+1 d+1 e0
+   > Une rixe tourne mal.
+
+=== sec-230 | securite | La mendicité agressive aux terrasses
+Des clients de terrasse se plaignent d’être harcelés.
+A) Des maraudes sociales pour orienter :: Accompagner.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Des personnes sont orientées vers l’aide.
+B) Des patrouilles aux heures de repas :: Ordre.
+   securite+1 bon-1 | g-1 c+2 d+2 e0
+   > Les terrasses se calment.
+C) Rien :: Tolérance.
+   economie-1 | g0 c+1 d+1 e0
+   > Les restaurateurs protestent.
+
+=== sec-231 | securite | Des écoles vandalisées pendant les vacances
+Des écoles fermées l’été sont saccagées et taguées.
+A) Des alarmes et rondes estivales :: Protéger.
+   bud-1 securite+1 | g0 c+2 d+2 e+1
+   > Les écoles sont épargnées.
+B) Ouvrir les cours aux jeunes encadrés :: Occuper.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les jeunes jouent au lieu de casser.
+C) Réparer à la rentrée :: Coût.
+   bud-2 | g0 c+1 d+1 e0
+   > Les réparations coûtent cher.
+
+=== sec-232 | securite | Des adolescents escaladent les grues
+Des jeunes grimpent sur les grues de chantier pour se filmer.
+A) Sécuriser les accès aux grues :: Prévenir.
+   securite+1 | g0 c+2 d+2 e+1
+   > Les échelles sont verrouillées.
+B) Une campagne sur les réseaux :: Sensibiliser.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les influenceurs relaient le danger.
+C) Rien :: Entreprises.
+   securite-1 | g0 c+1 d+1 e0
+   > Un adolescent chute.
+
+=== sec-233 | securite | Des tirs de plombs sur les chats et les pigeons
+Des animaux sont retrouvés blessés par des carabines à plombs.
+A) Enquêter et porter plainte :: Fermeté.
+   securite+1 ecologie+1 | g+1 c+2 d+2 e+1
+   > Le tireur est identifié.
+B) Une campagne d’alerte :: Informer.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les habitants signalent.
+C) Rien :: Police.
+   ecologie-1 | g0 c+1 d+1 e0
+   > D’autres animaux sont blessés.
+
+=== sec-234 | securite | Des plantes volées dans les jardins publics
+Des massifs entiers sont arrachés la nuit pour être revendus.
+? distinct
+A) Des caméras dans les jardins :: Surveiller.
+   bud-1 securite+1 | g-1 c+2 d+2 e0
+   > Les vols cessent.
+B) Planter des espèces moins prisées :: Adapter.
+   ecologie-1 | g0 c+2 d+1 e+1
+   > Les voleurs se désintéressent.
+C) Rien :: Replanter.
+   bud-1 | g0 c+1 d+1 e0
+   > Les massifs disparaissent encore.
+
+=== sec-235 | securite | Des commerçants rançonnés par des pirates
+Des boutiques voient leurs ordinateurs bloqués contre une rançon.
+A) Des formations à la cybersécurité :: Prévenir.
+   bud-1 economie+1 securite+1 | g0 c+2 d+1 e+1
+   > Les commerçants sauvegardent leurs données.
+B) Une cellule d’aide aux victimes :: Accompagner.
+   bud-1 economie+1 | g+1 c+2 d+1 e+1
+   > Les commerçants sont aidés à redémarrer.
+C) Rien :: État.
+   economie-1 | g0 c+1 d+1 e0
+   > Des commerces ferment.
+
+=== sec-236 | securite | Les colliers arrachés aux personnes âgées
+Des voleurs arrachent bijoux et sacs aux seniors dans la rue.
+? distinct
+A) Des patrouilles près des marchés :: Présence.
+   rec-0.01x60 securite+1 | g0 c+2 d+2 e0
+   > Les vols diminuent.
+B) Des ateliers de prévention pour seniors :: Prévenir.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les seniors laissent leurs bijoux chez eux.
+C) Rien :: Police nationale.
+   securite-1 | g0 c+1 d+1 e0
+   > Une personne âgée est blessée.
+
+=== sec-237 | securite | Le harcèlement des joggeuses
+Des femmes qui courent dans les parcs subissent remarques et filatures.
+A) Des parcours éclairés et des bornes d’alerte :: Protéger.
+   bud-2 securite+1 | g+1 c+2 d+1 e+1
+   > Les joggeuses courent plus sereinement.
+B) Des sorties de course en groupe :: Solidarité.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Des groupes de coureuses se forment.
+C) Rien :: Police.
+   securite-1 | g0 c+1 d+1 e0
+   > Des femmes renoncent à courir.
+
+=== sec-238 | securite | Les vols de sacs dans les restaurants
+Des voleurs se servent dans les sacs posés au dos des chaises.
+? distinct
+A) Des crochets antivol sous les tables :: Équiper.
+   bud-1 securite+1 economie+1 | g0 c+2 d+1 e+1
+   > Les sacs sont accrochés sous les tables.
+B) Une campagne avec les restaurateurs :: Informer.
+   securite+1 | g0 c+2 d+1 e+1
+   > Les clients sont prévenus.
+C) Rien :: Vigilance.
+   securite-1 | g0 c+1 d+1 e0
+   > Les vols continuent.
+
+=== sec-239 | securite | Des policiers municipaux blessés en intervention
+Plusieurs agents sont blessés lors d’interpellations.
+A) Mieux les équiper et les former :: Protéger.
+   bud-2 securite+1 coh+1 | g0 c+2 d+2 e0
+   > Les agents se sentent soutenus.
+B) Privilégier les patrouilles en binôme :: Prudence.
+   securite+1 | g0 c+2 d+1 e+1
+   > Plus aucun agent ne patrouille seul.
+C) Rien :: Risque du métier.
+   coh-1 | g0 c+1 d+1 e0
+   > Des agents démissionnent.
+
+=== sec-240 | securite | Le chantage en ligne contre des adolescents
+Des escrocs menacent des ados de publier des photos intimes.
+A) Une cellule d’écoute pour les jeunes :: Protéger.
+   bud-1 securite+1 services+1 | g+1 c+2 d+1 e+1
+   > Des victimes osent parler.
+B) Des interventions dans les collèges :: Prévenir.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les élèves connaissent les pièges.
+C) Rien :: Police nationale.
+   securite-1 | g0 c+1 d+1 e0
+   > Des adolescents restent seuls face au chantage.
+
+=== sec-241 | securite | De faux livreurs cambriolent
+Des malfaiteurs en tenue de livreur se font ouvrir les portes.
+A) Une campagne d’alerte :: Prévenir.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les habitants vérifient avant d’ouvrir.
+B) Des badges vérifiables avec les plateformes :: Identifier.
+   bud-1 securite+1 | g0 c+2 d+2 e+1
+   > Les vrais livreurs sont identifiables.
+C) Rien :: Police.
+   securite-1 | g0 c+1 d+1 e0
+   > D’autres cambriolages ont lieu.
+
+=== sec-242 | securite | Des facteurs mordus par des chiens
+Les facteurs refusent de distribuer certaines rues à cause des chiens.
+A) Des amendes pour les maîtres négligents :: Fermeté.
+   securite+1 | g0 c+2 d+2 e0
+   > Les chiens sont tenus.
+B) Une médiation avec les propriétaires :: Dialogue.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les maîtres font attention.
+C) Rien :: La Poste.
+   bon-1 | g0 c+1 d+1 e0
+   > Le courrier n’arrive plus.
+
+=== sec-243 | securite | Le vol de tablettes dans les écoles
+Des écoles sont cambriolées pour leur matériel informatique.
+A) Des alarmes dans les écoles :: Protéger.
+   bud-2 securite+1 | g0 c+2 d+2 e+1
+   > Les cambriolages cessent.
+B) Des armoires fortes pour le matériel :: Ranger.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les tablettes sont mises sous clé.
+C) Rien :: Remplacer.
+   bud-2 | g0 c+1 d+1 e0
+   > Le matériel est racheté encore et encore.
+
+=== sec-244 | securite | Des voitures retrouvées sur des parpaings
+Des voleurs démontent les roues des voitures la nuit.
+A) Des patrouilles nocturnes :: Surveiller.
+   rec-0.01x60 securite+1 | g0 c+2 d+2 e0
+   > Une bande est arrêtée.
+B) Des écrous antivol subventionnés :: Équiper.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les roues restent en place.
+C) Rien :: Assurances.
+   securite-1 | g0 c+1 d+1 e0
+   > Les vols continuent.
+
+=== sec-245 | securite | Des drones pour surveiller les parcs
+La police municipale propose des drones au-dessus des grands parcs.
+A) Accepter :: Technologie.
+   bud-2 securite+1 bon-1 | g-2 c+1 d+2 e0
+   > Les drones survolent les pelouses.
+B) Seulement lors des grands événements :: Encadrer.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les drones sont réservés aux foules.
+C) Refuser :: Vie privée.
+   bon+1 | g+2 c+1 d0 e+1
+   > Les parcs restent sans drones.
+
+=== sec-246 | securite | Des faux billets chez les commerçants
+Des faux billets de 50 euros circulent sur les marchés.
+A) Distribuer des détecteurs aux commerçants :: Équiper.
+   bud-1 economie+1 securite+1 | g0 c+2 d+1 e+1
+   > Les faux billets sont repérés.
+B) Une alerte aux commerçants :: Informer.
+   securite+1 | g0 c+2 d+1 e+1
+   > Les commerçants vérifient.
+C) Rien :: Banque de France.
+   economie-1 | g0 c+1 d+1 e0
+   > Des commerçants perdent de l’argent.
+
+=== sec-247 | securite | Les bagages abandonnés paralysent les gares
+Chaque bagage oublié déclenche une évacuation et des retards.
+A) Des chiens détecteurs pour lever le doute vite :: Rapidité.
+   rec-0.01x60 securite+1 transports+1 | g0 c+2 d+2 e0
+   > Les levées de doute prennent dix minutes.
+B) Une campagne contre les oublis :: Prévenir.
+   bud-1 transports+1 | g+1 c+2 d+1 e+1
+   > Les voyageurs surveillent leurs sacs.
+C) Rien :: Préfecture.
+   transports-1 | g0 c+1 d+1 e0
+   > Les retards s’accumulent.
+
+=== sec-248 | securite | Des grilles d’arbres en fonte volées
+Les grilles en fonte au pied des arbres disparaissent pour leur métal.
+A) Les fixer par soudure :: Protéger.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les grilles restent en place.
+B) Les remplacer par de la végétation :: Verdir.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Des plantes remplacent les grilles.
+C) Rien :: Coût.
+   securite-1 | g0 c+1 d+1 e0
+   > Des trous dangereux apparaissent.
+
+=== sec-249 | securite | Les vols dans les chambres d’hôpital
+Des voleurs se font passer pour des visiteurs et dérobent les affaires des patients.
+A) Des casiers sécurisés dans les chambres :: Protéger.
+   bud-1 securite+1 services+1 | g0 c+2 d+1 e+1
+   > Les patients rangent leurs affaires.
+B) Un contrôle des visites :: Filtrer.
+   securite+1 | g0 c+2 d+2 e0
+   > Les visiteurs sont enregistrés.
+C) Rien :: Hôpitaux.
+   securite-1 | g0 c+1 d+1 e0
+   > Les vols continuent.
+
+=== sec-250 | securite | Les arnaques sentimentales contre les seniors
+Des escrocs séduisent des seniors en ligne et vident leurs comptes.
+A) Des ateliers de prévention :: Prévenir.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les seniors repèrent les faux profils.
+B) Un numéro d’aide aux victimes :: Accompagner.
+   rec-0.01x60 securite+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des victimes osent appeler.
+C) Rien :: Banques.
+   securite-1 | g0 c+1 d+1 e0
+   > Des seniors perdent leurs économies.
