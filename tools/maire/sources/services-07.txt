@@ -1,0 +1,305 @@
+// Services publics, série 7
+=== ser-226 | services | Des crèches ouvertes en août
+Presque toutes les crèches ferment en août, les parents qui travaillent sont coincés.
+? distinct
+A) Une crèche ouverte par arrondissement :: Continuité.
+   rec-0.02x60 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les parents trouvent une solution l’été.
+B) Un regroupement dans quelques crèches :: Compromis.
+   rec-0.01x60 services+1 | g0 c+2 d+1 e+1
+   > Les enfants changent de crèche en août.
+C) Rien :: Congés du personnel.
+   bon-1 | g0 c+1 d+1 e0
+   > Les parents posent leurs congés en août.
+
+=== ser-227 | services | Une carte de bibliothèque dès la naissance
+Chaque nouveau-né recevrait sa carte et un premier livre.
+A) Une carte et un livre offerts :: Éveil.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les bébés deviennent lecteurs.
+B) Seulement la carte :: Simple.
+   services+1 | g0 c+2 d+1 e+1
+   > Les familles découvrent la bibliothèque.
+C) Rien :: Gadget.
+   bon-1 | g0 c+1 d+1 e0
+   > Les familles ne poussent pas la porte.
+
+=== ser-228 | services | Un centre de santé pour les étudiants
+Les étudiants renoncent aux soins faute de médecin et d’argent.
+? distinct
+A) Ouvrir un centre de santé étudiant :: Soigner.
+   bud-2 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les étudiants consultent gratuitement.
+B) Des permanences dans les universités :: Proximité.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Des médecins viennent sur les campus.
+C) Rien :: Assurance maladie.
+   services-1 | g0 c+1 d+1 e0
+   > Les étudiants attendent que ça passe.
+
+=== ser-229 | services | Un défenseur des enfants municipal
+Un médiateur pourrait recueillir les plaintes des enfants contre les services de la Ville.
+A) Créer la fonction :: Écouter.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des enfants signalent des injustices.
+B) Le confier au médiateur existant :: Simple.
+   services+1 | g0 c+2 d+1 e+1
+   > Le médiateur ouvre un guichet jeunesse.
+C) Rien :: Défenseur des droits.
+   bon-1 | g0 c+1 d+1 e0
+   > Les enfants n’ont pas de recours.
+
+=== ser-230 | services | Des bébés nageurs dans les piscines municipales
+Les parents réclament des créneaux pour leurs bébés.
+A) Des créneaux chaque samedi matin :: Éveil.
+   rec-0.01x60 services+1 bon+1 | g0 c+2 d+1 e+1
+   > Les bébés barbotent avec leurs parents.
+B) Dans une piscine pilote :: Tester.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Les places partent en une heure.
+C) Rien :: Créneaux saturés.
+   bon-1 | g0 c+1 d+1 e0
+   > Les parents vont au privé.
+
+=== ser-231 | services | Une médiation familiale gratuite
+Les séparations finissent au tribunal faute de médiation accessible.
+A) Une médiation gratuite en mairie :: Apaiser.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des parents trouvent des accords.
+B) Une médiation à tarif réduit :: Compromis.
+   services+1 | g0 c+2 d+1 e+1
+   > Les familles modestes y accèdent.
+C) Rien :: Justice.
+   bon-1 | g0 c+1 d+1 e0
+   > Les conflits s’enveniment.
+
+=== ser-232 | services | Des tablettes en maternelle ?
+Un fabricant propose d’équiper gratuitement les classes de maternelle.
+A) Accepter :: Modernité.
+   services+1 bon-1 | g-1 c+1 d+2 e0
+   > Les petits apprennent sur écran.
+B) Seulement pour les enfants en difficulté :: Cibler.
+   services+1 | g0 c+2 d+1 e+1
+   > Les orthophonistes utilisent les tablettes.
+C) Refuser :: Pas d’écran avant six ans.
+   bon+1 | g+1 c+2 d0 e+1
+   > Les maternelles restent sans écran.
+
+=== ser-233 | services | Une consultation pour les jeunes consommateurs
+Des adolescents fument du cannabis tous les jours sans oser en parler.
+A) Des consultations anonymes et gratuites :: Soigner.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Des jeunes demandent de l’aide.
+B) Des interventions dans les lycées :: Prévenir.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Les lycéens parlent des risques.
+C) Rien :: Familles.
+   services-1 | g0 c+1 d+1 e0
+   > Les consommations s’installent.
+
+=== ser-234 | services | Des ateliers d’équilibre pour éviter les chutes
+Les chutes sont la première cause d’hospitalisation des seniors.
+A) Des ateliers gratuits dans les clubs seniors :: Prévenir.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les seniors gagnent en assurance.
+B) Des diagnostics de domicile :: Adapter.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Tapis et barres d’appui sont installés.
+C) Rien :: Familles.
+   services-1 | g0 c+1 d+1 e0
+   > Les hospitalisations continuent.
+
+=== ser-235 | services | Un médiateur entre les familles et l’école
+Les conflits entre parents et enseignants s’enveniment.
+A) Un médiateur par secteur scolaire :: Apaiser.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les malentendus se dissipent.
+B) Des cafés des parents dans les écoles :: Rencontrer.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Parents et enseignants se parlent.
+C) Rien :: Éducation nationale.
+   bon-1 | g0 c+1 d+1 e0
+   > Les tensions montent.
+
+=== ser-236 | services | Des menus de cantine choisis par les enfants
+Des élèves veulent participer au choix des repas.
+? distinct
+A) Une commission des menus avec les enfants :: Participer.
+   bon+1 services+1 | g+1 c+2 d+1 e+1
+   > Le gaspillage diminue.
+B) Un vote mensuel pour un plat :: Simple.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les frites gagnent tous les mois.
+C) Rien :: Diététiciens.
+   bon-1 | g0 c+1 d+1 e0
+   > Les assiettes reviennent pleines.
+
+=== ser-237 | services | Des grands-parents bénévoles dans les crèches
+Des retraités veulent lire des histoires et bercer les bébés.
+? distinct
+A) Un programme de bénévolat encadré :: Lien entre générations.
+   bud-1 bon+1 services+1 | g+1 c+2 d+1 e+1
+   > Les bébés ont des grands-parents de cœur.
+B) Seulement des lectures ponctuelles :: Prudence.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les retraités lisent le mercredi.
+C) Rien :: Personnel qualifié.
+   bon-1 | g0 c+1 d+1 e0
+   > Les retraités restent chez eux.
+
+=== ser-238 | services | Des ordinateurs reconditionnés pour les familles
+Des familles n’ont pas d’ordinateur pour les devoirs et les démarches.
+A) Distribuer des ordinateurs reconditionnés :: Égalité numérique.
+   bud-1 services+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les anciens ordinateurs de la Ville trouvent une seconde vie.
+B) Un prêt en bibliothèque :: Partager.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Les familles empruntent un ordinateur.
+C) Rien :: Coût.
+   services-1 | g0 c+1 d+1 e0
+   > Les devoirs se font sur téléphone.
+
+=== ser-239 | services | Un forfait internet social
+Des familles modestes n’ont pas les moyens d’un abonnement internet.
+A) Négocier un forfait social avec les opérateurs :: Connecter.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles se connectent pour dix euros.
+B) Du wifi gratuit dans les résidences sociales :: Équiper.
+   bud-2 services+1 | g+1 c+2 d+1 e+1
+   > Les halls deviennent connectés.
+C) Rien :: Marché.
+   services-1 | g0 c+1 d+1 e0
+   > Des familles restent hors ligne.
+
+=== ser-240 | services | Raccrocher les élèves décrocheurs
+Des collégiens ne vont plus en cours depuis des mois.
+A) Des éducateurs qui vont chercher les jeunes :: Aller vers.
+   rec-0.02x60 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des élèves retrouvent le chemin du collège.
+B) Des classes relais :: Adapter.
+   bud-2 services+1 | g+1 c+2 d+1 e+1
+   > Les décrocheurs reprennent dans de petits groupes.
+C) Rien :: Éducation nationale.
+   services-1 | g0 c+1 d+1 e0
+   > Les jeunes traînent dans la rue.
+
+=== ser-241 | services | Des petits travaux à domicile pour les seniors
+Changer une ampoule devient impossible pour des seniors isolés.
+A) Un service de bricoleurs municipaux :: Aider.
+   rec-0.01x60 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les seniors ne montent plus sur des chaises.
+B) Des bénévoles du quartier :: Solidarité.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les voisins rendent service.
+C) Rien :: Familles.
+   bon-1 | g0 c+1 d+1 e0
+   > Des seniors chutent en bricolant.
+
+=== ser-242 | services | Un camion-douche pour les sans-abri
+Un camion aménagé offrirait douches et machines à laver dans les quartiers.
+A) Lancer le camion :: Dignité.
+   bud-2 bon+1 services+1 | g+2 c+2 d0 e+1
+   > Des centaines de personnes se lavent chaque semaine.
+B) Soutenir une association qui le fait :: Partenariat.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > L’association ajoute un camion.
+C) Rien :: Bains-douches.
+   bon-1 | g0 c+1 d+1 e0
+   > Les sans-abri restent sans douche.
+
+=== ser-243 | services | Une adresse postale pour les sans-abri
+Sans adresse, impossible de recevoir son courrier ou ses droits.
+A) Une domiciliation dans chaque mairie :: Accès aux droits.
+   rec-0.01x60 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les sans-abri reçoivent leurs papiers.
+B) Soutenir les associations de domiciliation :: Réseau.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Les associations élargissent leurs capacités.
+C) Rien :: État.
+   bon-1 | g0 c+1 d+1 e0
+   > Des droits sont perdus.
+
+=== ser-244 | services | Un guichet unique pour les 16-25 ans
+Les jeunes se perdent entre missions locales, bourses et aides au logement.
+A) Une maison des jeunes adultes :: Simplifier.
+   bud-2 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les jeunes trouvent toutes les aides au même endroit.
+B) Une application dédiée :: Numérique.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Les jeunes consultent leurs droits en ligne.
+C) Rien :: Dispositifs existants.
+   services-1 | g0 c+1 d+1 e0
+   > Les jeunes passent à côté de leurs droits.
+
+=== ser-245 | services | Accompagner les étudiants handicapés
+Des étudiants handicapés abandonnent faute d’aménagements.
+A) Un service d’accompagnement municipal :: Inclusion.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des étudiants poursuivent leurs études.
+B) Des logements adaptés réservés :: Loger.
+   bud-1 logement+1 | g+1 c+2 d+1 e+1
+   > Des chambres adaptées sont réservées.
+C) Rien :: Universités.
+   bon-1 | g0 c+1 d+1 e0
+   > Les abandons continuent.
+
+=== ser-246 | services | Des livres en langues étrangères dans les bibliothèques
+Les habitants d’origine étrangère cherchent des livres dans leur langue.
+A) Des fonds dans les principales langues parlées :: Accueillir.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les bibliothèques accueillent de nouveaux lecteurs.
+B) Des dons des communautés :: Partager.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les rayons s’enrichissent.
+C) Rien :: Français d’abord.
+   bon-1 | g-1 c+1 d+1 e0
+   > Ces habitants ne fréquentent pas les bibliothèques.
+
+=== ser-247 | services | Des ateliers pour les jeunes pères
+Les jeunes pères se sentent oubliés par les services de la petite enfance.
+A) Des ateliers et des groupes de parole :: Accompagner.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les pères partagent leurs doutes.
+B) Des horaires de PMI le samedi :: Adapter.
+   rec-0.01x60 services+1 | g0 c+2 d+1 e+1
+   > Les pères viennent aux consultations.
+C) Rien :: Mères.
+   bon-1 | g0 c+1 d+1 e0
+   > Les pères restent à l’écart.
+
+=== ser-248 | services | L’aide aux devoirs pour les enfants logés à l’hôtel
+Des enfants hébergés à l’hôtel font leurs devoirs sur le lit familial.
+A) Des salles d’étude près des hôtels sociaux :: Réussite.
+   bud-1 services+1 bon+1 | g+2 c+2 d0 e+1
+   > Les enfants révisent au calme.
+B) Des bénévoles qui viennent aider :: Solidarité.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Des étudiants accompagnent les enfants.
+C) Rien :: État.
+   bon-1 | g0 c+1 d+1 e0
+   > Les enfants décrochent.
+
+=== ser-249 | services | Un numéro contre la maltraitance des seniors
+Des seniors sont maltraités par des proches ou des aidants sans oser le dire.
+? distinct
+A) Un numéro municipal et des visites :: Protéger.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des situations sont signalées.
+B) Former les aides à domicile au repérage :: Prévenir.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Les intervenants repèrent les signes.
+C) Rien :: Numéro national.
+   bon-1 | g0 c+1 d+1 e0
+   > Les seniors souffrent en silence.
+
+=== ser-250 | services | Lire à un chien pour apprendre à lire
+Des enfants en difficulté lisent plus facilement à voix haute devant un chien.
+A) Des séances dans les bibliothèques :: Encourager.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les enfants lisent sans peur d’être jugés.
+B) Dans quelques écoles volontaires :: Tester.
+   services+1 | g0 c+2 d+1 e+1
+   > Les enseignants constatent des progrès.
+C) Refuser :: Hygiène.
+   bon-1 | g0 c+1 d+1 e0
+   > Les chiens restent à la maison.
