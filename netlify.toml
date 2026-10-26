@@ -1,3 +1,0 @@
-# Ancien hébergement (Netlify) : le site est maintenant sur Firebase Hosting (voir firebase.json).
-[build]
-  publish = "public"

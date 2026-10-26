@@ -1,15 +1,49 @@
 {
   "hosting": {
     "public": "public",
-    "ignore": ["_redirects", "**/.*"],
+    "ignore": [
+      "_redirects",
+      "**/.*"
+    ],
     "rewrites": [
-      { "source": "/api/insta", "function": { "functionId": "insta", "region": "europe-west1" } }
+      {
+        "source": "/api/insta",
+        "function": {
+          "functionId": "insta",
+          "region": "europe-west1"
+        }
+      }
     ],
     "headers": [
-      { "source": "/spots.json", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
-      { "source": "/index.html", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] }
-    ]
+      {
+        "source": "**/*.@(js|css|json|html)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "img/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=604800"
+          }
+        ]
+      }
+    ],
+    "cleanUrls": false
   },
-  "functions": [{ "source": "functions", "codebase": "default", "runtime": "nodejs22" }],
-  "firestore": { "rules": "firestore.rules" }
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "runtime": "nodejs22"
+    }
+  ],
+  "firestore": {
+    "rules": "firestore.rules"
+  }
 }
