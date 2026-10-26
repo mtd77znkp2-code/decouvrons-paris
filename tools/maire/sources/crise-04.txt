@@ -1,0 +1,488 @@
+// Crises exceptionnelles, série 4
+=== cri-106 | crise | Plus de chauffage dans une cité en plein hiver
+La chaudière collective d’une grande résidence tombe en panne par moins cinq degrés.
+? distinct
+A) Reloger les familles fragiles à l’hôtel :: Protéger.
+   bud-2 bon+1 logement+1 | g+1 c+2 d+1 e+1
+   > Les bébés et les anciens dorment au chaud.
+B) Distribuer des radiateurs d’appoint :: Urgence.
+   bud-1 bon+1 | g0 c+2 d+1 e0
+   > Les appartements tiennent quelques degrés.
+C) Laisser le bailleur gérer :: Responsabilité.
+   bon-2 logement-1 | g-1 c+1 d+1 e0
+   > Les reportages montrent des familles en manteau.
+
+=== cri-107 | crise | Une gastro-entérite foudroyante dans les crèches
+Un norovirus touche la moitié des crèches municipales, le personnel tombe malade à son tour.
+A) Fermer les crèches touchées une semaine :: Couper la chaîne.
+   services-1 economie-1 | g0 c+2 d+2 e+1
+   > Le virus recule, les parents posent des congés.
+B) Désinfection renforcée sans fermer :: Continuité.
+   bud-1 | g0 c+2 d+1 e0
+   > Les cas diminuent lentement.
+C) Laisser chaque crèche décider :: Autonomie.
+   bon-1 services-1 | g0 c+1 d+1 e0
+   > L’épidémie dure un mois.
+=== cri-108 | crise | Un immeuble se fissure dangereusement
+Des fissures géantes apparaissent dans un immeuble ancien de Belleville.
+A) Évacuer et étayer immédiatement :: Sécurité.
+   bud-2 securite+1 logement-1 | g0 c+2 d+2 e+1
+   > Quarante familles sont relogées en urgence.
+B) Évacuer les étages les plus touchés :: Mesure.
+   bud-1 | g0 c+1 d+1 e0
+   ~10 securite-2 > Un balcon s’effondre sur le trottoir.
+   > Les autres habitants restent sur place.
+C) Exiger une expertise du propriétaire :: Procédure.
+   securite-1 bon-1 | g-1 c+1 d+1 e0
+   > Les habitants dorment avec la peur.
+
+=== cri-109 | crise | Un camion-citerne renversé sur le périphérique
+Un poids lourd transportant du produit chimique se couche sur le périphérique.
+A) Fermer le périphérique et confiner le quartier :: Précaution.
+   transports-2 securite+1 | g0 c+2 d+2 e+1
+   > Le trafic est paralysé toute la journée.
+B) Fermer seulement une voie :: Équilibre.
+   transports-1 | g0 c+1 d+1 e0
+   > Les pompiers travaillent au milieu des voitures.
+C) Rouvrir au plus vite :: Circulation.
+   securite-2 | g-1 c0 d+1 e0
+   > Des automobilistes respirent des vapeurs.
+
+=== cri-110 | crise | Paris sous trente centimètres de neige
+Une tempête de neige historique paralyse la capitale.
+A) Mobiliser tous les agents pour déneiger :: Agir.
+   bud-2 transports+1 | g0 c+2 d+2 e0
+   > Les grands axes sont dégagés en vingt-quatre heures.
+B) Fermer écoles et administrations :: Prudence.
+   economie-1 services-1 | g+1 c+2 d+1 e+1
+   > Les enfants font des bonshommes de neige.
+C) Attendre le dégel :: Patience.
+   transports-2 bon-1 | g0 c+1 d+1 e0
+   > Les chutes se multiplient.
+
+=== cri-111 | crise | Une révolte dans un centre de rétention
+Des détenus mettent le feu à un centre de rétention administrative à Paris.
+A) Demander à l’État de fermer le centre :: Humanité.
+   pop+1 securite-1 | g+2 c+2 d0 e+1
+   > L’État refuse mais promet des travaux.
+B) Soutenir l’intervention policière :: Ordre.
+   securite+1 pop-1 | g-1 c+2 d+2 e0
+   > Le calme revient dans la nuit.
+C) Se taire :: Compétence de l’État.
+   pop-1 | g0 c+1 d+1 e0
+   > Les associations te reprochent ton silence.
+
+=== cri-112 | crise | Une explosion de rats après une grève
+Après trois semaines sans ramassage, les rats envahissent les rues.
+A) Une dératisation massive :: Hygiène.
+   bud-2 proprete+1 | g0 c+2 d+2 e0
+   > Les rats reculent en quelques semaines.
+B) Négocier la fin de la grève :: Dialogue.
+   rec-0.02x20 proprete+1 | g+1 c+2 d+1 e+1
+   > Les camions-bennes reprennent la route.
+C) Faire appel à des sociétés privées :: Contourner.
+   bud-2 proprete+1 bon-1 | g-1 c+1 d+2 e0
+   > Les grévistes dénoncent des briseurs de grève.
+
+=== cri-113 | crise | Une rumeur d’enlèvements d’enfants
+Une fausse rumeur sur les réseaux provoque des agressions contre des innocents.
+A) Démentir massivement et porter plainte :: Vérité.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > La rumeur s’éteint en quelques jours.
+B) Renforcer les patrouilles devant les écoles :: Rassurer.
+   bud-1 securite+1 | g0 c+1 d+2 e0
+   > Les parents se rassurent.
+C) Laisser la police gérer :: Prudence.
+   securite-1 bon-1 | g0 c+1 d+1 e0
+   > D’autres agressions ont lieu.
+
+=== cri-114 | crise | Des drones inconnus au-dessus de Paris
+Des drones survolent les monuments la nuit sans qu’on sache qui les pilote.
+A) Demander un renforcement militaire :: Sécurité.
+   securite+1 bon-1 | g-1 c+2 d+2 e0
+   > Des brouilleurs sont installés.
+B) Informer les Parisiens en toute transparence :: Calmer.
+   bon+1 | g+1 c+2 d+1 e+1
+   > La panique retombe.
+C) Ne rien dire :: Discrétion.
+   bon-1 | g0 c+1 d+1 e0
+   > Les théories du complot fleurissent.
+
+=== cri-115 | crise | Une canalisation géante inonde le métro
+Une conduite d’eau éclate et noie une station de métro.
+A) Fermer la ligne le temps des réparations :: Sécurité.
+   transports-2 bud-1 | g0 c+2 d+2 e+1
+   > La ligne est fermée dix jours.
+B) Mettre en place des bus de remplacement :: Continuité.
+   bud-2 transports-1 | g0 c+2 d+1 e+1
+   > Les bus remplacent tant bien que mal.
+C) Rouvrir partiellement :: Rapidité.
+   securite-1 | g0 c+1 d+1 e0
+   > Des usagers glissent sur des quais trempés.
+
+=== cri-116 | crise | Un incendie dans un centre de données
+Le serveur qui héberge les services en ligne de la Ville part en fumée.
+A) Basculer sur un site de secours payé en urgence :: Rétablir.
+   bud-2 services+1 | g0 c+2 d+2 e0
+   > Les démarches en ligne reviennent en trois jours.
+B) Rouvrir les guichets physiques :: Contact humain.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les mairies accueillent la foule.
+C) Attendre la reconstruction :: Patience.
+   services-2 | g-1 c+1 d+1 e0
+   > Plus aucune démarche possible pendant des semaines.
+=== cri-117 | crise | Une pénurie de lait infantile
+Les rayons de lait pour bébés sont vides dans toute la ville.
+A) Constituer un stock municipal :: Anticiper.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Les PMI distribuent le lait aux familles.
+B) Limiter les achats par famille :: Rationner.
+   bon-1 | g0 c+2 d+2 e0
+   > Les rayons se regarnissent lentement.
+C) Laisser le marché s’ajuster :: Libéralisme.
+   bon-2 | g-1 c+1 d+1 e0
+   > Des parents paniqués traversent la ville.
+
+=== cri-118 | crise | Des règlements de comptes entre trafiquants
+Trois fusillades en une semaine dans le nord de Paris.
+A) Demander un renfort massif de police :: Ordre.
+   securite+2 bon-1 | g-1 c+2 d+2 e0
+   > Des CRS quadrillent le quartier.
+B) Un plan de prévention avec éducateurs :: Long terme.
+   bud-2 securite+1 bon+1 | g+2 c+2 d0 e+1
+   > Des éducateurs arpentent les rues.
+C) Attendre que ça se calme :: Passivité.
+   securite-2 | g0 c0 d+1 e0
+   > Une quatrième fusillade éclate.
+
+=== cri-119 | crise | Un séisme ressenti à Paris
+Un tremblement de terre fait trembler les immeubles et fissure des bâtiments anciens.
+A) Inspecter tous les bâtiments publics :: Sécurité.
+   bud-2 securite+1 | g0 c+2 d+2 e+1
+   > Trois écoles sont fermées par précaution.
+B) Inspecter seulement les bâtiments signalés :: Cibler.
+   bud-1 | g0 c+1 d+1 e0
+   > Les inspections se concentrent sur les signalements.
+C) Rassurer sans inspecter :: Calme.
+   securite-1 | g0 c+1 d+1 e0
+   ~15 securite-2 > Une corniche tombe d’une façade fragilisée.
+   > Les Parisiens s’inquiètent.
+
+=== cri-120 | crise | Une coupure de gaz en plein hiver
+Un incident coupe le gaz de dizaines de milliers de foyers par grand froid.
+? distinct
+A) Ouvrir des gymnases chauffés :: Accueil.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Des familles passent la nuit au gymnase.
+B) Distribuer des repas chauds :: Solidarité.
+   bud-1 bon+1 | g+1 c+2 d0 e+1
+   > Des soupes sont servies dans les mairies.
+C) Attendre le rétablissement :: Patience.
+   bon-2 | g-1 c+1 d+1 e0
+   > Les plaintes explosent.
+
+=== cri-121 | crise | Un incendie dans un squat
+Un incendie ravage un immeuble occupé illégalement, plusieurs blessés.
+A) Reloger tous les occupants :: Humanité.
+   bud-2 bon+1 logement-1 | g+2 c+2 d0 e+1
+   > Les occupants sont mis à l’abri.
+B) Fermer tous les squats dangereux :: Sécurité.
+   securite+1 bon-1 | g-1 c+2 d+2 e0
+   > Des évacuations ont lieu dans toute la ville.
+C) Laisser l’État gérer :: Compétence.
+   bon-1 | g0 c+1 d+1 e0
+   > Les associations dénoncent ton silence.
+
+=== cri-122 | crise | Le centre de tri des déchets prend feu
+Un incendie détruit le principal centre de tri, le recyclage s’arrête.
+A) Envoyer les déchets dans d’autres départements :: Continuité.
+   bud-2 proprete+1 | g0 c+2 d+2 e0
+   > Les camions partent en province.
+B) Incinérer temporairement :: Pragmatisme.
+   ecologie-1 | g-1 c+1 d+2 e0
+   > Le recyclage est suspendu.
+C) Reconstruire un centre plus moderne :: Avenir.
+   bud-3 ecologie+1 | g+2 c+2 d0 e+1
+   ~30 proprete+2 > Le nouveau centre trie deux fois plus.
+   > Le chantier est lancé.
+=== cri-123 | crise | Une méningite dans une université
+Deux étudiants sont morts d’une méningite foudroyante.
+A) Vacciner tout le campus :: Protéger.
+   bud-2 services+1 | g+1 c+2 d+1 e+1
+   > Des milliers d’étudiants sont vaccinés.
+B) Traiter seulement les contacts proches :: Cibler.
+   bud-1 | g0 c+2 d+1 e0
+   > Les autorités sanitaires suivent les cas.
+C) Fermer l’université :: Précaution.
+   economie-1 bon-1 | g0 c+1 d+1 e0
+   > Les examens sont reportés.
+
+=== cri-124 | crise | Le RER B déraille
+Un train déraille entre deux gares, des dizaines de blessés.
+A) Déclencher le plan d’urgence et accueillir les victimes :: Secourir.
+   bud-1 securite+1 | g0 c+2 d+2 e+1
+   > Les blessés sont pris en charge.
+B) Exiger un audit complet du réseau :: Responsabilité.
+   transports+1 | g+1 c+2 d+1 e+1
+   > L’audit révèle des retards d’entretien.
+C) Laisser la SNCF communiquer :: Distance.
+   bon-1 | g0 c+1 d+1 e0
+   > Les familles te reprochent ton absence.
+
+=== cri-125 | crise | Une source radioactive perdue
+Une source radioactive disparaît d’un hôpital parisien.
+A) Alerter la population immédiatement :: Transparence.
+   bon-1 securite+1 | g+1 c+2 d+1 e+1
+   > La source est retrouvée dans une benne.
+B) Chercher discrètement :: Éviter la panique.
+   securite-1 | g0 c+1 d+1 e0
+   ~10 bon-2 > La presse révèle l’affaire.
+   > Les recherches se poursuivent.
+C) Demander l’aide de l’armée :: Moyens.
+   bud-1 securite+1 | g0 c+2 d+2 e0
+   > Les militaires quadrillent le quartier.
+
+=== cri-126 | crise | Une coulée de boue sur la butte Montmartre
+Après des pluies diluviennes, un talus s’effondre sur une rue en pente.
+A) Évacuer la rue et consolider le talus :: Sécurité.
+   bud-2 securite+1 | g0 c+2 d+2 e+1
+   > La rue est sécurisée en deux semaines.
+B) Dégager la boue et rouvrir :: Rapidité.
+   bud-1 | g0 c+1 d+1 e0
+   ~15 securite-1 > Un nouveau glissement se produit.
+   > La circulation reprend.
+C) Fermer la rue en attendant une étude :: Prudence.
+   transports-1 | g0 c+2 d+1 e0
+   > Les commerçants de la rue se plaignent.
+=== cri-127 | crise | Un tunnelier fissure des immeubles
+Le chantier d’une nouvelle ligne de métro provoque des affaissements.
+A) Arrêter le chantier :: Sécurité.
+   transports-1 securite+1 | g0 c+2 d+1 e+1
+   > Les travaux sont suspendus un mois.
+B) Indemniser les riverains et continuer :: Avancer.
+   bud-2 transports+1 | g0 c+1 d+2 e0
+   > Les riverains sont indemnisés.
+C) Minimiser :: Calendrier.
+   bon-2 | g-1 c0 d+1 e0
+   > Un immeuble est évacué.
+
+=== cri-128 | crise | Un mouvement de panique dans le métro
+Une fausse alerte provoque une bousculade dans une station bondée.
+A) Revoir les plans d’évacuation des stations :: Prévention.
+   bud-1 securite+1 transports+1 | g0 c+2 d+1 e+1
+   > Les stations sont mieux équipées.
+B) Renforcer la présence humaine :: Encadrer.
+   rec-0.02x20 securite+1 | g0 c+2 d+2 e0
+   > Des agents sont présents aux heures de pointe.
+C) Rien :: Accident isolé.
+   securite-1 bon-1 | g0 c+1 d+1 e0
+   > Les usagers restent inquiets.
+
+=== cri-129 | crise | Le prestataire des cantines fait faillite
+Du jour au lendemain, des centaines d’écoles n’ont plus de repas.
+A) Reprendre la restauration en régie :: Service public.
+   bud-3 services+1 | g+2 c+2 d0 e+1
+   > Les cuisines rouvrent sous gestion municipale.
+B) Signer un contrat d’urgence avec un concurrent :: Rapidité.
+   bud-2 | g0 c+2 d+2 e0
+   > Les repas reprennent en une semaine.
+C) Pique-nique jusqu’à nouvel ordre :: Attendre.
+   bon-2 services-1 | g-1 c+1 d+1 e0
+   > Les parents préparent les repas.
+
+=== cri-130 | crise | Un incendie au Forum des Halles
+Un feu se déclare dans le centre commercial souterrain, des milliers de personnes évacuées.
+A) Fermer le Forum pour une inspection complète :: Sécurité.
+   economie-1 securite+1 | g0 c+2 d+2 e+1
+   > Le Forum reste fermé une semaine.
+B) Rouvrir les zones intactes :: Équilibre.
+   economie-1 | g0 c+1 d+1 e0
+   > Une partie des commerces rouvre.
+C) Rouvrir tout de suite :: Commerce.
+   economie+1 securite-1 | g-1 c0 d+2 e0
+   > Les pompiers critiquent la décision.
+
+=== cri-131 | crise | Une rave sauvage géante au bois de Vincennes
+Vingt mille personnes se rassemblent pour une fête illégale.
+A) Encadrer la fête avec secours et sécurité :: Réduire les risques.
+   bud-1 securite+1 bon-1 | g+1 c+2 d+1 e+1
+   > La fête se termine sans drame.
+B) Faire évacuer :: Ordre.
+   securite+1 bon-1 | g-1 c+1 d+2 e0
+   > Des heurts éclatent au petit matin.
+C) Laisser faire :: Liberté.
+   proprete-2 | g0 c0 d+1 e0
+   > Le bois est jonché de déchets.
+
+=== cri-132 | crise | Un vol spectaculaire au musée Carnavalet
+Des tableaux de grande valeur sont volés en pleine nuit.
+? distinct
+A) Revoir la sécurité de tous les musées :: Protéger.
+   bud-2 securite+1 | g0 c+2 d+2 e+1
+   > Des alarmes neuves équipent les musées.
+B) Offrir une récompense :: Retrouver.
+   bud-1 | g0 c+1 d+1 e0
+   > Un tableau est retrouvé.
+C) Fermer le musée temporairement :: Prudence.
+   bon-1 | g0 c+1 d+1 e0
+   > Les visiteurs sont déçus.
+
+=== cri-133 | crise | Des sangliers dans Paris
+Une harde de sangliers traverse le 16e arrondissement.
+A) Faire capturer les animaux :: Sécurité.
+   bud-1 securite+1 | g0 c+2 d+2 e+1
+   > Les sangliers retournent en forêt.
+B) Clôturer les bois :: Prévention.
+   bud-2 ecologie-1 | g0 c+1 d+1 e0
+   > Les clôtures font débat.
+C) Laisser faire :: Nature.
+   securite-1 | g+1 c0 d0 e0
+   > Un scooter percute un sanglier.
+
+=== cri-134 | crise | Le chauffage urbain en panne
+Le réseau de chauffage urbain alimentant hôpitaux et écoles s’arrête.
+A) Activer les chaudières de secours :: Urgence.
+   bud-2 | g0 c+2 d+2 e0
+   > La chaleur revient en quelques heures.
+B) Fermer les écoles le temps de la panne :: Prudence.
+   services-1 bon-1 | g0 c+2 d+1 e0
+   > Les parents s’organisent.
+C) Attendre la réparation :: Patience.
+   bon-2 | g-1 c+1 d+1 e0
+   > Les hôpitaux se plaignent.
+
+=== cri-135 | crise | La foudre frappe une église
+La foudre déclenche un incendie dans le clocher d’une église municipale.
+A) Lancer immédiatement la restauration :: Patrimoine.
+   bud-3 bon+1 | g0 c+2 d+1 e+1
+   > L’église est sauvée.
+B) Lancer une souscription :: Mobiliser.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les dons affluent.
+C) Sécuriser et attendre :: Prudence.
+   bon-1 | g0 c+1 d+1 e0
+   > Le clocher reste bâché.
+
+=== cri-136 | crise | Des grévistes occupent l’Hôtel de Ville
+Des agents en colère occupent la salle du Conseil et refusent de partir.
+A) Négocier immédiatement :: Dialogue.
+   rec-0.02x20 coh-1 | g+1 c+2 d0 e+1
+   > Un accord est trouvé en deux jours.
+B) Faire évacuer :: Ordre.
+   coh+1 pop-1 | g-1 c+2 d+2 e0
+   > L’évacuation fait scandale.
+C) Les laisser occuper :: Patience.
+   coh-1 | g0 c+1 d+1 e0
+   > Le Conseil de Paris est reporté.
+
+=== cri-137 | crise | Des hydrocarbures dans le canal Saint-Martin
+Une nappe d’essence recouvre le canal et tue les poissons.
+? distinct
+A) Lancer une dépollution d’urgence :: Agir.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Le canal est nettoyé en une semaine.
+B) Rechercher le pollueur :: Justice.
+   ecologie+1 | g0 c+2 d+2 e0
+   > Un garage est condamné.
+C) Laisser la nature faire :: Économie.
+   ecologie-2 | g-1 c+1 d+1 e0
+   > Les poissons morts s’accumulent.
+
+=== cri-138 | crise | Un concert géant annulé au dernier moment
+Cent mille personnes attendent devant un concert annulé.
+A) Organiser un concert de remplacement :: Apaiser.
+   bud-2 bon+1 | g+1 c+2 d0 e+1
+   > Un DJ local sauve la soirée.
+B) Disperser la foule :: Sécurité.
+   securite+1 bon-1 | g-1 c+2 d+2 e0
+   > La foule se disperse dans la colère.
+C) Laisser l’organisateur gérer :: Distance.
+   securite-1 | g0 c+1 d+1 e0
+   > Des bousculades éclatent.
+
+=== cri-139 | crise | La nappe phréatique inonde les caves
+Après des mois de pluie, l’eau monte dans les sous-sols de quartiers entiers.
+A) Installer des pompes publiques :: Agir.
+   bud-2 | g0 c+2 d+2 e0
+   > Les caves sont asséchées.
+B) Indemniser les riverains :: Solidarité.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles sont remboursées.
+C) Attendre la décrue :: Patience.
+   bon-2 | g-1 c+1 d+1 e0
+   > Les caves restent inondées des semaines.
+
+=== cri-140 | crise | De faux agents volent des personnes âgées
+Des escrocs se faisant passer pour des agents de la Ville cambriolent des seniors.
+? distinct
+A) Une campagne d’alerte massive :: Prévenir.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les seniors appellent la mairie avant d’ouvrir.
+B) Des cartes officielles infalsifiables :: Sécuriser.
+   bud-1 securite+1 | g0 c+2 d+2 e+1
+   > Les agents portent un badge vérifiable.
+C) Laisser la police enquêter :: Compétence.
+   securite-1 | g0 c+1 d+1 e0
+   > Les vols continuent.
+
+=== cri-141 | crise | Un pic d’ozone record
+L’ozone atteint des niveaux jamais vus, les hôpitaux se remplissent.
+A) Interdire la circulation des voitures :: Santé.
+   ecologie+1 transports-1 | g+2 c+2 d0 e+1
+   > Paris respire mieux.
+B) Circulation alternée :: Compromis.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > La pollution baisse un peu.
+C) Simple recommandation :: Liberté.
+   ecologie-1 bon-1 | g-1 c+1 d+2 e0
+   > Les hôpitaux saturent.
+
+=== cri-142 | crise | Des touristes bloqués par une grève aérienne
+Des milliers de touristes dorment dans les aéroports et affluent à Paris.
+? distinct
+A) Ouvrir des gymnases pour les héberger :: Accueillir.
+   bud-1 bon+1 economie+1 | g+1 c+2 d+1 e+1
+   > Les touristes saluent l’hospitalité parisienne.
+B) Négocier des prix avec les hôtels :: Organiser.
+   economie+1 | g0 c+2 d+1 e0
+   > Des chambres sont proposées à prix réduit.
+C) Rien :: Pas notre rôle.
+   economie-1 | g0 c+1 d+1 e0
+   > Les images de touristes perdus tournent en boucle.
+
+=== cri-143 | crise | Des vols de câbles paralysent le RER
+Des voleurs de cuivre coupent les câbles de signalisation du RER.
+? distinct
+A) Financer des patrouilles avec la SNCF :: Sécuriser.
+   bud-1 securite+1 transports+1 | g0 c+2 d+2 e0
+   > Les vols diminuent.
+B) Faire pression sur les ferrailleurs :: Couper la filière.
+   securite+1 | g0 c+2 d+1 e+1
+   > Le cuivre volé ne trouve plus preneur.
+C) Laisser la SNCF gérer :: Compétence.
+   transports-1 | g0 c+1 d+1 e0
+   > Les pannes se répètent.
+
+=== cri-144 | crise | Un enfant perdu dans les catacombes
+Un adolescent s’est égaré dans les galeries interdites des catacombes.
+A) Mobiliser pompiers et cataphiles :: Secourir.
+   bud-1 securite+1 | g0 c+2 d+2 e+1
+   > L’adolescent est retrouvé vivant.
+B) Fermer toutes les entrées clandestines :: Prévenir.
+   bud-2 securite+1 | g0 c+2 d+2 e0
+   > Les cataphiles protestent.
+C) Laisser les secours officiels :: Procédure.
+   securite-1 | g0 c+1 d+1 e0
+   > Les recherches durent trois jours.
+
+=== cri-145 | crise | Un convoi exceptionnel coincé sous un pont
+Un camion géant reste bloqué sous un pont ferroviaire, la ligne est coupée.
+A) Démonter le chargement sur place :: Rapidité.
+   bud-1 transports+1 | g0 c+2 d+2 e0
+   > La ligne rouvre dans la nuit.
+B) Attendre l’expertise du pont :: Prudence.
+   transports-1 | g0 c+2 d+1 e+1
+   > Les trains sont supprimés deux jours.
+C) Faire payer le transporteur :: Responsabilité.
+   bud+1 transports-1 | g0 c+1 d+2 e0
+   > Le transporteur paie la facture.
