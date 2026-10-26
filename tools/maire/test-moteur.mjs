@@ -123,8 +123,11 @@ function valeur(st, c, prudence) {
   for (const x of c.dif || []) v += ((x.e.pop || 0) + (x.e.bon || 0)) * 0.6;
   return v;
 }
+// Hasard reproductible : mêmes parties à chaque exécution, donc pas de résultat qui change d’un lancement à l’autre
+let graineSim = 1;
+const alea = () => { graineSim = (graineSim + 0x6d2b79f5) | 0; let t = Math.imul(graineSim ^ (graineSim >>> 15), 1 | graineSim); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
 const STRATS = {
-  "hasard": (st, ev) => Math.floor(Math.random() * 3),
+  "hasard": (st, ev) => Math.floor(alea() * 3),
   "réfléchi": (st, ev) => ev.choix.map((c, i) => [valeur(st, c, 1), i]).sort((a, b) => b[0] - a[0])[0][1],
   "dépensier": (st, ev) => ev.choix.map((c, i) => [valeur(st, c, 0), i]).sort((a, b) => b[0] - a[0])[0][1],
   "populiste": (st, ev) => ev.choix.map((c, i) => [(c.e.pop || 0) + (c.e.bon || 0), i]).sort((a, b) => b[0] - a[0])[0][1],
@@ -133,8 +136,9 @@ console.log(`Simulation : ${N} parties par stratégie (${idx.total} événements
 const taux = {};
 for (const [nom, f] of Object.entries(STRATS)) {
   const fins = {}; let gagne = 0, tours = 0, amb = 0, score = 0, cats = {};
+  graineSim = 1;
   for (let p = 0; p < N; p++) {
-    const ligne = LIGNES[p % 4], a = DOMS.slice().sort(() => Math.random() - 0.5).slice(0, 2);
+    const ligne = LIGNES[p % 4], a = DOMS.slice().sort(() => alea() - 0.5).slice(0, 2);
     let st = M.nouvellePartie({ ligne, ambitions: a, graine: p * 7919 + 1 });
     while (st.phase !== "fin") {
       st = M.debutTour(st, base); if (st.phase === "fin") break;
