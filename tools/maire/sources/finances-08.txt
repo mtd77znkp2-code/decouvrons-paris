@@ -1,0 +1,304 @@
+// Finances, série 8
+=== fin-226 | finances | Le budget d’entretien des arbres
+Élagage, soins et remplacements des arbres coûtent de plus en plus cher.
+A) Augmenter le budget :: Protéger la canopée.
+   rec-0.08x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les arbres malades sont soignés à temps.
+B) Former des agents pour réduire les prestataires :: Internaliser.
+   bud-2 rec+0.03x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les jardiniers municipaux prennent la relève.
+C) Rogner :: Économie.
+   rec+0.03x60 ecologie-1 | g-1 c+1 d+2 e0
+   ~40 securite-1 > Une branche tombe sur une voiture.
+   > Les tailles s’espacent.
+
+=== fin-227 | finances | La fin des contrats aidés
+L’État supprime les emplois aidés qui faisaient vivre écoles et associations.
+A) Les reprendre sur le budget de la Ville :: Maintenir.
+   rec-0.15x60 services+1 bon+1 | g+2 c+2 d0 e+1
+   > Les animateurs restent en poste.
+B) En reprendre une partie :: Prioriser.
+   rec-0.06x60 services+1 | g+1 c+2 d+1 e+1
+   > Les postes essentiels sont sauvés.
+C) Les laisser disparaître :: Rigueur.
+   services-1 bon-1 | g-1 c+2 d+2 e0
+   > Des associations ferment.
+
+=== fin-228 | finances | Chauffer moins les gymnases
+Les gymnases sont chauffés à 20 degrés même vides.
+A) Baisser à 14 degrés et chauffer à la demande :: Économiser.
+   rec+0.05x60 ecologie+1 bon-1 | g+1 c+2 d+1 e+1
+   > Les sportifs gardent leur veste à l’échauffement.
+B) Des thermostats connectés :: Moderniser.
+   bud-3 rec+0.06x60 | g0 c+2 d+1 e+1
+   > Le chauffage suit les réservations.
+C) Rien :: Confort.
+   rec-0.02x60 | g0 c+1 d+1 e0
+   > Les factures restent élevées.
+
+=== fin-229 | finances | Louer les toits municipaux à des producteurs solaires
+Des sociétés veulent louer les toits des écoles pour y poser des panneaux.
+A) Louer les toits :: Recettes vertes.
+   rec+0.05x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les toits rapportent et produisent.
+B) Les équiper soi-même :: Garder la main.
+   bud-10 rec+0.12x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > La Ville produit sa propre électricité.
+C) Rien :: Contraintes techniques.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les toits restent nus.
+
+=== fin-230 | finances | Les uniformes des agents coûtent cher
+Chaque direction commande ses tenues de travail à un fournisseur différent.
+A) Un marché unique pour toutes les tenues :: Économiser.
+   rec+0.02x60 | g0 c+3 d+2 e+1
+   > Les prix baissent avec les volumes.
+B) Des tenues fabriquées en France :: Local.
+   rec-0.01x60 economie+1 | g+1 c+2 d+1 e+1
+   > Un atelier français habille les agents.
+C) Rien :: Habitudes.
+   rec-0.01x60 | g0 c+1 d+1 e0
+   > Les commandes restent dispersées.
+=== fin-231 | finances | Confier les impayés à une société de recouvrement
+Des millions d’euros de factures impayées ne sont jamais récupérés.
+A) Engager une société de recouvrement :: Récupérer.
+   bud+6 bon-1 | g-1 c+2 d+2 e0
+   > Des relances musclées font rentrer l’argent.
+B) Un service interne de relance :: Doux.
+   bud-1 rec+0.05x60 | g0 c+2 d+1 e+1
+   > Les impayés baissent progressivement.
+C) Rien :: Coût du recouvrement.
+   rec-0.02x60 | g0 c+1 d+1 e0
+   > Les impayés s’accumulent.
+
+=== fin-232 | finances | Rendre tous les bâtiments municipaux accessibles
+Beaucoup de mairies, écoles et gymnases restent inaccessibles en fauteuil.
+A) Un grand plan sur cinq ans :: Égalité.
+   bud-20 bon+1 services+1 | g+2 c+2 d0 e+1
+   > Rampes et ascenseurs se multiplient.
+B) Prioriser les écoles :: Cibler.
+   bud-8 services+1 | g+1 c+2 d+1 e+1
+   > Les écoles deviennent accessibles.
+C) Au fil des rénovations :: Lenteur.
+   bon-1 | g-1 c+1 d+2 e0
+   > Les personnes en fauteuil attendent.
+
+=== fin-233 | finances | Les contrats d’ascenseurs trop chers
+La maintenance des ascenseurs municipaux coûte trois fois le prix du marché.
+A) Relancer un appel d’offres :: Négocier.
+   rec+0.04x60 | g0 c+3 d+2 e0
+   > Les prix sont divisés par deux.
+B) Une équipe de maintenance interne :: Internaliser.
+   bud-2 rec+0.05x60 | g+1 c+2 d+1 e+1
+   > Les techniciens de la Ville réparent.
+C) Rien :: Contrats en cours.
+   rec-0.02x60 | g0 c+1 d+1 e0
+   > Les factures continuent.
+
+=== fin-234 | finances | Des rues éventrées deux fois de suite
+Une rue refaite en mars est rouverte en juin pour poser des câbles.
+A) Une coordination obligatoire des chantiers :: Organiser.
+   bud-1 rec+0.03x60 bon+1 | g0 c+3 d+2 e+1
+   > Les travaux sont groupés.
+B) Faire payer les opérateurs qui rouvrent :: Pénaliser.
+   rec+0.02x60 | g0 c+2 d+2 e0
+   > Les opérateurs se coordonnent.
+C) Rien :: Contraintes techniques.
+   bon-1 | g0 c+1 d+1 e0
+   > Les riverains voient double.
+
+=== fin-235 | finances | Un immeuble légué à la Ville
+Une vieille dame lègue un immeuble entier, avec des locataires et des travaux à faire.
+A) Le garder pour du logement social :: Loger.
+   bud-4 logement+1 | g+1 c+2 d+1 e+1
+   > Les appartements sont rénovés.
+B) Le vendre :: Recettes.
+   bud+12 | g-1 c+2 d+2 e0
+   > L’immeuble est vendu.
+C) Refuser le legs :: Charges.
+   bon-1 | g0 c+1 d+1 e0
+   > L’immeuble part à l’État.
+
+=== fin-236 | finances | Augmenter la taxe foncière
+La taxe foncière parisienne reste plus basse que dans la plupart des grandes villes.
+A) Une hausse importante :: Recettes.
+   rec+0.4x60 pop-2 | g0 c+2 d+1 e0
+   > Les propriétaires protestent.
+B) Une hausse modérée :: Équilibre.
+   rec+0.2x60 pop-1 | g0 c+2 d+1 e+1
+   > La hausse passe sans trop de bruit.
+C) Ne pas y toucher :: Promesse.
+   pop+1 | g0 c+1 d+2 e0
+   > Le budget reste serré.
+
+=== fin-237 | finances | Remplacer les vieilles canalisations d’eau
+Des conduites de plus d’un siècle fuient et cassent.
+A) Un grand plan de renouvellement :: Investir.
+   bud-15 rec+0.05x60 | g0 c+3 d+2 e+1
+   > Les fuites diminuent fortement.
+B) Remplacer seulement les plus fragiles :: Prioriser.
+   bud-5 | g0 c+2 d+1 e+1
+   > Les ruptures se raréfient.
+C) Réparer au fil des fuites :: Économie.
+   rec-0.03x60 | g0 c+1 d+1 e0
+   ~40 bud-6 > Une conduite géante éclate.
+   > Les fuites continuent.
+
+=== fin-238 | finances | Un fonds d’urgence pour les commerçants sinistrés
+Après des inondations, des commerçants ont tout perdu.
+? distinct
+A) Un fonds d’aide immédiat :: Solidarité.
+   bud-5 economie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les commerces rouvrent vite.
+B) Des prêts à taux zéro :: Aider.
+   bud-2 economie+1 | g0 c+2 d+1 e+1
+   > Les commerçants empruntent.
+C) Attendre les assurances :: Procédure.
+   economie-1 | g-1 c+1 d+2 e0
+   > Des commerces ne rouvrent pas.
+
+=== fin-239 | finances | Geler toutes les subventions un an
+Pour redresser les comptes, on propose de geler les subventions aux associations.
+A) Geler :: Rigueur.
+   rec+0.1x60 bon-1 coh-1 | g-1 c+3 d+2 e0
+   > Les associations réduisent la voilure.
+B) Geler sauf le social :: Protéger.
+   rec+0.05x60 | g0 c+2 d+1 e+1
+   > Les associations sociales sont épargnées.
+C) Ne pas geler :: Vie associative.
+   bon+1 | g+1 c+1 d0 e+1
+   > Le budget reste tendu.
+
+=== fin-240 | finances | Fusionner des directions de la Ville
+Plusieurs directions font le même travail en parallèle.
+A) Fusionner :: Simplifier.
+   rec+0.08x60 coh-1 | g0 c+3 d+2 e0
+   > Les doublons disparaissent.
+B) Mutualiser les fonctions support :: Compromis.
+   rec+0.04x60 | g0 c+2 d+1 e+1
+   > Paie et achats sont regroupés.
+C) Rien :: Stabilité.
+   rec-0.01x60 | g0 c+1 d+1 e0
+   > Les doublons persistent.
+
+=== fin-241 | finances | L’entretien des caméras de surveillance
+Un tiers des caméras municipales sont en panne faute de maintenance.
+A) Un contrat de maintenance complet :: Fiabilité.
+   rec-0.04x60 securite+1 | g-1 c+2 d+2 e0
+   > Toutes les caméras fonctionnent.
+B) Retirer les caméras inutiles :: Rationaliser.
+   rec+0.02x60 | g+1 c+2 d+1 e+1
+   > Les caméras utiles sont réparées, les autres retirées.
+C) Rien :: Coût.
+   securite-1 | g0 c+1 d+1 e0
+   > Les caméras filment dans le vide.
+
+=== fin-242 | finances | Vendre un stade municipal à un club
+Un club professionnel propose de racheter le stade qu’il occupe.
+A) Vendre :: Recettes.
+   bud+20 bon-1 | g-1 c+2 d+2 e0
+   > Le club devient propriétaire.
+B) Un bail emphytéotique :: Garder la propriété.
+   rec+0.05x60 | g0 c+2 d+1 e+1
+   > Le club paie un loyer pendant 50 ans.
+C) Refuser :: Patrimoine sportif.
+   bon+1 | g+1 c+1 d0 e0
+   > Le stade reste municipal.
+
+=== fin-243 | finances | Augmenter le prix d’entrée des piscines
+L’entrée des piscines est l’une des moins chères de France.
+? distinct
+A) Augmenter de moitié :: Recettes.
+   rec+0.04x60 bon-1 | g-1 c+2 d+2 e0
+   > Les piscines rapportent plus.
+B) Augmenter seulement pour les non-Parisiens :: Cibler.
+   rec+0.01x60 | g0 c+2 d+1 e0
+   > Les banlieusards paient plus.
+C) Ne rien changer :: Accès.
+   bon+1 | g+1 c+1 d0 e+1
+   > Les familles continuent de nager pour pas cher.
+
+=== fin-244 | finances | Rendre payant l’abonnement aux bibliothèques
+Le prêt est gratuit, mais les bibliothèques coûtent cher.
+A) Un abonnement annuel modeste :: Recettes.
+   rec+0.02x60 bon-1 | g-1 c+2 d+2 e0
+   > Les inscriptions baissent.
+B) Payant seulement pour les DVD et jeux :: Compromis.
+   rec+0.01x60 | g0 c+2 d+1 e+1
+   > Les livres restent gratuits.
+C) Garder la gratuité :: Culture pour tous.
+   bon+1 | g+1 c+1 d0 e+1
+   > Les bibliothèques restent ouvertes à tous.
+
+=== fin-245 | finances | Payer les prestataires de propreté au résultat
+Les entreprises de nettoyage sont payées même quand les rues restent sales.
+A) Une rémunération liée à la propreté mesurée :: Exiger.
+   rec+0.03x60 proprete+1 | g0 c+3 d+2 e0
+   > Les rues sont mieux nettoyées.
+B) Des pénalités en cas de manquement :: Sanctionner.
+   rec+0.02x60 proprete+1 | g0 c+2 d+2 e0
+   > Les prestataires font des efforts.
+C) Rien :: Contrats en cours.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les rues restent sales.
+
+=== fin-246 | finances | Couper dans le budget culturel ?
+Pour équilibrer le budget, on propose de réduire les dépenses culturelles.
+A) Couper de 10 % :: Rigueur.
+   rec+0.08x60 bon-1 | g-1 c+3 d+2 e0
+   > Des festivals sont annulés.
+B) Couper dans les grands événements, pas dans les quartiers :: Protéger.
+   rec+0.04x60 | g+1 c+2 d+1 e+1
+   > Les petites structures sont épargnées.
+C) Ne pas toucher à la culture :: Priorité.
+   bon+1 | g+1 c+1 d0 e+1
+   > Les économies viennent d’ailleurs.
+
+=== fin-247 | finances | Un grand événement annulé coûte des millions
+Un concert géant est annulé à la dernière minute, les frais sont engagés.
+A) Rembourser tout le monde :: Confiance.
+   bud-4 bon+1 | g+1 c+2 d+1 e+1
+   > Les spectateurs sont remboursés.
+B) Reporter l’événement :: Sauver la mise.
+   bud-1 | g0 c+2 d+1 e+1
+   > L’événement aura lieu l’an prochain.
+C) Se retourner contre l’organisateur :: Justice.
+   bud-1 | g0 c+2 d+2 e0
+   ~30 bud+3 > Le tribunal donne raison à la Ville.
+   > La procédure commence.
+
+=== fin-248 | finances | Les jeux d’argent dans les bars-tabacs
+Les recettes des jeux grandissent, mais la Ville n’en touche rien.
+A) Demander une part des recettes à l’État :: Négocier.
+   coh+1 | g0 c+2 d+1 e+1
+   ~25 bud+3 > L’État accorde une petite part.
+   > La demande est déposée.
+B) Financer la prévention de l’addiction au jeu :: Santé.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Des permanences d’aide ouvrent.
+C) Rien :: Compétence nationale.
+   bon-1 | g0 c+1 d+1 e0
+   > Les joueurs s’endettent.
+=== fin-249 | finances | Une taxe de balayage pour les propriétaires
+La loi permet de faire payer le balayage des rues aux propriétaires riverains.
+A) Instaurer la taxe :: Recettes.
+   rec+0.1x60 pop-1 | g0 c+2 d+1 e0
+   > Les propriétaires paient le balayage.
+B) Seulement sur les grands immeubles de bureaux :: Cibler.
+   rec+0.04x60 | g+1 c+2 d+1 e+1
+   > Les bureaux paient leur part.
+C) Refuser :: Pas de nouvel impôt.
+   pop+1 | g0 c+1 d+2 e0
+   > Le balayage reste à la charge de tous.
+
+=== fin-250 | finances | Vendre les droits d’image des monuments de la Ville
+Des marques utilisent des monuments municipaux dans leurs publicités sans payer.
+A) Facturer l’usage commercial :: Recettes.
+   rec+0.02x60 | g0 c+2 d+2 e0
+   > Les publicitaires paient.
+B) Gratuit pour les créateurs, payant pour les marques :: Équilibre.
+   rec+0.01x60 bon+1 | g+1 c+2 d+1 e+1
+   > Les photographes amateurs sont épargnés.
+C) Rien :: Patrimoine commun.
+   bon+1 | g+1 c+1 d0 e+1
+   > Les monuments restent libres.
