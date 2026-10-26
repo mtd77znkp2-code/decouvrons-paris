@@ -1,0 +1,488 @@
+// Logement, série 4
+=== log-106 | logement | Loger les agents de la Ville
+Les éboueurs, aides-soignantes et animateurs de la Ville vivent à deux heures de leur travail.
+A) Réserver des logements sociaux aux agents :: Fidéliser.
+   logement+1 services+2 | g+2 c+2 d+1 e+1
+   > Des agents emménagent près de leur travail.
+B) Prime logement pour les agents :: Aide directe.
+   rec-0.3x60 services+1 achat+1 | g+1 c+3 d+1 e0
+   > Les agents reçoivent une prime.
+C) Rien :: Égalité avec les autres demandeurs.
+   services-1 | g-1 c+1 d+1 e0
+   > Les agents démissionnent.
+
+=== log-107 | logement | Racheter des appartements un par un
+Au lieu d’immeubles entiers, la Ville pourrait racheter des appartements isolés pour créer des logements sociaux partout.
+A) Programme de rachat de 500 appartements :: Mixité diffuse.
+   bud-60 logement+2 | g+3 c+2 d0 e+1
+   > Des logements sociaux apparaissent dans tous les immeubles.
+B) Cent appartements :: Prudence.
+   bud-15 logement+1 | g+1 c+3 d+1 e+1
+   > Un premier lot est acheté.
+C) Rien :: Trop cher.
+   logement-1 | g-2 c+1 d+2 e0
+   > Rien n’est fait.
+
+=== log-108 | logement | Les permis de construire trop longs
+Il faut un an pour obtenir un permis de construire. Des projets de logements sont abandonnés.
+A) Recruter des instructeurs :: Accélérer.
+   rec-0.1x60 logement+2 economie+1 | g0 c+3 d+3 e0
+   > Les délais tombent à quatre mois.
+B) Procédure accélérée pour les logements sociaux :: Priorité.
+   logement+2 | g+2 c+2 d+1 e+1
+   > Les projets sociaux passent en priorité.
+C) Rien :: Contrôle nécessaire.
+   logement-1 | g0 c0 d-1 e+1
+   > Les délais restent longs.
+
+=== log-109 | logement | Réquisitionner des logements vides
+La loi permet de réquisitionner des logements vides depuis longtemps appartenant à des sociétés.
+A) Réquisitionner :: Logements pour tous.
+   logement+3 pop-1 | g+5 c-1 d-5 e+2
+   > Des centaines de logements sont réquisitionnés.
+   ~40 coh-1 > Des propriétaires gagnent en justice.
+B) Négocier avec les propriétaires :: Dialogue.
+   logement+1 | g+1 c+3 d+1 e+1
+   > Des propriétaires acceptent de louer.
+C) Refuser :: Propriété privée.
+   logement-1 | g-3 c+1 d+4 e0
+   > Les logements restent vides.
+
+=== log-110 | logement | Les gardiens de cimetière et d’écoles logés sur place
+Des logements de gardien dans les écoles et cimetières sont vides depuis la suppression des postes.
+A) Les attribuer à des agents de la Ville :: Utiliser.
+   logement+1 services+1 | g+1 c+3 d+2 e+1
+   > Des agents emménagent dans les loges vides.
+B) Les louer comme logements sociaux :: Loger des familles.
+   logement+2 | g+3 c+2 d0 e+1
+   > Des familles emménagent.
+   ~25 securite-1 > Des directeurs d’école s’inquiètent de la présence de non-agents.
+C) Les laisser vides :: Sécurité des sites.
+   logement-1 | g-1 c0 d+2 e0
+   > Les logements restent vides.
+=== log-111 | logement | Une copropriété veut privatiser un jardin
+Une grande copropriété veut clôturer un jardin traversé par un chemin public depuis des décennies.
+A) Défendre le passage public en justice :: Espace public.
+   bud-1 bon+1 | g+2 c+2 d-1 e+2
+   > La Ville défend le passage.
+   ~40 bon-1 > Le tribunal donne raison à la copropriété.
+B) Négocier une ouverture en journée :: Compromis.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Le jardin reste ouvert le jour.
+C) Laisser faire :: Propriété privée.
+   bon-1 | g-2 c0 d+3 e-1
+   > Le jardin est clôturé.
+
+=== log-112 | logement | Relever les plafonds de l’accession sociale
+Les plafonds de revenus pour l’accession sociale excluent beaucoup de jeunes couples parisiens.
+A) Relever les plafonds :: Classes moyennes.
+   logement+1 achat+1 | g-1 c+3 d+3 e0
+   > Plus de familles peuvent acheter.
+B) Garder les plafonds :: Cibler les modestes.
+   logement+1 | g+2 c+1 d-1 e0
+   > Les plafonds restent.
+C) Supprimer l’accession sociale au profit de la location :: Location.
+   achat-1 logement+1 | g+2 c0 d-2 e+1
+   > L’argent va au logement locatif.
+
+=== log-113 | logement | Des femmes enceintes à la rue
+Des femmes enceintes et des jeunes mères dorment dans la rue ou aux urgences.
+A) Ouvrir des places d’hébergement dédiées :: Protéger.
+   bud-6 rec-0.2x60 services+2 logement+1 | g+4 c+2 d0 e+1
+   > Un centre d’accueil ouvre.
+B) Chambres d’hôtel réservées :: Rapide.
+   rec-0.2x60 services+1 | g+2 c+2 d+1 e0
+   > Des chambres sont réservées.
+C) Interpeller l’État :: Compétence.
+   pop-1 coh+1 | g0 c+1 d+2 e0
+   > Le maire écrit au préfet.
+
+=== log-114 | logement | Les fenêtres en plastique dans les immeubles anciens
+Des propriétaires remplacent les fenêtres en bois par du PVC, défigurant les façades.
+A) Interdire le PVC sur les façades anciennes :: Patrimoine.
+   bon+1 ecologie+1 achat-1 | g0 c+2 d+2 e+2
+   > Le bois ou l’aluminium sont imposés.
+B) Aider à poser du bois :: Accompagner.
+   bud-4 bon+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Une aide finance les fenêtres en bois.
+C) Laisser faire :: Isolation moins chère.
+   bon-1 achat+1 | g0 c0 d+1 e0
+   > Le PVC se répand.
+
+=== log-115 | logement | La mixité dans les nouveaux quartiers
+Les nouveaux quartiers construits sur d’anciennes friches comptent surtout des logements chers.
+A) Imposer 50 % de logements sociaux :: Mixité.
+   logement+2 economie-1 | g+4 c0 d-3 e+1
+   > Les nouveaux quartiers seront mixtes.
+B) Un tiers social, un tiers intermédiaire, un tiers libre :: Équilibre.
+   logement+2 | g+1 c+3 d+1 e+1
+   > Une répartition équilibrée est fixée.
+C) Laisser le marché décider :: Rentabilité.
+   bud+20 logement+1 | g-3 c+1 d+4 e0
+   > Les terrains sont vendus plus cher.
+
+=== log-116 | logement | Des lofts illégaux dans des entrepôts
+Des entrepôts sont transformés en lofts sans autorisation ni normes de sécurité.
+A) Régulariser ceux qui sont aux normes :: Pragmatique.
+   logement+1 | g0 c+3 d+2 e0
+   > Les lofts conformes sont régularisés.
+B) Fermer et sanctionner :: Règle.
+   securite+1 logement-1 | g0 c+2 d+2 e0
+   > Les lofts illégaux sont fermés.
+C) Rien :: Logements en plus.
+   securite-1 logement+1 | g-1 c0 d+1 e0
+   > Les lofts restent.
+
+=== log-117 | logement | Des seniors expulsés pour reprise
+Des propriétaires reprennent leur logement loué depuis 40 ans par des locataires âgés.
+A) Accompagner et reloger en priorité :: Protéger.
+   bud-2 logement+1 bon+1 | g+3 c+2 d0 e+1
+   > Les seniors sont relogés dans leur quartier.
+B) Contrôler les reprises frauduleuses :: Vérifier.
+   bud-1 logement+1 | g+2 c+2 d0 e+1
+   > Les fausses reprises sont sanctionnées.
+C) Rien :: Droit des propriétaires.
+   bon-1 | g-2 c0 d+3 e0
+   > Les seniors partent.
+
+=== log-118 | logement | Des résidences hôtelières sociales
+Des hôtels pourraient être transformés en résidences meublées à loyer social pour les travailleurs précaires.
+A) Racheter et transformer des hôtels :: Logement rapide.
+   bud-35 logement+2 | g+3 c+2 d0 e+1
+   > Trois hôtels deviennent des résidences.
+B) Conventionner des hôtels existants :: Partenariat.
+   rec-0.2x60 logement+1 | g+1 c+3 d+1 e0
+   > Des chambres sont louées à prix social.
+C) Rien :: Hôtels pour les touristes.
+   logement-1 | g-2 c0 d+2 e0
+   > Rien ne change.
+
+=== log-119 | logement | Convaincre les propriétaires de louer à loyer social
+Des propriétaires privés pourraient louer à loyer modéré en échange d’avantages.
+A) Prime, garantie et travaux payés :: Attirer.
+   bud-8 logement+2 | g+1 c+3 d+2 e+1
+   > Mille propriétaires conventionnent leur logement.
+B) Garantie de loyers seulement :: Économique.
+   bud-2 logement+1 | g0 c+3 d+2 e0
+   > Des propriétaires se laissent convaincre.
+C) Rien :: Le parc social suffit.
+   logement-1 | g0 c0 d0 e0
+   > Rien ne change.
+
+=== log-120 | logement | Des cuisines collectives dans les résidences sociales
+Les résidents des foyers n’ont pas de cuisine et mangent froid.
+? distinct
+A) Créer des cuisines partagées :: Dignité.
+   bud-6 logement+1 bon+1 | g+3 c+2 d+1 e+1
+   > Des cuisines collectives sont installées.
+B) Restaurants solidaires à proximité :: Alternative.
+   rec-0.1x60 achat+1 | g+2 c+3 d+1 e+1
+   > Des repas à prix réduit sont proposés.
+C) Rien :: Gestionnaires.
+   bon-1 | g-2 c0 d+2 e0
+   > Rien ne change.
+
+=== log-121 | logement | Le « logement d’abord »
+Des experts proposent de donner directement un logement aux sans-abri, sans passer par l’hébergement d’urgence.
+A) Lancer le programme à grande échelle :: Changer de modèle.
+   bud-20 rec-0.3x60 logement+2 services+1 | g+4 c+2 d-1 e+2
+   > Des centaines de sans-abri obtiennent un logement.
+   +20 pop+2 > Le programme montre des résultats impressionnants.
+B) Expérimentation sur cent personnes :: Tester.
+   bud-5 rec-0.1x60 logement+1 | g+2 c+3 d+1 e+1
+   > Cent personnes sont logées.
+C) Garder les centres d’hébergement :: Modèle actuel.
+   services-1 | g-2 c+1 d+2 e0
+   > Rien ne change.
+
+=== log-122 | logement | Les dépôts de garantie jamais rendus
+Des propriétaires gardent les dépôts de garantie sans justification.
+A) Service gratuit de médiation :: Aider les locataires.
+   bud-1 achat+1 | g+3 c+2 d0 e+1
+   > Des milliers d’euros sont récupérés.
+B) Guide et modèle de lettre :: Informer.
+   bud-1 achat+1 | g+1 c+3 d+1 e0
+   > Les locataires connaissent leurs droits.
+C) Rien :: Affaire privée.
+   achat-1 | g-2 c0 d+3 e0
+   > Rien ne change.
+
+=== log-123 | logement | Les espaces verts des cités à l’abandon
+Les pelouses et jardins des cités sont mal entretenus par les bailleurs.
+A) Confier l’entretien aux jardiniers de la Ville :: Qualité.
+   rec-0.2x60 ecologie+1 bon+1 | g+2 c+2 d+1 e+2
+   > Les cités retrouvent des jardins soignés.
+B) Jardins partagés gérés par les habitants :: Participation.
+   bud-2 ecologie+1 bon+1 | g+2 c+2 d+1 e+3
+   > Les habitants jardinent.
+C) Rien :: Bailleurs responsables.
+   bon-1 | g0 c+1 d+1 e-1
+   > Rien ne change.
+
+=== log-124 | logement | Les toits qui fuient dans les copropriétés modestes
+Des copropriétés modestes ne peuvent pas financer la réfection de leur toiture en zinc.
+A) Aide aux travaux de toiture :: Soutien.
+   bud-10 logement+2 | g+2 c+2 d+1 e+1
+   > Les toits sont refaits.
+B) Prêt à taux zéro :: Avance.
+   bud-3 logement+1 | g0 c+3 d+2 e0
+   > Les copropriétés empruntent sans intérêts.
+C) Rien :: Propriété privée.
+   logement-1 | g-1 c0 d+2 e0
+   > Les fuites continuent.
+
+=== log-125 | logement | Des immeubles flottants sur la Seine
+Des architectes proposent des immeubles de logements flottants amarrés en bord de Seine.
+A) Accepter un projet pilote :: Innovation.
+   bud-10 logement+1 bon+1 | g+1 c+2 d+1 e+2
+   > Un immeuble flottant est construit.
+   ~30 pop-1 > Des défenseurs du paysage de la Seine protestent.
+B) Refuser :: Protéger les berges.
+   logement-1 | g0 c+1 d+1 e+1
+   > Le projet est rejeté.
+C) Seulement pour des logements étudiants :: Ciblé.
+   bud-8 logement+1 | g+1 c+3 d+1 e+1
+   > Une résidence étudiante flottante ouvre.
+
+=== log-126 | logement | Des logements sociaux vides pendant des mois
+Entre deux locataires, des logements sociaux restent vides six mois.
+A) Délai maximum d’un mois avec pénalités pour les bailleurs :: Efficacité.
+   logement+2 | g+1 c+3 d+2 e0
+   > Les logements sont réattribués vite.
+B) Équipes de travaux dédiées :: Moyens.
+   rec-0.1x60 logement+2 | g+1 c+2 d+1 e0
+   > Les remises en état sont accélérées.
+C) Rien :: Contraintes techniques.
+   logement-1 | g0 c0 d0 e0
+   > Les logements restent vides.
+
+=== log-127 | logement | Les assureurs refusent certains quartiers
+Des habitants de certains quartiers ne trouvent plus d’assurance habitation.
+A) Négocier une assurance municipale collective :: Protéger.
+   bud-2 achat+1 | g+3 c+2 d0 e+1
+   > Une assurance de groupe est proposée.
+B) Saisir les autorités de contrôle :: Pression.
+   coh+1 | g+1 c+3 d+1 e0
+   > Les assureurs sont rappelés à l’ordre.
+C) Rien :: Marché.
+   pop-1 | g-2 c0 d+3 e0
+   > Les habitants restent sans assurance.
+
+=== log-128 | logement | Vendre des terrains moins cher aux bailleurs sociaux
+La Ville vend ses terrains au prix fort, ce qui renchérit les logements sociaux.
+A) Décote de 50 % pour le logement social :: Priorité sociale.
+   bud-20 logement+3 | g+3 c+1 d-2 e+1
+   > Les terrains sont cédés à moitié prix.
+B) Décote de 20 % :: Compromis.
+   bud-8 logement+1 | g+1 c+3 d+1 e0
+   > Les terrains sont un peu moins chers.
+C) Prix du marché :: Recettes.
+   bud+10 logement-1 | g-3 c+1 d+3 e0
+   > Les terrains rapportent davantage.
+
+=== log-129 | logement | Le logement des internes en médecine
+Les internes des hôpitaux parisiens dorment parfois dans leur voiture.
+A) Réserver des studios aux internes :: Attirer les soignants.
+   bud-6 logement+1 services+1 | g+2 c+2 d+1 e+1
+   > Les internes sont logés près des hôpitaux.
+B) Convention avec l’AP-HP pour des logements partagés :: Partenariat.
+   bud-2 logement+1 | g+1 c+3 d+1 e0
+   > Des colocations d’internes sont créées.
+C) Rien :: Compétence de l’AP-HP.
+   services-1 | g-1 c+1 d+1 e0
+   > Les internes continuent de galérer.
+
+=== log-130 | logement | Des balcons fermés illégalement
+Des habitants ferment leur balcon en véranda sans autorisation.
+A) Faire démonter :: Règle.
+   logement-1 bon-1 | g0 c+2 d+2 e0
+   > Les vérandas illégales sont démontées.
+B) Régulariser les fermetures discrètes :: Pragmatisme.
+   logement+1 | g0 c+3 d+1 e0
+   > Les fermetures discrètes sont acceptées.
+C) Rien :: Pas prioritaire.
+   bon-1 | g0 c0 d+1 e0
+   > Les vérandas se multiplient.
+
+=== log-131 | logement | Le chauffage collectif allumé trop tard
+Dans les HLM, le chauffage collectif n’est allumé que le 15 octobre, même par temps froid.
+A) Allumer dès que la température baisse :: Confort.
+   rec-0.1x60 bon+1 logement+1 | g+2 c+2 d+1 e-1
+   > Le chauffage s’allume selon la météo.
+B) Thermostats intelligents :: Optimiser.
+   bud-6 logement+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Le chauffage s’adapte à chaque immeuble.
+C) Garder la règle :: Économie.
+   bon-1 | g0 c+1 d+1 e+1
+   > Les locataires ont froid.
+
+=== log-132 | logement | Des immeubles qui produisent plus d’énergie qu’ils n’en consomment
+Un bailleur propose des immeubles neufs à énergie positive, 10 % plus chers.
+A) Généraliser dans les logements sociaux neufs :: Avenir.
+   bud-15 ecologie+3 logement+1 | g+1 c+2 d0 e+5
+   > Les nouveaux HLM produisent leur énergie.
+B) Quelques immeubles pilotes :: Tester.
+   bud-4 ecologie+1 logement+1 | g+1 c+3 d+1 e+2
+   > Trois immeubles pilotes sont lancés.
+C) Rien :: Coût.
+   ecologie-1 | g0 c0 d+2 e-2
+   > Les normes minimales suffisent.
+
+=== log-133 | logement | Une charte avec les promoteurs
+Les promoteurs vendent les logements neufs à des prix records.
+A) Charte de prix plafonnés en échange de terrains :: Maîtriser.
+   logement+2 achat+1 | g+2 c+3 d0 e+1
+   > Les promoteurs s’engagent sur des prix.
+B) Négociation au cas par cas :: Souplesse.
+   logement+1 | g0 c+3 d+2 e0
+   > Quelques projets sont plus abordables.
+C) Rien :: Marché.
+   logement-1 | g-2 c0 d+3 e0
+   > Les prix continuent de grimper.
+
+=== log-134 | logement | Des appart-hôtels illégaux
+Des immeubles entiers sont transformés en appart-hôtels sans autorisation.
+A) Fermetures et amendes :: Protéger le logement.
+   logement+2 economie-1 | g+3 c+1 d-2 e+1
+   > Les appart-hôtels illégaux sont fermés.
+   +10 bud+5 > Les amendes rapportent.
+B) Régulariser contre une compensation en logements :: Compromis.
+   logement+1 | g0 c+3 d+2 e0
+   > Les exploitants créent des logements ailleurs.
+C) Rien :: Tourisme.
+   logement-1 economie+1 | g-3 c0 d+3 e0
+   > Les appart-hôtels se multiplient.
+
+=== log-135 | logement | Des salles communes dans les résidences
+Les résidents des immeubles sociaux n’ont aucune salle pour se réunir ou faire la fête.
+A) Créer une salle commune dans chaque grande résidence :: Lien social.
+   bud-8 bon+1 logement+1 | g+2 c+2 d+1 e+1
+   > Des salles communes ouvrent.
+B) Prêter des salles municipales :: Économique.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Les habitants peuvent réserver une salle.
+C) Rien :: Coût.
+   bon-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== log-136 | logement | Ouvrir les toits-terrasses aux habitants
+Les toits-terrasses des immeubles sociaux sont fermés. Les habitants voudraient en profiter.
+A) Aménager et ouvrir des toits sécurisés :: Espace et fraîcheur.
+   bud-10 bon+2 ecologie+1 | g+2 c+2 d+1 e+2
+   > Les habitants profitent des toits.
+B) Ouvrir quelques toits pour des événements :: Prudence.
+   bud-2 bon+1 | g+1 c+3 d+1 e+1
+   > Des fêtes ont lieu sur les toits l’été.
+C) Garder fermé :: Sécurité.
+   bon-1 | g0 c+1 d+2 e0
+   > Les toits restent fermés.
+
+=== log-137 | logement | Les grands propriétaires qui augmentent les loyers
+Des fonds d’investissement propriétaires de milliers de logements augmentent les loyers au maximum.
+A) Publier la liste des propriétaires qui abusent :: Pression.
+   logement+1 pop+1 | g+3 c+1 d-2 e+1
+   > La liste est publiée.
+   ~30 coh-1 > Les fonds menacent de poursuivre la Ville.
+B) Négocier une charte :: Dialogue.
+   logement+1 | g0 c+3 d+2 e0
+   > Une charte de modération est signée.
+C) Rien :: Légal.
+   logement-1 | g-3 c0 d+3 e0
+   > Les loyers montent.
+
+=== log-138 | logement | Reloger pendant les travaux de rénovation
+La rénovation d’une cité oblige les habitants à partir un an. Ils ont peur de ne pas revenir.
+A) Garantie écrite de retour et relogement proche :: Rassurer.
+   bud-5 logement+1 bon+1 | g+3 c+2 d+1 e+1
+   > Chaque famille a la garantie de revenir.
+B) Rénover sans faire partir, par étapes :: Plus long.
+   bud-8 logement+1 | g+2 c+2 d+1 e+1
+   > Les travaux se font logement par logement.
+C) Reloger là où il y a de la place :: Pragmatique.
+   logement+1 bon-1 | g-1 c+2 d+2 e0
+   > Les familles sont dispersées.
+
+=== log-139 | logement | Des plafonds de revenus HLM trop bas
+Les plafonds pour accéder à un logement social excluent des familles qui ne peuvent pas se loger dans le privé.
+A) Demander leur relèvement à Paris :: Adapter.
+   coh+1 logement+1 | g+1 c+3 d+1 e0
+   > Le gouvernement relève les plafonds parisiens.
+B) Développer le logement intermédiaire :: Alternative.
+   bud-20 logement+2 | g0 c+3 d+2 e0
+   > Des logements intermédiaires sont construits.
+C) Garder les plafonds :: Priorité aux modestes.
+   logement-1 | g+2 c0 d-2 e0
+   > Rien ne change.
+
+=== log-140 | logement | Un tiers de logements sociaux dans chaque immeuble neuf
+Une règle imposerait que chaque immeuble neuf compte un tiers de logements sociaux.
+A) Adopter la règle :: Mixité partout.
+   logement+2 economie-1 | g+3 c+1 d-3 e+1
+   > Chaque immeuble neuf sera mixte.
+B) Seulement au-delà de 20 logements :: Compromis.
+   logement+1 | g+1 c+3 d+1 e+1
+   > Les grands programmes sont concernés.
+C) Refuser :: Freiner la construction.
+   logement-1 | g-3 c0 d+4 e0
+   > Rien ne change.
+
+=== log-141 | logement | Des espaces de télétravail dans les résidences
+Les locataires des petits logements n’ont pas de place pour télétravailler.
+A) Transformer des locaux vides en espaces de travail :: Utile.
+   bud-5 logement+1 economie+1 | g+1 c+3 d+2 e+2
+   > Des salles de télétravail ouvrent en bas des immeubles.
+B) Prêter les bibliothèques le matin :: Économique.
+   services+1 | g+1 c+3 d+1 e+1
+   > Les bibliothèques accueillent les télétravailleurs.
+C) Rien :: Pas prioritaire.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== log-142 | logement | Les animaux dans les logements sociaux
+Certains bailleurs interdisent les chiens dans les logements sociaux.
+A) Autoriser les animaux avec règles :: Bien-être.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Les animaux sont autorisés.
+B) Laisser chaque bailleur décider :: Liberté.
+   bon-1 | g0 c+2 d+2 e0
+   > Les règles varient.
+C) Interdire les grands chiens :: Sécurité.
+   securite+1 bon-1 | g-1 c+1 d+2 e0
+   > Les grands chiens sont interdits.
+
+=== log-143 | logement | Des compteurs connectés dans les HLM
+Des compteurs connectés permettraient aux locataires de suivre leur consommation d’eau et de chauffage.
+A) Équiper tous les logements :: Économies.
+   bud-10 ecologie+2 achat+1 | g+1 c+3 d+2 e+3
+   > Les locataires suivent leur consommation.
+   ~25 pop-1 > Des locataires s’inquiètent pour leurs données.
+B) Équiper sur demande :: Volontariat.
+   bud-2 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les volontaires sont équipés.
+C) Rien :: Coût.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== log-144 | logement | Le logement des apprentis
+Les apprentis alternent entre deux villes et ne trouvent pas de logement pour quelques semaines.
+A) Résidence dédiée aux alternants :: Solution adaptée.
+   bud-12 logement+1 economie+1 | g+2 c+2 d+2 e+1
+   > Une résidence à la semaine ouvre.
+B) Chambres chez l’habitant avec aide :: Souple.
+   rec-0.05x60 logement+1 | g+1 c+3 d+1 e+1
+   > Des habitants accueillent des apprentis.
+C) Rien :: Pas prioritaire.
+   economie-1 | g-1 c0 d+1 e0
+   > Des apprentis abandonnent.
+
+=== log-145 | logement | Des logements sociaux près des gares du Grand Paris
+Les nouvelles gares du métro attirent la spéculation immobilière.
+A) Réserver des terrains autour des gares au logement social :: Anticiper.
+   bud-15 logement+2 | g+3 c+2 d0 e+2
+   > Des logements sociaux seront construits près des gares.
+B) Encadrer les prix des terrains :: Limiter la spéculation.
+   logement+1 | g+1 c+3 d+1 e+1
+   > Les prix sont encadrés.
+C) Laisser faire :: Développement.
+   logement-1 economie+1 | g-2 c0 d+3 e0
+   > Les prix flambent.
