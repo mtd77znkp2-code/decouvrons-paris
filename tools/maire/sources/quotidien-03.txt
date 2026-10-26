@@ -1,0 +1,484 @@
+// Vie quotidienne, série 3
+=== quo-066 | quotidien | Le ronronnement des pompes à chaleur
+Les pompes à chaleur et climatiseurs installés dans les cours font un bruit permanent qui empêche les voisins de dormir.
+A) Normes de bruit strictes et contrôles :: Calme.
+   bon+1 | g+1 c+3 d+1 e0
+   > Les appareils trop bruyants doivent être capotés.
+B) Aide pour installer des caissons antibruit :: Accompagner.
+   bud-3 bon+1 | g+1 c+2 d+2 e+1
+   > Une aide finance des caissons.
+C) Rien :: Transition énergétique.
+   bon-1 | g0 c0 d+1 e+1
+   > Le bruit continue.
+
+=== quo-067 | quotidien | Les bars sur les toits font la fête
+Les bars installés sur les toits d’hôtels diffusent de la musique jusqu’à 2 h.
+A) Couper la musique à 22 h :: Respect des voisins.
+   bon+1 economie-1 | g+1 c+2 d0 e+1
+   > Les toits redeviennent calmes le soir.
+B) Limiteurs de son obligatoires :: Compromis.
+   bon+1 | g0 c+3 d+2 e0
+   > Le volume est plafonné.
+C) Rien :: Attractivité touristique.
+   bon-1 economie+1 | g-1 c0 d+2 e0
+   > Les fêtes continuent.
+
+=== quo-068 | quotidien | Des jardinières qui tombent des fenêtres
+Une jardinière est tombée d’un cinquième étage et a frôlé un passant.
+A) Obliger les fixations solides :: Sécurité.
+   securite+1 | g0 c+3 d+2 e0
+   > Les jardinières doivent être fixées.
+B) Campagne et kits de fixation gratuits :: Accompagner.
+   bud-1 securite+1 bon+1 | g+1 c+3 d+1 e+1
+   > Des kits sont distribués.
+C) Rien :: Accident isolé.
+   securite-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-069 | quotidien | Des frigos solidaires dans la rue
+Des associations installent des réfrigérateurs dans la rue où chacun dépose ou prend de la nourriture.
+A) Soutenir et multiplier les frigos :: Solidarité.
+   bud-2 achat+1 ecologie+1 bon+1 | g+3 c+2 d0 e+3
+   > Cinquante frigos solidaires sont installés.
+   ~25 proprete-1 > Certains frigos sont mal entretenus.
+B) Les autoriser avec une charte d’hygiène :: Encadrer.
+   achat+1 | g+1 c+3 d+1 e+2
+   > Les frigos respectent une charte.
+C) Les interdire :: Risque sanitaire.
+   bon-1 | g-2 c0 d+2 e-1
+   > Les frigos sont retirés.
+
+=== quo-070 | quotidien | Les antennes 5G sur les toits
+Des habitants s’inquiètent des antennes de téléphonie installées sur leur immeuble.
+A) Moratoire sur les nouvelles antennes :: Précaution.
+   bon+1 economie-1 | g+1 c0 d-2 e+3
+   > Les nouvelles antennes sont suspendues.
+B) Mesures publiques des ondes :: Transparence.
+   bud-2 bon+1 | g+1 c+3 d+1 e+1
+   > Les mesures sont publiées en ligne.
+C) Laisser faire les opérateurs :: Réseau moderne.
+   bon-1 economie+1 | g-1 c+1 d+3 e-1
+   > Les antennes s’installent.
+
+=== quo-071 | quotidien | Des trottoirs encombrés de panneaux
+Poteaux, panneaux et bornes encombrent les trottoirs. Les poussettes et fauteuils ne passent plus.
+A) Grand désencombrement des trottoirs :: Libérer l’espace.
+   bud-6 bon+1 transports+1 | g+1 c+3 d+2 e+1
+   > Des milliers d’objets inutiles sont retirés.
+B) Regrouper les panneaux sur un même poteau :: Simple.
+   bud-2 bon+1 | g0 c+3 d+2 e+1
+   > Les panneaux sont regroupés.
+C) Rien :: Coût.
+   bon-1 | g0 c0 d+1 e0
+   > Les trottoirs restent encombrés.
+
+=== quo-072 | quotidien | Élargir les trottoirs trop étroits
+Dans certaines rues, le trottoir mesure moins d’un mètre. Les piétons marchent sur la chaussée.
+A) Élargir en supprimant du stationnement :: Piétons d’abord.
+   bud-12 bon+1 securite+1 pop-1 | g+1 c+2 d-2 e+3
+   > Les trottoirs sont élargis.
+B) Rues à sens unique pour gagner de la place :: Compromis.
+   bud-6 securite+1 | g+1 c+3 d+1 e+2
+   > Des rues passent en sens unique.
+C) Rien :: Stationnement.
+   securite-1 | g-1 c0 d+3 e-1
+   > Rien ne change.
+
+=== quo-073 | quotidien | Les vendeurs de muguet du 1er Mai
+Le 1er Mai, des centaines de vendeurs de muguet envahissent les trottoirs.
+A) Tolérer comme le veut la tradition :: Tradition.
+   bon+1 | g+1 c+2 d0 e0
+   > Le muguet se vend partout.
+B) Emplacements réservés :: Encadrer.
+   bud-1 bon+1 | g0 c+3 d+2 e0
+   > Les vendeurs ont des emplacements.
+C) Interdire la vente devant les fleuristes :: Protéger les commerces.
+   bon-1 economie+1 | g-1 c+1 d+2 e0
+   > Les vendeurs sont éloignés des boutiques.
+
+=== quo-074 | quotidien | Des tables d’échecs dans les parcs
+Des joueurs d’échecs et de cartes demandent des tables dans les parcs.
+A) Installer cent tables de jeux :: Convivialité.
+   bud-2 bon+2 | g+1 c+2 d+1 e+1
+   > Les parcs accueillent des tables de jeux.
+B) Quelques tables tests :: Tester.
+   bud-1 bon+1 | g+1 c+3 d+1 e+1
+   > Dix tables sont installées.
+C) Rien :: Bancs suffisants.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-075 | quotidien | Les barbecues sur les balcons
+Des barbecues au charbon sur les balcons enfument les voisins et créent des risques d’incendie.
+A) Interdire les barbecues au charbon :: Sécurité.
+   securite+1 bon-1 | g0 c+2 d+2 e+1
+   > Seuls les barbecues électriques sont autorisés.
+B) Conseils et prévention :: Doux.
+   bud-1 securite+1 | g+1 c+3 d+1 e0
+   > Des conseils sont diffusés.
+C) Rien :: Liberté.
+   securite-1 bon+1 | g0 c0 d+2 e-1
+   > Les barbecues continuent.
+
+=== quo-076 | quotidien | Six semaines pour garer un camion de déménagement
+Il faut demander six semaines à l’avance l’autorisation de garer un camion de déménagement.
+A) Autorisation en ligne en 48 h :: Simplifier.
+   bud-2 services+1 bon+1 | g+1 c+3 d+2 e0
+   > Les autorisations sont délivrées en deux jours.
+B) Emplacements de déménagement réservés par rue :: Organiser.
+   bud-2 transports+1 | g0 c+3 d+2 e0
+   > Des places sont dédiées aux déménagements.
+C) Rien :: Procédure actuelle.
+   services-1 | g0 c0 d+1 e0
+   > Les délais restent longs.
+
+=== quo-077 | quotidien | Les chantiers de nuit dans le métro
+Les travaux de nuit sur les voies du métro réveillent les riverains des lignes aériennes.
+? distinct
+A) Indemniser et fournir des bouchons et des nuits d’hôtel :: Compenser.
+   bud-3 bon+1 | g+2 c+2 d+1 e0
+   > Les riverains les plus touchés sont relogés quelques nuits.
+B) Travaux de jour avec fermeture de la ligne :: Calme la nuit.
+   transports-2 bon+1 | g0 c+2 d0 e+1
+   > La ligne ferme quelques week-ends.
+C) Rien :: Travaux nécessaires.
+   bon-1 | g0 c+1 d+1 e0
+   > Les nuits restent bruyantes.
+
+=== quo-078 | quotidien | Des panneaux d’expression libre
+Les associations n’ont plus de panneaux pour afficher leurs événements.
+A) Installer des panneaux d’affichage libre dans chaque quartier :: Vie associative.
+   bud-2 bon+1 | g+2 c+2 d+1 e+1
+   > Les associations affichent librement.
+B) Panneaux numériques gérés par la mairie :: Moderne.
+   bud-5 bon+1 | g0 c+3 d+1 e0
+   > Des écrans diffusent les événements.
+C) Rien :: Réseaux sociaux.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-079 | quotidien | Un serpent échappé dans un immeuble
+Un python échappé d’un appartement terrorise les habitants d’un immeuble.
+A) Réglementer la détention d’animaux exotiques :: Prévenir.
+   securite+1 | g+1 c+2 d+1 e+2
+   > Les animaux dangereux doivent être déclarés.
+B) Créer une équipe de capture d’animaux exotiques :: Réagir.
+   bud-1 securite+1 | g0 c+3 d+2 e0
+   > Les pompiers sont formés.
+C) Rien :: Fait divers.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-080 | quotidien | Des bornes d’appel d’urgence dans les parcs
+Les promeneurs âgés ou seuls ne peuvent pas appeler à l’aide dans les grands parcs.
+A) Installer des bornes d’appel :: Sécurité.
+   bud-4 securite+1 | g+1 c+3 d+2 e0
+   > Des bornes relient les promeneurs aux secours.
+B) Panneaux avec numéros et points de repère :: Simple.
+   bud-1 securite+1 | g0 c+3 d+1 e0
+   > Des repères numérotés aident les secours.
+C) Rien :: Téléphones portables.
+   securite-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-081 | quotidien | Changer son bébé en ville
+Les parents ne trouvent pas de table à langer dans les lieux publics.
+A) Tables à langer dans tous les bâtiments publics :: Accueil des familles.
+   bud-2 bon+1 services+1 | g+2 c+2 d+1 e+1
+   > Les bâtiments publics sont équipés.
+B) Label pour les commerces équipés :: Inciter.
+   bud-1 bon+1 | g+1 c+3 d+2 e0
+   > Un label signale les commerces accueillants.
+C) Rien :: Pas prioritaire.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-082 | quotidien | Le recyclage des capsules de café
+Des millions de capsules de café en aluminium partent à la poubelle.
+A) Points de collecte dans les mairies :: Recycler.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les capsules sont collectées.
+B) Exiger que les marques les reprennent en magasin :: Responsabiliser.
+   ecologie+1 | g+1 c+2 d+1 e+3
+   > Les magasins reprennent les capsules.
+C) Rien :: Tri existant.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Les capsules finissent incinérées.
+
+=== quo-083 | quotidien | Les seniors déjeunent à la cantine
+Les seniors isolés pourraient déjeuner dans les cantines scolaires avec les enfants.
+A) Ouvrir les cantines aux seniors :: Lien entre générations.
+   rec-0.1x60 bon+2 services+1 | g+2 c+2 d+1 e+1
+   > Des seniors déjeunent avec les écoliers.
+B) Repas seniors dans les restaurants administratifs :: Alternative.
+   rec-0.05x60 bon+1 | g+1 c+3 d+1 e0
+   > Les seniors mangent dans les restaurants municipaux.
+C) Rien :: Sécurité des écoles.
+   bon-1 | g0 c0 d+2 e0
+   > Rien ne change.
+
+=== quo-084 | quotidien | Des cafés pour les jeunes parents
+Les jeunes parents isolés cherchent des lieux où venir avec leur bébé.
+A) Ouvrir des cafés-poussettes dans les centres sociaux :: Rompre l’isolement.
+   bud-3 bon+1 services+1 | g+2 c+2 d+1 e+1
+   > Des cafés-poussettes ouvrent.
+B) Aider les cafés privés à s’équiper :: Incitation.
+   bud-2 bon+1 economie+1 | g0 c+3 d+2 e0
+   > Des cafés installent des espaces bébés.
+C) Rien :: Initiative privée.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-085 | quotidien | Les cimetières ferment trop tôt
+Les cimetières ferment à 17 h l’hiver. Les actifs ne peuvent pas se recueillir en semaine.
+A) Ouvrir jusqu’à 20 h :: Accès.
+   rec-0.1x60 bon+1 | g+1 c+2 d+1 e0
+   > Les cimetières restent ouverts plus tard.
+B) Nocturne un soir par semaine :: Compromis.
+   rec-0.05x60 bon+1 | g+1 c+3 d+1 e0
+   > Les cimetières ouvrent tard le jeudi.
+C) Rien :: Sécurité.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-086 | quotidien | Des plans en relief pour les aveugles
+Les personnes aveugles ne peuvent pas se repérer dans les gares et les places.
+A) Plans tactiles et bandes de guidage :: Accessibilité.
+   bud-5 services+1 bon+1 | g+2 c+3 d+1 e+1
+   > Des plans en relief sont installés.
+B) Application de guidage sonore :: Numérique.
+   bud-2 services+1 | g+1 c+3 d+1 e+1
+   > Une application guide les malvoyants.
+C) Rien :: Pas prioritaire.
+   pop-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-087 | quotidien | Les chiens dans le métro
+Les grands chiens sont interdits dans le métro sauf dans un sac. Leurs maîtres demandent un assouplissement.
+A) Autoriser les chiens en laisse avec muselière :: Assouplir.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les chiens voyagent en laisse.
+   ~25 pop-1 > Des voyageurs se plaignent.
+B) Autoriser hors heures de pointe :: Compromis.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Les chiens sont admis en journée.
+C) Garder l’interdiction :: Confort des voyageurs.
+   bon-1 | g0 c+1 d+2 e0
+   > Rien ne change.
+
+=== quo-088 | quotidien | Les boîtes à clés sur les grilles
+Des boîtes à clés pour locations touristiques sont accrochées aux grilles et aux poteaux.
+A) Les retirer systématiquement :: Espace public.
+   bud-1 logement+1 | g+1 c+2 d+1 e+1
+   > Les boîtes à clés sont arrachées.
+B) Les interdire sur le domaine public :: Règle.
+   logement+1 | g+1 c+3 d+1 e0
+   > Un arrêté les interdit.
+C) Rien :: Pas de nuisance réelle.
+   bon-1 | g-1 c0 d+2 e0
+   > Les boîtes restent.
+
+=== quo-089 | quotidien | Le linge aux fenêtres
+Un règlement ancien interdit d’étendre le linge aux fenêtres côté rue. Des habitants veulent le supprimer.
+A) Autoriser le séchage aux fenêtres :: Écologique.
+   ecologie+1 bon+1 | g+1 c+2 d-1 e+3
+   > Le linge sèche aux fenêtres.
+   ~25 pop-1 > Des riverains trouvent les façades défigurées.
+B) Autoriser côté cour seulement :: Compromis.
+   ecologie+1 | g0 c+3 d+1 e+1
+   > Le linge peut sécher côté cour.
+C) Garder l’interdiction :: Esthétique.
+   bon-1 | g0 c0 d+2 e-1
+   > Rien ne change.
+
+=== quo-090 | quotidien | Des cafés suspendus
+Des cafés proposent aux clients de payer un café pour une personne dans le besoin.
+A) Label et promotion des cafés suspendus :: Solidarité.
+   bud-1 bon+1 achat+1 | g+2 c+2 d+1 e+1
+   > Des centaines de cafés participent.
+B) La Ville finance aussi des repas suspendus :: Aller plus loin.
+   rec-0.1x60 achat+1 bon+1 | g+3 c+2 d0 e+1
+   > Des repas sont offerts aux personnes démunies.
+C) Rien :: Initiative privée.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-091 | quotidien | Des écrans géants pour la Coupe du monde
+Les fans de football demandent des écrans géants dans les parcs pour les matchs.
+A) Fan zones dans plusieurs parcs :: Fête populaire.
+   bud-5 bon+2 securite-1 | g+1 c+2 d+1 e0
+   > Des milliers de supporters regardent les matchs ensemble.
+B) Une seule fan zone sécurisée :: Prudence.
+   bud-3 bon+1 | g0 c+3 d+2 e0
+   > Une fan zone ouvre au Champ-de-Mars.
+C) Rien :: Sécurité.
+   bon-1 | g0 c0 d+1 e0
+   > Les supporters regardent dans les bars.
+
+=== quo-092 | quotidien | L’heure de fermeture des bars
+Les bars ferment à 2 h. Les noctambules veulent 5 h, les riverains veulent minuit.
+A) Fermeture à 5 h dans des quartiers festifs :: Vie nocturne.
+   economie+1 bon-1 | g0 c+1 d+2 e0
+   > Des quartiers deviennent zones de nuit.
+B) Garder 2 h :: Statu quo.
+   bon+1 | g0 c+2 d+1 e0
+   > Rien ne change.
+C) Fermeture à minuit en semaine :: Calme.
+   bon+1 economie-1 | g0 c+1 d0 e+1
+   > Les bars ferment plus tôt en semaine.
+
+=== quo-093 | quotidien | Les croix de pharmacie clignotent toute la nuit
+Les enseignes lumineuses des pharmacies clignotent toute la nuit sous les fenêtres.
+A) Éteindre les enseignes la nuit sauf pharmacie de garde :: Sobriété.
+   ecologie+1 bon+1 | g+1 c+3 d+1 e+2
+   > Seules les pharmacies de garde restent allumées.
+B) Baisser l’intensité :: Compromis.
+   bon+1 | g0 c+3 d+1 e+1
+   > Les croix brillent moins.
+C) Rien :: Repère utile.
+   bon-1 | g0 c0 d+2 e-1
+   > Rien ne change.
+
+=== quo-094 | quotidien | L’eau du robinet a mauvaise réputation
+Beaucoup de Parisiens achètent de l’eau en bouteille en pensant que l’eau du robinet est mauvaise.
+A) Campagne et carafes offertes :: Changer les habitudes.
+   bud-2 ecologie+2 achat+1 | g+1 c+3 d+1 e+3
+   > Des milliers de carafes sont distribuées.
+B) Publier la qualité de l’eau rue par rue :: Transparence.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les analyses sont publiées.
+C) Rien :: Choix individuel.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== quo-095 | quotidien | Des nids de frelons asiatiques
+Des nids de frelons asiatiques apparaissent dans les arbres des squares.
+A) Service gratuit de destruction des nids :: Protéger.
+   bud-2 securite+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les nids sont détruits.
+B) Pièges sélectifs :: Prévention.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Des pièges sont posés au printemps.
+C) Laisser les particuliers gérer :: Privé.
+   securite-1 | g0 c0 d+2 e-1
+   > Les nids prolifèrent.
+
+=== quo-096 | quotidien | Des bancs chauffants l’hiver
+Une entreprise propose des bancs chauffés à l’énergie solaire pour les arrêts de bus.
+A) En installer dans les arrêts les plus fréquentés :: Confort.
+   bud-4 bon+1 | g+1 c+2 d+1 e+1
+   > Des bancs chauffants apparaissent.
+B) Un test dans un arrondissement :: Tester.
+   bud-1 bon+1 | g0 c+3 d+1 e+1
+   > Dix bancs sont installés.
+C) Refuser :: Gadget.
+   bon-1 | g0 c+1 d+1 e+1
+   > Le projet est rejeté.
+
+=== quo-097 | quotidien | Des abris à poussettes devant les écoles
+Les parents ne savent pas où laisser leur poussette en déposant leurs enfants.
+A) Abris sécurisés devant les écoles :: Pratique.
+   bud-3 bon+1 | g+1 c+3 d+1 e+1
+   > Des abris à poussettes sont installés.
+B) Autoriser les poussettes dans les cours :: Simple.
+   bon+1 | g+1 c+2 d+1 e0
+   > Les poussettes peuvent entrer dans l’école.
+C) Rien :: Pas prioritaire.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-098 | quotidien | Des prises pour recharger son téléphone
+Des passants à court de batterie ne trouvent nulle part où recharger leur téléphone.
+A) Bornes de recharge solaires dans les parcs :: Service.
+   bud-3 bon+1 | g+1 c+3 d+1 e+2
+   > Des bornes solaires sont installées.
+B) Prises dans les mairies et bibliothèques :: Économique.
+   bud-1 services+1 | g+1 c+3 d+1 e+1
+   > Les bâtiments publics proposent des prises.
+C) Rien :: Pas prioritaire.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-099 | quotidien | Des abris de pique-nique dans les parcs
+Quand il pleut, les familles n’ont aucun abri dans les parcs.
+A) Kiosques couverts avec tables :: Convivialité.
+   bud-6 bon+2 | g+1 c+2 d+1 e+1
+   > Des abris accueillent les pique-niques.
+B) Prêter des tentes pour les fêtes :: Souple.
+   bud-1 bon+1 | g+1 c+3 d+1 e0
+   > Les associations empruntent des tentes.
+C) Rien :: Coût.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-100 | quotidien | Les cours de récréation dérangent les voisins
+Des voisins portent plainte contre les cris des enfants dans une cour d’école.
+A) Défendre le droit des enfants à jouer :: Vie de quartier.
+   bon+1 pop+1 | g+1 c+2 d+1 e+1
+   > Le maire soutient l’école.
+B) Panneaux acoustiques dans la cour :: Compromis.
+   bud-4 bon+1 | g0 c+3 d+2 e0
+   > Des panneaux absorbent le bruit.
+C) Réduire les récréations dans la cour :: Apaiser.
+   bon-1 services-1 | g-1 c0 d+1 e0
+   > Les récréations sont raccourcies.
+
+=== quo-101 | quotidien | Des coupures d’électricité annoncées trop tard
+Des habitants découvrent des coupures pour travaux la veille seulement.
+A) Alertes par SMS une semaine avant :: Prévenir.
+   bud-1 services+1 bon+1 | g+1 c+3 d+2 e0
+   > Les habitants sont prévenus à temps.
+B) Exiger des travaux sans coupure pour les malades :: Protéger.
+   services+1 | g+2 c+2 d0 e0
+   > Les personnes sous assistance médicale sont protégées.
+C) Rien :: Compétence du distributeur.
+   bon-1 | g0 c+1 d+1 e0
+   > Rien ne change.
+
+=== quo-102 | quotidien | Des pique-niques géants organisés en ligne
+Des pique-niques sauvages de plusieurs milliers de personnes sont organisés sur les réseaux sociaux.
+A) Les encadrer avec sécurité et poubelles :: Accompagner.
+   bud-3 bon+1 proprete+1 | g+1 c+3 d+1 e+1
+   > Les rassemblements se déroulent bien.
+B) Les interdire :: Prudence.
+   securite+1 bon-1 | g-1 c+1 d+3 e0
+   > Les rassemblements non déclarés sont dispersés.
+C) Laisser faire :: Liberté.
+   proprete-1 bon+1 | g+1 c0 d-1 e0
+   > Les pelouses sont saccagées.
+
+=== quo-103 | quotidien | Des rues sombres le matin en hiver
+L’éclairage public s’éteint avant le lever du jour en hiver. Les écoliers marchent dans le noir.
+A) Adapter l’allumage au lever du soleil :: Sécurité.
+   rec-0.05x60 securite+1 | g+1 c+3 d+1 e0
+   > Les rues restent éclairées jusqu’au jour.
+B) Éclairer seulement les trajets vers les écoles :: Ciblé.
+   rec-0.02x60 securite+1 | g+1 c+3 d+1 e+1
+   > Les rues des écoles sont éclairées.
+C) Rien :: Économie d’énergie.
+   securite-1 ecologie+1 | g0 c0 d0 e+2
+   > Les rues restent sombres.
+
+=== quo-104 | quotidien | Les chiens interdits dans les parcs
+Les chiens sont interdits dans la plupart des parcs parisiens. Leurs maîtres réclament un accès.
+A) Ouvrir tous les parcs aux chiens en laisse :: Accès.
+   bon+1 proprete-1 | g+1 c+2 d+1 e0
+   > Les chiens entrent dans les parcs.
+B) Ouvrir une partie des parcs :: Compromis.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Un parc sur deux s’ouvre aux chiens.
+C) Garder l’interdiction :: Propreté et enfants.
+   bon-1 | g0 c+1 d+2 e0
+   > Rien ne change.
+
+=== quo-105 | quotidien | La fin des téléphones fixes classiques
+Le réseau téléphonique en cuivre s’arrête. Des seniors risquent de perdre leur ligne fixe et leur téléalarme.
+A) Accompagner chaque senior dans le changement :: Aider.
+   rec-0.1x30 services+2 bon+1 | g+2 c+3 d+1 e+1
+   > Des agents installent les nouveaux équipements.
+B) Campagne d’information :: Informer.
+   bud-1 services+1 | g+1 c+3 d+1 e0
+   > Un courrier explique la démarche.
+C) Rien :: Compétence des opérateurs.
+   services-1 | g-1 c+1 d+1 e0
+   > Des seniors se retrouvent sans téléphone.
