@@ -1,0 +1,485 @@
+// Écologie, série 5
+=== ecol-146 | ecologie | Le golf du bois de Boulogne arrosé en pleine sécheresse
+Les arrosages du golf continuent alors que les habitants sont appelés à économiser l’eau.
+? distinct
+A) Suspendre l’arrosage :: Exemplarité.
+   ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les greens jaunissent, les Parisiens approuvent.
+B) Arroser à l’eau non potable seulement :: Compromis.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Le golf passe à l’eau brute.
+C) Laisser faire :: Concession privée.
+   ecologie-1 bon-1 | g-1 c+1 d+2 e0
+   > Les images des greens verts font scandale.
+
+=== ecol-147 | ecologie | Les terrains de foot en gazon synthétique
+Les billes de caoutchouc des terrains synthétiques partent dans les égouts.
+A) Remplacer par du gazon naturel :: Nature.
+   bud-3 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les terrains redeviennent verts.
+B) Des remplissages en liège :: Alternative.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les billes de plastique disparaissent.
+C) Rien :: Les clubs ont besoin de terrains.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les microplastiques continuent de partir à la Seine.
+
+=== ecol-148 | ecologie | Un castor dans la Seine
+Un castor a été aperçu sous un pont parisien, une première depuis des siècles.
+A) Protéger une berge pour lui :: Biodiversité.
+   bud-1 ecologie+1 bon+1 | g+2 c+2 d0 e+1
+   > Le castor s’installe sous une berge protégée.
+B) Communiquer largement :: Symbole.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Le castor devient une star des réseaux.
+C) Ne rien faire :: Nature.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Le castor disparaît.
+
+=== ecol-149 | ecologie | Le poison contre les rats tue les rapaces
+Des chouettes et faucons meurent après avoir mangé des rats empoisonnés.
+A) Remplacer le poison par des pièges :: Biodiversité.
+   bud-2 ecologie+1 proprete-1 | g+1 c+2 d+1 e+1
+   > Les rapaces reviennent.
+B) Réduire le poison dans les parcs :: Compromis.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Le poison reste en ville, pas dans les parcs.
+C) Garder le poison :: Efficacité.
+   ecologie-1 proprete+1 | g-1 c+1 d+2 e0
+   > Les rats reculent, les rapaces aussi.
+
+=== ecol-150 | ecologie | Des faucons pour chasser les pigeons
+Un fauconnier propose de faire voler des rapaces pour éloigner les pigeons des monuments.
+A) Embaucher des fauconniers :: Naturel.
+   bud-1 ecologie+1 proprete+1 | g+1 c+2 d+1 e+1
+   > Les pigeons fuient les monuments.
+B) Installer des nichoirs à faucons :: Durable.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Des faucons nichent sur les clochers.
+C) Rien :: Filets.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les pigeons restent.
+
+=== ecol-151 | ecologie | Le sel de déneigement tue les arbres
+Le sel répandu l’hiver brûle les racines des arbres d’alignement.
+A) Passer au sable et aux copeaux :: Protéger.
+   bud-1 ecologie+1 securite-1 | g+1 c+2 d+1 e+1
+   > Les arbres résistent mieux.
+B) Protéger les pieds d’arbres :: Compromis.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Le sel reste sur les trottoirs.
+C) Rien :: Sécurité des piétons.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Des arbres meurent au printemps.
+
+=== ecol-152 | ecologie | La collecte des piles et batteries
+Des piles et batteries finissent à la poubelle et provoquent des incendies.
+A) Des points de collecte dans tous les commerces :: Recycler.
+   bud-1 ecologie+1 securite+1 | g+1 c+2 d+1 e+1
+   > Les piles partent au recyclage.
+B) Une prime au retour :: Inciter.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les habitants rapportent leurs batteries.
+C) Rien :: Fabricants.
+   ecologie-1 securite-1 | g0 c+1 d+1 e0
+   > Un camion-benne prend feu.
+
+=== ecol-153 | ecologie | Deux arbres plantés pour un arbre abattu
+Les associations demandent que chaque arbre abattu soit remplacé deux fois.
+A) Adopter la règle :: Compenser.
+   bud-2 ecologie+1 | g+2 c+2 d0 e+1
+   > Les plantations doublent.
+B) Un pour un, mais plus grands :: Qualité.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Des arbres adultes remplacent les abattus.
+C) Rien :: Manque de place.
+   ecologie-1 | g0 c+1 d+1 e0
+   > La canopée diminue.
+
+=== ecol-154 | ecologie | Les déblais transformés en terre fertile
+Les chantiers produisent des millions de tonnes de terre envoyées en décharge.
+A) Une plateforme de fabrication de terre :: Économie circulaire.
+   bud-3 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les déblais nourrissent les parcs.
+B) Imposer le réemploi aux chantiers publics :: Règle.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Les chantiers publics montrent l’exemple.
+C) Rien :: Coût.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les camions partent en décharge.
+
+=== ecol-155 | ecologie | Une mairie zéro déchet
+Une mairie d’arrondissement veut supprimer toutes ses poubelles non triées.
+A) Généraliser à toutes les mairies :: Exemplarité.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les mairies réduisent leurs déchets de moitié.
+B) Laisser l’expérience se faire :: Tester.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > L’expérience inspire d’autres services.
+C) Rien :: Gadget.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les poubelles restent.
+
+=== ecol-156 | ecologie | Les nouvelles tours bloquent le vent frais
+Les études montrent que des projets de tours empêcheraient la ventilation des quartiers.
+A) Imposer une étude de ventilation :: Anticiper.
+   ecologie+1 logement-1 | g+1 c+2 d+1 e+1
+   > Les projets sont redessinés.
+B) Limiter la hauteur dans les couloirs de vent :: Règle.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Les couloirs de vent sont protégés.
+C) Rien :: Construire.
+   logement+1 ecologie-1 | g-1 c+1 d+2 e0
+   > Les quartiers étouffent l’été.
+
+=== ecol-157 | ecologie | Les bureaux éclairés toute la nuit
+Des tours de bureaux vides restent allumées jusqu’au matin.
+? distinct
+A) Imposer l’extinction après 22 heures :: Sobriété.
+   ecologie+1 economie-1 | g+1 c+2 d+1 e+1
+   > Les bureaux s’éteignent.
+B) Une campagne avec les entreprises :: Convaincre.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > Des entreprises s’engagent.
+C) Rien :: Liberté.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les tours brillent toute la nuit.
+
+=== ecol-158 | ecologie | Les patinoires éphémères énergivores
+La patinoire de l’Hôtel de Ville consomme autant qu’un quartier.
+A) Une patinoire synthétique sans glace :: Sobriété.
+   bud-1 ecologie+1 bon-1 | g+1 c+2 d+1 e+1
+   > Les patineurs glissent sur du plastique.
+B) Réduire la durée d’ouverture :: Compromis.
+   ecologie+1 | g0 c+2 d+1 e+1
+   > La patinoire ouvre deux semaines.
+C) Garder la patinoire :: Tradition.
+   ecologie-1 bon+1 | g-1 c+1 d+2 e0
+   > Les familles patinent.
+
+=== ecol-159 | ecologie | Une recyclerie des décors de théâtre
+Les théâtres jettent leurs décors après chaque spectacle.
+A) Créer une recyclerie municipale :: Réemploi.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les décors servent à d’autres compagnies.
+B) Soutenir une association :: Accompagner.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > L’association récupère les décors.
+C) Rien :: Théâtres.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les décors finissent en benne.
+
+=== ecol-160 | ecologie | Les nids détruits lors des ravalements
+Des nids d’hirondelles et de martinets sont détruits pendant les travaux.
+A) Interdire les travaux en période de nidification :: Protéger.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Les chantiers attendent l’automne.
+B) Des nichoirs de remplacement obligatoires :: Compenser.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Les oiseaux retrouvent un abri.
+C) Rien :: Propriétaires.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les martinets disparaissent.
+
+=== ecol-161 | ecologie | Les bouches d’incendie ouvertes l’été
+Des jeunes ouvrent les bouches d’incendie pour se rafraîchir, gaspillant des milliers de litres.
+A) Des brumisateurs et jeux d’eau en échange :: Alternative.
+   bud-2 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les jeunes se rafraîchissent autrement.
+B) Des bouchons de sécurité :: Fermeté.
+   bud-1 ecologie+1 | g0 c+2 d+2 e0
+   > Les bouches ne s’ouvrent plus.
+C) Rien :: Canicule.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les pompiers manquent d’eau.
+
+=== ecol-162 | ecologie | Des haies plutôt que des grilles
+Des écoles et squares sont entourés de grilles métalliques.
+A) Planter des haies partout :: Verdir.
+   bud-2 ecologie+1 | g+2 c+2 d0 e+1
+   > Les haies accueillent les oiseaux.
+B) Des haies le long des grilles :: Compromis.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les grilles disparaissent sous la verdure.
+C) Rien :: Sécurité.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les grilles restent.
+
+=== ecol-163 | ecologie | Évacuer les déchets par bateau
+Les camions-bennes traversent Paris pour rejoindre les incinérateurs.
+A) Des barges sur la Seine :: Fluvial.
+   bud-3 ecologie+1 transports+1 | g+1 c+2 d+1 e+1
+   > Les barges remplacent des centaines de camions.
+B) Un test sur un arrondissement :: Prudence.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Une barge fait la navette.
+C) Rien :: Camions.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les camions continuent.
+
+=== ecol-164 | ecologie | Des produits d’entretien écologiques dans les écoles
+Les produits chimiques utilisés pour nettoyer les classes irritent les enfants.
+A) Passer aux produits écologiques :: Santé.
+   bud-1 ecologie+1 services+1 | g+1 c+2 d+1 e+1
+   > Les classes sentent moins le chlore.
+B) Nettoyer à la vapeur :: Innovation.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les machines à vapeur arrivent.
+C) Rien :: Hygiène.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les enfants toussent.
+
+=== ecol-165 | ecologie | Un mur antibruit végétal le long du périphérique
+Les riverains du périphérique vivent dans le vacarme permanent.
+A) Un mur végétal sur dix kilomètres :: Protéger.
+   bud-4 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Le bruit baisse de moitié.
+B) Seulement devant les écoles :: Cibler.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les écoles respirent.
+C) Rien :: État.
+   bon-1 | g0 c+1 d+1 e0
+   > Le vacarme continue.
+
+=== ecol-166 | ecologie | La cueillette sauvage dans les bois
+Des cueilleurs ramassent champignons et ail des ours par sacs entiers.
+? distinct
+A) Interdire la cueillette :: Protéger.
+   ecologie+1 bon-1 | g0 c+2 d+2 e0
+   > Les sous-bois se reconstituent.
+B) Limiter les quantités :: Encadrer.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Les cueilleurs se modèrent.
+C) Rien :: Tradition.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les sous-bois s’appauvrissent.
+
+=== ecol-167 | ecologie | Nourrir les canards au pain
+Le pain jeté dans les lacs pollue l’eau et rend les oiseaux malades.
+A) Interdire et informer :: Protéger.
+   ecologie+1 bon-1 | g0 c+2 d+2 e0
+   > Les panneaux expliquent les dangers.
+B) Vendre de la nourriture adaptée :: Alternative.
+   rec+0.01x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les enfants nourrissent les canards sans danger.
+C) Rien :: Plaisir des enfants.
+   ecologie-1 bon+1 | g0 c+1 d+1 e0
+   > Les lacs verdissent.
+
+=== ecol-168 | ecologie | Chauffer les bureaux municipaux à 19 degrés
+Les bureaux de la Ville sont chauffés à 23 degrés.
+A) Imposer 19 degrés :: Sobriété.
+   rec+0.05x60 ecologie+1 coh-1 | g+1 c+2 d+1 e+1
+   > Les agents mettent un pull.
+B) Baisser à 20 degrés :: Compromis.
+   rec+0.03x60 ecologie+1 | g0 c+2 d+1 e+1
+   > Les factures baissent.
+C) Rien :: Confort.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les factures restent élevées.
+
+=== ecol-169 | ecologie | Le plastique dans les crèches
+Biberons, jouets et tapis en plastique exposent les bébés à des perturbateurs endocriniens.
+A) Remplacer tout le plastique :: Santé.
+   bud-2 ecologie+1 services+1 | g+1 c+2 d+1 e+1
+   > Le verre et le bois remplacent le plastique.
+B) Remplacer progressivement :: Prudence.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Le plastique disparaît en trois ans.
+C) Rien :: Normes respectées.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les parents s’inquiètent.
+
+=== ecol-170 | ecologie | Le crématorium pollue
+Les fumées du crématorium inquiètent les riverains.
+A) Des filtres de dernière génération :: Santé.
+   bud-2 ecologie+1 | g0 c+2 d+2 e+1
+   > Les rejets diminuent.
+B) Développer d’autres modes funéraires :: Innovation.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > De nouvelles options sont proposées.
+C) Rien :: Normes respectées.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les riverains protestent.
+
+=== ecol-171 | ecologie | Brancher les bateaux à quai
+Les bateaux à quai font tourner leurs moteurs pour s’éclairer.
+A) Des bornes électriques sur tous les quais :: Électrifier.
+   bud-3 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les moteurs s’arrêtent.
+B) Interdire les moteurs à quai :: Fermeté.
+   ecologie+1 economie-1 | g+1 c+2 d+2 e0
+   > Les bateaux s’équipent de batteries.
+C) Rien :: Coût.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les fumées continuent.
+
+=== ecol-172 | ecologie | Des radeaux végétalisés sur les canaux
+Des îlots flottants plantés filtreraient l’eau et abriteraient les oiseaux.
+A) En installer sur tous les canaux :: Biodiversité.
+   bud-2 ecologie+1 | g+2 c+2 d0 e+1
+   > Les canaux verdissent.
+B) Un test sur le bassin de la Villette :: Tester.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les canards adoptent les radeaux.
+C) Rien :: Navigation.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les canaux restent minéraux.
+
+=== ecol-173 | ecologie | Laver sa voiture dans la rue
+Des habitants lavent leur voiture au savon dans la rue, le savon part à la Seine.
+A) Interdire et verbaliser :: Fermeté.
+   ecologie+1 bon-1 | g0 c+2 d+2 e0
+   > Les lavages sauvages disparaissent.
+B) Informer sur les stations de lavage :: Pédagogie.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Les habitants vont en station.
+C) Rien :: Tolérance.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Le savon coule dans les caniveaux.
+
+=== ecol-174 | ecologie | Les habitants recensent la biodiversité
+Des Parisiens veulent compter oiseaux et papillons pour aider les scientifiques.
+A) Une grande opération annuelle :: Participer.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des milliers d’observations remontent.
+B) Une application ouverte toute l’année :: Numérique.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les données s’accumulent.
+C) Rien :: Scientifiques.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les habitants restent spectateurs.
+
+=== ecol-175 | ecologie | Ouvrir les églises comme refuges frais
+Les églises restent fraîches pendant les canicules.
+A) Les ouvrir comme refuges climatiques :: Protéger.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les seniors trouvent la fraîcheur.
+B) Seulement les plus grandes :: Cibler.
+   bon+1 | g0 c+2 d+1 e+1
+   > Quelques églises accueillent du public.
+C) Rien :: Laïcité.
+   bon-1 | g0 c+1 d+1 e0
+   > Les seniors souffrent de la chaleur.
+
+=== ecol-176 | ecologie | Des voiles d’ombrage au-dessus des rues commerçantes
+Les rues étroites deviennent des fours l’été.
+A) Tendre des voiles entre les façades :: Rafraîchir.
+   bud-2 ecologie+1 economie+1 | g+1 c+2 d+1 e+1
+   > Les rues deviennent des allées ombragées.
+B) Seulement dans les rues piétonnes :: Cibler.
+   bud-1 ecologie+1 | g0 c+2 d+1 e+1
+   > Les rues piétonnes se couvrent.
+C) Rien :: Patrimoine.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les commerces ferment l’après-midi.
+
+=== ecol-177 | ecologie | Interdire la tourbe dans les jardineries
+La tourbe vendue pour les plantes détruit des marais à l’étranger.
+A) Interdire la vente de tourbe :: Protéger.
+   ecologie+1 economie-1 | g+1 c+2 d+1 e+1
+   > Les jardineries vendent du compost.
+B) Distribuer du compost municipal :: Alternative.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Le compost parisien remplace la tourbe.
+C) Rien :: Commerce.
+   ecologie-1 | g0 c+1 d+1 e0
+   > La tourbe continue d’être vendue.
+
+=== ecol-178 | ecologie | Recycler l’huile de friture en carburant
+Les restaurants jettent des tonnes d’huile usagée.
+? distinct
+A) Une collecte pour faire rouler les bennes :: Économie circulaire.
+   bud-2 ecologie+1 proprete+1 | g+1 c+2 d+1 e+1
+   > Les bennes roulent à l’huile de frites.
+B) Imposer aux restaurants un contrat de collecte :: Règle.
+   ecologie+1 | g0 c+2 d+2 e+1
+   > Les restaurants s’organisent.
+C) Rien :: Coût.
+   ecologie-1 | g0 c+1 d+1 e0
+   > L’huile finit dans les égouts.
+
+=== ecol-179 | ecologie | Les chiens sans laisse dérangent les oiseaux nicheurs
+Au printemps, des chiens courent dans les zones de nidification des bois.
+A) Laisse obligatoire au printemps :: Protéger.
+   ecologie+1 bon-1 | g0 c+2 d+2 e0
+   > Les oiseaux nichent en paix.
+B) Des zones de liberté pour les chiens :: Partager.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les chiens courent ailleurs.
+C) Rien :: Liberté.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les nids sont détruits.
+
+=== ecol-180 | ecologie | Fermer le bois de Boulogne aux voitures
+Des routes traversent le bois et le coupent en morceaux.
+? distinct
+A) Fermer les routes du bois :: Nature.
+   ecologie+1 transports-1 | g+2 c+2 d0 e+1
+   > Le bois retrouve son calme.
+B) Fermer le week-end :: Compromis.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Les familles profitent du bois le dimanche.
+C) Rien :: Circulation.
+   transports+1 ecologie-1 | g-1 c+1 d+2 e0
+   > Les voitures continuent.
+
+=== ecol-181 | ecologie | Les jeunes arbres meurent faute d’arrosage
+Un tiers des arbres plantés meurent dans les deux ans.
+A) Des sacs d’arrosage goutte-à-goutte :: Protéger.
+   bud-1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les jeunes arbres survivent.
+B) Faire adopter les arbres par les habitants :: Participer.
+   ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les habitants arrosent leur arbre.
+C) Rien :: Remplacer.
+   bud-1 ecologie-1 | g0 c+1 d+1 e0
+   > Les arbres morts sont remplacés.
+
+=== ecol-182 | ecologie | Les fleurs coupées importées par avion
+Les fleurs des cérémonies municipales viennent du Kenya par avion.
+A) Des fleurs locales et de saison :: Local.
+   bud-1 ecologie+1 economie+1 | g+1 c+2 d+1 e+1
+   > Les horticulteurs franciliens fournissent.
+B) Des plantes en pot réutilisables :: Durable.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Les plantes servent plusieurs fois.
+C) Rien :: Esthétique.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les roses arrivent par avion.
+
+=== ecol-183 | ecologie | Le biogaz des égouts pour les bus
+Les boues des stations d’épuration pourraient produire du gaz pour les bus.
+A) Construire une unité de méthanisation :: Économie circulaire.
+   bud-4 ecologie+1 transports+1 | g+1 c+2 d+1 e+1
+   > Les bus roulent au biogaz.
+B) Vendre les boues à un industriel :: Recettes.
+   rec+0.02x60 ecologie+1 | g0 c+2 d+1 e+1
+   > Les boues sont valorisées.
+C) Rien :: Incinération.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les boues sont brûlées.
+
+=== ecol-184 | ecologie | Une coopérative citoyenne d’énergie solaire
+Des habitants veulent financer des panneaux solaires sur les écoles.
+A) Mettre les toits à disposition :: Participer.
+   ecologie+1 bon+1 | g+2 c+2 d0 e+1
+   > Les habitants deviennent producteurs d’énergie.
+B) Cofinancer la coopérative :: Soutenir.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > La coopérative grandit vite.
+C) Rien :: Ville seule.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Les toits restent nus.
+
+=== ecol-185 | ecologie | Faire classe dehors
+Des enseignants veulent faire cours dans les parcs une fois par semaine.
+A) Équiper des classes en plein air :: Nature.
+   bud-1 ecologie+1 services+1 | g+1 c+2 d+1 e+1
+   > Les enfants apprennent sous les arbres.
+B) Autoriser sans équiper :: Liberté.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Quelques classes sortent.
+C) Rien :: Sécurité.
+   bon-1 | g0 c+1 d+1 e0
+   > Les enfants restent en classe.

@@ -302,18 +302,17 @@ C) Rouvrir tout de suite :: Commerce.
    economie+1 securite-1 | g-1 c0 d+2 e0
    > Les pompiers critiquent la décision.
 
-=== cri-131 | crise | Une rave sauvage géante au bois de Vincennes
-Vingt mille personnes se rassemblent pour une fête illégale.
-A) Encadrer la fête avec secours et sécurité :: Réduire les risques.
-   bud-1 securite+1 bon-1 | g+1 c+2 d+1 e+1
-   > La fête se termine sans drame.
-B) Faire évacuer :: Ordre.
-   securite+1 bon-1 | g-1 c+1 d+2 e0
-   > Des heurts éclatent au petit matin.
-C) Laisser faire :: Liberté.
-   proprete-2 | g0 c0 d+1 e0
-   > Le bois est jonché de déchets.
-
+=== cri-131 | crise | Une ville jumelle frappée par un séisme
+Une ville amie est dévastée par un tremblement de terre, ses habitants appellent à l’aide.
+A) Envoyer pompiers et matériel :: Solidarité.
+   bud-2 pop+1 | g+1 c+2 d+1 e+1
+   > Les sauveteurs parisiens sont accueillis en héros.
+B) Organiser une grande collecte de dons :: Mobiliser.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les Parisiens donnent sans compter.
+C) Un message de soutien :: Prudence.
+   pop-1 | g0 c+1 d+1 e0
+   > Ta réaction est jugée tiède.
 === cri-132 | crise | Un vol spectaculaire au musée Carnavalet
 Des tableaux de grande valeur sont volés en pleine nuit.
 ? distinct
