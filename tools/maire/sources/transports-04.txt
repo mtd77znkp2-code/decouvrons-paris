@@ -1,0 +1,488 @@
+// Transports, série 4
+=== tra-106 | transports | Des vélos en libre-service pour enfants
+Les parents qui circulent à vélo ne peuvent pas emmener leurs enfants en vélo partagé.
+A) Ajouter des vélos enfants et des sièges bébé :: Familles.
+   bud-6 transports+1 bon+1 | g+1 c+3 d+1 e+3
+   > Des vélos enfants apparaissent dans les stations.
+B) Vélos-cargos partagés pour les familles :: Pratique.
+   bud-8 transports+1 ecologie+1 | g+1 c+2 d+1 e+3
+   > Des vélos-cargos sont disponibles.
+C) Rien :: Coût.
+   transports-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== tra-107 | transports | La fin des taxis diesel
+De nombreux taxis roulent encore au diesel.
+A) Prime pour passer à l’électrique :: Accompagner.
+   bud-8 ecologie+2 | g+1 c+3 d+2 e+3
+   > Les taxis s’électrifient.
+B) Interdire les taxis diesel dans deux ans :: Contrainte.
+   ecologie+2 economie-1 | g+1 c+1 d-2 e+4
+   > Les taxis ont deux ans pour changer.
+C) Rien :: Profession fragile.
+   ecologie-1 | g0 c0 d+2 e-2
+   > Les taxis diesel restent.
+
+=== tra-108 | transports | Les bus articulés dans les rues étroites
+Les bus articulés bloquent les rues étroites et accrochent les voitures garées.
+A) Bus plus courts et plus fréquents :: Adapter.
+   rec-0.2x60 transports+1 | g+1 c+3 d+1 e+1
+   > Des bus plus petits circulent.
+B) Supprimer le stationnement sur le parcours :: Libérer la rue.
+   transports+2 pop-1 | g+1 c+2 d-2 e+2
+   > Le stationnement disparaît sur le trajet.
+C) Rien :: Capacité.
+   transports-1 | g0 c0 d+1 e0
+   > Les blocages continuent.
+
+=== tra-109 | transports | Supprimer des arrêts de bus pour aller plus vite
+Les arrêts sont si proches que les bus avancent au pas. La RATP propose d’en supprimer un sur trois.
+A) Accepter :: Bus plus rapides.
+   transports+2 bon-1 | g0 c+3 d+2 e+1
+   > Les bus gagnent dix minutes par trajet.
+   ~30 pop-1 > Des seniors doivent marcher plus loin.
+B) Supprimer seulement les arrêts doublons :: Compromis.
+   transports+1 | g+1 c+3 d+1 e+1
+   > Quelques arrêts disparaissent.
+C) Refuser :: Proximité.
+   transports-1 | g+1 c0 d0 e0
+   > Les arrêts restent.
+
+=== tra-110 | transports | Les transports gratuits pour les plus de 65 ans
+Des associations de retraités demandent la gratuité totale des transports pour les seniors.
+A) Gratuité pour tous les seniors :: Générosité.
+   rec-0.6x60 achat+2 transports+1 | g+2 c0 d+1 e+1
+   > Les seniors voyagent gratuitement.
+B) Gratuité sous conditions de revenus :: Ciblé.
+   rec-0.2x60 achat+1 | g+3 c+2 d0 e+1
+   > Les seniors modestes voyagent gratuitement.
+C) Rien :: Coût.
+   achat-1 | g-1 c+1 d+2 e0
+   > Les tarifs restent.
+
+=== tra-111 | transports | Étendre les vélos partagés en banlieue
+Les communes voisines veulent les vélos en libre-service, mais elles ne peuvent pas payer.
+A) Cofinancer l’extension :: Mobilité métropolitaine.
+   bud-15 transports+2 ecologie+1 | g+2 c+2 d0 e+3
+   > Les vélos s’étendent dans la petite couronne.
+B) Laisser les communes payer seules :: Chacun son budget.
+   transports-1 | g-1 c+2 d+2 e0
+   > Peu de communes s’équipent.
+C) Extension aux communes limitrophes seulement :: Compromis.
+   bud-5 transports+1 | g+1 c+3 d+1 e+2
+   > Les communes voisines sont équipées.
+
+=== tra-112 | transports | Des vélos adaptés pour les personnes handicapées
+Les personnes handicapées n’ont pas accès aux vélos partagés.
+A) Tricycles et vélos adaptés en location :: Inclusion.
+   bud-4 transports+1 services+1 | g+2 c+3 d+1 e+2
+   > Des vélos adaptés sont proposés.
+B) Prêt gratuit par les associations :: Partenariat.
+   bud-2 services+1 | g+2 c+2 d+1 e+1
+   > Les associations prêtent des vélos.
+C) Rien :: Pas prioritaire.
+   pop-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== tra-113 | transports | Des pistes cyclables sur les ponts
+Les ponts sont les points dangereux des itinéraires cyclables.
+A) Une piste protégée sur chaque pont :: Continuité.
+   bud-15 transports+2 securite+1 | g+1 c+2 d0 e+3
+   > Les ponts sont équipés.
+B) Seulement les ponts les plus fréquentés :: Ciblé.
+   bud-6 transports+1 | g+1 c+3 d+1 e+2
+   > Cinq ponts sont équipés.
+C) Rien :: Voitures.
+   securite-1 | g-1 c0 d+3 e-2
+   > Les ponts restent dangereux.
+
+=== tra-114 | transports | Des ralentisseurs trop hauts
+Les ralentisseurs abîment les bus et les ambulances et secouent les passagers.
+A) Les remplacer par des coussins adaptés :: Confort.
+   bud-6 transports+1 | g0 c+3 d+2 e0
+   > Les bus passent sans secousse.
+B) Les supprimer et mettre des radars :: Alternative.
+   bud-4 transports+1 | g0 c+2 d+1 e0
+   > Des radars remplacent les ralentisseurs.
+C) Rien :: Sécurité des piétons.
+   transports-1 securite+1 | g0 c0 d0 e+1
+   > Rien ne change.
+
+=== tra-115 | transports | Les seniors n’ont pas le temps de traverser
+Les feux piétons passent au rouge avant que les seniors aient fini de traverser.
+A) Allonger tous les feux piétons :: Sécurité.
+   securite+2 transports-1 | g+1 c+2 d0 e+2
+   > Les piétons ont plus de temps.
+B) Boutons d’appel pour temps prolongé :: Ciblé.
+   bud-4 securite+1 | g+1 c+3 d+1 e+1
+   > Un bouton prolonge le feu.
+C) Rien :: Fluidité automobile.
+   securite-1 transports+1 | g-1 c0 d+3 e-1
+   > Rien ne change.
+
+=== tra-116 | transports | Un axe vélo express nord-sud
+Un grand axe cyclable sans interruption pourrait traverser Paris du nord au sud.
+A) Créer l’axe en supprimant une voie de voiture :: Ambition.
+   bud-20 transports+3 ecologie+2 pop-1 | g+1 c+1 d-2 e+4
+   > L’axe express est inauguré.
+B) Itinéraire par les petites rues :: Compromis.
+   bud-6 transports+1 | g+1 c+3 d+1 e+2
+   > Un itinéraire balisé est créé.
+C) Rien :: Les pistes existantes suffisent.
+   transports-1 | g-1 c0 d+2 e-2
+   > Rien ne change.
+
+=== tra-117 | transports | Le RER C fermé tout l’été
+Le RER C doit fermer deux mois pour travaux. Des milliers d’usagers sont concernés.
+A) Bus de substitution gratuits :: Compenser.
+   bud-5 transports+1 | g+1 c+2 d+1 e+1
+   > Des bus remplacent le RER.
+B) Vélos en libre-service gratuits pour les abonnés :: Alternative.
+   bud-3 transports+1 ecologie+1 | g+1 c+2 d0 e+3
+   > Les abonnés empruntent des vélos gratuitement.
+C) Rien :: Compétence de la SNCF.
+   transports-2 | g0 c+1 d+1 e0
+   > Les usagers se débrouillent.
+
+=== tra-118 | transports | Des arrêts de bus inaccessibles
+Les quais de certains arrêts sont trop bas pour que les fauteuils montent dans le bus.
+A) Rehausser tous les quais :: Accessibilité.
+   bud-15 transports+1 services+1 | g+2 c+3 d+1 e+1
+   > Les quais sont rehaussés.
+B) Rehausser les arrêts les plus utilisés :: Priorité.
+   bud-5 transports+1 | g+1 c+3 d+1 e+1
+   > Les grands arrêts sont adaptés.
+C) Rien :: Les bus ont des rampes.
+   pop-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== tra-119 | transports | Une fourrière pour trottinettes
+Des trottinettes en libre-service sont abandonnées en travers des trottoirs.
+A) Fourrière et facturation aux opérateurs :: Responsabiliser.
+   rec+0.05x60 proprete+1 transports+1 | g+1 c+3 d+2 e+1
+   > Les trottinettes mal garées sont enlevées.
+B) Zones de stationnement obligatoires :: Organiser.
+   bud-2 proprete+1 | g+1 c+3 d+1 e+1
+   > Les trottinettes doivent être garées dans des zones.
+C) Rien :: Les opérateurs gèrent.
+   proprete-1 | g0 c0 d+1 e0
+   > Le désordre continue.
+
+=== tra-120 | transports | Des scooters électriques en libre-service
+Un opérateur veut déployer des scooters électriques partagés.
+A) Autoriser avec règles strictes :: Encadrer.
+   transports+1 ecologie+1 | g0 c+3 d+2 e+1
+   > Des scooters partagés arrivent.
+   ~25 securite-1 > Des accidents de jeunes conducteurs se produisent.
+B) Refuser :: Sécurité.
+   transports-1 securite+1 | g+1 c+1 d0 e+1
+   > Les scooters sont refusés.
+C) Autoriser sans condition :: Liberté.
+   transports+1 proprete-1 | g-1 c0 d+3 e0
+   > Les scooters envahissent les trottoirs.
+
+=== tra-121 | transports | Des carrefours sans feux
+Des urbanistes proposent de supprimer les feux de certains carrefours pour obliger chacun à ralentir.
+A) Tester dans dix carrefours :: Innovation.
+   bud-2 securite+1 transports+1 | g+1 c+2 d0 e+2
+   > Les carrefours sans feux sont plus fluides.
+   ~35 pop-1 > Un accident relance la polémique.
+B) Remplacer par des ronds-points :: Classique.
+   bud-10 transports+1 | g0 c+3 d+2 e0
+   > Des petits giratoires sont créés.
+C) Garder les feux :: Prudence.
+   transports-1 | g0 c+1 d+2 e0
+   > Rien ne change.
+
+=== tra-122 | transports | Des trottoirs traversants
+Aux croisements avec les petites rues, le trottoir pourrait continuer sans interruption, les voitures devant céder.
+A) Généraliser les trottoirs traversants :: Priorité aux piétons.
+   bud-8 securite+2 bon+1 | g+1 c+2 d0 e+3
+   > Les piétons traversent sans descendre du trottoir.
+B) Quelques rues tests :: Tester.
+   bud-2 securite+1 | g+1 c+3 d+1 e+2
+   > Vingt carrefours sont aménagés.
+C) Rien :: Coût.
+   securite-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== tra-123 | transports | Les pistes cyclables coupées par les chantiers
+Les chantiers coupent les pistes cyclables sans itinéraire de remplacement.
+A) Obligation de déviation cyclable :: Continuité.
+   transports+2 securite+1 | g+1 c+3 d+1 e+3
+   > Chaque chantier prévoit un détour sûr.
+B) Panneaux d’information :: Minimum.
+   bud-1 transports+1 | g0 c+3 d+1 e+1
+   > Les cyclistes sont prévenus.
+C) Rien :: Les travaux priment.
+   securite-1 | g0 c0 d+2 e-2
+   > Les cyclistes se retrouvent au milieu des voitures.
+
+=== tra-124 | transports | Les chauffeurs de bus manquent
+Faute de chauffeurs, des centaines de bus ne circulent pas.
+A) Financer une école de conduite de bus :: Former.
+   bud-8 transports+2 economie+1 | g+2 c+2 d+1 e+1
+   > Des centaines de chauffeurs sont formés.
+B) Logements réservés aux chauffeurs :: Attirer.
+   logement-1 transports+1 | g+1 c+3 d+1 e0
+   > Des logements sont proposés aux chauffeurs.
+C) Rien :: Compétence de la RATP.
+   transports-2 | g0 c+1 d+1 e0
+   > Les bus manquent.
+
+=== tra-125 | transports | Le réseau téléphone dans les tunnels du métro
+Dans certains tunnels, le téléphone ne capte pas.
+A) Cofinancer la couverture :: Connecté.
+   bud-6 transports+1 | g0 c+3 d+2 e0
+   > Le réseau couvre tout le métro.
+B) Wifi dans les stations seulement :: Économique.
+   bud-2 transports+1 | g0 c+3 d+1 e0
+   > Les stations ont le wifi.
+C) Rien :: Le métro sans téléphone, c’est bien.
+   bon+1 | g+1 c0 d0 e+1
+   > Rien ne change.
+
+=== tra-126 | transports | Les motos garées sur les trottoirs
+Les motos et scooters se garent sur les trottoirs et gênent les piétons.
+A) Verbalisation et places dédiées :: Ordre.
+   bud-3 bon+1 transports+1 | g+1 c+3 d+1 e+2
+   > Les deux-roues ont leurs places.
+B) Tolérer sur les grands trottoirs :: Pragmatique.
+   bon-1 transports+1 | g0 c+2 d+2 e0
+   > Les motos restent sur les larges trottoirs.
+C) Interdire totalement :: Piétons.
+   bon+1 pop-1 | g+1 c+1 d-2 e+2
+   > Les motos doivent trouver une place en chaussée.
+
+=== tra-127 | transports | Des carrefours protégés pour les vélos
+Des carrefours « à la hollandaise » protègent les cyclistes avec des îlots aux angles.
+A) Aménager les cinquante carrefours les plus dangereux :: Sécurité.
+   bud-20 securite+2 transports+1 | g+1 c+2 d0 e+3
+   > Les accidents diminuent.
+B) Dix carrefours pilotes :: Tester.
+   bud-4 securite+1 | g+1 c+3 d+1 e+2
+   > Dix carrefours sont aménagés.
+C) Rien :: Coût.
+   securite-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== tra-128 | transports | Des navettes vers les cimetières
+Les cimetières parisiens de banlieue sont mal desservis. Les familles âgées ne peuvent pas s’y rendre.
+A) Navettes gratuites le week-end :: Respect des familles.
+   rec-0.1x60 transports+1 bon+1 | g+2 c+2 d+1 e+1
+   > Des navettes partent de Paris le dimanche.
+B) Navettes à la Toussaint seulement :: Ciblé.
+   bud-1 transports+1 | g+1 c+3 d+1 e0
+   > Des navettes circulent à la Toussaint.
+C) Rien :: Transports existants.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== tra-129 | transports | Des bus trop rapides dans les couloirs
+Des bus roulent vite dans les couloirs et frôlent les piétons qui traversent.
+A) Limiter les bus à 30 km/h :: Sécurité.
+   securite+1 transports-1 | g+1 c+2 d0 e+1
+   > Les bus ralentissent.
+B) Formation des chauffeurs :: Prévention.
+   bud-1 securite+1 | g+1 c+3 d+1 e0
+   > Les chauffeurs sont formés.
+C) Rien :: Ponctualité.
+   securite-1 transports+1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== tra-130 | transports | Des taxis accessibles aux fauteuils
+Il est presque impossible de trouver un taxi pouvant transporter un fauteuil roulant.
+A) Prime pour les taxis adaptés :: Inclusion.
+   bud-5 transports+1 services+1 | g+2 c+3 d+1 e+1
+   > Cent taxis adaptés sont financés.
+B) Quota obligatoire de taxis adaptés :: Règle.
+   transports+1 economie-1 | g+2 c+2 d-1 e+1
+   > Les compagnies doivent s’équiper.
+C) Rien :: Service public existant.
+   pop-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== tra-131 | transports | Les livraisons des chantiers aux heures de pointe
+Les camions de chantier bloquent les rues aux heures de pointe.
+A) Interdire les livraisons de chantier aux heures de pointe :: Fluidité.
+   transports+2 economie-1 | g0 c+3 d+1 e+1
+   > Les camions passent en dehors des pointes.
+B) Plateformes de livraison mutualisées :: Organiser.
+   bud-6 transports+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les livraisons sont regroupées.
+C) Rien :: Les chantiers doivent avancer.
+   transports-1 economie+1 | g0 c0 d+2 e0
+   > Les bouchons continuent.
+
+=== tra-132 | transports | Des stations de gonflage pour vélos
+Les cyclistes n’ont nulle part où regonfler leurs pneus ou réparer une chaîne.
+A) Cent stations de réparation en libre-service :: Service.
+   bud-2 transports+1 | g+1 c+3 d+1 e+2
+   > Des stations avec pompe et outils sont installées.
+B) Partenariat avec les vélocistes :: Commerce.
+   transports+1 economie+1 | g0 c+3 d+2 e+1
+   > Les vélocistes offrent le gonflage.
+C) Rien :: Pas prioritaire.
+   transports-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== tra-133 | transports | Des vélos électriques pour les entreprises
+Les entreprises pourraient fournir des vélos électriques à leurs salariés.
+A) Aide aux entreprises pour des flottes de vélos :: Inciter.
+   bud-5 transports+1 ecologie+1 economie+1 | g0 c+3 d+2 e+3
+   > Des milliers de salariés viennent à vélo.
+B) Label entreprise cyclable :: Valoriser.
+   bud-1 ecologie+1 | g0 c+3 d+2 e+2
+   > Un label récompense les entreprises.
+C) Rien :: Affaire des entreprises.
+   ecologie-1 | g-1 c0 d+2 e-1
+   > Rien ne change.
+
+=== tra-134 | transports | La fin des voitures à essence en 2030
+Des écologistes proposent d’interdire toutes les voitures thermiques dans Paris dès 2030.
+A) Adopter l’objectif :: Ambition climatique.
+   ecologie+3 pop-3 | g0 c-1 d-4 e+5
+   > Les voitures thermiques seront interdites en 2030.
+   ~40 pop-2 > Les artisans et banlieusards manifestent.
+B) Objectif 2035 avec aides :: Transition.
+   bud-10 ecologie+2 | g+1 c+3 d0 e+3
+   > Un calendrier progressif est adopté.
+C) Refuser :: Liberté.
+   ecologie-1 pop+1 | g-1 c+1 d+4 e-4
+   > Aucune interdiction n’est prévue.
+
+=== tra-135 | transports | Les pavés et les cyclistes
+Les rues pavées sont dangereuses et inconfortables pour les vélos et les poussettes.
+A) Remplacer par de l’asphalte :: Confort.
+   bud-10 transports+1 bon-1 | g0 c+2 d+1 e+1
+   > Les pavés disparaissent.
+   ~30 pop-1 > Des amoureux du vieux Paris protestent.
+B) Bande lisse au milieu des pavés :: Compromis.
+   bud-4 transports+1 | g+1 c+3 d+1 e+2
+   > Une bande cyclable lisse traverse les pavés.
+C) Garder les pavés :: Patrimoine.
+   transports-1 bon+1 | g0 c+1 d+2 e0
+   > Les pavés restent.
+
+=== tra-136 | transports | Des trains de nuit vers l’Europe
+Des compagnies veulent lancer des trains de nuit vers Berlin, Rome et Barcelone, mais les gares manquent de place.
+A) Soutenir et aménager un salon d’accueil :: Voyage bas carbone.
+   bud-3 transports+1 ecologie+2 | g+1 c+2 d+1 e+4
+   > Les trains de nuit partent de Paris.
+B) Soutien politique seulement :: Plaider.
+   coh+1 ecologie+1 | g+1 c+2 d+1 e+2
+   > Le maire soutient le projet.
+C) Rien :: Compétence de l’État.
+   ecologie-1 | g0 c+1 d+1 e-1
+   > Rien ne change.
+
+=== tra-137 | transports | Relier les grandes gares entre elles
+Changer de gare à Paris prend parfois une heure. Une navette directe est proposée.
+A) Navette électrique entre les six grandes gares :: Fluidité.
+   rec-0.3x60 transports+2 economie+1 | g+1 c+3 d+2 e+1
+   > Une navette relie les gares.
+B) Meilleure signalétique et parcours piétons :: Simple.
+   bud-2 transports+1 | g+1 c+3 d+1 e+2
+   > Les correspondances sont mieux indiquées.
+C) Rien :: Le métro existe.
+   transports-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== tra-138 | transports | Former les livreurs à la sécurité
+Les livreurs à vélo, souvent jeunes et inexpérimentés, ont beaucoup d’accidents.
+A) Formation gratuite obligatoire :: Prévenir.
+   bud-2 securite+2 | g+2 c+3 d+1 e+1
+   > Les livreurs sont formés.
+B) Exiger des plateformes qu’elles forment :: Responsabiliser.
+   securite+1 | g+2 c+2 d+1 e+1
+   > Les plateformes forment leurs livreurs.
+C) Rien :: Responsabilité individuelle.
+   securite-1 | g-1 c0 d+2 e0
+   > Les accidents continuent.
+
+=== tra-139 | transports | Les bus à impériale et les ponts bas
+Un bus touristique à étage a percuté un pont trop bas. Des passagers sont blessés.
+A) Itinéraires obligatoires pour les bus à étage :: Sécurité.
+   securite+2 economie-1 | g0 c+3 d+2 e+1
+   > Les bus suivent des parcours autorisés.
+B) Détecteurs de hauteur à l’entrée des ponts :: Technique.
+   bud-4 securite+1 | g0 c+3 d+2 e0
+   > Des alarmes préviennent les chauffeurs.
+C) Rien :: Accident isolé.
+   securite-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== tra-140 | transports | Fermer les rues autour des marchés le dimanche
+Les marchés du dimanche sont envahis par les voitures qui cherchent à se garer.
+? distinct
+A) Rues piétonnes autour des marchés le dimanche :: Convivialité.
+   bon+1 ecologie+1 economie+1 | g+1 c+2 d0 e+3
+   > Les rues deviennent piétonnes.
+B) Stationnement minute pour les clients :: Commerce.
+   transports+1 economie+1 | g0 c+2 d+2 e-1
+   > Des places minute sont créées.
+C) Rien :: Accès en voiture.
+   bon-1 | g0 c0 d+2 e-1
+   > Rien ne change.
+
+=== tra-141 | transports | Les embouteillages du dimanche soir
+Le dimanche soir, les retours de week-end bloquent les portes de Paris pendant des heures.
+A) Inciter au retour en train :: Alternative.
+   bud-2 transports+1 ecologie+1 | g+1 c+2 d0 e+2
+   > Des offres train sont promues.
+B) Ouvrir les couloirs de bus aux voitures le dimanche soir :: Fluidité.
+   transports+1 ecologie-1 | g-1 c+1 d+3 e-2
+   > Les couloirs sont ouverts.
+C) Rien :: Embouteillages inévitables.
+   transports-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== tra-142 | transports | Des panneaux pour guider les cyclistes
+Les cyclistes ne savent pas quel itinéraire prendre : il n’existe pas de panneaux dédiés.
+A) Jalonnement cyclable complet :: Orientation.
+   bud-4 transports+1 | g+1 c+3 d+1 e+2
+   > Des panneaux indiquent les temps à vélo.
+B) Carte en ligne :: Économique.
+   bud-1 transports+1 | g0 c+3 d+1 e+1
+   > Une carte des itinéraires est publiée.
+C) Rien :: Applications.
+   transports-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== tra-143 | transports | Le stationnement minute devant les commerces
+Les commerçants réclament des places de stationnement minute pour leurs clients.
+A) Créer des places minute :: Commerce.
+   bud-1 economie+1 transports+1 | g-1 c+2 d+3 e-1
+   > Des places de 15 minutes sont créées.
+B) Places de livraison partagées avec les clients :: Mutualiser.
+   economie+1 | g0 c+3 d+2 e0
+   > Les clients peuvent utiliser les aires de livraison.
+C) Refuser :: Moins de voitures.
+   ecologie+1 economie-1 | g+1 c0 d-2 e+3
+   > Pas de places minute.
+
+=== tra-144 | transports | La sortie des stades sature le métro
+À la sortie des matchs au Parc des Princes, les stations débordent et des bousculades ont lieu.
+A) Navettes de bus supplémentaires :: Désengorger.
+   rec-0.1x60 transports+1 securite+1 | g+1 c+2 d+1 e+1
+   > Des bus ramènent les supporters.
+B) Faire payer le club pour des renforts :: Responsabiliser.
+   rec+0.02x60 transports+1 | g+1 c+2 d0 e0
+   > Le club finance des renforts.
+C) Rien :: Compétence de la RATP.
+   securite-1 | g0 c+1 d+1 e0
+   > Les bousculades continuent.
+
+=== tra-145 | transports | Des rues réservées aux jeux d’enfants le dimanche
+Des parents proposent de fermer leur rue aux voitures le dimanche pour que les enfants jouent.
+? distinct
+A) Autoriser toutes les rues volontaires :: Liberté aux habitants.
+   bud-1 bon+2 | g+2 c+2 d0 e+3
+   > Des dizaines de rues deviennent des terrains de jeux.
+   ~25 pop-1 > Des riverains ne peuvent plus sortir leur voiture.
+B) Quelques rues tests :: Prudence.
+   bud-1 bon+1 | g+1 c+3 d+1 e+2
+   > Dix rues participent.
+C) Refuser :: Circulation.
+   bon-1 | g-1 c0 d+2 e-1
+   > Rien ne change.

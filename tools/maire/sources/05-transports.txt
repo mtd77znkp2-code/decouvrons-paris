@@ -55,6 +55,7 @@ C) Ne rien changer :: Les bus restent coincés.
 
 === tra-005 | transports | Les trottinettes électriques en libre-service
 Les trottinettes en libre-service sont accusées d’accidents et d’encombrer les trottoirs. Faut-il les interdire ?
+? distinct
 A) Organiser un vote des Parisiens :: Démocratique et risqué pour les opérateurs.
    bud-3 bon+1 pop+1 | g+1 c+3 d+1 e+1
    > Les Parisiens votent à 89 % pour l’interdiction.
