@@ -1,0 +1,492 @@
+// Transports, série 3
+=== tra-066 | transports | Prolonger une ligne de métro vers l’est
+Les habitants des communes de l’est demandent le prolongement d’une ligne de métro jusqu’à chez eux.
+A) Cofinancer le prolongement :: Désenclaver.
+   bud-80 transports+3 | g+2 c+2 d+1 e+3
+   > Le prolongement est lancé.
+   +30 transports+2 pop+2 > Les nouvelles stations ouvrent.
+B) Créer une ligne de bus express en attendant :: Rapide.
+   rec-0.3x60 transports+1 | g+1 c+3 d+1 e+2
+   > Un bus express relie l’est à Paris.
+C) Laisser la Région décider :: Pas notre budget.
+   transports-1 | g0 c+1 d+2 e0
+   > Le projet attend.
+
+=== tra-067 | transports | Les cars scolaires garés n’importe où
+Les cars des sorties scolaires stationnent en double file devant les musées.
+A) Aires de dépose réservées près des musées :: Organiser.
+   bud-4 transports+1 securite+1 | g+1 c+3 d+2 e+1
+   > Des aires de dépose sont créées.
+B) Encourager les sorties en métro :: Écologique.
+   bud-1 transports+1 ecologie+1 | g+1 c+2 d0 e+3
+   > Les classes prennent davantage le métro.
+C) Verbaliser :: Discipline.
+   transports+1 pop-1 | g-1 c+1 d+2 e0
+   > Les cars sont verbalisés.
+
+=== tra-068 | transports | Des zones de rencontre à 20 km/h
+Dans les rues étroites, piétons, vélos et voitures pourraient partager l’espace à 20 km/h.
+A) Créer cent zones de rencontre :: Rues apaisées.
+   bud-8 securite+1 ecologie+1 bon+1 | g+1 c+2 d-1 e+3
+   > Les piétons ont la priorité dans cent rues.
+B) Quelques rues pilotes :: Tester.
+   bud-2 securite+1 | g+1 c+3 d+1 e+2
+   > Dix rues deviennent zones de rencontre.
+C) Rien :: Le 30 suffit.
+   securite-1 | g0 c0 d+2 e-1
+   > Rien ne change.
+
+=== tra-069 | transports | Les pistes cyclables bidirectionnelles dangereuses
+Les pistes cyclables à double sens provoquent des collisions entre cyclistes et avec les piétons.
+A) Les remplacer par deux pistes séparées :: Sécurité.
+   bud-20 transports+2 securite+2 | g+1 c+2 d0 e+3
+   > Une piste de chaque côté de la rue.
+B) Élargir et mieux signaler :: Améliorer.
+   bud-8 securite+1 transports+1 | g+1 c+3 d+1 e+2
+   > Les pistes sont élargies.
+C) Garder en l’état :: Coût.
+   securite-1 | g0 c0 d+1 e-1
+   > Les collisions continuent.
+
+=== tra-070 | transports | Un péage urbain ?
+Comme à Londres, les voitures pourraient payer pour entrer dans Paris en journée.
+A) Instaurer un péage :: Moins de voitures, recettes.
+   bud-30 rec+2x60 ecologie+3 pop-4 | g+1 c0 d-4 e+5
+   > Les voitures paient 10 € pour entrer dans Paris.
+   ~40 pop-3 > Les banlieusards organisent des blocages.
+B) Péage limité au centre :: Ciblé.
+   bud-15 rec+0.8x60 ecologie+2 pop-2 | g+1 c+2 d-2 e+3
+   > Le centre devient payant pour les voitures.
+C) Refuser :: Pas de mur autour de Paris.
+   pop+1 | g0 c+1 d+3 e-3
+   > Le maire renonce au péage urbain.
+
+=== tra-071 | transports | Des parkings relais aux portes de Paris
+Les banlieusards veulent laisser leur voiture à l’entrée de Paris et finir en métro.
+A) Construire cinq parkings relais :: Combiner voiture et métro.
+   bud-40 transports+2 ecologie+1 | g+1 c+3 d+2 e+2
+   > Cinq parkings relais ouvrent.
+B) Transformer des parkings existants :: Économique.
+   bud-10 transports+1 | g0 c+3 d+2 e+1
+   > Des parkings proposent un tarif combiné avec le métro.
+C) Rien :: À la banlieue de s’organiser.
+   transports-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== tra-072 | transports | Conflits entre cyclistes et piétons sur les quais
+Sur les quais piétons, les vélos rapides frôlent les promeneurs.
+? distinct
+A) Séparer une voie cyclable :: Partager l’espace.
+   bud-6 securite+1 transports+1 | g+1 c+3 d+1 e+2
+   > Une voie cyclable est tracée sur les quais.
+B) Vélos au pas le week-end :: Règle.
+   securite+1 transports-1 | g0 c+2 d+1 e+1
+   > Les vélos doivent rouler au pas le week-end.
+C) Laisser faire :: Cohabitation.
+   securite-1 | g0 c0 d0 e+1
+   > Les conflits continuent.
+
+=== tra-073 | transports | La porte Maillot, carrefour dangereux
+La porte Maillot reste un enfer pour les piétons et les cyclistes.
+A) Réaménagement complet :: Grand chantier.
+   bud-50 securite+2 transports+2 | g+1 c+2 d+1 e+3
+   > La place est entièrement redessinée.
+B) Passages protégés et feux supplémentaires :: Rapide.
+   bud-8 securite+1 | g0 c+3 d+2 e+1
+   > De nouveaux passages sont créés.
+C) Rien :: Fluidité automobile.
+   securite-1 transports+1 | g-1 c0 d+3 e-2
+   > Le carrefour reste dangereux.
+
+=== tra-074 | transports | Des parkings vélos géants dans les gares
+Les cyclistes ne trouvent pas où garer leur vélo près des gares.
+A) Construire des vélostations de 2 000 places :: Intermodalité.
+   bud-20 transports+2 ecologie+1 | g+1 c+3 d+1 e+3
+   > Des parkings géants ouvrent dans les gares.
+B) Arceaux supplémentaires autour des gares :: Économique.
+   bud-4 transports+1 | g+1 c+2 d+1 e+2
+   > Des centaines d’arceaux sont posés.
+C) Laisser la SNCF gérer :: Pas notre propriété.
+   transports-1 | g0 c+1 d+1 e-1
+   > Rien ne change.
+
+=== tra-075 | transports | Une nouvelle passerelle sur la Seine
+Une passerelle piétonne et cyclable pourrait relier deux quartiers séparés par la Seine.
+A) Construire la passerelle :: Relier.
+   bud-35 transports+2 bon+1 | g+1 c+2 d+1 e+3
+   > Une passerelle élégante enjambe la Seine.
+B) Navette fluviale gratuite :: Moins cher.
+   rec-0.1x60 transports+1 | g+1 c+3 d+1 e+2
+   > Un bateau fait la navette.
+C) Rien :: Les ponts existants suffisent.
+   transports-1 | g0 c+1 d+1 e-1
+   > Rien n’est fait.
+
+=== tra-076 | transports | Les touristes perdus dans le métro
+La signalétique du métro est incompréhensible pour les étrangers.
+A) Nouvelle signalétique multilingue :: Accueil.
+   bud-10 transports+1 economie+1 | g0 c+3 d+2 e+1
+   > Les panneaux sont traduits.
+B) Agents d’accueil multilingues l’été :: Humain.
+   rec-0.1x20 transports+1 economie+1 | g+1 c+2 d+1 e0
+   > Des agents aident les touristes.
+C) Rien :: Applications existantes.
+   economie-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== tra-077 | transports | Des pistes cyclables à travers les parcs
+Des cyclistes demandent de traverser les grands parcs pour gagner du temps.
+A) Tracer des pistes à travers les parcs :: Continuité cyclable.
+   bud-5 transports+2 bon-1 | g0 c+2 d0 e+3
+   > Des pistes traversent les parcs.
+   ~30 pop-1 > Des promeneurs se plaignent des vélos.
+B) Autoriser les vélos au pas dans certaines allées :: Compromis.
+   transports+1 | g+1 c+3 d+1 e+2
+   > Les vélos peuvent passer au pas.
+C) Interdire les vélos dans les parcs :: Tranquillité.
+   transports-1 bon+1 | g0 c+1 d+2 e-1
+   > Les parcs restent piétons.
+
+=== tra-078 | transports | Le tramway T3 saturé
+Le tramway des Maréchaux est bondé aux heures de pointe.
+A) Rames plus longues et plus fréquentes :: Capacité.
+   bud-30 transports+2 | g+1 c+3 d+1 e+2
+   > Le tramway passe toutes les trois minutes.
+B) Bus de renfort aux heures de pointe :: Rapide.
+   rec-0.2x60 transports+1 | g+1 c+2 d+1 e+1
+   > Des bus doublent le tramway.
+C) Rien :: Région compétente.
+   transports-1 | g0 c+1 d+1 e0
+   > La saturation continue.
+
+=== tra-079 | transports | Des vans aménagés stationnés à l’année
+Des gens vivent dans des vans aménagés garés à l’année dans certaines rues.
+A) Créer des aires équipées pour vans :: Accueillir.
+   bud-4 logement+1 | g+2 c+2 d0 e+1
+   > Des aires avec eau et électricité sont créées.
+B) Limiter le stationnement à sept jours :: Règle.
+   transports+1 | g-1 c+2 d+3 e0
+   > Les vans doivent bouger chaque semaine.
+C) Laisser faire :: Tolérance.
+   transports-1 | g+1 c0 d-2 e0
+   > Les vans restent.
+
+=== tra-080 | transports | Le funiculaire de Montmartre en panne
+Le funiculaire de Montmartre tombe régulièrement en panne. Les seniors du quartier ne peuvent plus monter.
+A) Le rénover entièrement :: Patrimoine et service.
+   bud-25 transports+2 bon+1 | g+1 c+2 d+2 e+1
+   > Le funiculaire est modernisé.
+B) Navette électrique de secours :: Alternative.
+   rec-0.1x60 transports+1 | g+1 c+3 d+1 e+2
+   > Une navette monte les habitants.
+C) Réparer au cas par cas :: Économie.
+   transports-1 bud-3 | g0 c+1 d+1 e0
+   > Les pannes continuent.
+
+=== tra-081 | transports | Faire payer le stationnement selon le poids
+Les véhicules les plus lourds pourraient payer un stationnement trois fois plus cher.
+A) Tarif selon le poids :: Pollueur-payeur.
+   rec+0.4x60 ecologie+2 pop-1 | g+1 c+1 d-2 e+4
+   > Les gros véhicules paient plus.
+   ~30 pop-1 > Les familles nombreuses s’estiment pénalisées.
+B) Exempter les familles nombreuses et artisans :: Ciblé.
+   rec+0.2x60 ecologie+1 | g+1 c+3 d0 e+3
+   > Les exemptions limitent la grogne.
+C) Refuser :: Liberté de choix.
+   ecologie-1 | g-1 c+1 d+3 e-3
+   > Les tarifs restent uniformes.
+
+=== tra-082 | transports | Automatiser une ligne de métro
+La RATP propose d’automatiser une ligne surchargée, avec des travaux pendant plusieurs étés.
+? distinct
+A) Soutenir l’automatisation :: Modernité.
+   bud-30 transports+1 | g-1 c+3 d+3 e+1
+   > Les travaux démarrent.
+   +30 transports+3 > La ligne automatique transporte 20 % de voyageurs en plus.
+B) Exiger plus de rames d’abord :: Court terme.
+   bud-10 transports+1 | g+1 c+2 d+1 e+1
+   > De nouvelles rames sont commandées.
+C) S’opposer pour protéger les conducteurs :: Emploi.
+   transports-1 coh+1 | g+3 c0 d-2 e0
+   > Le maire s’oppose au projet.
+
+=== tra-083 | transports | La ligne 13 surchargée
+La ligne 13 est la plus saturée de Paris. Les voyageurs s’entassent sur les quais.
+A) Financer des bus de renfort parallèles :: Délester.
+   rec-0.3x60 transports+2 | g+1 c+2 d+1 e+2
+   > Un bus express double la ligne 13.
+B) Portes palières et régulation :: Fluidité.
+   bud-15 transports+1 securite+1 | g0 c+3 d+2 e+1
+   > Des portes sécurisent les quais.
+C) Attendre le nouveau métro :: Patience.
+   transports-1 | g0 c+1 d+1 e0
+   > La saturation continue.
+
+=== tra-084 | transports | Les escalators toujours en panne
+Dans certaines stations, les escalators sont en panne des mois.
+A) Pénalités pour la RATP :: Exiger.
+   rec+0.05x60 transports+1 | g+1 c+2 d+1 e0
+   > La RATP accélère les réparations.
+B) Cofinancer le remplacement des escalators :: Investir.
+   bud-15 transports+2 | g+1 c+3 d+1 e+1
+   > Des escalators neufs sont installés.
+C) Rien :: Pas notre compétence.
+   transports-1 | g0 c+1 d+1 e0
+   > Les pannes continuent.
+
+=== tra-085 | transports | Des cours de vélo pour adultes
+Beaucoup d’adultes ne savent pas faire de vélo en ville et n’osent pas se lancer.
+? distinct
+A) Vélo-écoles gratuites dans chaque arrondissement :: Apprendre.
+   rec-0.1x60 transports+1 ecologie+1 | g+2 c+2 d+1 e+3
+   > Des milliers d’adultes apprennent à rouler.
+B) Prêter des vélos pour essayer :: Essayer.
+   bud-3 transports+1 | g+1 c+3 d+1 e+2
+   > Des vélos sont prêtés un mois.
+C) Rien :: Chacun apprend seul.
+   transports-1 | g-1 c0 d+1 e-1
+   > Rien n’est fait.
+
+=== tra-086 | transports | Des radars de feux rouges
+Des automobilistes grillent les feux rouges aux carrefours dangereux.
+? distinct
+A) Installer des radars de feux :: Sécurité.
+   bud-5 rec+0.1x60 securite+2 pop-1 | g0 c+2 d+1 e+2
+   > Les radars flashent les contrevenants.
+B) Feux plus longs pour les piétons :: Prévention.
+   securite+1 transports-1 | g+1 c+2 d0 e+2
+   > Les piétons ont plus de temps.
+C) Rien :: Contrôles de police.
+   securite-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== tra-087 | transports | Des couloirs de bus sur les quais
+Les bus sont coincés dans les embouteillages des quais hauts de la Seine.
+A) Couloir de bus continu sur les quais :: Bus rapides.
+   bud-10 transports+2 ecologie+1 pop-1 | g+1 c+2 d-2 e+3
+   > Les bus filent sur les quais.
+B) Couloir aux heures de pointe seulement :: Compromis.
+   bud-4 transports+1 | g+1 c+3 d0 e+2
+   > Le couloir est réservé matin et soir.
+C) Rien :: Fluidité automobile.
+   transports-1 | g-1 c0 d+3 e-2
+   > Les bus restent bloqués.
+
+=== tra-088 | transports | Le marquage au sol effacé
+Les passages piétons et les marquages des pistes cyclables sont effacés dans de nombreuses rues.
+A) Grand plan de remarquage :: Sécurité.
+   bud-8 securite+2 | g0 c+3 d+2 e+1
+   > Les marquages sont refaits.
+B) Peinture longue durée :: Durable.
+   bud-12 securite+2 | g0 c+3 d+2 e+1
+   > Une peinture qui dure dix ans est utilisée.
+C) Repeindre au fil du temps :: Économie.
+   securite-1 bud-2 | g0 c+1 d+1 e0
+   > Les marquages restent effacés.
+
+=== tra-089 | transports | Les camionnettes garées sur les pistes cyclables
+Les livreurs se garent sur les pistes cyclables, obligeant les vélos à se déporter dans la circulation.
+A) Verbalisation systématique :: Protéger les cyclistes.
+   securite+1 transports+1 economie-1 | g0 c+2 d+1 e+3
+   > Les camionnettes sont verbalisées.
+B) Créer des aires de livraison à côté des pistes :: Solution.
+   bud-6 transports+1 | g+1 c+3 d+2 e+2
+   > Des aires de livraison sont aménagées.
+C) Tolérer :: Économie des commerces.
+   securite-1 economie+1 | g-1 c0 d+2 e-2
+   > Les camionnettes restent sur les pistes.
+
+=== tra-090 | transports | Le stationnement gratuit la nuit
+Le stationnement est payant jusqu’à 20 h. Certains proposent de le rendre payant la nuit aussi.
+A) Payant jusqu’à minuit :: Recettes et rotation.
+   rec+0.4x60 pop-2 | g0 c+1 d-2 e+2
+   > Le stationnement devient payant le soir.
+B) Garder la gratuité nocturne :: Pouvoir d’achat.
+   achat+1 | g+1 c+2 d+2 e-1
+   > Rien ne change.
+C) Payant le soir seulement dans les quartiers festifs :: Ciblé.
+   rec+0.1x60 | g0 c+3 d+1 e+1
+   > Pigalle et Oberkampf deviennent payants le soir.
+
+=== tra-091 | transports | Le double sens cyclable dans les rues à sens unique
+Les cyclistes pourraient circuler à contresens dans les rues à sens unique.
+A) Généraliser le double sens cyclable :: Raccourcis.
+   bud-4 transports+2 | g+1 c+2 d-1 e+3
+   > Les vélos peuvent remonter les sens uniques.
+   ~25 securite-1 > Des collisions ont lieu dans des rues étroites.
+B) Seulement dans les rues larges :: Prudence.
+   bud-2 transports+1 | g+1 c+3 d+1 e+2
+   > Les rues larges sont concernées.
+C) Refuser :: Sécurité.
+   transports-1 | g0 c+1 d+2 e-1
+   > Rien ne change.
+
+=== tra-092 | transports | Des gares sans toilettes
+Plusieurs gares n’ont pas de toilettes publiques gratuites.
+A) Exiger des toilettes gratuites dans toutes les gares :: Dignité.
+   proprete+1 bon+1 | g+2 c+2 d+1 e+1
+   > La SNCF installe des toilettes gratuites.
+B) Toilettes municipales devant les gares :: Agir nous-mêmes.
+   bud-6 proprete+1 | g+1 c+3 d+1 e+1
+   > Des sanisettes sont installées.
+C) Rien :: Compétence de la SNCF.
+   proprete-1 | g0 c+1 d+1 e0
+   > Rien ne change.
+
+=== tra-093 | transports | Élargir les couloirs de bus pour les vélos
+Les bus et les vélos se gênent dans les couloirs de bus trop étroits.
+A) Élargir les couloirs à 4,5 mètres :: Partage sécurisé.
+   bud-15 transports+2 securite+1 | g+1 c+2 d-1 e+3
+   > Les couloirs sont élargis.
+B) Séparer vélos et bus sur les grands axes :: Chacun sa voie.
+   bud-25 transports+2 securite+2 | g+1 c+2 d0 e+3
+   > Des pistes séparées sont créées.
+C) Rien :: Coût.
+   transports-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== tra-094 | transports | Les trains de banlieue bondés gare de Lyon
+Les voyageurs du RER D arrivent entassés et en retard tous les matins.
+? distinct
+A) Faire pression sur la Région et la SNCF :: Pression.
+   transports+1 coh+1 | g+1 c+2 d+1 e+1
+   > Un plan d’amélioration est promis.
+B) Navettes de bus depuis les gares de banlieue :: Délester.
+   rec-0.3x60 transports+1 | g+1 c+3 d+1 e+2
+   > Des bus express soulagent le RER.
+C) Rien :: Pas notre réseau.
+   transports-1 | g0 c+1 d+1 e0
+   > La situation continue.
+
+=== tra-095 | transports | Subventionner le covoiturage domicile-travail
+Les banlieusards qui viennent seuls en voiture pourraient être incités à covoiturer.
+A) Prime de 2 € par trajet covoituré :: Inciter.
+   rec-0.2x60 ecologie+1 transports+1 | g+1 c+3 d+1 e+3
+   > Le covoiturage se développe.
+B) Places réservées au covoiturage :: Avantage.
+   bud-2 ecologie+1 | g0 c+3 d+2 e+2
+   > Des places sont réservées aux covoitureurs.
+C) Rien :: Les transports en commun existent.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== tra-096 | transports | Six mois d’attente pour passer le permis
+Les jeunes Parisiens attendent six mois pour passer l’examen du permis de conduire.
+A) Mettre des locaux à disposition pour plus d’examens :: Faciliter.
+   bud-2 achat+1 economie+1 | g+1 c+3 d+2 e-1
+   > Plus de créneaux d’examen sont ouverts.
+B) Aide au permis pour les jeunes en insertion :: Emploi.
+   rec-0.1x60 achat+1 economie+1 | g+3 c+2 d0 e0
+   > Le permis est financé pour les jeunes en recherche d’emploi.
+C) Rien :: Les jeunes Parisiens n’ont pas besoin de voiture.
+   pop-1 | g0 c0 d-1 e+2
+   > Rien ne change.
+
+=== tra-097 | transports | Les écrans d’information des arrêts de bus en panne
+Les écrans indiquant l’attente aux arrêts de bus sont en panne une fois sur deux.
+A) Remplacer tous les écrans :: Fiabilité.
+   bud-8 transports+1 | g0 c+3 d+2 e+1
+   > Les écrans fonctionnent.
+B) Afficher un QR code avec l’horaire en temps réel :: Économique.
+   bud-1 transports+1 | g0 c+3 d+1 e+1
+   > Les voyageurs scannent un code.
+C) Rien :: Les applications suffisent.
+   transports-1 | g0 c0 d+1 e0
+   > Les écrans restent noirs.
+
+=== tra-098 | transports | Des chèques taxi pour les seniors
+Les seniors qui ne peuvent plus marcher jusqu’au métro restent chez eux.
+A) Chèques taxi pour les plus de 80 ans modestes :: Mobilité.
+   rec-0.3x60 transports+1 bon+1 | g+3 c+2 d+1 e0
+   > Les seniors reçoivent des chèques taxi.
+B) Minibus à la demande pour seniors :: Service collectif.
+   rec-0.2x60 transports+1 services+1 | g+2 c+3 d+1 e+1
+   > Un minibus vient chercher les seniors à domicile.
+C) Rien :: Budget.
+   bon-1 | g-1 c0 d+2 e0
+   > Les seniors restent chez eux.
+
+=== tra-099 | transports | Des petits bus de quartier
+Les grands bus ne passent pas dans les petites rues. Des minibus pourraient desservir les quartiers.
+A) Créer dix lignes de bus de quartier :: Proximité.
+   rec-0.4x60 transports+2 bon+1 | g+2 c+2 d+1 e+2
+   > Des minibus électriques sillonnent les quartiers.
+B) Deux lignes pilotes :: Tester.
+   rec-0.1x60 transports+1 | g+1 c+3 d+1 e+1
+   > Deux lignes de quartier sont créées.
+C) Rien :: Coût.
+   transports-1 | g-1 c0 d+2 e0
+   > Rien ne change.
+
+=== tra-100 | transports | Les piétons absorbés par leur téléphone
+Des piétons traversent les yeux rivés sur leur téléphone. Les accidents augmentent.
+A) Campagne de prévention :: Sensibiliser.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Des affiches humoristiques alertent les piétons.
+B) Signaux lumineux au sol aux passages piétons :: Technologie.
+   bud-6 securite+1 | g0 c+3 d+2 e+1
+   > Des LED au sol signalent le feu rouge.
+C) Rien :: Responsabilité individuelle.
+   securite-1 | g0 c0 d+2 e0
+   > Les accidents continuent.
+
+=== tra-101 | transports | Les poids lourds de transit
+Des camions traversent Paris pour éviter le périphérique encombré.
+A) Interdire le transit des poids lourds :: Protéger la ville.
+   ecologie+2 securite+1 economie-1 | g+1 c+1 d-1 e+4
+   > Les camions de transit sont interdits.
+B) Interdire aux heures de pointe :: Compromis.
+   ecologie+1 securite+1 | g+1 c+3 d+1 e+2
+   > Les camions passent la nuit.
+C) Rien :: Économie.
+   ecologie-1 economie+1 | g-1 c0 d+3 e-3
+   > Les camions continuent de traverser.
+
+=== tra-102 | transports | Des déviations de travaux incompréhensibles
+Les panneaux de déviation des chantiers envoient les automobilistes dans des impasses.
+A) Coordination centrale des déviations :: Organiser.
+   bud-3 transports+2 | g0 c+3 d+2 e+1
+   > Une cellule coordonne toutes les déviations.
+B) Carte des travaux en temps réel :: Informer.
+   bud-1 transports+1 | g0 c+3 d+1 e+1
+   > Une carte en ligne indique les chantiers.
+C) Rien :: Chaque entreprise gère.
+   transports-1 | g0 c0 d+1 e0
+   > Les automobilistes se perdent.
+
+=== tra-103 | transports | Rollers et skates sur les pistes cyclables
+Les rollers et les skateurs sont interdits sur les pistes cyclables et doivent rouler sur les trottoirs.
+A) Les autoriser sur les pistes :: Mobilités douces.
+   transports+1 securite+1 | g+1 c+2 d0 e+2
+   > Les rollers rejoignent les vélos.
+B) Seulement sur les grandes pistes :: Compromis.
+   transports+1 | g+1 c+3 d+1 e+1
+   > Les grandes pistes s’ouvrent aux rollers.
+C) Rien :: Code de la route.
+   securite-1 | g0 c0 d+2 e0
+   > Rien ne change.
+
+=== tra-104 | transports | Les stations de métro fantômes
+Plusieurs stations de métro fermées depuis des décennies pourraient avoir une seconde vie.
+A) Les transformer en lieux culturels :: Insolite.
+   bud-20 bon+2 economie+1 | g+1 c+2 d+1 e+1
+   > Une station fantôme devient une salle de concert.
+B) Les rouvrir comme stations :: Desserte.
+   bud-40 transports+2 | g+1 c+2 d+1 e+2
+   > Une station rouvre aux voyageurs.
+C) Les laisser fermées :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Les stations restent fantômes.
+
+=== tra-105 | transports | Stationnement gratuit pour les artisans
+Plombiers et électriciens paient des fortunes en stationnement et en amendes.
+? distinct
+A) Carte de stationnement artisan à petit prix :: Soutenir.
+   rec-0.2x60 economie+2 | g0 c+3 d+3 e-1
+   > Les artisans paient un forfait réduit.
+B) Places réservées aux artisans dans chaque rue :: Organiser.
+   bud-2 economie+1 | g0 c+3 d+2 e0
+   > Des places artisans sont créées.
+C) Rien :: Égalité.
+   economie-1 | g0 c0 d-1 e+1
+   > Les artisans continuent de payer.

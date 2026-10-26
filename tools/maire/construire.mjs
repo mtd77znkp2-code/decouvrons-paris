@@ -96,7 +96,7 @@ const base = Maire.indexer(tous);
 base.rejets.forEach((r) => err.push(...r.err));
 // Titres identiques ou descriptions presque identiques = doublon
 // Mots vides fréquents des titres, ignorés pour comparer les sujets
-const VIDES = new Set(["paris", "ville", "parisien", "parisiens", "parisienne", "dans", "pour", "avec", "sans", "plus", "trop", "veut", "veulent", "menace", "demande", "propose", "proposition", "nouveau", "nouvelle", "grand", "grande", "quartier", "quartiers", "logement", "logements", "sociaux", "social", "sociale", "immeuble", "immeubles", "coutent", "coute", "cher", "chers", "chere", "trop", "faut", "doit", "contre", "sont", "leur", "leurs", "tout", "tous", "toute", "toutes", "elle", "elles", "fait", "font"]);
+const VIDES = new Set(["paris", "ville", "parisien", "parisiens", "parisienne", "dans", "pour", "avec", "sans", "plus", "trop", "veut", "veulent", "menace", "demande", "propose", "proposition", "nouveau", "nouvelle", "grand", "grande", "quartier", "quartiers", "logement", "logements", "sociaux", "social", "sociale", "immeuble", "immeubles", "coutent", "coute", "cher", "chers", "chere", "trop", "faut", "doit", "contre", "sont", "leur", "leurs", "tout", "tous", "toute", "toutes", "elle", "elles", "fait", "font", "piste", "pistes", "cyclable", "cyclables", "ligne", "lignes"]);
 const motsTitre = (t) => new Set([...mots(t)].filter((w) => !VIDES.has(w)));
 const sig = base.liste.map((ev) => ({ id: ev.id, t: ev.titre.toLowerCase(), m: mots(ev.titre + " " + ev.desc), mt: motsTitre(ev.titre), libre: !!ev.distinct }));
 const lies = (a, b) => [a, b].some((x, k) => base.parId[x].choix.some((c) => c.suite && c.suite.id === [a, b][1 - k]));
