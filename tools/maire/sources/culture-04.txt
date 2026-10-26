@@ -1,0 +1,483 @@
+// Culture et tourisme, série 4
+=== cul-106 | culture | Une salle de concert dans un ancien réservoir
+Le réservoir désaffecté de Passy, avec ses voûtes immenses, intéresse des producteurs de musique.
+A) Le transformer en salle de concert :: Audace.
+   bud-3 bon+2 economie+1 | g+1 c+2 d+1 e0
+   > Une acoustique unique attire les orchestres.
+B) Le louer à un exploitant privé :: Recettes.
+   rec+0.02x15 economie+1 | g-1 c+1 d+2 e0
+   > Un club ouvre sous les voûtes.
+C) Le garder en réserve d’eau de secours :: Prudence.
+   ecologie+1 bon-1 | g+1 c+1 d0 e+1
+   > Le réservoir reste fermé.
+=== cul-107 | culture | Les cafés historiques menacés de rachat
+Des chaînes veulent racheter des cafés centenaires et en changer le décor.
+A) Protéger les décors par le plan d’urbanisme :: Patrimoine.
+   bon+1 economie-1 | g+1 c+2 d0 e+1
+   > Zincs et banquettes sont protégés.
+B) Racheter les murs d’un café emblématique :: Symbole.
+   bud-2 bon+1 | g+1 c+2 d+1 e0
+   > La Ville devient propriétaire d’un café de 1880.
+C) Laisser faire :: Liberté de commerce.
+   economie+1 bon-1 | g-1 c+1 d+2 e0
+   > Un café centenaire devient une enseigne de bagels.
+=== cul-108 | culture | Un marché de Noël au Trocadéro
+Des forains proposent de grands chalets face à la tour Eiffel chaque hiver.
+A) Accepter avec un cahier des charges strict :: Qualité.
+   rec+0.02x10 economie+1 bon+1 | g0 c+2 d+1 e+1
+   > Artisans et produits régionaux remplissent les chalets.
+B) Accepter sans conditions :: Recettes.
+   rec+0.04x10 bon-1 | g-1 c0 d+2 e0
+   > Les chalets vendent surtout des babioles importées.
+C) Refuser :: Esplanade libre.
+   economie-1 | g+1 c+1 d0 e0
+   > Le Trocadéro reste dégagé pour la vue.
+
+=== cul-109 | culture | Des escape games dans les anciennes caves
+Des entreprises veulent louer des caves municipales pour y créer des jeux d’évasion.
+A) Louer les caves aux entreprises :: Valoriser.
+   rec+0.02x15 economie+1 | g0 c+1 d+2 e0
+   > Les caves deviennent des énigmes à résoudre.
+B) Les confier à une association de quartier :: Proximité.
+   bon+1 | g+1 c+2 d0 e+1
+   > Les jeunes du quartier animent les jeux.
+C) Les garder fermées par prudence :: Sécurité.
+   securite+1 | g0 c+1 d+1 e0
+   > Les caves restent fermées.
+
+=== cul-110 | culture | Une saison de théâtre dans les parcs
+Des troupes proposent de jouer Molière gratuitement dans les jardins publics l’été.
+A) Financer une vraie saison estivale :: Culture pour tous.
+   bud-2 bon+2 | g+2 c+2 d0 e+1
+   > Les pelouses se remplissent de spectateurs.
+B) Prêter les lieux sans financer :: Coup de pouce.
+   bon+1 | g+1 c+2 d+1 e0
+   > Quelques troupes jouent au chapeau.
+C) Refuser pour protéger les pelouses :: Jardins.
+   bon-1 | g-1 c+1 d+1 e0
+   > Les comédiens partent en banlieue.
+
+=== cul-111 | culture | Le musée de la Libération trop petit
+Le musée consacré à la Résistance refuse des classes faute de place.
+A) L’agrandir dans le bâtiment voisin :: Mémoire.
+   bud-3 bon+1 services+1 | g+1 c+2 d+1 e+1
+   > Le musée double sa surface.
+B) Créer des visites hors les murs dans les quartiers :: Itinérance.
+   bud-1 bon+1 | g+1 c+2 d0 e+1
+   > Des guides emmènent les élèves sur les lieux de la Résistance.
+C) Garder le musée en l’état :: Économie.
+   bon-1 | g0 c+1 d+1 e0
+   > Des écoles attendent un an pour venir.
+
+=== cul-112 | culture | Un planétarium dans l’Est parisien
+Les écoles de l’Est n’ont aucun lieu pour découvrir l’astronomie.
+A) Construire un planétarium à Belleville :: Science pour tous.
+   bud-3 bon+1 services+1 | g+2 c+2 d0 e+1
+   > Les classes découvrent les étoiles.
+B) Un planétarium mobile qui tourne dans les écoles :: Itinérant.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Une coupole gonflable passe d’école en école.
+C) Refuser :: La Villette suffit.
+   bon-1 | g0 c+1 d+1 e0
+   > Les élèves traversent Paris pour la Villette.
+=== cul-113 | culture | Un orchestre symphonique des quartiers
+Un chef propose de créer un orchestre avec des enfants des quartiers populaires.
+A) Financer instruments et professeurs :: Égalité.
+   bud-2 bon+2 services+1 | g+2 c+2 d0 e+1
+   > Cent enfants découvrent le violon.
+   ~40 pop+2 > L’orchestre joue à la Philharmonie, salle comble.
+B) Le confier aux conservatoires :: Cadre existant.
+   bud-1 bon+1 | g+1 c+3 d+1 e+1
+   > Les conservatoires ouvrent quelques places.
+C) Refuser :: Priorités.
+   bon-1 | g-1 c0 d+1 e0
+   > Le chef part monter son projet ailleurs.
+
+=== cul-114 | culture | Le Paris FC cherche un stade
+Le second club de football de la capitale veut un stade moderne et demande l’aide de la Ville.
+A) Financer un stade neuf :: Sport.
+   bud-4 bon+1 economie+1 | g0 c+1 d+2 e0
+   ~40 rec+0.02x20 > Le stade génère des recettes.
+   > Les travaux commencent.
+B) Lui confier un stade existant :: Mutualiser.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Le club s’installe en partageant l’équipement.
+C) Refuser :: Le privé paie.
+   bon-1 | g0 c+1 d+1 e0
+   > Le club menace de quitter Paris.
+=== cul-115 | culture | La Maison de la radio ouvre ses studios
+Radio France propose d’ouvrir ses studios aux Parisiens un dimanche par mois.
+A) Cofinancer des concerts gratuits :: Partenariat.
+   bud-1 bon+2 | g+1 c+2 d+1 e+1
+   > Des familles assistent aux enregistrements.
+B) Communiquer sans financer :: Soutien.
+   bon+1 | g0 c+2 d+1 e0
+   > L’initiative reste confidentielle.
+C) Ne pas s’en mêler :: Neutralité.
+   bon-1 | g0 c+1 d+1 e0
+   > Radio France fait seule.
+
+=== cul-116 | culture | Une œuvre d’art pour chaque nouvelle école
+La loi du 1 % artistique impose une œuvre dans les bâtiments publics. La Ville peut aller plus loin.
+? distinct
+A) Une œuvre dans toutes les écoles neuves :: Art au quotidien.
+   bud-2 bon+1 | g+2 c+2 d0 e+1
+   > Les cours de récréation accueillent sculptures et fresques.
+B) Faire dessiner les élèves eux-mêmes :: Participation.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les élèves signent les murs de leur école.
+C) S’en tenir au minimum légal :: Rigueur.
+   bon-1 | g0 c+1 d+1 e0
+   > Les nouvelles écoles restent sobres.
+
+=== cul-117 | culture | Les tags sur les monuments historiques
+Des tags recouvrent régulièrement des façades classées.
+A) Une brigade de nettoyage rapide :: Réactivité.
+   rec-0.02x20 proprete+1 bon+1 | g0 c+2 d+1 e+1
+   > Les tags disparaissent en 48 heures.
+B) Des caméras autour des monuments :: Dissuasion.
+   bud-1 securite+1 | g-1 c+1 d+2 e0
+   > Les tagueurs évitent les zones filmées.
+C) Ouvrir des murs d’expression libre ailleurs :: Canaliser.
+   bud-1 bon+1 | g+2 c+2 d0 e+1
+   > Une partie des graffeurs change de support.
+
+=== cul-118 | culture | Les bus touristiques à impériale
+Les bus à étage roulent au diesel et encombrent les grandes avenues.
+A) Imposer l’électrique sous trois ans :: Air propre.
+   ecologie+1 economie-1 | g+2 c+2 d0 e+1
+   > Les compagnies renouvellent leur flotte.
+B) Limiter leur nombre par une licence payante :: Réguler.
+   rec+0.02x15 | g+1 c+2 d+1 e+1
+   > Moins de bus, mais plus chers pour les touristes.
+C) Laisser circuler :: Tourisme.
+   economie+1 ecologie-1 | g-1 c+1 d+2 e0
+   > Les avenues restent encombrées.
+
+=== cul-119 | culture | Les hôtels de luxe se multiplient
+Des palaces remplacent bureaux et logements dans les beaux quartiers.
+? distinct
+A) Exiger des logements en contrepartie :: Équilibre.
+   logement+1 economie-1 | g+2 c+2 d0 e+1
+   > Chaque nouveau palace finance des logements.
+B) Les accueillir pour l’emploi :: Attractivité.
+   economie+2 logement-1 | g-1 c+1 d+2 e0
+   > Des centaines d’emplois sont créés.
+C) Geler les permis d’hôtels :: Moratoire.
+   economie-1 bon+1 | g+1 c+1 d0 e0
+   > Les investisseurs partent à Londres.
+
+=== cul-120 | culture | Le bistrot parisien au patrimoine de l’Unesco
+Des restaurateurs veulent faire inscrire la culture du bistrot au patrimoine immatériel.
+A) Porter la candidature :: Fierté.
+   bud-1 bon+2 economie+1 | g0 c+2 d+1 e0
+   > La candidature est déposée à l’Unesco.
+B) Créer d’abord un label municipal :: Pragmatisme.
+   bon+1 economie+1 | g+1 c+2 d+1 e+1
+   > Trois cents bistrots affichent le label.
+C) Ne pas s’en mêler :: Neutralité.
+   bon-1 | g0 c+1 d+1 e0
+   > Les restaurateurs se débrouillent seuls.
+=== cul-121 | culture | Des concerts d’orgue gratuits
+Les grandes orgues des églises de la Ville sont rarement entendues.
+A) Une saison de concerts gratuits :: Patrimoine vivant.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les églises se remplissent le dimanche après-midi.
+B) Restaurer d’abord les orgues abîmés :: Préserver.
+   bud-2 bon+1 | g0 c+2 d+1 e+1
+   > Trois orgues retrouvent leur voix.
+C) Laisser aux paroisses :: Neutralité.
+   bon-1 | g0 c+1 d+1 e0
+   > Rien ne change.
+
+=== cul-122 | culture | La Philharmonie veut une seconde salle
+La salle est complète des mois à l’avance et demande à la Ville de cofinancer une extension.
+A) Cofinancer l’extension :: Rayonnement.
+   bud-4 bon+1 economie+1 | g+1 c+2 d+1 e0
+   > Une seconde salle sort de terre à la Villette.
+B) Proposer plutôt un auditorium dans l’Est parisien :: Rééquilibrer.
+   bud-3 bon+2 | g+2 c+2 d0 e+1
+   > Un auditorium ouvre à Belleville.
+C) Refuser :: L’État paie.
+   bon-1 | g-1 c+1 d+1 e0
+   > Le projet est reporté.
+
+=== cul-123 | culture | Un musée du vin à Bercy
+Les anciens chais de Bercy pourraient accueillir un musée de la vigne et du vin.
+A) Créer le musée avec les producteurs :: Tourisme.
+   bud-2 economie+1 bon+1 | g0 c+2 d+1 e0
+   > Les visiteurs dégustent sous les voûtes.
+B) Un musée de l’histoire du quartier :: Mémoire locale.
+   bud-1 bon+1 | g+1 c+2 d0 e+1
+   > Le passé de l’entrepôt revit.
+C) Louer les chais à des commerces :: Recettes.
+   rec+0.02x15 | g-1 c+1 d+2 e0
+   > Les chais deviennent des boutiques.
+
+=== cul-124 | culture | Un festival de bande dessinée
+Les éditeurs de BD veulent un grand festival parisien, comme à Angoulême.
+A) Le financer au Grand Palais :: Ambition.
+   bud-2 bon+2 economie+1 | g+1 c+2 d+1 e0
+   > Des dizaines de milliers de lecteurs viennent.
+B) Un festival dans les bibliothèques :: Proximité.
+   bud-1 bon+1 services+1 | g+1 c+2 d0 e+1
+   > Les bibliothèques accueillent auteurs et dédicaces.
+C) Laisser aux éditeurs :: Privé.
+   bon-1 | g0 c+1 d+1 e0
+   > Le festival reste modeste.
+
+=== cul-125 | culture | Un salon des métiers d’art au Carreau du Temple
+Ébénistes, doreurs et luthiers manquent de visibilité et d’apprentis.
+A) Un grand salon annuel avec ateliers ouverts :: Savoir-faire.
+   bud-1 bon+1 economie+1 | g+1 c+2 d+1 e+1
+   > Des jeunes découvrent la marqueterie.
+B) Financer des apprentissages :: Transmission.
+   rec-0.02x20 economie+1 | g+1 c+2 d0 e+1
+   > Vingt apprentis rejoignent des ateliers.
+C) Ne rien faire :: Priorités.
+   economie-1 | g0 c+1 d+1 e0
+   > Des ateliers ferment faute de repreneur.
+=== cul-126 | culture | Les galeries d’art du Marais s’en vont
+Les galeries partent vers Romainville et Pantin, chassées par les loyers.
+A) Créer un quartier des galeries aidé :: Retenir.
+   bud-2 economie+1 | g+1 c+2 d+1 e0
+   > Une rue du 13e accueille vingt galeries.
+B) Accompagner leur départ en Seine-Saint-Denis :: Métropole.
+   bon+1 | g+1 c+2 d0 e+1
+   > Le Grand Paris de l’art se dessine.
+C) Ne rien faire :: Laisser partir.
+   economie-1 | g0 c+1 d+1 e0
+   > Le Marais se remplit de marques de mode.
+
+=== cul-127 | culture | Un musée à ciel ouvert sur les quais
+Des sculpteurs proposent d’exposer leurs œuvres le long des berges de Seine.
+A) Une exposition permanente :: Promenade artistique.
+   bud-2 bon+2 | g+1 c+2 d+1 e+1
+   > Les promeneurs découvrent cinquante sculptures.
+B) Une exposition renouvelée chaque été :: Éphémère.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les quais changent de visage chaque saison.
+C) Refuser :: Berges dégagées.
+   bon-1 | g0 c+1 d+1 e0
+   > Les quais restent nus.
+
+=== cul-128 | culture | Des péniches-hôtels sur la Seine
+Des investisseurs veulent amarrer des hôtels flottants au pied des monuments.
+? distinct
+A) Autoriser quelques péniches-hôtels :: Nouveauté.
+   rec+0.02x15 economie+1 | g0 c+1 d+2 e0
+   > Trois hôtels flottants ouvrent.
+B) Exiger qu’elles soient électriques et discrètes :: Encadrer.
+   rec+0.01x15 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les péniches se fondent dans le paysage.
+C) Refuser :: Protéger les quais.
+   bon+1 economie-1 | g+1 c+1 d0 e0
+   > La Seine reste aux bateaux de passage.
+
+=== cul-129 | culture | Un parcours des écrivains américains
+Hemingway, Fitzgerald, Baldwin : des agences proposent un parcours balisé dans la ville.
+A) Poser des plaques et une application :: Valoriser.
+   bud-1 economie+1 bon+1 | g0 c+2 d+1 e+1
+   > Les touristes américains suivent le parcours.
+B) Élargir à tous les écrivains étrangers de Paris :: Universel.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Le parcours célèbre Paris, ville refuge.
+C) Laisser aux agences :: Privé.
+   bon-1 | g0 c+1 d+1 e0
+   > Les agences vendent leurs visites.
+
+=== cul-130 | culture | Un grand festival manga
+Les fans de culture japonaise réclament un festival dans Paris intra-muros.
+A) L’accueillir au parc des expositions :: Jeunesse.
+   bud-1 bon+2 economie+1 | g+1 c+2 d+1 e0
+   > Des milliers de cosplayeurs envahissent le 15e.
+B) Le décliner dans les médiathèques :: Lecture.
+   bud-1 bon+1 services+1 | g+1 c+2 d0 e+1
+   > Les rayons manga sont pris d’assaut.
+C) Laisser à Villepinte :: Banlieue.
+   bon-1 | g0 c+1 d+1 e0
+   > Les jeunes Parisiens prennent le RER.
+
+=== cul-131 | culture | Un concours d’éloquence pour les lycéens
+Des enseignants veulent un concours de plaidoiries entre lycées parisiens.
+A) Le financer avec finale à l’Hôtel de Ville :: Talent.
+   bud-1 bon+2 | g+1 c+2 d+1 e+1
+   > Une lycéenne de Belleville remporte la finale.
+B) Le limiter aux quartiers prioritaires :: Égalité des chances.
+   bud-1 bon+1 | g+2 c+2 d0 e+1
+   > Des élèves timides prennent la parole.
+C) Refuser :: L’école s’en charge.
+   bon-1 | g0 c+1 d+1 e0
+   > Le projet reste dans les cartons.
+
+=== cul-132 | culture | La tour Saint-Jacques ouverte au public
+La tour gothique n’est accessible qu’en été, sur réservation.
+A) L’ouvrir toute l’année :: Patrimoine accessible.
+   rec-0.01x20 bon+1 economie+1 | g+1 c+2 d+1 e+1
+   > La vue sur Notre-Dame séduit les visiteurs.
+B) Ouvrir quelques week-ends de plus :: Prudence.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les créneaux restent rares.
+C) La garder fermée pour la préserver :: Conservation.
+   bon-1 | g0 c+1 d+1 e0
+   > La tour reste un décor.
+
+=== cul-133 | culture | Un téléphérique au-dessus de la Seine
+Un promoteur propose un téléphérique touristique entre le Trocadéro et le Champ-de-Mars.
+A) Accepter :: Attraction.
+   rec+0.03x20 economie+1 bon-1 | g-1 c+1 d+2 e0
+   > Les cabines survolent la Seine, les riverains protestent.
+B) Exiger une étude paysagère d’abord :: Prudence.
+   bud-1 | g0 c+2 d+1 e+1
+   > L’étude conclut au refus.
+C) Refuser :: Ciel dégagé.
+   bon+1 | g+1 c+1 d0 e0
+   > La perspective reste intacte.
+
+=== cul-134 | culture | Un accueil touristique en chinois et en coréen
+Les visiteurs d’Asie se plaignent de ne trouver aucune information dans leur langue.
+A) Des agents multilingues aux grands sites :: Accueil.
+   rec-0.01x20 economie+1 | g+1 c+2 d+1 e+1
+   > Les touristes trouvent de l’aide en mandarin.
+B) Une application de traduction officielle :: Numérique.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > L’application est téléchargée par des millions de visiteurs.
+C) Ne rien faire :: Priorités.
+   economie-1 | g0 c+1 d+1 e0
+   > Les agences de voyage s’en chargent.
+
+=== cul-135 | culture | Les food trucks devant les monuments
+Des camions de restauration s’installent près du Louvre et de Notre-Dame.
+A) Leur attribuer des emplacements payants :: Encadrer.
+   rec+0.01x15 economie+1 | g0 c+2 d+1 e0
+   > Les food trucks paient leur place.
+B) Les interdire autour des sites classés :: Patrimoine.
+   bon+1 economie-1 | g+1 c+1 d+1 e0
+   > Les parvis retrouvent leur sobriété.
+C) Tolérer :: Laisser faire.
+   proprete-1 | g0 c0 d+1 e0
+   > Les poubelles débordent devant le Louvre.
+
+=== cul-136 | culture | Le parvis du Trocadéro bondé
+Les foules de photographes bloquent l’esplanade au coucher du soleil.
+A) Agrandir l’esplanade sur la chaussée :: Piétonniser.
+   bud-2 bon+1 | g+2 c+2 d0 e+1
+   > Le Trocadéro devient entièrement piéton.
+B) Une gestion de foule aux heures de pointe :: Organiser.
+   rec-0.01x15 securite+1 | g0 c+2 d+1 e+1
+   > Des médiateurs fluidifient le passage.
+C) Laisser faire :: Liberté.
+   securite-1 | g0 c0 d+1 e0
+   > Les bousculades se multiplient.
+
+=== cul-137 | culture | Des cours de danse gratuits dans les jardins
+Des professeurs proposent salsa et tango en plein air chaque soir d’été.
+A) Les financer dans tous les arrondissements :: Convivialité.
+   bud-1 bon+2 | g+2 c+2 d0 e+1
+   > Les jardins s’animent jusqu’à la nuit.
+B) Autoriser sans financer :: Liberté.
+   bon+1 | g+1 c+2 d+1 e0
+   > Quelques cours apparaissent au bord du canal.
+C) Refuser à cause du bruit :: Tranquillité.
+   bon-1 | g-1 c+1 d+1 e0
+   > Les danseurs vont ailleurs.
+
+=== cul-138 | culture | Le feu d’artifice du 14-Juillet coûte cher
+Le spectacle de la tour Eiffel coûte plusieurs millions et pollue.
+? distinct
+A) Le maintenir à l’identique :: Tradition.
+   bud-1 bon+1 | g0 c+2 d+1 e0
+   > Des centaines de milliers de spectateurs applaudissent.
+B) Le remplacer par un spectacle de drones :: Modernité.
+   bud-1 ecologie+1 bon-1 | g+1 c+1 d0 e+1
+   > Les drones dessinent Marianne dans le ciel, certains regrettent la poudre.
+C) Le raccourcir de moitié :: Économie.
+   bud+1 bon-1 | g0 c+1 d+1 e0
+   > Le spectacle déçoit un peu.
+
+=== cul-139 | culture | Le palais Galliera à l’étroit
+Le musée de la mode ne peut exposer qu’une petite partie de ses collections.
+A) Ouvrir des réserves visitables :: Montrer.
+   bud-2 bon+1 economie+1 | g+1 c+2 d+1 e+1
+   > Des milliers de robes historiques sortent de l’ombre.
+B) Prêter les collections aux musées de région :: Partager.
+   bon+1 | g+1 c+2 d0 e+1
+   > Les costumes voyagent en France.
+C) Garder en réserve :: Conservation.
+   bon-1 | g0 c+1 d+1 e0
+   > Les collections restent dans les cartons.
+
+=== cul-140 | culture | Une maison du jeu vidéo
+Les studios français proposent un lieu dédié à l’histoire et à la création vidéoludique.
+A) L’ouvrir dans un ancien marché couvert :: Création.
+   bud-2 economie+1 bon+1 | g+1 c+2 d+1 e0
+   > Les adolescents découvrent les métiers du jeu.
+B) Un espace jeu vidéo dans chaque médiathèque :: Proximité.
+   bud-1 services+1 | g+1 c+2 d0 e+1
+   > Les consoles entrent en médiathèque.
+C) Refuser :: Pas une priorité.
+   bon-1 | g-1 c+1 d+1 e0
+   > Le projet part à Lyon.
+
+=== cul-141 | culture | Les ateliers d’artistes de Belleville
+Les portes ouvertes annuelles des ateliers attirent du monde mais manquent de moyens.
+? distinct
+A) Financer l’événement et sa communication :: Création locale.
+   bud-1 bon+1 economie+1 | g+1 c+2 d+1 e+1
+   > Cinquante mille visiteurs montent à Belleville.
+B) Garantir des ateliers à loyer modéré :: Ancrer les artistes.
+   rec-0.02x20 bon+1 | g+2 c+2 d0 e+1
+   > Les artistes restent dans le quartier.
+C) Laisser l’association se débrouiller :: Autonomie.
+   bon-1 | g0 c+1 d+1 e0
+   > L’édition est réduite.
+
+=== cul-142 | culture | Le Sacré-Cœur sous les échafaudages
+La basilique doit être restaurée et la Ville en est propriétaire.
+A) Un grand chantier rapide :: Restaurer.
+   bud-4 bon+1 | g0 c+2 d+1 e+1
+   > La pierre blanche retrouve son éclat.
+B) Une souscription publique :: Mobiliser.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   ~20 bud+2 > Les dons affluent du monde entier.
+   > La souscription est lancée.
+C) Reporter les travaux :: Économie.
+   bon-1 | g-1 c+1 d+1 e0
+   ~40 bud-3 > Des pierres tombent : l’urgence coûte plus cher.
+   > Le chantier attend.
+
+=== cul-143 | culture | Les cloîtres et cours cachés de Paris
+Des propriétaires acceptent d’ouvrir des cours et jardins privés une fois par an.
+A) Organiser un week-end des jardins secrets :: Découverte.
+   bud-1 bon+2 | g+1 c+2 d+1 e+1
+   > Les Parisiens découvrent leur ville autrement.
+B) Une carte en ligne des lieux ouverts :: Simplicité.
+   bon+1 | g0 c+2 d+1 e+1
+   > La carte circule sur les réseaux.
+C) Ne rien organiser :: Discrétion.
+   bon-1 | g0 c+1 d+1 e0
+   > Les cours restent fermées.
+
+=== cul-144 | culture | Une biennale d’architecture
+Des architectes proposent une biennale qui exposerait des pavillons dans les parcs.
+A) La lancer avec des pavillons temporaires :: Audace.
+   bud-2 bon+1 economie+1 | g+1 c+2 d+1 e0
+   > Des pavillons étonnants poussent dans les parcs.
+B) Une version sobre dans les mairies :: Modestie.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Des maquettes sont exposées dans les mairies d’arrondissement.
+C) Refuser :: Venise suffit.
+   bon-1 | g0 c+1 d+1 e0
+   > Le projet s’arrête.
+
+=== cul-145 | culture | La statue équestre de Jeanne d’Arc redorée
+La dorure de la statue de la place des Pyramides s’écaille.
+A) La redorer à la feuille d’or :: Éclat.
+   bud-1 bon+1 | g0 c+2 d+1 e0
+   > Jeanne d’Arc brille à nouveau rue de Rivoli.
+B) Un plan de restauration de toutes les statues :: Patrimoine.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > Cent statues sont nettoyées en deux ans.
+C) Attendre :: Économie.
+   bon-1 | g0 c+1 d+1 e0
+   > La statue ternit encore.
