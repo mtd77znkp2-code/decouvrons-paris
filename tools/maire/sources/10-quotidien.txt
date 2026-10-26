@@ -1,0 +1,316 @@
+// Vie quotidienne : bruit, voisinage, animaux, commerces de proximité, démarches
+=== quo-001 | quotidien | Les trottinettes sur les trottoirs
+Des piétons se font renverser par des trottinettes qui roulent sur les trottoirs.
+A) Amendes fortes et contrôles :: Ferme.
+   rec-0.2x40 securite+2 | g0 c+2 d+3 e0
+   > Des agents verbalisent les trottinettes.
+   ~25 pop-1 > Une vidéo de verbalisation musclée fait le tour des réseaux.
+B) Créer plus de pistes cyclables :: Séparer les flux.
+   bud-20 transports+2 ecologie+1 | g+2 c+2 d0 e+3
+   > De nouvelles pistes séparent piétons et trottinettes.
+C) Campagne de prévention :: Doux.
+   bud-1 | g+1 c+2 d0 e+1
+   > Des affiches rappellent les règles.
+   ~40 bon-1 > Un nouvel accident relance la colère des piétons.
+
+=== quo-002 | quotidien | Les rats dans les jardins publics
+Des familles fuient les squares envahis de rats.
+A) Lancer une grande opération de dératisation :: Efficace, polémique.
+   bud-6 proprete+2 bon+1 | g0 c+2 d+2 e-2
+   > Les squares sont traités.
+   ~30 coh-1 > Les défenseurs des animaux protestent devant l’Hôtel de Ville.
+B) Poubelles fermées et nettoyage renforcé :: À la racine.
+   bud-8 rec-0.2x40 proprete+2 | g+1 c+2 d+1 e+2
+   > Les poubelles deviennent étanches.
+C) Fermer les squares le soir :: Simple, mal vécu.
+   proprete+1 bon-1 | g-1 c+1 d+2 e0
+   > Les squares ferment à 19 h.
+
+=== quo-003 | quotidien | Les boulangeries ferment le dimanche
+Plusieurs quartiers n’ont plus de boulangerie ouverte le dimanche ni en août.
+A) Créer un planning d’ouverture obligatoire :: Service garanti.
+   bon+1 economie-1 | g+1 c+2 d-1 e0
+   > Un tableau des boulangeries de garde est publié.
+B) Aider les boulangers qui ouvrent le dimanche :: Incitatif.
+   rec-0.1x50 bon+1 economie+1 | g+1 c+2 d+2 e0
+   > Une prime est versée aux boulangeries ouvertes.
+C) Laisser les boulangers libres :: Liberté.
+   bon-1 | g-1 c0 d+2 e0
+   > Les Parisiens marchent plus loin pour leur baguette.
+
+=== quo-004 | quotidien | Le bruit des bars en terrasse
+Les terrasses agrandies depuis le Covid empêchent des riverains de dormir.
+A) Fermer les terrasses à 22 h :: Calme, colère des patrons.
+   bon+1 economie-2 | g0 c+1 d-1 e+1
+   > Les terrasses ferment plus tôt.
+   ~35 pop-1 > Les restaurateurs manifestent en tablier devant l’Hôtel de Ville.
+B) Garder les terrasses mais avec des médiateurs :: Équilibre.
+   rec-0.2x40 bon+1 | g+1 c+3 d+1 e0
+   > Des « chuteurs » circulent le soir.
+C) Ne rien changer :: Économie d’abord.
+   economie+1 bon-1 | g-1 c0 d+2 e-1
+   > Les terrasses restent comme elles sont.
+
+=== quo-005 | quotidien | Les chiens et les crottes
+Les trottoirs sont souillés. Les habitants demandent des mesures.
+A) Amendes à 200 € et brigade dédiée :: Ferme.
+   rec-0.2x40 proprete+2 pop+1 | g0 c+2 d+3 e0
+   > La brigade verbalise les propriétaires négligents.
+B) Distributeurs de sacs dans toutes les rues :: Pratique.
+   bud-3 proprete+1 | g+1 c+2 d+1 e+1
+   > Des milliers de distributeurs sont installés.
+C) Créer des espaces canins clôturés :: Pour les chiens.
+   bud-5 proprete+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des parcs à chiens ouvrent dans chaque arrondissement.
+
+=== quo-006 | quotidien | Les toilettes publiques manquent
+Touristes et habitants se plaignent de l’absence de toilettes publiques.
+A) Installer 300 nouvelles sanisettes :: Confort.
+   bud-15 rec-0.2x60 proprete+2 bon+1 | g+2 c+2 d+1 e+1
+   > De nouvelles toilettes gratuites apparaissent partout.
+B) Payer les cafés pour ouvrir leurs toilettes :: Malin et peu cher.
+   rec-0.1x50 proprete+1 | g+1 c+3 d+2 e0
+   > Un autocollant signale les cafés partenaires.
+C) Installer des urinoirs écologiques :: Rapide, limité.
+   bud-3 proprete+1 | g0 c+1 d+1 e+2
+   > Des urinoirs à compost sont posés.
+   ~35 pop-1 > Ces urinoirs ouverts choquent les riverains de l’île Saint-Louis.
+
+=== quo-007 | quotidien | Les colis volés dans les halls
+Les vols de colis dans les halls d’immeubles se multiplient.
+A) Installer des consignes municipales :: Service public.
+   bud-6 services+1 securite+1 | g+2 c+2 d+1 e+1
+   > Des casiers à colis sont installés dans les mairies et gares.
+B) Obliger les livreurs à remettre en main propre :: Règlement.
+   economie-1 securite+1 | g+1 c+1 d0 e0
+   > Les livreurs doivent sonner à chaque fois.
+C) Laisser les syndics gérer :: Pas notre rôle.
+   bon-1 | g-1 c+1 d+2 e0
+   > Rien ne change.
+
+=== quo-008 | quotidien | La canicule dans les appartements
+Les logements sous les toits deviennent invivables pendant les vagues de chaleur.
+A) Ouvrir des salles climatisées dans chaque quartier :: Protéger.
+   bud-6 services+2 bon+1 | g+2 c+2 d+1 e+1
+   > Des « salles fraîches » ouvrent jour et nuit.
+B) Subventionner les volets et l’isolation :: Long terme.
+   bud-20 logement+2 ecologie+2 | g+2 c+2 d+1 e+3
+   > Les propriétaires reçoivent une aide pour s’équiper.
+   +25 bon+2 > Les étés suivants sont plus supportables.
+C) Distribuer des ventilateurs :: Rapide, symbolique.
+   bud-2 bon+1 | g+1 c+1 d+1 e-1
+   > Dix mille ventilateurs sont distribués.
+
+=== quo-009 | quotidien | Les marchés alimentaires en déclin
+Certains marchés de plein air perdent leurs commerçants.
+A) Baisser les droits de place :: Soutien.
+   rec-0.1x50 economie+1 achat+1 | g+1 c+2 d+2 e+1
+   > Les commerçants paient moins cher leur emplacement.
+B) Créer des marchés en soirée :: Nouveaux clients.
+   bud-2 bon+1 economie+1 | g+1 c+2 d+1 e+1
+   > Des marchés du soir s’installent.
+C) Regrouper les marchés :: Rationaliser.
+   rec+0.1x50 bon-1 | g-1 c+2 d+2 e0
+   > Trois marchés fusionnent.
+
+=== quo-010 | quotidien | Les embouteillages des livraisons
+Les camionnettes de livraison bloquent les rues tous les matins.
+A) Livraisons uniquement avant 8 h :: Fluidité, coût pour les commerces.
+   transports+2 economie-1 | g+1 c+2 d0 e+2
+   > Les livraisons se font à l’aube.
+   ~30 bon-1 > Les riverains se plaignent du bruit des camions à 6 h.
+B) Créer des hubs logistiques à vélo cargo :: Moderne.
+   bud-12 transports+1 ecologie+2 | g+2 c+2 d0 e+4
+   > Des vélos-cargos assurent les derniers kilomètres.
+C) Créer plus d’aires de livraison :: Simple.
+   bud-4 transports+1 | g0 c+2 d+2 e0
+   > Les aires de livraison doublent.
+
+=== quo-011 | quotidien | Les gardiens d’immeubles disparaissent
+Les bailleurs suppriment les gardiens. Les locataires se sentent abandonnés.
+A) Financer des gardiens dans les HLM :: Lien social.
+   rec-0.5x50 logement+2 securite+1 bon+1 | g+4 c+1 d0 e+1
+   > Des gardiens reviennent dans les cités.
+B) Remplacer par une conciergerie numérique :: Moderne, froid.
+   bud-4 logement+1 bon-1 | g-2 c+2 d+2 e0
+   > Une application remplace la loge.
+C) Créer des gardiens partagés entre immeubles :: Compromis.
+   rec-0.2x50 logement+1 | g+2 c+2 d+1 e0
+   > Un gardien s’occupe de trois immeubles.
+
+=== quo-012 | quotidien | La solitude des personnes âgées
+Une étude révèle qu’un Parisien âgé sur trois ne parle à personne pendant des jours.
+A) Créer un réseau de visites à domicile :: Humain.
+   rec-0.3x50 services+2 bon+2 | g+3 c+2 d+1 e+1
+   > Des visiteurs bénévoles et salariés passent chaque semaine.
+B) Lancer un numéro d’appel gratuit :: Simple.
+   rec-0.1x50 services+1 bon+1 | g+2 c+2 d+1 e0
+   > Le « Allô Voisins » répond 7 jours sur 7.
+C) Créer des colocations jeunes-seniors :: Malin.
+   bud-2 logement+1 bon+1 | g+2 c+3 d+1 e+1
+   > Des étudiants logent chez des seniors contre un peu de présence.
+
+=== quo-013 | quotidien | Les poussettes dans le métro
+Les parents ne peuvent pas circuler dans le métro faute d’ascenseurs.
+A) Exiger des ascenseurs dans 20 stations :: Grand chantier.
+   bud-40 transports+3 bon+1 | g+2 c+2 d+1 e+1
+   > Vingt stations auront des ascenseurs.
+   +30 pop+2 > Les premiers ascenseurs sont inaugurés.
+B) Créer des agents d’aide aux poussettes :: Humain.
+   rec-0.2x40 transports+1 bon+1 | g+2 c+2 d0 e0
+   > Des agents aident les parents dans les escaliers.
+C) Renforcer les bus accessibles :: Alternative.
+   rec-0.2x50 transports+1 | g+1 c+2 d+1 e+1
+   > Les bus deviennent la solution pour les familles.
+
+=== quo-014 | quotidien | Le prix des cantines d’entreprise
+Les salariés parisiens se plaignent de déjeuners à 18 € en moyenne.
+A) Ouvrir des restaurants municipaux à 6 € :: Pouvoir d’achat.
+   bud-15 rec-0.4x50 achat+3 bon+1 | g+4 c+1 d-2 e+1
+   > Des restaurants municipaux ouvrent dans les quartiers d’affaires.
+   ~30 economie-1 > Les restaurateurs dénoncent une concurrence déloyale.
+B) Négocier un menu à 10 € avec les restaurants :: Partenariat.
+   rec-0.1x50 achat+1 economie+1 | g+1 c+3 d+2 e0
+   > Un label « menu parisien » est créé.
+C) Ne rien faire :: Pas notre rôle.
+   achat-1 | g-2 c0 d+2 e0
+   > Les prix continuent de monter.
+
+=== quo-015 | quotidien | Les pigeons et les fientes
+Les habitants de certaines places se plaignent des pigeons.
+A) Installer des pigeonniers contraceptifs :: Doux et efficace.
+   bud-3 proprete+1 | g+1 c+2 d+1 e+2
+   > Des pigeonniers régulent la population.
+B) Interdire de nourrir les pigeons :: Ferme.
+   proprete+1 bon-1 | g0 c+1 d+2 e-1
+   > Une amende de 450 € est prévue.
+C) Faire venir des faucons :: Spectaculaire.
+   bud-2 proprete+1 bon+1 | g0 c+1 d+1 e+1
+   > Des fauconniers patrouillent sur les places.
+   ~30 pop-1 > Un faucon attaque un chihuahua sous les caméras.
+
+=== quo-016 | quotidien | Le bruit des chantiers le samedi
+Les chantiers privés font du bruit le samedi et réveillent les familles.
+A) Interdire les chantiers le samedi :: Calme, retards.
+   bon+2 economie-1 logement-1 | g+1 c+1 d-1 e+1
+   > Les chantiers s’arrêtent le samedi.
+B) Autoriser seulement l’après-midi :: Compromis.
+   bon+1 | g+1 c+3 d+1 e0
+   > Les marteaux-piqueurs attendent 14 h.
+C) Ne rien changer :: Laisser travailler.
+   bon-1 economie+1 | g-1 c0 d+2 e0
+   > Les chantiers continuent le samedi matin.
+
+=== quo-017 | quotidien | Les ascenseurs en panne dans les HLM
+Dans plusieurs tours, l’ascenseur est en panne depuis des semaines. Des personnes âgées ne sortent plus.
+A) Imposer des pénalités aux bailleurs :: Pression.
+   logement+1 bon+1 | g+2 c+2 d0 e0
+   > Les bailleurs paient des pénalités par jour de panne.
+B) Financer des portages de courses :: Urgence humaine.
+   rec-0.2x30 services+1 bon+1 | g+2 c+2 d+1 e+1
+   > Des livreurs montent les courses aux étages.
+C) Remplacer les ascenseurs vétustes :: Investissement.
+   bud-30 logement+3 | g+3 c+2 d+1 e+1
+   > Cinquante ascenseurs neufs sont commandés.
+   +15 pop+2 > Les nouveaux ascenseurs fonctionnent enfin.
+=== quo-018 | quotidien | Les SMS de la mairie
+Une application municipale propose d’envoyer des alertes aux habitants.
+A) Lancer une application complète :: Moderne.
+   bud-8 services+2 | g0 c+3 d+2 e+1
+   > L’application « Paris Alertes » est lancée.
+   ~25 pop-1 > Une panne envoie le même message dix fois en pleine nuit.
+B) Seulement des SMS en cas d’urgence :: Sobre.
+   bud-2 services+1 | g+1 c+2 d+1 e+1
+   > Les alertes sont réservées aux urgences.
+C) Rester sur les panneaux d’affichage :: Classique.
+   services-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-019 | quotidien | Les bancs publics retirés
+Des commerçants demandent de retirer des bancs pour éviter les regroupements.
+A) Retirer les bancs :: Ordre, inhumain.
+   securite+1 bon-2 | g-4 c0 d+3 e-1
+   > Les bancs disparaissent.
+   ~40 pop-2 > Des personnes âgées témoignent ne plus pouvoir se reposer.
+B) Garder et ajouter des bancs :: Ville accueillante.
+   bud-3 bon+2 | g+3 c+2 d-1 e+1
+   > De nouveaux bancs sont posés.
+C) Remplacer par des assises individuelles :: Compromis.
+   bud-4 bon+1 | g0 c+3 d+1 e0
+   > Des sièges individuels remplacent les bancs.
+
+=== quo-020 | quotidien | Les distributeurs de billets disparaissent
+Les banques ferment leurs distributeurs. Certains quartiers n’en ont plus.
+A) Installer des distributeurs dans les mairies :: Service.
+   bud-4 services+1 achat+1 | g+2 c+2 d+1 e0
+   > Des distributeurs reviennent dans les mairies.
+B) Négocier avec les banques :: Discussion.
+   bud-1 | g0 c+3 d+2 e0
+   > Les banques acceptent d’en garder quelques-uns.
+   ~40 bon-1 > Les banques ne tiennent pas leur promesse.
+C) Encourager le paiement par carte partout :: Modernité.
+   economie+1 bon-1 | g-1 c+2 d+2 e0
+   > Les commerces sont incités à accepter la carte dès 1 €.
+
+=== quo-021 | quotidien | Les nuisances des fêtes étudiantes
+Des soirées étudiantes dans les appartements empêchent tout un quartier de dormir.
+A) Créer une brigade anti-bruit de nuit :: Ferme.
+   rec-0.3x40 securite+1 bon+1 | g0 c+2 d+3 e0
+   > Une brigade intervient la nuit.
+B) Ouvrir des salles de fête pour étudiants :: Alternative.
+   bud-6 bon+1 | g+2 c+2 d0 e+1
+   > Des salles municipales accueillent les soirées.
+C) Médiation entre voisins :: Dialogue.
+   bud-1 bon+1 | g+2 c+2 d0 e+1
+   > Des médiateurs proposent des accords de voisinage.
+
+=== quo-022 | quotidien | Le permis de végétaliser
+Des habitants veulent planter au pied des arbres et sur les trottoirs.
+A) Généraliser le permis de végétaliser :: Participatif.
+   bud-1 ecologie+2 bon+1 | g+2 c+2 d0 e+4
+   > Des milliers de jardinières fleurissent.
+   ~25 proprete-1 > Certaines jardinières deviennent des poubelles.
+B) Le limiter à quelques rues :: Prudent.
+   ecologie+1 | g+1 c+2 d+1 e+2
+   > Quelques rues sont végétalisées.
+C) L’interdire :: Uniformité.
+   ecologie-1 bon-1 | g-2 c0 d+2 e-3
+   > Les trottoirs restent nus.
+
+=== quo-023 | quotidien | Les poubelles de tri trop petites
+Les bacs jaunes débordent deux jours après le ramassage.
+A) Doubler la collecte du tri :: Efficace, coûteux.
+   rec-0.4x50 proprete+2 ecologie+1 | g+1 c+2 d+1 e+2
+   > Les bacs jaunes sont vidés deux fois par semaine.
+B) Installer de grands conteneurs de rue :: Pratique.
+   bud-12 proprete+1 ecologie+1 | g+1 c+2 d+1 e+2
+   > Des conteneurs enterrés apparaissent dans les rues.
+C) Demander aux habitants de compacter :: Gratuit.
+   bud-1 proprete-1 | g0 c+1 d+1 e0
+   > Une affiche explique comment plier les cartons.
+   ~40 bon-1 > Les cartons s’empilent sur les trottoirs.
+=== quo-024 | quotidien | Les caves inondées
+Des orages ont inondé des centaines de caves.
+A) Aide d’urgence aux sinistrés :: Solidarité.
+   bud-10 bon+2 | g+2 c+2 d+1 e+1
+   > Les sinistrés reçoivent une aide rapide.
+B) Grand plan anti-inondation :: Long terme.
+   bud-35 ecologie+2 logement+1 | g+1 c+2 d+1 e+3
+   > Des bassins de rétention sont creusés.
+   +30 bon+2 > Le prochain orage ne fait aucun dégât.
+C) Renvoyer vers les assurances :: Pas d’argent public.
+   bon-2 | g-2 c+1 d+2 e0
+   > Les sinistrés attendent leurs assureurs.
+
+=== quo-025 | quotidien | Les parcs fermés la nuit en été
+Les Parisiens étouffent l’été et réclament l’ouverture des parcs toute la nuit.
+A) Ouvrir les grands parcs la nuit en été :: Fraîcheur.
+   rec-0.3x30 bon+2 securite-1 | g+2 c+1 d-2 e+2
+   > Les Buttes-Chaumont restent ouvertes jusqu’à l’aube.
+   ~30 proprete-2 > Les pelouses sont jonchées de déchets au petit matin.
+B) Ouvrir jusqu’à minuit seulement :: Compromis.
+   rec-0.1x30 bon+1 | g+1 c+3 d0 e+1
+   > Les parcs ferment à minuit en juillet et août.
+C) Garder les horaires :: Tranquillité.
+   bon-1 | g-1 c0 d+2 e-1
+   > Les grilles ferment à 21 h 30.

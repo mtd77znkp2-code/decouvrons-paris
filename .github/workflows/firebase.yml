@@ -13,6 +13,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Maire de Paris · base d'événements à jour et valide
+        run: node tools/maire/construire.mjs --verifier
+      - name: Maire de Paris · tests du moteur et équilibrage
+        run: node tools/maire/test-moteur.mjs 300
       - run: npm ci
         working-directory: functions
       - name: Mise en ligne

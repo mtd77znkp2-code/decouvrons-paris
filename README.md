@@ -1,6 +1,6 @@
 # Découvrons Paris
 
-Site de @decouvronsparis1 : Découvre ! (vidéos et carte), quiz, devine où c'est, devine le prix.
+Site de @decouvronsparis1 : Découvre ! (vidéos et carte), quiz, devine où c'est, devine le prix, Maire de Paris.
 
 - `public/` : le site.
   - `index.html` (pages), `css/site.css` (style), `img/` (images)
@@ -15,4 +15,8 @@ Site de @decouvronsparis1 : Découvre ! (vidéos et carte), quiz, devine où c'e
   - L'administration se fait avec « Se connecter avec Google » (compte indiqué dans `firestore.rules` et `index.html`).
 - Vidéos Instagram : fonction `insta` (`/api/insta`) et renouvellement quotidien `instaRefresh`.
   - Le token se colle dans l'admin → « Mes Reels » → « Connexion Instagram » (rangé dans `prive/instagram`, illisible depuis le site).
+- Maire de Paris (jeu de gestion, 100 semaines) : `public/maire/` (chargé seulement à l'ouverture du jeu)
+  - `moteur.js` : règles du jeu, sans interface (testable dans Node) ; `jeu.js` + `maire.css` : interface ; sauvegarde dans le navigateur.
+  - `data/` : événements validés, générés depuis `tools/maire/sources/*.txt` par `node tools/maire/construire.mjs`.
+  - Tests et simulation d'équilibrage : `node tools/maire/test-moteur.mjs`. Format des événements : `tools/maire/LISEZMOI.md`.
 - `public/spots.json` : lieux de départ de la carte Découvre (importés dans la base à la première ouverture de l'admin).

@@ -1,0 +1,319 @@
+// Transports : vélo, voiture, métro, bus, périphérique, piétons
+=== tra-001 | transports | La rue de Rivoli doit-elle rester cyclable ?
+La rue de Rivoli, réservée aux vélos et aux bus, est saturée de cyclistes. Les commerçants réclament le retour des voitures.
+A) Élargir encore la piste cyclable :: Cohérent pour le vélo, commerçants furieux.
+   bud-6 transports+3 ecologie+2 economie-2 | g+1 c0 d-3 e+5
+   > La piste est élargie à trois voies cyclables.
+   ~30 pop-2 > Les commerçants affichent « Rivoli se meurt » sur leurs vitrines.
+B) Rouvrir une voie aux livraisons et aux taxis :: Compromis.
+   bud-2 economie+2 transports+1 | g0 c+3 d+2 e-2
+   > Une voie est rouverte aux véhicules professionnels.
+C) Rendre la rue aux voitures :: Retour en arrière spectaculaire.
+   bud-5 economie+2 ecologie-4 transports-1 | g-2 c-1 d+4 e-5
+   > Les voitures reviennent sur Rivoli.
+   +3 bon-3 > Des milliers de cyclistes manifestent sur les quais.
+
+=== tra-002 | transports | Le périphérique à 50 km/h
+La vitesse sur le périphérique pourrait passer à 50 km/h pour réduire le bruit et la pollution. La banlieue est vent debout.
+A) Appliquer les 50 km/h :: Moins de bruit, colère des banlieusards.
+   ecologie+3 securite+1 pop-2 | g+1 c0 d-4 e+5
+   > Le périphérique passe à 50 km/h.
+   ~40 pop-2 > Les maires de banlieue dénoncent une « décision parisienne égoïste ».
+B) Passer à 60 km/h la nuit seulement :: Compromis pour les riverains.
+   ecologie+1 bon+1 | g+1 c+3 d0 e+2
+   > La nuit, la vitesse est réduite près des habitations.
+C) Garder les 70 km/h :: Fluidité préservée.
+   transports+1 ecologie-1 | g-1 c+1 d+3 e-4
+   > Rien ne change sur le périphérique.
+
+=== tra-003 | transports | Une ligne de tramway sur les Maréchaux
+Prolonger le tramway jusqu’à la porte Dauphine coûterait cher mais desservirait l’Ouest parisien.
+A) Lancer le prolongement :: Grand chantier, grand bénéfice.
+   bud-80 rec-0.5x40 transports+5 ecologie+3 | g+2 c+2 d0 e+4
+   > Les travaux du tramway démarrent.
+   +6 bon-2 > Les travaux perturbent fortement la circulation.
+   +25 transports+4 bon+3 > Le tramway est inauguré : la fréquentation dépasse les prévisions.
+B) Créer une ligne de bus à haut niveau de service :: Moins cher, moins attractif.
+   bud-20 transports+3 | g+1 c+3 d+1 e+2
+   > Des bus rapides en site propre circulent sur les Maréchaux.
+C) Abandonner le projet :: Économie, Ouest mal desservi.
+   transports-1 | g-1 c+1 d+2 e-3
+   > Le projet est enterré.
+
+=== tra-004 | transports | Les bus sont trop lents
+La vitesse moyenne des bus est tombée à 9 km/h dans le centre. Les usagers se découragent.
+A) Créer des couloirs de bus protégés partout :: Rapide et efficace, moins de place pour les voitures.
+   bud-15 transports+4 ecologie+1 | g+2 c+2 d-1 e+3
+   > Des couloirs protégés sont créés sur cinquante axes.
+B) Demander plus de bus à la Région :: Sans coût pour la ville.
+   transports+1 | g+1 c+2 d+1 e+1
+   > La Région promet quelques bus supplémentaires.
+   ~40 transports+2 > Deux nouvelles lignes de bus sont créées.
+C) Ne rien changer :: Les bus restent coincés.
+   transports-2 | g-1 c0 d+1 e-2
+   > Les bus restent lents.
+
+=== tra-005 | transports | Les trottinettes électriques en libre-service
+Les trottinettes en libre-service sont accusées d’accidents et d’encombrer les trottoirs. Faut-il les interdire ?
+A) Organiser un vote des Parisiens :: Démocratique et risqué pour les opérateurs.
+   bud-3 bon+1 pop+1 | g+1 c+3 d+1 e+1
+   > Les Parisiens votent à 89 % pour l’interdiction.
+   +2 securite+2 proprete+2 transports-1 > Les trottinettes disparaissent des rues.
+B) Les interdire directement :: Radical, sans débat.
+   securite+2 proprete+2 transports-1 pop-1 | g0 c-1 d+2 e-1
+   > Les trottinettes sont interdites.
+C) Les garder avec des règles strictes :: Moins de chaos, opérateurs ravis.
+   bud-1 transports+1 | g0 c+2 d+1 e+1
+   > Vitesse limitée et stationnement obligatoire en zones dédiées.
+
+=== tra-006 | transports | Une zone à faibles émissions
+Les vieux véhicules polluants pourraient être interdits dans Paris, ce qui toucherait surtout les ménages modestes.
+A) Appliquer l’interdiction avec des aides au changement :: Écologique et social, coûteux.
+   bud-30 ecologie+5 achat+1 | g+2 c+2 d-1 e+5
+   > Les vieux véhicules sont interdits, avec une prime pour changer.
+B) Appliquer l’interdiction sans aide :: Écologique, injuste pour certains.
+   ecologie+5 achat-3 pop-2 | g-2 c0 d0 e+4
+   > Les vieux véhicules sont interdits du jour au lendemain.
+   +4 pop-2 > Des artisans et des infirmières libérales manifestent.
+C) Reporter de deux ans :: Laisse le temps de s’adapter.
+   ecologie-2 achat+1 | g0 c+2 d+2 e-4
+   > L’interdiction est reportée.
+
+=== tra-007 | transports | Le RER B en panne une fois de plus
+Une panne bloque des dizaines de milliers de voyageurs pendant des heures. La colère monte contre l’État et la SNCF.
+A) Financer des navettes de bus de secours :: La ville aide, à ses frais.
+   bud-6 transports+2 pop+2 | g+1 c+2 d+1 e+1
+   > Des bus municipaux assurent des navettes pendant les pannes.
+B) Exiger un plan d’investissement de l’État :: Coup politique.
+   pop+2 | g+1 c+1 d+1 e+1
+   > Tu demandes un plan de rénovation du RER B.
+   ~35 transports+2 > L’État annonce de gros travaux de modernisation.
+C) Rester en retrait :: Ce n’est pas ta compétence.
+   pop-2 | g0 c0 d0 e0
+   > Les usagers regrettent ton silence.
+
+=== tra-008 | transports | Le parking des motos devient payant
+Les deux-roues motorisés stationnaient gratuitement. Faire payer rapporterait de l’argent et libérerait les trottoirs.
+A) Rendre le stationnement payant :: Recettes, colère des motards.
+   rec+0.6x40 proprete+1 ecologie+1 pop-2 | g+1 c+1 d-2 e+4
+   > Les motards doivent désormais payer.
+   ~40 pop-2 > Des milliers de motards bloquent le périphérique.
+B) Payant seulement pour les plus polluants :: Ciblé sur la pollution.
+   rec+0.3x40 ecologie+2 | g+1 c+3 d0 e+3
+   > Les motos électriques restent gratuites.
+C) Garder la gratuité :: Paix avec les motards.
+   pop+1 | g0 c0 d+2 e-3
+   > Rien ne change.
+
+=== tra-009 | transports | Une rue scolaire devant chaque école
+Les associations de parents demandent de fermer les rues devant les écoles aux voitures aux heures d’entrée et de sortie.
+A) Généraliser les rues scolaires :: Sécurité et air plus pur.
+   bud-8 securite+3 ecologie+2 bon+2 | g+2 c+2 d0 e+4
+   > Des centaines de rues ferment aux voitures aux heures d’école.
+   ~25 pop-1 > Des riverains se plaignent de ne plus pouvoir sortir leur voiture.
+B) Tester dans dix écoles :: Prudent, avant de généraliser.
+   bud-1 securite+1 | g+1 c+3 d+1 e+2
+   > Le test démarre devant dix écoles.
+C) Refuser :: La circulation reste fluide.
+   transports+1 securite-1 | g-1 c0 d+3 e-3
+   > Les rues restent ouvertes.
+
+=== tra-010 | transports | Le métro ouvert toute la nuit le week-end
+Les jeunes et les travailleurs de nuit réclament un métro 24 h/24 le week-end.
+A) Cofinancer l’ouverture avec la Région :: Coûteux, très attendu.
+   rec-1x40 transports+3 bon+2 economie+1 | g+2 c+2 d+1 e+2
+   > Quatre lignes roulent toute la nuit le samedi.
+B) Renforcer les bus de nuit :: Moins cher.
+   rec-0.3x40 transports+2 | g+1 c+2 d+1 e+1
+   > Les noctiliens passent toutes les dix minutes.
+C) Refuser :: Trop cher pour la ville.
+   transports-1 | g-1 c+1 d+2 e-1
+   > Le métro continue de fermer la nuit.
+
+=== tra-011 | transports | Les quais de Seine piétons
+Les voies sur berge sont fermées aux voitures depuis des années. Un nouveau collectif réclame leur réouverture.
+A) Les garder piétonnes et les embellir :: Cohérent, coût d’aménagement.
+   bud-10 ecologie+2 bon+2 | g+1 c+1 d-2 e+4
+   > Les quais accueillent désormais plages, jeux et guinguettes.
+B) Rouvrir aux voitures aux heures de pointe :: Compromis compliqué.
+   transports+1 ecologie-2 | g-1 c+2 d+2 e-3
+   > Les voitures reviennent de 7 h à 10 h et de 17 h à 20 h.
+   ~40 bon-2 > Des accidents surviennent lors des changements d’horaires.
+C) Rouvrir définitivement :: Fluidité pour les automobilistes.
+   transports+2 ecologie-4 bon-2 | g-2 c-1 d+4 e-5
+   > Les voitures reprennent possession des quais.
+
+=== tra-012 | transports | Les livraisons bloquent les rues
+Les camionnettes de livraison stationnent en double file et bloquent bus et vélos.
+A) Créer des centres de livraison en vélo-cargo :: Écologique, demande de l’espace.
+   bud-12 transports+2 ecologie+3 | g+1 c+2 d0 e+4
+   > Des centres de distribution en vélo-cargo ouvrent dans d’anciens parkings.
+B) Verbaliser la double file :: Simple et rapide.
+   rec+0.3x40 transports+2 economie-1 | g0 c+2 d+2 e+1
+   > Les agents verbalisent les camionnettes.
+C) Livrer la nuit :: Moins de bouchons, plus de bruit.
+   transports+2 bon-1 | g0 c+2 d+2 e0
+   > Les livraisons se font entre 22 h et 6 h.
+   ~30 bon-1 > Les riverains se plaignent du bruit nocturne.
+
+=== tra-013 | transports | Faut-il rendre les transports gratuits ?
+Plusieurs villes ont rendu leurs transports gratuits. Des élus demandent la même chose pour Paris.
+A) Gratuité pour les moins de 18 ans :: Ciblée, coûteuse.
+   rec-1x50 achat+3 transports+1 bon+2 | g+4 c+1 d-2 e+3
+   > Les jeunes voyagent gratuitement.
+B) Gratuité totale :: Énorme coût.
+   rec-4x50 achat+5 transports+2 pop+3 | g+5 c-2 d-5 e+4
+   > Les transports deviennent gratuits pour tous les Parisiens.
+   ~35 transports-3 > Le réseau saturé se dégrade.
+C) Refuser : priorité à la qualité :: Responsable budgétairement.
+   transports+1 | g-2 c+2 d+3 e-1
+   > Tu refuses la gratuité et investis dans les rames.
+
+=== tra-014 | transports | Une autoroute à vélo vers la banlieue
+Un projet relierait Paris à la banlieue par de larges pistes cyclables continues.
+A) Financer le projet avec la Région :: Grand investissement.
+   bud-30 transports+3 ecologie+3 | g+1 c+2 d0 e+5
+   > Le « RER Vélo » commence à se dessiner.
+B) Commencer par une seule ligne :: Prudent, avant de généraliser.
+   bud-8 transports+1 ecologie+1 | g+1 c+3 d+1 e+3
+   > Une première ligne relie Paris à Saint-Denis.
+C) Laisser la Région gérer seule :: Pas de dépense.
+   transports-1 | g0 c+1 d+2 e-2
+   > Le projet avance lentement.
+
+=== tra-015 | transports | Les taxis et VTC se disputent les places
+Les chauffeurs de taxi bloquent les gares pour protester contre la concurrence des VTC.
+A) Créer des voies réservées aux taxis :: Favorise les taxis.
+   bud-3 transports+1 | g+1 c+1 d+1 e0
+   > Des voies réservées apparaissent autour des gares.
+   ~30 pop-1 > Les chauffeurs VTC bloquent à leur tour l’aéroport.
+B) Négocier une charte entre taxis et VTC :: Le dialogue plutôt que l’affrontement.
+   bud-1 transports+1 | g+1 c+3 d+1 e0
+   > Une charte de cohabitation est signée.
+C) Rester neutre :: Pas ton combat.
+   pop-1 transports-1 | g0 c0 d0 e0
+   > Le blocage dure trois jours.
+
+=== tra-016 | transports | Les accidents de vélo augmentent
+Avec l’explosion du vélo, les accidents augmentent aussi, notamment aux carrefours.
+A) Sécuriser les carrefours avec des îlots :: Efficace, coûteux.
+   bud-20 securite+3 transports+2 | g+1 c+2 d+1 e+4
+   > Les grands carrefours sont équipés d’îlots protecteurs.
+B) Campagne de prévention et de respect du code :: Peu cher, effet limité.
+   bud-2 securite+1 | g0 c+2 d+2 e+1
+   > Une campagne rappelle les règles à tous.
+C) Verbaliser les cyclistes imprudents :: Ferme, impopulaire chez les cyclistes.
+   rec+0.2x40 securite+1 | g-1 c+1 d+3 e-2
+   > Les cyclistes grillant les feux sont verbalisés.
+   ~25 pop-1 > Les associations de cyclistes dénoncent une « chasse aux vélos ».
+
+=== tra-017 | transports | Le Grand Paris Express prend du retard
+Le nouveau métro du Grand Paris accumule les retards. Ses gares parisiennes ne seront pas prêtes à temps.
+? apres=15
+A) Financer une accélération des travaux :: La ville paie pour gagner du temps.
+   bud-40 transports+3 economie+1 | g0 c+2 d+1 e+1
+   > Les chantiers parisiens accélèrent.
+B) Négocier une compensation avec l’État :: Peut rapporter.
+   pop+1 | g0 c+3 d+1 e0
+   > Tu demandes une compensation.
+   ~40 bud+30 > L’État finance des bus de remplacement.
+C) Accepter le retard :: Pas de dépense.
+   transports-1 | g0 c0 d0 e0
+   > Le retard est acté.
+
+=== tra-018 | transports | Le stationnement résidentiel augmente
+Les tarifs du stationnement résidentiel n’ont pas bougé depuis dix ans. Les services proposent une forte hausse.
+A) Tripler le tarif :: Recettes, colère des résidents motorisés.
+   rec+0.8x40 ecologie+1 pop-3 | g0 c0 d-3 e+3
+   > Les résidents paient trois fois plus.
+B) Hausse modérée :: Compromis.
+   rec+0.3x40 pop-1 | g+1 c+3 d0 e+1
+   > Les tarifs augmentent de 30 %.
+C) Garder les tarifs :: Pas de colère.
+   pop+1 | g0 c0 d+2 e-2
+   > Les tarifs restent les mêmes.
+
+=== tra-019 | transports | Les escaliers du métro et les poussettes
+Les parents et les personnes à mobilité réduite ne peuvent pas utiliser la plupart des stations sans ascenseur.
+A) Cofinancer des ascenseurs dans vingt stations :: Coûteux, très attendu.
+   bud-40 transports+3 services+2 bon+2 | g+3 c+2 d+1 e+2
+   > Vingt stations seront équipées d’ascenseurs.
+B) Rendre toutes les lignes de bus accessibles :: Moins cher.
+   bud-8 transports+2 services+1 | g+2 c+2 d+1 e+1
+   > Toutes les lignes de bus deviennent accessibles.
+C) Laisser la RATP décider :: Pas de dépense.
+   transports-1 | g-1 c+1 d+1 e0
+   > Rien ne change dans le métro.
+
+=== tra-020 | transports | Une journée sans voiture chaque mois
+Les associations écologistes proposent une journée sans voiture par mois au lieu d’une par an.
+A) Accepter :: Fête populaire, automobilistes mécontents.
+   bud-3 ecologie+2 bon+2 pop-1 | g+1 c0 d-3 e+5
+   > Le premier dimanche du mois, Paris est sans voiture.
+B) Une fois par trimestre :: Compromis acceptable.
+   bud-1 ecologie+1 bon+1 | g+1 c+3 d0 e+2
+   > Quatre dimanches sans voiture par an.
+C) Refuser :: Une fois par an suffit.
+   pop+1 | g-1 c0 d+2 e-3
+   > La journée annuelle reste unique.
+
+=== tra-021 | transports | Le Vélib’ ne fonctionne plus bien
+Les stations sont vides ou pleines, les vélos souvent en panne. Les abonnés se désabonnent.
+A) Renégocier le contrat avec pénalités :: Ferme, peut rapporter.
+   bud+5 transports+2 | g+1 c+2 d+2 e+2
+   > L’opérateur paie des pénalités et s’engage à réparer.
+B) Investir dans de nouveaux vélos :: Coûteux, rapide.
+   bud-20 transports+3 ecologie+1 | g+1 c+2 d0 e+3
+   > Des milliers de vélos neufs arrivent.
+C) Ne rien faire :: Laisse le service se dégrader.
+   transports-2 | g0 c0 d+1 e-2
+   > Les abonnés continuent de partir.
+
+=== tra-022 | transports | Le pont fermé pour travaux
+Un pont doit fermer six mois pour réparation. Les bus et voitures devront faire un long détour.
+A) Travaux de nuit pour aller plus vite :: Coûteux, plus rapide.
+   bud-15 transports+1 bon-1 | g0 c+2 d+1 e0
+   > Le chantier tourne jour et nuit.
+B) Fermer six mois comme prévu :: Économique, pénible.
+   transports-3 bon-2 | g0 c+1 d+1 e0
+   > Le pont ferme pour six mois.
+   +12 transports+3 > Le pont rouvre, rénové.
+C) Garder une voie ouverte pour les bus :: Compromis.
+   bud-5 transports-1 | g+1 c+3 d0 e+2
+   > Une voie reste ouverte aux bus et aux vélos.
+
+=== tra-023 | transports | Les péniches de fret sur la Seine
+Un transporteur propose d’acheminer les marchandises par péniche jusqu’au cœur de Paris.
+A) Aménager des ports urbains :: Écologique, investissement.
+   bud-20 ecologie+3 transports+2 | g+1 c+2 d+1 e+4
+   > Des quais logistiques accueillent les péniches.
+B) Subventionner la première ligne :: Un test à petite échelle.
+   bud-5 ecologie+1 transports+1 | g+1 c+2 d+1 e+3
+   > Une ligne de péniches livre les supermarchés du centre.
+C) Refuser :: Les quais sont réservés aux loisirs.
+   bon+1 | g0 c0 d0 e-2
+   > Les quais restent dédiés aux promeneurs.
+
+=== tra-024 | transports | Les motos bruyantes
+Les motos et scooters trafiqués réveillent les habitants la nuit.
+A) Installer des radars sonores :: Moderne, dissuasif.
+   bud-5 bon+2 securite+1 | g+1 c+2 d+2 e+3
+   > Des radars mesurent le bruit et verbalisent automatiquement.
+B) Contrôles de police ciblés :: Classique.
+   bud-2 bon+1 | g0 c+2 d+3 e+1
+   > Des contrôles ont lieu chaque week-end.
+C) Ne rien faire :: Ce n’est pas une priorité.
+   bon-1 | g0 c0 d0 e-1
+   > Le bruit continue.
+
+=== tra-025 | transports | Les gares parisiennes saturées
+Gare du Nord, gare de Lyon : les abords sont saturés, les voyageurs se plaignent.
+A) Réaménager les parvis des gares :: Grand projet urbain.
+   bud-35 transports+3 securite+2 bon+1 | g+1 c+2 d+2 e+2
+   > Les parvis deviennent piétons et végétalisés.
+B) Créer des navettes vers les autres gares :: Pratique pour les voyageurs.
+   rec-0.3x40 transports+2 | g+1 c+2 d+1 e+1
+   > Des navettes relient les gares entre elles.
+C) Laisser la SNCF gérer :: Pas de dépense.
+   transports-1 | g0 c+1 d+1 e0
+   > Les abords restent saturés.

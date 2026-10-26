@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Découvrons Paris</title>
-<meta name="description" content="Les bons plans, les lieux secrets et les spots à ne pas rater à Paris, en vidéo et sur la carte. Et trois jeux pour tester ta culture parisienne.">
+<meta name="description" content="Les bons plans, les lieux secrets et les spots à ne pas rater à Paris, en vidéo et sur la carte. Et des jeux pour tester ta culture parisienne.">
 <meta name="theme-color" content="#0e1740">
 <meta property="og:title" content="Découvrons Paris">
-<meta property="og:description" content="Mes vidéos, mes adresses sur la carte de Paris et trois jeux sur Paris.">
+<meta property="og:description" content="Mes vidéos, mes adresses sur la carte de Paris et des jeux sur Paris.">
 <meta property="og:image" content="https://decouvrons-paris.web.app/img/logo.webp">
 <link rel="icon" href="img/icone.png">
 <link rel="apple-touch-icon" href="img/icone.png">
@@ -37,7 +37,7 @@
     <p class="hello">Que veux-tu découvrir ?</p>
     <div class="choices">
       <button class="choice" data-go="videos"><span class="t">🧭 Découvre !</span><span class="d">Mes vidéos et mes adresses sur la carte</span></button>
-      <button class="choice" data-go="jeux"><span class="t">🎮 Jeux</span><span class="d">Trois jeux pour tester ta culture parisienne</span></button>
+      <button class="choice" data-go="jeux"><span class="t">🎮 Jeux</span><span class="d">Teste ta culture parisienne, ou deviens maire de Paris</span></button>
     </div>
   </div>
 </div>
@@ -67,6 +67,7 @@
     <button class="gtile on" type="button" data-g="g-loc"><span class="gic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4C16 4 10 10 10 18c0 10 14 26 14 26s14-16 14-26C38 10 32 4 24 4z" fill="#0e1740"/><circle cx="24" cy="18" r="5.5" fill="#f5b21a"/></svg></span><span class="gn">Devine où c’est</span></button>
     <button class="gtile" type="button" data-g="g-quiz"><span class="gic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M16 17c0-5 3.5-8 8-8s8 3 8 8c0 3.5-2 5-5 7-2 1.5-3 3-3 6" fill="none" stroke="#0e1740" stroke-width="5" stroke-linecap="round"/><circle cx="24" cy="39" r="3.2" fill="#0e1740"/></svg></span><span class="gn">Quiz sur Paris</span></button>
     <button class="gtile" type="button" data-g="g-prix"><span class="gic"><svg viewBox="0 0 48 48" aria-hidden="true"><text x="24" y="34" text-anchor="middle" font-size="32" font-weight="800" fill="#0e1740" font-family="system-ui,sans-serif">€</text></svg></span><span class="gn">Devine le prix</span></button>
+    <button class="gtile" type="button" data-g="g-maire"><span class="gic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 20 24 9l16 11z" fill="#0e1740"/><rect x="11" y="22" width="26" height="15" fill="#0e1740"/><rect x="15" y="25" width="4" height="9" fill="#2b4fb3"/><rect x="22" y="25" width="4" height="9" fill="#fff"/><rect x="29" y="25" width="4" height="9" fill="#c8352e"/><rect x="8" y="38" width="32" height="3" fill="#0e1740"/></svg></span><span class="gn">Maire de Paris</span></button>
   </div>
   <div class="games">
     <div class="game" id="g-loc">
@@ -100,6 +101,13 @@
       <div id="p-box"></div>
       <div class="lb" id="lb-prix"></div>
     </div>
+    <div class="game" id="g-maire" hidden>
+      <h3>Maire de Paris</h3>
+      <p class="mnote">🛠 Ce jeu est en maintenance. Reviens très vite !</p>
+      <p class="mnote-adm">🛠 Mode maintenance : les joueurs ne peuvent pas jouer. Toi seul peux le tester.</p>
+      <div id="m-app"><p class="msg">Chargement…</p></div>
+      <div class="lb" id="lb-maire"></div>
+    </div>
   </div>
 </section>
 </div>
@@ -119,6 +127,7 @@
       <button type="button" role="tab" data-t="quiz">Quiz sur Paris<span class="n"></span></button>
       <button type="button" role="tab" data-t="prix">Devine le prix<span class="n"></span></button>
       <button type="button" role="tab" data-t="lieux">Devine où c’est<span class="n"></span></button>
+      <button type="button" role="tab" data-t="maire">Maire de Paris<span class="n"></span></button>
       <button type="button" role="tab" data-t="spots">Carte Découvre<span class="n"></span></button>
       <button type="button" role="tab" data-t="reels">Mes Reels<span class="n"></span></button>
       <button type="button" role="tab" data-t="videos">Vidéos TikTok<span class="n"></span></button>

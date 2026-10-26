@@ -1,0 +1,317 @@
+// Économie : commerce, emploi, entreprises, attractivité
+=== eco-101 | economie | Une grande enseigne veut s’installer aux Halles
+Un géant du commerce en ligne veut ouvrir un immense magasin-entrepôt au cœur de Paris.
+A) Accepter l’installation :: Emplois et recettes, petits commerces menacés.
+   rec+0.5x50 economie+4 achat+1 | g-3 c+1 d+4 e-3
+   > Le magasin ouvre et crée 400 emplois.
+   +10 economie-2 bon-1 > Plusieurs libraires et boutiques de quartier ferment.
+B) Imposer des conditions strictes :: Négociation difficile.
+   economie+1 | g+1 c+3 d+1 e+1
+   > Tu exiges des livraisons à vélo et un espace pour les commerces locaux.
+   ~45 economie+2 > L’enseigne accepte les conditions.
+C) Refuser :: Protège le commerce de proximité.
+   economie-1 bon+1 | g+3 c0 d-3 e+3
+   > Le projet est refusé.
+
+=== eco-102 | economie | Les commerces de quartier ferment les uns après les autres
+Dans certaines rues, une boutique sur cinq est vide. Les habitants déplorent la disparition des commerces de proximité.
+A) Racheter des murs commerciaux pour les louer moins cher :: Investissement public.
+   bud-30 economie+3 bon+2 | g+3 c+2 d0 e+2
+   > La ville devient propriétaire de centaines de boutiques.
+   +15 rec+0.4x40 > Les loyers perçus remboursent une partie de l’investissement.
+B) Taxer les locaux commerciaux vides :: Incite à louer.
+   rec+0.3x40 economie+1 | g+2 c+2 d-1 e+1
+   > Les propriétaires de locaux vides paient une taxe.
+C) Organiser des boutiques éphémères :: Animation à petit prix.
+   bud-3 economie+1 bon+1 | g+1 c+3 d+1 e+1
+   > Des créateurs occupent les vitrines vides pour quelques mois.
+
+=== eco-103 | economie | Les Jeux de la ville : accueillir un grand salon international
+Paris est en concurrence avec Londres pour accueillir un grand salon technologique.
+A) Proposer des aides et des locaux gratuits :: Coûteux, prestigieux.
+   bud-20 economie+4 | g-1 c+2 d+3 e0
+   > Paris remporte le salon.
+   +6 economie+2 rec+0.3x20 > Hôtels et restaurants affichent complet pendant le salon.
+B) Candidater sans aide particulière :: Pas de dépense.
+   economie+1 | g0 c+1 d+1 e0
+   > Le dossier part sans offre particulière.
+   ~60 economie-1 pop-1 > Londres l’emporte.
+C) Ne pas candidater :: Pas d’impact.
+   coh+1 | g+1 c0 d-2 e+1
+   > Tu laisses filer l’événement.
+
+=== eco-104 | economie | Le chômage des jeunes augmente
+Dans les quartiers populaires, un jeune sur quatre est sans emploi.
+A) Créer des emplois aidés dans la ville :: Rapide, coûteux.
+   rec-1x40 economie+2 achat+2 bon+1 | g+4 c+1 d-2 e+1
+   > Mille jeunes sont recrutés en contrats aidés.
+B) Soutenir l’apprentissage avec les entreprises :: Durable, résultats plus lents.
+   bud-10 economie+3 | g+1 c+3 d+3 e+1
+   > Des centaines d’apprentis rejoignent les entreprises parisiennes.
+C) Organiser un grand forum de l’emploi :: Peu cher, effet limité.
+   bud-2 economie+1 | g+1 c+2 d+2 e0
+   > Le forum attire 20 000 jeunes.
+
+=== eco-105 | economie | Le dimanche, ouvrir ou fermer ?
+Les grands magasins demandent à ouvrir tous les dimanches. Les syndicats sont contre.
+A) Autoriser l’ouverture le dimanche :: Économie dynamisée, salariés mécontents.
+   economie+3 rec+0.2x40 | g-4 c+1 d+4 e-1
+   > Les magasins ouvrent tous les dimanches.
+   ~35 pop-2 > Une grève des salariés du commerce paralyse les grands magasins.
+B) Seulement dans les zones touristiques :: Compromis.
+   economie+2 | g-1 c+3 d+2 e0
+   > Les zones touristiques ouvrent le dimanche.
+C) Refuser :: Le dimanche reste un jour de repos.
+   bon+1 economie-1 | g+4 c0 d-3 e+1
+   > Le dimanche reste fermé.
+
+=== eco-106 | economie | Une usine historique de la ville va fermer
+Une entreprise centenaire, installée dans le 13e, annonce son départ en province et la suppression de 300 emplois.
+A) Proposer des aides pour la garder :: Coûteux, pas garanti.
+   bud-15 economie+1 | g+1 c+1 d+2 e0
+   > Tu proposes un loyer réduit et des aides.
+   ~50 economie+3 pop+2 > L’entreprise reste à Paris.
+B) Accompagner les salariés vers d’autres emplois :: Social, l’usine part quand même.
+   bud-8 achat+1 bon+1 | g+3 c+2 d0 e+1
+   > Une cellule de reclassement aide les salariés.
+C) Racheter le site pour y créer un pôle d’artisans :: Projet ambitieux.
+   bud-40 economie+3 bon+1 | g+2 c+2 d+1 e+2
+   > Le site devient un pôle d’artisanat et de réparation.
+
+=== eco-107 | economie | Les cafés et restaurants manquent de personnel
+Les restaurateurs n’arrivent plus à recruter : les salaires sont trop bas pour vivre à Paris.
+A) Créer une école municipale de la restauration :: Formation durable.
+   bud-12 economie+2 | g+2 c+2 d+2 e+1
+   > Une école forme 500 jeunes par an.
+B) Faciliter le logement des saisonniers :: Pratique et ciblé.
+   bud-6 logement+1 economie+2 | g+1 c+2 d+1 e0
+   > Des logements temporaires sont réservés aux saisonniers.
+C) Laisser le marché s’ajuster :: Pas d’intervention.
+   economie-1 | g-1 c0 d+2 e0
+   > Certains restaurants réduisent leurs horaires.
+
+=== eco-108 | economie | Les marchés alimentaires sont trop chers
+Les prix sur les marchés parisiens ont fortement augmenté. Les familles modestes n’y vont plus.
+A) Créer des étals solidaires à prix réduits :: Social, coûteux.
+   rec-0.4x40 achat+3 bon+1 | g+4 c+1 d-1 e+2
+   > Chaque marché accueille un étal solidaire.
+B) Baisser les droits de place des commerçants :: Les prix pourraient baisser.
+   rec-0.3x40 achat+1 economie+1 | g+1 c+2 d+2 e+1
+   > Les commerçants paient moins cher leur place.
+   ~40 achat-1 > Les commerçants gardent la baisse pour eux : les prix ne bougent pas.
+C) Ouvrir des épiceries municipales :: Ambitieux.
+   bud-20 achat+3 economie+1 | g+4 c0 d-3 e+2
+   > Des épiceries municipales ouvrent dans les quartiers populaires.
+
+=== eco-109 | economie | Les start-up quittent Paris pour Londres
+Un rapport montre que des start-up prometteuses partent faute de locaux abordables.
+A) Créer un grand incubateur municipal :: Investissement.
+   bud-30 economie+4 | g0 c+3 d+3 e+1
+   > Un incubateur de 1 000 postes ouvre dans un ancien entrepôt.
+B) Baisser une taxe locale sur les entreprises innovantes :: Attractif, perte de recettes.
+   rec-0.5x40 economie+3 | g-3 c+1 d+4 e0
+   > Les jeunes entreprises paient moins de taxes.
+C) Ne rien faire :: Ce n’est pas une priorité.
+   economie-2 | g+1 c0 d-2 e0
+   > Les départs continuent.
+
+=== eco-110 | economie | Un festival de la gastronomie
+Les chefs proposent un grand festival de la gastronomie dans les rues de Paris.
+A) Financer le festival :: Animation et tourisme.
+   bud-8 economie+3 bon+2 | g0 c+2 d+2 e0
+   > Le festival attire un million de visiteurs.
+B) Version « cuisine de quartier » à petits prix :: Populaire.
+   bud-5 bon+2 achat+1 | g+3 c+2 d0 e+2
+   > Des cuisiniers de quartier font découvrir leurs plats.
+C) Laisser les chefs l’organiser seuls :: Sans dépense.
+   economie+1 | g0 c+1 d+2 e0
+   > Le festival est plus petit, mais a lieu.
+
+=== eco-111 | economie | Les livreurs à vélo veulent un statut
+Les livreurs des plateformes réclament de meilleures conditions de travail et une aide de la ville.
+A) Créer une coopérative municipale de livraison :: Original, coûteux.
+   bud-10 economie+1 achat+1 | g+4 c+1 d-3 e+3
+   > Une coopérative de livreurs salariés voit le jour.
+B) Ouvrir des lieux de repos pour les livreurs :: Concret et peu coûteux.
+   bud-4 bon+1 | g+2 c+2 d+1 e+1
+   > Des maisons des livreurs ouvrent avec toilettes et recharge.
+C) Rester neutre :: Pas ta compétence.
+   pop-1 | g-2 c+1 d+2 e-1
+   > Les livreurs manifestent devant l’Hôtel de Ville.
+
+=== eco-112 | economie | Les artisans d’art menacés
+Ébénistes, doreurs, luthiers : les ateliers d’artisans d’art disparaissent faute de loyers abordables.
+A) Réserver des ateliers municipaux à loyer bas :: Patrimoine vivant.
+   bud-8 economie+2 bon+1 | g+2 c+2 d+1 e+2
+   > Cinquante ateliers sont réservés aux métiers d’art.
+B) Créer un label « fabriqué à Paris » :: Peu cher, visibilité.
+   bud-2 economie+1 | g+1 c+2 d+2 e+1
+   > Le label aide les artisans à vendre.
+C) Ne rien faire :: Le marché décide.
+   economie-1 | g-1 c0 d+2 e-1
+   > Les ateliers continuent de fermer.
+
+=== eco-113 | economie | Les bouquinistes des quais en danger
+Les bouquinistes vendent de moins en moins de livres. Certains se mettent à vendre des souvenirs en plastique.
+A) Les aider financièrement :: Préserve un symbole.
+   bud-2 economie+1 bon+1 | g+2 c+2 d+1 e+1
+   > Les bouquinistes reçoivent une aide pour rénover leurs boîtes.
+B) Imposer 75 % de livres anciens :: Authenticité, revenus en baisse.
+   economie-1 bon+1 | g0 c+1 d+1 e+1
+   > Les porte-clés tour Eiffel sont limités.
+C) Laisser faire :: Liberté commerciale.
+   economie+1 bon-1 | g-1 c0 d+2 e-1
+   > Les souvenirs remplacent peu à peu les livres.
+
+=== eco-114 | economie | Les grands hôtels demandent moins de taxes
+Les hôteliers estiment que les taxes parisiennes les rendent moins compétitifs que Londres ou Rome.
+A) Baisser la taxe de séjour :: Attractivité, recettes en baisse.
+   rec-0.6x40 economie+2 | g-3 c+1 d+4 e-1
+   > La taxe de séjour baisse.
+B) La moduler selon l’engagement écologique :: Incitation verte.
+   rec-0.2x40 ecologie+2 economie+1 | g+1 c+3 d+1 e+3
+   > Les hôtels écologiques paient moins.
+C) Refuser :: Les touristes peuvent payer.
+   rec+0.2x40 | g+2 c0 d-2 e+1
+   > Les taxes restent les mêmes.
+
+=== eco-115 | economie | Le marché aux puces de Saint-Ouen en crise
+Les marchés aux puces aux portes de Paris perdent leurs visiteurs.
+A) Financer une grande campagne de promotion :: Visibilité.
+   bud-4 economie+2 | g0 c+2 d+2 e+1
+   > Une campagne internationale vante les puces.
+B) Créer une navette gratuite depuis le centre :: Pratique et durable.
+   rec-0.2x40 economie+2 transports+1 | g+1 c+2 d+1 e+2
+   > Une navette relie les Halles aux puces le week-end.
+C) Ne pas intervenir :: C’est hors de Paris.
+   economie-1 | g0 c+1 d+1 e0
+   > Les puces continuent de décliner.
+
+=== eco-116 | economie | La filière du luxe veut plus d’espace
+Les maisons de luxe veulent agrandir leurs boutiques avenue Montaigne et faubourg Saint-Honoré.
+A) Faciliter les extensions :: Recettes et emplois.
+   rec+0.4x40 economie+3 | g-3 c+1 d+4 e-1
+   > Les boutiques s’agrandissent.
+B) Exiger des contreparties sociales :: Négociation.
+   economie+1 achat+1 | g+2 c+3 d0 e+1
+   > Les maisons financent des formations aux métiers d’art.
+C) Bloquer : assez de luxe dans le centre :: Signal politique.
+   economie-2 | g+3 c-1 d-4 e+1
+   > Les extensions sont refusées.
+
+=== eco-117 | economie | Les vendeurs de marrons chauds et les licences
+Les petits vendeurs ambulants traditionnels disparaissent, remplacés par des ventes non autorisées.
+A) Créer des licences pour vendeurs ambulants :: Encadre et légalise.
+   rec+0.1x40 economie+1 securite+1 | g+1 c+3 d+2 e+1
+   > Des licences sont créées pour les vendeurs traditionnels.
+B) Interdire toute vente ambulante :: Ferme, ordre.
+   securite+1 economie-1 | g-2 c0 d+3 e-1
+   > La vente ambulante est interdite.
+C) Laisser faire :: Liberté du commerce.
+   securite-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== eco-118 | economie | La ville peut accueillir un grand siège social
+Une multinationale hésite entre Paris et Amsterdam pour son nouveau siège européen.
+A) Offrir un terrain et des aides :: Coûteux, gros enjeu.
+   bud-35 economie+4 | g-2 c+2 d+4 e-1
+   > La multinationale choisit Paris : 3 000 emplois arrivent.
+   +12 rec+0.5x40 > Les nouvelles recettes fiscales arrivent.
+B) Mettre en avant la qualité de vie sans aide :: Un pari, sans dépense.
+   economie+1 | g0 c+2 d+1 e+1
+   > Tu vantes la ville sans offrir d’argent.
+   ~45 economie+3 > Séduite par la ville, l’entreprise choisit Paris.
+C) Ne pas candidater :: Pas de cadeau aux multinationales.
+   coh+1 | g+3 c-1 d-3 e+1
+   > Amsterdam l’emporte.
+
+=== eco-119 | economie | Les vitrines brisées après une manifestation
+Après une manifestation qui a dégénéré, des commerçants ont vu leurs vitrines brisées.
+A) Indemniser rapidement les commerçants :: Solidarité.
+   bud-6 economie+2 | g+1 c+2 d+2 e0
+   > Un fonds d’urgence indemnise les commerçants.
+B) Demander à l’État de payer :: Pas de dépense.
+   economie-1 | g0 c+1 d+1 e0
+   > Tu demandes une indemnisation de l’État.
+   ~40 economie+1 > L’État accepte de payer une partie.
+C) Rien de particulier :: Les assurances couvriront.
+   economie-1 pop-1 | g0 c0 d0 e0
+   > Les commerçants se sentent abandonnés.
+
+=== eco-120 | economie | Les marchés de Noël sont envahis de produits importés
+Les chalets des marchés de Noël vendent surtout des produits importés bas de gamme.
+A) Réserver les chalets aux artisans locaux :: Authenticité.
+   economie+1 bon+1 | g+2 c+2 d+1 e+2
+   > Les marchés ne vendent plus que des produits artisanaux.
+B) Augmenter le prix des chalets :: Plus de recettes, moins de chalets.
+   rec+0.2x20 economie-1 | g0 c+1 d+2 e0
+   > Les chalets coûtent plus cher.
+C) Laisser faire :: Pas d’intervention.
+   bon-1 | g-1 c0 d+1 e-1
+   > Rien ne change.
+
+=== eco-121 | economie | Une crise touristique frappe Paris
+? suite
+Les annulations s’enchaînent après une série de grèves et de mauvaises images. Hôtels et restaurants s’inquiètent.
+A) Campagne mondiale « Paris vous attend » :: Coûteux, peut relancer.
+   bud-15 economie+3 | g0 c+2 d+3 e0
+   > La campagne passe sur toutes les chaînes internationales.
+B) Soutenir les petits commerces touchés :: Ciblé et social.
+   bud-10 economie+2 achat+1 | g+3 c+2 d0 e+1
+   > Un fonds aide les commerces les plus touchés.
+C) Attendre que ça passe :: Pas de dépense.
+   economie-3 | g0 c0 d0 e0
+   > La saison touristique est catastrophique.
+
+=== eco-122 | economie | Les grèves dans les transports se multiplient
+Une série de grèves paralyse les transports chaque semaine. Les commerçants perdent beaucoup.
+? apres=10
+A) Financer des solutions de secours :: Vélos et navettes gratuits.
+   bud-8 transports+2 economie+1 | g+1 c+2 d+1 e+2
+   > La ville met en place des alternatives pendant les grèves.
+B) Prendre position pour les grévistes :: Cohérent à gauche.
+   pop-1 | g+4 c-1 d-4 e+1
+   > Tu soutiens les revendications.
+   => eco-121 @4
+C) Prendre position contre les grévistes :: Cohérent à droite.
+   pop-1 | g-4 c0 d+4 e-1
+   > Tu dénonces une prise d’otage des usagers.
+   => eco-121 @4
+
+=== eco-123 | economie | Les commerces de nuit troublent le voisinage
+Les épiceries de nuit vendent de l’alcool tard et attirent des attroupements.
+A) Interdire la vente d’alcool après 22 h :: Ordre, perte pour les commerçants.
+   securite+2 bon+1 economie-1 | g0 c+2 d+3 e0
+   > La vente d’alcool est interdite la nuit.
+B) Discuter avec les commerçants :: Le dialogue, sans contrainte.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Une charte est signée.
+   ~40 securite-1 > Certaines épiceries ne respectent pas la charte.
+C) Ne rien faire :: Commerce libre.
+   bon-1 | g0 c0 d+1 e0
+   > Les nuisances continuent.
+
+=== eco-124 | economie | Paris veut attirer les tournages de films
+Les tournages rapportent de l’argent mais gênent les riverains.
+A) Faciliter les tournages :: Rayonnement et recettes.
+   rec+0.3x40 economie+2 bon-1 | g0 c+2 d+3 e0
+   > Les tournages se multiplient.
+B) Réguler et dédommager les riverains :: Équilibre.
+   rec+0.1x40 economie+1 bon+1 | g+2 c+3 d+1 e+1
+   > Les riverains reçoivent une compensation.
+C) Limiter fortement les tournages :: Tranquillité.
+   economie-2 bon+1 | g+1 c0 d-2 e+1
+   > Les tournages partent à Lyon et Marseille.
+
+=== eco-125 | economie | La monnaie locale parisienne
+Des associations proposent une monnaie locale pour soutenir les commerces de proximité.
+A) Lancer la monnaie locale :: Original, effet incertain.
+   bud-4 economie+1 achat+1 | g+3 c+1 d-2 e+3
+   > La « Pêche » parisienne est lancée.
+   ~40 economie+2 > Des milliers de commerces l’acceptent.
+B) Soutenir l’expérience sans s’engager :: Prudent et symbolique.
+   bud-1 economie+1 | g+1 c+3 d0 e+2
+   > La ville soutient symboliquement l’initiative.
+C) Refuser :: Pas utile.
+   coh+0.5 | g-1 c+1 d+2 e-2
+   > Le projet est abandonné.

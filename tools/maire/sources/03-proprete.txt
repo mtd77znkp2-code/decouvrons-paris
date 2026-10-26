@@ -1,0 +1,322 @@
+// Propreté : déchets, rats, tags, encombrants, toilettes publiques
+=== pro-001 | proprete | Paris face à une crise de propreté
+Les déchets s’accumulent dans plusieurs quartiers. Les habitants réclament une intervention rapide, mais le budget municipal est déjà sous pression.
+A) Recruter des agents supplémentaires :: Augmentation des dépenses, amélioration potentielle de la propreté.
+   rec-1.5x40 proprete+6 bon+2 | g+3 c+1 d-1 e+1
+   > Trois cents agents rejoignent les équipes de nettoyage.
+B) Sous-traiter le nettoyage à une entreprise privée :: Résultats rapides, risque de critiques et de surcoûts.
+   bud-20 rec-1x30 proprete+5 | g-4 c+1 d+3 e-1
+   > Une entreprise privée prend en charge trois arrondissements.
+   ~35 pop-2 > Les agents municipaux font grève contre la privatisation.
+C) Réorganiser les équipes existantes :: Économies immédiates, résultats incertains.
+   rec+0.5x20 proprete+1 | g-1 c+3 d+2 e0
+   > Les tournées sont réorganisées.
+   ~45 proprete-3 bon-2 > La réorganisation tourne mal : certaines rues ne sont plus nettoyées.
+
+=== pro-002 | proprete | Les rats envahissent les jardins publics
+Des vidéos de rats courant en plein jour dans des jardins du centre font le tour du monde.
+A) Campagne massive de dératisation :: Efficace à court terme.
+   bud-12 proprete+4 pop+1 | g0 c+2 d+2 e-2
+   > Des milliers de pièges sont posés. Les rats se font plus discrets.
+   +10 proprete-2 > Les rats reviennent : la population se reconstitue vite.
+B) Remplacer toutes les poubelles par des modèles fermés :: Durable, cher.
+   bud-25 proprete+5 ecologie+1 | g+1 c+2 d+1 e+2
+   > Trente mille poubelles hermétiques sont installées.
+C) Fermer les jardins le soir et sensibiliser les habitants :: Peu coûteux.
+   bud-2 proprete+2 bon-1 | g0 c+2 d+1 e+1
+   > Les jardins ferment plus tôt et des affiches demandent de ne pas nourrir les pigeons.
+   ~30 pop-1 > Les vidéos de rats continuent de circuler sur les réseaux.
+
+=== pro-003 | proprete | Grève des éboueurs
+Les éboueurs entament une grève contre la réforme de leurs horaires. Les poubelles débordent en quelques jours.
+? apres=4
+A) Céder aux revendications :: Les rues sont propres, le budget souffre.
+   rec-1.5x40 proprete+4 bon+2 | g+4 c0 d-4 e+1
+   > La grève s’arrête immédiatement. Les camions repartent.
+B) Réquisitionner une entreprise privée :: Rapide, conflit durci.
+   bud-15 proprete+3 | g-4 c0 d+4 e-1
+   > Des camions privés ramassent les ordures sous protection policière.
+   ~40 pop-3 > Les syndicats appellent à une grève générale des agents de la ville.
+C) Négocier pendant que les poubelles s’entassent :: Économique, odeur garantie.
+   proprete-6 bon-3 | g+1 c+3 d0 e0
+   > Les négociations durent dix jours. Des montagnes de sacs bloquent les trottoirs.
+   +3 proprete+5 > Un accord est trouvé : le ramassage reprend.
+
+=== pro-004 | proprete | Les tags se multiplient sur les façades
+Les habitants se plaignent de tags sur les façades, les volets et le mobilier urbain, effacés puis aussitôt refaits.
+A) Effacement gratuit en 48 heures partout :: Efficace, coûteux.
+   rec-0.8x40 proprete+4 bon+1 | g+1 c+2 d+2 e0
+   > Une brigade anti-tags efface tout en deux jours.
+B) Créer des murs d’expression libre :: Culturel, effet partiel.
+   bud-3 proprete+2 bon+1 | g+2 c+2 d-1 e+2
+   > Des murs dédiés au street art ouvrent dans chaque arrondissement.
+C) Amendes lourdes et caméras :: Dissuasif, controversé.
+   bud-4 securite+1 proprete+2 | g-2 c+1 d+4 e-1
+   > Les amendes passent à 1 500 €.
+   ~25 pop-1 > Un artiste reconnu est verbalisé : la polémique enfle.
+
+=== pro-005 | proprete | Les encombrants abandonnés sur les trottoirs
+Matelas, canapés et frigos s’entassent sur les trottoirs. Le service de ramassage est saturé.
+A) Ramassage gratuit sans rendez-vous :: Rues dégagées, coûteux.
+   rec-0.6x40 proprete+4 bon+1 | g+2 c+1 d0 e0
+   > Les encombrants sont ramassés chaque jour.
+B) Amendes pour les dépôts sauvages :: Responsabilise.
+   rec+0.2x40 proprete+2 | g-1 c+2 d+3 e+1
+   > Une brigade traque les auteurs de dépôts grâce aux adresses sur les colis.
+C) Ouvrir des ressourceries dans chaque quartier :: Réemploi, écologique.
+   bud-10 proprete+2 ecologie+3 achat+1 | g+2 c+1 d0 e+4
+   > Les objets récupérés sont réparés et revendus à petit prix.
+
+=== pro-006 | proprete | Les toilettes publiques sont insuffisantes
+Touristes et sans-abri n’ont nulle part où aller : certaines rues sentent l’urine en permanence.
+A) Installer 300 toilettes gratuites :: Coûteux, attendu.
+   bud-18 rec-0.4x40 proprete+4 services+2 | g+2 c+1 d0 e+1
+   > Des sanisettes gratuites apparaissent partout.
+B) Installer des urinoirs écologiques :: Moins cher, polémique.
+   bud-5 proprete+2 ecologie+1 | g0 c+1 d0 e+2
+   > Des urinoirs à compost apparaissent près des quais.
+   ~35 pop-2 > Les riverains de l’île Saint-Louis dénoncent des installations « indécentes ».
+C) Demander aux cafés d’ouvrir leurs toilettes :: Gratuit, volontaire.
+   bud-1 proprete+1 | g0 c+2 d+2 e0
+   > Des cafés volontaires affichent un logo « toilettes ouvertes ».
+
+=== pro-007 | proprete | Les mégots jonchent les rues
+Des millions de mégots finissent chaque année dans les caniveaux, puis dans la Seine.
+A) Amende de 135 € pour jet de mégot :: Une sanction ferme et dissuasive.
+   rec+0.3x40 proprete+2 ecologie+1 | g-1 c+1 d+3 e+2
+   > Des agents verbalisent les fumeurs.
+B) Installer des cendriers de sondage ludiques :: Original, peu cher.
+   bud-2 proprete+2 bon+1 | g+1 c+2 d+1 e+2
+   > Des cendriers où l’on vote avec son mégot (« croissant ou pain au chocolat ? ») fleurissent.
+C) Faire payer les fabricants de tabac :: Pollueur-payeur.
+   rec+0.3x40 proprete+1 | g+3 c+1 d-1 e+3
+   > Les fabricants financent désormais le nettoyage.
+   ~30 pop+1 > La mesure est reprise par d’autres villes.
+
+=== pro-008 | proprete | Les déjections canines
+Les habitants du 7e se plaignent de trottoirs constellés de déjections canines.
+A) Brigade canine avec amendes :: Dissuasif.
+   rec-0.2x30 proprete+2 | g-1 c+1 d+3 e0
+   > Des agents en civil verbalisent les propriétaires négligents.
+B) Distributeurs de sacs gratuits partout :: Simple et peu coûteux.
+   bud-2 proprete+2 | g+1 c+2 d+1 e+1
+   > Des distributeurs apparaissent à chaque coin de rue.
+C) Fichier ADN des chiens :: Radical et coûteux.
+   bud-6 proprete+3 pop-1 | g-2 c-1 d+2 e-1
+   > Les propriétaires doivent enregistrer l’ADN de leur chien.
+   ~40 pop-2 > La mesure devient un sujet de moquerie national.
+
+=== pro-009 | proprete | Le tri des déchets alimentaires
+Une loi impose de proposer le tri des déchets alimentaires. Paris est en retard.
+A) Bacs marron dans tous les immeubles :: Ambitieux.
+   bud-30 rec-0.5x40 ecologie+5 proprete+1 | g+2 c+1 d-1 e+5
+   > Chaque immeuble reçoit un bac pour les restes de repas.
+   ~30 proprete-2 > Les bacs mal fermés attirent des rats dans certains immeubles.
+B) Composteurs de quartier en libre accès :: Moins cher, volontaire.
+   bud-8 ecologie+3 bon+1 | g+1 c+2 d0 e+4
+   > Des composteurs partagés apparaissent dans les squares.
+C) Attendre que l’État finance :: Pas de dépense.
+   ecologie-2 | g-1 c0 d+2 e-4
+   > Paris reste en retard.
+   +8 bud-10 > L’État inflige une pénalité pour non-respect de la loi.
+
+=== pro-010 | proprete | Les chantiers salissent les rues
+Les chantiers du BTP laissent boue, gravats et barrières abandonnées sur les trottoirs.
+A) Pénalités financières pour les chantiers sales :: Recettes et propreté.
+   rec+0.4x40 proprete+3 economie-1 | g+1 c+2 d+1 e+1
+   > Les entreprises paient désormais chaque jour de trottoir sale.
+B) Charte de bonne conduite volontaire :: Doux, peu contraignant.
+   bud-1 proprete+1 | g0 c+2 d+2 e0
+   > Les grandes entreprises signent une charte.
+   ~45 proprete-1 > Les petits chantiers ne respectent pas la charte.
+C) Créer un service de nettoyage des chantiers payé par les entreprises :: Efficace, à la charge des entreprises.
+   bud-3 rec+0.2x40 proprete+3 | g+2 c+2 d0 e+1
+   > Une équipe dédiée nettoie autour des chantiers.
+
+=== pro-011 | proprete | Les marchés laissent des tonnes de déchets
+Après chaque marché, des cagettes, fruits abîmés et emballages restent sur la chaussée.
+A) Imposer le tri aux commerçants des marchés :: Responsabilise.
+   bud-2 proprete+2 ecologie+2 | g+1 c+2 d+1 e+3
+   > Les commerçants trient leurs déchets sous peine d’amende.
+B) Distribuer les invendus aux associations :: Solidaire et anti-gaspillage.
+   bud-3 achat+2 ecologie+2 bon+1 | g+4 c+1 d0 e+3
+   > Les invendus partent vers les épiceries solidaires.
+C) Nettoyer plus vite après les marchés :: Plus d’agents.
+   rec-0.4x40 proprete+3 | g+1 c+1 d0 e0
+   > Les rues sont lavées une heure après chaque marché.
+
+=== pro-012 | proprete | La Seine pleine de plastique
+Des images montrent des bouteilles et sacs plastiques flottant sur la Seine.
+A) Installer des barrages à déchets :: Visible et efficace.
+   bud-8 ecologie+3 proprete+2 | g+1 c+2 d+1 e+3
+   > Des barrages flottants récupèrent les déchets.
+B) Interdire les bouteilles plastique dans les événements :: Symbolique.
+   bud-1 ecologie+2 economie-1 | g+1 c+1 d-1 e+4
+   > Les événements municipaux passent aux gourdes.
+C) Lancer une journée annuelle de nettoyage citoyen :: Mobilisateur.
+   bud-1 bon+2 proprete+1 | g+1 c+2 d+1 e+2
+   > Des milliers de Parisiens nettoient les berges.
+
+=== pro-013 | proprete | Les touristes se plaignent de la saleté
+Un classement international place Paris parmi les grandes villes les plus sales. Les professionnels du tourisme s’inquiètent.
+A) Plan « Paris propre » avec beaucoup de moyens :: Cher, symbolique.
+   bud-40 proprete+7 economie+1 | g+1 c+1 d+2 e0
+   > Des moyens exceptionnels sont déployés pendant six mois.
+B) Concentrer l’effort sur les sites touristiques :: Les quartiers résidentiels attendront.
+   bud-12 proprete+3 economie+2 bon-1 | g-3 c+1 d+2 e-1
+   > Les abords des monuments brillent. Ailleurs, rien ne change.
+C) Contester le classement :: Gratuit, mais risque de paraître dans le déni.
+   pop-2 | g0 c-1 d-1 e0
+   > Tu contestes la méthode du classement.
+   ~40 pop-2 > Les Parisiens eux-mêmes donnent raison au classement sur les réseaux.
+
+=== pro-014 | proprete | Les poubelles de rue débordent le week-end
+Le dimanche, les corbeilles débordent dans les parcs et le long des canaux.
+A) Ajouter une tournée le dimanche :: Plus de dépenses.
+   rec-0.5x40 proprete+3 bon+1 | g+2 c+1 d0 e0
+   > Les poubelles sont vidées le dimanche matin.
+B) Retirer les poubelles et demander de remporter ses déchets :: Expérience risquée.
+   rec+0.2x40 proprete-2 ecologie+2 | g-1 c0 d+1 e+3
+   > Comme dans certains parcs étrangers, les promeneurs doivent repartir avec leurs déchets.
+   ~50 proprete-3 > Les déchets s’entassent au pied des anciens emplacements.
+C) Poubelles compacteuses solaires :: Investissement.
+   bud-12 proprete+3 ecologie+1 | g0 c+2 d+1 e+2
+   > Des poubelles qui compactent les déchets sont installées dans les parcs.
+
+=== pro-015 | proprete | Les sacs de nourriture pour pigeons
+Des habitants nourrissent massivement les pigeons, qui salissent façades et monuments.
+A) Interdire de nourrir les pigeons :: Simple, difficile à faire respecter.
+   bud-1 proprete+1 | g0 c+1 d+2 e0
+   > Une amende est créée.
+B) Installer des pigeonniers contraceptifs :: Méthode douce reconnue.
+   bud-4 proprete+2 ecologie+1 | g+1 c+2 d0 e+3
+   > Des pigeonniers régulent naturellement la population.
+C) Ne rien faire :: Ce n’est pas une priorité.
+   proprete-1 | g0 c0 d0 e0
+   > Rien ne change.
+
+=== pro-016 | proprete | Le nettoyage des rues à l’eau potable
+Les associations écologistes dénoncent le lavage des rues avec de l’eau potable en pleine sécheresse.
+A) Passer à l’eau non potable :: Investissement dans le réseau.
+   bud-20 ecologie+4 | g+1 c+1 d0 e+4
+   > Le réseau d’eau non potable est rénové pour le nettoyage.
+B) Réduire le lavage pendant les sécheresses :: Économie d’eau, rues moins propres.
+   ecologie+2 proprete-2 | g0 c+2 d0 e+3
+   > Le lavage est suspendu en période d’alerte sécheresse.
+C) Ne rien changer :: La propreté avant tout.
+   proprete+1 ecologie-2 | g0 c0 d+1 e-4
+   > Les rues continuent d’être lavées à l’eau potable.
+
+=== pro-017 | proprete | Les vélos-épaves encombrent les arceaux
+Des milliers de vélos abandonnés et rouillés occupent les places de stationnement.
+A) Enlever les épaves et les donner à des ateliers :: Utile et solidaire.
+   bud-3 proprete+2 transports+1 ecologie+1 | g+2 c+2 d+1 e+3
+   > Les vélos sont retapés par des ateliers d’insertion.
+B) Les envoyer à la fourrière :: Simple et rapide.
+   bud-2 proprete+2 | g0 c+2 d+2 e0
+   > Les épaves sont enlevées.
+C) Ne rien faire :: Les arceaux restent saturés.
+   transports-1 | g0 c0 d0 e-1
+   > Les cyclistes ne trouvent plus de place.
+
+=== pro-018 | proprete | Les terrasses éphémères laissent des déchets
+Depuis l’autorisation des terrasses sur les places de stationnement, certains restaurants laissent des déchets et des planches abandonnées.
+A) Durcir le règlement des terrasses :: Ordre et propreté.
+   rec+0.2x40 proprete+2 economie-1 | g0 c+2 d+2 e0
+   > Les terrasses mal entretenues perdent leur autorisation.
+B) Faire payer les terrasses plus cher :: Plus de recettes, restaurateurs mécontents.
+   rec+0.5x40 economie-2 | g+2 c+1 d-2 e+1
+   > Les redevances des terrasses augmentent.
+C) Accompagner les restaurateurs :: Une approche douce et pédagogique.
+   bud-1 proprete+1 economie+1 | g0 c+3 d+1 e0
+   > Un guide de bonnes pratiques est distribué.
+
+=== pro-019 | proprete | Une odeur nauséabonde envahit un quartier
+Une odeur d’égout persiste depuis des semaines dans le 11e. Les habitants ne supportent plus.
+A) Inspecter et rénover les égouts du quartier :: Coûteux, sérieux.
+   bud-15 proprete+3 bon+2 | g+1 c+2 d+1 e+1
+   > Une canalisation fissurée est découverte et réparée.
+B) Pulvériser des désodorisants :: Temporaire.
+   bud-1 proprete+1 | g0 c0 d0 e-1
+   > L’odeur disparaît… pendant quelques jours.
+   +3 bon-2 > L’odeur revient, plus forte.
+C) Attendre le rapport des services :: Prudent, mais lent.
+   bon-2 | g0 c+1 d0 e0
+   > Le rapport arrivera dans un mois.
+
+=== pro-020 | proprete | Les campements laissent des déchets
+Des campements de personnes à la rue génèrent des déchets que personne ne ramasse.
+A) Nettoyer et proposer des hébergements :: Humain et propre, coûteux.
+   bud-12 proprete+3 logement+1 services+2 | g+4 c+2 d0 e+2
+   > Les occupants sont orientés vers des hébergements, le site est nettoyé.
+B) Démanteler les campements :: Rapide, mais le problème peut se déplacer.
+   bud-2 proprete+3 bon-1 | g-4 c0 d+4 e-2
+   > Les tentes sont retirées.
+   +4 proprete-2 > Un nouveau campement se forme un peu plus loin.
+C) Installer des poubelles et des points d’eau sur place :: Pragmatique.
+   bud-3 proprete+2 services+1 | g+2 c+2 d-2 e+1
+   > Des points d’eau et des bennes sont installés près des campements.
+
+=== pro-021 | proprete | Un concours de la rue la plus propre
+Un adjoint propose un concours entre arrondissements pour motiver les habitants et les commerçants.
+A) Organiser le concours :: Ludique et peu cher.
+   bud-2 proprete+2 bon+1 | g0 c+2 d+1 e+1
+   > Les arrondissements rivalisent d’efforts.
+   ~25 pop-1 > Des habitants accusent un arrondissement d’avoir triché en cachant les poubelles.
+B) Récompenser les gardiens d’immeubles exemplaires :: Valorisant.
+   bud-1 proprete+1 bon+1 | g+2 c+1 d+1 e0
+   > Les gardiens sont mis à l’honneur.
+C) Refuser : la propreté est la mission de la ville :: Une position sérieuse, sans gadget.
+   coh+1 | g+1 c0 d0 e0
+   > Tu refuses de transformer la propreté en jeu.
+
+=== pro-022 | proprete | Les feuilles mortes bouchent les caniveaux
+Un automne pluvieux : les feuilles bouchent les égouts et provoquent des inondations de rue.
+A) Ramassage renforcé :: Efficace, coûteux.
+   bud-6 proprete+3 | g+1 c+2 d+1 e0
+   > Des souffleurs et camions tournent jour et nuit.
+B) Composter les feuilles avec les habitants :: Écologique, plus lent.
+   bud-2 ecologie+2 proprete+1 | g+1 c+1 d0 e+4
+   > Les feuilles deviennent du compost pour les jardins partagés.
+C) Laisser faire :: Pas de dépense.
+   proprete-2 | g0 c0 d0 e0
+   > Les caniveaux débordent à chaque averse.
+   ~40 bud-8 > Des caves sont inondées : la ville doit indemniser.
+
+=== pro-023 | proprete | Les crachats et l’urine dans le métro
+La RATP alerte sur l’état de certaines stations et demande l’aide de la ville pour les abords.
+A) Cofinancer le nettoyage des abords des stations :: Partenariat.
+   bud-6 proprete+2 transports+1 | g+1 c+2 d+1 e+1
+   > Les sorties de métro sont nettoyées deux fois par jour.
+B) Installer des toilettes aux sorties les plus fréquentées :: Solution concrète.
+   bud-10 proprete+3 services+1 | g+2 c+1 d0 e+1
+   > Des toilettes ouvrent à vingt sorties de métro.
+C) Renvoyer la RATP à ses responsabilités :: Gratuit pour la ville, rien ne change.
+   proprete-1 | g0 c0 d+1 e0
+   > Tu rappelles que les stations relèvent de la RATP.
+
+=== pro-024 | proprete | La propreté après les grands événements
+Concerts, marathons, manifestations : chaque grand événement laisse des tonnes de déchets.
+A) Faire payer les organisateurs :: Pollueur-payeur.
+   rec+0.4x40 proprete+2 | g+2 c+2 d+1 e+2
+   > Chaque événement paie désormais son nettoyage.
+   ~25 economie-1 > Un festival renonce à venir à Paris à cause du coût.
+B) Imposer des gobelets réutilisables :: Moins de déchets.
+   bud-1 ecologie+2 proprete+1 | g+1 c+1 d0 e+4
+   > Les gobelets jetables disparaissent des événements.
+C) Nettoyer aux frais de la ville :: Accueillant pour les organisateurs.
+   rec-0.3x40 proprete+2 economie+1 | g0 c+1 d+1 e-1
+   > La ville prend tout en charge.
+
+=== pro-025 | proprete | Les sacs-poubelle éventrés par les corbeaux
+Les corneilles éventrent les sacs déposés trop tôt sur les trottoirs.
+A) Imposer des horaires de dépôt :: Règle simple.
+   bud-1 proprete+2 | g0 c+2 d+2 e0
+   > Les sacs ne peuvent être sortis qu’une heure avant le passage.
+B) Distribuer des bacs rigides aux commerces :: Efficace, mais coûteux.
+   bud-6 proprete+3 | g+1 c+1 d+1 e+1
+   > Les commerces reçoivent des bacs fermés.
+C) Ramasser les déchets plus tôt :: Décalage des tournées.
+   rec-0.3x40 proprete+2 | g+1 c+1 d0 e0
+   > Les camions passent dès 5 heures.
+   ~30 bon-1 > Les riverains se plaignent du bruit des camions à l’aube.

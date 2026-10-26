@@ -20,7 +20,7 @@
     var p=k.split("_"),g={loc:"Devine où c’est",quiz:"Quiz",prix:"Devine le prix"}[p[0]]||p[0];
     return g+" "+(LVS[p[1]]||p[1]||"")+(p[2]==="b"?" + banlieue":"");
   }
-  function scLabel(k){if(k==="loc")return "Ancienne version";var p=k.split("_");return (LVS[p[1]]||p[1])+(p[2]==="b"?" + banlieue":"")}
+  function scLabel(k){if(k==="loc")return "Ancienne version";if(k==="maire")return "Meilleur score";var p=k.split("_");return (LVS[p[1]]||p[1])+(p[2]==="b"?" + banlieue":"")}
   function sc(g,h){
     var mine=function(x){return Object.keys(x.s||{}).filter(function(k){return (k===g||k.indexOf(g+"_")===0)&&x.s[k]>0}).sort(function(a,b){return (LVO[a.split("_")[1]]||0)-(LVO[b.split("_")[1]]||0)||(a.length-b.length)})};
     return {h:h,k:function(x){return mine(x).reduce(function(m,k){return Math.max(m,x.s[k])},0)},c:function(x){
@@ -118,10 +118,23 @@
       ],
       find:function(x){return (x.t||"")+" "+(x.u||"")},
       def:function(a,b){return (b.n||0)-(a.n||0)}},
+    // Maire de Paris : base d'événements générée par tools/maire/construire.mjs (lecture seule ici)
+    maire:{one:"événement",many:"événements",noAdd:true,noEdit:true,noDel:true,noNum:true,
+      cols:[
+        {h:"Id",k:function(x){return x.id},c:function(x){return el("b","",x.id)}},
+        {h:"Catégorie",k:function(x){return x.cat},c:function(x){return el("span","ap-mut",window.Maire?Maire.CATS[x.cat]:x.cat)}},
+        {h:"Événement",c:function(x){var d=el("div");d.appendChild(el("b","",x.titre));d.appendChild(el("p","ap-mut",x.desc));return d}},
+        {h:"Choix",c:function(x){var u=el("ol","ap-scl");x.choix.forEach(function(c){u.appendChild(el("li","",c.t))});return u}},
+        {h:"Particularités",c:function(x){var t=[];if(x.suiteSeulement)t.push("suite");if(x.cond)t.push("conditions");
+          x.choix.forEach(function(c){if(c.alea)t.push("imprévu");if(c.dif)t.push("effet différé");if(c.e.rec)t.push("récurrent")});
+          t=t.filter(function(v,i){return t.indexOf(v)===i});return el("span","ap-mut",t.join(", ")||"—")}}
+      ],
+      find:function(x){return x.id+" "+x.titre+" "+x.desc},
+      def:function(a,b){return a.id<b.id?-1:1}},
     scores:{coll:"scores",one:"joueur",many:"joueurs",noAdd:true,noEdit:true,
       cols:[
         {h:"Joueur",k:function(x){return norm(x.name)},c:function(x){return el("span","ap-strong",x.name||"Anonyme")}},
-        sc("loc","Devine où c’est"),sc("quiz","Quiz sur Paris"),sc("prix","Devine le prix"),
+        sc("loc","Devine où c’est"),sc("quiz","Quiz sur Paris"),sc("prix","Devine le prix"),sc("maire","Maire de Paris"),
         {h:"Dernière partie",k:function(x){return x.at||0},c:function(x){return el("span","ap-mut",day(x.at))}}
       ],
       find:function(x){return x.name},
@@ -140,6 +153,14 @@
     b.set(LB.db.doc("config/seed"),{spots:true},{merge:true});
     return b.commit();
   }
+  // Les événements du Maire sont lus dans les fichiers publiés (le compteur affiche donc le nombre réel d'événements valides)
+  var MDB=null;
+  function maireRows(){
+    if(!MDB){MDB=[];fetch("maire/data/index.json",{cache:"no-cache"}).then(function(r){return r.json()}).then(function(ix){
+      return Promise.all(ix.lots.map(function(l){return fetch("maire/data/"+l.f).then(function(r){return r.json()})}));
+    }).then(function(ls){MDB=[].concat.apply([],ls);apRender()}).catch(function(){MDB=null})}
+    return MDB;
+  }
   function allSpots(){return window.SPDB&&SPDB.length?SPDB:(SPOTS?SPOTS.lieux:[])}
   function reels(){
     if(!window.igOrdered)return [];
@@ -148,7 +169,7 @@
       return Object.assign({},v,{n:n,spots:sp});
     });
   }
-  function rows(t){if(t==="reels")return reels();if(t==="spots")return window.SPDB||[];return (t==="quiz"?window.QDB:t==="prix"?window.PDB:t==="lieux"?window.LDB:t==="videos"?window.VDB:LB.docs)||[]}
+  function rows(t){if(t==="reels")return reels();if(t==="maire")return maireRows();if(t==="spots")return window.SPDB||[];return (t==="quiz"?window.QDB:t==="prix"?window.PDB:t==="lieux"?window.LDB:t==="videos"?window.VDB:LB.docs)||[]}
   // ---------- Lieux de la carte « Découvre ! » ----------
   function cats(){return (window.SCDB||[]).slice().sort(function(a,b){return (a.n||0)-(b.n||0)})}
   function catName(id){var c=cats().filter(function(c){return c.id===id})[0];return c?c.emoji+" "+c.nom:"—"}
@@ -287,7 +308,7 @@
     $("apLvl").hidden=!d.lv;$("apZone").hidden=st.t!=="lieux";$("apOk").hidden=st.t!=="lieux";
     $("apCat").hidden=$("apCatsBtn").hidden=st.t!=="spots";$("apIgBtn").hidden=st.t!=="reels";
     if(st.t==="spots"){var cs=$("apCat");cs.innerHTML="";cs.appendChild(Object.assign(el("option","","Toutes les catégories"),{value:""}));cats().forEach(function(c){var o=el("option","",c.emoji+" "+c.nom);o.value=c.id;cs.appendChild(o)});cs.value=st.cat||""}
-    var mk={quiz:"quiz",prix:"prix",lieux:"loc"}[st.t],mon=!!(window.MAINT||{})[mk];
+    var mk={quiz:"quiz",prix:"prix",lieux:"loc",maire:"maire"}[st.t],mon=!!(window.MAINT||{})[mk];
     $("apMaint").hidden=!mk;$("apMaint").classList.toggle("on",mon);
     $("apMaintSw").classList.toggle("on",mon);$("apMaintSw").setAttribute("aria-checked",String(mon));
     $("apMaintS").textContent=mon?"Activé : les joueurs voient « Jeu en maintenance ». Toi, tu peux encore le tester.":"Désactivé : le jeu est ouvert à tous.";$("apVis").hidden=!d.vis;$("apAdd").hidden=!!d.noAdd;
@@ -566,7 +587,7 @@
   };
   $("apCat").onchange=function(){st.cat=this.value;apRender()};
   $("apMaintSw").onclick=function(){
-    var k={quiz:"quiz",prix:"prix",lieux:"loc"}[st.t];if(!k)return;
+    var k={quiz:"quiz",prix:"prix",lieux:"loc",maire:"maire"}[st.t];if(!k)return;
     var on=!(window.MAINT||{})[k],o={};o[k]=on;
     write(LB.db.doc("config/maintenance").set(o,{merge:true}),on?"Jeu mis en maintenance.":"Jeu de nouveau ouvert à tous.").catch(function(){});
   };

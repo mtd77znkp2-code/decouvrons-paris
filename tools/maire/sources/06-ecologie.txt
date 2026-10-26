@@ -1,0 +1,319 @@
+// Écologie : canicules, végétalisation, énergie, pollution, Seine
+=== eco-001 | ecologie | Une canicule historique s’annonce
+Météo-France annonce plusieurs jours au-dessus de 40 °C. Les personnes âgées et les sans-abri sont en danger.
+? apres=8
+A) Ouvrir des salles rafraîchies et appeler les personnes isolées :: Coûteux, protège les plus fragiles.
+   bud-12 services+3 bon+2 pop+2 | g+3 c+2 d+1 e+2
+   > Des centaines d’agents appellent chaque jour les personnes âgées isolées.
+B) Ouvrir les parcs la nuit et brumiser les rues :: Visible et apprécié.
+   bud-6 bon+3 ecologie-1 | g+1 c+2 d+1 e0
+   > Les parcs restent ouverts la nuit et des brumisateurs rafraîchissent les places.
+C) Diffuser des consignes et laisser faire :: Pas de dépense, risque élevé.
+   bon-2 | g-2 c0 d+1 e-1
+   > Des consignes sont affichées partout.
+   ~45 pop-5 bon-3 > Des décès de personnes isolées font scandale.
+
+=== eco-002 | ecologie | Débitumer les cours d’école
+Transformer les cours d’école en îlots de fraîcheur, avec de la terre, des arbres et des fontaines, coûte cher.
+A) Toutes les cours en cinq ans :: Grand plan visible.
+   bud-45 ecologie+5 services+2 bon+2 | g+2 c+2 d0 e+5
+   > Des centaines de cours d’école deviennent des oasis.
+B) Les cours des quartiers les plus chauds d’abord :: Ciblé et juste.
+   bud-18 ecologie+3 bon+1 | g+3 c+2 d0 e+4
+   > Les écoles des quartiers denses et chauds passent en priorité.
+C) Reporter, faute de budget :: Économique.
+   ecologie-1 | g-1 c+1 d+2 e-3
+   > Le projet attendra.
+
+=== eco-003 | ecologie | Planter une forêt urbaine sur une place emblématique
+Un projet propose de planter une vraie forêt sur la place de l’Hôtel de Ville.
+A) Planter la forêt :: Symbole fort, coûteux.
+   bud-20 ecologie+4 bon+2 | g+1 c0 d-2 e+5
+   > Des centaines d’arbres sont plantés devant l’Hôtel de Ville.
+   ~30 bud-8 > Des arbres meurent faute de terre suffisante : il faut replanter.
+B) Planter des arbres dans les rues plutôt :: Moins spectaculaire, plus utile.
+   bud-15 ecologie+4 bon+1 | g+1 c+3 d+1 e+4
+   > Dix mille arbres sont plantés dans les rues.
+C) Garder la place minérale pour les événements :: Pas de dépense.
+   economie+1 | g0 c+1 d+2 e-3
+   > La place reste dédiée aux grands événements.
+
+=== eco-004 | ecologie | Se baigner dans la Seine
+Après des années de travaux, la Seine pourrait accueillir des baignades publiques.
+A) Ouvrir trois sites de baignade :: Rêve parisien, risque sanitaire.
+   bud-15 bon+4 ecologie+2 pop+2 | g+1 c+1 d0 e+4
+   > Les Parisiens se baignent dans la Seine.
+   ~30 pop-3 > Des baignades sont fermées après des orages : l’eau est polluée.
+B) Ouvrir un seul site test :: Prudent, avant de généraliser.
+   bud-5 bon+2 ecologie+1 | g+1 c+3 d+1 e+3
+   > Un site test ouvre près de Bercy.
+C) Attendre que l’eau soit parfaite :: Sans risque.
+   ecologie-1 | g0 c+1 d+1 e-2
+   > Les baignades attendront.
+
+=== eco-005 | ecologie | La facture d’énergie des bâtiments municipaux explose
+Écoles, piscines, gymnases : la facture d’énergie de la ville a doublé.
+A) Baisser le chauffage à 19 °C partout :: Économies rapides.
+   rec+1x30 ecologie+2 bon-1 | g0 c+2 d+2 e+3
+   > Les bâtiments municipaux sont chauffés à 19 °C.
+   ~30 pop-1 > Les parents se plaignent d’écoles trop froides.
+B) Installer des panneaux solaires sur les toits :: Investissement rentable à terme.
+   bud-35 ecologie+4 | g+1 c+2 d+1 e+5
+   > Des panneaux solaires couvrent les toits des gymnases et des écoles.
+   +12 rec+1x40 > La production solaire allège la facture.
+C) Fermer certaines piscines l’hiver :: Économie, mécontentement.
+   rec+0.8x20 services-3 bon-2 | g-3 c+1 d+2 e+1
+   > Cinq piscines ferment pour l’hiver.
+
+=== eco-006 | ecologie | Le pic de pollution aux particules
+Un pic de pollution dure depuis une semaine. Les hôpitaux constatent plus de crises d’asthme.
+A) Circulation alternée et transports gratuits :: Efficace, coûteux.
+   bud-6 ecologie+3 bon+1 transports-1 | g+2 c+1 d-2 e+4
+   > Seules les plaques paires roulent aujourd’hui.
+B) Abaisser la vitesse et recommander le télétravail :: Mesures douces.
+   ecologie+1 | g+1 c+2 d+1 e+2
+   > La vitesse est abaissée partout.
+C) Ne rien faire, l’épisode va passer :: Pas de contraintes.
+   bon-2 ecologie-2 | g-1 c0 d+1 e-4
+   > L’épisode se prolonge.
+   ~35 pop-2 > Des médecins publient une tribune accusant la mairie d’inaction.
+
+=== eco-007 | ecologie | Les jardins partagés manquent de place
+Des centaines de Parisiens attendent une parcelle dans un jardin partagé.
+A) Ouvrir des jardins sur les toits municipaux :: Original et apprécié.
+   bud-8 ecologie+3 bon+2 | g+2 c+2 d0 e+4
+   > Des potagers s’installent sur les toits des écoles et gymnases.
+B) Transformer des parkings en jardins :: Moins de places pour les voitures.
+   bud-6 ecologie+3 transports-1 | g+1 c+1 d-2 e+5
+   > D’anciennes places de stationnement deviennent des potagers.
+C) Laisser les associations s’organiser :: Pas de dépense.
+   bon-1 | g-1 c+1 d+1 e-1
+   > La liste d’attente continue de s’allonger.
+
+=== eco-008 | ecologie | Interdire les chauffages de terrasse
+Les terrasses chauffées au gaz gaspillent de l’énergie, mais les cafés y tiennent.
+A) Interdiction immédiate :: Cohérent, cafetiers fâchés.
+   ecologie+3 economie-2 | g+1 c0 d-2 e+5
+   > Les chauffages de terrasse disparaissent.
+   ~30 pop-1 > Les cafetiers accusent la ville de vider les terrasses en hiver.
+B) Interdiction progressive avec aide aux alternatives :: Accompagne la transition.
+   bud-5 ecologie+2 | g+1 c+3 d0 e+3
+   > Les cafés passent aux couvertures et aux sièges chauffants électriques.
+C) Les autoriser :: Soutien aux cafés.
+   economie+1 ecologie-2 | g-1 c+1 d+3 e-5
+   > Les terrasses restent chauffées.
+
+=== eco-009 | ecologie | Un grand parc menacé par un projet immobilier
+Un promoteur veut construire des bureaux sur une partie d’un jardin public de l’Est parisien.
+A) Refuser et classer le jardin :: Protection définitive.
+   ecologie+3 bon+2 | g+2 c0 d-2 e+5
+   > Le jardin est protégé pour toujours.
+B) Accepter contre la création d’un parc ailleurs :: Échange de terrains.
+   bud+30 ecologie+1 economie+2 | g-1 c+3 d+3 e-1
+   > Le jardin est réduit, mais un nouveau parc ouvre dans le 12e.
+   ~30 pop-2 > Des militants occupent le jardin pour empêcher les travaux.
+C) Accepter sans contrepartie :: Recettes immédiates.
+   bud+60 ecologie-4 bon-2 | g-4 c-1 d+3 e-5
+   > Les bulldozers arrivent.
+
+=== eco-010 | ecologie | Un réseau de chaleur avec les eaux usées
+Des ingénieurs proposent de chauffer des quartiers avec la chaleur des égouts.
+A) Lancer le projet :: Innovant, investissement lourd.
+   bud-40 ecologie+4 achat+1 | g+1 c+2 d+1 e+5
+   > Les premiers immeubles sont chauffés grâce aux eaux usées.
+   +15 rec+0.5x40 achat+2 > Les factures de chauffage baissent dans les quartiers raccordés.
+B) Étude de faisabilité d’abord :: Prudent, mais rien ne bouge pendant deux ans.
+   bud-2 ecologie+1 | g0 c+3 d+2 e+2
+   > Une étude de deux ans est lancée.
+C) Refuser, trop risqué :: Pas de dépense.
+   ecologie-1 | g0 c+1 d+2 e-3
+   > Le projet est abandonné.
+
+=== eco-011 | ecologie | Les zones à 30 km/h
+Passer tout Paris à 30 km/h réduirait le bruit et les accidents. Les automobilistes protestent.
+A) Généraliser le 30 km/h :: Plus calme, plus lent.
+   bud-3 securite+2 ecologie+2 bon+1 pop-1 | g+1 c0 d-3 e+4
+   > Tout Paris passe à 30 km/h, sauf les grands axes.
+B) Seulement dans les quartiers résidentiels :: Compromis.
+   bud-1 securite+1 ecologie+1 | g+1 c+3 d0 e+2
+   > Les rues résidentielles passent à 30.
+C) Garder 50 km/h :: La fluidité avant tout.
+   transports+1 | g-1 c0 d+3 e-3
+   > Rien ne change.
+
+=== eco-012 | ecologie | La ville doit-elle sortir de la publicité lumineuse ?
+Les écrans publicitaires consomment beaucoup d’électricité. Les supprimer coûterait des recettes.
+A) Supprimer tous les écrans publicitaires :: Écologique, perte de recettes.
+   rec-0.6x50 ecologie+3 bon+1 | g+2 c0 d-3 e+5
+   > Les écrans disparaissent des rues.
+B) Les éteindre la nuit :: Compromis.
+   rec-0.1x50 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les écrans s’éteignent de 23 h à 7 h.
+C) En installer davantage :: Recettes nouvelles.
+   rec+0.8x50 ecologie-3 bon-1 | g-3 c0 d+3 e-5
+   > De nouveaux écrans apparaissent aux carrefours.
+
+=== eco-013 | ecologie | Les arbres centenaires d’une avenue malades
+Des platanes centenaires sont atteints d’un champignon. Il faudrait abattre la moitié de l’alignement.
+A) Abattre et replanter des essences variées :: Triste, mais nécessaire.
+   bud-6 ecologie+1 bon-2 | g0 c+2 d+1 e+1
+   > Les arbres malades sont remplacés par des essences plus résistantes.
+   ~35 pop-2 > Des riverains s’enchaînent aux arbres pour empêcher l’abattage.
+B) Tenter de les soigner :: Coûteux, résultat incertain.
+   bud-10 ecologie+1 | g+1 c+1 d0 e+3
+   > Un traitement expérimental est appliqué.
+   ~50 ecologie-2 > Le traitement échoue : les arbres doivent finalement être abattus.
+C) Attendre :: Le risque de chute grandit.
+   securite-2 | g0 c0 d0 e0
+   > Rien n’est fait.
+   ~30 pop-3 > Une grosse branche tombe sur une voiture.
+
+=== eco-014 | ecologie | Le budget climat
+Les écologistes proposent que chaque dépense de la ville soit évaluée selon son impact sur le climat.
+A) Adopter le budget climat :: Cohérence écologique.
+   bud-2 ecologie+2 | g+2 c+1 d-1 e+5
+   > Chaque projet affiche désormais son bilan carbone.
+B) L’appliquer aux grands projets seulement :: Une version allégée.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les projets de plus de 10 millions sont évalués.
+C) Refuser :: Pas de bureaucratie supplémentaire.
+   coh+0.5 | g-1 c0 d+3 e-4
+   > Tu refuses une « usine à gaz ».
+
+=== eco-015 | ecologie | Une cantine végétarienne obligatoire un jour par semaine
+Les cantines scolaires pourraient proposer un menu végétarien un jour de plus par semaine.
+A) Deux jours végétariens par semaine :: Écologique, débat avec des parents.
+   ecologie+2 achat+1 pop-1 | g+1 c+1 d-2 e+5
+   > Deux repas par semaine deviennent végétariens.
+   ~30 pop-1 > Une association de parents dénonce une « idéologie dans l’assiette ».
+B) Un menu végétarien en option chaque jour :: Choix libre.
+   bud-3 ecologie+1 | g+1 c+3 d+1 e+2
+   > Une alternative végétarienne est proposée chaque jour.
+C) Garder un seul jour :: Statu quo.
+   pop+0.5 | g0 c+1 d+2 e-2
+   > Rien ne change.
+
+=== eco-016 | ecologie | Une ferme urbaine géante
+Une entreprise propose une ferme urbaine sur le toit du parc des expositions.
+A) Soutenir le projet :: Vitrine écologique.
+   bud-8 ecologie+3 economie+1 | g+1 c+2 d+1 e+4
+   > La plus grande ferme urbaine d’Europe ouvre.
+B) Réserver les toits à des jardins partagés :: Plus citoyen.
+   bud-4 ecologie+2 bon+1 | g+3 c+1 d0 e+4
+   > Les habitants cultivent eux-mêmes.
+C) Refuser :: Ce n’est pas le rôle de la ville.
+   coh+0.5 | g0 c0 d+2 e-3
+   > Le toit reste vide.
+
+=== eco-017 | ecologie | Les sécheresses menacent les arbres
+L’été est sec : les jeunes arbres plantés ces dernières années meurent faute d’eau.
+A) Arrosage d’urgence avec des camions-citernes :: Coûteux, sauve les arbres.
+   bud-8 ecologie+2 | g+1 c+2 d+1 e+3
+   > Les arbres sont arrosés chaque semaine.
+B) Appel aux habitants à adopter un arbre :: Participatif, gratuit.
+   bud-1 ecologie+1 bon+1 | g+2 c+2 d+1 e+3
+   > Des milliers d’habitants arrosent l’arbre de leur rue.
+C) Laisser faire la nature :: Pas de dépense.
+   ecologie-3 | g-1 c0 d+1 e-4
+   > Un tiers des jeunes arbres meurt.
+
+=== eco-018 | ecologie | Le grand projet de végétalisation des toits
+Paris compte des millions de mètres carrés de toits en zinc. Les végétaliser rafraîchirait la ville.
+A) Rendre obligatoire sur les nouveaux bâtiments :: Pas de coût direct.
+   ecologie+2 logement-1 | g+1 c+2 d-1 e+4
+   > Tous les nouveaux bâtiments auront un toit végétal.
+B) Subventionner les copropriétés volontaires :: Coûteux, mais volontaire.
+   bud-15 ecologie+3 | g+1 c+2 d+1 e+4
+   > Des centaines de toits sont végétalisés.
+C) Protéger les toits en zinc, patrimoine parisien :: Patrimoine.
+   bon+1 | g0 c+1 d+2 e-2
+   > Les toits de zinc sont candidats au patrimoine mondial.
+
+=== eco-019 | ecologie | Une marée de plastique après les fêtes
+Les sapins de Noël abandonnés et les emballages s’accumulent en janvier.
+? apres=20
+A) Collecte et broyage des sapins :: Efficace et peu coûteux.
+   bud-2 proprete+2 ecologie+2 | g+1 c+2 d+1 e+3
+   > Les sapins sont transformés en paillage pour les jardins.
+B) Location de sapins en pot :: Original, écologique.
+   bud-3 ecologie+3 | g+1 c+1 d0 e+4
+   > Les Parisiens louent des sapins en pot qui sont replantés.
+C) Ramassage habituel :: Pas d’effort particulier.
+   proprete-1 | g0 c0 d+1 e-1
+   > Les sapins restent plusieurs semaines sur les trottoirs.
+
+=== eco-020 | ecologie | Les jets privés au Bourget
+Des militants réclament que Paris s’oppose aux vols de jets privés depuis l’aéroport du Bourget.
+A) Demander leur interdiction :: Symbole fort.
+   pop+1 economie-1 | g+3 c0 d-3 e+5
+   > Tu demandes à l’État d’interdire les jets privés.
+B) Demander une taxe sur ces vols :: Pragmatique.
+   pop+1 | g+2 c+2 d-1 e+3
+   > Tu proposes une taxe sur les vols privés.
+C) Ne pas s’en mêler :: Pas ta compétence.
+   pop-1 | g-1 c+1 d+2 e-3
+   > Tu restes silencieux.
+
+=== eco-021 | ecologie | L’éclairage public la nuit
+Éteindre une partie de l’éclairage public après 1 h du matin ferait des économies.
+A) Éteindre les rues résidentielles la nuit :: Économies et ciel étoilé.
+   rec+0.5x50 ecologie+2 securite-2 | g0 c+1 d-2 e+4
+   > Les rues résidentielles s’éteignent après 1 h.
+   ~30 pop-2 > Des habitantes témoignent de leur peur de rentrer dans le noir.
+B) Passer aux LED intelligentes :: Investissement, sécurité préservée.
+   bud-20 ecologie+2 | g+1 c+3 d+1 e+3
+   > Les lampadaires s’allument au passage des piétons.
+   +10 rec+0.4x50 > Les économies d’électricité s’accumulent.
+C) Garder l’éclairage :: La sécurité avant les économies.
+   securite+1 | g0 c0 d+2 e-2
+   > Rien ne change.
+
+=== eco-022 | ecologie | Les îlots de chaleur dans les quartiers denses
+Les cartes thermiques montrent des écarts de 8 °C entre les quartiers.
+A) Plan de rafraîchissement des quartiers chauds :: Ciblé et juste.
+   bud-25 ecologie+4 bon+2 | g+3 c+2 d0 e+4
+   > Fontaines, arbres et toiles d’ombrage arrivent dans les quartiers chauds.
+B) Peindre les toits en blanc :: Peu cher, efficace.
+   bud-6 ecologie+2 | g+1 c+2 d+1 e+3
+   > Les toits des bâtiments publics sont peints en blanc.
+C) Distribuer des ventilateurs aux ménages modestes :: Rapide, énergivore.
+   bud-4 achat+1 bon+1 ecologie-1 | g+2 c+1 d0 e-2
+   > Les ménages modestes reçoivent des ventilateurs.
+
+=== eco-023 | ecologie | Une marque de mode veut un défilé dans un jardin
+Une grande maison de couture veut organiser un défilé dans un jardin public, fermé au public une semaine.
+A) Accepter contre une forte redevance :: Recettes, jardin fermé.
+   bud+15 economie+1 bon-1 | g-2 c+2 d+3 e-2
+   > Le défilé a lieu. La redevance financera l’entretien du jardin.
+B) Accepter à condition de replanter le jardin :: Compromis.
+   bud+5 ecologie+1 | g0 c+3 d+1 e+1
+   > La marque finance une rénovation des massifs.
+C) Refuser :: Les jardins sont aux Parisiens.
+   bon+1 | g+2 c0 d-2 e+2
+   > Le défilé ira ailleurs.
+
+=== eco-024 | ecologie | Les fontaines à boire
+Avec les canicules, les Parisiens réclament plus de fontaines d’eau potable.
+A) Installer 500 fontaines :: Utile et visible.
+   bud-10 bon+2 ecologie+1 | g+2 c+2 d+1 e+2
+   > Des fontaines apparaissent à chaque coin de rue.
+B) Distribuer des gourdes aux écoliers :: Symbolique.
+   bud-2 ecologie+1 | g+1 c+1 d0 e+2
+   > Chaque écolier reçoit une gourde.
+C) Ne rien faire :: Pas de dépense.
+   bon-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== eco-025 | ecologie | Interdire les SUV dans Paris ?
+Un collectif propose d’interdire les SUV les plus lourds dans Paris.
+A) Organiser un vote citoyen :: Démocratique, résultat incertain.
+   bud-3 pop+1 | g+1 c+2 d0 e+3
+   > Les Parisiens sont appelés à voter.
+   ~55 ecologie+3 rec+0.5x40 > Le oui l’emporte : le stationnement des SUV devient très cher.
+B) Interdire directement :: Radical, juridiquement risqué.
+   ecologie+3 pop-2 | g+1 c-2 d-4 e+5
+   > Les SUV de plus de deux tonnes sont interdits.
+   ~40 pop-1 > Le tribunal annule la mesure.
+C) Refuser :: Liberté de chacun.
+   pop+1 ecologie-1 | g-1 c+1 d+3 e-4
+   > Les SUV restent autorisés.

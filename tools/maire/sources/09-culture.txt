@@ -1,0 +1,320 @@
+// Culture et tourisme : musées, fêtes, patrimoine, touristes, nuit
+=== cul-001 | culture | Nuit Blanche en danger
+Le budget de la Nuit Blanche a explosé. Les artistes demandent plus, les riverains se plaignent du bruit.
+A) Maintenir une grande Nuit Blanche :: Prestige, facture lourde.
+   bud-12 bon+2 economie+1 | g+2 c+1 d-1 e0
+   > La Nuit Blanche attire un million de visiteurs.
+   ~25 pop-1 > Des riverains furieux publient des vidéos de la foule à 4 h du matin.
+B) La déplacer dans les quartiers périphériques :: Plus populaire, moins médiatique.
+   bud-8 bon+2 | g+3 c+2 d0 e+1
+   > Les œuvres s’installent porte de la Chapelle et à Belleville.
+C) L’annuler cette année :: Économie, déception.
+   bon-2 pop-1 bud+10 | g-2 c+1 d+2 e-1
+   > Pas de Nuit Blanche cette année.
+
+=== cul-002 | culture | Notre-Dame : la foule des visiteurs
+Depuis sa réouverture, Notre-Dame attire des files de deux heures sur le parvis.
+A) Créer une réservation gratuite obligatoire :: Ordre, moins de spontanéité.
+   bud-2 bon+1 | g0 c+3 d+2 e0
+   > Les files disparaissent grâce aux créneaux.
+B) Réaménager le parvis avec ombre et fontaines :: Beau, cher.
+   bud-35 ecologie+2 bon+2 | g+1 c+2 d+1 e+3
+   > Le parvis devient un jardin ombragé.
+   +18 pop+2 > Le nouveau parvis est élu plus belle place de l’année.
+C) Instaurer une taxe pour les groupes de touristes :: Recettes, grogne des agences.
+   rec+0.5x60 economie-1 | g+2 c+1 d-2 e+1
+   > Les groupes paient désormais une contribution.
+
+=== cul-003 | culture | Un musée veut un prêt d’œuvres à l’étranger
+Un musée de la Ville propose de prêter ses chefs-d’œuvre à Abou Dhabi contre une forte somme.
+A) Accepter le prêt :: Argent frais, critiques.
+   bud+40 coh-2 | g-3 c+2 d+2 e-2
+   > Les œuvres partent pour un an.
+   ~30 pop-2 > Une pétition dénonce « la vente de notre patrimoine ».
+B) Refuser :: Fidélité au public parisien.
+   bon+1 | g+2 c0 d-1 e+1
+   > Les œuvres restent à Paris.
+C) Négocier un échange d’œuvres :: Gagnant-gagnant.
+   bud+8 bon+1 economie+1 | g+1 c+3 d+1 e0
+   > Une exposition venue du Golfe arrive à Paris en échange.
+
+=== cul-004 | culture | La Fête de la musique déborde
+L’an dernier, la Fête de la musique a fini en bagarres dans plusieurs quartiers.
+A) Fermer les rues à 1 h du matin :: Sécurité, frustration.
+   securite+2 bon-1 | g-1 c+2 d+3 e0
+   > La fête s’arrête à 1 h.
+B) Renforcer les secours et laisser faire :: Liberté, risque.
+   bud-4 bon+2 | g+2 c+1 d-2 e+1
+   > Les secouristes sont partout.
+   ~30 securite-2 pop-1 > Une rixe éclate place de la République.
+C) Créer des scènes officielles encadrées :: Organisé, moins spontané.
+   bud-6 securite+1 bon+1 | g0 c+3 d+1 e0
+   > Vingt grandes scènes encadrées remplacent les sonos sauvages.
+
+=== cul-005 | culture | Les bouquinistes menacés
+Les bouquinistes des quais vendent surtout des porte-clés. Certains veulent les remplacer par des kiosques modernes.
+A) Les protéger et imposer des livres :: Patrimoine.
+   bud-2 bon+1 economie-1 | g+1 c+2 d+1 e+1
+   > Les boîtes vertes doivent vendre au moins 75 % de livres.
+B) Les remplacer par des kiosques design :: Moderne, polémique.
+   bud-10 economie+1 pop-2 | g-1 c+1 d+2 e-1
+   > Les nouveaux kiosques sont installés.
+   ~45 pop-2 > Le patrimoine mondial de l’UNESCO s’inquiète publiquement.
+C) Subventionner les loyers des bouquinistes :: Soutien.
+   rec-0.1x60 bon+1 | g+2 c+2 d0 e+1
+   > Les bouquinistes reçoivent une aide.
+
+=== cul-006 | culture | Les théâtres municipaux en déficit
+Les théâtres de la Ville perdent de l’argent. Leurs salles sont à moitié vides.
+A) Baisser le prix des places à 10 € :: Accès à tous, coûteux.
+   rec-0.5x50 bon+2 achat+1 | g+4 c+1 d-1 e+1
+   > Les salles se remplissent de jeunes.
+B) Programmer des spectacles plus grand public :: Rentable, critiqué.
+   rec+0.2x50 | g-1 c+2 d+2 e0
+   > Les comédies musicales font salle comble.
+   ~35 coh-1 > Les artistes signent une tribune contre « la culture au rabais ».
+C) Fusionner deux théâtres :: Économies.
+   rec+0.4x50 bon-1 | g-2 c+3 d+2 e0
+   > Deux théâtres fusionnent.
+
+=== cul-007 | culture | Les locations de type Airbnb
+Les meublés touristiques vident des immeubles entiers dans le centre de Paris.
+A) Limiter à 90 nuits par an et contrôler :: Ferme.
+   bud-3 logement+3 economie-1 | g+4 c+2 d-2 e+2
+   > Des contrôleurs traquent les locations illégales.
+   +10 bud+6 > Les amendes rapportent gros.
+B) Interdire totalement dans quatre arrondissements :: Radical.
+   logement+4 economie-2 pop-1 | g+5 c-1 d-4 e+2
+   > Le centre devient zone sans meublés touristiques.
+   ~40 pop-2 > Des propriétaires attaquent la mairie en justice.
+C) Taxer fortement les locations :: Recettes.
+   rec+0.6x60 logement+1 | g+2 c+3 d0 e+1
+   > Chaque nuitée est taxée.
+
+=== cul-008 | culture | Un festival électro au bois de Vincennes
+Des organisateurs veulent un festival géant de trois jours dans le bois de Vincennes.
+A) Accepter avec une redevance élevée :: Recettes, nuisances.
+   bud+12 bon+1 ecologie-2 | g0 c+2 d+2 e-3
+   > Cent mille festivaliers viennent danser.
+   ~35 pop-2 > Les riverains de Saint-Mandé comptent les jours de bruit.
+B) Refuser pour protéger le bois :: Nature.
+   ecologie+1 bon-1 | g0 c0 d-1 e+3
+   > Le festival part à Marseille.
+C) Accepter sur un terrain déjà bétonné :: Compromis.
+   bud+5 bon+1 | g+1 c+3 d+1 e0
+   > Le festival s’installe sur un parking de la porte de Versailles.
+
+=== cul-009 | culture | Le musée Carnavalet veut s’agrandir
+Le musée de l’histoire de Paris manque de place pour ses collections.
+A) Acheter l’hôtel particulier voisin :: Patrimoine, coût élevé.
+   bud-45 bon+1 economie+1 | g+1 c+2 d+1 e0
+   > Le musée achète l’hôtel voisin.
+   +20 pop+2 > Les nouvelles salles ouvrent au public.
+B) Créer une annexe numérique en réalité virtuelle :: Moderne, moins cher.
+   bud-8 bon+1 | g0 c+3 d+1 e+1
+   > Une visite virtuelle de Paris en 1789 voit le jour.
+C) Prêter des objets aux mairies d’arrondissement :: Culture partout.
+   bud-2 bon+1 | g+3 c+2 d0 e+1
+   > Des vitrines historiques s’installent dans les mairies.
+
+=== cul-010 | culture | Les cafés-concerts ferment un à un
+Plaintes pour bruit et loyers élevés : les petites salles de concert disparaissent.
+A) Créer un fonds d’insonorisation :: Soutien concret.
+   bud-6 bon+1 economie+1 | g+2 c+2 d+1 e0
+   > Vingt salles s’insonorisent avec l’aide de la Ville.
+B) Créer des zones de nuit protégées :: Fête, conflits possibles.
+   bon+2 securite-1 | g+2 c+1 d-2 e0
+   > Pigalle et Oberkampf deviennent zones de nuit.
+   ~30 pop-1 > Des riverains de Pigalle déposent un recours.
+C) Ne rien faire :: Pas de dépense.
+   bon-1 economie-1 | g-2 c0 d+1 e0
+   > Encore trois salles ferment.
+
+=== cul-011 | culture | Les touristes ne reviennent plus
+Une baisse de fréquentation inquiète les hôteliers après un été pluvieux.
+A) Lancer une campagne mondiale « Paris vous attend » :: Pari marketing.
+   bud-15 economie+2 | g-1 c+2 d+2 e-1
+   > La campagne est diffusée dans quarante pays.
+   ~40 bud+10 > Les réservations repartent fortement.
+B) Miser sur le tourisme des Franciliens :: Local, plus modeste.
+   bud-5 economie+1 bon+1 | g+2 c+2 d0 e+2
+   > Des réductions sont proposées aux habitants d’Île-de-France.
+C) Ne rien faire :: Laisser le marché.
+   economie-2 | g0 c0 d+1 e0
+   > Les hôtels restent à moitié vides.
+
+=== cul-012 | culture | La tour Eiffel augmente ses prix
+La société d’exploitation de la tour Eiffel veut augmenter le billet de 20 %.
+A) Accepter : plus de recettes pour la Ville :: Recettes.
+   rec+0.6x60 pop-1 | g-2 c+2 d+2 e0
+   > Le billet augmente.
+B) Créer un tarif réduit pour les Parisiens :: Populaire.
+   rec+0.3x60 pop+1 achat+1 | g+2 c+2 d+1 e0
+   > Les Parisiens paient moitié prix.
+C) Refuser la hausse :: Accessibilité.
+   pop+1 | g+2 c0 d-1 e0
+   > Le prix ne bouge pas.
+
+=== cul-013 | culture | Un graffeur célèbre veut une fresque géante
+Un artiste mondialement connu propose une fresque sur un immeuble de logements sociaux.
+A) Accepter et financer :: Rayonnement.
+   bud-3 bon+1 economie+1 | g+2 c+2 d0 e+1
+   > La fresque attire les photographes du monde entier.
+B) Consulter d’abord les habitants :: Démocratie, délai.
+   bud-1 bon+1 coh+1 | g+3 c+2 d0 e+2
+   > Les habitants votent pour un dessin différent.
+C) Refuser :: Pas d’art sur les façades.
+   bon-1 | g-2 c0 d+2 e-1
+   > L’artiste peint finalement à Berlin.
+
+=== cul-014 | culture | La Seine baignable cet été
+Après la baignade olympique, les Parisiens réclament de nouveaux sites de baignade dans la Seine.
+A) Ouvrir cinq sites de baignade :: Joyeux, risque sanitaire.
+   bud-10 bon+3 ecologie+1 | g+2 c+2 d0 e+3
+   > Les Parisiens nagent dans la Seine.
+   ~30 pop-3 > Des orages ferment les baignades pendant deux semaines.
+B) Ouvrir un seul site, très surveillé :: Prudent.
+   bud-4 bon+1 | g+1 c+3 d+1 e+1
+   > Un site de baignade ouvre au bras Marie.
+C) Ne pas ouvrir de site :: Pas de risque.
+   bon-1 | g-1 c0 d+1 e-2
+   > La baignade reste interdite.
+
+=== cul-015 | culture | Le Salon de l’agriculture veut partir
+Le Salon de l’agriculture menace de quitter Paris à cause du coût de la location.
+A) Baisser le loyer du parc des expositions :: Garder l’événement.
+   rec-0.3x40 economie+2 | g0 c+2 d+3 e0
+   > Le Salon reste à la porte de Versailles.
+B) Laisser partir le Salon :: Économie.
+   economie-2 pop-1 | g0 c0 d-2 e+1
+   > Le Salon part à Lyon.
+C) Proposer un Salon de l’alimentation durable en remplacement :: Pari.
+   bud-8 economie+1 ecologie+1 | g+2 c+1 d-1 e+3
+   > Un nouveau salon voit le jour.
+
+=== cul-016 | culture | Les cinémas de quartier en difficulté
+Trois cinémas indépendants risquent la fermeture.
+A) Racheter les murs des cinémas :: Patrimoine.
+   bud-20 bon+2 | g+3 c+1 d0 e+1
+   > Les cinémas deviennent propriété de la Ville.
+B) Créer une carte cinéma à 5 € pour les jeunes :: Public jeune.
+   rec-0.3x50 bon+1 achat+1 | g+3 c+2 d0 e+1
+   > Les jeunes vont au cinéma pour 5 €.
+C) Laisser faire :: Le marché décide.
+   bon-1 | g-2 c0 d+2 e0
+   > Un cinéma devient une salle de sport.
+
+=== cul-017 | culture | Le stade Charléty en mauvais état
+Le stade a besoin de rénovations. Un club privé propose de le reprendre.
+A) Rénover avec l’argent public :: Coûteux.
+   bud-40 bon+1 services+1 | g+2 c+1 d0 e0
+   > Le stade est rénové.
+B) Le céder au club privé :: Recettes, perte de contrôle.
+   bud+25 services-1 | g-3 c+2 d+3 e-1
+   > Le club privé devient propriétaire.
+   ~35 pop-1 > Les écoles ne peuvent plus utiliser la piste d’athlétisme.
+C) Bail de 30 ans avec usage scolaire garanti :: Compromis.
+   bud+10 | g0 c+3 d+2 e0
+   > Le club rénove et les écoles gardent leurs créneaux.
+
+=== cul-018 | culture | Une exposition fait scandale
+Une exposition dans un musée municipal choque une partie du public avec des œuvres provocantes.
+A) Défendre la liberté artistique :: Principes.
+   pop-1 bon+1 | g+3 c+1 d-3 e+1
+   > L’exposition reste ouverte.
+   ~30 securite-1 > Des militants tentent de vandaliser une œuvre.
+B) Retirer les œuvres contestées :: Apaisement, censure.
+   pop+1 coh-2 | g-3 c+1 d+3 e-1
+   > Les œuvres sont décrochées.
+   ~40 pop-2 > Les artistes crient à la censure dans la presse.
+C) Ajouter un avertissement à l’entrée :: Équilibre.
+   bud-1 | g+1 c+3 d+1 e+1
+   > Un panneau prévient les visiteurs.
+
+=== cul-019 | culture | Les cars de touristes envahissent Montmartre
+Des dizaines de cars stationnent chaque jour au pied du Sacré-Cœur.
+A) Interdire les cars dans Montmartre :: Calme, grogne des agences.
+   ecologie+2 bon+1 economie-1 | g+1 c+1 d-1 e+3
+   > Les cars s’arrêtent à Pigalle.
+B) Créer un parking payant pour cars :: Recettes.
+   bud-10 rec+0.3x60 | g0 c+3 d+2 e0
+   > Un parking à cars ouvre à la porte de Clignancourt.
+C) Une navette électrique depuis les gares :: Moderne.
+   bud-8 rec-0.2x50 transports+1 ecologie+1 | g+1 c+2 d0 e+2
+   > Des navettes électriques montent à la Butte.
+
+=== cul-020 | culture | Le carnaval de Paris renaît
+Des associations veulent relancer le grand carnaval de Paris, disparu depuis des décennies.
+A) Soutenir un grand carnaval :: Joie, coût.
+   bud-6 bon+2 | g+2 c+1 d0 e+1
+   > Le carnaval défile de la place Gambetta à l’Hôtel de Ville.
+B) Prêter seulement du matériel :: Minimal.
+   bud-1 bon+1 | g+1 c+2 d+1 e0
+   > Les associations défilent avec des moyens modestes.
+C) Refuser :: Trop de sécurité à prévoir.
+   bon-1 | g-2 c0 d+2 e0
+   > Pas de carnaval cette année.
+
+=== cul-021 | culture | Une marque veut habiller un monument
+Une marque de luxe propose de payer la restauration d’une église en échange d’une bâche publicitaire géante.
+A) Accepter la bâche :: Argent, laideur.
+   bud+15 bon-1 | g-3 c+2 d+2 e-1
+   > Une bâche géante recouvre la façade pendant deux ans.
+B) Refuser :: Beauté de la ville.
+   bon+1 | g+2 c0 d0 e+1
+   > La restauration attendra.
+C) Accepter une bâche artistique sans logo géant :: Compromis.
+   bud+6 | g0 c+3 d+1 e0
+   > Une bâche dessinée par des artistes, avec un petit logo.
+
+=== cul-022 | culture | Les catacombes saturées
+Les catacombes refusent des milliers de visiteurs chaque jour. Des visites clandestines se multiplient.
+A) Ouvrir une deuxième entrée et un nouveau parcours :: Recettes à terme.
+   bud-15 economie+1 | g0 c+2 d+2 e0
+   > Un nouveau parcours ouvre.
+   +12 rec+0.3x50 > Les nouvelles visites rapportent régulièrement.
+B) Renforcer la police contre les visites clandestines :: Sécurité.
+   rec-0.2x40 securite+1 | g-1 c+2 d+3 e0
+   > Les cataphiles sont verbalisés.
+C) Organiser des visites nocturnes payantes :: Insolite.
+   bud-3 rec+0.2x50 bon+1 | g0 c+2 d+1 e0
+   > Les visites nocturnes affichent complet.
+
+=== cul-023 | culture | Paris candidate à l’Exposition universelle
+Le gouvernement demande si Paris veut porter une candidature pour une Exposition universelle.
+A) Se porter candidate :: Ambition, coûts énormes.
+   bud-30 economie+2 bon+1 | g-1 c+2 d+3 e-2
+   > Paris dépose sa candidature.
+   => cul-024 @10
+B) Refuser :: Prudence budgétaire.
+   pop-1 | g+1 c+1 d-1 e+2
+   > Paris laisse passer sa chance.
+C) Proposer une exposition sobre et réversible :: Original.
+   bud-10 economie+1 ecologie+1 | g+1 c+2 d0 e+3
+   > Paris propose la première Exposition « zéro béton ».
+
+=== cul-024 | culture | Le verdict de l’Exposition universelle
+? suite
+Le comité international a tranché : Paris est retenue, mais il faut confirmer l’engagement financier.
+A) Confirmer et lancer les travaux :: Grand projet.
+   bud-80 rec-1x40 economie+4 bon+1 | g-1 c+2 d+3 e-2
+   > Les grands chantiers démarrent.
+   +30 pop+3 economie+2 > Le site de l’Exposition prend forme et fait rêver.
+B) Se retirer :: Image abîmée.
+   pop-3 coh-2 | g+1 c-1 d-2 e+2
+   > Paris renonce, à la stupeur générale.
+C) Partager l’organisation avec d’autres villes :: Coûts partagés.
+   bud-30 economie+2 | g0 c+3 d+1 e+1
+   > Lyon et Marseille accueilleront une partie des pavillons.
+
+=== cul-025 | culture | Les street artists du canal Saint-Martin
+Les murs du canal sont couverts de graffitis. Certains y voient de l’art, d’autres de la saleté.
+A) Créer des murs d’expression libre :: Encadrer l’art.
+   bud-2 proprete+1 bon+1 | g+2 c+2 d0 e+1
+   > Des murs légaux sont désignés.
+B) Tout effacer :: Propreté.
+   bud-3 proprete+2 bon-1 | g-2 c+1 d+3 e0
+   > Les murs sont repeints en gris.
+C) Organiser un festival de street art :: Animation.
+   bud-5 bon+2 economie+1 | g+2 c+2 d0 e+1
+   > Le canal devient une galerie à ciel ouvert.

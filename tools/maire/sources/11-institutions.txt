@@ -1,0 +1,325 @@
+// Relations institutionnelles : État, Région, Métropole, conseil de Paris, opposition, justice
+=== ins-001 | institutions | Le préfet veut reprendre la main
+Le préfet de police critique la gestion municipale de la sécurité et demande plus de pouvoirs.
+A) Accepter une coopération renforcée :: Apaisement.
+   securite+2 coh-1 | g-2 c+3 d+3 e-1
+   > Une convention police-mairie est signée.
+B) Refuser et défendre la police municipale :: Indépendance.
+   securite+1 pop+1 | g+1 c0 d0 e+1
+   > Le maire défend ses prérogatives.
+   ~35 securite-1 > Le préfet retire des patrouilles dans plusieurs quartiers.
+C) Saisir le Conseil d’État :: Bras de fer juridique.
+   bud-2 coh+1 | g+1 c-1 d-1 e+1
+   > Le différend part devant les juges.
+
+=== ins-002 | institutions | La Région refuse de financer le métro
+La présidente de Région refuse de financer sa part d’un prolongement de ligne.
+A) Payer seul :: Le projet avance.
+   bud-60 transports+3 | g+1 c+1 d0 e+2
+   > Paris paie la part de la Région.
+B) Attaquer publiquement la Région :: Polémique.
+   pop+1 coh+1 | g+2 c-1 d-2 e+1
+   > Le maire dénonce « l’abandon des Parisiens ».
+   ~40 transports-1 > Le projet est gelé pour deux ans.
+C) Négocier un report et un partage :: Diplomatie.
+   bud-15 transports+1 | g0 c+3 d+2 e+1
+   > Un accord est trouvé avec un calendrier étalé.
+
+=== ins-003 | institutions | L’opposition demande un audit
+L’opposition accuse la majorité de mauvaise gestion et exige un audit indépendant.
+A) Accepter l’audit :: Transparence.
+   bud-2 coh+2 | g+1 c+3 d+1 e+1
+   > Un cabinet indépendant audite les comptes.
+   ~35 pop-2 > L’audit révèle des dépenses de réception embarrassantes.
+B) Refuser :: Évite un risque, paraît suspect.
+   pop-1 coh-1 | g0 c-1 d0 e0
+   > La majorité vote contre l’audit.
+C) Proposer une commission d’élus de tous bords :: Ouverture.
+   coh+1 pop+1 | g+1 c+3 d+1 e+1
+   > Une commission mixte examine les comptes.
+
+=== ins-004 | institutions | Un adjoint mis en examen
+Un adjoint au maire est mis en examen pour favoritisme dans un marché public.
+A) Le démettre immédiatement :: Exemplarité.
+   pop+1 coh+1 | g+1 c+2 d+2 e+2
+   > L’adjoint perd ses délégations.
+   ~30 coh-1 > Il se venge en racontant tout à la presse.
+B) Attendre le jugement :: Présomption d’innocence.
+   pop-2 | g0 c+1 d0 e-1
+   > L’adjoint reste en poste.
+   ~40 pop-2 > Un journal publie de nouvelles révélations.
+C) Lancer une charte éthique pour tous les élus :: Réforme.
+   bud-1 pop+1 coh+2 | g+2 c+2 d+1 e+2
+   > Une charte de déontologie est adoptée.
+
+=== ins-005 | institutions | Le gouvernement veut récupérer des bâtiments
+L’État veut reprendre trois casernes prêtées à la Ville, où vivent des familles en logement social provisoire.
+A) Racheter les casernes à l’État :: Garder les logements.
+   bud-70 logement+3 | g+3 c+1 d0 e+1
+   > Les casernes deviennent propriété de la Ville.
+B) Négocier un bail de quinze ans :: Gagner du temps.
+   rec-0.3x60 logement+1 | g+1 c+3 d+1 e+1
+   > Un loyer est versé à l’État.
+C) Rendre les bâtiments et reloger les familles :: Respect du droit.
+   bud-10 logement-2 pop-2 | g-3 c+1 d+3 e-1
+   > Les familles sont relogées ailleurs.
+   ~40 pop-2 > Des enfants doivent changer d’école en cours d’année.
+=== ins-006 | institutions | La Métropole veut plus de pouvoirs
+La Métropole du Grand Paris veut gérer elle-même l’urbanisme de toute l’agglomération.
+A) Soutenir la Métropole :: Vision globale.
+   coh-1 economie+1 | g0 c+3 d+1 e+1
+   > Paris perd une partie de son urbanisme.
+B) Refuser :: Garder le contrôle.
+   pop+1 | g+1 c-1 d+1 e0
+   > Paris garde la main sur son urbanisme.
+C) Proposer une compétence partagée :: Compromis.
+   coh+1 | g+1 c+3 d+1 e+1
+   > Un comité commun est créé.
+
+=== ins-007 | institutions | Une grève des agents de la Ville
+Les syndicats des agents municipaux lancent une grève pour les salaires.
+A) Accorder une hausse de salaire :: Paix sociale.
+   rec-1x50 services+2 | g+4 c+1 d-3 e+1
+   > Les agents obtiennent 4 %.
+B) Tenir bon :: Rigueur.
+   services-3 pop-2 | g-4 c+1 d+4 e-1
+   > La grève dure trois semaines.
+   ~40 proprete-2 > Les poubelles s’accumulent pendant la grève.
+C) Proposer une prime ponctuelle :: Négociation.
+   bud-12 services+1 | g+1 c+3 d+1 e0
+   > Une prime met fin à la grève.
+
+=== ins-008 | institutions | Les élections législatives approchent
+Votre parti vous demande de vous engager dans la campagne législative.
+A) S’engager à fond :: Fidélité, distraction.
+   coh+3 bon-1 | g+1 c+1 d+1 e+1
+   > Le maire fait campagne dans toute la France.
+   ~40 pop-2 > « Le maire n’est plus à Paris », titre un journal.
+B) Rester neutre :: Maire de tous.
+   pop+1 coh-2 | g0 c+2 d0 e0
+   > Le maire se tient à l’écart.
+C) Soutenir quelques candidats parisiens :: Équilibre.
+   coh+1 | g+1 c+2 d+1 e+1
+   > Le maire soutient les candidats de Paris.
+
+=== ins-009 | institutions | Le Conseil de Paris bloqué
+Votre majorité est divisée. Un vote important sur le budget risque d’échouer.
+A) Faire des concessions aux alliés :: Garder la majorité.
+   bud-20 coh-1 | g+1 c+2 d+1 e+1
+   > Les alliés obtiennent des projets dans leurs arrondissements.
+B) Chercher des voix dans l’opposition :: Audace.
+   coh-3 pop+1 | g-1 c+3 d+1 e-1
+   > Le budget passe grâce à quelques opposants.
+C) Passer en force :: Autorité.
+   coh+1 pop-2 | g0 c-1 d+1 e0
+   > Le budget passe de justesse et les alliés boudent.
+   ~40 coh-2 > Deux adjoints démissionnent.
+
+=== ins-010 | institutions | Un rapport de la Cour des comptes
+La Cour des comptes publie un rapport sévère sur la dette de la Ville.
+? detteMin=1
+A) Annoncer un plan d’économies :: Rassurer.
+   rec+0.6x60 services-1 bon-1 | g-2 c+3 d+3 e0
+   > Un plan de rigueur est annoncé.
+B) Contester les conclusions :: Défense.
+   pop-1 | g+1 c-1 d-2 e0
+   > Le maire conteste le rapport.
+   ~35 pop-2 > Les médias reprennent le rapport en boucle.
+C) Vendre des immeubles de la Ville :: Désendetter.
+   bud+60 logement-1 | g-3 c+2 d+3 e-1
+   > Des immeubles sont vendus aux enchères.
+
+=== ins-011 | institutions | Le jumelage avec une ville étrangère
+Une grande ville étrangère propose un jumelage, mais son gouvernement est critiqué pour les droits humains.
+A) Accepter le jumelage :: Économie.
+   economie+2 coh-2 | g-3 c+2 d+2 e-2
+   > Le jumelage est signé.
+   ~40 pop-2 > Des associations manifestent devant l’Hôtel de Ville.
+B) Refuser poliment :: Principes.
+   coh+1 | g+2 c+1 d0 e+2
+   > Paris décline l’offre.
+C) Accepter avec un volet droits humains :: Diplomatie.
+   economie+1 | g0 c+3 d+1 e+1
+   > Le jumelage inclut des échanges entre associations.
+
+=== ins-012 | institutions | Les maires d’arrondissement réclament plus d’autonomie
+Les maires d’arrondissement veulent gérer eux-mêmes une partie du budget.
+A) Leur confier 10 % du budget :: Décentralisation.
+   rec-0.3x60 bon+1 services+1 | g+2 c+2 d+1 e+2
+   > Les arrondissements gèrent leurs projets.
+   ~30 coh-1 > Un maire d’arrondissement de l’opposition s’en sert contre vous.
+B) Refuser :: Garder le contrôle.
+   coh+1 bon-1 | g-1 c0 d+1 e-1
+   > Tout reste centralisé.
+C) Créer un budget participatif par arrondissement :: Les habitants décident.
+   rec-0.2x60 bon+2 | g+3 c+2 d0 e+3
+   > Les habitants votent pour leurs projets.
+
+=== ins-013 | institutions | Un ministre attaque votre gestion
+Un ministre accuse publiquement Paris d’être « une ville sale et dangereuse ».
+A) Répondre fermement dans les médias :: Défendre Paris.
+   pop+2 coh+1 | g+1 c+1 d-1 e+1
+   > Le maire répond sur tous les plateaux.
+B) Inviter le ministre à une visite :: Apaisement.
+   pop+1 | g0 c+3 d+2 e0
+   > Le ministre visite les quartiers rénovés.
+C) Ignorer :: Calme.
+   pop-1 | g0 c+1 d0 e0
+   > Le maire ne répond pas.
+   ~30 pop-1 > Le silence est interprété comme un aveu.
+
+=== ins-014 | institutions | Le référendum local
+Des citoyens demandent un référendum sur un grand projet d’aménagement.
+A) Organiser le référendum :: Démocratie, risque.
+   bud-6 coh+2 | g+2 c+2 d0 e+3
+   > Les Parisiens votent.
+   ~40 pop-2 > Le projet est rejeté et la majorité apparaît désavouée.
+B) Refuser le référendum :: Décider soi-même.
+   pop-2 | g-2 c0 d+2 e-2
+   > Le projet continue sans vote.
+C) Organiser une consultation en ligne :: Rapide.
+   bud-1 coh+1 | g+1 c+3 d+1 e+1
+   > Une consultation en ligne recueille 80 000 avis.
+
+=== ins-015 | institutions | La police municipale armée ?
+Votre majorité est divisée sur l’armement de la police municipale.
+A) Armer la police municipale :: Sécurité.
+   bud-10 securite+3 | g-4 c+1 d+5 e-3
+   > Les policiers municipaux sont équipés d’armes.
+   ~25 pop-2 > Un tir lors d’une interpellation provoque une polémique.
+B) Refuser :: Prévention.
+   securite-1 | g+3 c+1 d-4 e+3
+   > La police municipale reste non armée.
+C) Équiper de caméras-piétons et pistolets à impulsion :: Intermédiaire.
+   bud-5 securite+2 | g0 c+3 d+2 e0
+   > Des pistolets à impulsion sont distribués.
+
+=== ins-016 | institutions | Paris et la banlieue : le périphérique
+Les maires de banlieue reprochent à Paris de décider seul de l’avenir du périphérique.
+A) Créer une conférence métropolitaine :: Coopération.
+   bud-1 coh+1 transports+1 | g+2 c+3 d+1 e+2
+   > Les maires se réunissent chaque trimestre.
+B) Maintenir la décision parisienne :: Fermeté.
+   transports+1 pop-1 | g0 c0 d+1 e+1
+   > Paris décide seul.
+   ~40 coh-1 > Les maires de banlieue boycottent les réunions métropolitaines.
+C) Proposer un fonds commun pour les communes voisines :: Solidarité.
+   bud-20 economie+1 | g+3 c+2 d0 e+2
+   > Un fonds de solidarité métropolitain est créé.
+
+=== ins-017 | institutions | Une ancienne promesse oubliée
+Un journaliste rappelle une promesse de campagne jamais tenue : un parc dans le 18e.
+A) Lancer le projet immédiatement :: Tenir parole.
+   bud-30 ecologie+2 bon+1 coh+2 | g+2 c+2 d+1 e+3
+   > Les travaux du parc démarrent.
+B) Expliquer pourquoi c’est impossible :: Franchise.
+   pop-1 coh+1 | g0 c+2 d+1 e0
+   > Le maire s’explique publiquement.
+C) Remplacer par un projet plus modeste :: Compromis.
+   bud-10 ecologie+1 | g+1 c+2 d+1 e+2
+   > Un square remplace le grand parc promis.
+
+=== ins-018 | institutions | Les Jeux olympiques de la jeunesse
+Le Comité olympique propose à Paris d’organiser les Jeux olympiques de la jeunesse.
+A) Accepter :: Rayonnement.
+   bud-40 economie+2 bon+1 | g0 c+2 d+3 e-1
+   > Paris accueillera les jeunes athlètes.
+   +25 pop+2 > Les Jeux sont un succès populaire.
+B) Refuser :: Pas de grands événements.
+   pop-1 | g+1 c0 d-2 e+2
+   > Paris décline la proposition du Comité.
+C) Accepter avec les équipements existants uniquement :: Sobre.
+   bud-15 economie+1 | g+1 c+3 d+1 e+2
+   > Les Jeux se tiendront dans les sites de 2024.
+
+=== ins-019 | institutions | Un conflit avec la SNCF
+La SNCF veut construire des bureaux sur une friche ferroviaire que vous vouliez transformer en parc.
+A) Négocier un partage bureaux-parc :: Compromis.
+   ecologie+1 economie+1 | g+1 c+3 d+2 e+1
+   > Un tiers bureaux, deux tiers parc.
+B) Bloquer le permis de construire :: Bras de fer.
+   ecologie+2 economie-1 | g+2 c-1 d-2 e+3
+   > Le permis est refusé.
+   ~40 pop-1 > La SNCF attaque la Ville en justice.
+C) Racheter le terrain :: Coûteux.
+   bud-80 ecologie+3 bon+1 | g+2 c+1 d0 e+4
+   > La Ville devient propriétaire de la friche.
+
+=== ins-020 | institutions | Le scandale des notes de frais
+Des notes de frais d’élus municipaux font la une : restaurants étoilés et voyages.
+A) Publier toutes les notes de frais :: Transparence.
+   pop+2 coh+1 | g+2 c+2 d+1 e+2
+   > Toutes les dépenses des élus sont en ligne.
+   ~30 pop-1 > On découvre aussi quelques dépenses du maire.
+B) Plafonner les frais :: Réforme.
+   bud+1 pop+1 | g+1 c+3 d+2 e+1
+   > Les frais sont strictement plafonnés.
+C) Minimiser l’affaire :: Risqué.
+   pop-3 coh-1 | g-1 c0 d0 e-1
+   > Le maire parle de « détails ».
+
+=== ins-021 | institutions | L’État veut installer un centre d’accueil de migrants
+L’État annonce un centre d’accueil pour 500 personnes dans un arrondissement parisien.
+A) Accepter et accompagner :: Humanité.
+   bud-5 services+1 | g+4 c+1 d-4 e+3
+   > Le centre ouvre avec l’appui de la Ville.
+   ~35 pop-2 > Une réunion publique tourne à l’affrontement.
+B) Refuser :: Écouter les riverains.
+   pop+1 coh-1 | g-4 c0 d+4 e-3
+   > Le maire s’oppose au projet.
+C) Proposer plusieurs petits centres répartis :: Équilibre.
+   bud-3 | g+2 c+3 d0 e+2
+   > Cinq petits centres sont ouverts.
+
+=== ins-022 | institutions | L’Union européenne propose des fonds
+Bruxelles propose des fonds pour la transition écologique, mais le dossier est très lourd.
+A) Monter un dossier ambitieux :: Recettes potentielles.
+   bud-3 ecologie+1 | g+1 c+2 d+1 e+3
+   > Une équipe prépare le dossier.
+   +15 bud+40 > Paris obtient 40 millions de fonds européens.
+B) Ne pas candidater :: Trop compliqué.
+   ecologie-1 | g-1 c-1 d+1 e-2
+   > Paris passe son tour.
+C) Candidater avec d’autres villes européennes :: Réseau.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Paris s’allie avec Milan et Barcelone.
+   +15 bud+15 > Le consortium obtient des financements.
+
+=== ins-023 | institutions | La dissolution de la majorité ?
+Un parti allié menace de quitter votre majorité à cause de vos choix récents.
+? cohMax=55
+A) Céder sur leurs demandes :: Garder l’alliance.
+   bud-15 coh-2 | g+1 c+2 d+1 e+2
+   > L’allié reste dans la majorité.
+B) Les laisser partir :: Clarifier la ligne.
+   coh+4 pop-2 | g0 c-1 d0 e0
+   > L’allié quitte la majorité.
+   ~30 pop-2 > Plusieurs votes sont perdus au Conseil de Paris.
+C) Remanier l’équipe municipale :: Nouveau souffle.
+   coh+2 pop+1 | g+1 c+2 d+1 e+1
+   > Un nouvel exécutif est nommé.
+
+=== ins-024 | institutions | Le procès de l’ancienne majorité
+L’ancienne équipe municipale est jugée pour des emplois fictifs. On vous demande de vous constituer partie civile.
+A) Se porter partie civile :: Justice.
+   bud+2 pop+1 coh+1 | g+1 c+2 d+1 e+2
+   > La Ville réclame réparation.
+B) Ne pas s’en mêler :: Neutre.
+   coh-1 | g0 c+1 d0 e0
+   > La Ville reste en dehors du procès.
+C) Créer une cellule anti-corruption :: Prévenir.
+   rec-0.2x60 pop+1 coh+1 | g+2 c+3 d+2 e+2
+   > Une cellule de contrôle est créée.
+
+=== ins-025 | institutions | La loi sur le statut de Paris
+Le Parlement propose de réformer le statut de Paris et de supprimer certains pouvoirs de la Ville.
+A) Mobiliser les Parisiens contre la réforme :: Combat.
+   pop+2 coh+1 | g+2 c0 d-1 e+2
+   > Une grande pétition rassemble 300 000 signatures.
+   ~35 coh-1 > Le gouvernement durcit le texte en représailles.
+B) Négocier des amendements :: Diplomatie.
+   coh+1 | g0 c+3 d+2 e0
+   > Plusieurs amendements protègent la Ville.
+C) Accepter la réforme :: Résignation.
+   pop-2 coh-1 | g-2 c+1 d+2 e-1
+   > La réforme passe.

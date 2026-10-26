@@ -126,7 +126,7 @@ paintUser();
 // Mode maintenance : les joueurs voient un message, l'admin peut toujours tester
 function applyMaint(){
   var M=window.MAINT||{},adm=!!window.ADMIN_UNLOCKED;
-  [["g-loc","loc","locStop"],["g-quiz","quiz","quizStop"],["g-prix","prix","prixStop"]].forEach(function(g){
+  [["g-loc","loc","locStop"],["g-quiz","quiz","quizStop"],["g-prix","prix","prixStop"],["g-maire","maire","maireStop"]].forEach(function(g){
     var on=!!M[g[1]],box=$(g[0]);if(!box)return;
     box.classList.toggle("maint",on&&!adm);box.classList.toggle("maint-adm",on&&adm);
     var tl=document.querySelector('.gtile[data-g="'+g[0]+'"]');if(tl)tl.classList.toggle("off",on&&!adm);
@@ -141,7 +141,8 @@ Array.prototype.forEach.call(document.querySelectorAll(".gtile"),function(b){
     if(window.prixStop)prixStop();
     if(window.locStop)locStop();
     Array.prototype.forEach.call(document.querySelectorAll(".gtile"),function(x){x.classList.toggle("on",x===b)});
-    ["g-loc","g-quiz","g-prix"].forEach(function(id){$(id).hidden=(id!==b.dataset.g)});
+    ["g-loc","g-quiz","g-prix","g-maire"].forEach(function(id){$(id).hidden=(id!==b.dataset.g)});
+    if(b.dataset.g==="g-maire")loadMaire();
   };
 });
 
@@ -149,6 +150,12 @@ Array.prototype.forEach.call(document.querySelectorAll(".gtile"),function(b){
 var LOADED={};
 function loadScript(src){
   return LOADED[src]||(LOADED[src]=new Promise(function(ok,ko){var s=document.createElement("script");s.src=src;s.onload=ok;s.onerror=function(){delete LOADED[src];ko()};document.head.appendChild(s)}));
+}
+// Maire de Paris : moteur, interface et style chargés seulement quand on ouvre le jeu
+function loadMaire(){
+  if(!LOADED.mcss){LOADED.mcss=1;var l=document.createElement("link");l.rel="stylesheet";l.href="maire/maire.css";document.head.appendChild(l)}
+  return loadScript("maire/moteur.js").then(function(){return loadScript("maire/jeu.js")}).then(function(){maireInit()})
+    .catch(function(){$("m-app").textContent="Le jeu n’a pas pu se charger. Vérifie ta connexion."});
 }
 function loadAdmin(){
   if(!LOADED.css){LOADED.css=1;var l=document.createElement("link");l.rel="stylesheet";l.href="css/admin.css";document.head.appendChild(l)}
