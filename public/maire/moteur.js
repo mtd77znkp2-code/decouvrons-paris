@@ -6,12 +6,12 @@
 
   var TOURS = 100, SEUIL = 30;
   var DEPART = { pop: 58, bon: 58, coh: 70, tresor: 1000 };
-  var FONCT = { recettes: 200, depenses: 204 };          // fonctionnement courant (M€ par semaine), légèrement déficitaire
+  var FONCT = { recettes: 200, depenses: 206 };          // fonctionnement courant (M€ par semaine), légèrement déficitaire
   var PLAFOND_DETTE = 1000, TAUX = 0.003;               // emprunt autorisé et intérêts par semaine
 
   // Réglages d'équilibrage (vérifiés par tools/maire/test-moteur.mjs)
   var P = { domRepos: 42, domVit: 0.03, bonVit: 0.05, popVit: 0.04, usure: 0.22, detteImpop: 120,
-    cohRepos: 50, cohVit: 0.015, aliPlus: 0.8, aliMoins: 1.6, probleme: 3.5, ambMult: 2.5, ambSeuil: 58 };
+    cohRepos: 50, cohVit: 0.015, aliPlus: 0.8, aliMoins: 1.6, probleme: 3.7, ambMult: 2.5, ambSeuil: 56, problemeAmb: 0.5 };
 
   var LIGNES = {
     gauche: { nom: "Gauche", txt: "Services publics, solidarité et réduction des inégalités." },
@@ -285,7 +285,11 @@
     st.vus[ev.id] = st.tour; st.cats.push(ev.cat); if (st.cats.length > 6) st.cats.shift();
     // Chaque événement est un problème qui pèse sur la ville tant qu'on ne le règle pas
     if (st.special) { /* les effets d'une catastrophe ou d'une chance sont dans les choix */ }
-    else if (CAT_DOM[ev.cat]) st.dom[CAT_DOM[ev.cat]] = borne(st.dom[CAT_DOM[ev.cat]] - P.probleme);
+    else if (CAT_DOM[ev.cat]) {
+      // Les domaines des ambitions reviennent plus souvent sur le bureau : chaque dossier y pèse un peu moins
+      var k = CAT_DOM[ev.cat], f = st.ambitions.indexOf(k) >= 0 ? P.problemeAmb : 1;
+      st.dom[k] = borne(st.dom[k] - P.probleme * f);
+    }
     else st.bon = borne(st.bon - P.probleme * (ev.cat === "crise" ? 0.8 : 0.3));
     st.evenement = ev.id; st.notes = notes; st.phase = "evenement";
     return st;
