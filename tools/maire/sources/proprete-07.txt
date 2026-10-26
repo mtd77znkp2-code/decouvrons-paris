@@ -13,6 +13,7 @@ C) Rien :: Coût.
 
 === pro-227 | proprete | Des bancs publics jamais lavés
 Taches, fientes et chewing-gums couvrent les bancs des places.
+? distinct
 A) Un lavage mensuel de tous les bancs :: Entretenir.
    rec-0.01x60 proprete+1 bon+1 | g0 c+2 d+1 e+1
    > Les bancs redeviennent accueillants.
