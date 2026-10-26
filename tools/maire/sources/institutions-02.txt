@@ -1,0 +1,508 @@
+// Relations institutionnelles, série 2
+=== ins-026 | institutions | Retransmettre le Conseil de Paris en direct
+Les séances du Conseil de Paris sont peu suivies. Des habitants demandent plus de transparence.
+A) Retransmission en direct et sous-titrée :: Transparence.
+   bud-2 coh+1 pop+1 | g+1 c+3 d+1 e+2
+   > Les séances sont diffusées en direct.
+   ~30 pop-1 > Une dispute entre élus devient virale.
+B) Publier seulement des résumés vidéo :: Pédagogie.
+   bud-1 pop+1 | g0 c+2 d+1 e+1
+   > Des vidéos courtes résument chaque séance.
+C) Garder le fonctionnement actuel :: Sérénité des débats.
+   pop-1 | g-1 c0 d+1 e-1
+   > Rien ne change.
+
+=== ins-027 | institutions | Un adjoint veut aussi être député
+Ton adjoint aux transports veut se présenter aux législatives tout en gardant sa délégation.
+A) Exiger qu’il choisisse :: Un mandat, un élu.
+   coh+2 pop+1 | g+1 c+2 d+1 e+2
+   > L’adjoint renonce à sa candidature.
+   ~30 coh-1 > Vexé, il critique ta gestion dans la presse.
+B) L’autoriser :: Relais à l’Assemblée.
+   coh-1 | g0 c+1 d+1 e-1
+   > L’adjoint fait campagne.
+   ~35 transports-1 > Les dossiers des transports prennent du retard.
+C) Lui retirer sa délégation s’il est élu :: Compromis.
+   coh+1 | g+1 c+3 d+1 e+1
+   > La règle est fixée à l’avance.
+
+=== ins-028 | institutions | La parité dans l’équipe municipale
+Les associations féministes relèvent que les grandes délégations sont toutes confiées à des hommes.
+A) Redistribuer les délégations :: Égalité.
+   coh+1 pop+1 | g+3 c+2 d0 e+2
+   > Les finances et l’urbanisme sont confiés à des adjointes.
+B) Promettre la parité au prochain remaniement :: Plus tard.
+   pop-1 | g0 c+2 d+1 e0
+   > Les associations restent sceptiques.
+C) Défendre la compétence avant le genre :: Assumer.
+   pop-2 | g-3 c0 d+3 e-1
+   > Le maire refuse de changer son équipe.
+
+=== ins-029 | institutions | Le Défenseur des droits épingle la Ville
+Le Défenseur des droits estime que les règles d’accès aux cantines discriminent les enfants de parents sans emploi.
+A) Changer immédiatement les règles :: Corriger.
+   rec-0.2x60 services+1 coh+1 | g+3 c+2 d0 e+1
+   > Tous les enfants peuvent manger à la cantine.
+B) Contester l’avis :: Défendre la Ville.
+   pop-2 | g-2 c0 d+2 e-1
+   > La Ville conteste.
+C) Lancer une concertation :: Prendre le temps.
+   bud-1 | g+1 c+3 d+1 e+1
+   > Une concertation est ouverte.
+
+=== ins-030 | institutions | La CNIL enquête sur l’application municipale
+La CNIL s’intéresse aux données collectées par l’application de la Ville.
+A) Coopérer et supprimer les données inutiles :: Transparence.
+   bud-2 coh+1 | g+2 c+3 d+1 e+2
+   > Les données superflues sont effacées.
+B) Défendre l’application :: Assumer.
+   pop-1 | g-1 c0 d+2 e-1
+   > La Ville conteste les reproches.
+   ~40 bud-5 pop-1 > La CNIL inflige une amende à la Ville.
+C) Suspendre l’application :: Prudence.
+   services-1 | g+1 c+2 d0 e+1
+   > L’application est suspendue.
+
+=== ins-031 | institutions | Le tribunal annule une piétonnisation
+Le tribunal administratif annule la piétonnisation d’une rue pour insuffisance d’étude d’impact.
+A) Faire appel :: Défendre le projet.
+   bud-1 coh+1 | g+1 c0 d-2 e+3
+   > La Ville fait appel.
+   ~40 pop-1 > La cour d’appel confirme l’annulation.
+B) Refaire l’étude et reprendre la décision :: Respecter le droit.
+   bud-2 | g0 c+3 d+1 e+2
+   > Une nouvelle étude est lancée.
+C) Rouvrir la rue aux voitures :: Accepter.
+   transports+1 ecologie-1 coh-1 | g-1 c+1 d+3 e-3
+   > Les voitures reviennent.
+
+=== ins-032 | institutions | Le préfet interdit une manifestation
+Le préfet interdit une marche pour le climat que tu soutenais publiquement.
+A) Manifester quand même avec les élus :: Défier.
+   coh+2 pop+1 | g+3 c-1 d-3 e+4
+   > Le maire marche en tête du cortège.
+   ~35 pop-2 > Des heurts éclatent en fin de manifestation.
+B) Demander un autre parcours :: Négocier.
+   coh+1 | g+1 c+3 d+1 e+2
+   > Le préfet accepte un parcours réduit.
+C) Respecter l’interdiction :: Légalité.
+   coh-1 | g-1 c+1 d+3 e-2
+   > La marche est annulée.
+
+=== ins-033 | institutions | L’État veut construire une prison à Paris
+Le ministère de la Justice veut construire une maison d’arrêt sur un terrain du 13e.
+A) Accepter avec des contreparties :: Compromis.
+   bud+20 securite+1 bon-1 | g0 c+3 d+2 e0
+   > L’État finance une école et un parc en échange.
+B) S’opposer fermement :: Défendre les habitants.
+   pop+2 coh+1 | g+1 c0 d-2 e+1
+   > Le maire refuse le projet.
+   ~40 coh-1 > L’État passe outre.
+C) Proposer un autre terrain :: Déplacer.
+   bon-1 | g0 c+2 d+1 e0
+   > Le projet est déplacé en bordure du périphérique.
+
+=== ins-034 | institutions | Les ambassades ne paient pas leurs amendes
+Les véhicules diplomatiques accumulent des millions d’euros d’amendes de stationnement impayées.
+A) Publier la liste des ambassades mauvaises payeuses :: Pression.
+   pop+2 bud+3 | g+1 c+1 d+1 e+1
+   > Plusieurs ambassades règlent leurs amendes.
+   ~30 coh-1 > Le ministère des Affaires étrangères proteste.
+B) Négocier discrètement avec le ministère :: Diplomatie.
+   bud+2 | g0 c+3 d+2 e0
+   > Un accord de paiement est trouvé.
+C) Abandonner les poursuites :: Diplomatie d’abord.
+   pop-1 | g-1 c+1 d+1 e0
+   > Les amendes sont oubliées.
+
+=== ins-035 | institutions | La visite d’un chef d’État controversé
+Un chef d’État accusé de violations des droits humains est reçu à l’Élysée. Il veut visiter l’Hôtel de Ville.
+A) Refuser de le recevoir :: Principes.
+   coh+2 pop+1 | g+3 c0 d-2 e+3
+   > Le maire refuse la visite.
+   ~30 economie-1 > Un contrat commercial avec ce pays est annulé.
+B) Le recevoir en évoquant les droits humains :: Diplomatie franche.
+   coh+1 | g0 c+3 d+2 e0
+   > Le maire évoque les prisonniers politiques.
+C) Le recevoir avec les honneurs :: Protocole.
+   economie+1 coh-2 | g-3 c+1 d+3 e-2
+   > La visite se fait en grande pompe.
+
+=== ins-036 | institutions | Un conseil municipal des enfants
+Des enseignants proposent que des élèves élus siègent dans un conseil des enfants avec un vrai budget.
+A) Créer le conseil avec un budget d’un million :: Démocratie dès l’enfance.
+   bud-1 bon+1 pop+1 | g+2 c+2 d+1 e+2
+   > Les enfants votent leurs premiers projets.
+B) Conseil consultatif sans budget :: Symbolique.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Les enfants donnent leur avis.
+C) Refuser :: Gadget.
+   bon-1 | g-1 c0 d+2 e-1
+   > Le projet est abandonné.
+
+=== ins-037 | institutions | Un accord avec les syndicats des agents
+Les syndicats proposent un accord sur trois ans : salaires, conditions de travail et télétravail.
+A) Signer l’accord :: Paix sociale.
+   rec-0.6x60 services+2 | g+3 c+2 d-1 e+1
+   > Trois ans de paix sociale sont garantis.
+B) Négocier un accord plus modeste :: Compromis.
+   rec-0.3x60 services+1 | g+1 c+3 d+1 e0
+   > Un accord a minima est signé.
+C) Refuser :: Maîtrise des dépenses.
+   services-1 | g-3 c+1 d+3 e-1
+   > Les négociations échouent, aucun accord n’est signé.
+   ~45 services-2 pop-1 > Une grève touche les crèches et les cantines.
+
+=== ins-038 | institutions | Un registre des lobbys
+Des associations demandent que toutes les rencontres entre élus et lobbys soient publiées.
+A) Créer un registre public obligatoire :: Transparence.
+   bud-1 coh+2 pop+1 | g+2 c+2 d0 e+2
+   > Chaque rendez-vous d’élu est publié.
+B) Registre volontaire :: Souple.
+   coh+1 | g0 c+3 d+1 e+1
+   > Les élus volontaires publient leurs rendez-vous.
+C) Refuser :: Bureaucratie.
+   pop-1 | g-1 c0 d+2 e-1
+   > Rien ne change.
+
+=== ins-039 | institutions | Un adjoint en conflit d’intérêts
+Un adjoint a voté une subvention à une association présidée par sa femme.
+A) Lui demander de rembourser et de démissionner :: Exemplarité.
+   coh+1 pop+1 | g+1 c+2 d+2 e+2
+   > L’adjoint démissionne.
+B) Faire voter une règle de déport :: Réforme.
+   coh+1 | g+1 c+3 d+1 e+1
+   > Les élus devront quitter la salle en cas de conflit d’intérêts.
+C) Minimiser :: Une erreur de bonne foi.
+   pop-2 coh-1 | g-1 c0 d0 e-1
+   > Le maire défend son adjoint.
+
+=== ins-040 | institutions | Une convention citoyenne pour le climat
+Cent Parisiens tirés au sort pourraient proposer des mesures pour le climat.
+A) Lancer la convention et s’engager à soumettre ses propositions au vote :: Démocratie.
+   bud-2 coh+1 ecologie+1 | g+2 c+2 d0 e+4
+   > Cent citoyens travaillent pendant six mois.
+   +20 ecologie+2 > Plusieurs propositions de la convention sont adoptées.
+B) Convention consultative :: Prudence.
+   bud-1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Les citoyens rendent un avis.
+C) Refuser :: Les élus sont là pour décider.
+   coh-1 | g-1 c0 d+3 e-2
+   > Pas de convention.
+
+=== ins-041 | institutions | Un conflit avec la ville de Saint-Denis
+La mairie de Saint-Denis accuse Paris d’envoyer ses problèmes de l’autre côté du périphérique.
+A) Créer un fonds commun pour les quartiers limitrophes :: Solidarité.
+   bud-15 bon+1 | g+3 c+2 d0 e+2
+   > Un fonds finance des projets des deux côtés.
+B) Réunion de travail entre les deux maires :: Dialogue.
+   coh+1 | g+1 c+3 d+1 e+1
+   > Les deux maires signent une charte.
+C) Rejeter les accusations :: Défendre Paris.
+   pop+1 coh-1 | g-2 c0 d+2 e-1
+   > Le maire dément.
+
+=== ins-042 | institutions | Des militaires dans les rues
+Le gouvernement veut renforcer la présence militaire dans les rues de Paris.
+A) Soutenir le dispositif :: Sécurité.
+   securite+2 bon-1 | g-3 c+1 d+4 e-2
+   > Les patrouilles de militaires se multiplient.
+B) Demander plutôt des policiers :: Alternative.
+   securite+1 | g+1 c+3 d+1 e+1
+   > Le maire réclame des policiers plutôt que des soldats.
+C) S’y opposer :: Ville apaisée.
+   securite-1 coh+1 | g+3 c0 d-3 e+2
+   > Le maire critique la militarisation.
+
+=== ins-043 | institutions | Le Sénat garde le Luxembourg fermé le soir
+Le jardin du Luxembourg appartient au Sénat, qui refuse de l’ouvrir le soir en été.
+A) Campagne publique pour l’ouverture :: Pression.
+   pop+1 coh+1 | g+2 c+1 d-1 e+2
+   > Une pétition réunit 100 000 signatures.
+   ~40 coh-1 > Le Sénat refuse sèchement.
+B) Proposer de payer les gardiens du soir :: Solution concrète.
+   rec-0.1x20 bon+1 | g+1 c+3 d+1 e+1
+   > Le jardin ouvre jusqu’à 22 h en juillet.
+C) Ne rien demander :: Respect des institutions.
+   bon-1 | g0 c+1 d+2 e0
+   > Le jardin ferme toujours au coucher du soleil.
+
+=== ins-044 | institutions | L’État ne compense plus les aides sociales
+L’État ne rembourse plus intégralement le RSA que la Ville verse aux allocataires.
+A) Attaquer l’État en justice :: Défendre les finances.
+   bud-1 coh+1 | g+2 c+1 d0 e+1
+   > La Ville saisit le Conseil d’État.
+   ~40 bud+30 > La Ville obtient un remboursement partiel.
+B) Absorber le coût :: Protéger les allocataires.
+   rec-0.8x60 achat+1 | g+3 c+1 d-2 e+1
+   > La Ville paie la différence.
+C) Renforcer les contrôles des allocataires :: Réduire la dépense.
+   rec+0.2x60 bon-1 | g-4 c+1 d+4 e-1
+   > Les contrôles se multiplient.
+
+=== ins-045 | institutions | Une loi contre l’encadrement des loyers
+Le Parlement examine une loi pour supprimer l’encadrement des loyers à Paris.
+A) Mobiliser les locataires contre la loi :: Combat.
+   pop+1 coh+2 | g+4 c0 d-3 e+2
+   > Des milliers de locataires manifestent.
+   ~45 logement-1 > La loi passe malgré tout.
+B) Négocier des aménagements :: Diplomatie.
+   coh+1 | g+1 c+3 d+1 e+1
+   > Paris obtient une période de transition.
+C) Accepter :: Fin d’une expérimentation.
+   logement-1 coh-1 | g-4 c+1 d+4 e-1
+   > Les loyers sont libérés.
+
+=== ins-046 | institutions | Un vote symbolique des étrangers
+Des associations demandent une consultation où les résidents étrangers pourraient voter sur des projets locaux.
+A) Organiser la consultation :: Citoyenneté de résidence.
+   bud-1 coh+1 | g+4 c0 d-4 e+2
+   > Les résidents étrangers votent sur les projets de quartier.
+   ~35 pop-2 > L’opposition dénonce une provocation.
+B) Les intégrer au budget participatif :: Discret.
+   coh+1 | g+2 c+2 d-1 e+1
+   > Le budget participatif s’ouvre à tous les habitants.
+C) Refuser :: Le vote est réservé aux citoyens.
+   coh-1 | g-3 c+1 d+4 e-1
+   > La demande est rejetée.
+
+=== ins-047 | institutions | Un droit d’interpellation citoyen
+Des habitants proposent qu’une pétition de 5 000 signatures oblige le Conseil de Paris à débattre.
+A) Créer le droit d’interpellation :: Démocratie directe.
+   coh+1 pop+2 | g+2 c+2 d0 e+3
+   > Les pétitions arrivent au Conseil.
+B) Seuil à 20 000 signatures :: Prudence.
+   pop+1 | g+1 c+3 d+1 e+1
+   > Le droit est créé avec un seuil élevé.
+C) Refuser :: Démocratie représentative.
+   pop-1 | g-1 c0 d+2 e-1
+   > La demande est rejetée.
+
+=== ins-048 | institutions | L’augmentation des indemnités des élus
+Les indemnités des conseillers de Paris n’ont pas bougé depuis dix ans. Certains veulent les augmenter.
+A) Les augmenter :: Reconnaître le travail.
+   rec-0.05x60 pop-3 | g0 c+1 d+1 e0
+   > Les indemnités augmentent de 10 %.
+B) Les geler :: Exemplarité.
+   pop+1 | g+1 c+2 d+1 e+1
+   > Les indemnités restent gelées.
+C) Les baisser :: Symbole.
+   pop+2 coh-1 | g+1 c+1 d+1 e+1
+   > Les indemnités baissent de 10 %.
+   ~30 coh-1 > Des élus menacent de ne plus siéger.
+
+=== ins-049 | institutions | Une ville amie bombardée
+Une ville jumelée avec Paris est bombardée. Son maire appelle à l’aide.
+A) Envoyer une aide humanitaire importante :: Solidarité.
+   bud-10 pop+2 coh+1 | g+2 c+2 d+1 e+2
+   > Des convois d’aide partent de Paris.
+B) Accueillir des familles réfugiées :: Hospitalité.
+   bud-6 rec-0.2x40 bon+1 | g+3 c+2 d-1 e+2
+   > Des familles sont logées à Paris.
+C) Un message de soutien :: Symbolique.
+   pop-1 | g0 c+1 d+1 e0
+   > Le maire exprime sa solidarité.
+
+=== ins-050 | institutions | Une coopération avec une ville africaine
+La capitale d’un pays africain propose un partenariat sur l’eau et l’assainissement.
+A) Financer un programme de coopération :: Solidarité internationale.
+   bud-5 coh+1 | g+3 c+2 d0 e+2
+   > Les ingénieurs d’Eau de Paris partent en mission.
+B) Échange d’expertise sans budget :: Partage.
+   coh+1 | g+1 c+3 d+1 e+1
+   > Des techniciens échangent leurs savoir-faire.
+C) Refuser :: Priorité aux Parisiens.
+   coh-1 | g-3 c0 d+3 e-1
+   > Le partenariat est décliné.
+
+=== ins-051 | institutions | Un ministère quitte Paris
+Le gouvernement veut déplacer un ministère et ses 3 000 agents en province.
+A) Protester :: Défendre l’emploi parisien.
+   pop+1 | g+1 c0 d+1 e0
+   > Le maire dénonce une « punition de Paris ».
+   ~45 economie-1 > Le ministère part quand même.
+B) Proposer de transformer les bâtiments en logements :: Rebondir.
+   logement+2 | g+2 c+2 d+1 e+2
+   > L’État accepte de céder les bâtiments à la Ville.
+C) Accepter : décentraliser est juste :: Solidarité territoriale.
+   economie-1 coh+1 | g+1 c+2 d0 e+2
+   > Le maire soutient le départ.
+
+=== ins-052 | institutions | Présider le réseau des grandes villes pour le climat
+Paris peut prendre la présidence d’un réseau mondial de grandes villes engagées pour le climat.
+A) Accepter la présidence :: Rayonnement.
+   bud-3 ecologie+1 pop+1 | g+1 c+2 d0 e+4
+   > Le maire préside le réseau mondial.
+   ~30 pop-1 > On reproche au maire de voyager plus qu’il ne gouverne.
+B) Participer sans présider :: Discret.
+   ecologie+1 | g+1 c+3 d+1 e+2
+   > Paris reste un membre actif.
+C) Quitter le réseau :: Priorités locales.
+   coh-1 | g-1 c0 d+3 e-3
+   > Paris quitte le réseau.
+
+=== ins-053 | institutions | L’ancien maire critique ta politique
+Ton prédécesseur multiplie les interviews pour critiquer tes décisions.
+A) Lui répondre point par point :: Défendre son bilan.
+   coh+1 pop-1 | g0 c+1 d0 e0
+   > Le maire répond dans la presse.
+   ~35 pop-1 > La polémique s’éternise.
+B) L’ignorer :: Hauteur.
+   pop+1 | g0 c+2 d+1 e+1
+   > Le maire ne répond pas.
+C) Lui proposer une mission :: Le neutraliser.
+   coh-1 pop+1 | g+1 c+2 d+1 e0
+   > L’ancien maire accepte une mission sur le patrimoine.
+
+=== ins-054 | institutions | Un lanceur d’alerte dans tes services
+Un agent révèle à la presse des irrégularités dans un marché public de la Ville.
+A) Le protéger et ouvrir une enquête :: Intégrité.
+   coh+2 pop+1 | g+2 c+2 d+1 e+2
+   > Une enquête interne est lancée.
+   ~40 pop-2 > L’enquête confirme des irrégularités graves.
+B) Sanctionner l’agent pour fuite :: Discipline.
+   pop-3 coh-1 | g-3 c0 d+2 e-2
+   > L’agent est suspendu.
+C) Saisir directement la justice :: Transparence totale.
+   coh+1 | g+1 c+2 d+2 e+1
+   > Le procureur est saisi.
+
+=== ins-055 | institutions | Le préfet conteste une délibération
+Le préfet saisit le tribunal contre une délibération du Conseil de Paris sur les loyers commerciaux.
+A) Défendre la délibération en justice :: Tenir bon.
+   bud-1 coh+1 | g+2 c+1 d-1 e+1
+   > La Ville défend sa décision.
+   ~45 coh-1 > Le tribunal donne raison au préfet.
+B) Modifier la délibération :: Sécuriser.
+   economie-1 | g0 c+3 d+1 e0
+   > Une nouvelle version est votée.
+C) Retirer la délibération :: Éviter le conflit.
+   coh-2 | g-2 c+1 d+2 e-1
+   > La délibération est abandonnée.
+
+=== ins-056 | institutions | L’incinérateur d’Ivry à reconstruire
+Le syndicat qui gère les déchets de Paris veut reconstruire l’incinérateur d’Ivry, très contesté.
+A) Soutenir un incinérateur plus petit et moderne :: Pragmatique.
+   bud-30 proprete+2 ecologie+1 | g0 c+3 d+2 e+1
+   > L’incinérateur sera plus petit et moins polluant.
+B) Exiger un plan zéro déchet sans incinérateur :: Ambition écologique.
+   ecologie+3 proprete-2 | g+2 c0 d-2 e+5
+   > Le projet est gelé.
+   ~40 proprete-2 > Les déchets partent en camion vers d’autres départements.
+C) Accepter le projet tel quel :: Continuité.
+   bud-40 proprete+2 ecologie-2 | g-1 c+2 d+3 e-4
+   > Le grand incinérateur sera reconstruit.
+
+=== ins-057 | institutions | Des communes voisines refusent des places d’hébergement
+Plusieurs communes de banlieue refusent d’accueillir des centres d’hébergement, laissant Paris seul.
+A) Demander à l’État de répartir équitablement :: Solidarité régionale.
+   coh+1 | g+2 c+2 d0 e+1
+   > Le préfet de région est saisi.
+B) Payer pour des places dans les communes volontaires :: Financer.
+   bud-10 services+1 | g+2 c+2 d+1 e+1
+   > Des communes acceptent contre un financement.
+C) Réduire l’hébergement à Paris :: Équité.
+   services-1 | g-4 c+1 d+4 e-2
+   > Paris arrête d’ouvrir de nouvelles places.
+
+=== ins-058 | institutions | Un commissariat fermé la nuit
+La préfecture ferme la nuit le commissariat d’un arrondissement pour manque d’effectifs.
+A) Protester auprès du ministre :: Pression.
+   pop+1 coh+1 | g+1 c+1 d+1 e0
+   > Le maire écrit au ministre de l’Intérieur.
+   ~45 securite-1 > Le commissariat reste fermé.
+B) Ouvrir un poste de police municipale la nuit :: Compenser.
+   rec-0.3x60 securite+2 | g0 c+2 d+3 e0
+   > La police municipale assure une présence de nuit.
+C) Accepter :: Contraintes de l’État.
+   securite-1 pop-1 | g0 c+1 d0 e0
+   > L’arrondissement n’a plus de commissariat la nuit.
+
+=== ins-059 | institutions | Accueillir une agence européenne
+Une agence européenne cherche une ville pour s’installer. Paris peut candidater.
+A) Candidater avec un bâtiment offert :: Rayonnement.
+   bud-25 economie+3 pop+1 | g0 c+3 d+2 e+1
+   > Paris remporte l’agence.
+   +20 economie+2 > Mille fonctionnaires européens s’installent à Paris.
+B) Candidater sans offre spéciale :: Prudent.
+   economie+1 | g0 c+2 d+1 e0
+   > Paris est candidate.
+   ~50 pop-1 > L’agence choisit Amsterdam.
+C) Ne pas candidater :: Économie.
+   economie-1 | g0 c0 d+1 e0
+   > Paris passe son tour.
+
+=== ins-060 | institutions | Les permanences des élus désertées
+Plus personne ne vient aux permanences des élus d’arrondissement.
+A) Permanences dans les marchés et les gares :: Aller vers les gens.
+   bud-1 pop+1 | g+2 c+2 d+1 e+1
+   > Les élus tiennent des stands au marché.
+B) Permanences en ligne :: Moderne.
+   bud-1 pop+1 | g0 c+3 d+1 e+1
+   > Les habitants prennent rendez-vous en visio.
+C) Les supprimer :: Simplifier.
+   pop-1 | g-1 c+1 d+1 e0
+   > Les permanences disparaissent.
+
+=== ins-061 | institutions | Les cérémonies du 11 Novembre
+Les anciens combattants trouvent que la Ville néglige les cérémonies commémoratives.
+A) Associer les écoles aux cérémonies :: Transmettre.
+   bud-1 pop+1 | g+1 c+2 d+2 e+1
+   > Des élèves lisent des lettres de poilus.
+B) Rénover les monuments aux morts :: Patrimoine.
+   bud-4 pop+1 | g0 c+2 d+3 e0
+   > Les monuments sont restaurés.
+C) Garder le format actuel :: Sobriété.
+   pop-1 | g0 c+1 d0 e0
+   > Rien ne change.
+
+=== ins-062 | institutions | L’égalité salariale chez les agents de la Ville
+Une étude montre que les femmes agents de la Ville gagnent 12 % de moins que les hommes.
+A) Plan de rattrapage sur trois ans :: Égalité.
+   rec-0.4x60 coh+1 pop+1 | g+3 c+2 d0 e+2
+   > Les écarts de salaire sont corrigés.
+B) Transparence sur les salaires :: Révéler.
+   bud-1 coh+1 | g+2 c+2 d+1 e+1
+   > Les grilles de salaires sont publiées.
+C) Contester l’étude :: Défense.
+   pop-2 | g-3 c0 d+2 e-1
+   > La Ville conteste la méthode.
+
+=== ins-063 | institutions | La gestion de l’eau convoitée par un groupe privé
+Un groupe privé propose de reprendre la gestion de l’eau, aujourd’hui publique, en promettant des économies.
+A) Garder Eau de Paris en régie publique :: Bien commun.
+   coh+1 | g+4 c+1 d-2 e+3
+   > L’eau reste publique.
+B) Ouvrir un appel d’offres :: Comparer.
+   bud+5 | g-3 c+2 d+3 e-1
+   > Un appel d’offres est lancé.
+   ~40 pop-3 > Une manifestation pour l’eau publique réunit 20 000 personnes.
+C) Moderniser la régie publique :: Améliorer.
+   bud-10 services+1 | g+2 c+3 d+1 e+2
+   > Eau de Paris investit dans son réseau.
+
+=== ins-064 | institutions | Une nomination contestée
+Tu veux nommer un ami proche à la tête d’une grande direction de la Ville. L’opposition crie au copinage.
+A) Maintenir la nomination :: Confiance.
+   pop-2 coh-1 | g0 c-1 d0 e-1
+   > L’ami prend ses fonctions.
+   ~40 pop-2 > Un journal révèle d’autres nominations d’amis.
+B) Lancer un recrutement ouvert :: Transparence.
+   coh+1 pop+1 | g+1 c+3 d+1 e+2
+   > Un jury indépendant choisit le directeur.
+C) Nommer un haut fonctionnaire neutre :: Apaiser.
+   pop+1 | g0 c+2 d+2 e0
+   > Un fonctionnaire expérimenté est nommé.
+
+=== ins-065 | institutions | Un débat télévisé avec ton principal opposant
+Une chaîne propose un débat en direct entre toi et le chef de l’opposition.
+A) Accepter :: Affronter.
+   pop+1 coh+1 | g0 c+1 d0 e0
+   > Le débat est regardé par deux millions de personnes.
+   ~40 pop-3 > Ton adversaire te met en difficulté sur la propreté.
+B) Proposer un débat avec des habitants plutôt :: Proximité.
+   pop+1 | g+1 c+2 d+1 e+1
+   > Le maire répond aux questions d’habitants.
+C) Refuser :: Éviter le risque.
+   pop-1 | g0 c0 d0 e0
+   > Le maire décline.

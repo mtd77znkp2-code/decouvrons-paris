@@ -1,0 +1,236 @@
+// Finances, série 3
+=== fin-047 | finances | Vendre le nom d’une salle de spectacle
+Une marque propose 20 M€ pour donner son nom à une grande salle de spectacle municipale pendant dix ans.
+A) Accepter :: Recettes.
+   bud+20 pop-1 | g-3 c+2 d+3 e-1
+   > La salle prend le nom d’une marque de boissons.
+   ~30 pop-1 > Les habitants continuent d’utiliser l’ancien nom par moquerie.
+B) Accepter seulement pour une salle neuve :: Compromis.
+   bud+8 | g0 c+3 d+2 e0
+   > La future salle portera le nom du mécène.
+C) Refuser :: Pas de publicité sur les lieux publics.
+   pop+1 | g+3 c0 d-2 e+2
+   > La salle garde son nom.
+
+=== fin-048 | finances | Vendre aux enchères du vieux mobilier municipal
+Des entrepôts de la Ville regorgent de mobilier ancien, de lustres et de vieux panneaux de rue.
+A) Grande vente aux enchères publique :: Recettes et succès populaire.
+   bud+8 bon+1 | g0 c+3 d+2 e+1
+   > Les collectionneurs s’arrachent les vieux panneaux.
+B) Donner le mobilier aux associations :: Solidarité.
+   bon+1 ecologie+1 | g+3 c+2 d0 e+2
+   > Les associations meublent leurs locaux.
+C) Tout garder pour les musées :: Patrimoine.
+   bud-1 | g0 c+1 d+1 e0
+   > Le mobilier reste stocké.
+
+=== fin-049 | finances | Les procès de la Ville coûtent cher
+La Ville dépense des millions en frais d’avocats pour des contentieux qu’elle perd souvent.
+A) Créer un service juridique interne renforcé :: Économies à terme.
+   bud-3 rec+0.2x60 | g+1 c+3 d+2 e0
+   > Des juristes sont recrutés.
+B) Négocier plutôt que plaider :: Médiation.
+   rec+0.1x60 | g+1 c+3 d+1 e+1
+   > La Ville privilégie les accords amiables.
+C) Continuer à plaider :: Défendre la Ville.
+   rec-0.1x60 | g0 c0 d+1 e0
+   > Les procès continuent.
+
+=== fin-050 | finances | Faire payer les chantiers privés qui occupent la rue
+Les échafaudages et palissades des chantiers privés occupent les trottoirs pendant des mois pour presque rien.
+A) Multiplier la redevance par trois :: Recettes et chantiers plus courts.
+   rec+0.6x60 logement-1 | g+2 c+2 d-1 e+1
+   > Les chantiers se dépêchent.
+B) Redevance qui augmente avec la durée :: Inciter à finir vite.
+   rec+0.3x60 | g+1 c+3 d+1 e+1
+   > Au-delà de six mois, la redevance double.
+C) Ne rien changer :: Ne pas freiner le bâtiment.
+   logement+1 | g-2 c0 d+3 e0
+   > Les palissades restent.
+
+=== fin-051 | finances | Un fonds de réserve pour les catastrophes
+Les experts conseillent de mettre de côté de l’argent pour faire face aux catastrophes.
+A) Mettre 100 M€ en réserve :: Prudence.
+   bud-100 coh+1 | g0 c+3 d+3 e+1
+   > Une réserve est bloquée pour les coups durs.
+   +5 bud+100 > La réserve reste disponible en cas de crise.
+B) Souscrire une assurance catastrophe :: Mutualiser.
+   rec-0.4x60 | g0 c+3 d+2 e0
+   > La Ville est assurée contre les grandes catastrophes.
+C) Ne rien mettre de côté :: Investir maintenant.
+   coh-1 | g+1 c-1 d-2 e0
+   > L’argent est dépensé pour les projets du mandat.
+
+=== fin-052 | finances | Le prix de l’eau doit-il augmenter ?
+La régie de l’eau doit financer des travaux. Elle propose d’augmenter le prix de 8 %.
+A) Accepter la hausse :: Investir dans le réseau.
+   rec+0.3x60 achat-1 services+1 | g0 c+2 d+1 e+1
+   > Le prix de l’eau augmente.
+B) Tarif progressif : les premiers mètres cubes moins chers :: Social et écologique.
+   rec+0.2x60 achat+1 ecologie+1 | g+3 c+2 d0 e+3
+   > Les gros consommateurs paient plus.
+C) Geler le prix :: Pouvoir d’achat.
+   achat+1 services-1 | g+1 c+1 d+1 e-1
+   > Le prix ne bouge pas.
+
+=== fin-053 | finances | Une plateforme de dons pour les projets de la Ville
+Des Parisiens aimeraient financer directement des projets : arbres, bancs, rénovation d’une fontaine.
+A) Créer une plateforme de financement participatif :: Engagement citoyen.
+   bud-1 rec+0.1x60 bon+1 | g+1 c+3 d+2 e+2
+   > Des milliers de Parisiens financent des projets.
+B) Parrainage d’arbres et de bancs avec plaque :: Symbolique.
+   rec+0.1x60 bon+1 | g0 c+2 d+2 e+1
+   > On peut offrir un banc avec son nom.
+C) Refuser :: Le service public se finance par l’impôt.
+   bon-1 | g+2 c0 d-1 e0
+   > La proposition est rejetée.
+
+=== fin-054 | finances | Les concessions des restaurants dans les parcs
+Les restaurants installés dans les parcs municipaux paient des loyers très faibles.
+A) Relancer les concessions avec mise en concurrence :: Recettes.
+   rec+0.5x60 economie-1 | g+1 c+2 d+1 e0
+   > Les nouveaux loyers sont bien plus élevés.
+   ~30 pop-1 > Un restaurant historique perd sa concession.
+B) Garder les exploitants contre des prix accessibles :: Intérêt public.
+   bon+1 achat+1 | g+2 c+2 d0 e+1
+   > Les restaurants proposent un menu abordable.
+C) Ne rien changer :: Stabilité.
+   rec-0.05x60 | g-1 c+1 d+2 e0
+   > Les contrats sont renouvelés.
+
+=== fin-055 | finances | Le tarif des crèches selon les revenus
+Les familles aisées paient la crèche presque aussi peu que les familles modestes.
+? distinct
+A) Tarifs plus progressifs :: Justice.
+   rec+0.3x60 pop-1 | g+3 c+1 d-3 e+1
+   > Les familles aisées paient plus.
+B) Augmenter tous les tarifs de 5 % :: Recettes.
+   rec+0.3x60 achat-1 | g-2 c+1 d+2 e0
+   > Toutes les familles paient un peu plus.
+C) Garder les tarifs :: Stabilité.
+   rec-0.05x60 | g0 c+1 d+1 e0
+   > Rien ne change.
+
+=== fin-056 | finances | Les heures supplémentaires explosent
+Les heures supplémentaires des agents ont doublé en trois ans, notamment pour les événements.
+A) Recruter plutôt que payer des heures sup :: Organisation.
+   rec+0.2x60 services+1 | g+2 c+2 d0 e0
+   > Des agents sont recrutés.
+B) Plafonner les heures supplémentaires :: Maîtrise.
+   rec+0.3x60 bon-1 services-1 | g-2 c+2 d+3 e0
+   > Les heures sup sont limitées.
+   ~30 services-1 > Des événements sont annulés faute de personnel.
+C) Laisser faire :: Souplesse.
+   rec-0.2x60 | g0 c0 d-1 e0
+   > Les dépenses continuent d’augmenter.
+
+=== fin-057 | finances | Les voitures de fonction des élus
+Les adjoints disposent de voitures avec chauffeur. L’opposition dénonce un privilège.
+A) Supprimer les voitures de fonction :: Exemplarité.
+   rec+0.1x60 pop+2 | g+2 c+2 d+1 e+2
+   > Les élus prennent le métro et le vélo.
+B) Remplacer par des voitures électriques partagées :: Compromis.
+   bud-2 ecologie+1 | g+1 c+3 d+1 e+2
+   > Un petit parc de voitures partagées est créé.
+C) Garder les voitures :: Efficacité des élus.
+   pop-2 | g-1 c0 d+1 e-1
+   > Les voitures restent.
+
+=== fin-058 | finances | Les voyages officiels à l’étranger
+Les déplacements du maire et des adjoints à l’étranger coûtent plus d’un million par an.
+A) Les réduire de moitié :: Économie.
+   rec+0.05x60 pop+1 economie-1 | g+1 c+2 d+1 e+2
+   > Seuls les déplacements essentiels sont maintenus.
+B) Publier chaque voyage et son coût :: Transparence.
+   pop+1 coh+1 | g+1 c+3 d+1 e+1
+   > Les voyages sont publiés en ligne.
+C) Les assumer : Paris doit rayonner :: Diplomatie.
+   economie+1 pop-1 | g-1 c+1 d+2 e-1
+   > Les voyages continuent.
+
+=== fin-059 | finances | Un vieil emprunt toxique
+On découvre un emprunt indexé sur le franc suisse, contracté il y a vingt ans. Ses intérêts s’envolent.
+A) Rembourser par anticipation, avec pénalité :: Sortir du piège.
+   bud-60 | g0 c+3 d+3 e0
+   > L’emprunt toxique est soldé.
+B) Attaquer la banque en justice :: Combat.
+   bud-2 coh+1 | g+3 c+1 d0 e+1
+   > La Ville attaque la banque.
+   ~45 bud+30 > La justice condamne la banque à indemniser la Ville.
+C) Continuer à payer :: Attendre des jours meilleurs.
+   rec-0.6x60 | g-1 c0 d+1 e0
+   > Les intérêts continuent de grimper.
+
+=== fin-060 | finances | Placer l’argent de la trésorerie
+La Ville a de l’argent qui dort sur ses comptes. Un conseiller propose de le placer.
+? tresorMin=600
+A) Placer une partie à court terme :: Rendement prudent.
+   rec+0.3x40 | g-1 c+3 d+3 e0
+   > Les placements rapportent des intérêts.
+B) Placer dans des projets verts :: Finance responsable.
+   rec+0.2x40 ecologie+1 | g+1 c+2 d+1 e+3
+   > L’argent finance des énergies renouvelables.
+C) Ne rien placer :: Prudence totale.
+   coh+1 | g+1 c+1 d0 e0
+   > L’argent reste sur les comptes.
+
+=== fin-061 | finances | La taxe sur les ordures ménagères augmente
+Le coût de la collecte des déchets augmente. La taxe pourrait suivre.
+A) Augmenter la taxe :: Équilibre.
+   rec+0.6x60 pop-2 achat-1 | g0 c+1 d0 e+1
+   > La taxe augmente de 6 %.
+B) Taxe incitative selon le poids des déchets :: Moins de déchets.
+   bud-10 rec+0.3x60 ecologie+2 | g+1 c+2 d0 e+4
+   > Les foyers qui trient bien paient moins.
+C) Couvrir le surcoût par le budget général :: Pas de hausse.
+   rec-0.4x60 | g+1 c0 d-1 e0
+   > Le budget absorbe la hausse.
+
+=== fin-062 | finances | Acheter ou louer le matériel des fêtes
+La Ville loue chaque année scènes, barrières et tentes pour ses événements. Acheter serait rentable sur dix ans.
+A) Acheter tout le matériel :: Investissement.
+   bud-25 rec+0.3x80 | g+1 c+3 d+2 e+1
+   > La Ville constitue son propre stock.
+B) Le partager avec les villes voisines :: Mutualiser.
+   bud-10 rec+0.2x80 | g+1 c+3 d+1 e+2
+   > Un stock commun est créé.
+C) Continuer à louer :: Souplesse.
+   rec-0.1x60 | g0 c+1 d+1 e0
+   > Les locations continuent.
+
+=== fin-063 | finances | Le coût des illuminations de Noël
+Les commerçants demandent à la Ville de financer entièrement les illuminations des rues commerçantes.
+A) Financer toutes les illuminations :: Magie de Noël.
+   bud-8 bon+2 economie+1 | g0 c+2 d+2 e-1
+   > Toutes les rues s’illuminent.
+B) Financer à moitié avec des LED :: Compromis.
+   bud-4 bon+1 | g+1 c+3 d+1 e+1
+   > Les illuminations sont partagées.
+C) Laisser les commerçants payer :: Économie.
+   bon-1 | g0 c+1 d+1 e+1
+   > Certaines rues restent dans le noir.
+
+=== fin-064 | finances | Une erreur de paie pour 10 000 agents
+Un bug du logiciel de paie verse des salaires faux à 10 000 agents.
+A) Rembourser immédiatement les agents lésés :: Réparer.
+   bud-6 services+1 | g+2 c+2 d+1 e0
+   > Les agents sont remboursés en une semaine.
+B) Récupérer aussi les trop-perçus :: Rigueur.
+   bud+2 bon-1 | g-2 c+2 d+2 e0
+   > Les trop-perçus sont prélevés.
+   ~40 services-1 > Les agents menacent de faire grève.
+C) Changer de logiciel :: Éviter que ça recommence.
+   bud-12 services+1 | g0 c+3 d+2 e0
+   > Un nouveau logiciel est commandé.
+
+=== fin-065 | finances | Les gratuités accordées aux grands événements
+La Ville prête gratuitement des lieux et du personnel à des événements commerciaux rentables.
+A) Facturer au prix réel :: Fin des cadeaux.
+   rec+0.3x60 economie-1 | g+2 c+2 d-1 e+1
+   > Les organisateurs paient le vrai coût.
+B) Gratuité seulement pour les associations :: Distinguer.
+   rec+0.2x60 bon+1 | g+2 c+3 d+1 e+1
+   > Les événements commerciaux paient.
+C) Garder les gratuités :: Attractivité.
+   rec-0.1x60 economie+1 | g-2 c+1 d+3 e0
+   > Les gratuités continuent.

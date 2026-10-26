@@ -1,0 +1,491 @@
+// Vie quotidienne, série 2
+=== quo-026 | quotidien | Des chiens qui aboient toute la journée
+Des chiens laissés seuls aboient des heures dans les appartements. Les voisins deviennent fous.
+A) Médiateurs de voisinage spécialisés :: Dialogue.
+   bud-1 bon+1 | g+1 c+3 d+1 e+1
+   > Des médiateurs rencontrent les propriétaires.
+B) Garderies pour chiens à prix réduit :: Solution concrète.
+   bud-3 bon+1 | g+1 c+2 d+1 e+1
+   > Des garderies canines ouvrent dans les quartiers.
+C) Amendes pour troubles du voisinage :: Sanction.
+   bon+1 pop-1 | g-1 c+1 d+3 e0
+   > Les propriétaires négligents sont verbalisés.
+
+=== quo-027 | quotidien | Du wifi gratuit dans les parcs
+Les étudiants et les familles demandent un wifi gratuit et rapide dans les parcs et les places.
+A) Couvrir tous les grands parcs :: Connecté.
+   bud-6 rec-0.1x60 bon+1 services+1 | g+1 c+3 d+2 e0
+   > Le wifi gratuit couvre 200 parcs.
+B) Seulement dans les bibliothèques et les mairies :: Lieux publics.
+   bud-2 services+1 | g+1 c+2 d+1 e0
+   > Les bâtiments publics offrent un wifi gratuit.
+C) Refuser : les parcs doivent rester déconnectés :: Nature.
+   bon-1 | g0 c0 d0 e+2
+   > Les parcs restent sans wifi.
+
+=== quo-028 | quotidien | Les horloges publiques arrêtées
+Les vieilles horloges des places et des mairies sont arrêtées depuis des années.
+A) Restaurer toutes les horloges :: Patrimoine.
+   bud-3 bon+1 | g0 c+2 d+2 e0
+   > Les horloges de Paris redonnent l’heure.
+B) Les restaurer avec des bénévoles horlogers :: Participatif.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Des passionnés réparent les horloges.
+C) Les laisser arrêtées :: Pas prioritaire.
+   bon-1 | g0 c0 d0 e0
+   > Les horloges restent figées.
+
+=== quo-029 | quotidien | Des boîtes à livres dans les rues
+Des habitants proposent d’installer des boîtes où l’on dépose et prend des livres gratuitement.
+A) Installer 300 boîtes à livres :: Partage.
+   bud-2 bon+2 | g+2 c+2 d+1 e+2
+   > Des boîtes à livres fleurissent dans les rues.
+   ~25 proprete-1 > Certaines boîtes deviennent des dépôts sauvages.
+B) Laisser les habitants les installer avec une autorisation :: Initiative citoyenne.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Les habitants installent leurs boîtes.
+C) Refuser :: Les bibliothèques existent.
+   bon-1 | g0 c0 d+1 e0
+   > Les boîtes ne sont pas autorisées.
+
+=== quo-030 | quotidien | Les plaques de rue illisibles
+Les plaques bleues des noms de rue sont effacées ou couvertes d’autocollants. Les touristes se perdent.
+A) Remplacer toutes les plaques abîmées :: Patrimoine.
+   bud-4 bon+1 | g0 c+2 d+2 e0
+   > Les plaques bleues retrouvent leur éclat.
+B) Ajouter des panneaux de direction piétons :: Orientation.
+   bud-5 bon+1 economie+1 | g+1 c+3 d+1 e+1
+   > Des totems indiquent les directions et les temps de marche.
+C) Rien :: Les téléphones guident les gens.
+   bon-1 | g0 c0 d+1 e0
+   > Les plaques restent illisibles.
+
+=== quo-031 | quotidien | Apprendre le vélo aux enfants
+Beaucoup d’enfants parisiens ne savent pas faire de vélo faute d’espace pour apprendre.
+A) Cours de vélo dans toutes les écoles :: Savoir rouler.
+   rec-0.2x60 transports+1 bon+1 | g+2 c+2 d+1 e+3
+   > Les élèves de CM1 apprennent à rouler en ville.
+B) Pistes d’apprentissage dans les parcs :: Espaces dédiés.
+   bud-4 bon+1 | g+1 c+3 d+1 e+2
+   > Des petites pistes d’apprentissage sont tracées.
+C) Laisser faire les parents :: Pas notre rôle.
+   bon-1 | g-1 c0 d+2 e-1
+   > Rien ne change.
+
+=== quo-032 | quotidien | Des fuites d’eau dans les rues
+Des canalisations vétustes cassent régulièrement et inondent les rues pendant des heures.
+A) Grand plan de remplacement des canalisations :: Investir.
+   bud-50 services+2 ecologie+1 | g+1 c+2 d+2 e+2
+   > Cinquante kilomètres de tuyaux sont remplacés.
+   +30 bon+2 > Les fuites deviennent rares.
+B) Capteurs pour détecter les fuites :: Réagir vite.
+   bud-10 services+1 ecologie+1 | g0 c+3 d+2 e+2
+   > Les fuites sont repérées en quelques minutes.
+C) Réparer au fil des casses :: Économie.
+   bud-3 | g0 c+1 d+1 e-1
+   > Les réparations continuent au cas par cas.
+   ~40 pop-1 > Une fuite géante inonde une station de métro.
+
+=== quo-033 | quotidien | L’odeur de friture des restaurants
+Des riverains se plaignent des extractions de cuisine qui rejettent des odeurs de friture dans leur cour.
+A) Contrôler les conduits d’extraction :: Règlement.
+   bon+1 economie-1 | g0 c+2 d+1 e+1
+   > Les restaurants doivent mettre leurs conduits aux normes.
+B) Aider les restaurants à s’équiper de filtres :: Accompagner.
+   bud-3 bon+1 | g+1 c+3 d+2 e+1
+   > Une aide finance des filtres à odeurs.
+C) Ne pas intervenir :: Conflit privé.
+   bon-1 | g0 c0 d+2 e0
+   > Les odeurs persistent.
+
+=== quo-034 | quotidien | Des pianos en libre accès
+Des pianos installés dans les gares ont un grand succès. Les Parisiens en veulent dans les parcs.
+A) Installer des pianos dans vingt lieux publics :: Musique partout.
+   bud-2 bon+2 | g+1 c+2 d+1 e+1
+   > Des pianos apparaissent dans les parcs et les mairies.
+   ~30 bon-1 > Des riverains se lassent des concerts à toute heure.
+B) Pianos l’été seulement :: Saisonnier.
+   bud-1 bon+1 | g+1 c+3 d+1 e+1
+   > Les pianos sortent de juin à septembre.
+C) Refuser :: Bruit.
+   bon-1 | g0 c0 d+1 e0
+   > Aucun piano n’est installé.
+
+=== quo-035 | quotidien | Des jeux d’eau pour les enfants l’été
+Les familles sans vacances cherchent des endroits où les enfants peuvent se rafraîchir.
+A) Créer des jeux d’eau dans trente squares :: Fraîcheur.
+   bud-10 bon+2 | g+2 c+2 d+1 e0
+   > Des jets d’eau font la joie des enfants.
+   ~25 ecologie-1 > Les écologistes dénoncent le gaspillage d’eau.
+B) Jeux d’eau en circuit fermé :: Écologique.
+   bud-15 bon+2 ecologie+1 | g+2 c+2 d+1 e+2
+   > L’eau des jeux est recyclée.
+C) Ouvrir plus longtemps les piscines :: Alternative.
+   rec-0.2x20 bon+1 | g+1 c+2 d+1 e0
+   > Les piscines ferment à 21 h l’été.
+
+=== quo-036 | quotidien | Trouver une pharmacie de garde la nuit
+Les habitants cherchent pendant des heures une pharmacie ouverte la nuit.
+A) Application et affichage en temps réel :: Information.
+   bud-2 services+1 | g+1 c+3 d+2 e0
+   > Une carte des pharmacies ouvertes est publiée.
+B) Pharmacie municipale de nuit :: Service garanti.
+   bud-6 rec-0.2x60 services+2 | g+3 c+1 d0 e0
+   > Une pharmacie ouvre toute la nuit.
+C) Distributeurs de médicaments de base :: Automatiser.
+   bud-4 services+1 | g0 c+2 d+2 e0
+   > Des distributeurs vendent paracétamol et pansements.
+
+=== quo-037 | quotidien | Les vendeurs de maïs grillé sur des chariots
+Des vendeurs font griller du maïs sur des chariots de supermarché, dans des conditions d’hygiène douteuses.
+A) Saisir le matériel :: Hygiène.
+   securite+1 bon-1 | g-2 c+1 d+3 e0
+   > Les chariots sont saisis.
+B) Leur proposer des stands légaux :: Insertion.
+   bud-2 economie+1 | g+3 c+2 d0 e+1
+   > Des stands propres sont attribués.
+C) Tolérer :: Petite économie.
+   proprete-1 | g+1 c0 d-2 e0
+   > Les chariots restent.
+
+=== quo-038 | quotidien | La mendicité avec des enfants
+Des réseaux font mendier des enfants dans le métro et aux carrefours.
+A) Protection de l’enfance et enquêtes contre les réseaux :: Protéger les enfants.
+   rec-0.2x60 securite+2 services+1 | g+2 c+2 d+2 e+1
+   > Les enfants sont pris en charge par la protection de l’enfance.
+B) Interdire la mendicité avec enfants :: Ferme.
+   securite+1 | g-2 c+1 d+3 e0
+   > Un arrêté interdit cette pratique.
+   ~30 pop-1 > Des associations dénoncent une criminalisation de la pauvreté.
+C) Hébergement des familles :: Solidarité.
+   bud-5 services+1 | g+3 c+2 d0 e+1
+   > Des familles sont hébergées.
+
+=== quo-039 | quotidien | Des parasols sur les places brûlantes
+Les places minérales sont brûlantes l’été. Pas un coin d’ombre.
+A) Installer des voiles d’ombrage géantes :: Rapide.
+   bud-5 bon+1 | g+1 c+3 d+1 e+1
+   > Des voiles colorées ombragent les places.
+B) Planter des arbres même si c’est long :: Durable.
+   bud-12 ecologie+2 | g+1 c+2 d0 e+4
+   > Des arbres sont plantés.
+   +25 bon+2 > Les arbres offrent enfin de l’ombre.
+C) Rien :: Coût.
+   bon-1 | g0 c0 d+1 e-1
+   > Les places restent brûlantes.
+
+=== quo-040 | quotidien | Les tickets papier disparaissent
+Le ticket de métro papier disparaît. Les seniors sans téléphone sont perdus.
+A) Garder un ticket papier pour ceux qui le demandent :: Inclusion.
+   rec-0.1x60 services+1 | g+2 c+2 d+1 e0
+   > Un ticket papier reste disponible aux guichets.
+B) Cartes rechargeables distribuées gratuitement :: Accompagner.
+   bud-3 services+1 | g+1 c+3 d+1 e+1
+   > Les seniors reçoivent une carte gratuite.
+C) Suivre la modernisation :: Progrès.
+   pop-1 | g-1 c+1 d+2 e+1
+   > Le papier disparaît.
+
+=== quo-041 | quotidien | Les anciennes cabines téléphoniques
+Quelques cabines téléphoniques abandonnées subsistent. Des habitants veulent les transformer.
+A) En faire des mini-bibliothèques :: Recycler.
+   bud-1 bon+1 | g+1 c+2 d+1 e+2
+   > Les cabines deviennent des boîtes à livres.
+B) En faire des points de recharge pour téléphones :: Utile.
+   bud-2 services+1 | g0 c+3 d+2 e+1
+   > Les cabines rechargent les téléphones.
+C) Les enlever :: Débarrasser.
+   bud-1 proprete+1 | g0 c+1 d+2 e0
+   > Les cabines disparaissent.
+
+=== quo-042 | quotidien | Les valises à roulettes la nuit
+Dans les rues pavées, le bruit des valises des voyageurs en location touristique réveille les habitants.
+A) Limiter les locations touristiques dans la rue :: À la source.
+   bon+1 logement+1 economie-1 | g+2 c+1 d-2 e+1
+   > Les meublés touristiques sont limités.
+B) Refaire les pavés en surface lisse :: Technique.
+   bud-6 bon+1 | g0 c+2 d+1 e0
+   > Les pavés sont remplacés par du granit lisse.
+   ~30 pop-1 > Les défenseurs du patrimoine regrettent les vieux pavés.
+C) Rien :: C’est la vie urbaine.
+   bon-1 | g-1 c0 d+2 e0
+   > Les valises roulent toujours.
+
+=== quo-043 | quotidien | Ouvrir les jardins des cités
+Les jardins des résidences sociales sont fermés par des grilles. Les habitants du quartier n’y ont pas accès.
+A) Ouvrir les jardins en journée :: Partager.
+   bud-2 bon+1 | g+2 c+2 d0 e+2
+   > Les jardins s’ouvrent au quartier.
+   ~30 securite-1 > Des locataires se plaignent de dégradations.
+B) Les ouvrir pour des activités encadrées :: Mesuré.
+   bud-1 bon+1 | g+1 c+3 d+1 e+1
+   > Des ateliers de jardinage ont lieu le samedi.
+C) Garder fermé :: Tranquillité des locataires.
+   bon-1 | g-1 c0 d+2 e-1
+   > Les grilles restent fermées.
+
+=== quo-044 | quotidien | La fête des voisins
+La fête des voisins rassemble des milliers de Parisiens. Les organisateurs demandent plus d’aide.
+A) Fournir tables, chaises et kits gratuits :: Encourager.
+   bud-2 bon+2 | g+2 c+2 d+2 e+1
+   > Des kits de fête sont prêtés.
+B) Fermer les rues aux voitures ce soir-là :: Fête dans la rue.
+   bud-1 bon+2 transports-1 | g+2 c+1 d0 e+2
+   > Des centaines de rues deviennent piétonnes.
+C) Rien de plus :: Initiative citoyenne.
+   bon-1 | g0 c0 d+1 e0
+   > Les habitants se débrouillent.
+
+=== quo-045 | quotidien | Les parcs ferment trop tôt l’hiver
+En hiver, les parcs ferment à 17 h. Les enfants qui sortent de l’école n’ont plus d’endroit pour jouer.
+A) Fermer à 19 h avec éclairage :: Plus de temps.
+   rec-0.2x30 bon+1 | g+2 c+2 d0 e0
+   > Les parcs restent ouverts plus tard.
+B) Ouvrir les cours d’école après la classe :: Alternative.
+   rec-0.1x30 bon+1 | g+2 c+2 d+1 e+1
+   > Les cours d’école deviennent des aires de jeux le soir.
+C) Garder les horaires :: Sécurité.
+   bon-1 | g0 c+1 d+2 e0
+   > Les parcs ferment à 17 h.
+
+=== quo-046 | quotidien | La fourrière animale débordée
+La fourrière animale est saturée de chiens et chats abandonnés.
+A) Agrandir le refuge et financer l’adoption :: Protection animale.
+   bud-6 bon+1 | g+2 c+2 d+1 e+2
+   > Le refuge double sa capacité.
+B) Identification obligatoire et contrôles :: Responsabiliser.
+   bon+1 | g0 c+3 d+2 e+1
+   > Les animaux non pucés sont signalés.
+C) Confier aux associations :: Partenariat.
+   rec-0.1x60 bon+1 | g+1 c+2 d+1 e+1
+   > Les associations prennent le relais.
+
+=== quo-047 | quotidien | Les guides avec haut-parleurs
+Des groupes de touristes avec guides au micro envahissent les rues étroites du Marais.
+A) Interdire les haut-parleurs :: Calme.
+   bon+1 economie-1 | g0 c+2 d+1 e+1
+   > Les guides doivent utiliser des oreillettes.
+B) Limiter la taille des groupes :: Fluidité.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Les groupes sont limités à 25 personnes.
+C) Laisser faire :: Tourisme.
+   bon-1 economie+1 | g-1 c0 d+2 e0
+   > Les rues restent bruyantes.
+
+=== quo-048 | quotidien | Les feux d’artifice des mariages
+Des fêtes de mariage tirent des feux d’artifice à minuit dans les cours et les rues.
+? distinct
+A) Interdire sans autorisation :: Sécurité.
+   securite+1 bon+1 | g0 c+2 d+2 e+1
+   > Les feux d’artifice doivent être déclarés.
+B) Tolérer avant 22 h :: Compromis.
+   bon+1 | g+1 c+3 d+1 e0
+   > Les feux sont tolérés en début de soirée.
+C) Laisser faire :: Fêtes familiales.
+   bon-1 | g+1 c0 d0 e-1
+   > Les feux continuent à minuit.
+
+=== quo-049 | quotidien | Les klaxons des cortèges
+Des cortèges de voitures klaxonnent pendant des heures après des matchs ou des mariages.
+A) Verbaliser :: Faire respecter le calme.
+   bon+1 pop-1 | g-1 c+2 d+3 e0
+   > Les cortèges bruyants sont verbalisés.
+B) Itinéraire autorisé pour les cortèges :: Encadrer.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Les cortèges passent par les grands boulevards.
+C) Tolérer :: Moments de joie.
+   bon-1 pop+1 | g+1 c0 d0 e-1
+   > Les klaxons continuent.
+
+=== quo-050 | quotidien | Les livraisons de nuit des supermarchés
+Les camions de livraison des supérettes déchargent à 4 h du matin sous les fenêtres.
+A) Interdire les livraisons entre 22 h et 6 h :: Sommeil.
+   bon+2 economie-1 transports-1 | g+1 c+1 d-1 e+1
+   > Les livraisons se font en journée.
+B) Label livraison silencieuse :: Incitation.
+   bud-1 bon+1 | g0 c+3 d+2 e+2
+   > Les enseignes utilisent des camions électriques silencieux.
+C) Rien :: Fluidité de jour.
+   bon-1 transports+1 | g-1 c0 d+2 e0
+   > Les livraisons nocturnes continuent.
+
+=== quo-051 | quotidien | Les plaques d’égout qui claquent
+Des plaques d’égout mal fixées claquent à chaque passage de voiture, toute la nuit.
+A) Recenser et fixer toutes les plaques :: Réparer.
+   bud-4 bon+1 | g0 c+2 d+2 e0
+   > Les plaques sont fixées.
+B) Réparer sur signalement :: Économique.
+   bud-1 bon+1 | g0 c+3 d+1 e0
+   > Les plaques signalées sont réparées.
+C) Rien :: Pas prioritaire.
+   bon-1 | g0 c0 d0 e0
+   > Les plaques continuent de claquer.
+
+=== quo-052 | quotidien | Les horaires des déchetteries
+Les déchetteries sont fermées le dimanche, le seul jour où les Parisiens bricolent.
+A) Ouvrir le dimanche :: Service adapté.
+   rec-0.1x60 proprete+1 | g+1 c+2 d+1 e+1
+   > Les déchetteries ouvrent le dimanche.
+B) Déchetteries mobiles dans les quartiers :: Proximité.
+   rec-0.2x60 proprete+2 | g+2 c+2 d+1 e+2
+   > Des camions-déchetteries passent dans les quartiers.
+C) Garder les horaires :: Coût.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les encombrants finissent sur le trottoir.
+
+=== quo-053 | quotidien | Des arrêts de bus sans abri
+Des centaines d’arrêts de bus n’ont ni abri ni banc. Les personnes âgées attendent sous la pluie.
+A) Équiper tous les arrêts :: Confort.
+   bud-15 transports+1 bon+1 | g+1 c+2 d+1 e+1
+   > Des abris sont installés partout.
+B) Prioriser les arrêts près des hôpitaux et maisons de retraite :: Ciblé.
+   bud-5 transports+1 | g+1 c+3 d+1 e+1
+   > Les arrêts prioritaires sont équipés.
+C) Abris financés par la publicité :: Gratuit.
+   transports+1 | g-1 c+2 d+2 e-1
+   > Des abris publicitaires sont posés.
+
+=== quo-054 | quotidien | Le numéro de la mairie ne répond plus
+Le numéro de la mairie fait attendre quarante minutes. Les habitants raccrochent.
+A) Doubler les téléconseillers :: Service.
+   rec-0.3x60 services+2 | g+2 c+2 d+1 e0
+   > L’attente tombe à cinq minutes.
+B) Rappel automatique :: Malin.
+   bud-2 services+1 | g0 c+3 d+2 e0
+   > Les habitants sont rappelés.
+C) Renvoyer vers le site internet :: Économique.
+   services-1 | g-1 c+1 d+2 e0
+   > Le standard est réduit.
+
+=== quo-055 | quotidien | Les chaises des jardins volées
+Les fameuses chaises vertes des jardins disparaissent par centaines chaque année.
+A) Les fixer au sol :: Antivol.
+   bud-2 bon-1 | g0 c+2 d+2 e0
+   > Les chaises ne bougent plus.
+B) Puces de localisation :: Technologie.
+   securite+1 bud-3 | g0 c+2 d+2 e0
+   > Les chaises volées sont retrouvées.
+C) Accepter les pertes et en racheter :: Liberté.
+   bud-2 bon+1 | g+1 c+1 d0 e0
+   > Les chaises restent libres.
+
+=== quo-056 | quotidien | Des coins pour les nounous dans les squares
+Les assistantes maternelles passent leurs journées dans les squares sans toilettes ni abri.
+A) Aménager des espaces couverts et des toilettes :: Confort.
+   bud-6 services+1 bon+1 | g+2 c+2 d+1 e+1
+   > Des abris et des toilettes sont installés.
+B) Ouvrir des salles municipales pour les nounous :: Lieu chaud.
+   bud-2 services+1 | g+2 c+2 d+1 e+1
+   > Des salles d’accueil ouvrent le matin.
+C) Rien :: Pas notre rôle.
+   bon-1 | g-1 c0 d+2 e0
+   > Les nounous restent dehors.
+
+=== quo-057 | quotidien | Les bacs à sable sales
+Les bacs à sable des squares sont souillés par les chats et les mégots.
+A) Changer le sable tous les mois :: Hygiène.
+   rec-0.1x60 proprete+1 bon+1 | g+1 c+2 d+1 e0
+   > Le sable est renouvelé régulièrement.
+B) Couvrir les bacs la nuit :: Protéger.
+   bud-3 proprete+1 | g0 c+3 d+1 e0
+   > Des bâches couvrent les bacs.
+C) Les supprimer :: Simple.
+   bud-1 bon-1 | g-1 c+1 d+1 e0
+   > Les bacs à sable disparaissent.
+
+=== quo-058 | quotidien | Des parcours de jogging balisés
+Les coureurs demandent des parcours balisés avec distances et points d’eau.
+A) Baliser cent kilomètres de parcours :: Sport pour tous.
+   bud-3 bon+1 | g+1 c+2 d+2 e+2
+   > Des parcours balisés traversent la ville.
+B) Points d’eau et vestiaires dans les grands parcs :: Équipement.
+   bud-6 bon+1 services+1 | g+1 c+2 d+1 e+1
+   > Des vestiaires sont installés.
+C) Rien :: Les coureurs se débrouillent.
+   bon-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== quo-059 | quotidien | Prêter des outils entre voisins
+Chaque foyer possède une perceuse utilisée dix minutes par an. Des habitants veulent une outilthèque.
+A) Ouvrir des outilthèques dans les mairies :: Partage.
+   bud-3 bon+1 ecologie+1 achat+1 | g+2 c+2 d+1 e+3
+   > Les Parisiens empruntent perceuses et échelles.
+B) Plateforme de prêt entre voisins :: Numérique.
+   bud-1 bon+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Une application facilite le prêt.
+C) Rien :: Initiative privée.
+   bon-1 | g0 c0 d+1 e-1
+   > Rien n’est fait.
+
+=== quo-060 | quotidien | Supprimer les amendes de retard des bibliothèques
+Les amendes de retard découragent des familles modestes d’emprunter des livres.
+A) Supprimer les amendes :: Accès à la lecture.
+   rec-0.05x60 services+1 bon+1 | g+2 c+2 d0 e+1
+   > Les amendes disparaissent.
+   ~30 services-1 > Des livres ne sont jamais rendus.
+B) Amnistie une fois par an :: Compromis.
+   services+1 | g+1 c+3 d+1 e0
+   > Une semaine d’amnistie est organisée.
+C) Garder les amendes :: Responsabilité.
+   bon-1 | g-1 c+1 d+2 e0
+   > Rien ne change.
+
+=== quo-061 | quotidien | Les lampadaires éclairent les chambres
+Des habitants ne dorment plus à cause d’un lampadaire trop puissant devant leur fenêtre.
+A) Lampadaires orientés vers le sol :: Réduire la lumière.
+   bud-5 bon+1 ecologie+1 | g+1 c+3 d+1 e+3
+   > Les lampadaires éclairent le trottoir, pas les fenêtres.
+B) Baisser l’intensité la nuit :: Économie d’énergie.
+   rec+0.1x60 bon+1 | g+1 c+2 d+1 e+2
+   > La lumière baisse après minuit.
+C) Rien :: Sécurité.
+   bon-1 securite+1 | g0 c0 d+2 e-1
+   > Les lampadaires restent puissants.
+
+=== quo-062 | quotidien | Les queues aux guichets des gares
+Les automates de vente sont souvent en panne. Les queues aux guichets durent une heure.
+A) Demander à la SNCF de rouvrir des guichets :: Service humain.
+   coh+1 transports+1 | g+2 c+2 d0 e0
+   > La SNCF rouvre quelques guichets.
+B) Installer des agents de la Ville pour aider :: Accueil.
+   rec-0.1x40 transports+1 bon+1 | g+1 c+2 d+1 e0
+   > Des agents aident les voyageurs.
+C) Rien :: Ce n’est pas notre gare.
+   bon-1 | g0 c+1 d+1 e0
+   > Les queues continuent.
+
+=== quo-063 | quotidien | Les fontaines à eau pour chiens
+Les propriétaires de chiens réclament des points d’eau pour leurs animaux l’été.
+A) Ajouter une gamelle aux fontaines publiques :: Simple.
+   bud-1 bon+1 | g+1 c+3 d+1 e+1
+   > Les fontaines ont un petit bassin pour chiens.
+B) Points d’eau dans les espaces canins :: Ciblé.
+   bud-2 bon+1 | g0 c+2 d+2 e+1
+   > Les enclos à chiens ont leur fontaine.
+C) Rien :: Pas prioritaire.
+   bon-1 | g0 c0 d+1 e0
+   > Les chiens ont soif.
+
+=== quo-064 | quotidien | Le froid dans les écoles en hiver
+Des écoles mal chauffées obligent les enfants à garder leur manteau en classe.
+A) Réparer les chaudières en urgence :: Chaleur.
+   bud-10 services+2 bon+1 | g+2 c+2 d+1 e0
+   > Les chaudières défectueuses sont remplacées.
+B) Isoler les écoles :: Long terme.
+   bud-25 services+1 ecologie+2 | g+1 c+2 d+1 e+3
+   > Les écoles les plus froides sont isolées.
+C) Distribuer des radiateurs d’appoint :: Rapide.
+   bud-2 bon+1 ecologie-1 | g+1 c+2 d+1 e-1
+   > Des radiateurs électriques sont livrés.
+
+=== quo-065 | quotidien | Les ronds-points fleuris
+Les habitants regrettent que les ronds-points et terre-pleins soient laissés en friche.
+A) Fleurir tous les terre-pleins :: Embellir.
+   bud-5 rec-0.1x60 bon+1 ecologie+1 | g+1 c+2 d+2 e+2
+   > Les terre-pleins se couvrent de fleurs.
+B) Les confier aux écoles et associations :: Participatif.
+   bud-1 bon+1 ecologie+1 | g+2 c+2 d+1 e+2
+   > Les élèves jardinent les terre-pleins.
+C) Les laisser en friche :: Biodiversité.
+   ecologie+1 bon-1 | g0 c0 d-1 e+2
+   > Les herbes folles prospèrent.
