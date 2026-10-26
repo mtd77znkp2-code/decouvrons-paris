@@ -167,17 +167,17 @@ C) Geler les permis d’hôtels :: Moratoire.
    economie-1 bon+1 | g+1 c+1 d0 e0
    > Les investisseurs partent à Londres.
 
-=== cul-120 | culture | Le bistrot parisien au patrimoine de l’Unesco
-Des restaurateurs veulent faire inscrire la culture du bistrot au patrimoine immatériel.
-A) Porter la candidature :: Fierté.
-   bud-1 bon+2 economie+1 | g0 c+2 d+1 e0
-   > La candidature est déposée à l’Unesco.
-B) Créer d’abord un label municipal :: Pragmatisme.
-   bon+1 economie+1 | g+1 c+2 d+1 e+1
-   > Trois cents bistrots affichent le label.
-C) Ne pas s’en mêler :: Neutralité.
+=== cul-120 | culture | Une maison de la photographie dans un ancien marché
+Des photographes veulent un grand lieu d’exposition gratuit pour les jeunes talents.
+A) Rénover l’ancien marché pour l’accueillir :: Création.
+   bud-3 bon+1 economie+1 | g+1 c+2 d+1 e+1
+   > Les cimaises accueillent mille tirages.
+B) Exposer sur les grilles des jardins :: Plein air.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les promeneurs découvrent les photos en marchant.
+C) Refuser :: Il y a déjà des musées.
    bon-1 | g0 c+1 d+1 e0
-   > Les restaurateurs se débrouillent seuls.
+   > Les photographes exposent à Arles.
 === cul-121 | culture | Des concerts d’orgue gratuits
 Les grandes orgues des églises de la Ville sont rarement entendues.
 A) Une saison de concerts gratuits :: Patrimoine vivant.
@@ -346,18 +346,17 @@ C) Ne rien faire :: Priorités.
    economie-1 | g0 c+1 d+1 e0
    > Les agences de voyage s’en chargent.
 
-=== cul-135 | culture | Les food trucks devant les monuments
-Des camions de restauration s’installent près du Louvre et de Notre-Dame.
-A) Leur attribuer des emplacements payants :: Encadrer.
-   rec+0.01x15 economie+1 | g0 c+2 d+1 e0
-   > Les food trucks paient leur place.
-B) Les interdire autour des sites classés :: Patrimoine.
-   bon+1 economie-1 | g+1 c+1 d+1 e0
-   > Les parvis retrouvent leur sobriété.
-C) Tolérer :: Laisser faire.
-   proprete-1 | g0 c0 d+1 e0
-   > Les poubelles débordent devant le Louvre.
-
+=== cul-135 | culture | Les ateliers de l’Opéra ouverts au public
+Costumiers, perruquiers et décorateurs de l’Opéra travaillent loin des regards.
+A) Des visites des ateliers le week-end :: Découvrir.
+   bud-1 bon+1 economie+1 | g+1 c+2 d+1 e+1
+   > Les visiteurs regardent naître les costumes.
+B) Des stages pour les lycéens professionnels :: Transmettre.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Des élèves découvrent les métiers du spectacle.
+C) Ne pas s’en mêler :: Opéra national.
+   bon-1 | g0 c+1 d+1 e0
+   > Les ateliers restent secrets.
 === cul-136 | culture | Le parvis du Trocadéro bondé
 Les foules de photographes bloquent l’esplanade au coucher du soleil.
 A) Agrandir l’esplanade sur la chaussée :: Piétonniser.

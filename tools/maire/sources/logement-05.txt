@@ -361,30 +361,28 @@ C) Laisser faire :: Marché.
    logement+1 bon-1 | g-1 c+1 d+2 e0
    > Les maisons disparaissent.
 
-=== log-176 | logement | Les logements de fonction des gardiens de parc
-Les gardiens de parc logés sur place sont de moins en moins nombreux.
-A) Rénover les logements de fonction :: Présence.
-   bud-2 securite+1 | g0 c+2 d+1 e+1
-   > Les gardiens reviennent dans les parcs.
-B) Les transformer en logements sociaux :: Loger.
+=== log-176 | logement | Les immeubles en brique des années 1930 à rénover
+Les anciennes habitations à bon marché vieillissent mal et coûtent cher à chauffer.
+A) Un grand plan de rénovation :: Patrimoine social.
+   bud-5 logement+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les briques retrouvent leur couleur, les factures baissent.
+B) Isoler par l’intérieur seulement :: Préserver les façades.
+   bud-3 ecologie+1 | g0 c+2 d+1 e+1
+   > Les façades restent intactes.
+C) Attendre :: Coût.
+   logement-1 | g0 c+1 d+1 e0
+   > Les locataires grelottent.
+=== log-177 | logement | Les rénovations qui chassent les locataires
+Des propriétaires rénovent pour relouer beaucoup plus cher et pousser les locataires dehors.
+A) Encadrer les hausses après travaux :: Protéger.
+   logement+1 economie-1 | g+1 c+2 d+1 e+1
+   > Les hausses sont plafonnées.
+B) Accompagner les locataires juridiquement :: Défendre.
    bud-1 logement+1 | g+1 c+2 d+1 e+1
-   > Des familles emménagent.
-C) Les vendre :: Recettes.
-   bud+3 securite-1 | g-1 c+1 d+2 e0
-   > Les parcs perdent leurs gardiens.
-
-=== log-177 | logement | Les loyers des chambres d’hôpital pour soignants
-Des soignants dorment dans leur voiture faute de logement.
-A) Des résidences pour soignants :: Soigner.
-   bud-4 logement+1 services+1 | g+1 c+2 d+1 e+1
-   > Une résidence ouvre près de l’hôpital.
-B) Réserver des logements sociaux :: Priorité.
-   logement-1 services+1 | g0 c+2 d+1 e+1
-   > Les soignants obtiennent des logements.
-C) Rien :: AP-HP.
-   services-1 | g0 c+1 d+1 e0
-   > Les soignants démissionnent.
-
+   > Les locataires connaissent leurs droits.
+C) Rien :: Rénover est utile.
+   logement-1 | g-1 c+1 d+2 e0
+   > Des familles quittent le quartier.
 === log-178 | logement | Les cours d’immeuble fermées aux enfants
 Des copropriétés interdisent aux enfants de jouer dans les cours.
 A) Des aires de jeux dans les cours sociales :: Jouer.
@@ -397,18 +395,17 @@ C) Rien :: Copropriétés.
    bon-1 | g0 c+1 d+1 e0
    > Les enfants restent enfermés.
 
-=== log-179 | logement | Les logements des travailleurs de nuit
-Les travailleurs de nuit ne trouvent pas de logement près de leur lieu de travail.
-A) Des résidences dédiées :: Loger.
-   bud-3 logement+1 | g+1 c+2 d+1 e+1
-   > Une résidence ouvre.
-B) Une priorité dans les attributions :: Priorité.
-   logement+1 | g0 c+2 d+1 e+1
-   > Les travailleurs de nuit sont prioritaires.
-C) Rien :: Employeurs.
-   logement-1 | g0 c+1 d+1 e0
-   > Les travailleurs de nuit dorment dans les transports.
-
+=== log-179 | logement | Une maison relais pour les sortants d’hôpital psychiatrique
+Des patients stabilisés restent hospitalisés faute de logement.
+A) Ouvrir une maison relais :: Soigner.
+   bud-3 logement+1 services+1 | g+2 c+2 d0 e+1
+   > Vingt résidents retrouvent une vie autonome.
+B) Réserver des logements sociaux avec suivi :: Accompagner.
+   logement-1 services+1 | g+1 c+2 d+1 e+1
+   > Des patients emménagent avec un infirmier référent.
+C) Rien :: Compétence de l’État.
+   bon-1 | g0 c+1 d+1 e0
+   > Les lits d’hôpital restent occupés.
 === log-180 | logement | Les clés des logements sociaux perdues
 Les attributions prennent des mois car les états des lieux traînent.
 A) Une équipe dédiée aux états des lieux :: Accélérer.

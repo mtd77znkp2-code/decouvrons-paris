@@ -180,18 +180,17 @@ C) Rien :: Marché.
    bon-1 | g0 c+1 d+1 e0
    > Les lycéens restent sans emploi.
 
-=== econ-161 | economie | Les stages de troisième introuvables
-Les collégiens des quartiers populaires n’ont pas de réseau pour trouver un stage.
-A) Des stages dans les services de la Ville :: Égalité.
-   bud-1 bon+1 | g+2 c+2 d0 e+1
-   > Des milliers de collégiens découvrent un métier.
-B) Une plateforme avec les entreprises :: Réseau.
-   bud-1 economie+1 | g+1 c+2 d+1 e+1
-   > Les entreprises proposent des stages.
-C) Rien :: Familles.
-   bon-1 | g-1 c+1 d+1 e0
-   > Les inégalités persistent.
-
+=== econ-161 | economie | Les luthiers et facteurs d’instruments
+Les ateliers qui fabriquent violons et pianos ferment faute de successeurs.
+A) Des ateliers-écoles subventionnés :: Transmettre.
+   bud-2 economie+1 | g+1 c+2 d+1 e+1
+   > Des apprentis apprennent à tailler les tables d’harmonie.
+B) Les regrouper près de la Philharmonie :: Pôle.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Un quartier de la musique se forme.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+1 e0
+   > Les musiciens font réparer à Bruxelles.
 === econ-162 | economie | Les boulangeries industrielles remplacent les artisans
 Des chaînes de terminaux de cuisson s’installent à la place des boulangeries.
 A) Réserver des locaux aux artisans boulangers :: Savoir-faire.
@@ -252,18 +251,17 @@ C) Rien :: État.
    bon-1 | g0 c+1 d+1 e0
    > Les chauffeurs manifestent.
 
-=== econ-167 | economie | Des épiceries sociales dans chaque arrondissement
-Des familles modestes ne peuvent plus payer leurs courses.
-A) Ouvrir une épicerie sociale par arrondissement :: Solidarité.
-   bud-3 bon+2 | g+2 c+2 d0 e+1
-   > Des milliers de familles font leurs courses à prix réduit.
-B) Soutenir les associations existantes :: Accompagner.
-   bud-1 bon+1 | g+1 c+2 d+1 e+1
-   > Les associations élargissent leurs horaires.
-C) Rien :: État.
-   bon-1 | g0 c+1 d+1 e0
-   > Les files d’attente s’allongent.
-
+=== econ-167 | economie | Les fromagers affineurs cherchent des caves
+Les fromagers n’ont plus de caves pour affiner leurs fromages en ville.
+A) Louer des caves municipales :: Savoir-faire.
+   rec+0.01x60 economie+1 | g0 c+2 d+1 e+1
+   > Des caves d’affinage s’ouvrent sous les immeubles.
+B) Un marché des fromages affinés à Paris :: Valoriser.
+   bud-1 economie+1 | g0 c+2 d+1 e+1
+   > Les Parisiens découvrent des fromages affinés en ville.
+C) Rien :: Marché.
+   economie-1 | g0 c+1 d+1 e0
+   > Les fromagers achètent des fromages déjà affinés.
 === econ-168 | economie | Une foncière pour racheter les murs des commerces
 Une société municipale pourrait racheter des boutiques pour les louer à des artisans.
 A) Créer la foncière :: Maîtriser.

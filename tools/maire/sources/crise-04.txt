@@ -254,18 +254,17 @@ B) Dégager la boue et rouvrir :: Rapidité.
 C) Fermer la rue en attendant une étude :: Prudence.
    transports-1 | g0 c+2 d+1 e0
    > Les commerçants de la rue se plaignent.
-=== cri-127 | crise | Un tunnelier fissure des immeubles
-Le chantier d’une nouvelle ligne de métro provoque des affaissements.
-A) Arrêter le chantier :: Sécurité.
-   transports-1 securite+1 | g0 c+2 d+1 e+1
-   > Les travaux sont suspendus un mois.
-B) Indemniser les riverains et continuer :: Avancer.
-   bud-2 transports+1 | g0 c+1 d+2 e0
-   > Les riverains sont indemnisés.
-C) Minimiser :: Calendrier.
-   bon-2 | g-1 c0 d+1 e0
-   > Un immeuble est évacué.
-
+=== cri-127 | crise | Les sirènes d’alerte ne fonctionnent plus
+Un test révèle que la moitié des sirènes d’alerte de la ville sont muettes.
+A) Les réparer toutes en urgence :: Sécurité.
+   bud-2 securite+1 | g0 c+2 d+2 e+1
+   > Les sirènes hurlent au test suivant.
+B) Passer à l’alerte par SMS :: Moderniser.
+   bud-1 securite+1 | g+1 c+2 d+1 e+1
+   > Les téléphones vibrent lors des exercices.
+C) Attendre l’État :: Compétence.
+   securite-1 | g0 c+1 d+1 e0
+   > Personne ne serait prévenu en cas de danger.
 === cri-128 | crise | Un mouvement de panique dans le métro
 Une fausse alerte provoque une bousculade dans une station bondée.
 A) Revoir les plans d’évacuation des stations :: Prévention.
@@ -399,31 +398,28 @@ C) Laisser l’organisateur gérer :: Distance.
    securite-1 | g0 c+1 d+1 e0
    > Des bousculades éclatent.
 
-=== cri-139 | crise | La nappe phréatique inonde les caves
-Après des mois de pluie, l’eau monte dans les sous-sols de quartiers entiers.
-A) Installer des pompes publiques :: Agir.
-   bud-2 | g0 c+2 d+2 e0
-   > Les caves sont asséchées.
-B) Indemniser les riverains :: Solidarité.
-   bud-2 bon+1 | g+1 c+2 d+1 e+1
-   > Les familles sont remboursées.
-C) Attendre la décrue :: Patience.
+=== cri-139 | crise | Des canalisations gelées dans les écoles
+Après une nuit à moins douze, l’eau ne coule plus dans quarante écoles.
+A) Fermer les écoles touchées :: Prudence.
+   services-1 bon-1 | g0 c+2 d+1 e0
+   > Les parents gardent leurs enfants.
+B) Envoyer des plombiers d’astreinte et des citernes :: Réagir.
+   bud-2 services+1 | g0 c+2 d+2 e+1
+   > Les écoles rouvrent en deux jours.
+C) Laisser chaque école se débrouiller :: Autonomie.
    bon-2 | g-1 c+1 d+1 e0
-   > Les caves restent inondées des semaines.
-
-=== cri-140 | crise | De faux agents volent des personnes âgées
-Des escrocs se faisant passer pour des agents de la Ville cambriolent des seniors.
-? distinct
-A) Une campagne d’alerte massive :: Prévenir.
-   bud-1 securite+1 | g+1 c+2 d+1 e+1
-   > Les seniors appellent la mairie avant d’ouvrir.
-B) Des cartes officielles infalsifiables :: Sécuriser.
-   bud-1 securite+1 | g0 c+2 d+2 e+1
-   > Les agents portent un badge vérifiable.
-C) Laisser la police enquêter :: Compétence.
-   securite-1 | g0 c+1 d+1 e0
-   > Les vols continuent.
-
+   > Des enfants passent la journée sans toilettes.
+=== cri-140 | crise | Un dépôt de bus électriques prend feu
+Une batterie s’embrase et l’incendie détruit quarante bus.
+A) Remplacer les bus au plus vite :: Continuité.
+   bud-3 transports+1 | g0 c+2 d+2 e0
+   > Des bus de location circulent dès la semaine suivante.
+B) Revoir la sécurité de tous les dépôts :: Prévenir.
+   bud-2 securite+1 | g0 c+2 d+2 e+1
+   > Des murs coupe-feu sont construits.
+C) Revenir aux bus diesel :: Prudence.
+   ecologie-2 transports+1 | g-2 c0 d+2 e0
+   > Les écologistes dénoncent un retour en arrière.
 === cri-141 | crise | Un pic d’ozone record
 L’ozone atteint des niveaux jamais vus, les hôpitaux se remplissent.
 A) Interdire la circulation des voitures :: Santé.

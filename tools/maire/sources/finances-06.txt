@@ -168,17 +168,17 @@ C) Garder les contrats :: Simplicité.
    rec-0.02x60 | g0 c+1 d+1 e0
    > Les factures augmentent.
 
-=== fin-160 | finances | Les aides au ravalement de façade
-Les copropriétés repoussent les ravalements obligatoires faute de moyens.
-A) Une aide de 20 % des travaux :: Embellir.
-   bud-8 bon+1 logement+1 | g+1 c+2 d+1 e+1
-   > Les façades retrouvent leur éclat.
-B) Une aide liée à l’isolation :: Combiner.
-   bud-6 ecologie+1 logement+1 | g+2 c+2 d0 e+2
-   > Les ravalements isolent les immeubles.
-C) Imposer les travaux sans aide :: Règle.
-   bon-1 | g-1 c+2 d+2 e0
-   > Les copropriétaires s’endettent.
+=== fin-160 | finances | Les massifs de fleurs coûtent cher
+Les fleurs annuelles des jardins sont replantées trois fois par an.
+A) Passer aux plantes vivaces :: Économiser.
+   rec+0.03x60 ecologie+1 bon-1 | g+1 c+2 d+1 e+1
+   > Les massifs fleurissent tout seuls chaque année.
+B) Produire les fleurs dans les serres municipales :: Régie.
+   bud-2 rec+0.04x60 | g0 c+2 d+1 e+1
+   > Les serres d’Auteuil fournissent les jardins.
+C) Garder les annuelles :: Prestige.
+   rec-0.02x60 bon+1 | g0 c+1 d+1 e0
+   > Les jardins restent spectaculaires.
 === fin-161 | finances | Un emprunt auprès des Parisiens
 Des obligations citoyennes permettraient aux Parisiens de prêter à leur ville.
 A) Lancer un emprunt citoyen pour les écoles :: Participation.
@@ -275,18 +275,17 @@ C) Rien :: Pas le temps.
    rec-0.01x60 | g0 c0 d+1 e0
    > Les factures continuent.
 
-=== fin-169 | finances | Le prix de la carte de stationnement résident
-Le stationnement résidentiel coûte à peine quelques euros par jour.
-A) Le doubler :: Recettes.
-   rec+0.15x60 bon-1 transports+1 | g+1 c+2 d+1 e+1
-   > Des résidents se séparent de leur voiture.
-B) Tarif selon la taille du véhicule :: Équité.
-   rec+0.1x60 ecologie+1 | g+2 c+2 d0 e+1
-   > Les SUV paient plus cher.
-C) Ne pas toucher :: Pouvoir d’achat.
-   bon+1 | g-1 c+1 d+2 e0
-   > Les résidents sont soulagés.
-
+=== fin-169 | finances | La redevance des clubs de tennis dans les parcs
+Des clubs privés occupent des courts municipaux pour une somme modique.
+A) Augmenter la redevance :: Recettes.
+   rec+0.03x60 bon-1 | g0 c+2 d+2 e0
+   > Les clubs paient plus cher.
+B) Ouvrir les courts au public certains jours :: Partager.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les habitants réservent des créneaux.
+C) Maintenir :: Vie associative.
+   bon-1 | g0 c+1 d+1 e0
+   > Les courts restent réservés aux membres.
 === fin-170 | finances | Les amendes des terrasses illégales
 Des cafés agrandissent leurs terrasses sans payer.
 A) Multiplier les contrôles :: Recettes.
@@ -384,19 +383,17 @@ C) Maintenir :: Solidarité.
    rec-0.01x60 bon+1 | g+1 c+1 d0 e0
    > Le déficit continue.
 
-=== fin-178 | finances | Vendre le bois des arbres abattus
-Des milliers d’arbres malades sont abattus chaque année et finissent broyés.
-? distinct
-A) Vendre le bois aux ébénistes :: Recette.
-   rec+0.01x60 economie+1 | g0 c+2 d+1 e+1
-   > Le bois parisien devient du mobilier.
-B) Le donner aux écoles pour des ateliers :: Pédagogie.
-   bon+1 | g+1 c+2 d0 e+1
-   > Les élèves sculptent le bois de leur quartier.
-C) Continuer à broyer :: Simplicité.
-   ecologie-1 | g0 c+1 d+1 e0
-   > Le bois finit en copeaux.
-
+=== fin-178 | finances | Revendre la ferraille des équipements usagés
+Vieux lampadaires, grilles et bancs dorment dans les dépôts municipaux.
+A) Les vendre aux enchères aux particuliers :: Recettes.
+   bud+2 bon+1 | g0 c+2 d+1 e+1
+   > Des collectionneurs achètent des réverbères anciens.
+B) Les revendre au poids :: Simplicité.
+   bud+1 | g0 c+2 d+2 e0
+   > La ferraille part à la fonderie.
+C) Les garder pour réemploi :: Économie circulaire.
+   ecologie+1 | g+1 c+2 d0 e+1
+   > Les bancs sont restaurés et réinstallés.
 === fin-179 | finances | Les loyers payés à l’État
 La Ville loue à l’État des bâtiments pour ses services à des prix élevés.
 A) Racheter les bâtiments :: Propriété.

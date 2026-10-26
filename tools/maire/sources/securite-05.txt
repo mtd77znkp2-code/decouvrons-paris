@@ -252,18 +252,17 @@ C) Rien :: Compétence de l’État.
    economie-1 | g0 c+1 d+1 e0
    > Les arnaques continuent.
 
-=== sec-167 | securite | Les branchements électriques pirates
-Des câbles tirés sauvagement alimentent des campements et provoquent des incendies.
-A) Couper et sécuriser :: Fermeté.
-   securite+1 bon-1 | g-1 c+2 d+2 e0
-   > Les campements restent dans le noir.
-B) Installer des bornes sécurisées :: Pragmatisme.
+=== sec-167 | securite | Le vol de plaques d’immatriculation
+Des plaques volées servent à commettre des délits avec de fausses identités.
+A) Des contrôles par lecture automatique :: Détecter.
+   bud-1 securite+1 | g0 c+2 d+2 e0
+   > Des véhicules suspects sont interceptés.
+B) Distribuer des vis antivol :: Prévenir.
    bud-1 securite+1 | g+1 c+2 d+1 e+1
-   > Les incendies cessent.
-C) Rien :: Attendre.
+   > Les plaques restent en place.
+C) Rien :: Police nationale.
    securite-1 | g0 c+1 d+1 e0
-   > Un incendie se déclare.
-
+   > Des habitants reçoivent des amendes injustes.
 === sec-168 | securite | Les seniors désorientés qui disparaissent
 Des personnes âgées atteintes d’Alzheimer se perdent dans la ville.
 A) Un plan alerte avec les commerçants :: Réseau.
