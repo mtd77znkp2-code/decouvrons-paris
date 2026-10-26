@@ -1,0 +1,285 @@
+// Crises exceptionnelles, série 7
+=== cri-226 | crise | Les agents de la Ville privés de salaire
+Une panne du logiciel de paie bloque le salaire de 50 000 agents municipaux.
+A) Verser une avance exceptionnelle à tous :: Protéger.
+   bud-2 coh+1 | g+1 c+2 d+1 e+1
+   > Les agents reçoivent une avance en trois jours.
+B) Attendre la réparation du logiciel :: Patience.
+   coh-2 services-1 | g0 c+1 d+1 e0
+   > Des services ferment, les syndicats appellent à la grève.
+C) Avancer seulement aux plus bas salaires :: Cibler.
+   bud-1 | g0 c+2 d+1 e+1
+   > Les agents modestes sont aidés en priorité.
+=== cri-227 | crise | Une bibliothèque ravagée par les flammes
+Un incendie nocturne détruit une médiathèque de quartier et ses collections.
+A) Ouvrir une bibliothèque provisoire dès la semaine prochaine :: Rebondir.
+   bud-1 services+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les lecteurs retrouvent un lieu dans un gymnase.
+B) Lancer un appel aux dons de livres :: Solidarité.
+   bon+1 | g0 c+2 d+1 e+1
+   > Des milliers de livres arrivent de toute la France.
+C) Reporter la reconstruction :: Économie.
+   bud+1 services-1 | g-1 c+1 d+1 e0
+   > Le quartier perd son lieu de culture.
+=== cri-228 | crise | Des cas de choléra dans un campement
+Plusieurs exilés d’un campement du nord de Paris sont hospitalisés.
+A) Installer des points d’eau et des sanitaires en urgence :: Soigner.
+   bud-1 services+1 proprete+1 | g+1 c+2 d+2 e+1
+   > L’épidémie est stoppée en quelques jours.
+B) Demander à l’État de mettre les exilés à l’abri :: Réclamer.
+   coh+1 | g0 c+2 d+1 e+1
+   ~6 bon-1 > L’État tarde et de nouveaux cas apparaissent.
+   > La préfecture promet des places.
+C) Faire évacuer le campement :: Ordre.
+   securite+1 bon-1 | g0 c+1 d+1 e0
+   > Les malades se dispersent dans la ville.
+=== cri-229 | crise | Les trains de Montparnasse à l’arrêt
+Une caténaire arrachée bloque tous les départs de la gare en plein week-end de vacances.
+A) Ouvrir des gymnases pour les voyageurs bloqués :: Accueillir.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles dorment au chaud.
+B) Laisser la SNCF gérer :: Compétence.
+   bon-1 | g0 c+1 d+1 e0
+   > Des voyageurs passent la nuit sur le sol de la gare.
+C) Distribuer de l’eau et des repas sur place :: Aider.
+   bud-1 | g0 c+2 d+1 e+1
+   > Les bénévoles de la Ville sont remerciés.
+=== cri-230 | crise | Le toit de l’Opéra Garnier en feu
+Un incendie se déclare dans les combles pendant des travaux de soudure.
+A) Mobiliser tous les pompiers disponibles :: Sauver.
+   securite+1 bon+1 | g+1 c+2 d+2 e+1
+   > La salle et le plafond de Chagall sont sauvés.
+B) Lancer une souscription nationale :: Reconstruire.
+   bud+1 bon+1 | g0 c+2 d+1 e+1
+   > Les dons affluent du monde entier.
+C) Demander une enquête sur le chantier :: Comprendre.
+   coh+1 | g0 c+1 d+1 e0
+   > Les règles de sécurité des chantiers sont durcies.
+=== cri-231 | crise | Les panneaux d’affichage piratés
+Des pirates diffusent des images choquantes sur les écrans de la ville.
+A) Couper tous les écrans immédiatement :: Stopper.
+   economie-1 securite+1 | g0 c+2 d+2 e+1
+   > Les images disparaissent en une heure.
+B) Porter plainte et attendre :: Procédure.
+   bon-1 | g0 c+1 d+1 e0
+   > Les images tournent toute la soirée.
+C) Interdire les écrans publicitaires connectés :: Radical.
+   economie-1 ecologie+1 bon+1 | g0 c+2 d+1 e+1
+   > Les rues retrouvent un peu de calme.
+=== cri-232 | crise | Un faux site de la Ville escroque les Parisiens
+Un site imitant celui de la mairie fait payer de fausses amendes.
+A) Lancer une grande campagne d’alerte :: Prévenir.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Les Parisiens apprennent à reconnaître l’arnaque.
+B) Rembourser les victimes :: Réparer.
+   bud-2 bon+1 | g0 c+2 d+1 e+1
+   > Les victimes saluent un geste rare.
+C) Laisser la police enquêter :: Justice.
+   bon-1 | g0 c+1 d+1 e0
+   > D’autres habitants se font piéger.
+=== cri-233 | crise | Le réservoir de Montsouris fuit
+Une fissure menace l’un des grands réservoirs d’eau potable de Paris.
+A) Vider et réparer le réservoir en urgence :: Réparer.
+   bud-2 services+1 | g+1 c+2 d+2 e+1
+   > Le sud de Paris garde son eau.
+B) Colmater provisoirement :: Rapide.
+   bud-1 | g0 c+1 d+1 e0
+   ~12 bud-2 services-1 > La fissure se rouvre, la réparation coûte plus cher.
+   > La fuite ralentit.
+C) Appeler les habitants à économiser l’eau :: Sobriété.
+   ecologie+1 bon-1 | g0 c+2 d+1 e+1
+   > La consommation baisse de 15 %.
+=== cri-234 | crise | Les maîtres-nageurs en grève pendant la canicule
+Toutes les piscines ferment alors qu’il fait 38 °C.
+? distinct
+A) Négocier une prime d’été :: Accord.
+   bud-1 coh+1 services+1 | g+1 c+2 d+1 e+1
+   > Les piscines rouvrent le lendemain.
+B) Ouvrir des brumisateurs et des fontaines :: Rafraîchir.
+   bud-1 | g0 c+2 d+1 e+1
+   > Les enfants se rafraîchissent dans les parcs.
+C) Refuser de céder :: Fermeté.
+   coh-1 bon-1 | g0 c+1 d+1 e0
+   > Des baignades sauvages se multiplient.
+=== cri-235 | crise | Un champignon tueur attaque les platanes
+Le chancre coloré oblige à abattre des centaines d’arbres le long des quais.
+A) Abattre vite pour stopper la maladie :: Protéger.
+   ecologie-1 bon-1 | g0 c+2 d+2 e+1
+   > La maladie ne se répand plus.
+B) Replanter d’autres espèces aussitôt :: Diversifier.
+   bud-2 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les quais accueillent de jeunes arbres variés.
+C) Attendre un traitement :: Espoir.
+   ecologie-1 | g0 c+1 d+1 e0
+   ~10 ecologie-2 > Le champignon gagne les boulevards.
+   > Les experts sont sceptiques.
+=== cri-236 | crise | Un embouteillage géant paralyse la région
+Grève, pluie et accident : on mesure 700 km de bouchons autour de Paris.
+A) Rendre les transports gratuits pour la soirée :: Désengorger.
+   bud-1 transports+1 bon+1 | g+1 c+2 d+1 e+1
+   > Beaucoup laissent leur voiture.
+B) Ouvrir les voies de bus à tous :: Fluidifier.
+   transports-1 | g0 c+1 d+1 e0
+   > Les bus restent coincés à leur tour.
+C) Conseiller de rester chez soi :: Prudence.
+   economie-1 | g0 c+2 d+1 e+1
+   > Le télétravail sauve la journée.
+=== cri-237 | crise | Des tombes profanées au Père-Lachaise
+Des dizaines de sépultures sont renversées et taguées en une nuit.
+A) Restaurer les tombes aux frais de la Ville :: Respect.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les familles sont touchées par le geste.
+B) Installer des caméras dans les cimetières :: Surveiller.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Les auteurs sont identifiés.
+C) Laisser les familles réparer :: Discrétion.
+   bon-2 | g-1 c+1 d+1 e0
+   > Les familles se sentent abandonnées.
+=== cri-238 | crise | Des cueilleurs intoxiqués par des champignons
+Une dizaine de personnes sont hospitalisées après une cueillette au bois de Vincennes.
+A) Interdire la cueillette dans les bois :: Protéger.
+   securite+1 bon-1 | g0 c+2 d+1 e+1
+   > Les intoxications cessent.
+B) Organiser des sorties avec des pharmaciens :: Éduquer.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Les cueilleurs apprennent à reconnaître les espèces.
+C) Afficher une simple mise en garde :: Informer.
+   bon-1 | g0 c+1 d+1 e0
+   > Peu de promeneurs lisent les panneaux.
+=== cri-239 | crise | Des ateliers d’artistes partent en fumée
+Un incendie détruit une cité d’artistes et des années d’œuvres.
+? distinct
+A) Reloger les artistes dans des locaux de la Ville :: Accueillir.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Les artistes se remettent au travail.
+B) Organiser une vente aux enchères solidaire :: Solidarité.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les dons permettent de racheter du matériel.
+C) Vendre le terrain à un promoteur :: Opportunité.
+   bud+2 bon-2 | g-1 c+1 d+1 e0
+   > Le monde de l’art dénonce un abandon.
+=== cri-240 | crise | Une panne de congélateurs détruit des milliers de vaccins
+Une coupure électrique dans un centre municipal fait perdre tout un stock de vaccins.
+? distinct
+A) Racheter les vaccins en urgence :: Remplacer.
+   bud-2 services+1 | g+1 c+2 d+1 e+1
+   > Les rendez-vous sont maintenus.
+B) Reporter les vaccinations :: Attendre.
+   services-1 bon-1 | g0 c+1 d+1 e0
+   > Les familles doivent revenir dans un mois.
+C) Équiper tous les centres de générateurs :: Prévoir.
+   bud-1 securite+1 | g0 c+2 d+1 e+1
+   > Une telle panne ne pourra plus se reproduire.
+=== cri-241 | crise | Des tiques porteuses de maladie dans les bois
+Plusieurs cas de maladie de Lyme sont signalés après des promenades.
+A) Lancer une campagne de prévention :: Informer.
+   bud-1 services+1 | g+1 c+2 d+1 e+1
+   > Les promeneurs vérifient leur peau au retour.
+B) Faucher les sous-bois :: Agir.
+   ecologie-1 | g0 c+1 d+1 e0
+   > La biodiversité en souffre.
+C) Fermer certaines zones :: Précaution.
+   bon-1 | g0 c+2 d+1 e+1
+   > Les joggeurs râlent.
+=== cri-242 | crise | Le 115 ne répond plus
+Le numéro d’urgence pour les sans-abri est saturé en plein hiver.
+A) Ouvrir des places d’hébergement municipales :: Héberger.
+   bud-2 logement+1 bon+1 | g+1 c+2 d+2 e+1
+   > Des centaines de personnes dorment au chaud.
+B) Envoyer des maraudes dans les rues :: Aller vers.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Les agents trouvent ceux qui n’appelaient plus.
+C) Rappeler que c’est le rôle de l’État :: Compétence.
+   bon-2 | g-1 c+1 d+1 e0
+   > Les associations sont scandalisées.
+=== cri-243 | crise | L’Arc de triomphe tagué
+Des slogans sont peints sur le monument au lendemain d’une manifestation.
+A) Nettoyer dans la nuit :: Effacer.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Au matin, plus aucune trace.
+B) Porter plainte et demander des sanctions :: Fermeté.
+   securite+1 | g0 c+2 d+1 e+1
+   > Les auteurs sont recherchés.
+C) Laisser l’État s’en charger :: Distance.
+   bon-1 | g0 c+1 d+1 e0
+   > Les images tournent dans le monde entier.
+=== cri-244 | crise | Une fissure sur un pont du périphérique
+Les ingénieurs découvrent une fissure inquiétante sur un ouvrage du périphérique.
+A) Fermer le pont pour réparer :: Sécurité.
+   bud-2 transports-1 securite+1 | g0 c+2 d+2 e+1
+   > Les bouchons durent un mois mais le pont est sauvé.
+B) Réduire la circulation aux voitures légères :: Compromis.
+   bud-1 | g0 c+2 d+1 e+1
+   > Les camions sont déviés.
+C) Surveiller sans fermer :: Risque.
+   securite-1 | g0 c+1 d+1 e0
+   ~10 bud-3 transports-2 > La fissure s’agrandit, le pont ferme d’urgence.
+   > Les capteurs sont installés.
+=== cri-245 | crise | Des pompiers pris pour cible le 14 Juillet
+Des pompiers sont visés par des tirs de mortiers d’artifice pendant la nuit.
+? distinct
+A) Soutenir les pompiers et porter plainte :: Solidarité.
+   securite+1 bon+1 | g0 c+2 d+1 e+1
+   > Les pompiers se sentent soutenus.
+B) Interdire la vente de pétards :: Prévenir.
+   economie-1 securite+1 | g0 c+2 d+1 e+1
+   > L’année suivante est plus calme.
+C) Lancer des médiateurs dans les quartiers :: Apaiser.
+   bud-1 coh+1 | g+1 c+2 d+1 e+1
+   > Les jeunes rencontrent les pompiers.
+=== cri-246 | crise | Les stocks d’urgence de la Ville périmés
+Pendant une alerte, on découvre que les masques et rations sont périmés.
+A) Reconstituer tous les stocks :: Prévoir.
+   bud-2 securite+1 | g+1 c+2 d+1 e+1
+   > La Ville est prête pour la prochaine crise.
+B) Cacher l’affaire :: Silence.
+   bon-1 | g0 c+1 d+1 e0
+   ~8 bon-2 > La presse révèle tout.
+   > Les stocks restent vides.
+C) Mutualiser avec la Région :: Partager.
+   bud-1 coh+1 | g0 c+2 d+1 e+1
+   > Un entrepôt commun est créé.
+=== cri-247 | crise | Un forcené retranché dans un immeuble
+Un homme armé s’enferme chez lui et menace ses voisins.
+A) Évacuer l’immeuble et loger les voisins :: Protéger.
+   bud-1 bon+1 | g0 c+2 d+1 e+1
+   > Les voisins passent la nuit à l’hôtel.
+B) Laisser faire la police :: Compétence.
+   securite+1 | g0 c+2 d+1 e+1
+   > L’homme se rend au petit matin.
+C) Faire une déclaration publique :: Parler.
+   bon-1 | g0 c+1 d+1 e0
+   > Ta parole tombe à côté.
+=== cri-248 | crise | Un bateau-restaurant prend feu
+Un incendie se déclare à bord d’une péniche pleine de dîneurs.
+A) Contrôler tous les bateaux-restaurants :: Contrôler.
+   securite+1 economie-1 | g0 c+2 d+1 e+1
+   > Plusieurs bateaux sont mis en conformité.
+B) Remercier les sauveteurs :: Saluer.
+   bon+1 | g0 c+1 d+1 e0
+   > Les héros de la soirée sont honorés.
+C) Durcir les règles des quais :: Règle.
+   coh+1 economie-1 | g0 c+2 d+1 e+1
+   > Les exploitants protestent.
+=== cri-249 | crise | Un ascenseur de station de métro bloqué avec des écoliers
+Une classe entière reste coincée deux heures dans l’ascenseur d’une station profonde.
+A) Exiger un plan de maintenance de la RATP :: Exiger.
+   coh+1 transports+1 | g0 c+2 d+1 e+1
+   > Les pannes d’ascenseurs diminuent.
+B) Accompagner les familles :: Soutenir.
+   bud-1 bon+1 | g+1 c+2 d+1 e+1
+   > Un psychologue reçoit les enfants.
+C) Considérer l’incident comme mineur :: Relativiser.
+   bon-1 | g0 c+1 d+1 e0
+   > Les parents d’élèves se mobilisent.
+=== cri-250 | crise | Un service de pédiatrie ferme faute de médecins
+Le seul service de pédiatrie de l’est parisien ferme ses portes.
+A) Financer des médecins dans les centres de santé :: Soigner.
+   bud-2 services+1 | g+1 c+2 d+2 e+1
+   > Les familles retrouvent des consultations.
+B) Interpeller le ministre :: Réclamer.
+   coh+1 | g0 c+2 d+1 e+1
+   > Le ministère promet des renforts.
+C) Ne rien faire :: Attente.
+   bon-2 | g-1 c+1 d+1 e0
+   > Les parents doivent traverser Paris.
