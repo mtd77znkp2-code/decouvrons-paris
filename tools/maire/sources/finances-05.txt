@@ -1,0 +1,491 @@
+// Finances, série 5
+=== fin-106 | finances | Les dons des Parisiens pour Notre-Dame des quartiers
+Une fondation propose de collecter des dons pour rénover les petites églises de quartier, en échange d’une réduction d’impôt.
+? distinct
+A) Soutenir la collecte :: Mobiliser les dons.
+   bud+10 bon+1 | g-1 c+2 d+3 e0
+   > Les dons financent plusieurs restaurations.
+B) Doubler chaque euro donné :: Effet levier.
+   bud-5 bon+2 | g0 c+2 d+2 e0
+   > La Ville abonde chaque don.
+C) Refuser : la Ville finance seule son patrimoine :: Indépendance.
+   bon+1 bud-10 | g+2 c+1 d-1 e+1
+   > La Ville paie seule.
+
+=== fin-107 | finances | Les loyers des antennes de téléphonie
+Les opérateurs paient des loyers pour leurs antennes sur les toits municipaux. Ces contrats n’ont pas été revus depuis quinze ans.
+A) Renégocier à la hausse :: Recettes.
+   rec+0.2x60 | g+1 c+3 d+1 e0
+   > Les opérateurs paient le double.
+B) Exiger en échange une meilleure couverture des quartiers mal desservis :: Contrepartie.
+   rec+0.05x60 services+1 | g+1 c+3 d+1 e0
+   > Les zones blanches disparaissent.
+C) Laisser les contrats :: Stabilité.
+   rec-0.02x60 | g0 c+1 d+1 e0
+   > Rien ne change.
+=== fin-108 | finances | La facture du déneigement
+L’hiver a été rude. Le budget du déneigement est épuisé dès janvier.
+A) Débloquer une rallonge :: Sécurité.
+   bud-6 securite+1 transports+1 | g0 c+2 d+2 e0
+   > Le déneigement continue.
+B) Mutualiser les engins avec les communes voisines :: Partager.
+   bud-2 transports+1 | g+1 c+3 d+1 e+1
+   > Un accord de prêt d’engins est signé.
+C) Ne déneiger que les axes principaux :: Économie.
+   securite-1 transports-1 | g-1 c+1 d+1 e0
+   > Les petites rues restent glissantes.
+
+=== fin-109 | finances | Des économies d’énergie partagées avec les écoles
+Les écoles qui économisent l’énergie pourraient garder la moitié des économies pour leurs projets.
+A) Lancer l’intéressement :: Motiver.
+   rec+0.1x60 ecologie+2 services+1 | g+1 c+3 d+2 e+3
+   > Les écoles éteignent les lumières et financent des sorties.
+B) Garder toutes les économies :: Budget.
+   rec+0.1x60 ecologie+1 | g0 c+2 d+2 e+1
+   > Les économies vont au budget général.
+C) Rien :: Pas de levier.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== fin-110 | finances | Une banque propose de gérer la trésorerie
+Une banque propose de gérer les comptes de la Ville contre une commission, en promettant des économies.
+A) Accepter :: Expertise.
+   rec+0.1x60 | g-2 c+2 d+3 e0
+   > La banque gère la trésorerie.
+   ~30 pop-1 > La presse révèle des frais cachés.
+B) Créer un service de trésorerie interne :: Maîtrise.
+   bud-2 rec+0.1x60 | g+1 c+3 d+1 e0
+   > Des experts sont recrutés.
+C) Garder l’organisation :: Prudence.
+   coh+1 | g0 c+1 d0 e0
+   > Rien ne change.
+
+=== fin-111 | finances | Les loyers des crèches associatives
+Les crèches associatives paient des loyers élevés dans des locaux de la Ville.
+A) Supprimer les loyers :: Soutenir la petite enfance.
+   rec-0.1x60 services+1 | g+2 c+2 d0 e+1
+   > Les crèches ne paient plus de loyer.
+B) Loyers selon le nombre d’enfants modestes accueillis :: Social.
+   rec-0.05x60 services+1 | g+2 c+3 d+1 e+1
+   > Les crèches solidaires paient moins.
+C) Garder les loyers :: Recettes.
+   services-1 | g-2 c+1 d+2 e0
+   > Rien ne change.
+
+=== fin-112 | finances | Une hausse de la taxe foncière sur les bureaux
+Les entreprises paient moins de taxe que les ménages. Une hausse ciblée sur les bureaux est proposée.
+? distinct
+A) Augmenter fortement la taxe sur les bureaux :: Faire payer les entreprises.
+   rec+0.8x60 economie-2 | g+3 c0 d-3 e+1
+   > Les bureaux paient plus.
+B) Hausse modérée :: Compromis.
+   rec+0.3x60 economie-1 | g+1 c+3 d0 e+1
+   > Une hausse de 3 % est votée.
+C) Pas de hausse :: Attractivité.
+   economie+1 | g-2 c+1 d+3 e0
+   > Rien ne change.
+
+=== fin-113 | finances | Les vélos de fonction des agents
+Les agents qui viennent à vélo demandent une indemnité comme ceux qui viennent en transports.
+A) Forfait mobilités durables :: Encourager le vélo.
+   rec-0.1x60 ecologie+1 bon+1 | g+1 c+3 d+1 e+3
+   > Les cyclistes reçoivent une indemnité.
+B) Vélos de service prêtés :: Équiper.
+   bud-3 ecologie+1 | g+1 c+2 d+1 e+2
+   > Des vélos sont prêtés aux agents.
+C) Rien :: Budget.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== fin-114 | finances | Le contrat des toilettes publiques
+Le contrat des toilettes publiques gratuites coûte de plus en plus cher.
+? distinct
+A) Renégocier avec un nouveau prestataire :: Concurrence.
+   rec+0.1x60 proprete-1 | g-1 c+3 d+2 e0
+   > Un prestataire moins cher est retenu.
+   ~30 proprete-1 > Les nouvelles toilettes sont souvent en panne.
+B) Reprendre en régie :: Maîtrise.
+   bud-5 rec-0.05x60 proprete+1 | g+3 c+1 d-1 e+1
+   > La Ville gère ses toilettes.
+C) Garder le contrat :: Continuité.
+   proprete+1 rec-0.05x60 | g0 c+1 d+1 e0
+   > Le contrat est prolongé.
+
+=== fin-115 | finances | Les intérêts moratoires
+La Ville paie des intérêts de retard aux entreprises parce qu’elle paie ses factures trop tard.
+A) Réorganiser le circuit des factures :: Efficacité.
+   bud-2 rec+0.1x60 economie+1 | g0 c+3 d+2 e0
+   > Les factures sont payées à temps.
+B) Payer d’abord les petites entreprises :: Priorité.
+   rec-0.02x60 economie+1 | g+1 c+2 d+1 e0
+   > Les PME sont payées en premier.
+C) Rien :: Contraintes de trésorerie.
+   rec-0.1x60 economie-1 | g0 c0 d0 e0
+   > Les intérêts continuent.
+
+=== fin-116 | finances | Le budget des maternelles
+Les écoles maternelles demandent des crédits pour du matériel pédagogique, jamais renouvelé depuis dix ans.
+A) Doubler le budget pédagogique :: Investir dans l’enfance.
+   rec-0.2x60 services+2 | g+2 c+2 d+1 e+1
+   > Les classes reçoivent jeux et livres neufs.
+B) Budget exceptionnel une fois :: Rattrapage.
+   bud-6 services+1 | g+1 c+3 d+1 e0
+   > Le matériel est renouvelé.
+C) Rien :: Budget contraint.
+   services-1 | g-2 c+1 d+2 e0
+   > Rien ne change.
+
+=== fin-117 | finances | Une taxe sur les écrans des abribus
+Les abribus diffusent des publicités sur écrans. Les recettes reviennent surtout à l’afficheur.
+A) Renégocier une part plus forte pour la Ville :: Recettes.
+   rec+0.3x60 | g+1 c+3 d+1 e0
+   > La part de la Ville double.
+B) Remplacer les écrans par des affiches papier :: Sobriété.
+   rec-0.1x60 ecologie+1 | g+1 c+1 d-1 e+3
+   > Les écrans disparaissent des abribus.
+C) Rien :: Contrat en cours.
+   rec-0.01x60 | g0 c+1 d+1 e-1
+   > Rien ne change.
+=== fin-118 | finances | Le coût des JO de la jeunesse dérape
+Le budget d’un grand événement sportif accueilli par Paris dépasse de 30 %.
+? apres=30
+A) Payer le dépassement :: Tenir l’engagement.
+   bud-30 bon+1 | g0 c+2 d+2 e0
+   > La Ville couvre le dépassement.
+B) Réduire le programme :: Économie.
+   bud-10 bon-1 | g0 c+2 d+2 e+1
+   > Certaines épreuves sont supprimées.
+C) Demander à l’État de payer :: Partage.
+   bud-15 coh+1 | g+1 c+1 d0 e0
+   > L’État prend une part.
+
+=== fin-119 | finances | Le recouvrement des amendes impayées
+Des millions d’euros d’amendes municipales ne sont jamais recouvrés.
+A) Agence de recouvrement :: Rendement.
+   bud+15 pop-1 | g-1 c+2 d+3 e0
+   > Les impayés sont récupérés.
+B) Relances et paiement en ligne facilité :: Simplicité.
+   bud+6 | g0 c+3 d+2 e0
+   > Le paiement devient plus simple.
+C) Amnistie des petites amendes :: Apaiser.
+   pop+1 bud-2 | g+1 c0 d-2 e0
+   > Les amendes anciennes sont annulées.
+
+=== fin-120 | finances | Un mécène pour les piscines
+Un grand groupe propose de rénover trois piscines en échange de son nom sur la façade.
+A) Accepter :: Piscines rénovées gratuitement.
+   bud+30 services+2 pop-1 | g-2 c+2 d+3 e0
+   > Les piscines portent le nom de la marque.
+B) Accepter sans nom, contre une plaque :: Compromis.
+   bud+10 services+1 | g0 c+3 d+2 e0
+   > Le groupe accepte une plaque discrète.
+C) Refuser :: Pas de marques sur le service public.
+   pop+1 | g+2 c0 d-2 e+1
+   > Les piscines attendent leur rénovation.
+
+=== fin-121 | finances | Le budget des fanfares et harmonies municipales
+Les harmonies municipales jouent dans les fêtes mais leur budget est menacé.
+A) Les financer pleinement :: Tradition musicale.
+   rec-0.05x60 bon+1 | g+1 c+2 d+2 e0
+   > Les harmonies continuent de jouer.
+B) Les fusionner :: Économie.
+   rec+0.02x60 bon-1 | g-1 c+2 d+2 e0
+   > Trois harmonies fusionnent.
+C) Les supprimer :: Pas prioritaire.
+   rec+0.05x60 bon-1 | g-2 c0 d+1 e0
+   > Les harmonies disparaissent.
+
+=== fin-122 | finances | Investir dans l’hydrogène
+Une entreprise propose une station d’hydrogène pour les camions-poubelles, très chère.
+A) Investir :: Pionnier.
+   bud-25 ecologie+2 economie+1 | g0 c+2 d+2 e+3
+   > Les camions roulent à l’hydrogène.
+B) Préférer l’électrique, moins cher :: Pragmatique.
+   bud-12 ecologie+2 | g+1 c+3 d+1 e+3
+   > Les camions passent à l’électrique.
+C) Garder les camions au gaz :: Économie.
+   ecologie-1 | g0 c+1 d+2 e-2
+   > Rien ne change.
+
+=== fin-123 | finances | Les tarifs des conservatoires
+Les tarifs des conservatoires varient de 1 à 20 selon les revenus. Les classes moyennes trouvent cela injuste.
+A) Lisser les tarifs :: Équité pour les classes moyennes.
+   rec-0.05x60 achat+1 | g0 c+3 d+2 e0
+   > Les tarifs intermédiaires baissent.
+B) Garder la forte progressivité :: Solidarité.
+   achat+1 | g+3 c0 d-2 e+1
+   > Rien ne change.
+C) Tarif unique :: Simplicité.
+   rec+0.05x60 achat-1 | g-3 c+1 d+3 e0
+   > Tout le monde paie pareil.
+
+=== fin-124 | finances | Réduire le nombre d’imprimantes
+La Ville possède une imprimante pour trois agents. Les cartouches coûtent une fortune.
+A) Imprimantes partagées et badges :: Économies.
+   bud-1 rec+0.05x60 ecologie+1 | g0 c+3 d+2 e+2
+   > Le nombre d’imprimantes est divisé par trois.
+B) Campagne de sensibilisation :: Doux.
+   rec+0.01x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les agents impriment moins.
+C) Rien :: Confort des agents.
+   rec-0.02x60 | g0 c0 d0 e-1
+   > Rien ne change.
+
+=== fin-125 | finances | La vente des droits de diffusion des événements
+Une plateforme veut acheter les droits de diffusion des grands événements de la Ville (feux d’artifice, Nuit Blanche).
+A) Vendre l’exclusivité :: Recettes.
+   bud+12 pop-2 | g-3 c+1 d+3 e0
+   > Les événements sont diffusés en exclusivité.
+   ~30 pop-1 > Les Parisiens ne peuvent plus les voir gratuitement en ligne.
+B) Vendre sans exclusivité :: Compromis.
+   bud+4 | g0 c+3 d+2 e0
+   > Les événements restent gratuits sur le site de la Ville.
+C) Refuser :: Culture gratuite.
+   pop+1 | g+2 c+1 d-1 e+1
+   > Les événements restent libres.
+
+=== fin-126 | finances | Le coût des logements de fonction des directeurs
+Des directeurs de la Ville occupent de grands appartements de fonction dans les beaux quartiers.
+A) Les remettre en location sociale :: Exemplarité.
+   logement+1 pop+2 | g+2 c+2 d0 e+1
+   > Les appartements sont attribués à des familles.
+B) Faire payer un loyer de marché :: Recettes.
+   rec+0.05x60 pop+1 | g0 c+3 d+2 e0
+   > Les directeurs paient un vrai loyer.
+C) Ne rien changer :: Avantage du poste.
+   pop-2 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== fin-127 | finances | Les dettes de cantine des collèges
+Les collèges, gérés par la Ville, accumulent des impayés de cantine.
+A) Tarifs sociaux élargis :: Prévenir.
+   rec-0.1x60 achat+1 services+1 | g+3 c+2 d0 e+1
+   > Plus de familles paient un tarif réduit.
+B) Recouvrement strict :: Rigueur.
+   bud+2 pop-1 | g-3 c+1 d+3 e0
+   > Les familles sont relancées.
+C) Fonds de solidarité par collège :: Ciblé.
+   bud-2 achat+1 | g+2 c+3 d+1 e+1
+   > Chaque collège dispose d’un fonds.
+
+=== fin-128 | finances | Une recette inattendue de la Seine
+Un opérateur de bateaux propose une forte redevance pour de nouvelles escales sur les quais.
+A) Accepter :: Recettes.
+   rec+0.3x60 economie+1 bon-1 | g-1 c+2 d+3 e-1
+   > De nouvelles escales s’installent.
+B) Accepter pour des bateaux électriques seulement :: Condition.
+   rec+0.2x60 ecologie+1 | g+1 c+3 d+1 e+2
+   > Seuls les bateaux propres sont admis.
+C) Refuser :: Quais pour les promeneurs.
+   bon+1 | g+1 c+1 d-1 e+2
+   > Les quais restent libres.
+
+=== fin-129 | finances | Économiser sur l’éclairage des bâtiments la nuit
+Les bureaux municipaux restent éclairés la nuit.
+? distinct
+A) Extinction automatique :: Économies.
+   bud-3 rec+0.1x60 ecologie+1 | g0 c+3 d+2 e+2
+   > Les lumières s’éteignent automatiquement.
+B) Consigne aux agents :: Simple.
+   rec+0.02x60 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les agents éteignent en partant.
+C) Rien :: Sécurité des bâtiments.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== fin-130 | finances | La flotte de véhicules municipaux
+La Ville possède 3 000 véhicules dont beaucoup roulent peu.
+A) Réduire la flotte d’un tiers :: Économies.
+   bud+8 rec+0.1x60 services-1 | g0 c+3 d+2 e+2
+   > Mille véhicules sont vendus.
+B) Partager les véhicules entre services :: Mutualiser.
+   rec+0.1x60 | g+1 c+3 d+1 e+1
+   > Un système de réservation est créé.
+C) Garder la flotte :: Réactivité.
+   rec-0.05x60 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== fin-131 | finances | Les recettes des visites de l’Hôtel de Ville
+Les visites guidées de l’Hôtel de Ville sont gratuites et toujours complètes.
+A) Les rendre payantes pour les touristes :: Recettes.
+   rec+0.05x60 | g-1 c+2 d+2 e0
+   > Les touristes paient la visite.
+B) Garder la gratuité :: Maison commune.
+   bon+1 | g+2 c+1 d0 e+1
+   > Les visites restent gratuites.
+C) Plus de visites gratuites :: Ouvrir.
+   rec-0.02x60 bon+1 | g+2 c+2 d+1 e+1
+   > Les visites doublent.
+
+=== fin-132 | finances | La part de Paris dans la péréquation
+Paris verse des centaines de millions aux communes pauvres via la péréquation. Le montant augmente encore.
+A) Contester la hausse :: Défendre Paris.
+   coh+1 pop+1 | g-1 c+1 d+3 e0
+   > Paris conteste au Parlement.
+   ~40 rec-0.3x60 > La hausse est confirmée.
+B) Accepter : solidarité territoriale :: Assumer.
+   rec-0.3x60 coh+1 | g+3 c+1 d-2 e+1
+   > Paris paie davantage.
+C) Négocier un plafonnement :: Compromis.
+   rec-0.1x60 | g0 c+3 d+1 e0
+   > La hausse est plafonnée.
+
+=== fin-133 | finances | Le coût des inaugurations
+Chaque inauguration coûte des dizaines de milliers d’euros en buffets et décors.
+A) Inaugurations sobres :: Exemplarité.
+   rec+0.02x60 pop+1 | g+1 c+2 d+1 e+1
+   > Les inaugurations se font sans buffet.
+B) Inaugurations ouvertes aux habitants :: Fête de quartier.
+   rec-0.01x60 bon+1 | g+2 c+2 d+1 e+1
+   > Les habitants sont invités.
+C) Garder le format :: Protocole.
+   pop-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== fin-134 | finances | Une banque de projets pour les fonds européens
+La Ville rate beaucoup de fonds européens faute de projets prêts.
+A) Créer une équipe dédiée :: Aller chercher l’argent.
+   bud-2 rec+0.2x60 | g+1 c+3 d+2 e+1
+   > Les dossiers européens se multiplient.
+B) Faire appel à un cabinet de conseil :: Externaliser.
+   bud-4 rec+0.15x60 | g-1 c+2 d+2 e0
+   > Un cabinet monte les dossiers.
+C) Rien :: Trop complexe.
+   economie-1 | g0 c0 d+1 e0
+   > Les fonds vont à d’autres villes.
+
+=== fin-135 | finances | Les loyers des marchés aux puces
+La Ville loue des emplacements aux puciers à des prix inchangés depuis vingt ans.
+A) Revaloriser les loyers :: Recettes.
+   rec+0.05x60 economie-1 | g-1 c+2 d+2 e0
+   > Les loyers augmentent.
+B) Revaloriser contre des travaux d’amélioration :: Contrepartie.
+   bud-3 economie+1 | g+1 c+3 d+1 e+1
+   > Le marché est rénové.
+C) Geler :: Soutenir les puciers.
+   rec-0.01x60 economie+1 | g+1 c+1 d0 e0
+   > Rien ne change.
+
+=== fin-136 | finances | Un trou dans la caisse d’une régie
+Une enquête révèle qu’un agent détournait l’argent d’une régie de piscine depuis des années.
+A) Plainte et contrôle de toutes les régies :: Fermeté.
+   bud-1 coh+1 | g0 c+2 d+3 e0
+   > Toutes les régies sont contrôlées.
+B) Passer au paiement sans espèces :: Supprimer le risque.
+   services-1 bud-3 | g0 c+3 d+2 e0
+   > Les piscines n’acceptent plus le liquide.
+C) Discrétion :: Éviter le scandale.
+   pop-1 | g-1 c0 d0 e-1
+   > L’affaire est réglée en interne.
+   ~40 pop-2 > La presse révèle l’affaire.
+
+=== fin-137 | finances | Le prix des repas des agents
+Le prix des repas dans les restaurants des agents augmente.
+A) Subventionner davantage :: Pouvoir d’achat.
+   rec-0.1x60 achat+1 bon+1 | g+2 c+2 d0 e0
+   > Le prix du repas baisse.
+B) Repas végétarien moins cher :: Écologique.
+   ecologie+1 achat+1 | g+1 c+2 d0 e+3
+   > Le menu végétarien coûte 2 €.
+C) Laisser augmenter :: Équilibre.
+   achat-1 | g-2 c+1 d+2 e0
+   > Les agents paient plus.
+
+=== fin-138 | finances | Les recettes des concessions funéraires
+Les concessions perpétuelles rapportent peu et occupent la place pour toujours.
+A) Ne plus vendre de concessions perpétuelles :: Gestion durable.
+   rec+0.05x60 services+1 | g+1 c+2 d0 e+1
+   > Seules les concessions de 30 ou 50 ans restent.
+   ~30 pop-1 > Des familles regrettent la fin de la perpétuité.
+B) Augmenter leur prix :: Recettes.
+   rec+0.1x60 | g-1 c+2 d+2 e0
+   > Les concessions perpétuelles coûtent plus cher.
+C) Rien :: Tradition.
+   services-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== fin-139 | finances | Une taxe sur les écrans publicitaires des commerces
+Les commerces installent des écrans lumineux dans leurs vitrines. Une taxe est proposée.
+? distinct
+A) Taxer fortement :: Décourager.
+   rec+0.2x60 ecologie+1 economie-1 | g+1 c+1 d-2 e+3
+   > Les écrans de vitrine sont taxés.
+B) Taxe modérée :: Compromis.
+   rec+0.1x60 | g0 c+3 d+1 e+1
+   > Une petite taxe est créée.
+C) Pas de taxe :: Commerce.
+   economie+1 | g-1 c+1 d+3 e-2
+   > Rien ne change.
+
+=== fin-140 | finances | Les prêts de la Ville aux associations
+Des associations demandent des avances de trésorerie en attendant leurs subventions.
+A) Créer un fonds d’avances :: Soutien.
+   bud-5 bon+1 | g+2 c+3 d+1 e+1
+   > Les associations ne sont plus à court d’argent.
+   ~20 bud-2 > Quelques associations ne remboursent pas.
+B) Verser les subventions plus tôt :: Organisation.
+   bon+1 | g+1 c+3 d+1 e+1
+   > Les subventions arrivent en janvier.
+C) Rien :: Pas le rôle de la Ville.
+   bon-1 | g-2 c0 d+2 e0
+   > Des associations ferment.
+
+=== fin-141 | finances | Le budget des jumelages
+Les jumelages coûtent cher en voyages et réceptions pour peu de résultats.
+A) Les recentrer sur les échanges de jeunes :: Utile.
+   rec+0.01x60 bon+1 | g+1 c+3 d+1 e+1
+   > Des lycéens partent en échange.
+B) Réduire le budget :: Économie.
+   coh-1 rec+0.03x60 | g0 c+2 d+2 e0
+   > Les jumelages sont réduits.
+C) Les développer :: Rayonnement.
+   rec-0.05x60 economie+1 | g0 c+1 d+1 e0
+   > De nouveaux jumelages sont signés.
+
+=== fin-142 | finances | Une taxe sur les parkings des centres commerciaux
+Les grands centres commerciaux disposent de parkings gratuits qui attirent les voitures.
+A) Taxer les places de parking :: Moins de voitures.
+   rec+0.2x60 ecologie+1 economie-1 | g+1 c+1 d-2 e+3
+   > Les parkings deviennent payants.
+B) Taxe seulement sur les grands centres :: Ciblé.
+   rec+0.1x60 ecologie+1 | g+1 c+3 d0 e+2
+   > Les plus grands centres paient.
+C) Pas de taxe :: Commerce.
+   economie+1 | g-1 c+1 d+3 e-2
+   > Rien ne change.
+
+=== fin-143 | finances | Le coût de l’accueil des grands événements sportifs
+Les grandes compétitions accueillies à Paris coûtent en sécurité, nettoyage et transports.
+A) Exiger une participation des fédérations :: Partager.
+   rec+0.1x60 | g+1 c+3 d+1 e+1
+   > Les fédérations paient une partie.
+B) Continuer à accueillir gratuitement :: Rayonnement.
+   rec-0.1x60 economie+1 bon+1 | g0 c+1 d+2 e0
+   > Les compétitions continuent d’affluer.
+C) Accueillir moins d’événements :: Sobriété.
+   rec+0.05x60 economie-1 | g+1 c+1 d-1 e+2
+   > Paris refuse plusieurs compétitions.
+
+=== fin-144 | finances | Les assurances de la Ville augmentent
+Après plusieurs catastrophes, les assureurs triplent les primes de la Ville.
+A) S’auto-assurer en partie :: Réduire la prime.
+   bud-20 rec+0.2x60 | g0 c+3 d+2 e0
+   > Une réserve couvre les petits sinistres.
+B) Payer :: Sécurité.
+   coh+1 rec-0.4x60 | g0 c+1 d+1 e0
+   > La Ville paie la nouvelle prime.
+C) Se regrouper avec d’autres villes :: Mutualiser.
+   rec-0.2x60 | g+1 c+3 d+1 e+1
+   > Un groupement d’assurance est créé.
+
+=== fin-145 | finances | Revendre les vieux Vélib’
+L’opérateur propose de revendre aux Parisiens les anciens vélos en libre-service.
+A) Vendre à prix modique :: Seconde vie.
+   bud+2 transports+1 ecologie+1 | g+1 c+3 d+2 e+2
+   > Des milliers de Parisiens achètent un vélo.
+B) Les donner aux associations :: Solidarité.
+   transports+1 bon+1 | g+2 c+2 d0 e+2
+   > Les vélos équipent des jeunes et des réfugiés.
+C) Les recycler :: Simple.
+   ecologie+1 bud+1 | g0 c+2 d+1 e+1
+   > Les vélos sont démontés et recyclés.
