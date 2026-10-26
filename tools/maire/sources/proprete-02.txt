@@ -196,6 +196,7 @@ C) Les nettoyer chaque semaine :: Entretien.
 
 === pro-042 | proprete | Les autocollants publicitaires sur le mobilier urbain
 Les poteaux, feux et panneaux sont couverts d’autocollants de marques et de soirées.
+? distinct
 A) Retrouver et facturer les annonceurs :: Responsabiliser.
    rec+0.1x50 proprete+1 | g+1 c+3 d+2 e+1
    > Les marques reçoivent la facture.
@@ -440,6 +441,7 @@ C) Laisser les commerçants gérer :: Privé.
 
 === pro-062 | proprete | Les cartons des commerces entassés le soir
 Les commerçants sortent leurs cartons sur le trottoir chaque soir. Le vent les éparpille.
+? distinct
 A) Collecte spéciale des cartons à heure fixe :: Organiser.
    rec-0.2x50 proprete+2 ecologie+1 | g+1 c+3 d+2 e+2
    > Un camion passe à 19 h précises.

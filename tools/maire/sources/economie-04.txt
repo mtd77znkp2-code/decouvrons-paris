@@ -1,0 +1,484 @@
+// Économie, série 4
+=== econ-106 | economie | Une semaine de la mode durable
+Des créateurs proposent une semaine de la mode consacrée aux vêtements durables et fabriqués localement.
+A) La financer et l’accueillir à l’Hôtel de Ville :: Vitrine.
+   bud-3 economie+1 ecologie+1 | g+1 c+2 d+1 e+3
+   > La mode durable défile à l’Hôtel de Ville.
+B) Prêter un lieu sans financer :: Soutien léger.
+   bud-1 economie+1 | g0 c+3 d+2 e+1
+   > L’événement a lieu dans une halle.
+C) Rien :: Le secteur s’organise seul.
+   economie-1 | g0 c0 d+2 e-1
+   > L’événement va à Amsterdam.
+
+=== econ-107 | economie | Un campus des entreprises de santé
+Des entreprises de biotechnologie cherchent des laboratoires près des hôpitaux.
+? distinct
+A) Créer un campus près de l’hôpital Cochin :: Innovation médicale.
+   bud-25 economie+3 services+1 | g0 c+3 d+3 e0
+   > Des laboratoires s’installent.
+B) Faciliter l’accès aux locaux existants :: Économique.
+   bud-3 economie+1 | g0 c+3 d+2 e0
+   > Des bureaux sont transformés en laboratoires.
+C) Rien :: Le privé décide.
+   economie-1 | g0 c0 d+2 e0
+   > Les entreprises partent à Lyon.
+
+=== econ-108 | economie | Un incubateur pour les femmes entrepreneures
+Les femmes créent moins d’entreprises et obtiennent moins de financements.
+A) Incubateur dédié et fonds de garantie :: Égalité.
+   bud-6 economie+2 | g+3 c+2 d+1 e+1
+   > Des centaines de femmes créent leur entreprise.
+B) Quota de femmes dans les incubateurs municipaux :: Règle.
+   economie+1 | g+2 c+2 d0 e+1
+   > La moitié des places est réservée aux femmes.
+C) Rien :: Égalité de traitement.
+   economie-1 | g-2 c0 d+3 e0
+   > Rien ne change.
+
+=== econ-109 | economie | Des commerces ouverts le soir
+Les actifs voudraient faire leurs courses après 20 h. Les petits commerces ferment à 19 h.
+A) Aide aux commerces qui ouvrent le soir :: Inciter.
+   rec-0.1x60 economie+2 bon+1 | g0 c+3 d+2 e0
+   > Des commerces ouvrent jusqu’à 21 h.
+B) Nocturne commerciale un soir par semaine :: Événement.
+   bud-1 economie+1 bon+1 | g+1 c+3 d+1 e0
+   > Le jeudi devient le soir du shopping.
+C) Rien :: Liberté des commerçants.
+   economie-1 | g0 c0 d+1 e0
+   > Les horaires restent.
+
+=== econ-110 | economie | Les chômeurs de plus de 50 ans
+Les seniors au chômage ne retrouvent pas d’emploi.
+A) Programme de formation et d’embauche à la Ville :: Exemplarité.
+   rec-0.2x60 economie+2 achat+1 | g+3 c+2 d+1 e0
+   > La Ville embauche des seniors.
+B) Prime aux entreprises qui embauchent des seniors :: Inciter.
+   rec-0.1x60 economie+1 | g0 c+3 d+3 e0
+   > Des entreprises recrutent.
+C) Rien :: Compétence de l’État.
+   economie-1 | g-1 c+1 d+2 e0
+   > Rien ne change.
+
+=== econ-111 | economie | Embaucher les habitants des quartiers prioritaires
+Les entreprises qui embauchent des habitants des quartiers prioritaires pourraient recevoir une aide.
+A) Prime municipale à l’embauche :: Emploi local.
+   rec-0.3x60 economie+2 bon+1 | g+3 c+2 d+1 e+1
+   > Des centaines d’habitants trouvent un emploi.
+B) Clause d’embauche dans les marchés publics :: Levier public.
+   economie+1 | g+2 c+3 d+1 e+1
+   > Les entreprises titulaires recrutent localement.
+C) Rien :: Le marché du travail.
+   economie-1 | g-2 c0 d+3 e0
+   > Rien ne change.
+
+=== econ-112 | economie | Des studios de jeux vidéo cherchent des locaux
+Les studios de jeux vidéo emploient des milliers de jeunes mais ne trouvent pas de bureaux abordables.
+A) Réserver un immeuble aux studios :: Filière d’avenir.
+   bud-10 economie+2 | g0 c+3 d+2 e0
+   > Un immeuble accueille vingt studios.
+B) Loyers réduits dans les incubateurs :: Soutien.
+   rec-0.1x60 economie+1 | g+1 c+3 d+1 e0
+   > Des studios s’installent dans les incubateurs.
+C) Rien :: Marché.
+   economie-1 | g0 c0 d+2 e0
+   > Les studios partent à Montréal.
+
+=== econ-113 | economie | Des ateliers sous le viaduc
+Les arches d’un viaduc ferroviaire pourraient accueillir des ateliers d’artisans.
+A) Aménager les arches en ateliers :: Artisanat.
+   bud-12 economie+2 bon+1 | g+1 c+2 d+2 e+1
+   > Des artisans s’installent sous les arches.
+B) Les louer à des restaurants :: Rentable.
+   bud-5 rec+0.1x60 economie+1 | g-1 c+2 d+3 e0
+   > Des restaurants s’installent.
+C) Rien :: Coût des travaux.
+   economie-1 | g0 c0 d+1 e0
+   > Les arches restent murées.
+
+=== econ-114 | economie | Paris, ville du commerce équitable
+Un label « ville équitable » obligerait la Ville à acheter des produits équitables.
+A) Adopter le label :: Cohérence.
+   rec-0.1x60 economie+1 ecologie+1 | g+2 c+2 d0 e+3
+   > Café, sucre et uniformes sont équitables.
+B) Seulement pour le café et le thé :: Symbolique.
+   rec-0.02x60 ecologie+1 | g+1 c+3 d+1 e+1
+   > Les machines à café servent du café équitable.
+C) Rien :: Coût.
+   ecologie-1 | g-1 c0 d+2 e-1
+   > Rien ne change.
+
+=== econ-115 | economie | Le ménage des bureaux en journée
+Les agents de nettoyage travaillent à 5 h du matin ou à 22 h, loin de leur famille.
+A) Imposer le nettoyage en journée dans les bâtiments municipaux :: Dignité.
+   bon+1 services-1 | g+3 c+2 d0 e+1
+   > Les agents travaillent en journée.
+B) Encourager les entreprises à faire de même :: Exemple.
+   bon+1 | g+2 c+3 d+1 e+1
+   > Une charte est proposée aux entreprises.
+C) Rien :: Organisation des entreprises.
+   bon-1 | g-2 c0 d+2 e0
+   > Rien ne change.
+
+=== econ-116 | economie | Des livraisons à vélo par des entreprises d’insertion
+Des entreprises d’insertion livrent à vélo-cargo et emploient des personnes éloignées de l’emploi.
+A) Leur confier les livraisons de la Ville :: Commande publique.
+   rec-0.05x60 economie+1 ecologie+1 bon+1 | g+3 c+2 d+1 e+3
+   > Les colis de la Ville sont livrés à vélo.
+B) Aide au démarrage :: Coup de pouce.
+   bud-2 economie+1 | g+2 c+3 d+1 e+2
+   > Plusieurs entreprises se lancent.
+C) Rien :: Concurrence.
+   economie-1 | g-1 c0 d+2 e-1
+   > Rien ne change.
+
+=== econ-117 | economie | Un magasin discount géant
+Une enseigne discount veut ouvrir un immense magasin dans l’est parisien.
+A) Accepter :: Pouvoir d’achat.
+   achat+2 economie+1 | g-1 c+2 d+3 e-1
+   > Le magasin ouvre.
+   ~35 economie-1 > Des petits commerces voisins ferment.
+B) Exiger une surface réduite et des produits locaux :: Compromis.
+   achat+1 economie+1 | g+1 c+3 d+1 e+1
+   > Le magasin est plus petit.
+C) Refuser :: Protéger le commerce de proximité.
+   achat-1 economie+1 | g+2 c0 d-2 e+1
+   > Le projet est rejeté.
+
+=== econ-118 | economie | La mode de la Goutte d’Or
+Des créateurs de la Goutte d’Or veulent faire de leur quartier un lieu de la mode.
+A) Créer un pôle mode dans le quartier :: Valoriser le quartier.
+   bud-6 economie+2 bon+1 | g+3 c+2 d+1 e+1
+   > Des ateliers et boutiques ouvrent.
+B) Défilé annuel dans la rue :: Événement.
+   bud-2 economie+1 bon+1 | g+2 c+2 d+1 e+1
+   > Un défilé anime le quartier.
+C) Rien :: Pas prioritaire.
+   economie-1 | g-1 c0 d+1 e0
+   > Rien ne change.
+
+=== econ-119 | economie | Découper les marchés publics pour les PME
+Les marchés publics de la Ville sont trop gros pour les petites entreprises parisiennes.
+A) Découper en petits lots :: Ouvrir aux PME.
+   economie+2 rec-0.05x60 | g+1 c+3 d+2 e+1
+   > Les PME remportent plus de marchés.
+B) Réserver une part aux petites entreprises :: Quota.
+   economie+1 | g+1 c+2 d+1 e0
+   > Un quota est fixé.
+C) Rien :: Efficacité des gros marchés.
+   economie-1 rec+0.05x60 | g-1 c+1 d+2 e0
+   > Les grands groupes gagnent.
+
+=== econ-120 | economie | Taxer les locaux commerciaux vides
+Des propriétaires laissent des boutiques vides en attendant un loyer plus élevé.
+A) Taxe sur les friches commerciales :: Pression.
+   rec+0.2x60 economie+1 | g+2 c+2 d-1 e+1
+   > Les boutiques se relouent.
+B) Aide à la relocation :: Accompagner.
+   bud-3 economie+1 | g+1 c+3 d+2 e0
+   > Un service met en relation propriétaires et commerçants.
+C) Rien :: Propriété privée.
+   economie-1 | g-2 c0 d+3 e0
+   > Les vitrines restent vides.
+
+=== econ-121 | economie | Les boulangers étranglés par l’énergie
+La facture d’électricité des boulangers a triplé. Plusieurs ferment.
+A) Aide d’urgence à l’énergie :: Sauver les boulangeries.
+   bud-6 economie+1 bon+1 | g+1 c+2 d+2 e0
+   > Les boulangers reçoivent une aide.
+B) Aide pour des fours économes :: Investir.
+   bud-8 economie+1 ecologie+1 | g+1 c+3 d+1 e+2
+   > Des fours modernes sont financés.
+C) Rien :: Compétence de l’État.
+   economie-1 | g-1 c+1 d+2 e0
+   > Des boulangeries ferment.
+
+=== econ-122 | economie | Un maire de la nuit
+Des villes ont nommé un « maire de la nuit » pour gérer la vie nocturne.
+A) Créer un conseil de la nuit :: Dialogue.
+   bud-1 economie+1 bon+1 | g+1 c+3 d+1 e+1
+   > Le conseil réunit riverains, patrons et noctambules.
+B) Nommer un adjoint à la nuit :: Visibilité.
+   coh-1 bud-1 economie+1 | g+1 c+2 d+1 e0
+   > Un adjoint est chargé de la nuit.
+C) Rien :: Gadget.
+   bon-1 | g0 c0 d+1 e0
+   > Rien n’est créé.
+
+=== econ-123 | economie | Une rue commerçante qui meurt
+Une rue commerçante voit fermer un magasin par mois. Les habitants s’inquiètent.
+A) Manager de rue et plan de relance :: Accompagner.
+   bud-4 rec-0.05x60 economie+2 | g+1 c+3 d+2 e+1
+   > Un manager attire de nouveaux commerces.
+B) Racheter des boutiques :: Agir directement.
+   bud-15 economie+2 | g+2 c+2 d0 e+1
+   > La Ville rachète cinq boutiques.
+C) Rien :: Évolution.
+   economie-1 | g-1 c0 d+2 e0
+   > La rue continue de mourir.
+
+=== econ-124 | economie | Le financement participatif des commerces
+Des habitants veulent investir dans le commerce de leur rue pour l’aider à ouvrir.
+A) Plateforme municipale de financement participatif :: Engagement citoyen.
+   bud-2 economie+2 | g+1 c+3 d+2 e+1
+   > Des commerces ouvrent grâce aux habitants.
+B) Abonder les collectes :: Effet levier.
+   bud-4 economie+2 | g+1 c+2 d+2 e+1
+   > La Ville ajoute un euro par euro collecté.
+C) Rien :: Les plateformes privées existent.
+   economie-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== econ-125 | economie | Aider les salariés à reprendre leur entreprise
+Des patrons partent à la retraite sans repreneur. Leurs salariés voudraient reprendre.
+A) Fonds d’aide à la reprise en coopérative :: Emploi.
+   bud-6 economie+2 | g+4 c+2 d0 e+1
+   > Des entreprises sont reprises par leurs salariés.
+B) Accompagnement juridique :: Conseil.
+   bud-1 economie+1 | g+2 c+3 d+1 e+1
+   > Les salariés sont conseillés.
+C) Rien :: Marché.
+   economie-1 | g-2 c0 d+2 e0
+   > Les entreprises ferment.
+
+=== econ-126 | economie | Des studios de tournage dans Paris
+Les productions de cinéma partent tourner en studio en Europe de l’Est.
+A) Créer des studios sur une friche :: Filière cinéma.
+   bud-30 economie+3 | g0 c+2 d+3 e0
+   > Des studios de cinéma ouvrent.
+B) Aider l’agrandissement des studios existants :: Économique.
+   bud-8 economie+1 | g0 c+3 d+2 e0
+   > Les studios s’agrandissent.
+C) Rien :: Le cinéma s’en charge.
+   economie-1 | g0 c0 d+1 e0
+   > Les tournages partent.
+
+=== econ-127 | economie | Les aides à domicile manquent
+Les services d’aide à domicile pour les personnes âgées ne trouvent plus de personnel.
+A) Revaloriser les salaires financés par la Ville :: Attirer.
+   rec-0.4x60 services+2 economie+1 | g+3 c+2 d0 e+1
+   > Les recrutements repartent.
+B) Formation gratuite et logements :: Accompagner.
+   bud-5 services+1 economie+1 | g+2 c+3 d+1 e+1
+   > Des jeunes se forment.
+C) Rien :: Compétence de l’État.
+   services-1 | g-1 c+1 d+2 e0
+   > Des seniors restent sans aide.
+
+=== econ-128 | economie | Aider les jeunes à reprendre une épicerie
+Des épiceries de quartier ferment faute de repreneur. Des jeunes voudraient les reprendre.
+A) Prêt d’honneur et loyer réduit :: Transmettre.
+   bud-3 economie+2 | g+2 c+3 d+2 e0
+   > Des jeunes reprennent des épiceries.
+B) Formation au commerce :: Préparer.
+   bud-1 economie+1 | g+1 c+3 d+1 e0
+   > Une formation est proposée.
+C) Rien :: Le marché.
+   economie-1 | g-1 c0 d+2 e0
+   > Les épiceries ferment.
+
+=== econ-129 | economie | Les commerçants des marchés vieillissent
+La moitié des commerçants des marchés partira à la retraite dans cinq ans.
+A) Programme de transmission des emplacements :: Relève.
+   bud-2 economie+2 | g+1 c+3 d+2 e0
+   > De jeunes commerçants reprennent les étals.
+B) Emplacements gratuits la première année :: Attirer.
+   rec-0.05x60 economie+1 | g+1 c+3 d+1 e0
+   > Les nouveaux commerçants ne paient rien.
+C) Rien :: Le marché s’adaptera.
+   economie-1 | g0 c0 d+1 e0
+   > Les marchés se vident.
+
+=== econ-130 | economie | Le bois des arbres abattus
+Les arbres abattus finissent broyés. Leur bois pourrait servir à fabriquer du mobilier.
+? distinct
+A) Filière de mobilier en bois parisien :: Économie circulaire.
+   bud-4 economie+1 ecologie+2 | g+1 c+3 d+1 e+3
+   > Les bancs sont faits avec le bois des platanes.
+B) Vendre le bois aux artisans :: Recettes.
+   rec+0.02x60 economie+1 | g0 c+3 d+2 e+1
+   > Les ébénistes achètent le bois.
+C) Rien :: Broyage.
+   ecologie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== econ-131 | economie | Du mobilier urbain fabriqué à Paris
+Les bancs et abribus sont fabriqués à l’étranger.
+A) Imposer une fabrication locale :: Emploi local.
+   rec-0.1x60 economie+2 | g+2 c+2 d+2 e+2
+   > Le mobilier urbain est fabriqué en Île-de-France.
+B) Critère local dans les appels d’offres :: Inciter.
+   economie+1 | g+1 c+3 d+2 e+1
+   > Les fabricants locaux gagnent des points.
+C) Le moins cher :: Économie.
+   economie-1 rec+0.05x60 | g-1 c+1 d+1 e-1
+   > Rien ne change.
+
+=== econ-132 | economie | Un observatoire des prix parisiens
+Les Parisiens ont l’impression que tout est plus cher à Paris. Personne ne mesure les écarts.
+A) Créer un observatoire des prix :: Transparence.
+   bud-1 achat+1 | g+2 c+3 d+1 e+1
+   > Les prix sont publiés chaque mois.
+B) Comparateur de prix des supermarchés :: Utile.
+   bud-1 achat+1 | g+1 c+3 d+1 e0
+   > Une application compare les prix.
+C) Rien :: Marché.
+   achat-1 | g-1 c0 d+2 e0
+   > Rien ne change.
+
+=== econ-133 | economie | Le café à 7 € pour les touristes
+Des cafés facturent le double aux touristes. Le scandale fait le tour des réseaux sociaux.
+A) Affichage obligatoire des prix en terrasse :: Transparence.
+   economie+1 achat+1 | g+1 c+3 d+1 e0
+   > Les prix s’affichent dehors.
+B) Contrôles et sanctions :: Fermeté.
+   securite+1 economie-1 | g+1 c+2 d+1 e0
+   > Des cafés sont sanctionnés.
+C) Rien :: Liberté des prix.
+   economie-1 | g-1 c0 d+3 e0
+   > L’image de Paris en souffre.
+
+=== econ-134 | economie | Des distributeurs de baguettes 24 h sur 24
+Des boulangers installent des distributeurs de baguettes chaudes dans la rue.
+A) Autoriser :: Service.
+   economie+1 bon+1 | g0 c+2 d+2 e0
+   > Les baguettes sont disponibles la nuit.
+B) Autoriser seulement devant les boulangeries :: Protéger les commerces.
+   economie+1 | g+1 c+3 d+1 e0
+   > Les distributeurs restent liés aux boulangeries.
+C) Refuser :: Encombrement des trottoirs.
+   bon-1 | g0 c+1 d0 e+1
+   > Les distributeurs sont interdits.
+
+=== econ-135 | economie | Les micro-brasseries cherchent des locaux
+Des dizaines de petites brasseries artisanales veulent produire dans Paris.
+A) Réserver des locaux d’activité :: Artisanat.
+   bud-4 economie+2 | g+1 c+3 d+2 e+1
+   > Des brasseries s’installent dans le 11e.
+B) Festival de la bière parisienne :: Promouvoir.
+   bud-2 economie+1 bon+1 | g0 c+2 d+2 e0
+   > Un festival attire les amateurs.
+C) Rien :: Le marché.
+   economie-1 | g0 c0 d+1 e0
+   > Les brasseries s’installent en banlieue.
+
+=== econ-136 | economie | Un marché du vintage
+Les friperies et vendeurs de vêtements anciens veulent un grand marché régulier.
+A) Marché mensuel du vintage :: Mode durable.
+   bud-1 economie+1 ecologie+1 bon+1 | g+1 c+3 d+1 e+3
+   > Le marché attire les jeunes.
+B) Halle permanente :: Ambition.
+   bud-8 economie+2 ecologie+1 | g+1 c+2 d+1 e+2
+   > Une halle du vintage ouvre.
+C) Rien :: Les vide-greniers suffisent.
+   economie-1 | g0 c0 d+1 e-1
+   > Rien ne change.
+
+=== econ-137 | economie | Des emplois dans le recyclage des vêtements
+Un centre de tri des vêtements usagés pourrait employer des centaines de personnes en insertion.
+A) Financer un centre de tri :: Emploi et écologie.
+   bud-10 economie+2 ecologie+2 | g+3 c+2 d+1 e+3
+   > Le centre emploie 200 personnes.
+B) Soutenir les associations existantes :: Économique.
+   rec-0.05x60 economie+1 ecologie+1 | g+2 c+3 d+1 e+2
+   > Les associations trient davantage.
+C) Rien :: Le privé s’en charge.
+   economie-1 | g-1 c0 d+2 e-1
+   > Les vêtements partent à l’étranger.
+
+=== econ-138 | economie | Les magasins de jouets indépendants
+Les magasins de jouets de quartier ferment face aux grandes plateformes.
+A) Bons d’achat de Noël à dépenser dans les commerces locaux :: Soutien.
+   bud-5 economie+2 achat+1 | g+1 c+3 d+2 e+1
+   > Les familles achètent dans les boutiques de quartier.
+B) Marché de Noël des commerçants indépendants :: Vitrine.
+   bud-1 economie+1 | g+1 c+3 d+1 e0
+   > Les boutiques exposent ensemble.
+C) Rien :: Le marché.
+   economie-1 | g-1 c0 d+2 e0
+   > Les magasins ferment.
+
+=== econ-139 | economie | Un grand salon de l’emploi
+Un salon de l’emploi géant pourrait réunir mille entreprises et des dizaines de milliers de chercheurs d’emploi.
+A) L’organiser au parc des expositions :: Emploi.
+   bud-4 economie+2 | g+1 c+3 d+2 e0
+   > Des milliers d’embauches sont conclues.
+B) Forums dans chaque arrondissement :: Proximité.
+   bud-3 economie+1 | g+2 c+2 d+1 e+1
+   > Des forums se tiennent dans les mairies.
+C) Rien :: Pôle emploi existe.
+   economie-1 | g-1 c+1 d+2 e0
+   > Rien n’est organisé.
+
+=== econ-140 | economie | Un marché des livres anciens
+Les marchands de livres anciens cherchent un lieu couvert pour un marché hebdomadaire.
+A) Prêter une halle municipale :: Culture et commerce.
+   bud-1 economie+1 bon+1 | g+1 c+3 d+1 e+1
+   > Le marché aux livres s’installe.
+B) Emplacement payant :: Recettes.
+   rec+0.02x60 economie+1 | g0 c+3 d+2 e0
+   > Les marchands paient leur place.
+C) Rien :: Pas de lieu.
+   bon-1 | g0 c0 d+1 e0
+   > Les marchands restent dehors.
+
+=== econ-141 | economie | Les épiceries fines veulent exporter
+Les épiceries fines parisiennes veulent vendre leurs produits à l’étranger sous une marque commune.
+A) Créer une marque « Paris » :: Rayonnement.
+   bud-3 economie+2 | g0 c+3 d+3 e0
+   > La marque est lancée à l’export.
+B) Accompagner aux salons internationaux :: Soutien.
+   bud-2 economie+1 | g0 c+3 d+2 e0
+   > Les épiciers exposent à Tokyo et New York.
+C) Rien :: Le privé s’en charge.
+   economie-1 | g0 c0 d+2 e0
+   > Rien ne change.
+
+=== econ-142 | economie | Le Sentier se transforme
+Les grossistes du textile quittent le Sentier, remplacés par des start-up. Les petits ateliers disparaissent.
+A) Préserver des ateliers textiles :: Savoir-faire.
+   bud-6 economie+1 | g+2 c+2 d+1 e+1
+   > Des ateliers sont protégés.
+B) Accompagner la transformation :: Modernité.
+   economie+2 | g-1 c+3 d+3 e0
+   > Le quartier devient un pôle numérique.
+C) Rien :: Évolution naturelle.
+   economie-1 | g-1 c0 d+2 e0
+   > Les ateliers disparaissent.
+
+=== econ-143 | economie | Ouvrir les restaurants universitaires à tous
+Les restaurants universitaires pourraient accueillir les habitants du quartier le midi.
+A) Ouvrir à tous avec un tarif majoré :: Partager.
+   achat+1 bon+1 | g+2 c+3 d+1 e+1
+   > Les habitants déjeunent au restaurant universitaire.
+B) Ouvrir aux seniors et aux demandeurs d’emploi :: Ciblé.
+   achat+1 | g+3 c+2 d0 e+1
+   > Les publics modestes y mangent.
+C) Rien :: Réservé aux étudiants.
+   achat-1 | g0 c0 d+1 e0
+   > Rien ne change.
+
+=== econ-144 | economie | Des retraits de courses piétons
+Les supermarchés veulent créer des points de retrait de courses en pied d’immeuble.
+A) Autoriser :: Service.
+   economie+1 bon+1 | g0 c+3 d+2 e0
+   > Des points de retrait s’installent.
+   ~25 economie-1 > Des épiceries de quartier perdent des clients.
+B) Seulement dans les quartiers sans commerces :: Ciblé.
+   economie+1 | g+1 c+3 d+1 e+1
+   > Les déserts commerciaux sont desservis.
+C) Refuser :: Protéger les commerces.
+   bon-1 economie+1 | g+1 c+1 d0 e+1
+   > Le projet est rejeté.
+
+=== econ-145 | economie | Les agences de voyages ferment
+Les agences de voyages de quartier ferment face aux sites internet. Les seniors perdent un service.
+A) Transformer en points d’information tourisme et services :: Reconvertir.
+   bud-2 economie+1 services+1 | g+1 c+3 d+1 e+1
+   > Des agences deviennent des points services.
+B) Aide temporaire :: Soutien.
+   bud-2 economie+1 | g0 c+2 d+2 e0
+   > Les agences reçoivent une aide.
+C) Rien :: Évolution.
+   economie-1 | g-1 c0 d+2 e0
+   > Les agences ferment.
