@@ -1,0 +1,484 @@
+// Propreté, série 6
+=== pro-186 | proprete | Les sacs de déjections jetés dans les arbres
+Des maîtres ramassent les crottes puis accrochent les sacs aux branches.
+A) Plus de corbeilles près des espaces canins :: Équiper.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Les sacs finissent à la poubelle.
+B) Des amendes ciblées :: Fermeté.
+   proprete+1 bon-1 | g0 c+2 d+2 e0
+   > Les arbres se débarrassent de leurs décorations.
+C) Rien :: Ils ramassent déjà.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les sacs pendent tout l’hiver.
+
+=== pro-187 | proprete | Les tickets à gratter jetés devant les bureaux de tabac
+Des dizaines de tickets perdants jonchent le trottoir devant chaque tabac.
+? distinct
+A) Imposer une poubelle à la sortie :: Responsabiliser.
+   proprete+1 | g0 c+2 d+2 e0
+   > Les tickets finissent dans un bac.
+B) Une campagne avec les buralistes :: Dialogue.
+   bud-1 proprete+1 | g+1 c+2 d+1 e+1
+   > Les buralistes rappellent les bons gestes.
+C) Rien :: Anecdotique.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les tickets s’envolent.
+
+=== pro-188 | proprete | Les scooters-épaves abandonnés
+Des scooters rouillés occupent les places deux-roues pendant des mois.
+A) Une campagne d’enlèvement :: Nettoyer.
+   bud-1 proprete+1 transports+1 | g0 c+2 d+2 e0
+   > Des centaines d’épaves partent à la casse.
+B) Un délai de quinze jours avant enlèvement :: Procédure.
+   proprete+1 | g0 c+2 d+1 e+1
+   > Les épaves sont étiquetées puis retirées.
+C) Rien :: Propriétaires.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les places restent occupées.
+
+=== pro-189 | proprete | Les carcasses de voitures brûlées
+Des voitures incendiées restent des semaines dans la rue.
+A) Enlèvement sous 48 heures :: Réactivité.
+   bud-1 proprete+1 securite+1 | g0 c+2 d+2 e0
+   > Les carcasses disparaissent vite.
+B) Facturer l’enlèvement aux assureurs :: Recettes.
+   rec+0.01x60 proprete+1 | g0 c+2 d+2 e0
+   > Les assureurs paient.
+C) Attendre la fin de l’enquête :: Procédure.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les carcasses deviennent des dépotoirs.
+
+=== pro-190 | proprete | Des murs anti-pipi
+Une peinture qui renvoie l’urine sur les chaussures pourrait dissuader les fêtards.
+A) Peindre les recoins les plus touchés :: Dissuader.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Les fêtards changent de mur.
+B) Des urinoirs à côté :: Alternative.
+   bud-1 proprete+1 | g+1 c+2 d+1 e+1
+   > Les recoins sentent moins.
+C) Rien :: Gadget.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les recoins puent toujours.
+
+=== pro-191 | proprete | Des dons abandonnés devant les associations
+Des sacs de vêtements et des meubles sont déposés la nuit devant les associations fermées.
+A) Des horaires de dépôt et des boîtes sécurisées :: Organiser.
+   bud-1 proprete+1 | g+1 c+2 d+1 e+1
+   > Les dons arrivent au bon moment.
+B) Une collecte municipale de dons :: Service.
+   rec-0.01x60 proprete+1 bon+1 | g+1 c+2 d+1 e+1
+   > Un camion passe chaque semaine.
+C) Verbaliser :: Fermeté.
+   proprete+1 bon-1 | g-1 c+2 d+2 e0
+   > Les donateurs sont découragés.
+
+=== pro-192 | proprete | Les antivols orphelins sur les arceaux
+Des centaines de cadenas sans vélo encombrent les arceaux.
+A) Une opération de découpe régulière :: Libérer.
+   bud-1 proprete+1 transports+1 | g0 c+2 d+1 e+1
+   > Les arceaux se libèrent.
+B) Une étiquette d’avertissement avant découpe :: Procédure.
+   proprete+1 | g0 c+2 d+1 e+1
+   > Les propriétaires récupèrent leurs antivols.
+C) Rien :: Coût.
+   transports-1 | g0 c+1 d+1 e0
+   > Les cyclistes ne trouvent pas de place.
+
+=== pro-193 | proprete | Les eaux usées des camping-cars
+Des camping-cars vident leurs cuves dans les caniveaux.
+A) Une aire de vidange aux portes de Paris :: Équiper.
+   bud-2 proprete+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les camping-cars vident proprement.
+B) Des amendes lourdes :: Fermeté.
+   proprete+1 | g0 c+2 d+2 e0
+   > Les vidanges sauvages diminuent.
+C) Rien :: Rare.
+   proprete-1 ecologie-1 | g0 c+1 d+1 e0
+   > Les caniveaux sentent mauvais.
+
+=== pro-194 | proprete | Les bouteilles de gaz et extincteurs abandonnés
+Des bouteilles de gaz traînent sur les trottoirs et explosent dans les bennes.
+A) Une collecte spécialisée gratuite :: Sécurité.
+   bud-1 proprete+1 securite+1 | g0 c+2 d+2 e+1
+   > Les bouteilles sont récupérées sans danger.
+B) Obliger les vendeurs à les reprendre :: Responsabiliser.
+   proprete+1 securite+1 | g0 c+2 d+2 e+1
+   > Les magasins reprennent les bouteilles vides.
+C) Rien :: Encombrants.
+   securite-1 | g0 c+1 d+1 e0
+   > Un camion-benne prend feu.
+
+=== pro-195 | proprete | Les commerçants qui remplissent les corbeilles de rue
+Des restaurants jettent leurs sacs d’ordures dans les poubelles publiques.
+A) Verbaliser :: Fermeté.
+   proprete+1 economie-1 | g0 c+2 d+2 e0
+   > Les corbeilles retrouvent de la place.
+B) Une collecte commerciale payante :: Organiser.
+   rec+0.02x60 proprete+1 | g0 c+2 d+2 e0
+   > Les restaurants paient leur collecte.
+C) Rien :: Tolérance.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les corbeilles débordent dès midi.
+
+=== pro-196 | proprete | Les grilles d’aération du métro remplies de déchets
+Mégots et canettes tombent dans les grilles et finissent sur les voies.
+A) Des grilles à mailles fines :: Équiper.
+   bud-2 proprete+1 | g0 c+2 d+1 e+1
+   > Les déchets restent en surface.
+B) Un nettoyage régulier avec la RATP :: Coopérer.
+   rec-0.01x60 proprete+1 | g0 c+2 d+1 e+1
+   > Les grilles sont aspirées chaque mois.
+C) Rien :: RATP.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les grilles débordent.
+
+=== pro-197 | proprete | Les fils de pêche abandonnés sur les berges
+Des fils et hameçons blessent cygnes et canards.
+A) Des bacs de collecte sur les berges :: Équiper.
+   bud-1 proprete+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les pêcheurs jettent leurs fils dans les bacs.
+B) Une charte avec les clubs de pêche :: Dialogue.
+   ecologie+1 | g+1 c+2 d+1 e+1
+   > Les clubs nettoient les berges.
+C) Rien :: Loisir.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Un cygne est retrouvé blessé.
+
+=== pro-198 | proprete | Une prime pour les éboueurs des quartiers difficiles
+Les éboueurs refusent les secteurs les plus sales et les plus durs.
+A) Une prime de pénibilité :: Reconnaître.
+   rec-0.03x60 proprete+1 coh+1 | g+1 c+2 d+1 e+1
+   > Les postes sont pourvus.
+B) Une rotation obligatoire :: Partager.
+   proprete+1 coh-1 | g0 c+2 d+2 e0
+   > Tout le monde passe par les secteurs durs.
+C) Rien :: Égalité de traitement.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les quartiers difficiles restent moins bien nettoyés.
+
+=== pro-199 | proprete | Ramasser les ordures le dimanche
+Les poubelles débordent tout le dimanche dans les quartiers animés.
+A) Une collecte le dimanche matin :: Service.
+   rec-0.03x60 proprete+1 coh-1 | g0 c+2 d+1 e+1
+   > Les rues sont propres le dimanche.
+B) Seulement dans les quartiers touristiques :: Cibler.
+   rec-0.01x60 proprete+1 | g0 c+2 d+1 e0
+   > Le centre est propre, les autres quartiers attendent.
+C) Rien :: Repos des agents.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les poubelles débordent jusqu’au lundi.
+
+=== pro-200 | proprete | Les éboueurs accidentés
+Des éboueurs se blessent en courant derrière les camions.
+A) Des camions avec marchepied sécurisé et cadence ralentie :: Protéger.
+   bud-2 proprete-1 coh+1 | g+1 c+2 d+1 e+1
+   > Les accidents diminuent.
+B) Des formations à la sécurité :: Former.
+   bud-1 coh+1 | g0 c+2 d+1 e+1
+   > Les gestes dangereux reculent.
+C) Rien :: Métier difficile.
+   coh-1 | g0 c+1 d+1 e0
+   > Un éboueur est grièvement blessé.
+
+=== pro-201 | proprete | Des bennes à ordures silencieuses
+Les camions-bennes réveillent les habitants à l’aube.
+A) Passer à des bennes électriques :: Silence.
+   bud-4 proprete+1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les collectes se font en silence.
+B) Remplacer progressivement :: Prudence.
+   bud-2 ecologie+1 | g0 c+2 d+1 e+1
+   > Les premiers camions électriques circulent.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Le vacarme continue.
+
+=== pro-202 | proprete | Les éboueurs manquent à l’appel
+La Ville ne parvient plus à recruter assez d’éboueurs.
+A) Augmenter les salaires de départ :: Attirer.
+   rec-0.03x60 proprete+1 | g+1 c+2 d+1 e+1
+   > Les candidatures repartent.
+B) Recruter des jeunes en insertion :: Former.
+   bud-1 proprete+1 economie+1 | g+1 c+2 d+1 e+1
+   > Des jeunes trouvent un emploi stable.
+C) Recourir à l’intérim :: Dépanner.
+   rec-0.02x60 | g-1 c+1 d+2 e0
+   > Les intérimaires changent chaque semaine.
+
+=== pro-203 | proprete | Un réseau d’aspiration des déchets sous les rues
+Un système pneumatique aspirerait les poubelles vers un terminal, sans camion.
+A) L’installer dans un nouveau quartier :: Innovation.
+   bud-6 proprete+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les déchets voyagent sous terre.
+B) Une étude d’abord :: Prudence.
+   bud-1 | g0 c+2 d+1 e+1
+   > L’étude est lancée.
+C) Refuser :: Trop cher.
+   proprete-1 | g0 c+1 d+2 e0
+   > Les camions continuent.
+
+=== pro-204 | proprete | Des conteneurs enterrés
+Des bacs enterrés libéreraient les trottoirs des poubelles.
+A) En installer dans les rues larges :: Libérer les trottoirs.
+   bud-3 proprete+1 | g0 c+2 d+1 e+1
+   > Les trottoirs se dégagent.
+B) Seulement près des grands ensembles :: Cibler.
+   bud-2 proprete+1 | g+1 c+2 d+1 e+1
+   > Les cités s’équipent.
+C) Rien :: Coût.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les bacs restent sur les trottoirs.
+
+=== pro-205 | proprete | Doubler les amendes pour dépôt sauvage
+Les dépôts sauvages continuent malgré les amendes actuelles.
+A) Doubler les amendes et filmer les points noirs :: Fermeté.
+   bud-1 rec+0.02x60 proprete+1 | g-1 c+2 d+2 e0
+   > Les dépôts reculent.
+B) Plus de collectes gratuites d’encombrants :: Prévenir.
+   rec-0.02x60 proprete+1 | g+1 c+2 d+1 e+1
+   > Les habitants prennent rendez-vous.
+C) Rien :: Les amendes suffisent.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les trottoirs restent encombrés.
+
+=== pro-206 | proprete | Vider le canal Saint-Martin pour le nettoyer
+Le canal n’a pas été curé depuis des années, des tonnes d’objets reposent au fond.
+A) Vider et curer le canal :: Grand nettoyage.
+   bud-3 proprete+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Vélos, trottinettes et coffres-forts sont sortis de la vase.
+B) Un curage partiel par bateau :: Économe.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Une partie des déchets est retirée.
+C) Attendre :: Coût.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Le fond du canal s’encombre.
+
+=== pro-207 | proprete | Les boîtes à livres transformées en poubelles
+Des boîtes à livres se remplissent de vieux magazines moisis et d’ordures.
+A) Confier chaque boîte à un habitant référent :: Parrainer.
+   bon+1 proprete+1 | g+1 c+2 d+1 e+1
+   > Les boîtes sont triées chaque semaine.
+B) Un passage des agents de propreté :: Service.
+   rec-0.01x60 proprete+1 | g0 c+2 d+1 e+1
+   > Les déchets sont retirés régulièrement.
+C) Retirer les boîtes sales :: Couper court.
+   proprete+1 bon-1 | g-1 c+2 d+2 e0
+   > Les livres n’ont plus de refuge.
+=== pro-208 | proprete | L’urine de chien sur les devantures
+Les commerçants voient leurs vitrines et portes attaquées par l’urine des chiens.
+A) Des zones de propreté canine dans chaque rue :: Équiper.
+   bud-2 proprete+1 | g+1 c+2 d+1 e+1
+   > Les chiens ont leurs coins.
+B) Une campagne auprès des maîtres :: Sensibiliser.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Les maîtres font attention.
+C) Rien :: Commerçants.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les devantures se dégradent.
+
+=== pro-209 | proprete | Les cartons des colis en ligne
+Les achats en ligne remplissent les poubelles de cartons volumineux.
+A) Des bacs à cartons dans chaque immeuble :: Trier.
+   bud-2 proprete+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les cartons partent au recyclage.
+B) Une taxe sur les emballages des plateformes :: Pollueur-payeur.
+   rec+0.02x60 economie-1 proprete+1 | g+1 c+2 d+1 e0
+   > Les plateformes réduisent leurs cartons.
+C) Rien :: Commerce.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les poubelles débordent de cartons.
+
+=== pro-210 | proprete | Les cages d’escalier sales dans les HLM
+Le ménage n’est fait qu’une fois par semaine dans certaines résidences.
+? distinct
+A) Imposer un ménage quotidien aux bailleurs :: Dignité.
+   rec-0.01x60 proprete+1 logement+1 | g+1 c+2 d+1 e+1
+   > Les halls brillent.
+B) Des emplois d’insertion pour le ménage :: Emploi.
+   bud-1 proprete+1 economie+1 | g+1 c+2 d+1 e+1
+   > Des habitants travaillent dans leur résidence.
+C) Rien :: Bailleurs.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les locataires se plaignent.
+
+=== pro-211 | proprete | La propreté des parkings souterrains
+Odeurs, déchets et graffitis rendent les parkings répulsifs.
+? distinct
+A) Un plan de remise en état :: Nettoyer.
+   bud-2 proprete+1 | g0 c+2 d+1 e+1
+   > Les parkings retrouvent de la lumière.
+B) Exiger des exploitants un nettoyage régulier :: Contrat.
+   proprete+1 | g0 c+2 d+2 e0
+   > Les exploitants s’exécutent.
+C) Rien :: Exploitants.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les usagers fuient.
+
+=== pro-212 | proprete | Les automobilistes qui jettent par la fenêtre
+Mégots et canettes volent des voitures arrêtées aux feux.
+A) Verbaliser grâce aux caméras :: Fermeté.
+   proprete+1 bon-1 | g-1 c+2 d+2 e0
+   > Les amendes pleuvent.
+B) Une campagne d’affichage aux feux :: Pédagogie.
+   bud-1 proprete+1 | g+1 c+2 d+1 e+1
+   > Les conducteurs gardent leurs déchets.
+C) Rien :: Difficile à prouver.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les terre-pleins se remplissent.
+
+=== pro-213 | proprete | Des chevaux pour ramasser les déchets des parcs
+Des villes utilisent des chevaux de trait pour la collecte dans les parcs.
+A) Tester au bois de Vincennes :: Original.
+   bud-1 proprete+1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les enfants adorent les chevaux éboueurs.
+B) Des petits véhicules électriques plutôt :: Pratique.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Les véhicules silencieux circulent dans les allées.
+C) Refuser :: Folklore.
+   bon-1 | g0 c+1 d+1 e0
+   > Les camions continuent dans les parcs.
+
+=== pro-214 | proprete | Un centre de tri au cœur d’un quartier
+Les riverains d’un centre de tri se plaignent du bruit et des camions.
+A) Le déplacer en périphérie :: Riverains.
+   bud-5 bon+1 | g0 c+2 d+1 e+1
+   > Le quartier retrouve le calme.
+B) Le couvrir et limiter les horaires :: Compromis.
+   bud-2 bon+1 | g+1 c+2 d+1 e+1
+   > Le bruit diminue.
+C) Rien :: Utilité publique.
+   bon-1 | g0 c+1 d+1 e0
+   > Les riverains manifestent.
+
+=== pro-215 | proprete | Des épaves de bateaux sur les canaux
+Des barques et petits bateaux abandonnés pourrissent le long des quais.
+A) Les enlever et les recycler :: Nettoyer.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Les quais sont dégagés.
+B) Les transformer en jardinières flottantes :: Créatif.
+   bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
+   > Les épaves fleurissent.
+C) Rien :: Voies navigables.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les épaves coulent.
+
+=== pro-216 | proprete | Confier la collecte au privé dans tout Paris
+Une moitié de Paris est collectée par la Ville, l’autre par des entreprises.
+A) Tout confier au privé :: Économies.
+   rec+0.1x60 coh-2 | g-2 c+1 d+2 e0
+   > Les syndicats lancent une grève.
+B) Tout reprendre en régie :: Service public.
+   rec-0.08x60 coh+1 | g+2 c+1 d-1 e+1
+   > Les agents des entreprises sont repris.
+C) Garder le partage actuel :: Comparer.
+   bon+1 | g0 c+2 d+1 e+1
+   > Les deux modèles coexistent.
+
+=== pro-217 | proprete | Des poubelles compacteuses solaires
+Des corbeilles qui tassent les déchets éviteraient les débordements.
+A) En installer dans les lieux touristiques :: Équiper.
+   bud-2 proprete+1 | g0 c+2 d+1 e+1
+   > Les corbeilles ne débordent plus.
+B) Un test sur une avenue :: Prudence.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > L’essai est concluant.
+C) Rien :: Coût.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les corbeilles débordent.
+
+=== pro-218 | proprete | Les erreurs de tri dans les bacs jaunes
+Un tiers du contenu des bacs jaunes n’est pas recyclable.
+A) Des ambassadeurs du tri dans les immeubles :: Former.
+   rec-0.01x60 proprete+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Le tri s’améliore.
+B) Refuser les bacs mal triés :: Fermeté.
+   proprete+1 bon-1 | g0 c+2 d+2 e0
+   > Les bacs refusés restent sur le trottoir.
+C) Rien :: Le centre de tri s’en occupe.
+   ecologie-1 | g0 c+1 d+1 e0
+   > Le recyclage stagne.
+
+=== pro-219 | proprete | Le riz et les pétales sur les marches des mairies
+Après les mariages, les marches deviennent glissantes et sales.
+A) Interdire les lancers de riz et confettis :: Règle.
+   proprete+1 bon-1 | g0 c+2 d+2 e0
+   > Les mariés partent sous les bulles de savon.
+B) Un nettoyage après chaque cérémonie :: Service.
+   rec-0.01x60 proprete+1 | g0 c+2 d+1 e+1
+   > Les marches sont balayées.
+C) Rien :: Joie.
+   proprete-1 bon+1 | g0 c+1 d+1 e0
+   > Un invité glisse sur le riz.
+
+=== pro-220 | proprete | Des équipes de propreté la nuit dans les quartiers festifs
+Les rues des bars sont jonchées de déchets au petit matin.
+A) Une équipe de nuit dédiée :: Réactivité.
+   rec-0.02x60 proprete+1 | g0 c+2 d+1 e+1
+   > Les rues sont propres à l’aube.
+B) Faire payer les bars :: Pollueur-payeur.
+   rec+0.01x60 proprete+1 economie-1 | g0 c+2 d+2 e0
+   > Les bars financent le nettoyage.
+C) Rien :: Collecte du matin.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les écoliers enjambent les bouteilles.
+
+=== pro-221 | proprete | Collecter plus tôt pendant la canicule
+Les éboueurs souffrent de la chaleur et les déchets fermentent.
+? distinct
+A) Commencer la collecte à 5 heures :: Protéger.
+   coh+1 bon-1 | g0 c+2 d+1 e+1
+   > Les agents finissent avant la chaleur.
+B) Des collectes supplémentaires l’été :: Hygiène.
+   rec-0.02x60 proprete+1 | g0 c+2 d+1 e+1
+   > Les odeurs diminuent.
+C) Rien :: Organisation.
+   coh-1 proprete-1 | g0 c+1 d+1 e0
+   > Un éboueur fait un malaise.
+
+=== pro-222 | proprete | Les sacs-poubelle qui se déchirent
+Les sacs fournis aux immeubles sont trop fins et éclatent dans les escaliers.
+? distinct
+A) Des sacs plus solides :: Qualité.
+   rec-0.01x60 proprete+1 | g0 c+2 d+1 e+1
+   > Les sacs tiennent le coup.
+B) Des sacs en papier compostables :: Écologie.
+   bud-1 proprete+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les sacs bruns se généralisent.
+C) Rien :: Coût.
+   proprete-1 | g0 c+1 d+1 e0
+   > Les escaliers sont tachés.
+
+=== pro-223 | proprete | Le verre et les gravillons sur les pistes cyclables
+Les cyclistes crèvent à cause des débris sur les pistes.
+A) Un balayage quotidien des pistes :: Entretien.
+   rec-0.02x60 proprete+1 transports+1 | g+1 c+2 d+1 e+1
+   > Les crevaisons diminuent.
+B) Une application de signalement :: Participatif.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Les cyclistes signalent les débris.
+C) Rien :: Coût.
+   transports-1 | g0 c+1 d+1 e0
+   > Les cyclistes réparent leurs pneus.
+
+=== pro-224 | proprete | Des rats dans les composteurs de quartier
+Les composteurs collectifs attirent les rats.
+A) Des composteurs fermés et grillagés :: Équiper.
+   bud-1 proprete+1 ecologie+1 | g+1 c+2 d+1 e+1
+   > Les rats ne passent plus.
+B) Former les habitants :: Pédagogie.
+   proprete+1 | g+1 c+2 d+1 e+1
+   > Les habitants évitent la viande.
+C) Retirer les composteurs :: Prudence.
+   proprete+1 ecologie-1 | g-1 c+2 d+2 e0
+   > Les déchets alimentaires repartent à la poubelle.
+
+=== pro-225 | proprete | Des bacs inaccessibles aux personnes en fauteuil
+Les conteneurs de tri sont trop hauts pour les personnes en fauteuil.
+A) Des bacs adaptés partout :: Accessibilité.
+   bud-2 proprete+1 bon+1 | g+1 c+2 d+1 e+1
+   > Tout le monde peut trier.
+B) Seulement dans les quartiers demandeurs :: Cibler.
+   bud-1 proprete+1 | g0 c+2 d+1 e+1
+   > Les premiers bacs adaptés apparaissent.
+C) Rien :: Coût.
+   bon-1 | g0 c+1 d+1 e0
+   > Les personnes en fauteuil dépendent des voisins.
