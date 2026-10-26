@@ -1,0 +1,479 @@
+// Relations institutionnelles, série 4
+=== ins-106 | institutions | Les députés parisiens contre ton projet phare
+Plusieurs députés de Paris, y compris de ton camp, signent une tribune contre ton grand projet.
+A) Les recevoir un par un :: Convaincre.
+   coh+1 | g0 c+2 d+1 e+1
+   > Deux signataires retirent leur nom.
+B) Passer outre :: Détermination.
+   pop+1 coh-1 | g0 c+1 d+2 e0
+   > Le projet avance, les rancunes aussi.
+C) Amender le projet :: Écouter.
+   bud-1 pop+1 | g+1 c+2 d+1 e+1
+   > La version revue apaise les esprits.
+=== ins-107 | institutions | L’État veut fusionner Paris et la petite couronne
+Un projet de loi propose de créer une seule grande collectivité avec les trois départements voisins.
+A) Soutenir la fusion :: Grand Paris.
+   pop-1 coh+1 | g+1 c+2 d+1 e+1
+   > Les maires de banlieue s’inquiètent de ta domination.
+B) Exiger des garanties pour Paris :: Négocier.
+   coh+1 | g0 c+3 d+1 e+1
+   > Le projet est amendé.
+C) S’y opposer :: Identité parisienne.
+   pop+1 coh-1 | g0 c+1 d+2 e0
+   > Le projet est enterré, l’État t’en veut.
+
+=== ins-108 | institutions | Un nouveau préfet de police
+Le nouveau préfet arrive avec une réputation de fermeté et veut te rencontrer.
+A) Proposer un contrat de sécurité commun :: Coopérer.
+   securite+1 coh+1 | g0 c+2 d+2 e+1
+   > Les deux institutions travaillent main dans la main.
+B) Poser tes conditions d’emblée :: Fermeté.
+   pop+1 | g+1 c+2 d0 e0
+   > Le préfet prend note, froidement.
+C) Le laisser venir :: Distance.
+   securite-1 | g0 c+1 d+1 e0
+   > Les relations restent tièdes.
+
+=== ins-109 | institutions | Un élu filmé en train d’insulter un agent
+Une vidéo montre un conseiller de ta majorité humiliant une agente d’accueil.
+A) Exiger des excuses publiques et sa démission :: Exemplarité.
+   pop+1 coh-1 | g+1 c+2 d+1 e+1
+   > L’élu quitte ses délégations.
+B) Lui retirer ses délégations sans démission :: Sanction mesurée.
+   coh+1 | g0 c+2 d+1 e+1
+   > Le scandale retombe lentement.
+C) Le défendre :: Solidarité.
+   pop-2 | g-1 c0 d+1 e-1
+   > Les syndicats d’agents manifestent devant l’Hôtel de Ville.
+
+=== ins-110 | institutions | Les agents veulent la semaine de quatre jours
+Les syndicats demandent de travailler 35 heures en quatre jours.
+A) L’expérimenter dans quelques services :: Tester.
+   bon+1 coh+1 | g+1 c+2 d+1 e+1
+   > Les agents des bibliothèques testent la formule.
+B) La généraliser :: Attractivité.
+   rec-0.03x30 pop+1 services-1 | g+2 c+1 d0 e+1
+   > Les candidatures affluent, certains guichets ferment le vendredi.
+C) Refuser :: Continuité du service.
+   coh-1 services+1 | g-1 c+1 d+2 e0
+   > Un préavis de grève est déposé.
+
+=== ins-111 | institutions | Fusionner d’autres arrondissements
+Après Paris Centre, on propose de regrouper les 5e, 6e et 7e arrondissements.
+A) Lancer la fusion :: Simplifier.
+   bud+1 pop-1 | g0 c+2 d+1 e+1
+   > Les mairies fusionnent, les habitants râlent.
+B) Consulter les habitants :: Démocratie.
+   bud-1 pop+1 | g+1 c+2 d+1 e+1
+   > Le non l’emporte nettement.
+C) Garder les arrondissements :: Proximité.
+   coh+1 | g0 c+1 d+1 e0
+   > Le projet est enterré.
+
+=== ins-112 | institutions | L’armée veut garder le Val-de-Grâce
+L’ancien hôpital militaire est vide, la Ville le veut pour des logements, l’armée refuse.
+A) Négocier un rachat :: Logements.
+   bud-3 logement+2 | g+2 c+2 d0 e+1
+   > Huit cents logements sont programmés.
+B) Proposer un usage partagé :: Compromis.
+   logement+1 coh+1 | g+1 c+2 d+1 e+1
+   > L’armée garde une aile, la Ville en prend deux.
+C) Abandonner :: Ne pas froisser l’État.
+   pop-1 | g-1 c+1 d+1 e0
+   > Le bâtiment reste vide.
+
+=== ins-113 | institutions | Un accord de coopération avec Londres
+Le maire de Londres propose un partenariat sur le climat, les transports et la culture.
+A) Signer un accord ambitieux :: Grandes capitales.
+   bud-1 pop+1 coh+1 | g+1 c+2 d+1 e+1
+   > Les deux maires posent ensemble sur le pont de la Tour.
+B) Un accord limité aux transports :: Concret.
+   coh+1 | g0 c+2 d+1 e+1
+   > Les ingénieurs échangent leurs méthodes.
+C) Refuser :: Priorités locales.
+   pop-1 | g0 c+1 d+1 e0
+   > Londres signe avec Berlin.
+
+=== ins-114 | institutions | Une pétition géante contre toi
+Une pétition en ligne réclamant ta démission dépasse 300 000 signatures.
+A) Organiser une grande réunion publique :: Affronter.
+   pop+1 coh+1 | g+1 c+2 d+1 e+1
+   > La salle est houleuse mais tu tiens.
+B) Répondre point par point en vidéo :: Expliquer.
+   pop+1 | g0 c+2 d+1 e+1
+   > La vidéo est très partagée.
+C) Ignorer :: Mépris.
+   pop-2 | g0 c0 d+1 e-1
+   > La pétition double de volume.
+
+=== ins-115 | institutions | Une commission d’enquête du Sénat sur la Ville
+Le Sénat convoque tes adjoints pour enquêter sur la gestion municipale.
+A) Coopérer pleinement :: Transparence.
+   coh+1 pop+1 | g0 c+3 d+1 e+1
+   > Les auditions se passent sans accroc.
+B) Dénoncer une manœuvre politique :: Riposte.
+   pop+1 coh-1 | g+1 c+1 d0 e0
+   > Le bras de fer fait les gros titres.
+C) Envoyer des fonctionnaires à la place des élus :: Esquive.
+   pop-1 | g0 c+1 d+1 e0
+   > Les sénateurs s’indignent.
+=== ins-116 | institutions | Un sondage catastrophique
+Un sondage te place troisième aux prochaines municipales.
+A) Remanier l’équipe municipale :: Relancer.
+   pop+1 coh-1 | g0 c+1 d+1 e0
+   > De nouveaux visages apparaissent.
+B) Accélérer les promesses de campagne :: Tenir.
+   bud-2 pop+1 coh+1 | g+1 c+2 d+1 e+1
+   > Les chantiers promis démarrent.
+C) Ne rien changer :: Sang-froid.
+   coh+1 | g0 c+2 d+1 e+1
+   > Tu gardes le cap.
+
+=== ins-117 | institutions | L’Ordre des architectes conteste un concours
+Les architectes dénoncent un concours public truqué au profit d’une grande agence.
+A) Annuler et relancer le concours :: Transparence.
+   bud-1 pop+1 | g+1 c+3 d+1 e+1
+   > Le concours repart, plus ouvert.
+B) Ouvrir une enquête interne :: Vérifier.
+   coh+1 | g0 c+2 d+1 e+1
+   > L’enquête ne trouve que des maladresses.
+C) Maintenir le résultat :: Calendrier.
+   pop-1 | g0 c+1 d+2 e0
+   > L’affaire part devant le tribunal.
+
+=== ins-118 | institutions | L’Académie française critique la Ville
+L’Académie dénonce l’écriture inclusive dans les documents municipaux.
+A) Maintenir l’écriture inclusive :: Égalité.
+   coh+1 pop-1 | g+2 c+2 d0 e+1
+   > La polémique dure une semaine.
+B) Revenir à une écriture neutre :: Apaiser.
+   coh-1 pop+1 | g-1 c+1 d+2 e0
+   > Les associations féministes protestent.
+C) Laisser chaque service choisir :: Souplesse.
+   coh-1 | g0 c+1 d+1 e0
+   > Les documents deviennent incohérents.
+=== ins-119 | institutions | Un maire de banlieue t’accuse
+Il affirme que Paris repousse ses pauvres et ses nuisances vers sa commune.
+A) Proposer un pacte de solidarité :: Partager.
+   bud-2 coh+1 | g+2 c+2 d0 e+1
+   > Paris finance des équipements dans sa ville.
+B) Répondre chiffres à l’appui :: Se défendre.
+   pop+1 | g0 c+2 d+1 e0
+   > La polémique s’éteint lentement.
+C) L’ignorer :: Silence.
+   pop-1 coh-1 | g0 c+1 d+1 e0
+   > Il multiplie les plateaux télé.
+
+=== ins-120 | institutions | Ta succession se prépare déjà
+Deux adjoints se disputent ouvertement pour te succéder.
+A) Organiser une primaire interne :: Démocratie.
+   coh-1 pop+1 | g+1 c+2 d+1 e+1
+   > Le débat est vif mais loyal.
+B) Désigner ton dauphin :: Autorité.
+   coh+1 pop-1 | g0 c+2 d+2 e0
+   > L’autre adjoint claque la porte.
+C) Taire le sujet :: Gouverner.
+   coh-1 | g0 c+1 d+1 e0
+   > Les querelles fuitent dans la presse.
+
+=== ins-121 | institutions | Un budget voté grâce à l’opposition
+Ta majorité est divisée : le budget ne passera qu’avec des voix de l’opposition.
+A) Négocier avec l’opposition :: Compromis.
+   bud-1 coh-1 pop+1 | g0 c+2 d+1 e+1
+   > Le budget passe avec des concessions.
+B) Remettre ta majorité au pas :: Discipline.
+   coh+1 pop-1 | g0 c+2 d+2 e0
+   > Les frondeurs rentrent dans le rang.
+C) Reporter le vote :: Temporiser.
+   bud-1 coh-1 | g0 c+1 d+1 e0
+   > La Ville fonctionne au budget provisoire.
+
+=== ins-122 | institutions | Un adjoint publie des messages polémiques
+Un adjoint multiplie les messages agressifs sur les réseaux sociaux.
+A) Lui retirer sa délégation :: Fermeté.
+   pop+1 coh-1 | g0 c+2 d+2 e+1
+   > L’adjoint devient simple conseiller.
+B) Lui imposer une charte de communication :: Encadrer.
+   coh+1 | g0 c+2 d+1 e+1
+   > Les messages se calment.
+C) Le laisser s’exprimer :: Liberté.
+   pop-1 | g+1 c0 d0 e0
+   > Les polémiques s’enchaînent.
+
+=== ins-123 | institutions | Le Sénat veut supprimer les mairies d’arrondissement
+Une proposition de loi veut tout centraliser à l’Hôtel de Ville.
+? distinct
+A) La soutenir :: Efficacité.
+   bud+1 pop-1 coh-1 | g0 c+2 d+2 e0
+   > Les maires d’arrondissement entrent en rébellion.
+B) S’y opposer fermement :: Proximité.
+   pop+1 coh+1 | g+1 c+2 d0 e+1
+   > Les mairies d’arrondissement te remercient.
+C) Rester neutre :: Prudence.
+   coh-1 | g0 c+1 d+1 e0
+   > Chacun t’accuse de lâcheté.
+
+=== ins-124 | institutions | Une ambassade veut acheter un hôtel particulier
+Un pays étranger offre une fortune pour un hôtel particulier appartenant à la Ville.
+A) Vendre :: Recette exceptionnelle.
+   bud+4 pop-1 | g-1 c+1 d+2 e0
+   > Le chèque renfloue les caisses.
+B) Louer sur longue durée :: Garder le bien.
+   rec+0.03x30 | g0 c+2 d+1 e+1
+   > Le loyer rapporte chaque année.
+C) Refuser :: Patrimoine.
+   pop+1 | g+1 c+1 d0 e0
+   > L’hôtel reste à la Ville.
+
+=== ins-125 | institutions | Le Conseil d’État tranche sur la publicité
+Les afficheurs contestent ton règlement anti-publicité devant la plus haute juridiction.
+A) Défendre le règlement jusqu’au bout :: Conviction.
+   bud-1 coh+1 | g+2 c+2 d0 e+1
+   > Le Conseil d’État te donne raison.
+B) Négocier un compromis avec les afficheurs :: Apaiser.
+   rec+0.01x20 coh-1 | g0 c+1 d+2 e0
+   > Le règlement est assoupli.
+C) Retirer le règlement :: Recul.
+   pop-1 coh-1 | g-1 c0 d+1 e0
+   > Les panneaux reviennent.
+
+=== ins-126 | institutions | Une multinationale attaque la Ville en justice
+Une plateforme de location de voitures réclame des millions après l’interdiction de ses véhicules.
+A) Aller au procès :: Principe.
+   bud-1 coh+1 | g+1 c+2 d+1 e+1
+   > La Ville gagne en première instance.
+B) Transiger discrètement :: Prudence.
+   bud-2 | g0 c+1 d+2 e0
+   > L’affaire se règle hors tribunal.
+C) Lever l’interdiction :: Céder.
+   pop-1 coh-1 | g-1 c0 d+2 e0
+   > Les voitures reviennent sur les trottoirs.
+=== ins-127 | institutions | Le recensement sous-estime la population
+L’INSEE annonce moins d’habitants, ce qui fait baisser les dotations de l’État.
+A) Contester le recensement :: Défendre Paris.
+   bud-1 coh+1 | g0 c+2 d+1 e+1
+   > Une partie des dotations est rétablie.
+B) Accepter et s’adapter :: Réalisme.
+   bud-1 | g0 c+2 d+1 e0
+   > Les recettes baissent.
+C) En faire un argument de campagne :: Politiser.
+   pop+1 coh-1 | g+1 c0 d0 e0
+   > L’État agacé ne cède rien.
+
+=== ins-128 | institutions | Une ville jumelle en crise politique
+Le maire d’une ville jumelée est arrêté par un régime autoritaire.
+A) Suspendre le jumelage :: Principes.
+   pop+1 coh+1 | g+1 c+2 d+1 e+1
+   > Le geste est salué par les ONG.
+B) Le soutenir publiquement :: Solidarité.
+   pop+1 | g+2 c+2 d0 e+1
+   > Le portrait du maire emprisonné est affiché à l’Hôtel de Ville.
+C) Rester discret :: Diplomatie.
+   pop-1 | g0 c+1 d+1 e0
+   > Ton silence est critiqué.
+
+=== ins-129 | institutions | Le Parlement européen t’invite à parler
+Tu es invité à Strasbourg pour défendre le rôle des villes en Europe.
+A) Y aller avec un discours fort :: Stature.
+   pop+1 coh+1 | g+1 c+2 d+1 e+1
+   > Ton discours est repris dans toute l’Europe.
+B) Envoyer un adjoint :: Priorités.
+   pop-1 | g0 c+1 d+1 e0
+   > L’adjoint passe inaperçu.
+C) Décliner :: Rester à Paris.
+   pop-1 | g0 c+1 d+1 e0
+   > On te reproche ton manque d’envergure.
+
+=== ins-130 | institutions | Un rival régional te défie
+Un conseiller régional annonce sa candidature contre toi et multiplie les attaques.
+A) Lui répondre sur le terrain :: Proximité.
+   bud-1 pop+1 | g+1 c+2 d+1 e+1
+   > Tu enchaînes les marchés et les réunions.
+B) Contre-attaquer sur son bilan :: Offensive.
+   pop+1 coh-1 | g0 c+1 d+2 e0
+   > La campagne se durcit.
+C) L’ignorer :: Hauteur.
+   pop-1 | g0 c+1 d+1 e0
+   > Il gagne des points.
+
+=== ins-131 | institutions | Une agence publique pour la Seine
+L’État propose une agence commune pour gérer les berges, les ponts et la navigation.
+A) Y entrer à égalité avec l’État :: Partenariat.
+   bud-1 coh+1 | g+1 c+2 d+1 e+1
+   > Les projets fluviaux accélèrent.
+B) Exiger la présidence :: Leadership.
+   coh-1 pop+1 | g0 c+1 d+1 e0
+   > L’État traîne des pieds.
+C) Refuser :: Garder la main.
+   pop-1 | g0 c+1 d+1 e0
+   > Chacun continue de son côté.
+
+=== ins-132 | institutions | Présider l’Association des maires de France
+Des maires te proposent de briguer la présidence de leur association.
+A) Te présenter :: Stature nationale.
+   pop+1 coh-1 | g0 c+1 d+1 e0
+   > Tu es élu, les Parisiens te voient moins.
+B) Soutenir un maire rural :: Alliance.
+   coh+1 | g+1 c+2 d+1 e+1
+   > Le candidat élu te doit beaucoup.
+C) Rester à l’écart :: Paris d’abord.
+   coh+1 | g0 c+2 d+1 e0
+   > Tu restes concentré sur la ville.
+
+=== ins-133 | institutions | Un ancien ministre veut être ton adjoint
+Une personnalité nationale propose de rejoindre ton équipe.
+A) L’accueillir comme premier adjoint :: Renfort.
+   pop+1 coh-1 | g0 c+1 d+1 e0
+   > Ton équipe gagne en visibilité, et en tensions.
+B) Lui confier une mission ponctuelle :: Prudence.
+   coh+1 | g0 c+2 d+1 e+1
+   > Il rend un rapport remarqué.
+C) Refuser :: Indépendance.
+   coh+1 pop-1 | g0 c+2 d+1 e+1
+   > Il rejoint l’opposition.
+
+=== ins-134 | institutions | Les syndicats de police contre la mairie
+Ils accusent la Ville de ne pas soutenir les policiers.
+A) Rencontrer les syndicats :: Dialogue.
+   coh+1 securite+1 | g0 c+2 d+2 e+1
+   > Un protocole de coopération est signé.
+B) Financer du matériel pour les commissariats :: Geste.
+   bud-1 securite+1 | g0 c+1 d+2 e0
+   > Les syndicats saluent le geste.
+C) Maintenir la distance :: Indépendance.
+   pop-1 | g+1 c+1 d0 e0
+   > Le ton monte dans la presse.
+
+=== ins-135 | institutions | Les Hauts-de-Seine veulent le bois de Boulogne
+Le département voisin propose de reprendre la gestion du bois.
+? distinct
+A) Refuser :: Patrimoine parisien.
+   pop+1 | g0 c+1 d+1 e0
+   > Le bois reste parisien.
+B) Une gestion commune :: Coopérer.
+   bud+1 coh+1 | g+1 c+2 d+1 e+1
+   > Les deux collectivités partagent les frais.
+C) Céder la gestion :: Économie.
+   bud+2 pop-2 | g-1 c+1 d+1 e0
+   > Les Parisiens se sentent dépossédés.
+
+=== ins-136 | institutions | Un prix international pour la Ville
+Paris est finaliste d’un grand prix mondial de la ville durable.
+A) Mobiliser toute l’équipe pour gagner :: Ambition.
+   bud-1 pop+1 | g+1 c+2 d+1 e+1
+   ~15 pop+2 > Paris remporte le prix.
+   > Le dossier est déposé.
+B) Candidater sans effort particulier :: Sobriété.
+   coh+1 | g0 c+1 d+1 e0
+   > Paris termine deuxième.
+C) Se retirer :: Pas de vitrine.
+   pop-1 | g0 c+1 d+1 e0
+   > Copenhague l’emporte.
+
+=== ins-137 | institutions | Un budget participatif détourné
+Des projets votés ont été financés à des associations proches d’élus.
+? distinct
+A) Une enquête indépendante :: Transparence.
+   bud-1 pop+1 coh+1 | g+1 c+3 d+1 e+1
+   > Les irrégularités sont corrigées.
+B) Suspendre le budget participatif un an :: Assainir.
+   pop-1 | g-1 c+2 d+2 e0
+   > Les Parisiens perdent leur vote.
+C) Minimiser :: Étouffer.
+   pop-2 coh-1 | g0 c0 d+1 e-1
+   > La presse révèle d’autres cas.
+
+=== ins-138 | institutions | La Ville condamnée pour discrimination
+Un tribunal condamne la Ville pour discrimination à l’embauche d’agents.
+A) Un plan contre les discriminations :: Corriger.
+   bud-1 pop+1 coh+1 | g+2 c+2 d0 e+1
+   > Les recrutements deviennent anonymes.
+B) Faire appel :: Contester.
+   pop-1 | g0 c+1 d+2 e0
+   > L’appel prolonge la polémique.
+C) Payer et tourner la page :: Discrétion.
+   bud-1 | g0 c+1 d+1 e0
+   > Rien ne change en interne.
+
+=== ins-139 | institutions | Un élu d’opposition propose une alliance
+Un groupe d’opposition te propose de rejoindre ta majorité contre des postes.
+A) Accepter :: Élargir.
+   coh-1 pop+1 | g0 c+1 d+1 e0
+   > Ta majorité devient confortable mais hétéroclite.
+B) Accepter sur un programme précis :: Accord écrit.
+   coh+1 | g0 c+2 d+1 e+1
+   > Un contrat de mandature est signé.
+C) Refuser :: Clarté.
+   coh+1 pop-1 | g+1 c+2 d+1 e+1
+   > Ta majorité reste fragile.
+
+=== ins-140 | institutions | Prêter des salles aux partis politiques
+Des partis réclament des salles municipales gratuites avant les élections.
+A) Prêter à tous à égalité :: Démocratie.
+   bud-1 pop+1 | g+1 c+2 d+1 e+1
+   > Chaque parti obtient ses salles.
+B) Les louer à tous au même tarif :: Neutralité.
+   rec+0.01x10 coh+1 | g0 c+2 d+1 e+1
+   > Les partis paient leur location.
+C) Refuser à tous :: Bâtiments neutres.
+   pop-1 | g0 c+1 d+2 e0
+   > Les partis protestent.
+
+=== ins-141 | institutions | Partager les données avec l’État
+L’État demande l’accès aux données des capteurs et caméras de la Ville.
+A) Accepter avec un encadrement strict :: Coopération.
+   securite+1 coh+1 | g0 c+2 d+2 e+1
+   > Une convention protège la vie privée.
+B) Refuser :: Libertés.
+   pop+1 securite-1 | g+2 c+1 d0 e0
+   > Les associations saluent ta fermeté.
+C) Tout ouvrir :: Efficacité.
+   securite+1 pop-1 | g-1 c0 d+2 e0
+   > La CNIL s’inquiète.
+
+=== ins-142 | institutions | La médaille de la Ville pour un militant controversé
+Ta majorité propose d’honorer un militant célèbre mais clivant.
+A) Lui remettre la médaille :: Assumer.
+   pop-1 coh+1 | g+1 c+2 d0 e+1
+   > La cérémonie est perturbée par des opposants.
+B) Reporter la décision :: Prudence.
+   coh-1 | g0 c+1 d+1 e0
+   > Ta majorité est déçue.
+C) Refuser :: Consensus.
+   pop+1 coh-1 | g0 c+1 d+2 e0
+   > Ton aile gauche grogne.
+
+=== ins-143 | institutions | Les Jeux d’hiver 2030 sollicitent Paris
+Les organisateurs des Jeux d’hiver dans les Alpes veulent une cérémonie à Paris.
+A) Accueillir la cérémonie :: Prestige.
+   bud-2 pop+1 economie+1 | g0 c+2 d+1 e0
+   > La cérémonie illumine le Trocadéro.
+B) Accepter si l’État paie :: Conditions.
+   coh+1 | g0 c+2 d+1 e+1
+   > L’État accepte de financer.
+C) Refuser :: Sobriété.
+   pop-1 | g+1 c+1 d0 e0
+   > La cérémonie part à Lyon.
+=== ins-144 | institutions | Un rapport sur le harcèlement dans les services
+Une enquête interne révèle un climat de harcèlement dans plusieurs directions.
+A) Un plan d’action et des sanctions :: Protéger.
+   bud-1 pop+1 coh+1 | g+1 c+3 d+1 e+1
+   > Des chefs de service sont écartés.
+B) Une cellule d’écoute :: Accompagner.
+   bud-1 coh+1 | g+1 c+2 d0 e+1
+   > Les signalements affluent.
+C) Garder le rapport confidentiel :: Discrétion.
+   pop-2 | g0 c0 d+1 e-1
+   > Le rapport fuite dans la presse.
+
+=== ins-145 | institutions | Les vœux du maire boycottés
+L’opposition et les syndicats boycottent ta cérémonie de vœux.
+A) Transformer les vœux en fête populaire :: Ouvrir.
+   bud-1 pop+1 | g+1 c+2 d+1 e+1
+   > Des milliers de Parisiens remplacent les officiels.
+B) Les supprimer et donner l’argent aux associations :: Sobriété.
+   bud+1 pop+1 | g+1 c+2 d+1 e+1
+   > Le geste est apprécié.
+C) Maintenir comme si de rien n’était :: Tradition.
+   pop-1 | g0 c+1 d+1 e0
+   > La salle est à moitié vide.
