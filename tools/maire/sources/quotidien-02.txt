@@ -213,6 +213,7 @@ C) Rien :: C’est la vie urbaine.
 
 === quo-043 | quotidien | Ouvrir les jardins des cités
 Les jardins des résidences sociales sont fermés par des grilles. Les habitants du quartier n’y ont pas accès.
+? distinct
 A) Ouvrir les jardins en journée :: Partager.
    bud-2 bon+1 | g+2 c+2 d0 e+2
    > Les jardins s’ouvrent au quartier.

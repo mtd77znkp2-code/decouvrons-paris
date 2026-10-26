@@ -39,6 +39,7 @@ C) Téléconsultations avec des sages-femmes :: Moderne.
 
 === ser-029 | services | Un centre dentaire municipal
 Les soins dentaires coûtent si cher que des Parisiens renoncent à se soigner.
+? distinct
 A) Ouvrir trois centres dentaires à tarifs sociaux :: Santé pour tous.
    bud-20 rec-0.3x60 services+3 achat+1 | g+4 c+2 d0 e+1
    > Des centres dentaires ouvrent sans dépassement d’honoraires.

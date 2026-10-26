@@ -13,6 +13,7 @@ C) Ne pas encourager la voiture, même électrique :: Ligne claire.
 
 === tra-027 | transports | Un téléphérique au-dessus des voies ferrées
 Des ingénieurs proposent un téléphérique pour relier des quartiers coupés par les voies ferrées du nord.
+? distinct
 A) Construire la ligne :: Innovation spectaculaire.
    bud-70 transports+3 pop+1 | g+1 c+2 d+1 e+3
    > Le chantier du téléphérique démarre.
