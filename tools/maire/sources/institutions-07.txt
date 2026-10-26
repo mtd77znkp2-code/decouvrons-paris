@@ -1,0 +1,305 @@
+// Relations institutionnelles, série 7
+=== ins-226 | institutions | Une ONG internationale veut installer son siège à Paris
+Une grande organisation humanitaire hésite entre Paris et Genève.
+A) Offrir des locaux :: Rayonnement.
+   bud-2 pop+1 economie+1 | g+1 c+2 d+1 e+1
+   > L’ONG s’installe à Paris.
+B) Faciliter les démarches sans aide financière :: Accueillir.
+   coh+1 | g0 c+2 d+1 e+1
+   > L’ONG hésite encore.
+C) Rien :: Pas de priorité.
+   pop-1 | g0 c+1 d+1 e0
+   > L’ONG choisit Genève.
+
+=== ins-227 | institutions | Former des maires étrangers
+Des maires de villes du Sud demandent à apprendre les méthodes parisiennes.
+A) Un programme de formation :: Coopération.
+   bud-1 coh+1 pop+1 | g+1 c+2 d+1 e+1
+   > Des maires repartent avec des idées.
+B) Des échanges d’agents :: Partager.
+   coh+1 | g+1 c+2 d+1 e+1
+   > Des agents parisiens partent en mission.
+C) Rien :: Paris d’abord.
+   pop-1 | g0 c+1 d+1 e0
+   > Les maires vont à Lyon.
+
+=== ins-228 | institutions | Un journaliste exclu d’une séance du Conseil
+Un journaliste critique a été empêché d’entrer en séance.
+A) Présenter des excuses et garantir l’accès :: Liberté de la presse.
+   pop+1 | g+1 c+2 d+1 e+1
+   > Le journaliste retrouve sa place.
+B) Une charte d’accueil de la presse :: Règle.
+   coh+1 pop+1 | g0 c+2 d+1 e+1
+   > Les règles d’accès sont publiées.
+C) Assumer :: Sécurité.
+   pop-2 | g-1 c0 d+1 e-1
+   > Les syndicats de journalistes protestent.
+
+=== ins-229 | institutions | Les séances du Conseil en langue des signes
+Les personnes sourdes ne peuvent pas suivre les débats.
+? distinct
+A) Une interprétation à chaque séance :: Accessibilité.
+   rec-0.01x60 pop+1 | g+1 c+2 d+1 e+1
+   > Les débats deviennent accessibles.
+B) Des sous-titres automatiques :: Numérique.
+   bud-1 pop+1 | g0 c+2 d+1 e+1
+   > Les vidéos sont sous-titrées.
+C) Rien :: Coût.
+   pop-1 | g0 c+1 d+1 e0
+   > Les sourds restent exclus.
+
+=== ins-230 | institutions | Un élu filmé endormi en séance
+Une vidéo d’un adjoint qui ronfle pendant un débat fait le tour des réseaux.
+A) En rire publiquement :: Humour.
+   pop+1 | g0 c+2 d+1 e+1
+   > L’autodérision désamorce la polémique.
+B) Raccourcir les séances :: Efficacité.
+   coh+1 | g0 c+2 d+1 e+1
+   > Les débats finissent plus tôt.
+C) Sanctionner l’élu :: Exemplarité.
+   coh-1 pop+1 | g0 c+2 d+2 e0
+   > L’adjoint perd une délégation.
+
+=== ins-231 | institutions | Un adjoint en vacances pendant une crise
+Pendant une crue, l’adjoint chargé de la sécurité publie des photos de plage.
+A) Le rappeler immédiatement :: Responsabilité.
+   coh-1 pop+1 | g0 c+2 d+2 e+1
+   > L’adjoint revient le lendemain.
+B) Le remplacer :: Sanction.
+   coh-1 pop+1 | g0 c+2 d+2 e0
+   > Un nouvel adjoint est nommé.
+C) Le défendre :: Droit aux congés.
+   pop-2 coh+1 | g0 c0 d+1 e-1
+   > La presse se déchaîne.
+
+=== ins-232 | institutions | Un réseau de villes contre la pauvreté
+Des maires européens proposent une alliance pour partager leurs solutions.
+? distinct
+A) Prendre la tête du réseau :: Leadership.
+   bud-1 pop+1 coh+1 | g+2 c+2 d0 e+1
+   > Paris accueille le premier sommet.
+B) Y participer :: Coopération.
+   coh+1 | g+1 c+2 d+1 e+1
+   > Des idées sont échangées.
+C) Rien :: Paris seul.
+   pop-1 | g0 c+1 d+1 e0
+   > Le réseau se fait sans Paris.
+
+=== ins-233 | institutions | L’État veut une cité administrative à Paris
+Le gouvernement réclame un grand terrain pour regrouper des ministères.
+A) Céder le terrain :: Coopérer.
+   bud+5 coh+1 logement-1 | g-1 c+2 d+2 e0
+   > Les ministères se regroupent.
+B) Exiger des logements dans le projet :: Contrepartie.
+   coh+1 logement+1 | g+1 c+2 d+1 e+1
+   > Des logements accompagnent les bureaux.
+C) Refuser :: Logement d’abord.
+   coh-1 | g+1 c+1 d0 e+1
+   > L’État cherche ailleurs.
+
+=== ins-234 | institutions | Les collaborateurs d’élus en grève
+Les assistants des groupes politiques dénoncent leurs conditions de travail.
+A) Négocier un statut :: Dialogue.
+   bud-1 coh+1 | g+1 c+2 d+1 e+1
+   > Les collaborateurs obtiennent des garanties.
+B) Laisser les groupes gérer :: Autonomie.
+   coh-1 | g0 c+1 d+1 e0
+   > La grève dure des semaines entières.
+C) Une charte commune :: Règle.
+   coh+1 | g0 c+2 d+1 e+1
+   > Les pratiques s’harmonisent.
+
+=== ins-235 | institutions | Débaptiser une rue au nom controversé
+Une rue porte le nom d’un homme lié à l’esclavage.
+A) Débaptiser la rue :: Mémoire.
+   bud-1 coh+1 pop-1 | g+2 c+2 d-1 e+1
+   > La rue prend le nom d’une résistante.
+B) Ajouter une plaque explicative :: Compromis.
+   bud-1 pop+1 | g0 c+2 d+1 e+1
+   > Les passants découvrent l’histoire.
+C) Rien :: Histoire.
+   coh-1 | g-1 c+1 d+2 e0
+   > Les associations manifestent.
+
+=== ins-236 | institutions | Une ville jumelle demande une aide financière
+Une ville amie frappée par une crise économique demande un soutien.
+A) Une aide exceptionnelle :: Solidarité.
+   bud-2 pop+1 coh+1 | g+1 c+2 d+1 e+1
+   > Les écoles de la ville jumelle sont rénovées.
+B) Une aide en expertise :: Partager.
+   coh+1 | g0 c+2 d+1 e+1
+   > Des agents parisiens partent conseiller.
+C) Refuser :: Argent des Parisiens.
+   pop+1 coh-1 | g-1 c+1 d+2 e0
+   > Le jumelage se refroidit.
+
+=== ins-237 | institutions | Une audition à l’Assemblée nationale
+Les députés te convoquent pour parler de la gestion de la Ville.
+A) Y aller avec des propositions :: Offensive.
+   pop+1 coh+1 | g0 c+2 d+1 e+1
+   > Tes propositions sont reprises dans un rapport.
+B) Envoyer un adjoint :: Distance.
+   pop-1 | g0 c+1 d+1 e0
+   > Les députés regrettent ton absence.
+C) Refuser :: Autonomie.
+   pop-1 coh-1 | g0 c+1 d+1 e0
+   > La presse parle de mépris.
+
+=== ins-238 | institutions | Honorer un champion olympique parisien
+Une jeune athlète du 19e devient championne olympique.
+? distinct
+A) Une grande fête sur le parvis :: Fierté.
+   bud-1 pop+1 bon+1 | g0 c+2 d+1 e+1
+   > Des milliers de jeunes l’acclament.
+B) Donner son nom à un gymnase :: Durable.
+   pop+1 | g+1 c+2 d+1 e+1
+   > Le gymnase de son quartier porte son nom.
+C) Un simple message :: Sobriété.
+   pop-1 | g0 c+1 d+1 e0
+   > On te reproche ta froideur.
+
+=== ins-239 | institutions | Faire d’un prisonnier politique un citoyen d’honneur
+Des associations demandent d’honorer un opposant emprisonné à l’étranger.
+A) Le faire citoyen d’honneur :: Principe.
+   pop+1 coh+1 | g+2 c+2 d0 e+1
+   > Son portrait est affiché sur l’Hôtel de Ville.
+B) Une motion de soutien :: Prudence.
+   coh+1 | g+1 c+2 d+1 e+1
+   > Le Conseil vote un vœu.
+C) Refuser :: Diplomatie.
+   pop-1 | g-1 c+1 d+2 e0
+   > Les associations dénoncent ta frilosité.
+
+=== ins-240 | institutions | Des villes étrangères copient tes projets
+Plusieurs capitales reprennent les idées parisiennes sur le vélo et les écoles.
+A) En faire une campagne de communication :: Fierté.
+   bud-1 pop+1 | g0 c+2 d+1 e+1
+   > Les Parisiens découvrent l’influence de leur ville.
+B) Créer un réseau d’échange :: Partager.
+   coh+1 | g+1 c+2 d+1 e+1
+   > Les villes échangent leurs bonnes pratiques.
+C) Rien :: Modestie.
+   pop+1 | g0 c+2 d+1 e0
+   > Les projets parlent d’eux-mêmes.
+
+=== ins-241 | institutions | La communication de la Ville en anglais
+Des touristes et expatriés réclament des informations en anglais.
+A) Traduire les services essentiels :: Accueillir.
+   bud-1 services+1 | g0 c+2 d+1 e+1
+   > Les démarches existent en anglais.
+B) Seulement le site touristique :: Cibler.
+   economie+1 | g0 c+2 d+1 e+1
+   > Les touristes sont informés.
+C) Rien :: Langue française.
+   pop+1 | g0 c+1 d+2 e0
+   > Les défenseurs du français applaudissent.
+
+=== ins-242 | institutions | Un pacte avec les universités parisiennes
+Les universités veulent travailler avec la Ville sur le logement et la recherche.
+A) Un pacte ambitieux :: Savoir.
+   bud-2 coh+1 logement+1 | g+1 c+2 d+1 e+1
+   > Logements étudiants et projets de recherche sont lancés.
+B) Des conventions au cas par cas :: Souplesse.
+   coh+1 | g0 c+2 d+1 e+1
+   > Quelques partenariats voient le jour.
+C) Rien :: État.
+   coh-1 | g0 c+1 d+1 e0
+   > Les universités regardent vers la banlieue.
+
+=== ins-243 | institutions | Ton prédécesseur annonce son retour
+L’ancien maire annonce qu’il sera candidat contre toi.
+A) Défendre ton bilan sur le terrain :: Campagne.
+   bud-1 pop+1 | g0 c+2 d+1 e+1
+   > Tu multiplies les réunions publiques.
+B) Lui proposer un rôle dans ton équipe :: Rassembler.
+   coh-1 pop+1 | g0 c+1 d+1 e0
+   > Il refuse avec un sourire.
+C) L’ignorer :: Hauteur.
+   pop-1 | g0 c+1 d+1 e0
+   > Il remonte dans les sondages.
+
+=== ins-244 | institutions | Un adjoint condamné à rembourser des dépenses
+Le juge des comptes condamne un adjoint à rembourser des frais injustifiés.
+A) Exiger sa démission :: Exemplarité.
+   pop+1 coh-1 | g+1 c+2 d+2 e+1
+   > L’adjoint quitte ses fonctions.
+B) Lui laisser le temps de faire appel :: Présomption.
+   coh+1 pop-1 | g0 c+2 d+1 e0
+   > La presse s’impatiente.
+C) Le soutenir :: Loyauté.
+   pop-2 | g0 c0 d+1 e-1
+   > Le scandale t’éclabousse.
+
+=== ins-245 | institutions | Un maire étranger critique Paris
+Le maire d’une grande capitale déclare Paris sale et dangereuse.
+? distinct
+A) Répondre avec humour :: Riposte.
+   pop+1 | g0 c+2 d+1 e+1
+   > Ta réponse fait le tour du monde.
+B) L’inviter à visiter :: Diplomatie.
+   bud-1 coh+1 | g0 c+2 d+1 e+1
+   > Il repart impressionné.
+C) L’ignorer :: Mépris.
+   pop-1 | g0 c+1 d+1 e0
+   > Sa phrase reste dans les mémoires.
+
+=== ins-246 | institutions | Réclamer une dotation de capitale
+Paris assume des charges de capitale sans compensation de l’État.
+A) Une campagne nationale :: Revendiquer.
+   pop+1 coh-1 | g0 c+2 d+1 e0
+   ~30 rec+0.1x40 > L’État accorde une dotation.
+   > La campagne fait débat.
+B) Négocier discrètement :: Diplomatie.
+   coh+1 | g0 c+2 d+1 e+1
+   > Une petite compensation est obtenue.
+C) Rien :: Fierté.
+   coh-1 | g0 c+1 d+1 e0
+   > Les charges continuent.
+
+=== ins-247 | institutions | Choisir un nouveau premier adjoint
+Ton premier adjoint démissionne, il faut le remplacer.
+A) Un fidèle de longue date :: Stabilité.
+   coh+1 | g0 c+2 d+1 e0
+   > L’équipe reste soudée.
+B) Une figure d’un autre courant de ta majorité :: Rassembler.
+   coh+1 pop+1 | g+1 c+2 d+1 e+1
+   > La majorité s’élargit.
+C) Une personnalité de la société civile :: Renouveler.
+   pop+1 coh-1 | g0 c+1 d+1 e+1
+   > Les élus de ta majorité sont vexés.
+
+=== ins-248 | institutions | Un séminaire de l’équipe municipale
+Ton équipe propose deux jours de réflexion hors de Paris.
+A) Un séminaire sobre en mairie d’arrondissement :: Sobriété.
+   coh+1 | g+1 c+2 d+1 e+1
+   > Les adjoints travaillent sur les priorités.
+B) Un séminaire au vert :: Ressourcer.
+   bud-1 coh+1 pop-1 | g0 c+1 d+1 e0
+   > La presse parle de vacances aux frais du contribuable.
+C) Rien :: Agenda chargé.
+   coh-1 | g0 c+1 d+1 e0
+   > Les adjoints travaillent chacun de leur côté.
+
+=== ins-249 | institutions | La Ville se porte partie civile dans un procès
+Un procès concerne des marchands de sommeil qui exploitaient des familles.
+A) Se porter partie civile :: Défendre.
+   bud-1 pop+1 logement+1 | g+1 c+2 d+1 e+1
+   > La Ville obtient des dommages et intérêts.
+B) Soutenir les victimes sans être partie :: Accompagner.
+   bon+1 | g+1 c+2 d+1 e+1
+   > Les familles sont accompagnées.
+C) Rien :: Justice.
+   pop-1 | g0 c+1 d+1 e0
+   > Les victimes se sentent seules.
+
+=== ins-250 | institutions | Un de tes adjoints nommé ministre
+Le gouvernement débauche ton adjoint aux finances.
+A) Le féliciter et le remplacer vite :: Continuité.
+   coh+1 pop+1 | g0 c+2 d+1 e+1
+   > La transition se fait en douceur.
+B) Lui demander de rester jusqu’au budget :: Responsabilité.
+   coh+1 | g0 c+2 d+1 e0
+   > Il part après le vote du budget.
+C) Le critiquer pour son départ :: Déception.
+   coh-1 pop-1 | g0 c+1 d+1 e0
+   > Le nouveau ministre devient un adversaire.
