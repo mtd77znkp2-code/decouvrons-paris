@@ -537,6 +537,15 @@
     st.historique.push({ t: st.t, titre: B.ico + " " + B.nom, choix: "Acheté pour " + px + " M€", d: { pop: 0, bon: 0, coh: 0, bud: -px, pil: {} }, c: "achat" });
     return st;
   }
+  function duree(t) { return t < 4 ? t + " trimestre" + (t > 1 ? "s" : "") : String(Math.round(t / 4 * 10) / 10).replace(".", ",") + " ans"; }
+  // Démission : la partie s'arrête tout de suite (le bilan et l'XP sont comptés comme pour une fin normale)
+  function demissionner(st0) {
+    if (st0.phase === "fin") return st0;
+    var st = copie(st0);
+    st.fin = { gagne: false, raison: { type: "demission", txt: "Tu as remis ta démission au Conseil de Paris au bout de " + duree(st.t) + "." }, t: st.t };
+    st.phase = "fin"; st.evPerso = null;
+    return st;
+  }
   function regler(st0, o) {
     if (st0.phase === "fin" || !st0.meca.budget) return st0;
     var st = copie(st0);
@@ -561,7 +570,7 @@
     return { score: Math.max(0, score), mandats: gagnes, t: t, annees: t / 4, bonheur: bonheur(st), pires: poids.slice(0, 5), meilleures: poids.slice(-5).reverse() };
   }
   function analyse(st) {
-    if (!st.fin) return null;
+    if (!st.fin || st.fin.raison.type === "demission") return null;
     if (st.fin.raison.type === "election") {
       var el = st.elections[st.elections.length - 1], o = opposant(st), raisons = [];
       if (st.pop < 50) raisons.push("ta popularité (" + Math.round(st.pop) + ") était trop basse");
@@ -573,7 +582,7 @@
       return { phrase: "Battu avec " + String(el.pct).replace(".", ",") + " % des voix : " + (raisons.length ? raisons.join(", ") : "il t’a manqué un petit élan") + ".",
         conseil: "Surveille le sondage en haut de l’écran : s’il passe sous 50 %, achète des bâtiments pour ton pilier le plus faible (" + ICO[faible] + " " + PILIERS[faible].toLowerCase() + ") avant l’élection." };
     }
-    return { phrase: "La ville a fait faillite au bout de " + Math.round(st.t / 4 * 10) / 10 + " ans avec " + Math.round(st.dette) + " M€ de dette.",
+    return { phrase: "La ville a fait faillite au bout de " + duree(st.t) + " avec " + Math.round(st.dette) + " M€ de dette.",
       conseil: entretien(st) > 60 ? "L’entretien de tes bâtiments (" + Math.round(entretien(st)) + " M€ par trimestre) pèse lourd : achète aussi ce qui rapporte (marchés, musées)." :
         st.taux < 1 ? "Baisser les impôts coûte cher : remonte-les un peu quand les caisses se vident." :
         "Regarde le solde du trimestre sous ta trésorerie : s’il est négatif plusieurs fois de suite, arrête d’acheter un moment." };
@@ -596,7 +605,7 @@
     MECANIQUES: MECANIQUES, mecaniques: mecaniques, BATIMENTS: BATIMENTS, OPPOSANTS: OPPOSANTS, SEUIL_OPP: SEUIL_OPP, LIGNES: LIGNES, CATS: CATS,
     FAMILLE: FAMILLE, SPECIAUX: SPECIAUX,
     nouvellePartie: nouvellePartie, debutTour: debutTour, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
-    disponible: disponible, prix: prix, regler: regler, reprendre: reprendre, bilan: bilan, analyse: analyse, valider: valider, indexer: indexer,
+    disponible: disponible, prix: prix, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, valider: valider, indexer: indexer,
     engagements: engagements, evenementCourant: evenementCourant, stats: stats, opposant: opposant, humeurOpp: humeurOpp, bonheur: bonheur,
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
     prochaineElection: prochaineElection, promessesTenues: promessesTenues };

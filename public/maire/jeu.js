@@ -274,6 +274,12 @@
     ajout(box, boutique());
     if (st.meca.budget) box.appendChild(budget());
     box.appendChild(journal());
+    box.appendChild(ajout(h("div", "m-quitter"),
+      bouton("🏠 Menu principal", "btn m-sec", function () { sauver(); fermerModale(); accueil(); haut(); }),
+      bouton("🚪 Démissionner", "btn m-sec m-demission", function () {
+        if (!confirm("Démissionner ? La partie s’arrête ici : tu gardes l’XP de ce que tu as déjà accompli.")) return;
+        st = M.demissionner(st); sauver(); jeu();
+      })));
     box.appendChild(barreTrimestre());
     box.style.minHeight = ""; window.scrollTo(0, y);
     modale();
@@ -563,8 +569,8 @@
     choixNiveau(st.niveau);
     var b = M.bilan(st), an = M.analyse(st), e = st.elections[st.elections.length - 1];
     var t = h("div", "m-final m-perdu");
-    ajout(t, h("p", "m-sur", (st.defi != null ? "Défi du jour · " : "") + (st.fin.raison.type === "election" ? "Battu aux élections" : "Faillite")),
-      h("h4", null, b.mandats ? "Fin de règne après " + virg(b.annees) + " ans et " + b.mandats + " réélection" + (b.mandats > 1 ? "s" : "") : "Ton aventure s’arrête au bout de " + virg(b.annees) + " ans"),
+    ajout(t, h("p", "m-sur", (st.defi != null ? "Défi du jour · " : "") + ({ election: "Battu aux élections", faillite: "Faillite", demission: "Démission" })[st.fin.raison.type]),
+      h("h4", null, b.mandats ? "Fin de règne après " + M.duree(b.t) + " et " + b.mandats + " réélection" + (b.mandats > 1 ? "s" : "") : "Ton aventure s’arrête au bout de " + M.duree(b.t)),
       h("p", "m-raison", st.fin.raison.txt), h("p", "m-score", "Score : " + b.score + " · " + M.NIVEAUX[st.niveau].nom));
     box.appendChild(t);
     if (e && st.fin.raison.type === "election") box.appendChild(carteElection(e));
