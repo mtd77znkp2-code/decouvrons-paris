@@ -59,7 +59,8 @@
   function profilVide() {
     return { v: 3, xp: 0, parties: 0, mandats: 0, mandatsNiv: { facile: 0, moyen: 0, difficile: 0 }, mandatsLigne: {}, meilleurMandats: 0,
       achats: 0, bats: {}, elims: 0, contres: 0, catas: 0, chances: 0, defis: 0, defiJours: {}, quetesTot: 0, quetesJour: {}, succes: {},
-      scoreMax: 0, pertes: {}, chapitres: {}, tutos: {} };
+      scoreMax: 0, pertes: {}, chapitres: {}, tutos: {},
+      objets: {}, secrets: {}, combos: {}, rep: 0, missions: 0, historiques: 0, defiMeilleur: {} };
   }
   function lire() {
     try {
@@ -78,6 +79,18 @@
   // Le guide du jeu (bulles qui montrent quoi faire) : chaque séquence ne s'affiche qu'une fois
   function guideVu(id) { return !!lire().tutos[id]; }
   function marquerGuide(id) { var P = lire(); P.tutos[id] = 1; ecrire(P); }
+  // Découvertes faites pendant une partie (objets, bâtiments secrets, combos) : rangées dans le profil tout de suite,
+  // pour qu'elles restent acquises même si la partie n'est jamais terminée
+  function synchroniser(st) {
+    var P = lire(), nouv = [];
+    (st.decouvertes || []).forEach(function (d) {
+      var t = d.type === "objet" ? P.objets : d.type === "secret" ? P.secrets : P.combos;
+      if (!t[d.id]) { t[d.id] = jour(); nouv.push(d); P.rep = (P.rep || 0) + (d.type === "objet" ? 5 : 10); }
+    });
+    if (nouv.length) ecrire(P);
+    return nouv;
+  }
+  function reputation(rep, C) { var t = C.REPUTATION[0][1]; C.REPUTATION.forEach(function (x) { if (rep >= x[0]) t = x[1]; }); return t; }
   function chapitre(M, n) { var c = null; M.MECANIQUES.forEach(function (m) { if (n >= m.niv) c = m.id; }); return c; }
 
   // ---------- Résumé d'une partie terminée ----------
@@ -88,7 +101,8 @@
     Object.keys(x.cats).forEach(function (c) { var f = FAM[c]; if (f) fam[f] = (fam[f] || 0) + x.cats[c]; });
     return { niveau: st.niveau || "moyen", rang: RANG[st.niveau || "moyen"], ligne: st.ligne, ambitions: st.ambitions, meca: st.meca,
       mandats: gagnees.length, t: st.fin ? st.fin.t : st.t, perte: st.fin ? st.fin.raison.type : null, score: b.score, x: x, fam: fam,
-      el: gagnees, bat: st.bat || {}, defi: st.defi != null ? st.defi : null };
+      el: gagnees, bat: st.bat || {}, defi: st.defi != null ? st.defi : null, flags: st.flags || {}, persos: st.persos || {},
+      missions: st.missionsOk || [], objets: st.objets || [], combos: st.combos || [], scenario: st.scenario, finDefi: st.fin && st.fin.raison.type === "defi" };
   }
   function une(R, f) { return R.el.some(f); }
 
@@ -128,13 +142,14 @@
     return [0, 1, 2].map(function (d) { return ok[ordre[(k + d) % ordre.length]]; });
   }
 
-  // ---------- Défi du jour : même départ pour tout le monde (toutes les mécaniques jusqu'au niveau 8) ----------
+  // ---------- Défi du jour : un scénario imposé, identique pour tout le monde, en 12 trimestres ----------
   function defiDuJour(j, M, lots, minEvts) {
-    var r = generateur(graine(j)), L = Object.keys(M.LIGNES), D = Object.keys(M.PILIERS);
-    var amb = melange(D, r).slice(0, 2), ligne = L[Math.floor(r() * L.length)], niv = ["moyen", "facile", "difficile"][j % 3];
+    var r = generateur(graine(j)), L = Object.keys(M.LIGNES), D = Object.keys(M.PILIERS), sc = M.C.DEFIS_JOUR[j % M.C.DEFIS_JOUR.length];
+    var amb = melange(D, r).slice(0, 2), ligne = L[Math.floor(r() * L.length)];
     var choisis = [], n = 0;
     melange(lots, r).forEach(function (l) { if (n < (minEvts || 600)) { choisis.push(l.f); n += l.n; } });
-    return { jour: j, graine: graine(j * 7 + 3) || 1, niveau: niv, ligne: ligne, ambitions: amb, lots: choisis, nivJoueur: NIV_DEFI };
+    return { jour: j, graine: graine(j * 7 + 3) || 1, niveau: "moyen", ligne: ligne, ambitions: amb, lots: choisis, nivJoueur: NIV_DEFI,
+      scenario: sc.id, titre: sc.titre, txt: sc.txt };
   }
 
   // ---------- 100 succès ----------
@@ -220,6 +235,37 @@
   s("fidele", "Fidèle", "Gagne une élection sans jamais avoir renié ta ligne.", 2, function (R) { return R.meca.ligne && R.mandats >= 1 && R.x.trahisons === 0; });
   s("dossiers50", "Bourreau de travail", "Traite 50 dossiers dans une partie.", 2, function (R) { return R.x.dossiers >= 50; });
   s("crise", "Gestionnaire de crise", "Traite 5 dossiers de crise dans une partie.", 2, function (R) { return (R.fam.crise || 0) >= 5; });
+  // ---------- Succès des nouvelles mécaniques (dont des succès secrets, cachés tant qu'ils ne sont pas obtenus) ----------
+  function s2(id, cat, nom, desc, t, f, secret) { s(id, nom, desc, t, f); S[S.length - 1].cat = cat; if (secret) S[S.length - 1].secret = 1; }
+  s2("comptable", "Finances", "Comptable du dimanche", "Termine un trimestre sans que la dette augmente.", 1, function (R) { return R.x.trimSansDette >= 1; });
+  s2("banquier", "Finances", "Le banquier fou", "Accumule 3 milliards en caisse.", 3, function (R) { return R.x.tresorMax >= 3000; });
+  s2("detteTradition", "Finances", "La dette est une tradition", "Gagne une élection avec plus d’un milliard de dette.", 3, function (R) { return une(R, function (e) { return e.dette >= 1000; }); });
+  s2("dernierRecours", "Prise de risque", "Le dernier recours", "Sauve la ville alors que la faillite semblait imminente.", 3, function (R) { return R.x.sauvetage >= 1; });
+  s2("vingtEtUn", "Prise de risque", "Vingt-et-un", "Gagne au dernier pari de Monsieur Valentin.", 2, function (R) { return R.x.pariGain > 0; });
+  s2("maisonGagne", "Prise de risque", "La maison gagne toujours", "Perds au moins 100 M€ au dernier pari.", 2, function (R) { return R.x.pariPerte >= 100; }, 1);
+  s2("zero", "Prise de risque", "Le zéro magique", "Gagne à la roulette en misant sur le zéro.", 4, function (R) { return !!R.x.zero; }, 1);
+  s2("toutVaBien", "Gestion", "Tout va bien, Monsieur le Maire", "Encaisse trois mauvaises nouvelles d’affilée sans tomber.", 2, function (R) { return R.x.negSerieMax >= 3 && R.t >= 8; });
+  s2("visionnaire", "Construction", "Visionnaire", "Fais réussir un coup de génie risqué.", 2, function (R) { return R.x.genieOk >= 1; });
+  s2("chantier1", "Construction", "Premier coup de pioche", "Inaugure un projet démesuré.", 2, function (R) { return R.x.projetsOk >= 1; });
+  s2("chantier3", "Construction", "Bâtisseur de l’impossible", "Inaugure 3 projets démesurés dans une même partie.", 3, function (R) { return R.x.projetsOk >= 3; });
+  s2("posterite", "Exploration", "C’est pour la postérité", "Construis un bâtiment secret.", 2, function (R) { return R.x.secretsBatis >= 1; });
+  s2("parisSecret", "Exploration", "Paris secret", "Découvre les 6 bâtiments secrets.", 4, function (R, P) { return Object.keys(P.secrets || {}).length >= 6; }, 1);
+  s2("combo1", "Construction", "Effet combo", "Active un combo de bâtiments.", 1, function (R) { return R.x.combos >= 1; });
+  s2("combosTous", "Construction", "Urbaniste de génie", "Découvre les 4 combos de bâtiments.", 3, function (R, P) { return Object.keys(P.combos || {}).length >= 4; });
+  s2("objet1", "Exploration", "Bureau des objets trouvés", "Trouve ton premier objet insolite.", 1, function (R) { return R.x.objets >= 1; });
+  s2("objets10", "Exploration", "Collectionneur", "Rassemble 10 objets insolites.", 3, function (R, P) { return Object.keys(P.objets || {}).length >= 10; });
+  s2("objetsTous", "Exploration", "Le grenier de Paris", "Rassemble tous les objets insolites.", 4, function (R, P) { return Object.keys(P.objets || {}).length >= 14; }, 1);
+  s2("amiPigeons", "Humour", "Ami des pigeons", "Vis toute l’histoire des pigeons de Paris.", 2, function (R) { return R.x.pigeons >= 2; }, 1);
+  s2("casino", "Humour", "Croupier en chef", "Laisse le casino clandestin de l’Hôtel de Ville ouvert.", 2, function (R) { return !!R.flags.casino; }, 1);
+  s2("absurde", "Humour", "Le maire le plus absurde de l’histoire", "Prends 5 décisions que Léon refuse d’inscrire au compte rendu.", 3, function (R) { return R.x.absurdes >= 5; }, 1);
+  s2("legende1", "Événements rares", "Témoin de l’histoire", "Vis un événement légendaire.", 2, function (R) { return R.x.legendaires >= 1; });
+  s2("legende3", "Événements rares", "Aimant à légendes", "Vis 3 événements légendaires dans une même partie.", 4, function (R) { return R.x.legendaires >= 3; }, 1);
+  s2("grandJour", "Événements rares", "Le Grand Jour", "Réussis le Grand Jour de Paris.", 3, function (R) { return R.x.grandJourOk >= 1; });
+  s2("mission1", "Défis", "Défi improbable", "Réussis une mission surprise de Léon.", 1, function (R) { return R.x.missionsOk >= 1; });
+  s2("missions10", "Défis", "Homme ou femme de mission", "Réussis 10 missions surprises au total.", 3, function (R, P) { return P.missions >= 10; });
+  s2("historiques3", "Gestion", "Main de l’histoire", "Prends 3 décisions historiques au total.", 2, function (R, P) { return P.historiques >= 3; });
+  s2("gaspard", "Exploration", "Ami des milliardaires", "Gagne la confiance de Gaspard Mallet.", 2, function (R) { return (R.persos.gaspard || 0) >= 2; }, 1);
+  s2("reputation", "Exploration", "Personnalité nationale", "Atteins 350 points de réputation.", 3, function (R, P) { return (P.rep || 0) >= 350; });
 
   // ---------- Fin de partie : tout ce que la partie rapporte ----------
   function terminer(st, M, opts) {
@@ -235,6 +281,14 @@
     gagne("Trimestres à l’Hôtel de Ville", Math.min(150, R.t * 2));
     if (R.mandats) gagne(R.mandats + " élection" + (R.mandats > 1 ? "s" : "") + " gagnée" + (R.mandats > 1 ? "s" : "") + " (" + NOM_NIV[R.niveau] + ")", XP_ELECTION[R.niveau] * R.mandats);
     gagne("Bâtiments achetés", Math.min(80, R.x.achats * 2));
+    R.missions.forEach(function (m) { gagne("Mission surprise réussie", m.xp); });
+    if (R.x.projetsOk) gagne("Projets démesurés inaugurés", R.x.projetsOk * 40);
+    if (R.x.rares + R.x.legendaires) gagne("Événements rares vécus", Math.min(120, R.x.rares * 10 + R.x.legendaires * 30));
+    P.missions += R.missions.length; P.historiques += R.x.historiques || 0;
+    R.objets.forEach(function (o) { if (!P.objets[o]) P.objets[o] = j; }); R.combos.forEach(function (c) { if (!P.combos[c]) P.combos[c] = j; });
+    Object.keys(st.secrets || {}).forEach(function (k) { if (!P.secrets[k]) P.secrets[k] = j; });
+    var repAvant = P.rep || 0;
+    P.rep = repAvant + R.mandats * 20 + R.missions.length * 5 + R.x.projetsOk * 10 + R.x.secretsBatis * 5 + R.x.legendaires * 5 + (R.finDefi ? 10 : 0);
     // Objectifs de chapitre accomplis (chaque chapitre déjà ouvert peut être validé dans n'importe quelle partie)
     M.MECANIQUES.forEach(function (m) {
       var h = HISTOIRE[m.id]; if (!h || P.chapitres[m.id] || !R.meca[m.id]) return;
@@ -242,8 +296,8 @@
       if (ok) { P.chapitres[m.id] = j; chapitres.push(h); gagne("Chapitre " + h.num + " accompli : " + h.titre, XP_CHAPITRE); }
     });
     if (R.defi != null && R.defi === j && !P.defiJours[j]) {
-      P.defiJours[j] = { score: R.score, mandats: R.mandats };
-      if (R.mandats >= 1) { P.defis++; gagne("Défi du jour réussi", XP_DEFI); if (R.mandats >= 2) gagne("Défi du jour : deux élections gagnées", XP_DEFI_BONUS); }
+      P.defiJours[j] = { score: R.score, ok: R.finDefi };
+      if (R.finDefi) { P.defis++; gagne("Défi du jour terminé", XP_DEFI); if (R.score >= 1200) gagne("Défi du jour : excellent score", XP_DEFI_BONUS); }
     }
     Object.keys(P.defiJours).forEach(function (k) { if (+k < j - 60) delete P.defiJours[k]; });
     var faites = P.quetesJour[j] || [];
@@ -261,13 +315,13 @@
       if (nouveaux.length === n0) break;
     }
     ecrire(P);
-    var apres = niveau(P.xp), debloque = M.MECANIQUES.filter(function (m) { return m.niv > avant.n && m.niv <= apres.n; });
+    var apres = niveau(P.xp), debloque = M.MECANIQUES.concat(M.EXTRAS).filter(function (m) { return m.niv > avant.n && m.niv <= apres.n; });
     return { gains: gains, total: gains.reduce(function (a, g) { return a + g.xp; }, 0), nouveaux: nouveaux, quetes: quetes, chapitres: chapitres,
-      avant: avant, apres: apres, debloque: debloque, profil: P };
+      avant: avant, apres: apres, debloque: debloque, profil: P, rep: P.rep - repAvant };
   }
 
   var API = { jour: jour, niveau: niveau, xpPour: xpPour, lire: lire, ecrire: ecrire, profilVide: profilVide, resume: resume, terminer: terminer,
-    nivJoueur: nivJoueur, fixerNiveau: fixerNiveau, oublierTutos: oublierTutos, guideVu: guideVu, marquerGuide: marquerGuide, chapitre: chapitre,
+    nivJoueur: nivJoueur, fixerNiveau: fixerNiveau, synchroniser: synchroniser, reputation: reputation, oublierTutos: oublierTutos, guideVu: guideVu, marquerGuide: marquerGuide, chapitre: chapitre,
     HISTOIRE: HISTOIRE, quetesDuJour: quetesDuJour, queteFaite: queteFaite, TYPES_QUETES: Object.keys(QUETE), defiDuJour: defiDuJour,
     SUCCES: S, XP_TIER: XP_TIER, NOM_NIV: NOM_NIV, TITRES: TITRES, NIV_DEFI: NIV_DEFI, NIV_QUETES: NIV_QUETES, NIV_MAX: NIV_MAX };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.MaireProg = API;

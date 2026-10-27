@@ -7,6 +7,8 @@
 // la page ne rejoue jamais un effet déjà appliqué.
 (function (root) {
   "use strict";
+  // Contenu fait main (personnages, objets, secrets, combos, projets, événements rares…) : voir contenu.js
+  var C = (typeof module !== "undefined" && module.exports) ? require("./contenu.js") : root.MaireContenu;
 
   var MANDAT = 24, PLAFOND_DETTE = 1500, TAUX = 0.012;   // 24 trimestres = 6 ans ; dette autorisée (M€) ; intérêts par trimestre
   var DEPART = { pop: 58, coh: 70 };
@@ -41,7 +43,15 @@
     { id: "boutique3", niv: 8, nom: "Grands équipements, niveau Réaliste et défi du jour" },
     { id: "projets", niv: 10, nom: "Les grands projets de Paris 2040" }
   ];
-  function mecaniques(nivJoueur) { var m = {}; MECANIQUES.forEach(function (x) { m[x.id] = nivJoueur >= x.niv; }); return m; }
+  // Mécaniques supplémentaires (sans chapitre d'histoire) : elles s'ajoutent en chemin
+  var EXTRAS = [
+    { id: "missions", niv: 3, nom: "Les missions surprises de Léon" },
+    { id: "combos", niv: 4, nom: "Les combos de bâtiments" },
+    { id: "pari", niv: 4, nom: "Le dernier pari, quand tout va mal" },
+    { id: "historiques", niv: 5, nom: "Les décisions historiques" },
+    { id: "grandsProjets", niv: 6, nom: "Les projets démesurés (chantiers de plusieurs trimestres)" }
+  ];
+  function mecaniques(nivJoueur) { var m = {}; MECANIQUES.concat(EXTRAS).forEach(function (x) { m[x.id] = nivJoueur >= x.niv; }); return m; }
 
   // ---------- Boutique ----------
   // cout : prix du premier exemplaire (chaque achat suivant coûte 15 % de plus) · ent : entretien par trimestre
@@ -58,12 +68,12 @@
     metro: { nom: "Station de métro", ico: "🚇", tier: 3, cout: 350, ent: 10, e: { transports: 9, logement: 1 }, eco: 2, ali: { g: 1, c: 2, d: 1, e: 1 } },
     hopital: { nom: "Hôpital", ico: "🏥", tier: 3, cout: 300, ent: 12, e: { cadre: 6, securite: 2 }, ali: { g: 2, c: 1, d: 0, e: 0 } },
     quartier: { nom: "Écoquartier", ico: "🏘️", tier: 3, cout: 400, ent: 8, e: { logement: 8, cadre: 2 }, ali: { g: 1, c: 1, d: 0, e: 2 } },
-    musee: { nom: "Grand musée", ico: "🎭", tier: 3, cout: 250, ent: 4, rev: 14, e: { cadre: 2 }, eco: 3, ali: { g: 0, c: 1, d: 1, e: 0 } },
-    jo: { nom: "Village olympique", ico: "🏟️", tier: 4, unique: 1, cout: 1200, ent: 10, e: { logement: 10, transports: 4, cadre: 4 }, eco: 6, pop: 10, ali: { g: 1, c: 2, d: 1, e: 0 } },
-    gpe: { nom: "Grand Paris Express", ico: "🚄", tier: 4, unique: 1, cout: 1500, ent: 15, e: { transports: 18 }, eco: 8, pop: 8, ali: { g: 1, c: 2, d: 1, e: 1 } },
-    seine: { nom: "Seine baignable", ico: "🏊", tier: 4, unique: 1, cout: 900, ent: 8, e: { cadre: 12 }, eco: 2, pop: 12, ali: { g: 1, c: 1, d: 0, e: 3 } }
+    musee: { nom: "Grand musée", ico: "🎭", tier: 3, cout: 250, ent: 4, rev: 14, e: { cadre: 2 }, eco: 3, ali: { g: 0, c: 1, d: 1, e: 0 } }
   };
-  var TIER_MECA = { 1: "base", 2: "boutique2", 3: "boutique3", 4: "projets" };
+  // Projets démesurés (chantiers) et bâtiments secrets rejoignent la même boutique, avec les mêmes règles d'effets
+  Object.keys(C.PROJETS).forEach(function (id) { BATIMENTS[id] = Object.assign({ projet: 1, unique: 1, ali: { g: 1, c: 1, d: 1, e: 1 } }, C.PROJETS[id]); });
+  Object.keys(C.SECRETS).forEach(function (id) { BATIMENTS[id] = Object.assign({ secret: 1, unique: 1, ali: {} }, C.SECRETS[id]); });
+  var TIER_MECA = { 1: "base", 2: "boutique2", 3: "boutique3" };
 
   // ---------- Opposants (personnages fictifs) : un nouveau tirage à chaque mandat, une attaque par an ----------
   var OPPOSANTS = [
@@ -115,9 +125,9 @@
 
   // ---------- Niveaux de difficulté (« difficile » s'affiche « Réaliste ») ----------
   var NIVEAUX = {
-    facile: { nom: "Facile", txt: "Caisses pleines et Parisiens indulgents.", meca: "base", tresor: 800, recettes: 1.04, elec: 2, usure: 0.3 },
-    moyen: { nom: "Moyen", txt: "Chaque euro compte, chaque élection se prépare.", meca: "boutique2", tresor: 500, recettes: 1, elec: 0, usure: P.usure },
-    difficile: { nom: "Réaliste", txt: "Caisses presque vides, Parisiens exigeants.", meca: "boutique3", tresor: 350, recettes: 0.99, elec: -1, usure: 0.45 }
+    facile: { nom: "Facile", txt: "Caisses pleines et Parisiens indulgents.", meca: "base", tresor: 800, recettes: 1.04, elec: 2, usure: 0.3, pariMax: 250 },
+    moyen: { nom: "Moyen", txt: "Chaque euro compte, chaque élection se prépare.", meca: "boutique2", tresor: 500, recettes: 1, elec: 0, usure: P.usure, pariMax: 200 },
+    difficile: { nom: "Réaliste", txt: "Caisses presque vides, Parisiens exigeants.", meca: "boutique3", tresor: 350, recettes: 0.99, elec: -1, usure: 0.45, pariMax: 150 }
   };
   function niv(st) { return NIVEAUX[st && st.niveau] || NIVEAUX.moyen; }
 
@@ -190,7 +200,7 @@
   }
 
   // ---------- Création de partie ----------
-  // o : { ligne, ambitions (2 piliers), niveau, nivJoueur, graine, lots }
+  // o : { ligne, ambitions (2 piliers), niveau, nivJoueur, graine, lots, secrets (bâtiments secrets déjà découverts), scenario (défi du jour) }
   function nouvellePartie(o) {
     var nv = NIVEAUX[o.niveau] ? o.niveau : "moyen", m = mecaniques(o.nivJoueur || 99);
     if (!m[NIVEAUX[nv].meca]) nv = "facile";
@@ -199,17 +209,41 @@
     var amb = m.promesses ? (o.ambitions || []).filter(function (a, i, t) { return PILIERS[a] && t.indexOf(a) === i; }) : [];
     if (m.promesses && amb.length !== 2) throw new Error("Il faut choisir exactement deux promesses");
     var st = {
-      v: 3, niveau: nv, meca: m, rng: (o.graine >>> 0) || ((Math.random() * 4294967296) >>> 0), lots: o.lots || [],
+      v: 4, niveau: nv, meca: m, nivJ: o.nivJoueur || 99, rng: (o.graine >>> 0) || ((Math.random() * 4294967296) >>> 0), lots: o.lots || [],
       ligne: ligne, ambitions: amb, t: 0, mandat: 1, debutMandat: 0, phase: "pret",
       tresor: NIVEAUX[nv].tresor, dette: 0, pop: DEPART.pop, coh: DEPART.coh, humeur: 0, taux: 1, eco: 50,
       piliers: {}, base: {}, bat: {}, prevus: [], recurrents: [], suites: [], vus: {}, flags: {}, nid: 1,
       journal: [], historique: [], evenement: null, resultat: null, fin: null, cats: [], special: null, evPerso: null,
       elections: [], rapport: null, notes: [], opposant: null
     };
+    migrer(st);
+    Object.keys(o.secrets || {}).forEach(function (id) { if (C.SECRETS[id]) st.secrets[id] = 1; });
     st.rngT = (st.rng ^ 0x5bd1e995) | 0;
     PK.forEach(function (k) { st.base[k] = borne(46 + Math.round((rnd(st) - 0.5) * 10)); st.piliers[k] = st.base[k]; });
     if (m.opposant) tirerOpposant(st);
+    var sc = o.scenario && C.DEFIS_JOUR.filter(function (d) { return d.id === o.scenario; })[0];
+    if (sc) {
+      var dp = sc.depart; st.scenario = { id: sc.id, fin: 12, tauxBloque: !!dp.tauxBloque };
+      if (dp.dette) st.dette = dp.dette; if (dp.tresor != null) st.tresor = dp.tresor; if (dp.pop) st.pop = dp.pop; if (dp.taux) st.taux = dp.taux;
+      if (dp.piliers) PK.forEach(function (k) { st.base[k] = dp.piliers; st.piliers[k] = dp.piliers; });
+      if (dp.elec) st.debutMandat = dp.elec - MANDAT;
+    }
     stats(st);
+    leon(st, "debut");
+    return st;
+  }
+  // Sauvegardes : les parties des versions précédentes reçoivent les nouveaux champs, sans rien perdre
+  function migrer(st) {
+    if (!st || st.v > 4) return st;
+    var d = { chaos: 10, chantiers: [], incidents: [], messages: [], offre: null, bj: null, pariRes: null, mission: null, missionCd: 0, missionsOk: [],
+      combos: [], decouvertes: [], objets: [], secrets: {}, persos: {}, mods: { entretien: 1, recettes: 0 }, conditions: [], suitesSpe: [],
+      histoMandat: 0, alerte: null, repit: 0, pariMandat: 0, pariCd: 0, leon: null, uniques: {}, emprunts: 0, ampleur: {}, scenario: null };
+    Object.keys(d).forEach(function (k) { if (st[k] == null) st[k] = d[k]; });
+    if (st.nivJ == null) st.nivJ = 99;
+    if (!st.meca) st.meca = mecaniques(st.nivJ);
+    EXTRAS.forEach(function (x) { if (st.meca[x.id] == null) st.meca[x.id] = st.nivJ >= x.niv; });
+    stats(st);
+    st.v = 4;
     return st;
   }
   function tirerOpposant(st) {
@@ -219,28 +253,55 @@
     st.opposant.depart = st.opposant.force;
   }
   function stats(st) {
-    if (!st.stats) st.stats = { trahisons: 0, depenses: 0, detteMax: 0, popMin: st.pop, contre: 0, mobilise: 0, nuireOk: 0, nuireKo: 0,
-      subi: 0, elimines: 0, catastrophes: 0, chances: 0, cats: {}, retombees: 0, achats: 0, bats: {}, investi: 0, dossiers: 0, tresorMax: st.tresor };
+    var d = { trahisons: 0, depenses: 0, detteMax: 0, popMin: st.pop, contre: 0, mobilise: 0, nuireOk: 0, nuireKo: 0,
+      subi: 0, elimines: 0, catastrophes: 0, chances: 0, cats: {}, retombees: 0, achats: 0, bats: {}, investi: 0, dossiers: 0, tresorMax: st.tresor,
+      rares: 0, legendaires: 0, crisesOk: 0, bonheurMax: 0, paris: 0, pariGain: 0, pariPerte: 0, projetsOk: 0, missionsOk: 0, combos: 0,
+      secretsBatis: 0, absurdes: 0, genieOk: 0, genieKo: 0, hantises: 0, objets: 0, grandJour: 0, grandJourOk: 0, negSerie: 0, negSerieMax: 0,
+      trimSansDette: 0, sauvetage: 0, pigeons: 0, persos: 0, financements: 0 };
+    if (!st.stats) st.stats = {};
+    Object.keys(d).forEach(function (k) { if (st.stats[k] == null) st.stats[k] = d[k]; });
     return st.stats;
   }
   function suivre(st) {
     var x = stats(st);
     x.detteMax = Math.max(x.detteMax, st.dette); x.popMin = Math.min(x.popMin, st.pop); x.tresorMax = Math.max(x.tresorMax, st.tresor);
+    x.bonheurMax = Math.max(x.bonheurMax, bonheur(st));
   }
   function opposant(st) { return st.opposant ? Object.assign({}, OPPOSANTS[st.opposant.i], st.opposant) : null; }
   function humeurOpp(f) { return f < 40 ? "tiède" : f < 60 ? "combatif" : f < 75 ? "redoutable" : "brûlant"; }
+  // Léon ne parle qu'aux moments importants ; le téléphone garde une trace des messages
+  function leon(st, k) {
+    var l = C.LEON[k]; if (!l) return;
+    st.leon = { t: st.t, k: k, txt: l[Math.floor(rnd(st) * l.length)] };
+  }
+  function message(st, ico, titre, txt, type) {
+    st.messages.push({ id: st.nid++, t: st.t, ico: ico, titre: titre, txt: txt, type: type || "info", lu: false });
+    if (st.messages.length > 15) st.messages.splice(0, st.messages.length - 15);
+  }
+  function lireMessages(st0) { var st = copie(st0); st.messages.forEach(function (m) { m.lu = true; }); return st; }
 
   // ---------- Calculs ----------
   function bonheur(st) { var t = 0; PK.forEach(function (k) { t += st.piliers[k]; }); return borne(t / PK.length + st.humeur); }
   function trimMandat(st) { return st.t - st.debutMandat; }
   function prochaineElection(st) { return st.debutMandat + MANDAT; }
+  function nbTransports(st) { return (st.bat.tram || 0) + (st.bat.metro || 0) + (st.bat.metroRevo || 0) + (st.bat.gpe || 0) + (st.bat.telepherique || 0); }
+  // Combos : certains bâtiments fonctionnent mieux ensemble (débloqué au niveau 4)
+  function combosActifs(st) {
+    if (!st.meca.combos) return [];
+    return Object.keys(C.COMBOS).filter(function (id) {
+      var b = C.COMBOS[id].besoin;
+      return Object.keys(b).every(function (k) { return (k === "transport" ? nbTransports(st) : (st.bat[k] || 0)) >= b[k]; });
+    });
+  }
   function bonusBat(st) {
     var b = {};
     Object.keys(st.bat).forEach(function (id) {
       var B = BATIMENTS[id], n = st.bat[id], m = 0; if (!B || !n) return;
       for (var j = 0; j < n; j++) m += Math.pow(P.rendement, j);
+      m *= (st.ampleur && st.ampleur[id]) || 1;
       Object.keys(B.e).forEach(function (k) { b[k] = (b[k] || 0) + B.e[k] * m * P.gain; });
     });
+    combosActifs(st).forEach(function (id) { var e = C.COMBOS[id].e; Object.keys(e).forEach(function (k) { b[k] = (b[k] || 0) + e[k] * P.gain; }); });
     return b;
   }
   function cible(st) {
@@ -251,18 +312,25 @@
   function prix(st, id) { var B = BATIMENTS[id]; return Math.round(B.cout * Math.pow(P.inflation, st.bat[id] || 0)); }
   function recettes(st) {
     var r = P.impot * st.taux * (0.8 + st.eco / P.ecoRecettes) * niv(st).recettes;
-    Object.keys(st.bat).forEach(function (id) { r += (BATIMENTS[id].rev || 0) * st.bat[id]; });
-    return arrondi(r);
+    Object.keys(st.bat).forEach(function (id) { r += (BATIMENTS[id].rev || 0) * st.bat[id] * ((st.ampleur && st.ampleur[id]) || 1); });
+    combosActifs(st).forEach(function (id) { r += C.COMBOS[id].rev || 0; });
+    return arrondi(r + ((st.mods && st.mods.recettes) || 0));
   }
-  function entretien(st) { var t = 0; Object.keys(st.bat).forEach(function (id) { t += BATIMENTS[id].ent * st.bat[id]; }); return arrondi(t); }
+  function entretien(st) {
+    var t = 0;
+    Object.keys(st.bat).forEach(function (id) { t += BATIMENTS[id].ent * st.bat[id]; });
+    combosActifs(st).forEach(function (id) { t += C.COMBOS[id].ent || 0; });
+    return arrondi(t * ((st.mods && st.mods.entretien) || 1));
+  }
   function depenses(st) { return arrondi(P.fonct + entretien(st)); }
-  function solde(st) { var r = 0; st.recurrents.forEach(function (x) { r += x.m; }); return arrondi(recettes(st) - depenses(st) + r - st.dette * TAUX); }
+  function chantierTranches(st) { var t = 0; (st.chantiers || []).forEach(function (c) { if (!c.susp) t += Math.round(c.du / Math.max(1, c.reste)); }); return t; }
+  function solde(st) { var r = 0; st.recurrents.forEach(function (x) { r += x.m; }); return arrondi(recettes(st) - depenses(st) + r - st.dette * TAUX - chantierTranches(st)); }
   function promessesTenues(st) { return st.ambitions.filter(function (k) { return st.piliers[k] >= P.ambSeuil; }); }
   // Sondage : ce que donnerait l'élection aujourd'hui (sans le petit aléa du jour du vote)
   function sondage(st) {
     var o = st.opposant, f = o && o.actif ? o.force : (st.meca.opposant ? 0 : 45);
     var pct = 50 + (bonheur(st) - 50) * 0.45 + (st.pop - 50) * 0.55 + (st.ambitions.length ? (promessesTenues(st).length - 1) * 3 : 0)
-      - (f - 45) * 0.1 + niv(st).elec - (st.mandat - 1) * P.usureMandat - st.dette / P.detteImpop * 2;
+      - (f - 45) * 0.1 + niv(st).elec - (st.mandat - 1) * P.usureMandat - st.dette / P.detteImpop * 2 + (st.bat.palais && bonheur(st) >= 55 ? 2 : 0);
     return Math.max(10, Math.min(90, arrondi(pct)));
   }
 
@@ -307,6 +375,49 @@
     });
     return d;
   }
+  // Effets des événements spéciaux (contenu.js) : tout ce qu'appliquer() sait faire, plus objets, secrets, chantiers…
+  function appliquerTout(st, e, lib, d, ctx) {
+    d = appliquer(st, e && { pop: e.pop, bon: e.bon, coh: e.coh, bud: e.bud }, lib, d);
+    if (!e) return d;
+    if (e.pil) Object.keys(e.pil).forEach(function (k) { var a = st.piliers[k]; st.piliers[k] = borne(a + e.pil[k]); d.pil[k] = arrondi((d.pil[k] || 0) + st.piliers[k] - a); });
+    if (e.base) Object.keys(e.base).forEach(function (k) { var a = st.piliers[k]; st.base[k] = borne(st.base[k] + e.base[k]); st.piliers[k] = borne(a + e.base[k]); d.pil[k] = arrondi((d.pil[k] || 0) + st.piliers[k] - a); });
+    if (e.eco) st.eco = borne(st.eco + e.eco);
+    if (e.rec) { st.recurrents.push({ id: st.nid++, m: e.rec.m, n: e.rec.n, l: lib }); d.rec = (d.rec || []).concat([e.rec]); }
+    if (e.chaos) st.chaos = Math.max(0, Math.min(100, st.chaos + e.chaos));
+    if (e.flag) st.flags[e.flag] = st.t;
+    if (e.perso) Object.keys(e.perso).forEach(function (k) { st.persos[k] = (st.persos[k] || 0) + e.perso[k]; });
+    if (e.suite) st.suitesSpe.push({ id: e.suite.id, t: st.t + e.suite.n });
+    if (e.mod) { if (e.mod.entretien) st.mods.entretien = arrondi2(st.mods.entretien * e.mod.entretien); if (e.mod.recettes) st.mods.recettes += e.mod.recettes; d.mod = e.mod; }
+    if (e.condition) st.conditions.push(e.condition);
+    if (e.objet) gagnerObjet(st, e.objet);
+    if (e.secret) debloquerSecret(st, e.secret);
+    if (e.chantier && ctx && ctx.cid) {
+      var ch = st.chantiers.filter(function (c) { return c.id === ctx.cid; })[0];
+      if (ch) {
+        if (e.chantier.retard) ch.reste += e.chantier.retard;
+        if (e.chantier.avance) ch.reste = Math.max(1, ch.reste - e.chantier.avance);
+        if (e.chantier.cout) ch.du += e.chantier.cout;
+        if (e.chantier.reduire) { ch.ampleur = arrondi2(ch.ampleur * 0.7); ch.du = Math.round(ch.du * 0.8); }
+        if (e.chantier.suspendre) ch.susp = (ch.susp || 0) + e.chantier.suspendre;
+      }
+    } else if (e.chantier && e.chantier.retard && st.chantiers.length) st.chantiers[0].reste += e.chantier.retard;
+    if (e.perteBat && st.bat[e.perteBat]) { st.bat[e.perteBat]--; if (!st.bat[e.perteBat]) delete st.bat[e.perteBat]; }
+    return d;
+  }
+  function arrondi2(x) { return Math.round(x * 100) / 100; }
+  function gagnerObjet(st, id) {
+    if (!C.OBJETS[id] || st.objets.indexOf(id) >= 0) return;
+    st.objets.push(id); stats(st).objets++;
+    st.decouvertes.push({ type: "objet", id: id });
+    message(st, C.OBJETS[id].ico, "Objet trouvé : " + C.OBJETS[id].nom, C.OBJETS[id].txt);
+    if (C.OBJETS[id].secret) debloquerSecret(st, C.OBJETS[id].secret);
+  }
+  function debloquerSecret(st, id) {
+    if (!C.SECRETS[id] || st.secrets[id]) return;
+    st.secrets[id] = 1; st.decouvertes.push({ type: "secret", id: id });
+    message(st, C.SECRETS[id].ico, "Bâtiment secret découvert : " + C.SECRETS[id].nom, C.SECRETS[id].txt + " Il est maintenant dans ta boutique.");
+    leon(st, "secret");
+  }
   function varier(st, e) {
     if (!e) return null;
     var o = {};
@@ -316,7 +427,7 @@
     return o;
   }
 
-  // ---------- Tirage des dossiers ----------
+  // ---------- Tirage des dossiers ordinaires ----------
   function possible(st, ev) {
     var c = ev.cond; if (!c) return true;
     var t = trimMandat(st) * 100 / MANDAT;   // les conditions de date sont écrites sur 100 semaines
@@ -364,6 +475,65 @@
     return cand[cand.length - 1][0];
   }
 
+  // ---------- Événements spéciaux : rares, légendaires, suites, chantiers, décisions historiques ----------
+  var SPE = {}; C.EVENEMENTS.forEach(function (ev) { SPE[ev.id] = ev; });
+  function versEvenement(st, ev, kind, extra) {
+    var o = { id: "spe-" + ev.id + "-" + st.t, src: ev.id, kind: kind || "special", cat: ev.rar === "legendaire" ? "legendaire" : ev.rar === "rare" ? "rare" : ev.rar === "politique" ? "politique" : kind || "rare",
+      perso: ev.perso || null, titre: ev.titre, desc: ev.desc2 && ev.perso && st.persos[ev.perso] != null ? ev.desc2 : ev.desc, choix: copie(ev.choix), grandJour: !!ev.grandJour };
+    return Object.assign(o, extra || {});
+  }
+  function tirerSpe(st, rar) {
+    var c = C.EVENEMENTS.filter(function (ev) { return ev.rar === rar && !st.uniques[ev.id] && (!ev.cond || ev.cond(st)); });
+    return c.length ? c[Math.floor(rnd(st) * c.length)] : null;
+  }
+  function lancerSpe(st, ev, kind, extra) {
+    st.evPerso = versEvenement(st, ev, kind, extra); st.evenement = st.evPerso.id; st.uniques[ev.id] = st.t;
+    st.special = kind === "chantier" ? "chantier" : kind === "historique" ? "historique" : ev.rar === "legendaire" ? "legendaire" : ev.rar === "rare" ? "rare" : "politique";
+    if (ev.rar === "rare") stats(st).rares++; else if (ev.rar === "legendaire") stats(st).legendaires++;
+    if (ev.perso && st.persos[ev.perso] == null) { st.persos[ev.perso] = 0; stats(st).persos++; }
+    if (ev.id.indexOf("pigeons") >= 0) stats(st).pigeons++;
+    st.phase = "evenement";
+    return st;
+  }
+  // Incidents de chantier, pannes : construits à partir de la situation réelle
+  function evIncident(st, inc) {
+    var B = BATIMENTS[inc.cid || inc.bid] || {}, ch = st.chantiers.filter(function (c) { return c.id === inc.cid; })[0], nom = B.nom || "", reste = ch ? Math.round(ch.du) : 0;
+    var p15 = Math.round((B.cout || 100) * 0.15), p25 = Math.round((B.cout || 100) * 0.25);
+    if (inc.type === "panne") {
+      var rep = Math.round(B.cout * 0.5);
+      return { titre: "Panne : " + nom.toLowerCase() + " à l’arrêt", desc: "Faute d’entretien (la ville emprunte depuis plusieurs trimestres pour payer ses factures), un équipement « " + nom + " » tombe en panne.",
+        choix: [{ t: "Réparer correctement (" + rep + " M€)", r: "Réparé, et pour longtemps.", e: { bud: -rep } },
+          { t: "Rafistoler (" + p15 + " M€)", r: "Ça tient… pour l’instant.", e: { bud: -p15 }, risque: { p: 0.5, e: { perteBat: inc.bid, pop: -1 }, r: "Le rafistolage lâche : l’équipement ferme définitivement." } },
+          { t: "Laisser fermé", r: "L’équipement ferme. Les habitants du quartier ne sont pas contents.", e: { perteBat: inc.bid, pop: -2 } }] };
+    }
+    if (inc.type === "rallonge") return { titre: "Le chantier " + nom + " réclame une rallonge", desc: "Lancé sans réserves suffisantes, le chantier « " + nom + " » manque d’argent. Les entreprises menacent d’arrêter les travaux.",
+      choix: [{ t: "Payer la rallonge (" + p25 + " M€)", r: "Les travaux reprennent à plein régime.", e: { bud: -p25 } },
+        { t: "Réduire l’ampleur du projet", r: "Le projet sera plus modeste… et moins efficace.", e: { chantier: { reduire: 1 } } },
+        { t: "Suspendre les travaux 4 trimestres", r: "Les grues s’immobilisent. Les riverains respirent, les ouvriers moins.", e: { chantier: { suspendre: 4 }, pop: -2 } }] };
+    if (inc.type === "retard") return { titre: "Retard sur le chantier " + nom, desc: "Le chantier « " + nom + " » prend du retard : intempéries, livraisons bloquées, grue en panne.",
+      choix: [{ t: "Payer pour rattraper le retard (" + p15 + " M€)", r: "Équipes de nuit : le planning est tenu.", e: { bud: -p15 } },
+        { t: "Accepter 2 trimestres de retard", r: "Patience : le projet sera livré plus tard.", e: { chantier: { retard: 2 } } },
+        { t: "Mettre la pression sur les entreprises", r: "Les entreprises promettent de tenir les délais…", e: {}, risque: { p: 0.5, e: { chantier: { retard: 3 } }, r: "Vexées, les entreprises ralentissent encore : 3 trimestres de retard." } }] };
+    if (inc.type === "depassement") return { titre: "Dépassement de budget : " + nom, desc: "Le devis du chantier « " + nom + " » explose. Il reste " + reste + " M€ à payer… et il en faudrait " + p25 + " de plus.",
+      choix: [{ t: "Payer le surcoût (+" + p25 + " M€ étalés)", r: "Le surcoût est absorbé dans les prochaines tranches.", e: { chantier: { cout: p25 } } },
+        { t: "Réduire l’ampleur du projet", r: "Un projet plus modeste, mais dans le budget.", e: { chantier: { reduire: 1 } } },
+        { t: "Renégocier avec les entreprises", r: "Après des semaines de négociation…", e: { chantier: { retard: 1 } }, risque: { p: 0.5, e: { chantier: { cout: p25 } }, r: "La négociation échoue : il faut payer quand même, avec un trimestre de retard." } }] };
+    if (inc.type === "succes") return { titre: "Bonne nouvelle sur le chantier " + nom, desc: "Le chantier « " + nom + " » avance plus vite que prévu. Les équipes sont motivées.",
+      choix: [{ t: "Accélérer encore (" + p15 + " M€)", r: "Deux trimestres d’avance !", e: { bud: -p15, chantier: { avance: 2 } } },
+        { t: "Garder le rythme", r: "Un trimestre d’avance, sans frais.", e: { chantier: { avance: 1 } } },
+        { t: "Organiser une visite publique du chantier", r: "Les Parisiens découvrent le projet. Enthousiasme général.", e: { pop: 2 } }] };
+    return { titre: "Les riverains contre le chantier " + nom, desc: "Une association de riverains manifeste contre le chantier « " + nom + " » : bruit, poussière, circulation.",
+      choix: [{ t: "Négocier des compensations (20 M€)", r: "Les riverains obtiennent des murs anti-bruit. Le calme revient.", e: { bud: -20 } },
+        { t: "Passer en force", r: "Les travaux continuent, sous les huées.", e: { pop: -3 } },
+        { t: "Modifier le projet", r: "Un trimestre de retard, mais des riverains apaisés.", e: { chantier: { retard: 1 }, pop: 1 } }] };
+  }
+  function lancerIncident(st, inc) {
+    var ev = evIncident(st, inc);
+    st.evPerso = { id: "inc-" + st.t, kind: "chantier", cat: "chantier", cid: inc.cid || null, titre: ev.titre, desc: ev.desc, choix: ev.choix };
+    st.evenement = st.evPerso.id; st.special = "chantier"; st.phase = "evenement";
+    return st;
+  }
+
   // ---------- Élection ----------
   function election(st) {
     var pct = Math.max(10, Math.min(90, arrondi(sondage(st) + (rnd(st) - 0.5) * 6)));
@@ -373,14 +543,22 @@
   }
   function faillite(st) {
     st.fin = { gagne: false, raison: { type: "faillite", txt: "Faillite municipale : la ville ne peut plus payer ses dépenses, même en empruntant au maximum autorisé." }, t: st.t };
+    st.phase = "fin"; gagnerObjet(st, "bonnet");
+    leon(st, "faillite");
+  }
+  function finDefi(st) {
+    st.fin = { gagne: true, raison: { type: "defi", txt: "Fin du défi du jour : " + st.scenario.fin + " trimestres se sont écoulés." }, t: st.t };
     st.phase = "fin";
   }
 
   // ---------- Trimestre suivant ----------
   function debutTour(st0, base) {
     if (st0.phase !== "pret" && st0.phase !== "gestion") return st0;    // un dossier attend une décision : rien à rejouer
-    var st = copie(st0), notes = [];
-    st.t++; st.resultat = null; st.evPerso = null; st.special = null; st.evenement = null;
+    if (st0.bj && !st0.bj.fini) return st0;                              // une partie de cartes est en cours
+    var st = copie(st0), notes = [], x = stats(st), dette0 = st.dette;
+    st.t++; st.resultat = null; st.evPerso = null; st.special = null; st.evenement = null; st.pariRes = null;
+    if (st.bj && st.bj.fini) st.bj = null;
+    if (st.offre && st.offre.t < st.t) { st.offre = null; message(st, "📵", "Offre expirée", "Monsieur Valentin est reparti. « Une autre fois, peut-être. »"); }
     var r0 = recettes(st), d0 = depenses(st);
     mouvement(st, r0, "Impôts et recettes de la ville");
     mouvement(st, -d0, "Fonctionnement et entretien des bâtiments");
@@ -388,49 +566,267 @@
     if (st.recurrents.length) mouvement(st, rec, "Engagements récurrents (" + st.recurrents.length + ")");
     st.recurrents = st.recurrents.filter(function (r) { return r.n > 0; });
     if (st.dette > 0) mouvement(st, -arrondi(st.dette * TAUX), "Intérêts de la dette");
+    // Chantiers : une tranche par trimestre, des incidents possibles, l'inauguration au bout
+    var finis = [];
+    st.chantiers.forEach(function (ch) {
+      if (ch.susp) { ch.susp--; return; }
+      var tr = Math.round(ch.du / Math.max(1, ch.reste)); ch.du = arrondi(ch.du - tr); ch.reste--;
+      mouvement(st, -tr, "Chantier : " + BATIMENTS[ch.id].nom);
+      if (ch.reste <= 0) finis.push(ch);
+      else if (!st.incidents.length && rnd(st) < BATIMENTS[ch.id].risque * 0.6) {
+        var r = rnd(st), type = r < 0.3 ? "retard" : r < 0.55 ? "depassement" : r < 0.8 ? "riverains" : "succes";
+        st.incidents.push({ t: st.t, cid: ch.id, type: type });
+      }
+    });
+    finis.forEach(function (ch) { inaugurer(st, ch, notes); });
     var restants = [];
     st.prevus.forEach(function (p) {
       if (p.t <= st.t) { var d = appliquer(st, p.e, p.l); notes.push({ txt: p.txt, d: d }); } else restants.push(p);
     });
     st.prevus = restants;
     // La ville vit : sans entretien, chaque pilier recule ; les bâtiments le tirent vers le haut
-    var c = cible(st);
     PK.forEach(function (k) { st.base[k] = Math.max(P.plancher, Math.round((st.base[k] - niv(st).usure) * 100) / 100); });
-    c = cible(st);
+    var c = cible(st);
     PK.forEach(function (k) { st.piliers[k] = borne(st.piliers[k] + (c[k] - st.piliers[k]) * P.vit); });
     st.eco = borne(st.eco + (50 - st.eco) * 0.05 - Math.max(0, st.taux - 1) * 3);
     st.humeur = arrondi(st.humeur * P.humeurVit);
-    var cib = bonheur(st) * 0.6 + st.coh * 0.2 + 14 - trimMandat(st) * P.usurePop - st.dette / P.detteImpop - (st.coh < 40 ? 4 : 0) - Math.max(0, st.taux - 1) * 30;
+    var cib = bonheur(st) * 0.6 + st.coh * 0.2 + 14 - Math.max(0, trimMandat(st)) * P.usurePop - st.dette / P.detteImpop - (st.coh < 40 ? 4 : 0) - Math.max(0, st.taux - 1) * 30;
     st.pop = borne(st.pop + (cib - st.pop) * P.popVit);
     if (st.meca.ligne) st.coh = borne(st.coh + (50 - st.coh) * 0.03);
+    // Le Palais du Maire fait scandale quand la ville va mal
+    if (st.bat.palais && (st.dette > 800 || bonheur(st) < 45)) { st.pop = borne(st.pop - 0.8); notes.push({ txt: "👑 Le Palais du Maire fait jaser : « Il vit dans le luxe pendant que la ville souffre ! »", d: { pop: -0.8, bon: 0, coh: 0, bud: 0, pil: {} } }); }
+    // Le chaos parisien monte avec le temps (et les bâtiments étranges), et redescend après un événement extraordinaire
+    var chaosBat = 0; Object.keys(st.bat).forEach(function (id) { if (BATIMENTS[id].chaos) chaosBat += BATIMENTS[id].chaos / 10; });
+    st.chaos = Math.min(100, st.chaos + 3 + chaosBat);
     var ok = financement(st); suivre(st);
-    st.rapport = { t: st.t, recettes: r0, depenses: d0, solde: arrondi(r0 - d0 + rec) };
+    if (st.dette > dette0 + 0.5) st.emprunts++; else { st.emprunts = 0; x.trimSansDette++; }
+    st.rapport = { t: st.t, recettes: r0, depenses: d0, solde: arrondi((st.tresor - st.dette) - (st0.tresor - st0.dette)), dette: arrondi(st.dette - dette0) };
     st.notes = notes;
     if (!ok) { faillite(st); return st; }
+    // Léon prévient quand la dette devient dangereuse
+    if (st.dette > 1000 && dette0 <= 1000) leon(st, "detteHaute");
+    // Dernier pari : une proposition risquée quand la ville est au bord du gouffre
+    if (st.meca.pari && !st.offre && st.t >= st.pariCd && st.pariMandat < 2 && (st.dette > PLAFOND_DETTE * 0.55 || (st.tresor < 40 && solde(st) < 0 && st.dette > 200))) {
+      st.offre = { t: st.t, max: pariMise(st) };
+      message(st, "🎩", "Une proposition très risquée", "Monsieur Valentin propose de sauver les finances de la ville. Réponds avant la fin du trimestre.", "pari");
+      leon(st, "pari");
+    }
+    // Entretien négligé : à force d'emprunter pour payer les factures, un équipement finit par lâcher
+    if (st.emprunts >= 3 && !st.incidents.length) {
+      var ids = Object.keys(st.bat).filter(function (id) { var B = BATIMENTS[id]; return !B.projet && !B.secret && st.bat[id] > 0; });
+      if (ids.length >= 2 && rnd(st) < 0.35) st.incidents.push({ t: st.t, bid: ids[Math.floor(rnd(st) * ids.length)], type: "panne" });
+    }
+    // Missions surprises
+    suivreMission(st);
+    if (st.meca.missions && !st.mission && st.t >= 4 && st.t >= st.missionCd && rnd(st) < 0.2) lancerMission(st);
+    // Élection
     if (st.t >= prochaineElection(st)) {
+      st.conditions.forEach(function (cd) {
+        if (st.piliers[cd.k] < cd.v) { st.pop = borne(st.pop - cd.pen); notes.push({ txt: "📜 Le contrat de Gaspard Mallet n’est pas respecté (" + PILIERS[cd.k] + " sous " + cd.v + ") : scandale juste avant le vote !", d: { pop: -cd.pen, bon: 0, coh: 0, bud: 0, pil: {} } }); }
+      });
+      st.conditions = [];
       var el = election(st); st.elections.push(el);
-      if (!el.gagne) { st.fin = { gagne: false, raison: { type: "election", txt: "Les Parisiens ont choisi " + el.opposant + " : tu n’obtiens que " + String(el.pct).replace(".", ",") + " % des voix." }, t: st.t }; st.phase = "fin"; return st; }
-      st.mandat++; st.debutMandat = st.t; st.pop = borne(st.pop + 5);
+      if (!el.gagne) { if (el.pct < 35) gagnerObjet(st, "bonnet"); st.fin = { gagne: false, raison: { type: "election", txt: "Les Parisiens ont choisi " + el.opposant + " : tu n’obtiens que " + String(el.pct).replace(".", ",") + " % des voix." }, t: st.t }; st.phase = "fin"; leon(st, "battu"); return st; }
+      if (st.scenario && st.t >= st.scenario.fin) { finDefi(st); return st; }
+      st.mandat++; st.debutMandat = st.t; st.pop = borne(st.pop + 5); st.pariMandat = 0;
+      if (st.mandat >= 3) gagnerObjet(st, "echarpe");
       if (st.meca.opposant) tirerOpposant(st);
+      leon(st, "reelu");
+      if (bonheur(st) < 50 || st.dette > 1000) x.sauvetage++;
       st.phase = "election"; return st;
     }
+    if (st.scenario && st.t >= st.scenario.fin) { finDefi(st); return st; }
+    if (trimMandat(st) === MANDAT - 2) leon(st, "election");
     return tirerDossier(st, base);
   }
   function continuer(st0, base) { if (st0.phase !== "election") return st0; return tirerDossier(copie(st0), base); }
   function tirerDossier(st, base) {
-    var o = st.opposant, ev = null;
-    if (st.meca.opposant && o && o.actif && trimMandat(st) % 4 === 0 && trimMandat(st) > 0) {
+    var o = st.opposant, ev = null, tm = trimMandat(st);
+    // 1. La catastrophe annoncée le trimestre précédent arrive
+    if (st.alerte && st.alerte.t <= st.t) {
+      st.alerte = null; ev = tirer(st, base, "catastrophe");
+      if (ev) { st.special = "catastrophe"; st.repit = st.t + 6; return lancerOrdinaire(st, ev); }
+    }
+    // 2. L'opposant attaque une fois par an
+    if (st.meca.opposant && o && o.actif && tm % 4 === 0 && tm > 0) {
       st.evPerso = attaque(st); st.evenement = st.evPerso.id; st.special = "opposition"; st.phase = "evenement"; return st;
     }
-    if (st.meca.cata) {
-      var r = rnd(st);
-      if (r < P.cata) { ev = tirer(st, base, "catastrophe"); if (ev) st.special = "catastrophe"; }
-      else if (r < P.cata + P.chance) { ev = tirer(st, base, "chance"); if (ev) st.special = "chance"; }
+    // 3. Les décisions passées reviennent (suites d'événements spéciaux)
+    for (var i = 0; i < st.suitesSpe.length; i++) {
+      var s = st.suitesSpe[i];
+      if (s.t <= st.t && SPE[s.id]) { st.suitesSpe.splice(i, 1); stats(st).hantises++; return lancerSpe(st, SPE[s.id], "suite"); }
     }
-    if (!ev) ev = tirer(st, base);
+    // 4. Chantiers et pannes
+    if (st.incidents.length) { var inc = st.incidents.shift(); return lancerIncident(st, inc); }
+    // 5. Une décision historique par mandat, à mi-parcours
+    if (st.meca.historiques && st.histoMandat < st.mandat && tm === 10) {
+      var dispo = C.HISTORIQUES.filter(function (h) { return !st.uniques[h.id]; });
+      if (dispo.length) { st.histoMandat = st.mandat; leon(st, "historique"); return lancerSpe(st, dispo[Math.floor(rnd(st) * dispo.length)], "historique"); }
+    }
+    // 6. Le chaos parisien : plus il monte, plus l'extraordinaire devient probable
+    var ch = st.chaos, r = rnd(st), pL = ch >= 40 ? 0.006 + ch / 5000 : 0, pR = 0.03 + ch / 800 + (st.bat.coffre ? 0.03 : 0), pP = 0.05;
+    var rar = r < pL ? "legendaire" : r < pL + pR ? "rare" : r < pL + pR + pP ? "politique" : null;
+    if (rar && st.t > 1) {
+      var spe = tirerSpe(st, rar) || (rar === "legendaire" ? tirerSpe(st, "rare") : null);
+      if (spe) { st.chaos = Math.max(0, st.chaos - (rar === "politique" ? 10 : 35)); return lancerSpe(st, spe, "special"); }
+    }
+    // 7. Catastrophes (annoncées un trimestre à l'avance) et coups de chance
+    if (st.meca.cata) {
+      var rc = rnd(st);
+      if (rc < P.cata && st.t >= st.repit && !st.alerte) {
+        st.alerte = { t: st.t + 1 };
+        message(st, "⚠️", "Alerte pour le trimestre prochain", "Les services de la ville s’attendent à un coup dur. Garde de l’argent de côté.");
+        leon(st, "alerte");
+      } else if (rc > 1 - P.chance) { ev = tirer(st, base, "chance"); if (ev) { st.special = "chance"; return lancerOrdinaire(st, ev); } }
+    }
+    return lancerOrdinaire(st, tirer(st, base));
+  }
+  function lancerOrdinaire(st, ev) {
     st.vus[ev.id] = st.t; st.cats.push(ev.cat); if (st.cats.length > 6) st.cats.shift();
     if (st.special === "catastrophe") stats(st).catastrophes++; else if (st.special === "chance") stats(st).chances++;
     st.evenement = ev.id; st.phase = "evenement";
+    return st;
+  }
+
+  // ---------- Projets démesurés ----------
+  function inaugurer(st, ch, notes) {
+    var B = BATIMENTS[ch.id];
+    st.chantiers = st.chantiers.filter(function (c) { return c !== ch; });
+    st.bat[ch.id] = 1; st.ampleur[ch.id] = ch.ampleur;
+    if (B.eco) st.eco = borne(st.eco + B.eco * ch.ampleur);
+    st.pop = borne(st.pop + (B.pop || 0) * ch.ampleur);
+    stats(st).projetsOk++;
+    notes.push({ txt: "✂️ Inauguration : " + B.ico + " " + B.nom + " ! " + (ch.ampleur < 1 ? "(version réduite)" : "Les Parisiens sont venus en foule."), d: { pop: arrondi((B.pop || 0) * ch.ampleur), bon: 0, coh: 0, bud: 0, pil: {} } });
+    message(st, B.ico, "Inauguration : " + B.nom, "Le chantier est terminé. Ses effets s’appliquent dès maintenant.");
+    leon(st, "projetOk");
+    gagnerObjet(st, "casque");
+    verifierCombos(st);
+  }
+
+  // ---------- Combos et missions ----------
+  function verifierCombos(st) {
+    combosActifs(st).forEach(function (id) {
+      if (st.combos.indexOf(id) >= 0) return;
+      st.combos.push(id); stats(st).combos++; st.decouvertes.push({ type: "combo", id: id });
+      message(st, C.COMBOS[id].ico, "Combo découvert : " + C.COMBOS[id].nom, "Ces bâtiments fonctionnent mieux ensemble : bonus permanent.");
+      leon(st, "combo");
+    });
+  }
+  function lancerMission(st) {
+    var b = bonheur(st), ids = Object.keys(C.MISSIONS).filter(function (id) { var m = C.MISSIONS[id]; return !m.si || m.si(st, b); });
+    if (!ids.length) return;
+    var id = ids[Math.floor(rnd(st) * ids.length)], m = C.MISSIONS[id];
+    st.mission = { id: id, debut: st.t, fin: st.t + m.n, d: m.depart(st, PK, combosActifs(st)) };
+    message(st, "🎯", "Mission surprise", m.t + " Récompense : " + m.xp + " XP.");
+    leon(st, "mission");
+  }
+  function suivreMission(st) {
+    var m = st.mission; if (!m) return;
+    var def = C.MISSIONS[m.id], b = bonheur(st), cb = combosActifs(st);
+    if (def.ok(st, m, b, cb)) {
+      st.missionsOk.push({ id: m.id, xp: def.xp }); stats(st).missionsOk++; st.mission = null; st.missionCd = st.t + 4;
+      message(st, "✅", "Mission accomplie !", def.t + " (+" + def.xp + " XP en fin de partie)");
+      leon(st, "missionOk");
+      if (rnd(st) < 0.35) {
+        var o = Object.keys(C.OBJETS).filter(function (k) { return !C.OBJETS[k].secret && st.objets.indexOf(k) < 0 && ["statue", "medaille", "maquette", "carte"].indexOf(k) >= 0; });
+        if (o.length) gagnerObjet(st, o[Math.floor(rnd(st) * o.length)]);
+      }
+    } else if (st.t >= m.fin || (def.echec && def.echec(st, m, b))) {
+      st.mission = null; st.missionCd = st.t + 4;
+      message(st, "❌", "Mission ratée", def.t);
+    }
+  }
+
+  // ---------- Le dernier pari (monnaie fictive du jeu uniquement) ----------
+  // Monsieur Valentin avance la mise : si la ville gagne, elle l'empoche ; si elle perd, elle la lui doit.
+  function pariMise(st) { return Math.max(0, Math.min(niv(st).pariMax, Math.floor((PLAFOND_DETTE - st.dette - 120) / 10) * 10)); }
+  function finPari(st, gain, type, txt) {
+    var x = stats(st);
+    if (gain) { mouvement(st, gain, "Dernier pari (" + type + ")"); }
+    st.offre = null; st.pariCd = st.t + 8; st.pariMandat++;
+    if (type === "blackjack" || type === "roulette") {
+      x.paris++; if (gain > 0) x.pariGain += gain; else if (gain < 0) x.pariPerte += -gain;
+      gagnerObjet(st, "jeton"); leon(st, gain > 0 ? "pariGagne" : gain < 0 ? "pariPerdu" : "pari");
+    } else x.financements = (x.financements || 0) + 1;
+    if (st.dette > PLAFOND_DETTE * 0.55 && gain > 0) x.sauvetage++;
+    st.historique.push({ t: st.t, titre: "🎩 Dernier pari : " + type, choix: txt, d: { pop: 0, bon: 0, coh: 0, bud: gain, pil: {} }, c: "pari" });
+    if (!financement(st)) faillite(st); suivre(st);
+  }
+  function refuserPari(st0) { if (!st0.offre) return st0; var st = copie(st0); st.offre = null; st.pariCd = st.t + 4; message(st, "🙅", "Proposition refusée", "Léon respire. « Vous avez bien fait. »"); return st; }
+  // Blackjack : vrai paquet de 52 cartes mélangé par le moteur, croupier qui tire jusqu'à 17
+  function valeurMain(m) { var t = 0, as = 0; m.forEach(function (c) { var v = c % 13 + 1; if (v === 1) { as++; t += 11; } else t += Math.min(10, v); }); while (t > 21 && as) { t -= 10; as--; } return t; }
+  function bjCommencer(st0, mise) {
+    if (!st0.offre || st0.bj || st0.phase === "fin" || !(mise > 0) || mise > pariMise(st0)) return st0;
+    var st = copie(st0), deck = [];
+    for (var i = 0; i < 52; i++) deck.push(i);
+    for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(rnd(st) * (j + 1)), t = deck[j]; deck[j] = deck[k]; deck[k] = t; }
+    st.bj = { mise: mise, deck: deck, j: [deck.pop(), deck.pop()], c: [deck.pop(), deck.pop()], fini: false, res: null };
+    if (valeurMain(st.bj.j) === 21 || valeurMain(st.bj.c) === 21) resoudreBJ(st);
+    return st;
+  }
+  function bjTirer(st0) {
+    if (!st0.bj || st0.bj.fini) return st0;
+    var st = copie(st0); st.bj.j.push(st.bj.deck.pop());
+    if (valeurMain(st.bj.j) >= 21) jouerCroupier(st);
+    return st;
+  }
+  function bjRester(st0) { if (!st0.bj || st0.bj.fini) return st0; var st = copie(st0); jouerCroupier(st); return st; }
+  function bjDoubler(st0) {
+    if (!st0.bj || st0.bj.fini || st0.bj.j.length !== 2 || st0.bj.mise * 2 > pariMise(st0)) return st0;
+    var st = copie(st0); st.bj.mise *= 2; st.bj.double = true; st.bj.j.push(st.bj.deck.pop()); jouerCroupier(st);
+    return st;
+  }
+  function jouerCroupier(st) {
+    if (valeurMain(st.bj.j) <= 21) while (valeurMain(st.bj.c) < 17) st.bj.c.push(st.bj.deck.pop());
+    resoudreBJ(st);
+  }
+  function resoudreBJ(st) {
+    var b = st.bj, vj = valeurMain(b.j), vc = valeurMain(b.c), nat = vj === 21 && b.j.length === 2, natC = vc === 21 && b.c.length === 2, g, txt;
+    if (nat && !natC) { g = Math.round(b.mise * 1.5); txt = "Blackjack ! La ville empoche " + g + " M€."; }
+    else if (vj > 21) { g = -b.mise; txt = "Tu dépasses 21 (" + vj + ") : la ville doit " + b.mise + " M€ à Monsieur Valentin."; }
+    else if (natC && !nat) { g = -b.mise; txt = "Le croupier a un blackjack : la ville doit " + b.mise + " M€."; }
+    else if (vc > 21 || vj > vc) { g = b.mise; txt = "Gagné (" + vj + " contre " + vc + ") : la ville empoche " + b.mise + " M€ !"; }
+    else if (vj === vc) { g = 0; txt = "Égalité (" + vj + ") : personne ne gagne, personne ne perd."; }
+    else { g = -b.mise; txt = "Perdu (" + vj + " contre " + vc + ") : la ville doit " + b.mise + " M€ à Monsieur Valentin."; }
+    b.fini = true; b.res = { gain: g, txt: txt };
+    finPari(st, g, "blackjack", txt);
+  }
+  // Roulette européenne (0 à 36) : rouge/noir ×2, une douzaine ×3, le zéro ×36. Le moteur tire le numéro avant l'animation.
+  var ROUGES = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
+  function roulette(st0, mise, pari) {
+    if (!st0.offre || st0.bj || st0.phase === "fin" || !(mise > 0) || mise > pariMise(st0) || ["rouge", "noir", "d1", "d2", "d3", "zero"].indexOf(pari) < 0) return st0;
+    var st = copie(st0), n = Math.floor(rnd(st) * 37), rouge = ROUGES.indexOf(n) >= 0;
+    var ok = pari === "zero" ? n === 0 : pari === "rouge" ? n > 0 && rouge : pari === "noir" ? n > 0 && !rouge : n > 0 && Math.ceil(n / 12) === +pari.slice(1);
+    var mult = pari === "zero" ? 36 : pari[0] === "d" ? 3 : 2, g = ok ? mise * (mult - 1) : -mise;
+    if (ok && pari === "zero") stats(st).zero = 1;
+    var txt = "La bille s’arrête sur le " + n + (n ? (rouge ? " rouge" : " noir") : " vert") + ". " + (ok ? "Gagné : la ville empoche " + g + " M€ !" : "Perdu : la ville doit " + mise + " M€ à Monsieur Valentin.");
+    st.pariRes = { type: "roulette", n: n, rouge: rouge, pari: pari, gain: g, txt: txt };
+    finPari(st, g, "roulette", txt);
+    return st;
+  }
+  // L'investisseur mystérieux et le fonds de secours : de l'argent maintenant, une contrepartie affichée avant d'accepter
+  function offresFinancement(st) {
+    var faible = PK.slice().sort(function (a, b) { return st.piliers[a] - st.piliers[b]; })[0], v = Math.min(80, Math.round(st.piliers[faible] + 8));
+    return {
+      investisseur: [
+        { t: "Un don modeste", g: 80, txt: "+80 M€, sans contrepartie." },
+        { t: "Un gros investissement", g: 300, rec: { m: -25, n: 16 }, txt: "+300 M€ maintenant, puis −25 M€ par trimestre pendant 4 ans (400 M€ au total)." },
+        { t: "Un financement colossal", g: 600, cond: { k: faible, v: v, pen: 12 }, txt: "+600 M€, à condition que le pilier " + PILIERS[faible] + " atteigne " + v + " d’ici la prochaine élection. Sinon : scandale, −12 de popularité." }],
+      fonds: [
+        { t: "Accepter le prêt de secours", g: 250, rec: { m: -20, n: 16 }, txt: "+250 M€ maintenant, remboursés 20 M€ par trimestre pendant 4 ans (320 M€)." },
+        { t: "Négocier de meilleures conditions", g: 250, rec: { m: -16, n: 16 }, txt: "Une chance sur deux d’obtenir 250 M€ remboursés 16 M€ par trimestre (256 M€). Sinon, le fonds se retire." }]
+    };
+  }
+  function financer(st0, type, k) {
+    if (!st0.offre || st0.phase === "fin") return st0;
+    var o = offresFinancement(st0)[type]; if (!o || !o[k]) return st0;
+    var st = copie(st0), c = o[k], txt;
+    if (type === "fonds" && k === 1 && rnd(st) < 0.5) { txt = "Le fonds de secours refuse de négocier et se retire."; st.pariRes = { type: type, txt: txt, gain: 0 }; finPari(st, 0, "fonds de secours", txt); return st; }
+    if (c.rec) st.recurrents.push({ id: st.nid++, m: c.rec.m, n: c.rec.n, l: type === "fonds" ? "Remboursement du fonds de secours" : "Remboursement à Gaspard Mallet" });
+    if (c.cond) st.conditions.push(c.cond);
+    txt = c.t + " : " + c.txt;
+    st.pariRes = { type: type, txt: txt, gain: c.g };
+    finPari(st, c.g, type === "fonds" ? "fonds de secours" : "investisseur mystérieux", txt);
     return st;
   }
 
@@ -446,7 +842,7 @@
     if (st.meca.ligne) { var cc = Math.round((3 + o.force / 15) * cher); choix.push({ t: "Mobiliser ton camp pour répondre (−" + cc + " cohérence)", r: "Tes élus montent au créneau : l’attaque est repoussée.", e: { coh: -cc }, k: "mobilise", coh: cc }); }
     choix.push({ t: "Chercher à le faire tomber (−40 M€, une chance sur deux)", r: "", e: { bud: -40 }, k: "nuire" });
     choix.push({ t: "Ne rien faire", r: "Tu laisses passer l’orage. " + o.nom + " en sort renforcé et reviendra.", e: e, k: "subir" });
-    return { id: "opp-" + st.t, cat: "opposition", titre: o.nom + " " + a.titre, attaque: e,
+    return { id: "opp-" + st.t, kind: "opposition", cat: "opposition", titre: o.nom + " " + a.titre, attaque: e,
       desc: a.desc.replace("{nom}", o.nom) + " Influence actuelle : " + Math.round(o.force) + "/100 (" + humeurOpp(o.force) + "). Si tu laisses faire : −" + m + " " + nom + ".", choix: choix };
   }
   function choisirOpposition(st, i) {
@@ -465,17 +861,38 @@
     else extra.push("Influence de " + nom + " : " + Math.round(o.force) + "/100 (" + humeurOpp(o.force) + ").");
     return { d: d, txt: txt, extra: extra };
   }
+  // Événements spéciaux, incidents de chantier, décisions historiques
+  function choisirSpe(st, i) {
+    var ev = st.evPerso, c = ev.choix[i], lib = ev.titre + " : " + c.t, x = stats(st), extra = [], txt = c.r, rate = false;
+    var d = appliquerTout(st, c.e, lib, null, { cid: ev.cid });
+    if (c.risque && rnd(st) < c.risque.p) { d = appliquerTout(st, c.risque.e, lib + " (imprévu)", d, { cid: ev.cid }); txt = c.risque.r; rate = true; }
+    if (c.grandJour) {
+      var infra = (st.bat.musee || 0) + (st.bat.museeMondial ? 2 : 0) + Math.min(3, nbTransports(st)) + (st.bat.jo ? 2 : 0) + (st.bat.seine ? 1 : 0);
+      var q = bonheur(st) / 20 + infra * 0.5 + c.grandJour + rnd(st) * 3; x.grandJour++;
+      if (q >= 6.5) { x.grandJourOk++; d = appliquerTout(st, { bud: 70 * c.grandJour, rec: { m: 4 * c.grandJour, n: 8 }, pop: 2 * c.grandJour, eco: 3 * c.grandJour, objet: "statue" }, lib, d);
+        txt = c.grandJour >= 3 ? "Un triomphe planétaire ! Paris rayonne, les touristes affluent, les recettes explosent." : "Une belle réussite, à la mesure de Paris."; leon(st, "genieOk"); }
+      else { d = appliquerTout(st, { pop: -2 * c.grandJour, chaos: 10 }, lib, d); rate = true;
+        txt = c.grandJour >= 3 ? "Fiasco mondial : files d’attente géantes, transports saturés, fiasco en direct à la télévision." : "Une version modeste… un peu trop modeste. Les médias se moquent."; leon(st, "genieKo"); }
+    }
+    if (c.absurde) { st.chaos = Math.min(100, st.chaos + 8); x.absurdes++; if (!c.grandJour) leon(st, "absurde"); }
+    if (c.genie) { if (rate) { x.genieKo++; leon(st, "genieKo"); } else { x.genieOk++; leon(st, "genieOk"); } }
+    if (ev.kind === "historique") x.historiques = (x.historiques || 0) + 1;
+    if (ev.kind === "historique") extra.push("📜 Décision historique : elle pèsera sur tout le reste de la partie.");
+    var neg = (d.pop || 0) + (d.bon || 0) < 0 || (d.bud || 0) < -100;
+    x.negSerie = neg ? x.negSerie + 1 : 0; x.negSerieMax = Math.max(x.negSerieMax, x.negSerie);
+    return { d: d, txt: txt, extra: extra };
+  }
 
   // ---------- Décision sur le dossier du trimestre ----------
   function choisir(st0, base, i) {
     if (st0.phase !== "evenement") return st0;
     if (st0.evPerso) {
       if (!st0.evPerso.choix[i]) return st0;
-      var so = copie(st0), ro = choisirOpposition(so, i), co = so.evPerso.choix[i];
-      so.historique.push({ t: so.t, titre: so.evPerso.titre, choix: co.t, d: ro.d, sp: "opposition", c: "opposition" });
+      var so = copie(st0), kind = so.evPerso.kind || "opposition", ro = kind === "opposition" ? choisirOpposition(so, i) : choisirSpe(so, i), co = so.evPerso.choix[i];
+      so.historique.push({ t: so.t, titre: so.evPerso.titre, choix: co.t, d: ro.d, sp: so.special || kind, c: kind });
       so.resultat = { i: i, d: ro.d, extra: ro.extra, txt: ro.txt };
       so.phase = "gestion"; so.resultatVu = false;
-      if (!financement(so)) faillite(so); suivre(so);
+      if (!financement(so)) faillite(so); suivre(so); verifierCombos(so); suivreMission(so);
       return so;
     }
     var ev = base.parId[st0.evenement]; if (!ev || !ev.choix[i]) return st0;
@@ -504,37 +921,64 @@
       stats(st).retombees++;
     }
     var x = stats(st); x.cats[ev.cat] = (x.cats[ev.cat] || 0) + 1; x.dossiers++;
+    if (ev.cat === "catastrophe" || ev.cat === "crise") x.crisesOk++;
     if (e && e.bud < 0) x.depenses += -e.bud;
+    var neg = (d.pop || 0) + (d.bon || 0) < 0; x.negSerie = neg ? x.negSerie + 1 : 0; x.negSerieMax = Math.max(x.negSerieMax, x.negSerie);
     st.resultat = { i: i, d: d, surprise: surprise, extra: extra, rec: e && e.rec ? e.rec : null, dif: (c.dif || []).length };
     st.historique.push({ t: st.t, titre: ev.titre, choix: c.t, d: d, sp: st.special || "", c: ev.cat });
     if (st.historique.length > 300) st.historique.splice(0, st.historique.length - 300);
     st.phase = "gestion"; st.resultatVu = false;
-    if (!financement(st)) faillite(st); suivre(st);
+    if (!financement(st)) faillite(st); suivre(st); suivreMission(st);
     return st;
   }
 
   // ---------- Boutique et budget ----------
-  function disponible(st, id) { var B = BATIMENTS[id]; return !!(B && st.meca[TIER_MECA[B.tier]]); }
+  function disponible(st, id) {
+    var B = BATIMENTS[id]; if (!B) return false;
+    if (B.secret) return !!(st.secrets && st.secrets[id]);
+    if (B.projet) return !!st.meca.grandsProjets && (st.nivJ || 99) >= B.niv;
+    return !!st.meca[TIER_MECA[B.tier]];
+  }
+  function enChantier(st, id) { return (st.chantiers || []).some(function (c) { return c.id === id; }); }
   function peutAcheter(st, id) {
     var B = BATIMENTS[id];
     if (!B || st.phase === "fin") return "Impossible pour l’instant.";
-    if (!disponible(st, id)) return "Se débloque plus tard.";
+    if (!disponible(st, id)) return B.projet ? "Se débloque au niveau " + B.niv + "." : "Se débloque plus tard.";
     if (B.unique && st.bat[id]) return "Déjà réalisé.";
-    if (prix(st, id) > st.tresor + (PLAFOND_DETTE - st.dette) * 0.5) return "Pas assez d’argent, même en empruntant.";
+    if (enChantier(st, id)) return "Chantier en cours.";
+    if (B.projet && st.chantiers.length >= 2) return "Deux chantiers à la fois, pas plus.";
+    var px = B.projet ? Math.round(B.cout * 0.3) : prix(st, id);
+    if (px > st.tresor + (PLAFOND_DETTE - st.dette) * 0.5) return "Pas assez d’argent, même en empruntant.";
     return "";
   }
   function acheter(st0, id) {
     if (peutAcheter(st0, id)) return st0;
-    var st = copie(st0), B = BATIMENTS[id], px = prix(st0, id), x = stats(st);
+    var st = copie(st0), B = BATIMENTS[id], x = stats(st);
+    if (B.projet) {
+      // Projet démesuré : 30 % tout de suite, le reste par tranches pendant le chantier
+      var avance = Math.round(B.cout * 0.3);
+      mouvement(st, -avance, "Lancement du chantier : " + B.nom);
+      st.chantiers.push({ id: id, reste: B.duree, du: B.cout - avance, ampleur: 1, susp: 0, debut: st.t });
+      x.investi += B.cout;
+      if (st.tresor < 0) st.incidents.push({ t: st.t + 3, cid: id, type: "rallonge" });   // lancé sans réserves : la facture reviendra
+      st.historique.push({ t: st.t, titre: B.ico + " Chantier lancé : " + B.nom, choix: "Avance de " + avance + " M€, " + B.duree + " trimestres de travaux", d: { pop: 0, bon: 0, coh: 0, bud: -avance, pil: {} }, c: "achat" });
+      st.pop = borne(st.pop + 1);
+      if (!financement(st)) faillite(st); suivre(st);
+      return st;
+    }
+    var px = prix(st0, id);
     st.bat[id] = (st.bat[id] || 0) + 1;
     mouvement(st, -px, B.nom);
     x.achats++; x.bats[id] = (x.bats[id] || 0) + 1; x.investi += px;
+    if (B.secret) x.secretsBatis++;
     if (B.eco) st.eco = borne(st.eco + B.eco);
+    if (B.chaos) st.chaos = Math.min(100, st.chaos + B.chaos);
     var al = st.meca.ligne ? (B.ali && B.ali[LETTRE[st.ligne]]) || 0 : 0;
     if (al) st.coh = borne(st.coh + (al > 0 ? al * 0.5 : al));
     st.pop = borne(st.pop + (B.pop || (px >= 150 ? 1 : 0.3)));
     if (!financement(st)) faillite(st); suivre(st);
     st.historique.push({ t: st.t, titre: B.ico + " " + B.nom, choix: "Acheté pour " + px + " M€", d: { pop: 0, bon: 0, coh: 0, bud: -px, pil: {} }, c: "achat" });
+    verifierCombos(st); suivreMission(st);
     return st;
   }
   function duree(t) { return t < 4 ? t + " trimestre" + (t > 1 ? "s" : "") : String(Math.round(t / 4 * 10) / 10).replace(".", ",") + " ans"; }
@@ -543,34 +987,69 @@
     if (st0.phase === "fin") return st0;
     var st = copie(st0);
     st.fin = { gagne: false, raison: { type: "demission", txt: "Tu as remis ta démission au Conseil de Paris au bout de " + duree(st.t) + "." }, t: st.t };
-    st.phase = "fin"; st.evPerso = null;
+    st.phase = "fin"; st.evPerso = null; st.bj = null; st.offre = null;
     return st;
   }
   function regler(st0, o) {
-    if (st0.phase === "fin" || !st0.meca.budget) return st0;
+    if (st0.phase === "fin" || !st0.meca.budget || (st0.scenario && st0.scenario.tauxBloque)) return st0;
     var st = copie(st0);
     if (o.taux != null) st.taux = Math.max(0.8, Math.min(1.3, Math.round(o.taux * 100) / 100));
     return st;
   }
+  // L'interface récupère ici les découvertes (objets, secrets, combos) pour les ranger dans le profil du joueur
+  function viderDecouvertes(st0) { if (!st0.decouvertes || !st0.decouvertes.length) return st0; var st = copie(st0); st.decouvertes = []; return st; }
 
   // ---------- Reprise d'une sauvegarde ----------
   function reprendre(st0, base) {
+    st0 = migrer(copie(st0));
     if (st0.phase !== "evenement" || st0.evPerso || base.parId[st0.evenement]) return st0;
     var st = copie(st0), ev = tirer(st, base);
     st.vus[ev.id] = st.t; st.evenement = ev.id; st.special = null;
     return st;
   }
 
-  // ---------- Bilan et explications ----------
+  // ---------- Bilan, explications et récit de la partie ----------
+  function scoreDefi(st) {
+    if (!st.scenario) return null;
+    if (st.fin && st.fin.raison.type === "faillite") return 0;
+    var d = C.DEFIS_JOUR.filter(function (x) { return x.id === st.scenario.id; })[0];
+    return d ? Math.max(0, d.score(st, bonheur(st))) : 0;
+  }
   function bilan(st) {
-    var gagnes = st.elections.filter(function (e) { return e.gagne; }).length, t = st.fin ? st.fin.t : st.t;
-    var score = Math.round(t * 12 + gagnes * 150 + bonheur(st) * 2 + stats(st).achats * 3 + Math.max(-100, Math.min(100, (st.tresor - st.dette) / 10)));
-    var poids = st.historique.filter(function (h) { return h.c !== "achat"; }).map(function (h) { return { t: h.t, titre: h.titre, choix: h.choix, v: h.d.pop + h.d.bon }; })
+    var gagnes = st.elections.filter(function (e) { return e.gagne; }).length, t = st.fin ? st.fin.t : st.t, x = stats(st);
+    var score = Math.round(t * 12 + gagnes * 150 + bonheur(st) * 2 + x.achats * 3 + x.projetsOk * 40 + (st.missionsOk || []).length * 15 + Math.max(-100, Math.min(100, (st.tresor - st.dette) / 10)));
+    var poids = st.historique.filter(function (h) { return h.c !== "achat" && h.c !== "pari"; }).map(function (h) { return { t: h.t, titre: h.titre, choix: h.choix, v: h.d.pop + h.d.bon }; })
       .sort(function (a, b) { return a.v - b.v; });
-    return { score: Math.max(0, score), mandats: gagnes, t: t, annees: t / 4, bonheur: bonheur(st), pires: poids.slice(0, 5), meilleures: poids.slice(-5).reverse() };
+    return { score: st.scenario ? scoreDefi(st) : Math.max(0, score), mandats: gagnes, t: t, annees: t / 4, bonheur: bonheur(st), pires: poids.slice(0, 5), meilleures: poids.slice(-5).reverse(),
+      stats: x, objets: st.objets.slice(), combos: st.combos.slice(), recit: recit(st) };
+  }
+  // Un résumé à raconter, construit uniquement à partir de ce qui s'est vraiment passé dans la partie
+  function recit(st) {
+    var x = stats(st), t = st.fin ? st.fin.t : st.t, gagnes = st.elections.filter(function (e) { return e.gagne; }).length, p = [];
+    var top = Object.keys(x.bats).sort(function (a, b) { return x.bats[b] - x.bats[a]; })[0];
+    p.push("Après " + t + " trimestre" + (t > 1 ? "s" : "") + " à l’Hôtel de Ville" + (gagnes ? " et " + gagnes + " réélection" + (gagnes > 1 ? "s" : "") : "") + ", ton aventure s’achève sur un bilan " + (gagnes >= 2 ? "remarquable" : gagnes ? "honorable" : "mouvementé") + ".");
+    var faits = [];
+    if (top && x.bats[top] >= 3) faits.push("construit " + x.bats[top] + " × « " + BATIMENTS[top].nom.toLowerCase() + " »");
+    if (x.projetsOk) faits.push("inauguré " + x.projetsOk + " projet" + (x.projetsOk > 1 ? "s" : "") + " démesuré" + (x.projetsOk > 1 ? "s" : ""));
+    if (x.crisesOk) faits.push("traversé " + x.crisesOk + " crise" + (x.crisesOk > 1 ? "s" : ""));
+    if (x.combos) faits.push("découvert " + x.combos + " combo" + (x.combos > 1 ? "s" : "") + " de bâtiments");
+    if (x.secretsBatis) faits.push("bâti " + x.secretsBatis + " bâtiment" + (x.secretsBatis > 1 ? "s" : "") + " secret" + (x.secretsBatis > 1 ? "s" : ""));
+    if (x.elimines) faits.push("poussé " + x.elimines + " opposant" + (x.elimines > 1 ? "s" : "") + " à renoncer");
+    if (faits.length) p.push("En chemin, tu as " + faits.slice(0, 4).join(", ").replace(/, ([^,]*)$/, " et $1") + ".");
+    if (x.paris) p.push(x.pariGain > x.pariPerte ? "Monsieur Valentin se souvient encore de toi : tu lui as pris " + Math.round(x.pariGain - x.pariPerte) + " M€ au dernier pari." : "Le dernier pari a coûté " + Math.round(x.pariPerte - x.pariGain) + " M€ à la ville. La maison gagne toujours.");
+    if (x.pigeons >= 2) p.push("Les pigeons de Paris te doivent beaucoup.");
+    if (x.absurdes >= 3) p.push("Léon a refusé d’inscrire " + x.absurdes + " de tes décisions au compte rendu officiel.");
+    if (x.legendaires) p.push("Tu as vécu " + x.legendaires + " événement" + (x.legendaires > 1 ? "s" : "") + " légendaire" + (x.legendaires > 1 ? "s" : "") + ".");
+    if (st.fin) {
+      var r = st.fin.raison.type;
+      p.push(r === "election" ? (st.dette > 600 ? "Malgré ces résultats, la dette a fragilisé ta dernière campagne." : "Mais les Parisiens ont fini par vouloir changer de maire.") :
+        r === "faillite" ? "Hélas, la ville a fait faillite avec " + Math.round(st.dette) + " M€ de dette." :
+        r === "demission" ? "Tu as préféré rendre ton écharpe avant la fin." : "Défi terminé : il ne reste plus qu’à comparer ton score.");
+    }
+    return p.join(" ");
   }
   function analyse(st) {
-    if (!st.fin || st.fin.raison.type === "demission") return null;
+    if (!st.fin || st.fin.raison.type === "demission" || st.fin.raison.type === "defi") return null;
     if (st.fin.raison.type === "election") {
       var el = st.elections[st.elections.length - 1], o = opposant(st), raisons = [];
       if (st.pop < 50) raisons.push("ta popularité (" + Math.round(st.pop) + ") était trop basse");
@@ -602,12 +1081,14 @@
   }
 
   var API = { MANDAT: MANDAT, PLAFOND_DETTE: PLAFOND_DETTE, TAUX: TAUX, P: P, NIVEAUX: NIVEAUX, PILIERS: PILIERS, ICO: ICO, DOMAINES: DOMAINES,
-    MECANIQUES: MECANIQUES, mecaniques: mecaniques, BATIMENTS: BATIMENTS, OPPOSANTS: OPPOSANTS, SEUIL_OPP: SEUIL_OPP, LIGNES: LIGNES, CATS: CATS,
-    FAMILLE: FAMILLE, SPECIAUX: SPECIAUX,
-    nouvellePartie: nouvellePartie, debutTour: debutTour, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
-    disponible: disponible, prix: prix, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, valider: valider, indexer: indexer,
-    engagements: engagements, evenementCourant: evenementCourant, stats: stats, opposant: opposant, humeurOpp: humeurOpp, bonheur: bonheur,
+    MECANIQUES: MECANIQUES, EXTRAS: EXTRAS, mecaniques: mecaniques, BATIMENTS: BATIMENTS, OPPOSANTS: OPPOSANTS, SEUIL_OPP: SEUIL_OPP, LIGNES: LIGNES, CATS: CATS,
+    FAMILLE: FAMILLE, SPECIAUX: SPECIAUX, C: C,
+    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
+    disponible: disponible, enChantier: enChantier, prix: prix, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, recit: recit,
+    valider: valider, indexer: indexer, engagements: engagements, evenementCourant: evenementCourant, stats: stats, opposant: opposant, humeurOpp: humeurOpp, bonheur: bonheur,
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
-    prochaineElection: prochaineElection, promessesTenues: promessesTenues };
+    prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
+    pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
+    roulette: roulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.Maire = API;
 })(this);
