@@ -181,9 +181,9 @@ const bornes = [
   ["moyen : jouer au hasard gagne entre 15 % et 65 % des parties", T.moyen["hasard"].gagne >= 0.15 && T.moyen["hasard"].gagne <= 0.65],
   ["moyen : un joueur réfléchi gagne au moins 80 % des parties", T.moyen["réfléchi"].gagne >= 0.8],
   ["moyen : ignorer le budget mène parfois à la faillite (≥ 5 %)", T.moyen["dépensier"].faillite >= 0.05],
-  ["difficile : jouer au hasard gagne moins de 10 % des parties", T.difficile["hasard"].gagne < 0.1],
-  ["difficile : un joueur réfléchi gagne entre 50 % et 90 % des parties", T.difficile["réfléchi"].gagne >= 0.5 && T.difficile["réfléchi"].gagne <= 0.9],
-  ["difficile : ignorer le budget mène souvent à la faillite (≥ 20 %)", T.difficile["dépensier"].faillite >= 0.2],
+  ["réaliste : jouer au hasard gagne moins de 10 % des parties", T.difficile["hasard"].gagne < 0.1],
+  ["réaliste : un joueur réfléchi gagne entre 50 % et 90 % des parties", T.difficile["réfléchi"].gagne >= 0.5 && T.difficile["réfléchi"].gagne <= 0.9],
+  ["réaliste : ignorer le budget mène souvent à la faillite (≥ 20 %)", T.difficile["dépensier"].faillite >= 0.2],
 ];
 let echec = 0;
 for (const [t, v] of bornes) { console.log((v ? "  ✓ " : "  ✗ ") + t); if (!v) echec++; }

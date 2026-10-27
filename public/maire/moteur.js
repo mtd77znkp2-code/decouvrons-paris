@@ -32,13 +32,13 @@
   // Événements spéciaux, hors des 12 catégories : 3 catastrophes par partie, et une chance sur deux d'avoir un coup de chance
   var SPECIAUX = { catastrophe: "Catastrophe", chance: "Coup de chance" };
   var NB_CATASTROPHES = 3, PROBA_CHANCE = 0.5;
-  // Niveaux de difficulté : le niveau moyen correspond aux réglages ci-dessus, les autres les ajustent
+  // Niveaux de difficulté (le niveau « difficile » s'affiche « Réaliste ») : le niveau moyen correspond aux réglages ci-dessus, les autres les ajustent
   var NIVEAUX = {
     facile: { nom: "Facile", txt: "Finances plus souples, moins d’usure du pouvoir, 2 catastrophes.",
       seuil: 28, tresor: 1200, depenses: 205, usure: 0.19, probleme: 3.5, catastrophes: 2 },
     moyen: { nom: "Moyen", txt: "L’équilibre classique : 3 catastrophes, popularité et bonheur au-dessus de 30.",
       seuil: SEUIL, tresor: DEPART.tresor, depenses: FONCT.depenses, usure: P.usure, probleme: P.probleme, catastrophes: NB_CATASTROPHES },
-    difficile: { nom: "Difficile", txt: "Caisses plus vides, Parisiens plus exigeants, 4 catastrophes.",
+    difficile: { nom: "Réaliste", txt: "Caisses plus vides, Parisiens plus exigeants, 4 catastrophes.",
       seuil: 32, tresor: 800, depenses: 211, usure: 0.27, probleme: 4.2, catastrophes: 4 }
   };
   function niv(st) { return NIVEAUX[st && st.niveau] || NIVEAUX.moyen; }   // anciennes sauvegardes : niveau moyen

@@ -73,7 +73,7 @@
     var regles = h("details", "m-regles");
     regles.innerHTML = "<summary>Règles du jeu</summary><ul>" +
       "<li><b>Trois niveaux</b>, chacun avec son classement : " + Object.keys(M.NIVEAUX).map(function (k) { return "<b>" + M.NIVEAUX[k].nom + "</b> (" + M.NIVEAUX[k].txt.replace(/\.$/, "") + ")"; }).join(", ") + ".</li>" +
-      "<li><b>Popularité</b> et <b>bonheur</b> ne doivent jamais passer sous <b>30</b> (28 en facile, 32 en difficile).</li>" +
+      "<li><b>Popularité</b> et <b>bonheur</b> ne doivent jamais passer sous <b>30</b> (28 en facile, 32 en réaliste).</li>" +
       "<li>Le <b>budget</b> part d’un milliard d’euros. Tu peux t’endetter jusqu’à " + argent(M.PLAFOND_DETTE) + " ; au-delà, c’est la faillite.</li>" +
       "<li>La <b>cohérence politique</b> mesure ta fidélité à ta ligne. Trop de reniements et ton camp te lâche.</li>" +
       "<li>Les effets annoncés varient un peu : certaines décisions coûtent chaque semaine, d’autres ont des conséquences plus tard.</li>" +
