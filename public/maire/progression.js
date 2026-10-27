@@ -1,5 +1,5 @@
 // Maire de Paris : progression du joueur. XP et niveaux (qui débloquent les mécaniques du jeu), l'histoire racontée
-// par Léon en 9 chapitres, les tutoriels, 100 succès, le défi du jour et 3 quêtes du jour.
+// par Léon en 9 chapitres, le guide intégré au jeu, 100 succès, le défi du jour et 3 quêtes du jour.
 // Tout est calculé à partir du bilan d'une partie terminée ; le profil est gardé dans le navigateur.
 (function (root) {
   "use strict";
@@ -33,43 +33,25 @@
   }
 
   // ---------- L'histoire : un chapitre par mécanique débloquée ----------
-  // titre, récit de Léon (ton directeur de cabinet), étapes du tutoriel, objectif du chapitre (récompensé une fois)
+  // titre, phrase de Léon (ton directeur de cabinet), objectif du chapitre (récompensé une fois)
   var HISTOIRE = {
-    base: { num: 1, titre: "Le premier jour", recit: "Bienvenue à l’Hôtel de Ville ! Je suis Léon, ton directeur de cabinet. Les Parisiens t’ont élu de justesse, sur une promesse : rendre Paris plus agréable à vivre d’ici 2040. À nous de leur prouver qu’ils ont eu raison.",
-      etapes: ["📅 Chaque clic sur « Trimestre suivant » fait passer 3 mois. Les impôts rentrent, la ville dépense pour fonctionner.",
-        "📂 Chaque trimestre, un dossier arrive sur ton bureau : choisis une réponse. Certaines coûtent de l’argent, d’autres font plaisir… ou fâchent.",
-        "🛒 Avec ta trésorerie, achète des bâtiments dans la boutique. Chacun fait monter un des 4 piliers : 🏠 Logement, 🚇 Transports, 🌳 Cadre de vie, 🛡️ Sécurité.",
-        "😊 Le bonheur des Parisiens, c’est la moyenne des 4 piliers. Sans investissement, ils baissent un peu chaque trimestre.",
-        "🗳️ Tous les 6 ans (24 trimestres), l’élection. Le sondage en haut de l’écran te dit où tu en es : il te faut plus de 50 %."],
+    base: { num: 1, titre: "Le premier jour", recit: "Bienvenue ! Je suis Léon, ton directeur de cabinet. Ensemble, rendons Paris plus agréable d’ici 2040.",
       objectif: "Gagne ta première élection.", ok: function (R) { return R.mandats >= 1; } },
-    budget: { num: 2, titre: "Le nerf de la guerre", recit: "Bonne nouvelle : le Conseil de Paris te laisse désormais fixer les impôts locaux. C’est le nerf de la guerre… mais les Parisiens surveillent leur feuille d’impôts.",
-      etapes: ["💶 Dans la partie Budget, le curseur « Impôts » va de 80 % à 130 %.", "⬆️ Plus d’impôts : plus d’argent pour acheter, mais la popularité et le logement en pâtissent.",
-        "🏦 Si la trésorerie passe sous zéro, la ville emprunte. Au-delà de 1,5 milliard de dette, c’est la faillite et la partie s’arrête."],
+    budget: { num: 2, titre: "Le nerf de la guerre", recit: "Le Conseil te laisse fixer les impôts : à manier avec précaution !",
       objectif: "Gagne une élection sans aucune dette.", ok: function (R) { return R.el.some(function (e) { return e.dette === 0; }); } },
-    opposant: { num: 3, titre: "L’opposition se réveille", recit: "Ton succès agace. Un adversaire va se dresser contre toi à chaque mandat : on le découvre à la roulette, et il ne lâchera rien.",
-      etapes: ["🎰 En début de mandat, une roulette tire ton opposant. Son influence (sur 100) pèse sur le sondage.",
-        "⚔️ Une fois par an, il attaque. Tu peux riposter (ça coûte de l’argent), tenter de le faire tomber (une chance sur deux) ou ne rien faire : il revient alors plus fort.",
-        "🏳️ Si son influence passe sous 15, il renonce jusqu’à la prochaine élection."],
+    opposant: { num: 3, titre: "L’opposition se réveille", recit: "Ton succès agace : un adversaire se dresse contre toi.",
       objectif: "Pousse un opposant à renoncer.", ok: function (R) { return R.x.elimines >= 1; } },
-    boutique2: { num: 4, titre: "Voir plus grand", recit: "Les Parisiens commencent à te faire confiance. Les services techniques te proposent de nouveaux équipements, plus chers mais plus efficaces. Et le niveau Moyen t’est ouvert.",
-      etapes: ["🏫 Nouveaux bâtiments : école, ligne de tramway, brigade de propreté et marché couvert.",
-        "🧺 Le marché couvert rapporte de l’argent chaque trimestre : pratique pour financer le reste.", "🎚️ Le niveau Moyen est débloqué, avec son propre classement."],
+    boutique2: { num: 4, titre: "Voir plus grand", recit: "Les services techniques te proposent de nouveaux équipements.",
       objectif: "Gagne une élection en Moyen.", ok: function (R) { return R.mandats >= 1 && R.rang >= 1; } },
-    cata: { num: 5, titre: "Paris face aux éléments", recit: "Crues, incendies, pannes géantes… Une capitale vit aussi des coups durs. Et parfois, de vrais coups de chance.",
-      etapes: ["🚨 Des catastrophes peuvent tomber n’importe quel trimestre : garde toujours un peu d’argent de côté.", "🍀 Des coups de chance arrivent aussi au hasard : sache en profiter."],
+    cata: { num: 5, titre: "Paris face aux éléments", recit: "Crues, incendies, pannes géantes… Paris doit être prête à tout.",
       objectif: "Gagne une élection après avoir affronté une catastrophe.", ok: function (R) { return R.mandats >= 1 && R.x.catastrophes >= 1; } },
-    promesses: { num: 6, titre: "Tenir parole", recit: "Cette fois, tu fais campagne sur deux promesses. Les Parisiens s’en souviendront le jour du vote.",
-      etapes: ["🎯 En début de partie, choisis deux piliers à promettre.", "✅ Le jour de l’élection, chaque promesse tenue (pilier à 60 ou plus) te rapporte des voix ; aucune promesse tenue en fait perdre."],
+    promesses: { num: 6, titre: "Tenir parole", recit: "Cette fois, tu fais campagne sur deux promesses.",
       objectif: "Gagne une élection en tenant tes deux promesses.", ok: function (R) { return R.el.some(function (e) { return e.amb.length === 2; }); } },
-    ligne: { num: 7, titre: "Garder le cap", recit: "Ton camp politique attend que tu restes fidèle à tes idées. Gauche, centre, droite ou écologie : à toi de choisir… et de t’y tenir.",
-      etapes: ["🧭 Choisis ta ligne politique en début de partie.", "📏 Chaque dossier et chaque bâtiment plaît ou déplaît à ton camp : c’est ta cohérence.",
-        "🤝 Une cohérence élevée soutient ta popularité, et tu peux mobiliser ton camp contre l’opposant."],
+    ligne: { num: 7, titre: "Garder le cap", recit: "Ton camp attend que tu restes fidèle à tes idées.",
       objectif: "Gagne une élection avec une cohérence d’au moins 70.", ok: function (R) { return R.el.some(function (e) { return e.coh >= 70; }); } },
-    boutique3: { num: 8, titre: "Les grands chantiers", recit: "Paris voit grand. Métro, hôpital, écoquartier, grand musée : les grands équipements sont à ta portée. Le niveau Réaliste et le défi du jour aussi.",
-      etapes: ["🚇 Nouveaux équipements : station de métro, hôpital, écoquartier et grand musée.", "🎚️ Le niveau Réaliste est débloqué.", "🎯 Le défi du jour t’attend chaque jour sur l’accueil."],
+    boutique3: { num: 8, titre: "Les grands chantiers", recit: "Paris voit grand : métro, hôpital, écoquartier…",
       objectif: "Gagne une élection en Réaliste.", ok: function (R) { return R.mandats >= 1 && R.rang >= 2; } },
-    projets: { num: 9, titre: "Paris 2040", recit: "Nous y sommes. Les trois grands projets qui changeront Paris pour toujours sont sur la table. Réalise-les et ton nom restera dans l’histoire.",
-      etapes: ["🏟️ Village olympique, 🚄 Grand Paris Express, 🏊 Seine baignable : très chers, mais immenses.", "🏆 Les trois réunis dans une même partie, c’est la légende."],
+    projets: { num: 9, titre: "Paris 2040", recit: "Les trois grands projets de Paris 2040 sont sur la table.",
       objectif: "Réalise les trois grands projets de Paris 2040 dans une même partie.", ok: function (R) { return R.bat.jo && R.bat.gpe && R.bat.seine; } }
   };
 
@@ -93,8 +75,9 @@
   // Réservé à l'administrateur : se placer directement à un niveau (les tutoriels déjà vus restent vus)
   function fixerNiveau(n) { var P = lire(); P.xp = xpPour(Math.max(1, Math.min(NIV_MAX, n))); ecrire(P); return P; }
   function oublierTutos() { var P = lire(); P.tutos = {}; ecrire(P); }
-  function tutosAVoir(M) { var P = lire(), n = niveau(P.xp).n; return M.MECANIQUES.filter(function (m) { return n >= m.niv && !P.tutos[m.id]; }).map(function (m) { return m.id; }); }
-  function tutoVu(id) { var P = lire(); P.tutos[id] = 1; ecrire(P); }
+  // Le guide du jeu (bulles qui montrent quoi faire) : chaque séquence ne s'affiche qu'une fois
+  function guideVu(id) { return !!lire().tutos[id]; }
+  function marquerGuide(id) { var P = lire(); P.tutos[id] = 1; ecrire(P); }
   function chapitre(M, n) { var c = null; M.MECANIQUES.forEach(function (m) { if (n >= m.niv) c = m.id; }); return c; }
 
   // ---------- Résumé d'une partie terminée ----------
@@ -284,7 +267,7 @@
   }
 
   var API = { jour: jour, niveau: niveau, xpPour: xpPour, lire: lire, ecrire: ecrire, profilVide: profilVide, resume: resume, terminer: terminer,
-    nivJoueur: nivJoueur, fixerNiveau: fixerNiveau, oublierTutos: oublierTutos, tutosAVoir: tutosAVoir, tutoVu: tutoVu, chapitre: chapitre,
+    nivJoueur: nivJoueur, fixerNiveau: fixerNiveau, oublierTutos: oublierTutos, guideVu: guideVu, marquerGuide: marquerGuide, chapitre: chapitre,
     HISTOIRE: HISTOIRE, quetesDuJour: quetesDuJour, queteFaite: queteFaite, TYPES_QUETES: Object.keys(QUETE), defiDuJour: defiDuJour,
     SUCCES: S, XP_TIER: XP_TIER, NOM_NIV: NOM_NIV, TITRES: TITRES, NIV_DEFI: NIV_DEFI, NIV_QUETES: NIV_QUETES, NIV_MAX: NIV_MAX };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.MaireProg = API;

@@ -120,7 +120,7 @@ test("faillite quand la dette dépasse le plafond", () => {
 
 test("progression : niveaux, chapitres, 100 succès, 400 quêtes adaptées au niveau, défi du jour", () => {
   assert.equal(G.SUCCES.length, 100); assert.equal(new Set(G.SUCCES.map(x => x.id)).size, 100);
-  M.MECANIQUES.forEach(m => { const c = G.HISTOIRE[m.id]; assert.ok(c && c.etapes.length && c.objectif && c.recit, m.id); });
+  M.MECANIQUES.forEach(m => { const c = G.HISTOIRE[m.id]; assert.ok(c && c.objectif && c.recit, m.id); });
   const Q = JSON.parse(readFileSync(new URL("quetes.json", DATA)));
   assert.equal(Q.length, 400); assert.equal(new Set(Q.map(q => q.id)).size, 400); assert.equal(new Set(Q.map(q => q.t)).size, 400);
   for (const q of Q) { assert.ok(G.TYPES_QUETES.includes(q.k), q.id + " : type " + q.k); assert.ok(q.xp >= 10 && q.xp <= 300, q.id + " : xp"); }

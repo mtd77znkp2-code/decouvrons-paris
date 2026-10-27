@@ -1,5 +1,6 @@
 // Maire de Paris : interface du jeu, chargée à la demande. La logique est dans moteur.js,
-// la progression du joueur (niveaux, histoire, tutoriels, succès, quêtes, défi du jour) dans progression.js.
+// la progression du joueur (niveaux, histoire, succès, quêtes, défi du jour) dans progression.js.
+// Pas de tutoriel à lire : un guide montre, au bon moment, l'élément à utiliser avec une bulle d'une ligne.
 (function () {
   "use strict";
   var M = window.Maire, G = window.MaireProg, QUETES = null, CLE = "maire_partie_v3", MIN_EVTS = 600;
@@ -104,7 +105,7 @@
       var a = h("div", "m-admin"), sel = h("select");
       for (var k = 1; k <= G.NIV_MAX; k++) { var o = h("option", null, "Niveau " + k); o.value = k; if (k === n.n) o.selected = true; sel.appendChild(o); }
       sel.onchange = function () { G.fixerNiveau(+sel.value); accueil(); };
-      ajout(a, h("span", null, "🛠 Admin : se placer au"), sel, bouton("Revoir les tutoriels", "btn m-sec", function () { G.oublierTutos(); alert("Les tutoriels réapparaîtront à la prochaine partie."); }));
+      ajout(a, h("span", null, "🛠 Admin : se placer au"), sel, bouton("Revoir le guide", "btn m-sec", function () { G.oublierTutos(); alert("Le guide réapparaîtra dans ta prochaine partie."); }));
       c.appendChild(a);
     }
     return c;
@@ -202,6 +203,7 @@
     var go = bouton("Prendre mes fonctions", "btn m-go", demarrer), msg = h("p", "msg m-msg");
     var bas = h("div", "m-bas"); ajout(bas, bouton("Retour", "btn m-sec", accueil), go);
     box.appendChild(bas); box.appendChild(msg);
+    setTimeout(function () { guide("creation"); }, 50);
     function maj() {
       var ok = CHOIX.ligne && (!m.promesses || CHOIX.amb.length === 2);
       go.disabled = !ok;
@@ -216,35 +218,11 @@
       sauver(); demarrerPartie();
     }).catch(function () { alert("Impossible de charger les dossiers. Vérifie ta connexion et réessaie."); accueil(); });
   }
-  // Tutoriels des mécaniques pas encore vues, puis roulette de l'opposant (s'il est débloqué), puis le premier trimestre
+  // Roulette de l'opposant (s'il est débloqué), puis le premier trimestre ; le guide prend le relais dans le jeu
   function demarrerPartie() {
     choixNiveau(st.niveau, true);
-    var a = G.tutosAVoir(M).filter(function (id) { return st.meca[id]; });
-    if (a.length) return tutoriel(a[0], demarrerPartie);
     if (st.meca.opposant && st.t === 0) return roulette();
     st = M.debutTour(st, BASE); sauver(); jeu(); haut();
-  }
-  function tutoriel(id, ensuite) {
-    var c = G.HISTOIRE[id], etape = 0;
-    fermerModale();
-    var pop = h("div", "m-pop m-pop-tuto"); pop.id = "m-modale"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "true");
-    var cadre = h("div", "m-pop-in"), carte = h("article", "m-dossier m-tuto");
-    cadre.appendChild(carte); pop.appendChild(cadre); (document.getElementById("g-maire") || document.body).appendChild(pop);
-    document.body.classList.add("m-modal");
-    function dessin() {
-      carte.innerHTML = "";
-      carte.appendChild(h("p", "m-cat", id === "base" ? "Chapitre 1 · Bienvenue" : "🔓 Nouveau · Chapitre " + c.num));
-      carte.appendChild(h("h4", null, c.titre));
-      if (etape === 0) carte.appendChild(ajout(h("div", "m-leon m-leon-clair"), h("span", "m-leon-ico", "🧑‍💼"), h("p", null, "« " + c.recit + " »")));
-      else carte.appendChild(h("p", "m-tuto-etape", c.etapes[etape - 1]));
-      var pts = h("div", "m-points"); for (var i = 0; i <= c.etapes.length; i++) pts.appendChild(h("i", i === etape ? "on" : ""));
-      carte.appendChild(pts);
-      if (etape === c.etapes.length) carte.appendChild(h("p", "m-chap-obj", "🎯 Objectif du chapitre : " + c.objectif + " (+200 XP)"));
-      carte.appendChild(bouton(etape < c.etapes.length ? "Suivant →" : "C’est parti !", "btn m-go", function () {
-        if (etape < c.etapes.length) { etape++; dessin(); } else { G.tutoVu(id); fermerModale(); ensuite(); }
-      }));
-    }
-    dessin();
   }
   function reprise() {
     var s = lireSauvegarde(); if (!s) return accueil();
@@ -299,6 +277,7 @@
     box.appendChild(barreTrimestre());
     box.style.minHeight = ""; window.scrollTo(0, y);
     modale();
+    guide(document.getElementById("m-modale") ? "modale" : "jeu");
   }
   function entete() {
     var d = h("div", "m-entete"), reste = M.prochaineElection(st) - st.t;
@@ -321,7 +300,7 @@
     ajout(t, tuile("💰 Trésorerie", argent(st.tresor), (so >= 0 ? "+" : "") + argent(so) + " / trimestre" + (st.dette > 0 ? " · dette " + argent(st.dette) : ""), st.dette > M.PLAFOND_DETTE * 0.6),
       tuile("😊 Bonheur", String(Math.round(M.bonheur(st))), "moyenne des 4 piliers", M.bonheur(st) < 40),
       tuile("📣 Popularité", String(Math.round(st.pop)), "s’use avec le temps", st.pop < 40));
-    if (st.meca.ligne) t.appendChild(tuile("🧭 Cohérence", String(Math.round(st.coh)), "ligne " + M.LIGNES[st.ligne].nom, st.coh < 40));
+    if (st.meca.ligne) { var tc = tuile("🧭 Cohérence", String(Math.round(st.coh)), "ligne " + M.LIGNES[st.ligne].nom, st.coh < 40); tc.classList.add("m-jauge-coh"); t.appendChild(tc); }
     return t;
   }
   function piliers() {
@@ -362,13 +341,15 @@
       var gain = Object.keys(B.e).map(function (k) { return "+" + virg(B.e[k] * M.P.gain * Math.pow(M.P.rendement, deja)) + " " + M.ICO[k]; });
       if (B.rev) gain.push("+" + argent(B.rev) + "/trim.");
       if (B.pop) gain.push("+" + B.pop + " popularité");
-      var b = bouton("", "m-bat" + (B.tier === 4 ? " m-bat-projet" : ""), function () {
+      var neuf = B.tier > 1 && !G.guideVu("bat-" + id);
+      var b = bouton("", "m-bat" + (B.tier === 4 ? " m-bat-projet" : "") + (neuf ? " m-new" : ""), function () {
         if (M.peutAcheter(st, id)) return;
-        st = M.acheter(st, id); sauver(); jeu(); toast(B.ico + " " + B.nom + " : c’est fait !");
+        G.marquerGuide("bat-" + id);
+        st = M.acheter(st, id); sauver(); signal("achat"); jeu(); toast(B.ico + " " + B.nom + " : c’est fait !");
       });
       b.disabled = !!non;
       ajout(b, h("span", "m-bico", B.ico), ajout(h("div"), h("strong", null, B.nom),
-        h("span", "m-gain", gain.join("  ")),
+        h("span", "m-gain", gain.join("  ")), neuf ? h("i", "m-neuf", "Nouveau") : null,
         h("small", null, non && non !== "Pas assez d’argent, même en empruntant." ? non : argent(px) + (B.ent ? " · entretien " + argent(B.ent) + "/trim." : ""))), deja && !B.unique ? h("em", null, "×" + deja) : null);
       g.appendChild(b);
     });
@@ -382,7 +363,7 @@
     ajout(t, h("span", null, "💶 Impôts locaux"), val);
     var r = h("input"); r.type = "range"; r.min = 80; r.max = 130; r.step = 5; r.value = Math.round(st.taux * 100); r.setAttribute("aria-label", "Impôts locaux");
     r.oninput = function () { val.textContent = r.value + " %"; };
-    r.onchange = function () { st = M.regler(st, { taux: r.value / 100 }); sauver(); jeu(); };
+    r.onchange = function () { st = M.regler(st, { taux: r.value / 100 }); sauver(); signal("regler"); jeu(); };
     ajout(d, t, r, h("small", null, "Recettes " + argent(M.recettes(st)) + " · dépenses " + argent(M.depenses(st)) + " (dont entretien " + argent(M.entretien(st)) + ") par trimestre. Plus d’impôts = plus d’argent, mais moins de popularité."));
     return d;
   }
@@ -404,7 +385,7 @@
     var b = h("div", "m-barmois");
     b.appendChild(bouton(st.phase === "evenement" ? "📂 Un dossier t’attend" : "Trimestre suivant →", "btn m-go", function () {
       if (st.phase === "evenement" || (st.resultat && !st.resultatVu)) return modale();
-      st = M.debutTour(st, BASE); sauver(); jeu();
+      st = M.debutTour(st, BASE); sauver(); signal("trimestre"); jeu();
     }));
     return b;
   }
@@ -423,8 +404,102 @@
     setTimeout(function () { x.classList.add("m-toast-out"); }, 1600); setTimeout(function () { x.remove(); }, 2100);
   }
 
+  // ---------- Guide intégré : une bulle pointe l'élément à utiliser, on avance en faisant l'action ----------
+  // Chaque séquence : où elle peut se lancer (ecran), quand (si), et ses étapes { q: élément visé, t: une phrase, a: action attendue }.
+  // a = "ok" : un bouton OK dans la bulle (ou toucher l'élément) suffit.
+  var GUIDES = [
+    { id: "base", ecran: "modale", si: function () { return st.phase === "evenement" && !st.special; }, etapes: [
+      { q: "#m-modale .m-choix", t: "📂 Un dossier arrive chaque trimestre. Choisis une réponse.", a: "choix" },
+      { q: "#m-modale .m-delta, #m-modale .m-res", t: "Voilà les conséquences de ta décision.", a: "ok" },
+      { q: "#m-modale .m-go", t: "Retourne à l’Hôtel de Ville.", a: "fermer" },
+      { q: ".m-sondage", t: "🗳️ Ton but : rester au-dessus de 50 % jusqu’à l’élection.", a: "ok" },
+      { q: ".m-piliers", t: "Ces 4 piliers font le bonheur des Parisiens. Ils baissent avec le temps.", a: "ok" },
+      { q: ".m-bat:not(:disabled):not(.m-bat-lock)", t: "🛒 Achète un bâtiment pour faire monter un pilier.", a: "achat" },
+      { q: ".m-barmois .btn", t: "Bravo ! Passe au trimestre suivant.", a: "trimestre" }] },
+    { id: "budget", ecran: "jeu", si: function () { return st.meca.budget && st.phase === "gestion"; }, etapes: [
+      { q: ".m-curseur", t: "💶 Nouveau : les impôts ! Plus d’argent… mais moins de popularité.", a: "ok" }] },
+    { id: "opposant", ecran: "jeu", si: function () { return st.meca.opposant && st.opposant && st.phase === "gestion"; }, etapes: [
+      { q: ".m-opp", t: "⚔️ Ton opposant attaque une fois par an. Son influence fait baisser ton sondage.", a: "ok" }] },
+    { id: "attaque", ecran: "modale", si: function () { return st.special === "opposition" && st.phase === "evenement"; }, etapes: [
+      { q: "#m-modale .m-choix", t: "Riposte, tente de le faire tomber… ou laisse faire, il reviendra plus fort.", a: "choix" }] },
+    { id: "cata", ecran: "modale", si: function () { return st.special === "catastrophe" && st.phase === "evenement"; }, etapes: [
+      { q: "#m-modale .m-choix", t: "🚨 Une catastrophe ! Choisis comment limiter les dégâts.", a: "choix" }] },
+    { id: "chance", ecran: "modale", si: function () { return st.special === "chance" && st.phase === "evenement"; }, etapes: [
+      { q: "#m-modale .m-choix", t: "🍀 Un coup de chance ! À toi d’en profiter.", a: "choix" }] },
+    { id: "promesses-crea", ecran: "creation", si: function () { return !!document.querySelector(".m-ambs"); }, etapes: [
+      { q: ".m-ambs", t: "🎯 Choisis 2 piliers à promettre aux Parisiens.", a: "ok" }] },
+    { id: "promesses", ecran: "jeu", si: function () { return st.ambitions.length && st.phase === "gestion"; }, etapes: [
+      { q: ".m-prom", t: "🎯 Ta promesse : dépasse le trait blanc avant l’élection pour gagner des voix.", a: "ok" }] },
+    { id: "ligne-crea", ecran: "creation", si: function () { return !!document.querySelector(".m-lignes"); }, etapes: [
+      { q: ".m-lignes", t: "🧭 Choisis ton camp politique.", a: "ok" }] },
+    { id: "ligne", ecran: "jeu", si: function () { return st.meca.ligne && st.phase === "gestion"; }, etapes: [
+      { q: ".m-jauge-coh", t: "🧭 Reste fidèle à ton camp : ta cohérence soutient ta popularité.", a: "ok" }] },
+    { id: "nouveautes", ecran: "jeu", si: function () { return st.phase === "gestion" && !!document.querySelector(".m-bat.m-new:not(:disabled)"); }, rejouable: 1, etapes: [
+      { q: ".m-bat.m-new:not(:disabled)", t: "✨ Nouveau en boutique ! Essaie-le.", a: "ok" }] }
+  ];
+  var GA = null, BULLE = null;   // séquence en cours : { g, i }
+  function guide(ecran) {
+    if (ecran !== "creation" && (!st || st.phase === "fin")) return cacherBulle();
+    if (!GA) {
+      var g = GUIDES.filter(function (x) {
+        if (x.ecran !== ecran || !x.si()) return false;
+        var cle = x.rejouable ? x.id + "-" + nivJ() : x.id;
+        return !G.guideVu(cle);
+      })[0];
+      if (!g) return cacherBulle();
+      GA = { g: g, i: 0, cle: g.rejouable ? g.id + "-" + nivJ() : g.id };
+    }
+    montrerEtape();
+  }
+  function signal(a) {
+    if (!GA) return;
+    var e = GA.g.etapes[GA.i];
+    if (e && e.a === a) avancer();
+  }
+  function avancer() {
+    GA.i++;
+    if (GA.i >= GA.g.etapes.length) { G.marquerGuide(GA.cle); GA = null; cacherBulle(); return; }
+    setTimeout(montrerEtape, 60);
+  }
+  function cacherBulle() {
+    if (BULLE) { BULLE.remove(); BULLE = null; }
+    Array.prototype.forEach.call(document.querySelectorAll(".m-focus"), function (x) { x.classList.remove("m-focus"); });
+  }
+  function montrerEtape() {
+    cacherBulle();
+    if (!GA) return;
+    var e = GA.g.etapes[GA.i], cible = document.querySelector(e.q);
+    if (!cible) return;                           // l'élément n'est pas à l'écran : on attendra le prochain affichage
+    cible.classList.add("m-focus");
+    var dansModale = !!cible.closest("#m-modale");
+    var b = h("div", "m-bulle" + (dansModale ? " m-bulle-fixe" : ""));
+    ajout(b, h("span", "m-bulle-leon", "🧑‍💼"), h("p", null, e.t));
+    var bas = h("div", "m-bulle-bas");
+    if (e.a === "ok") bas.appendChild(bouton("OK", "m-bulle-ok", avancer));
+    bas.appendChild(bouton("Passer le guide", "m-bulle-passer", function () { G.marquerGuide(GA.cle); GA = null; cacherBulle(); }));
+    b.appendChild(bas);
+    (dansModale ? document.getElementById("m-modale") : document.body).appendChild(b);
+    BULLE = b;
+    if (e.a === "ok") cible.addEventListener("click", function ok() { cible.removeEventListener("click", ok); if (BULLE === b) avancer(); });
+    if (!dansModale) { var r0 = cible.getBoundingClientRect(); if (r0.top < 70 || r0.bottom > innerHeight - 120) cible.scrollIntoView({ block: "center", behavior: "smooth" }); }
+    placer();
+    setTimeout(placer, 350);
+  }
+  function placer() {
+    if (!BULLE || !GA) return;
+    var cible = document.querySelector(".m-focus"); if (!cible) return;
+    var r = cible.getBoundingClientRect(), fixe = BULLE.classList.contains("m-bulle-fixe"), bh = BULLE.offsetHeight, bw = BULLE.offsetWidth;
+    var dessous = r.bottom + bh + 16 < innerHeight || r.top < bh + 16;
+    var top = dessous ? r.bottom + 12 : r.top - bh - 12, left = Math.max(10, Math.min(innerWidth - bw - 10, r.left + r.width / 2 - bw / 2));
+    BULLE.classList.toggle("m-bulle-haut", !dessous);
+    BULLE.style.top = (fixe ? top : top + scrollY) + "px"; BULLE.style.left = left + "px";
+    BULLE.style.setProperty("--fl", Math.max(16, Math.min(bw - 16, r.left + r.width / 2 - left)) + "px");
+  }
+  window.addEventListener("scroll", function () { if (BULLE) placer(); }, { passive: true });
+  window.addEventListener("resize", function () { if (BULLE) placer(); });
+
   // ---------- Dossier du trimestre : fenêtre au premier plan ----------
-  function fermerModale() { var m = document.getElementById("m-modale"); if (m) m.remove(); document.body.classList.remove("m-modal"); }
+  function fermerModale() { var m = document.getElementById("m-modale"); if (m) m.remove(); document.body.classList.remove("m-modal"); cacherBulle(); }
   function modale() {
     fermerModale();
     var ev = M.evenementCourant(st, BASE);
@@ -439,7 +514,7 @@
       carte.appendChild(h("p", "m-desc", ev.desc));
       var ch = h("div", "m-choix");
       ev.choix.forEach(function (x, i) {
-        var b = bouton("", "m-option", function () { if (st.phase !== "evenement") return; st = M.choisir(st, BASE, i); sauver(); jeu(); });
+        var b = bouton("", "m-option", function () { if (st.phase !== "evenement") return; st = M.choisir(st, BASE, i); sauver(); signal("choix"); jeu(); });
         ajout(b, h("span", "m-lettre", "ABCD"[i]), h("strong", null, x.t));
         ch.appendChild(b);
       });
@@ -451,11 +526,12 @@
       if (r.surprise) carte.appendChild(h("p", "m-surprise", "⚡ Imprévu : " + r.surprise));
       (r.extra || []).forEach(function (t) { carte.appendChild(h("p", "m-extra", t)); });
       if (r.dif) carte.appendChild(h("p", "m-extra", "⏳ Cette décision aura encore des conséquences plus tard."));
-      carte.appendChild(bouton("Retour à l’Hôtel de Ville", "btn m-go", function () { st.resultatVu = true; sauver(); fermerModale(); if (st.phase === "fin") jeu(); }));
+      carte.appendChild(bouton("Retour à l’Hôtel de Ville", "btn m-go", function () { st.resultatVu = true; sauver(); fermerModale(); signal("fermer"); if (st.phase === "fin") jeu(); else guide("jeu"); }));
     }
     cadre.appendChild(carte); pop.appendChild(cadre); (document.getElementById("g-maire") || document.body).appendChild(pop);
     document.body.classList.add("m-modal");
     var f = carte.querySelector("button"); if (f) setTimeout(function () { f.focus({ preventScroll: true }); }, 50);
+    setTimeout(function () { guide("modale"); }, 30);
   }
 
   // ---------- Élection ----------
