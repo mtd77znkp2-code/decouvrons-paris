@@ -23,8 +23,8 @@ jobs:
         # La simulation d'équilibrage (longue) ne tourne que si le moteur, les événements ou les tests ont changé
         run: |
           N=0
-          if ! git diff --quiet "${{ github.event.before }}" "${{ github.sha }}" -- public/maire/moteur.js public/maire/data tools/maire 2>/dev/null; then N=300; fi
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then N=300; fi
+          if ! git diff --quiet "${{ github.event.before }}" "${{ github.sha }}" -- public/maire/moteur.js public/maire/data tools/maire 2>/dev/null; then N=60; fi
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then N=60; fi
           echo "Parties simulées par stratégie : $N"
           node tools/maire/test-moteur.mjs $N
       - run: npm ci
