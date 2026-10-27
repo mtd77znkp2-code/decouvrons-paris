@@ -12,7 +12,6 @@
   // Réglages d'équilibrage (vérifiés par tools/maire/test-moteur.mjs)
   var P = { domRepos: 43, domVit: 0.03, bonVit: 0.05, popVit: 0.04, usure: 0.22, detteImpop: 120,
     cohRepos: 50, cohVit: 0.015, aliPlus: 0.8, aliMoins: 1.6, probleme: 3.7, ambMult: 2.5, ambSeuil: 56, problemeAmb: 0.5 };
-
   var LIGNES = {
     gauche: { nom: "Gauche", txt: "Services publics, solidarité et réduction des inégalités." },
     centre: { nom: "Centre", txt: "Compromis, équilibre budgétaire et réformes pragmatiques." },
@@ -33,6 +32,18 @@
   // Événements spéciaux, hors des 12 catégories : 3 catastrophes par partie, et une chance sur deux d'avoir un coup de chance
   var SPECIAUX = { catastrophe: "Catastrophe", chance: "Coup de chance" };
   var NB_CATASTROPHES = 3, PROBA_CHANCE = 0.5;
+  // Niveaux de difficulté : le niveau moyen correspond aux réglages ci-dessus, les autres les ajustent
+  var NIVEAUX = {
+    facile: { nom: "Facile", txt: "Finances plus souples, moins d’usure du pouvoir, 2 catastrophes.",
+      seuil: 28, tresor: 1200, depenses: 205, usure: 0.19, probleme: 3.5, catastrophes: 2 },
+    moyen: { nom: "Moyen", txt: "L’équilibre classique : 3 catastrophes, popularité et bonheur au-dessus de 30.",
+      seuil: SEUIL, tresor: DEPART.tresor, depenses: FONCT.depenses, usure: P.usure, probleme: P.probleme, catastrophes: NB_CATASTROPHES },
+    difficile: { nom: "Difficile", txt: "Caisses plus vides, Parisiens plus exigeants, 4 catastrophes.",
+      seuil: 32, tresor: 800, depenses: 211, usure: 0.27, probleme: 4.2, catastrophes: 4 }
+  };
+  function niv(st) { return NIVEAUX[st && st.niveau] || NIVEAUX.moyen; }   // anciennes sauvegardes : niveau moyen
+  function seuil(st) { return niv(st).seuil; }
+
   // Domaine naturellement lié à chaque catégorie (pour favoriser les événements liés aux ambitions)
   var CAT_DOM = { securite: "securite", proprete: "proprete", logement: "logement", transports: "transports",
     ecologie: "ecologie", economie: "economie", services: "services", finances: "achat", quotidien: "achat" };
@@ -113,14 +124,16 @@
     if (amb.length !== 2) throw new Error("Il faut choisir exactement deux ambitions");
     var dom = {}; Object.keys(DOMAINES).forEach(function (k) { dom[k] = 50; });
     var st = {
-      v: 1, rng: (o.graine >>> 0) || ((Math.random() * 4294967296) >>> 0), lots: o.lots || [],
+      v: 1, niveau: NIVEAUX[o.niveau] ? o.niveau : "moyen", rng: (o.graine >>> 0) || ((Math.random() * 4294967296) >>> 0), lots: o.lots || [],
       ligne: o.ligne, ambitions: amb, tour: 0, phase: "pret",
-      pop: DEPART.pop, bon: DEPART.bon, coh: DEPART.coh, tresor: DEPART.tresor, dette: 0, dom: dom,
+      pop: DEPART.pop, bon: DEPART.bon, coh: DEPART.coh, tresor: NIVEAUX[o.niveau] ? NIVEAUX[o.niveau].tresor : DEPART.tresor, dette: 0, dom: dom,
       prevus: [], recurrents: [], suites: [], vus: {}, flags: {}, nid: 1,
       journal: [], historique: [], evenement: null, resultat: null, fin: null, cats: [], speciaux: [], special: null
     };
     // Calendrier secret des événements spéciaux : une catastrophe par tiers du mandat, un éventuel coup de chance
-    for (var k = 0; k < NB_CATASTROPHES; k++) st.speciaux.push({ tour: 8 + k * 30 + Math.floor(rnd(st) * 24), type: "catastrophe" });
+    // (une catastrophe par tranche du mandat : 3 tranches de 30 semaines au niveau moyen)
+    var nc = niv(st).catastrophes, pas = Math.floor(90 / nc);
+    for (var k = 0; k < nc; k++) st.speciaux.push({ tour: 8 + k * pas + Math.floor(rnd(st) * (pas - 6)), type: "catastrophe" });
     if (rnd(st) < PROBA_CHANCE) {
       var t = 12 + Math.floor(rnd(st) * 76);
       while (st.speciaux.some(function (s) { return Math.abs(s.tour - t) < 3; })) t += 3;
@@ -232,8 +245,8 @@
   function verifierFin(st, raisonFaillite) {
     var r = null;
     if (raisonFaillite) r = { type: "faillite", txt: "Faillite municipale : la ville ne peut plus payer ses dépenses, même en empruntant au maximum autorisé." };
-    else if (st.pop < SEUIL) r = { type: "popularite", txt: "Ta popularité est passée sous 30 % : le Conseil de Paris te retire sa confiance." };
-    else if (st.bon < SEUIL) r = { type: "bonheur", txt: "Le bonheur des Parisiens est passé sous 30 % : la ville se soulève et tu dois démissionner." };
+    else if (st.pop < seuil(st)) r = { type: "popularite", txt: "Ta popularité est passée sous " + seuil(st) + " % : le Conseil de Paris te retire sa confiance." };
+    else if (st.bon < seuil(st)) r = { type: "bonheur", txt: "Le bonheur des Parisiens est passé sous " + seuil(st) + " % : la ville se soulève et tu dois démissionner." };
     if (r) { st.fin = { gagne: false, raison: r, tour: st.tour }; st.phase = "fin"; }
     return !!r;
   }
@@ -247,7 +260,7 @@
     var notes = [];
     // 1. Fonctionnement courant de la ville
     mouvement(st, FONCT.recettes, "Recettes courantes (impôts, dotations)");
-    mouvement(st, -FONCT.depenses, "Dépenses courantes de fonctionnement");
+    mouvement(st, -niv(st).depenses, "Dépenses courantes de fonctionnement");
     // 2. Dépenses et recettes récurrentes engagées
     var rec = 0; st.recurrents.forEach(function (r) { rec += r.m; r.n--; });
     if (st.recurrents.length) mouvement(st, rec, "Engagements récurrents (" + st.recurrents.length + ")");
@@ -266,7 +279,7 @@
     Object.keys(st.dom).forEach(function (k) { st.dom[k] = borne(st.dom[k] + (P.domRepos - st.dom[k]) * P.domVit); somme += st.dom[k]; n++; });
     st.bon = borne(st.bon + (somme / n - st.bon) * P.bonVit);
     // Usure du pouvoir : avec le temps, il faut faire mieux pour garder le même soutien
-    var cible = st.bon * 0.55 + st.coh * 0.2 + 12 - st.tour * P.usure - (st.coh < 40 ? 4 : 0) - st.dette / P.detteImpop;
+    var cible = st.bon * 0.55 + st.coh * 0.2 + 12 - st.tour * niv(st).usure - (st.coh < 40 ? 4 : 0) - st.dette / P.detteImpop;
     st.pop = borne(st.pop + (cible - st.pop) * P.popVit);
     st.coh = borne(st.coh + (P.cohRepos - st.coh) * P.cohVit);   // les compromis du quotidien érodent la ligne
     // 6. Financement et vérifications
@@ -288,9 +301,9 @@
     else if (CAT_DOM[ev.cat]) {
       // Les domaines des ambitions reviennent plus souvent sur le bureau : chaque dossier y pèse un peu moins
       var k = CAT_DOM[ev.cat], f = st.ambitions.indexOf(k) >= 0 ? P.problemeAmb : 1;
-      st.dom[k] = borne(st.dom[k] - P.probleme * f);
+      st.dom[k] = borne(st.dom[k] - niv(st).probleme * f);
     }
-    else st.bon = borne(st.bon - P.probleme * (ev.cat === "crise" ? 0.8 : 0.3));
+    else st.bon = borne(st.bon - niv(st).probleme * (ev.cat === "crise" ? 0.8 : 0.3));
     st.evenement = ev.id; st.notes = notes; st.phase = "evenement";
     return st;
   }
@@ -372,7 +385,7 @@
     return { liste: valides, parId: p, rejets: rejets };
   }
 
-  var API = { SPECIAUX: SPECIAUX, NB_CATASTROPHES: NB_CATASTROPHES, P: P, TAUX: TAUX, TOURS: TOURS, SEUIL: SEUIL, DEPART: DEPART, FONCT: FONCT, PLAFOND_DETTE: PLAFOND_DETTE, LIGNES: LIGNES, DOMAINES: DOMAINES, CATS: CATS,
+  var API = { NIVEAUX: NIVEAUX, seuil: seuil, depenses: function (st) { return niv(st).depenses; }, SPECIAUX: SPECIAUX, NB_CATASTROPHES: NB_CATASTROPHES, P: P, TAUX: TAUX, TOURS: TOURS, SEUIL: SEUIL, DEPART: DEPART, FONCT: FONCT, PLAFOND_DETTE: PLAFOND_DETTE, LIGNES: LIGNES, DOMAINES: DOMAINES, CATS: CATS,
     nouvellePartie: nouvellePartie, debutTour: debutTour, choisir: choisir, reprendre: reprendre, bilan: bilan, valider: valider, indexer: indexer, engagements: engagements };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.Maire = API;
 })(this);

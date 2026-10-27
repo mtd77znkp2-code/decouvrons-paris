@@ -106,6 +106,17 @@ test("3 catastrophes par partie, un coup de chance une fois sur deux, jamais hor
   assert.ok(chances > 70 && chances < 130, "coups de chance : " + chances + "/200");
 });
 
+test("niveaux : catastrophes prévues, trésorerie de départ, anciennes sauvegardes au niveau moyen", () => {
+  for (const [n, nb] of [["facile", 2], ["moyen", 3], ["difficile", 4]]) {
+    const st = M.nouvellePartie({ ligne: "centre", ambitions: ["logement", "transports"], graine: 5, niveau: n });
+    assert.equal(st.niveau, n); assert.equal(st.tresor, M.NIVEAUX[n].tresor);
+    const c = st.speciaux.filter(s => s.type === "catastrophe").map(s => s.tour);
+    assert.equal(c.length, nb); assert.ok(c.every(t => t >= 8 && t < 100));
+  }
+  const ancien = M.nouvellePartie({ ligne: "centre", ambitions: ["logement", "transports"], graine: 5 });
+  delete ancien.niveau; assert.equal(M.seuil(ancien), 30);
+});
+
 console.log(ok + " tests réussis.\n");
 
 // ---------- Simulation d'équilibrage ----------
@@ -132,36 +143,47 @@ const STRATS = {
   "dépensier": (st, ev) => ev.choix.map((c, i) => [valeur(st, c, 0), i]).sort((a, b) => b[0] - a[0])[0][1],
   "populiste": (st, ev) => ev.choix.map((c, i) => [(c.e.pop || 0) + (c.e.bon || 0), i]).sort((a, b) => b[0] - a[0])[0][1],
 };
-console.log(`Simulation : ${N} parties par stratégie (${idx.total} événements)`);
-const taux = {};
-for (const [nom, f] of Object.entries(STRATS)) {
-  const fins = {}; let gagne = 0, tours = 0, amb = 0, score = 0, cats = {};
-  graineSim = 1;
-  for (let p = 0; p < N; p++) {
-    const ligne = LIGNES[p % 4], a = DOMS.slice().sort(() => alea() - 0.5).slice(0, 2);
-    let st = M.nouvellePartie({ ligne, ambitions: a, graine: p * 7919 + 1 });
-    while (st.phase !== "fin") {
-      st = M.debutTour(st, base); if (st.phase === "fin") break;
-      const ev = base.parId[st.evenement]; cats[ev.cat] = (cats[ev.cat] || 0) + 1;
-      st = M.choisir(st, base, f(st, ev));
+// Chaque niveau est simulé avec les mêmes parties
+function simuler(niveau) {
+  console.log(`Simulation niveau ${M.NIVEAUX[niveau].nom} : ${N} parties par stratégie (${idx.total} événements)`);
+  const taux = {};
+  for (const [nom, f] of Object.entries(STRATS)) {
+    const fins = {}; let gagne = 0, tours = 0, amb = 0, score = 0, cats = {};
+    graineSim = 1;
+    for (let p = 0; p < N; p++) {
+      const ligne = LIGNES[p % 4], a = DOMS.slice().sort(() => alea() - 0.5).slice(0, 2);
+      let st = M.nouvellePartie({ ligne, ambitions: a, graine: p * 7919 + 1, niveau });
+      while (st.phase !== "fin") {
+        st = M.debutTour(st, base); if (st.phase === "fin") break;
+        const ev = base.parId[st.evenement]; cats[ev.cat] = (cats[ev.cat] || 0) + 1;
+        st = M.choisir(st, base, f(st, ev));
+      }
+      const b = M.bilan(st);
+      if (st.fin.gagne) { gagne++; amb += b.ambitions.filter(x => x.ok).length; }
+      else fins[st.fin.raison.type] = (fins[st.fin.raison.type] || 0) + 1;
+      tours += st.tour; score += b.score;
     }
-    const b = M.bilan(st);
-    if (st.fin.gagne) { gagne++; amb += b.ambitions.filter(x => x.ok).length; }
-    else fins[st.fin.raison.type] = (fins[st.fin.raison.type] || 0) + 1;
-    tours += st.tour; score += b.score;
+    taux[nom] = { gagne: gagne / N, faillite: (fins.faillite || 0) / N };
+    const pct = x => Math.round(x / N * 100) + " %";
+    console.log(`  ${nom.padEnd(10)} victoires ${pct(gagne).padStart(5)} · tours moyens ${(tours / N).toFixed(0).padStart(3)} · ` +
+      `ambitions tenues ${(gagne ? amb / gagne : 0).toFixed(1)}/2 · score ${Math.round(score / N)} · défaites ${JSON.stringify(fins)}`);
+    if (nom === "réfléchi" && niveau === "moyen") console.log("    catégories tirées : " + Object.entries(cats).map(([k, v]) => k + " " + Math.round(v / N)).join(", "));
   }
-  taux[nom] = { gagne: gagne / N, faillite: (fins.faillite || 0) / N };
-  const pct = x => Math.round(x / N * 100) + " %";
-  console.log(`  ${nom.padEnd(10)} victoires ${pct(gagne).padStart(5)} · tours moyens ${(tours / N).toFixed(0).padStart(3)} · ` +
-    `ambitions tenues ${(gagne ? amb / gagne : 0).toFixed(1)}/2 · score ${Math.round(score / N)} · défaites ${JSON.stringify(fins)}`);
-  if (nom === "réfléchi") console.log("    catégories tirées : " + Object.entries(cats).map(([k, v]) => k + " " + Math.round(v / N)).join(", "));
+  return taux;
 }
+const T = { facile: simuler("facile"), moyen: simuler("moyen"), difficile: simuler("difficile") };
 
-// Bornes d'équilibrage : jouer au hasard doit souvent perdre, réfléchir doit payer, l'argent doit compter
+// Bornes d'équilibrage : jouer au hasard doit souvent perdre, réfléchir doit payer, l'argent doit compter,
+// et chaque niveau doit être nettement plus dur que le précédent
 const bornes = [
-  ["jouer au hasard gagne entre 15 % et 65 % des parties", taux["hasard"].gagne >= 0.15 && taux["hasard"].gagne <= 0.65],
-  ["un joueur réfléchi gagne au moins 80 % des parties", taux["réfléchi"].gagne >= 0.8],
-  ["ignorer le budget mène parfois à la faillite (≥ 5 %)", taux["dépensier"].faillite >= 0.05],
+  ["facile : jouer au hasard gagne entre 40 % et 85 % des parties", T.facile["hasard"].gagne >= 0.4 && T.facile["hasard"].gagne <= 0.85],
+  ["facile : un joueur réfléchi gagne au moins 95 % des parties", T.facile["réfléchi"].gagne >= 0.95],
+  ["moyen : jouer au hasard gagne entre 15 % et 65 % des parties", T.moyen["hasard"].gagne >= 0.15 && T.moyen["hasard"].gagne <= 0.65],
+  ["moyen : un joueur réfléchi gagne au moins 80 % des parties", T.moyen["réfléchi"].gagne >= 0.8],
+  ["moyen : ignorer le budget mène parfois à la faillite (≥ 5 %)", T.moyen["dépensier"].faillite >= 0.05],
+  ["difficile : jouer au hasard gagne moins de 10 % des parties", T.difficile["hasard"].gagne < 0.1],
+  ["difficile : un joueur réfléchi gagne entre 50 % et 90 % des parties", T.difficile["réfléchi"].gagne >= 0.5 && T.difficile["réfléchi"].gagne <= 0.9],
+  ["difficile : ignorer le budget mène souvent à la faillite (≥ 20 %)", T.difficile["dépensier"].faillite >= 0.2],
 ];
 let echec = 0;
 for (const [t, v] of bornes) { console.log((v ? "  ✓ " : "  ✗ ") + t); if (!v) echec++; }

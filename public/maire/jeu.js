@@ -3,7 +3,7 @@
   "use strict";
   var M = window.Maire, CLE = "maire_partie_v1", MIN_EVTS = 550;
   var IDX = null, BASE = null, st = null, onglet = "decision", finVue = false, box = null;
-  var CHOIX = { ligne: null, amb: [] };
+  var CHOIX = { ligne: null, amb: [] }, niveau = "moyen";
 
   // ---------- Outils ----------
   function h(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
@@ -17,6 +17,18 @@
   function sauver() { try { localStorage.setItem(CLE, JSON.stringify(st)); } catch (e) {} }
   function lireSauvegarde() { try { var s = JSON.parse(localStorage.getItem(CLE) || "null"); return s && s.v === 1 && s.ligne ? s : null; } catch (e) { return null; } }
   function effacer() { try { localStorage.removeItem(CLE); } catch (e) {} }
+  // Niveau : choisi avec les boutons au-dessus du jeu, il fixe aussi le classement affiché.
+  // Pendant une partie, les boutons sont bloqués sur le niveau de la partie.
+  function lireNiveau() { try { var n = localStorage.getItem("maire_niveau"); return M.NIVEAUX[n] ? n : "moyen"; } catch (e) { return "moyen"; } }
+  function choixNiveau(n, bloque) {
+    niveau = M.NIVEAUX[n] ? n : "moyen";
+    var lv = document.getElementById("m-lvls");
+    if (lv) Array.prototype.forEach.call(lv.children, function (b) { b.classList.toggle("on", b.dataset.l === niveau); b.disabled = !!bloque; });
+    if (window.lbRender) lbRender();
+  }
+  function texteNiveau() { return "Niveau " + M.NIVEAUX[niveau].nom + " : " + M.NIVEAUX[niveau].txt + " Tu peux le changer avec les boutons au-dessus."; }
+  // Le classement du niveau moyen garde la clé d'origine « maire » : les scores déjà enregistrés y restent
+  function cleClassement(n) { return n === "moyen" ? "maire" : "maire_" + n; }
   function haut() { var g = document.getElementById("g-maire"); if (g && g.getBoundingClientRect().top < 0) g.scrollIntoView({ behavior: "smooth" }); }
 
   // ---------- Données : l'index, puis seulement quelques lots par partie ----------
@@ -39,15 +51,16 @@
   // ---------- Écran d'accueil ----------
   function accueil() {
     box.innerHTML = ""; finVue = false;
+    var s = lireSauvegarde();
+    choixNiveau(s && s.phase !== "fin" ? s.niveau || "moyen" : lireNiveau());
     var hero = h("div", "m-hero");
     ajout(hero, h("p", "m-sur", "Hôtel de Ville · Mandat de 100 semaines"),
       h("p", "m-intro", "Chaque semaine, un dossier arrive sur ton bureau. Trois décisions possibles, des conséquences parfois inattendues. Garde la confiance des Parisiens, leur bonheur et les finances de la ville."));
     box.appendChild(hero);
-    var s = lireSauvegarde();
     if (s && s.phase !== "fin") {
       var r = h("div", "m-reprise");
       ajout(r, h("strong", null, "Partie en cours"),
-        h("span", null, "Semaine " + s.tour + "/" + M.TOURS + " · " + M.LIGNES[s.ligne].nom + " · " + s.ambitions.map(function (a) { return M.DOMAINES[a]; }).join(" et ")),
+        h("span", null, "Semaine " + s.tour + "/" + M.TOURS + " · " + M.NIVEAUX[s.niveau || "moyen"].nom + " · " + M.LIGNES[s.ligne].nom + " · " + s.ambitions.map(function (a) { return M.DOMAINES[a]; }).join(" et ")),
         bouton("Reprendre", "btn", reprise));
       box.appendChild(r);
     }
@@ -59,7 +72,8 @@
     box.appendChild(info);
     var regles = h("details", "m-regles");
     regles.innerHTML = "<summary>Règles du jeu</summary><ul>" +
-      "<li><b>Popularité</b> et <b>bonheur</b> ne doivent jamais passer sous <b>30</b>.</li>" +
+      "<li><b>Trois niveaux</b>, chacun avec son classement : " + Object.keys(M.NIVEAUX).map(function (k) { return "<b>" + M.NIVEAUX[k].nom + "</b> (" + M.NIVEAUX[k].txt.replace(/\.$/, "") + ")"; }).join(", ") + ".</li>" +
+      "<li><b>Popularité</b> et <b>bonheur</b> ne doivent jamais passer sous <b>30</b> (28 en facile, 32 en difficile).</li>" +
       "<li>Le <b>budget</b> part d’un milliard d’euros. Tu peux t’endetter jusqu’à " + argent(M.PLAFOND_DETTE) + " ; au-delà, c’est la faillite.</li>" +
       "<li>La <b>cohérence politique</b> mesure ta fidélité à ta ligne. Trop de reniements et ton camp te lâche.</li>" +
       "<li>Les effets annoncés varient un peu : certaines décisions coûtent chaque semaine, d’autres ont des conséquences plus tard.</li>" +
@@ -74,6 +88,8 @@
   // ---------- Création du maire (moins d'une minute) ----------
   function creation() {
     box.innerHTML = ""; CHOIX = { ligne: null, amb: [] };
+    choixNiveau(niveau);
+    box.appendChild(h("p", "m-niv", texteNiveau()));
     box.appendChild(h("p", "m-etape", "1. Ta ligne politique"));
     var lg = h("div", "m-lignes");
     Object.keys(M.LIGNES).forEach(function (k) {
@@ -112,7 +128,7 @@
   function demarrer(e) {
     var b = e && e.currentTarget; if (b) { b.disabled = true; b.textContent = "Installation à l’Hôtel de Ville…"; }
     index().then(function () { var l = choisirLots(); return chargerLots(l).then(function () { return l; }); }).then(function (lots) {
-      st = M.nouvellePartie({ ligne: CHOIX.ligne, ambitions: CHOIX.amb, lots: lots });
+      st = M.nouvellePartie({ ligne: CHOIX.ligne, ambitions: CHOIX.amb, lots: lots, niveau: niveau });
       st = M.debutTour(st, BASE); sauver(); onglet = "decision"; finVue = false; jeu(); haut();
     }).catch(function () {
       if (b) { b.disabled = false; b.textContent = "Prendre mes fonctions"; }
@@ -147,7 +163,7 @@
     ajout(sem, h("span", null, "Semaine"), h("b", null, st.tour + " / " + M.TOURS));
     var p = h("div", "m-prog"), pi = h("i"); pi.style.width = (st.tour / M.TOURS * 100) + "%"; p.appendChild(pi); sem.appendChild(p);
     t.appendChild(sem);
-    ajout(t, jauge("Popularité", st.pop, M.SEUIL), jauge("Bonheur", st.bon, M.SEUIL), jauge("Cohérence", st.coh, 0));
+    ajout(t, jauge("Popularité", st.pop, M.seuil(st)), jauge("Bonheur", st.bon, M.seuil(st)), jauge("Cohérence", st.coh, 0));
     var b = h("div", "m-jauge m-budget" + (st.dette > M.PLAFOND_DETTE * 0.7 ? " m-danger" : ""));
     ajout(b, h("span", null, "Trésorerie"), h("b", null, argent(st.tresor)), h("small", null, st.dette > 0 ? "Dette " + argent(st.dette) : "Aucune dette"));
     t.appendChild(b);
@@ -166,6 +182,7 @@
   // ---------- Écran principal ----------
   function jeu() {
     if (st.phase === "fin" && (finVue || !st.resultat)) return fin();
+    if (niveau !== (st.niveau || "moyen") || !document.querySelector("#m-lvls .lvl:disabled")) choixNiveau(st.niveau, true);
     // La fenêtre ne remonte pas au changement de question : la carte du dossier reste à sa place
     // (si son haut était sorti de l'écran, on le ramène juste en haut de l'écran)
     var y = window.scrollY, avant = box.querySelector(".m-contenu > .m-dossier");
@@ -194,7 +211,7 @@
     if (l.children.length) parent.appendChild(l);
   }
   // ---------- « Votre mandat » : où en est la partie, en quelques phrases ----------
-  function solde() { var r = 0; st.recurrents.forEach(function (x) { r += x.m; }); return M.FONCT.recettes - M.FONCT.depenses + r - st.dette * M.TAUX; }
+  function solde() { var r = 0; st.recurrents.forEach(function (x) { r += x.m; }); return M.FONCT.recettes - M.depenses(st) + r - st.dette * M.TAUX; }
   function tendance(k) {
     var t = 0; st.historique.slice(-6).forEach(function (x) { t += (x.d && x.d[k]) || 0; });
     return t >= 3 ? " et elle progresse" : t <= -3 ? " et elle recule" : "";
@@ -203,8 +220,8 @@
     var p = [], reste = M.TOURS - st.tour;
     p.push(st.tour <= 1 ? "Ton mandat commence : 100 semaines pour transformer Paris." :
       st.fin ? "Ton mandat s’est achevé à la semaine " + st.tour + "." : "Semaine " + st.tour + " : il te reste " + reste + " semaine" + (reste > 1 ? "s" : "") + " de mandat.");
-    p.push((st.pop >= 65 ? "Les Parisiens t’apprécient (popularité " : st.pop >= 50 ? "Ta popularité tient bon (" : st.pop >= 40 ? "Ta popularité s’effrite (" : "Danger : ta popularité frôle le seuil fatidique de 30 (") + Math.round(st.pop) + ")" + tendance("pop") + ".");
-    p.push((st.bon >= 60 ? "La ville respire, les habitants sont plutôt heureux" : st.bon >= 45 ? "L’humeur des Parisiens est mitigée" : st.bon >= 38 ? "Les Parisiens sont las et le font savoir" : "La colère monte dans les rues : le bonheur approche du seuil de 30") + " (bonheur " + Math.round(st.bon) + ").");
+    p.push((st.pop >= 65 ? "Les Parisiens t’apprécient (popularité " : st.pop >= 50 ? "Ta popularité tient bon (" : st.pop >= 40 ? "Ta popularité s’effrite (" : "Danger : ta popularité frôle le seuil fatidique de " + M.seuil(st) + " (") + Math.round(st.pop) + ")" + tendance("pop") + ".");
+    p.push((st.bon >= 60 ? "La ville respire, les habitants sont plutôt heureux" : st.bon >= 45 ? "L’humeur des Parisiens est mitigée" : st.bon >= 38 ? "Les Parisiens sont las et le font savoir" : "La colère monte dans les rues : le bonheur approche du seuil de " + M.seuil(st)) + " (bonheur " + Math.round(st.bon) + ").");
     st.ambitions.forEach(function (k) {
       var v = Math.round(st.dom[k]), n = M.DOMAINES[k].toLowerCase();
       p.push(v >= M.P.ambSeuil ? "Ta promesse sur « " + n + " » est tenue (" + v + ")." : "Ta promesse sur « " + n + " » est en retard : " + v + " sur " + M.P.ambSeuil + " visés.");
@@ -285,7 +302,7 @@
       var d = h("div", "m-chiffre"); ajout(d, h("span", null, x[0]), h("b", null, x[1])); g.appendChild(d);
     });
     c.appendChild(g);
-    c.appendChild(h("p", "m-aide", "Fonctionnement courant : " + argent(M.FONCT.recettes) + " de recettes et " + argent(M.FONCT.depenses) +
+    c.appendChild(h("p", "m-aide", "Fonctionnement courant : " + argent(M.FONCT.recettes) + " de recettes et " + argent(M.depenses(st)) +
       " de dépenses chaque semaine. Si la trésorerie passe sous zéro, la ville emprunte automatiquement ; au-delà du plafond de dette, c’est la faillite."));
     c.appendChild(h("h5", null, "Engagements en cours"));
     var eng = h("ul", "m-liste");
@@ -339,12 +356,13 @@
   // ---------- Fin de partie ----------
   function fin() {
     box.innerHTML = ""; document.body.classList.remove("m-modal");
+    choixNiveau(st.niveau);
     var b = M.bilan(st), g = st.fin.gagne;
     var t = h("div", "m-final " + (g ? "m-gagne" : "m-perdu"));
     ajout(t, h("p", "m-sur", g ? "Mandat accompli" : "Fin de mandat anticipée"),
       h("h4", null, g ? "Tu as tenu 100 semaines à l’Hôtel de Ville !" : "Ton mandat s’arrête à la semaine " + st.fin.tour),
       g ? null : h("p", "m-raison", st.fin.raison.txt),
-      h("p", "m-score", "Score : " + b.score));
+      h("p", "m-score", "Score : " + b.score + " · niveau " + M.NIVEAUX[st.niveau || "moyen"].nom));
     box.appendChild(t);
     var s = h("div", "m-fin");
     [["Popularité", Math.round(st.pop)], ["Bonheur", Math.round(st.bon)], ["Cohérence", Math.round(st.coh)],
@@ -368,7 +386,7 @@
     box.appendChild(msg);
     if (!st.envoye && window.lbSubmit) {
       st.envoye = true; sauver();
-      lbSubmit("maire", b.score).then(function (x) { msg.textContent = x; });
+      lbSubmit(cleClassement(st.niveau || "moyen"), b.score).then(function (x) { msg.textContent = x; });
     }
     var bas = h("div", "m-bas");
     ajout(bas, bouton("Historique complet", "btn m-sec", histoFin),
@@ -385,7 +403,17 @@
     box = document.getElementById("m-app");
     if (!box || box.dataset.ok) return;
     box.dataset.ok = "1";
-    if (window.lbBoard) lbBoard("lb-maire", function () { return "maire"; }, function () { return "🏆 Classement général · Maire de Paris"; });
+    niveau = lireNiveau();
+    var lv = document.getElementById("m-lvls");
+    if (lv) Array.prototype.forEach.call(lv.children, function (b) {
+      b.onclick = function () {
+        if (b.disabled) return;
+        choixNiveau(b.dataset.l);
+        try { localStorage.setItem("maire_niveau", niveau); } catch (e) {}
+        var t = box.querySelector(".m-niv"); if (t) t.textContent = texteNiveau();   // écran de création : niveau annoncé à jour
+      };
+    });
+    if (window.lbBoard) lbBoard("lb-maire", function () { return cleClassement(niveau); }, function () { return "🏆 Classement général · Maire de Paris " + M.NIVEAUX[niveau].nom; });
     accueil();
   };
   window.maireStop = function () { document.body.classList.remove("m-modal"); };
