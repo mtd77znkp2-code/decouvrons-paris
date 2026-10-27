@@ -6,12 +6,13 @@ import assert from "node:assert/strict";
 
 const require = createRequire(import.meta.url);
 const M = require("../../public/maire/moteur.js");
+const G = require("../../public/maire/progression.js");
 const DATA = new URL("../../public/maire/data/", import.meta.url);
 const idx = JSON.parse(readFileSync(new URL("index.json", DATA)));
 const tous = idx.lots.flatMap(l => JSON.parse(readFileSync(new URL(l.f, DATA)))).concat(JSON.parse(readFileSync(new URL(idx.speciaux.f, DATA))));
 const NSP = idx.speciaux.catastrophe + idx.speciaux.chance;
 const base = M.indexer(tous);
-const N = +process.argv[2] || 400;
+const N = process.argv[2] != null ? +process.argv[2] : 400;
 
 let ok = 0;
 function test(nom, f) { f(); ok++; console.log("  ✓ " + nom); }
@@ -82,6 +83,7 @@ test("aucun événement deux fois dans une partie, suites respectées", () => {
   const vus = new Set();
   while (st.phase !== "fin") {
     st = M.debutTour(st, base); if (st.phase === "fin") break;
+    if (st.evPerso) { st = M.choisir(st, base, 0); continue; }
     assert.ok(!vus.has(st.evenement), "doublon " + st.evenement); vus.add(st.evenement);
     st = M.choisir(st, base, 0);
   }
@@ -94,8 +96,10 @@ test("3 catastrophes par partie, un coup de chance une fois sur deux, jamais hor
     const vu = { catastrophe: 0, chance: 0 };
     while (st.phase !== "fin") {
       st = M.debutTour(st, base); if (st.phase === "fin") break;
-      const ev = base.parId[st.evenement];
-      if (M.SPECIAUX[ev.cat]) { assert.equal(st.special, ev.cat); vu[ev.cat]++; } else assert.equal(st.special, null);
+      const ev = M.evenementCourant(st, base);
+      if (M.SPECIAUX[ev.cat]) { assert.equal(st.special, ev.cat); vu[ev.cat]++; }
+      else if (ev.cat === "opposition") assert.equal(st.special, "opposition");
+      else assert.equal(st.special, null);
       st = M.choisir(st, base, 1);
     }
     const prevues = st.speciaux.filter(s => s.tour <= st.tour);
@@ -115,6 +119,43 @@ test("niveaux : catastrophes prévues, trésorerie de départ, anciennes sauvega
   }
   const ancien = M.nouvellePartie({ ligne: "centre", ambitions: ["logement", "transports"], graine: 5 });
   delete ancien.niveau; assert.equal(M.seuil(ancien), 30);
+});
+
+test("opposant : une attaque toutes les 10 semaines tant qu'il est actif, élection à la fin, analyse des défaites", () => {
+  for (let g = 1; g <= 40; g++) {
+    let st = M.nouvellePartie({ ligne: "gauche", ambitions: ["logement", "services"], graine: g, niveau: ["facile", "moyen", "difficile"][g % 3] });
+    const f0 = M.opposant(st).force; assert.ok(f0 >= 25 && f0 <= 90);
+    while (st.phase !== "fin") {
+      const actif = st.opposant.actif;
+      st = M.debutTour(st, base); if (st.phase === "fin") break;
+      assert.equal(!!st.evPerso, actif && st.tour % 10 === 0 && st.tour < M.TOURS, "semaine " + st.tour);
+      if (st.evPerso) { assert.equal(st.evPerso.choix.length, 4); const avant = JSON.parse(JSON.stringify(st)); st = M.choisir(st, base, g % 4); assert.deepEqual(M.choisir(st, base, 0), st); assert.notDeepEqual(avant, st); }
+      else st = M.choisir(st, base, g % 3);
+    }
+    if (st.fin.gagne) { assert.ok(st.election && st.election.pct >= 15 && st.election.pct <= 85); if (!st.election.reelu) assert.ok(M.analyse(st).phrase); }
+    else { const a = M.analyse(st); assert.ok(a.phrase.length > 20 && a.conseil.length > 20); }
+  }
+});
+
+test("progression : 100 succès, 400 quêtes vérifiables, défi du jour identique pour tous", () => {
+  assert.equal(G.SUCCES.length, 100); assert.equal(new Set(G.SUCCES.map(x => x.id)).size, 100);
+  const Q = JSON.parse(readFileSync(new URL("quetes.json", DATA)));
+  assert.equal(Q.length, 400); assert.equal(new Set(Q.map(q => q.id)).size, 400); assert.equal(new Set(Q.map(q => q.t)).size, 400);
+  for (const q of Q) { assert.ok(G.TYPES_QUETES.includes(q.k), q.id + " : type " + q.k); assert.ok(q.xp >= 10 && q.xp <= 300, q.id + " : xp"); }
+  const j = 20000, a = G.quetesDuJour(j, Q), b = G.quetesDuJour(j + 1, Q);
+  assert.equal(a.length, 3); assert.equal(new Set(a.map(q => q.id)).size, 3); assert.notDeepEqual(a, b);
+  assert.deepEqual(G.defiDuJour(j, M, idx.lots, 550), G.defiDuJour(j, M, idx.lots, 550));
+  // Chaque quête et chaque succès s'évaluent sans erreur sur de vraies fins de partie, et certains sont atteignables
+  const faites = new Set(), succes = new Set();
+  for (let g = 1; g <= 30; g++) {
+    let st = M.nouvellePartie({ ligne: ["gauche", "centre", "droite", "ecologie"][g % 4], ambitions: ["logement", "transports"], graine: g, niveau: ["facile", "moyen", "difficile"][g % 3] });
+    while (st.phase !== "fin") { st = M.debutTour(st, base); if (st.phase === "fin") break; st = M.choisir(st, base, g % 3); }
+    const R = G.resume(st, M), P = G.profilVide(); P.parties = 1;
+    for (const q of Q) if (G.queteFaite(q, R)) faites.add(q.id);
+    for (const x of G.SUCCES) if (x.f(R, P)) succes.add(x.id);
+  }
+  assert.ok(faites.size >= 40, "quêtes atteintes : " + faites.size); assert.ok(succes.size >= 5, "succès atteints : " + succes.size);
+  assert.equal(G.niveau(0).n, 1); assert.ok(G.niveau(G.xpPour(10)).n === 10);
 });
 
 console.log(ok + " tests réussis.\n");
@@ -148,29 +189,31 @@ function simuler(niveau) {
   console.log(`Simulation niveau ${M.NIVEAUX[niveau].nom} : ${N} parties par stratégie (${idx.total} événements)`);
   const taux = {};
   for (const [nom, f] of Object.entries(STRATS)) {
-    const fins = {}; let gagne = 0, tours = 0, amb = 0, score = 0, cats = {};
+    const fins = {}; let gagne = 0, tours = 0, amb = 0, score = 0, cats = {}, reelu = 0, elim = 0;
     graineSim = 1;
     for (let p = 0; p < N; p++) {
       const ligne = LIGNES[p % 4], a = DOMS.slice().sort(() => alea() - 0.5).slice(0, 2);
       let st = M.nouvellePartie({ ligne, ambitions: a, graine: p * 7919 + 1, niveau });
       while (st.phase !== "fin") {
         st = M.debutTour(st, base); if (st.phase === "fin") break;
-        const ev = base.parId[st.evenement]; cats[ev.cat] = (cats[ev.cat] || 0) + 1;
+        const ev = M.evenementCourant(st, base); cats[ev.cat] = (cats[ev.cat] || 0) + 1;
         st = M.choisir(st, base, f(st, ev));
       }
       const b = M.bilan(st);
-      if (st.fin.gagne) { gagne++; amb += b.ambitions.filter(x => x.ok).length; }
-      else fins[st.fin.raison.type] = (fins[st.fin.raison.type] || 0) + 1;
+      if (st.fin.gagne) { gagne++; amb += b.ambitions.filter(x => x.ok).length; if (st.election.reelu) reelu++; }
+      if (!st.opposant.actif) elim++;
+      if (!st.fin.gagne) fins[st.fin.raison.type] = (fins[st.fin.raison.type] || 0) + 1;
       tours += st.tour; score += b.score;
     }
-    taux[nom] = { gagne: gagne / N, faillite: (fins.faillite || 0) / N };
+    taux[nom] = { gagne: gagne / N, faillite: (fins.faillite || 0) / N, amb: gagne ? amb / gagne : 0, reelu: gagne ? reelu / gagne : 0 };
     const pct = x => Math.round(x / N * 100) + " %";
     console.log(`  ${nom.padEnd(10)} victoires ${pct(gagne).padStart(5)} · tours moyens ${(tours / N).toFixed(0).padStart(3)} · ` +
-      `ambitions tenues ${(gagne ? amb / gagne : 0).toFixed(1)}/2 · score ${Math.round(score / N)} · défaites ${JSON.stringify(fins)}`);
+      `ambitions tenues ${(gagne ? amb / gagne : 0).toFixed(1)}/2 · réélus ${gagne ? Math.round(reelu / gagne * 100) : 0} % · opposant éliminé ${pct(elim)} · score ${Math.round(score / N)} · défaites ${JSON.stringify(fins)}`);
     if (nom === "réfléchi" && niveau === "moyen") console.log("    catégories tirées : " + Object.entries(cats).map(([k, v]) => k + " " + Math.round(v / N)).join(", "));
   }
   return taux;
 }
+if (!N) { console.log("Simulation d’équilibrage ignorée (0 partie demandée)."); process.exit(0); }
 const T = { facile: simuler("facile"), moyen: simuler("moyen"), difficile: simuler("difficile") };
 
 // Bornes d'équilibrage : jouer au hasard doit souvent perdre, réfléchir doit payer, l'argent doit compter,
@@ -181,6 +224,9 @@ const bornes = [
   ["moyen : jouer au hasard gagne entre 15 % et 65 % des parties", T.moyen["hasard"].gagne >= 0.15 && T.moyen["hasard"].gagne <= 0.65],
   ["moyen : un joueur réfléchi gagne au moins 80 % des parties", T.moyen["réfléchi"].gagne >= 0.8],
   ["moyen : ignorer le budget mène parfois à la faillite (≥ 5 %)", T.moyen["dépensier"].faillite >= 0.05],
+  ["moyen : un joueur réfléchi tient en moyenne au moins 0,8 ambition sur 2", T.moyen["réfléchi"].amb >= 0.8],
+  ["moyen : un joueur réfléchi qui finit son mandat est réélu entre 40 % et 90 % du temps", T.moyen["réfléchi"].reelu >= 0.4 && T.moyen["réfléchi"].reelu <= 0.9],
+  ["moyen : jouer au hasard mène rarement à la réélection (< 30 % des mandats finis)", T.moyen["hasard"].reelu < 0.3],
   ["réaliste : jouer au hasard gagne moins de 10 % des parties", T.difficile["hasard"].gagne < 0.1],
   ["réaliste : un joueur réfléchi gagne entre 50 % et 90 % des parties", T.difficile["réfléchi"].gagne >= 0.5 && T.difficile["réfléchi"].gagne <= 0.9],
   ["réaliste : ignorer le budget mène souvent à la faillite (≥ 20 %)", T.difficile["dépensier"].faillite >= 0.2],

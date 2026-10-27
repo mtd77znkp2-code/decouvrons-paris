@@ -14,7 +14,7 @@
 .m-regles ul{margin:8px 0 0;padding-left:20px;line-height:1.55;color:var(--mut)}
 .m-regles b{color:var(--ink)}
 .m-etape{margin:6px 0 0;font-weight:800}
-.m-niv{margin:0 0 4px;padding:8px 12px;border-radius:10px;background:rgba(43,61,147,.08);font-size:.95em}
+.m-nivtxt{margin:0 0 4px;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.06);font-size:.95em;color:var(--c)}
 .m-lignes{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
 .m-ligne{display:grid;gap:4px;text-align:left;font:inherit;color:var(--ink);background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.12);border-left:6px solid var(--lc);border-radius:14px;padding:12px 14px;cursor:pointer}
 .m-ligne span{font-size:13px;color:var(--mut);line-height:1.4}
@@ -131,3 +131,60 @@ body.m-modal{overflow:hidden}
 @keyframes m-fond{from{opacity:0}}
 @keyframes m-entree{from{opacity:0;transform:scale(.92) translateY(14px)}}
 @media (prefers-reduced-motion:reduce){.m-pop,.m-pop-in{animation:none}}
+/* Profil : niveau et XP */
+.m-profil{display:grid;gap:8px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.06)}
+.m-pt{display:flex;align-items:center;gap:12px}
+.m-pt div{display:grid;gap:2px}
+.m-pt small{font-size:13px;color:var(--mut)}
+.m-pn{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:50%;background:var(--a);color:var(--bg);font-weight:900;font-size:19px}
+.m-bsucces{justify-self:start;padding:8px 14px;font-size:14px}
+/* Aujourd'hui : défi et quêtes */
+.m-auj{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.m-auj:empty{display:none}
+.m-defi,.m-quetes{display:grid;gap:8px;align-content:start;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.m-defi{background:linear-gradient(135deg,rgba(43,79,179,.35),rgba(200,53,46,.25))}
+.m-defi span,.m-quetes small{font-size:14px;color:var(--c);line-height:1.45}
+.m-defi .btn{justify-self:start}
+.m-qliste{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.m-qliste li{display:flex;justify-content:space-between;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.05);font-size:14px}
+.m-qliste b{white-space:nowrap;color:var(--a)}
+.m-qliste .m-qok{background:rgba(63,174,104,.18)}
+.m-qliste .m-qok span{color:#8fe0ad}
+/* Succès */
+.m-succes{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.m-suc{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);border-left:4px solid var(--tc);opacity:.6}
+.m-suc div{display:grid;gap:2px}
+.m-suc span{font-size:13px;color:var(--mut)}
+.m-suc small{font-size:12px;color:var(--tc);font-weight:800}
+.m-sico{font-size:22px}
+.m-sok{opacity:1;background:rgba(255,255,255,.08)}
+.m-t1{--tc:#cd8b4d}.m-t2{--tc:#c9d1e0}.m-t3{--tc:#f5b21a}.m-t4{--tc:#8fe8ff}
+/* Roulette de l'opposant */
+.m-roulette{display:grid;gap:12px;padding:20px;border-radius:16px;background:rgba(255,255,255,.06);text-align:center}
+.m-rfen{display:flex;align-items:center;justify-content:center;gap:12px;min-height:84px;padding:14px;border-radius:14px;background:var(--p);color:var(--pi);font:700 clamp(22px,5vw,30px)/1.2 Georgia,serif}
+.m-rfen.m-rstop{box-shadow:0 0 0 3px var(--a),0 10px 40px rgba(245,178,26,.35);animation:m-entree .35s cubic-bezier(.2,.9,.3,1.2)}
+.m-rico{font-size:1.4em}
+.m-rfiche{display:grid;gap:8px;text-align:left}
+.m-rfiche p{margin:0;line-height:1.5}
+.m-rfiche .btn{justify-self:center;margin-top:6px}
+/* Bandeau de l'opposant pendant la partie */
+.m-opp{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;background:rgba(200,53,46,.14);border:1px solid rgba(200,53,46,.35);font-size:14px}
+.m-opp div{display:grid}
+.m-opp span:not(.m-rico){color:var(--c)}
+.m-opp .m-rico{font-size:24px}
+.m-opp-fini{background:rgba(63,174,104,.12);border-color:rgba(63,174,104,.35)}
+.m-pop-opposition .m-pop-titre{color:#ffb0aa}
+.m-pop-opposition .m-dossier{box-shadow:0 0 0 3px #7a3fd1,0 20px 60px rgba(122,63,209,.45)}
+.m-pop-opposition .m-cat{color:#7a3fd1}
+.m-pop-opposition .m-dossier::before{background:#7a3fd1}
+/* Élection, analyse, gains */
+.m-election,.m-analyse,.m-gains{display:grid;gap:8px;padding:16px;border-radius:14px;background:rgba(255,255,255,.06)}
+.m-gains:empty{display:none}
+.m-election p,.m-analyse p{margin:0;line-height:1.5}
+.m-escore{display:flex;justify-content:space-between;gap:10px;font-weight:800;flex-wrap:wrap}
+.m-ebarre{display:flex;height:14px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,.1)}
+.m-ebarre i:first-child{background:var(--a)}.m-ebarre i:last-child{background:#7a3fd1}
+.m-election.m-gagne{box-shadow:inset 0 0 0 2px var(--a)}
+.m-conseil{padding:10px 12px;border-radius:10px;background:rgba(245,178,26,.12)}
+.m-gains small{color:var(--mut)}
+.m-lvlup{margin:0;font-weight:900;font-size:18px;color:var(--a)}

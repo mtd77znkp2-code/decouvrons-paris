@@ -154,7 +154,7 @@ function loadScript(src){
 // Maire de Paris : moteur, interface et style chargés seulement quand on ouvre le jeu
 function loadMaire(){
   if(!LOADED.mcss){LOADED.mcss=1;var l=document.createElement("link");l.rel="stylesheet";l.href="maire/maire.css";document.head.appendChild(l)}
-  return loadScript("maire/moteur.js").then(function(){return loadScript("maire/jeu.js")}).then(function(){maireInit()})
+  return loadScript("maire/moteur.js").then(function(){return loadScript("maire/progression.js")}).then(function(){return loadScript("maire/jeu.js")}).then(function(){maireInit()})
     .catch(function(){$("m-app").textContent="Le jeu n’a pas pu se charger. Vérifie ta connexion."});
 }
 function loadAdmin(){

@@ -1,9 +1,9 @@
 // Maire de Paris : interface du jeu (chargée à la demande). Toute la logique est dans moteur.js.
 (function () {
   "use strict";
-  var M = window.Maire, CLE = "maire_partie_v1", MIN_EVTS = 550;
+  var M = window.Maire, G = window.MaireProg, QUETES = null, CLE = "maire_partie_v1", MIN_EVTS = 550;
   var IDX = null, BASE = null, st = null, onglet = "decision", finVue = false, box = null;
-  var CHOIX = { ligne: null, amb: [] }, niveau = "moyen";
+  var CHOIX = { ligne: null, amb: [] }, niveau = "moyen", comptage = false;   // comptage : gains de fin de partie en cours de calcul
 
   // ---------- Outils ----------
   function h(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
@@ -42,6 +42,10 @@
     for (var k = 0; k < l.length && n < MIN_EVTS; k++) { pris.push(l[k].f); n += l[k].n; }
     return pris;
   }
+  function quetes() {
+    if (QUETES) return Promise.resolve(QUETES);
+    return fetch("maire/data/quetes.json", { cache: "no-cache" }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (x) { QUETES = x; return x; });
+  }
   function chargerLots(noms) {
     noms = noms.concat(IDX.speciaux ? [IDX.speciaux.f] : []);   // catastrophes et coups de chance : toujours chargés
     return Promise.all(noms.map(function (f) { return fetch("maire/data/" + f).then(function (r) { if (!r.ok) throw 0; return r.json(); }); }))
@@ -57,10 +61,13 @@
     ajout(hero, h("p", "m-sur", "Hôtel de Ville · Mandat de 100 semaines"),
       h("p", "m-intro", "Chaque semaine, un dossier arrive sur ton bureau. Trois décisions possibles, des conséquences parfois inattendues. Garde la confiance des Parisiens, leur bonheur et les finances de la ville."));
     box.appendChild(hero);
+    box.appendChild(carteProfil());
+    var auj = h("div", "m-auj"); box.appendChild(auj);
+    Promise.all([index(), quetes()]).then(function () { panneauJour(auj, s); }).catch(function () { auj.remove(); });
     if (s && s.phase !== "fin") {
       var r = h("div", "m-reprise");
       ajout(r, h("strong", null, "Partie en cours"),
-        h("span", null, "Semaine " + s.tour + "/" + M.TOURS + " · " + M.NIVEAUX[s.niveau || "moyen"].nom + " · " + M.LIGNES[s.ligne].nom + " · " + s.ambitions.map(function (a) { return M.DOMAINES[a]; }).join(" et ")),
+        h("span", null, (s.defi != null ? "Défi du jour · " : "") + "Semaine " + s.tour + "/" + M.TOURS + " · " + M.NIVEAUX[s.niveau || "moyen"].nom + " · " + M.LIGNES[s.ligne].nom + " · " + s.ambitions.map(function (a) { return M.DOMAINES[a]; }).join(" et ")),
         bouton("Reprendre", "btn", reprise));
       box.appendChild(r);
     }
@@ -77,7 +84,11 @@
       "<li>Le <b>budget</b> part d’un milliard d’euros. Tu peux t’endetter jusqu’à " + argent(M.PLAFOND_DETTE) + " ; au-delà, c’est la faillite.</li>" +
       "<li>La <b>cohérence politique</b> mesure ta fidélité à ta ligne. Trop de reniements et ton camp te lâche.</li>" +
       "<li>Les effets annoncés varient un peu : certaines décisions coûtent chaque semaine, d’autres ont des conséquences plus tard.</li>" +
-      "<li>Tiens tes deux <b>ambitions</b> (niveau " + M.P.ambSeuil + " ou plus à la fin) pour un meilleur score.</li></ul>";
+      "<li>Tiens tes deux <b>ambitions</b> (niveau " + M.P.ambSeuil + " ou plus à la fin) pour un meilleur score et une meilleure élection.</li>" +
+      "<li>Un <b>opposant</b> tiré au sort t’attaque toutes les 10 semaines : riposte (argent ou cohérence), tente de le faire tomber (une chance sur deux) ou laisse faire, mais il reviendra plus fort.</li>" +
+      "<li>Certaines décisions ont des <b>retombées cachées</b> plusieurs semaines plus tard.</li>" +
+      "<li>Au bout de 100 semaines, l’<b>élection municipale</b> décide si tu es réélu.</li>" +
+      "<li>Chaque partie rapporte de l’<b>XP</b> : défi du jour, 3 quêtes quotidiennes et 100 succès à débloquer.</li></ul>";
     box.appendChild(regles);
     index().then(function (x) {
       var n = Object.keys(x.parCat || {}).length;
@@ -85,11 +96,93 @@
     }).catch(function () { info.textContent = "La base d’événements n’a pas pu être chargée. Vérifie ta connexion."; });
   }
 
+  // ---------- Profil du joueur : niveau et XP ----------
+  function carteProfil() {
+    var P = G.lire(), n = G.niveau(P.xp), c = h("div", "m-profil");
+    var t = h("div", "m-pt");
+    ajout(t, h("span", "m-pn", String(n.n)), ajout(h("div"), h("strong", null, n.titre), h("small", null, n.max ? P.xp + " XP · niveau maximum" : n.depuis + " / " + n.besoin + " XP vers le niveau " + (n.n + 1))));
+    var barre = h("div", "m-barre"), i = h("i"); i.style.width = n.pct + "%"; barre.appendChild(i);
+    var nb = Object.keys(P.succes).length;
+    ajout(c, t, barre, bouton("🏅 Succès " + nb + " / " + G.SUCCES.length, "btn m-sec m-bsucces", succes));
+    return c;
+  }
+  // ---------- Aujourd'hui : défi du jour et 3 quêtes ----------
+  function panneauJour(c, s) {
+    var j = G.jour(), P = G.lire(), d = G.defiDuJour(j, M, IDX.lots, MIN_EVTS), fait = P.defiJours[j], qs = G.quetesDuJour(j, QUETES), ok = P.quetesJour[j] || [];
+    c.innerHTML = "";
+    var df = h("div", "m-defi");
+    ajout(df, h("p", "m-sur", "Défi du jour"),
+      h("strong", null, M.NIVEAUX[d.niveau].nom + " · " + M.LIGNES[d.ligne].nom + " · " + d.ambitions.map(function (a) { return M.DOMAINES[a]; }).join(" et ")),
+      h("span", null, fait ? (fait.gagne ? "✔ Défi réussi aujourd’hui (score " + fait.score + (fait.reelu ? ", réélu" : "") + ")." : "Défi tenté aujourd’hui : raté (score " + fait.score + "). Reviens demain !") :
+        "Même départ pour tout le monde : même niveau, même ligne, mêmes ambitions, même opposant. Termine le mandat pour gagner 150 XP (+50 si tu es réélu)."));
+    if (!fait) df.appendChild(bouton("Relever le défi", "btn m-go", function () {
+      if (s && s.phase !== "fin" && !confirm("Relever le défi ? La partie en cours sera perdue.")) return;
+      lancerDefi(d);
+    }));
+    c.appendChild(df);
+    var q = h("div", "m-quetes");
+    q.appendChild(h("p", "m-sur", "Quêtes du jour · " + ok.length + "/3"));
+    var u = h("ul", "m-qliste");
+    qs.forEach(function (x) { var li = h("li", ok.indexOf(x.id) >= 0 ? "m-qok" : ""); ajout(li, h("span", null, (ok.indexOf(x.id) >= 0 ? "✔ " : "") + x.t), h("b", null, "+" + x.xp + " XP")); u.appendChild(li); });
+    q.appendChild(u);
+    q.appendChild(h("small", null, "Valables dans n’importe quelle partie terminée aujourd’hui, défi compris. Nouvelles quêtes demain."));
+    c.appendChild(q);
+  }
+  function lancerDefi(d) {
+    choixNiveau(d.niveau, true);
+    box.innerHTML = ""; box.appendChild(h("p", "msg", "Préparation du défi…"));
+    chargerLots(d.lots).then(function () {
+      st = M.nouvellePartie({ ligne: d.ligne, ambitions: d.ambitions, lots: d.lots, niveau: d.niveau, graine: d.graine });
+      st.defi = d.jour; sauver(); roulette();
+    }).catch(function () { alert("Impossible de charger les événements. Vérifie ta connexion et réessaie."); accueil(); });
+  }
+  // ---------- Succès ----------
+  function succes() {
+    var P = G.lire(); box.innerHTML = ""; choixNiveau(niveau);
+    box.appendChild(bouton("← Retour", "btn m-sec", accueil));
+    var nb = Object.keys(P.succes).length;
+    box.appendChild(h("h5", null, "Succès · " + nb + " / " + G.SUCCES.length));
+    var NOMS = ["", "Bronze", "Argent", "Or", "Platine"], g = h("div", "m-succes");
+    G.SUCCES.slice().sort(function (a, b) { return (P.succes[b.id] ? 1 : 0) - (P.succes[a.id] ? 1 : 0) || a.t - b.t; }).forEach(function (x) {
+      var d = h("div", "m-suc m-t" + x.t + (P.succes[x.id] ? " m-sok" : ""));
+      ajout(d, h("span", "m-sico", P.succes[x.id] ? "🏅" : "🔒"), ajout(h("div"), h("strong", null, x.nom), h("span", null, x.desc), h("small", null, NOMS[x.t] + " · +" + G.XP_TIER[x.t] + " XP")));
+      g.appendChild(d);
+    });
+    box.appendChild(g); haut();
+  }
+  // ---------- Roulette : tirage de l'opposant ----------
+  function roulette() {
+    var o = M.opposant(st), noms = M.OPPOSANTS; box.innerHTML = ""; document.body.classList.remove("m-modal");
+    var r = h("div", "m-roulette");
+    r.appendChild(h("p", "m-sur", "Tirage au sort de ton opposant"));
+    var fen = h("div", "m-rfen"), nom = h("strong", "m-rnom"), ico = h("span", "m-rico");
+    ajout(fen, ico, nom); r.appendChild(fen);
+    var fiche = h("div", "m-rfiche"); fiche.hidden = true; r.appendChild(fiche);
+    box.appendChild(r); haut();
+    var calme = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var k = Math.floor(Math.random() * noms.length), tours = calme ? 0 : 22 + ((o.i - k - 22) % noms.length + noms.length) % noms.length, n = 0;
+    function montre(i) { ico.textContent = noms[i].ico; nom.textContent = noms[i].nom; }
+    (function tick() {
+      montre((k + n) % noms.length);
+      if (n >= tours) return fin();
+      n++; setTimeout(tick, 45 + Math.pow(n / tours, 3) * 260);
+    })();
+    function fin() {
+      montre(o.i); fen.classList.add("m-rstop");
+      var barre = h("div", "m-barre"), i = h("i"); i.style.width = o.force + "%"; barre.appendChild(i);
+      ajout(fiche, h("p", null, o.txt),
+        ajout(h("div", "m-jt"), h("span", null, "Influence"), h("b", null, Math.round(o.force) + "/100 · " + M.humeurOpp(o.force))), barre,
+        h("p", "m-aide", "Toutes les 10 semaines, " + o.nom + " t’attaquera. Tu pourras riposter (argent ou cohérence), tenter de le faire tomber (une chance sur deux) ou laisser faire : il reviendra plus fort. Sous " + M.SEUIL_OPP + " d’influence, il abandonne."),
+        bouton("Entrer en fonctions", "btn m-go", function () { st = M.debutTour(st, BASE); sauver(); onglet = "decision"; finVue = false; jeu(); haut(); }));
+      fiche.hidden = false;
+    }
+  }
+
   // ---------- Création du maire (moins d'une minute) ----------
   function creation() {
     box.innerHTML = ""; CHOIX = { ligne: null, amb: [] };
     choixNiveau(niveau);
-    box.appendChild(h("p", "m-niv", texteNiveau()));
+    box.appendChild(h("p", "m-nivtxt", texteNiveau()));
     box.appendChild(h("p", "m-etape", "1. Ta ligne politique"));
     var lg = h("div", "m-lignes");
     Object.keys(M.LIGNES).forEach(function (k) {
@@ -129,7 +222,7 @@
     var b = e && e.currentTarget; if (b) { b.disabled = true; b.textContent = "Installation à l’Hôtel de Ville…"; }
     index().then(function () { var l = choisirLots(); return chargerLots(l).then(function () { return l; }); }).then(function (lots) {
       st = M.nouvellePartie({ ligne: CHOIX.ligne, ambitions: CHOIX.amb, lots: lots, niveau: niveau });
-      st = M.debutTour(st, BASE); sauver(); onglet = "decision"; finVue = false; jeu(); haut();
+      sauver(); roulette();
     }).catch(function () {
       if (b) { b.disabled = false; b.textContent = "Prendre mes fonctions"; }
       alert("Impossible de charger les événements. Vérifie ta connexion et réessaie.");
@@ -144,6 +237,7 @@
       return chargerLots(lots);
     }).then(function () {
       st = M.reprendre(s, BASE);
+      if (st.phase === "pret" && st.tour === 0) { choixNiveau(st.niveau, true); return roulette(); }
       if (st.phase === "pret") st = M.debutTour(st, BASE);
       sauver(); onglet = "decision"; finVue = st.phase === "fin" && !st.resultat; jeu();
     }).catch(function () { alert("Impossible de charger les événements. Vérifie ta connexion et réessaie."); });
@@ -234,6 +328,8 @@
     p.push(st.coh >= 70 ? "Ton camp se reconnaît dans tes choix." : st.coh >= 45 ? "Certains dans ton camp doutent de ta ligne politique." : "Ton camp ne comprend plus ta ligne : attention aux défections.");
     var faible = Object.keys(M.DOMAINES).sort(function (a, b) { return st.dom[a] - st.dom[b]; })[0];
     if (st.dom[faible] < 40) p.push("Point faible de la ville : " + M.DOMAINES[faible].toLowerCase() + " (" + Math.round(st.dom[faible]) + ").");
+    var o = M.opposant(st);
+    if (o) p.push(o.actif ? "Ton opposant, " + o.nom + ", a une influence de " + Math.round(o.force) + " sur 100 : il est " + M.humeurOpp(o.force) + "." : o.nom + " a quitté la vie politique : tu n’as plus d’opposant.");
     var cata = (st.historique || []).filter(function (x) { return x.sp === "catastrophe"; }).length;
     if (cata) p.push("Paris a déjà traversé " + cata + " catastrophe" + (cata > 1 ? "s" : "") + " sous ton mandat.");
     return p;
@@ -247,6 +343,13 @@
   }
   function mandatOuvert() { try { return !localStorage.getItem("maire_mandat_ferme"); } catch (e) { return true; } }
 
+  function bandeauOpp() {
+    var o = M.opposant(st), b = h("div", "m-opp" + (o.actif ? "" : " m-opp-fini"));
+    var prochaine = Math.ceil((st.tour + 1) / 10) * 10;
+    ajout(b, h("span", "m-rico", o.ico), ajout(h("div"), h("strong", null, o.nom),
+      h("span", null, o.actif ? "Influence " + Math.round(o.force) + "/100 · " + M.humeurOpp(o.force) + (prochaine < M.TOURS ? " · prochaine attaque semaine " + prochaine : "") : "A quitté la vie politique")));
+    return b;
+  }
   function dossier(c) {
     c.appendChild(caseMandat(mandatOuvert()));
     if (st.notes && st.notes.length && st.phase === "evenement") {
@@ -254,10 +357,11 @@
       st.notes.forEach(function (x) { var p = h("div", "m-note"); p.appendChild(h("p", null, "⏳ " + x.txt)); variations(x.d, p); n.appendChild(p); });
       c.appendChild(n);
     }
-    var ev = BASE.parId[st.evenement];
+    var ev = M.evenementCourant(st, BASE);
+    if (st.opposant) c.appendChild(bandeauOpp());
     if (!ev) { c.appendChild(h("p", "msg", "Dossier introuvable.")); return; }
     var carte = h("article", "m-dossier m-c-" + ev.cat);
-    ajout(carte, h("p", "m-cat", st.special === "catastrophe" ? "🚨 Catastrophe" : st.special === "chance" ? "🍀 Coup de chance" : M.CATS[ev.cat]), h("h4", null, ev.titre));
+    ajout(carte, h("p", "m-cat", st.special === "catastrophe" ? "🚨 Catastrophe" : st.special === "chance" ? "🍀 Coup de chance" : st.special === "opposition" ? "⚔️ Attaque de l’opposition" : M.CATS[ev.cat]), h("h4", null, ev.titre));
     if (st.phase === "evenement") {
       carte.appendChild(h("p", "m-desc", ev.desc));
       var ch = h("div", "m-choix");
@@ -266,13 +370,13 @@
           if (st.phase !== "evenement") return;
           st = M.choisir(st, BASE, i); sauver(); jeu();
         });
-        ajout(b, h("span", "m-lettre", "ABC"[i]), h("strong", null, x.t), h("span", "m-indice", x.d));
+        ajout(b, h("span", "m-lettre", "ABCD"[i]), h("strong", null, x.t));
         ch.appendChild(b);
       });
       carte.appendChild(ch);
     } else if (st.resultat) {
       var r = st.resultat, x = ev.choix[r.i];
-      ajout(carte, h("p", "m-pris", "Ta décision : " + x.t), h("p", "m-res", x.r));
+      ajout(carte, h("p", "m-pris", "Ta décision : " + x.t), h("p", "m-res", r.txt || x.r));
       variations(r.d, carte);
       if (r.surprise) carte.appendChild(h("p", "m-surprise", "⚡ Imprévu : " + r.surprise));
       (r.extra || []).forEach(function (t) { carte.appendChild(h("p", "m-extra", t)); });
@@ -286,7 +390,7 @@
       // Catastrophe ou coup de chance : la décision s'impose en pop-up, impossible de l'ignorer
       var pop = h("div", "m-pop m-pop-" + st.special); pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "true");
       var cadre = h("div", "m-pop-in");
-      cadre.appendChild(h("p", "m-pop-titre", st.special === "catastrophe" ? "Alerte : une catastrophe frappe Paris" : "Bonne nouvelle pour Paris !"));
+      cadre.appendChild(h("p", "m-pop-titre", st.special === "catastrophe" ? "Alerte : une catastrophe frappe Paris" : st.special === "opposition" ? "Ton opposant passe à l’attaque" : "Bonne nouvelle pour Paris !"));
       cadre.appendChild(carte); pop.appendChild(cadre); c.appendChild(pop);
       document.body.classList.add("m-modal");
       var f = carte.querySelector("button"); if (f) setTimeout(function () { f.focus({ preventScroll: true }); }, 50);
@@ -321,7 +425,7 @@
   }
 
   // ---------- Ambitions et état de la ville ----------
-  function niveau(nom, v, cible, amb) {
+  function jaugeDom(nom, v, cible, amb) {
     var d = h("div", "m-niv" + (amb ? " m-niv-amb" : ""));
     var t = h("div", "m-jt"); ajout(t, h("span", null, nom), h("b", null, String(Math.round(v))));
     var barre = h("div", "m-barre"), r = h("i"); r.style.width = v + "%"; barre.appendChild(r);
@@ -334,10 +438,10 @@
     var l = h("div", "m-ligne-rap"); ajout(l, h("strong", null, "Ligne " + M.LIGNES[st.ligne].nom), h("span", null, M.LIGNES[st.ligne].txt));
     c.appendChild(l);
     c.appendChild(h("h5", null, "Tes ambitions"));
-    st.ambitions.forEach(function (k) { c.appendChild(niveau(M.DOMAINES[k], st.dom[k], M.P.ambSeuil, true)); });
+    st.ambitions.forEach(function (k) { c.appendChild(jaugeDom(M.DOMAINES[k], st.dom[k], M.P.ambSeuil, true)); });
     c.appendChild(h("h5", null, "État de la ville"));
     var g = h("div", "m-doms");
-    Object.keys(M.DOMAINES).forEach(function (k) { if (st.ambitions.indexOf(k) < 0) g.appendChild(niveau(M.DOMAINES[k], st.dom[k])); });
+    Object.keys(M.DOMAINES).forEach(function (k) { if (st.ambitions.indexOf(k) < 0) g.appendChild(jaugeDom(M.DOMAINES[k], st.dom[k])); });
     c.appendChild(g);
     c.appendChild(h("p", "m-aide", "Les problèmes reviennent d’eux-mêmes : sans action, chaque domaine se dégrade peu à peu. Le bonheur des Parisiens suit l’état moyen de la ville."));
   }
@@ -347,7 +451,7 @@
     if (!st.historique.length) { c.appendChild(h("p", "m-vide", "Aucune décision pour l’instant.")); return; }
     var l = h("ol", "m-histo");
     st.historique.slice().reverse().forEach(function (x) {
-      var li = h("li"); ajout(li, h("span", "m-hs", "S" + x.tour), h("strong", null, (x.sp === "catastrophe" ? "🚨 " : x.sp === "chance" ? "🍀 " : "") + x.titre), h("span", "m-hc", x.choix));
+      var li = h("li"); ajout(li, h("span", "m-hs", "S" + x.tour), h("strong", null, (x.sp === "catastrophe" ? "🚨 " : x.sp === "chance" ? "🍀 " : x.sp === "opposition" ? "⚔️ " : "") + x.titre), h("span", "m-hc", x.choix));
       variations({ pop: x.d.pop, bon: x.d.bon, coh: x.d.coh, bud: x.d.bud }, li); l.appendChild(li);
     });
     c.appendChild(l);
@@ -359,11 +463,32 @@
     choixNiveau(st.niveau);
     var b = M.bilan(st), g = st.fin.gagne;
     var t = h("div", "m-final " + (g ? "m-gagne" : "m-perdu"));
-    ajout(t, h("p", "m-sur", g ? "Mandat accompli" : "Fin de mandat anticipée"),
-      h("h4", null, g ? "Tu as tenu 100 semaines à l’Hôtel de Ville !" : "Ton mandat s’arrête à la semaine " + st.fin.tour),
+    var el = st.election, an = M.analyse(st), o = M.opposant(st);
+    ajout(t, h("p", "m-sur", (st.defi != null ? "Défi du jour · " : "") + (g ? (el && el.reelu ? "Mandat accompli · Réélu" : el ? "Mandat accompli · Battu aux élections" : "Mandat accompli") : "Fin de mandat anticipée")),
+      h("h4", null, g ? (el && el.reelu ? "Les Parisiens te réélisent pour un nouveau mandat !" : "Tu as tenu 100 semaines à l’Hôtel de Ville !") : "Ton mandat s’arrête à la semaine " + st.fin.tour),
       g ? null : h("p", "m-raison", st.fin.raison.txt),
       h("p", "m-score", "Score : " + b.score + " · niveau " + M.NIVEAUX[st.niveau || "moyen"].nom));
     box.appendChild(t);
+    if (g && el) {
+      var e = h("div", "m-election" + (el.reelu ? " m-gagne" : " m-perdu"));
+      var moi = Math.round(el.pct * 10) / 10, lui = Math.round((100 - el.pct) * 10) / 10;
+      var bm = h("div", "m-ebarre"), im = h("i"), il = h("i"); im.style.width = moi + "%"; il.style.width = lui + "%"; ajout(bm, im, il);
+      ajout(e, h("p", "m-sur", "🗳️ Élection municipale"),
+        ajout(h("div", "m-escore"), h("span", null, "Toi · " + String(moi).replace(".", ",") + " %"), h("span", null, (o && o.actif ? o.nom : "Ton adversaire") + " · " + String(lui).replace(".", ",") + " %")), bm,
+        h("p", null, el.reelu ? "Victoire ! Ton bilan convainc une majorité de Parisiens." : "Défaite de justesse ou désaveu : ton adversaire l’emporte."));
+      box.appendChild(e);
+    }
+    if (an) { var a = h("div", "m-analyse"); ajout(a, h("p", "m-sur", "Ce qui s’est passé"), h("p", null, an.phrase), h("p", "m-conseil", "💡 " + an.conseil)); box.appendChild(a); }
+    var gz = h("div", "m-gains"); box.appendChild(gz);
+    if (!st.prog && !comptage) {
+      comptage = true;
+      quetes().catch(function () { return []; }).then(function () {
+        var res = G.terminer(st, M, { quetes: G.quetesDuJour(G.jour(), QUETES || []) });
+        st.prog = { total: res.total, gains: res.gains, nouveaux: res.nouveaux.map(function (x) { return x.id; }), avant: res.avant.n, apres: res.apres.n };
+        comptage = false; sauver(); gains(gz);
+        if (window.lbSubmit && window.user) lbSubmit("maire_xp", res.profil.xp);
+      });
+    } else gains(gz);
     var s = h("div", "m-fin");
     [["Popularité", Math.round(st.pop)], ["Bonheur", Math.round(st.bon)], ["Cohérence", Math.round(st.coh)],
       ["Trésorerie", argent(st.tresor)], ["Dette", argent(st.dette)], ["Décisions", st.historique.length]].forEach(function (x) {
@@ -372,7 +497,7 @@
     box.appendChild(s);
     box.appendChild(caseMandat(true));
     box.appendChild(h("h5", null, "Tes ambitions"));
-    b.ambitions.forEach(function (a) { box.appendChild(niveau(a.nom, a.niveau, M.P.ambSeuil, true)); });
+    b.ambitions.forEach(function (a) { box.appendChild(jaugeDom(a.nom, a.niveau, M.P.ambSeuil, true)); });
     function liste(titre, l) {
       if (!l.length) return;
       box.appendChild(h("h5", null, titre));
@@ -393,6 +518,17 @@
       bouton("Nouveau mandat", "btn m-go", function () { effacer(); st = null; creation(); haut(); }));
     box.appendChild(bas);
   }
+  function gains(c) {
+    var p = st.prog; if (!p) return; c.innerHTML = "";
+    var n = G.niveau(G.lire().xp);
+    c.appendChild(h("p", "m-sur", "Ce que ce mandat te rapporte : +" + p.total + " XP"));
+    if (p.apres > p.avant) c.appendChild(h("p", "m-lvlup", "⬆️ Niveau " + p.apres + " atteint : " + n.titre + " !"));
+    var u = h("ul", "m-liste");
+    p.gains.forEach(function (x) { var li = h("li", "m-up"); ajout(li, h("span", null, x.txt), h("b", null, "+" + x.xp + " XP")); u.appendChild(li); });
+    c.appendChild(u);
+    var barre = h("div", "m-barre"), i = h("i"); i.style.width = n.pct + "%"; barre.appendChild(i);
+    ajout(c, h("small", null, "Niveau " + n.n + " · " + n.titre + (n.max ? "" : " · " + n.depuis + " / " + n.besoin + " XP")), barre);
+  }
   function histoFin() {
     box.innerHTML = "";
     box.appendChild(bouton("← Retour au bilan", "btn m-sec", function () { fin(); }));
@@ -410,7 +546,7 @@
         if (b.disabled) return;
         choixNiveau(b.dataset.l);
         try { localStorage.setItem("maire_niveau", niveau); } catch (e) {}
-        var t = box.querySelector(".m-niv"); if (t) t.textContent = texteNiveau();   // écran de création : niveau annoncé à jour
+        var t = box.querySelector(".m-nivtxt"); if (t) t.textContent = texteNiveau();   // écran de création : niveau annoncé à jour
       };
     });
     if (window.lbBoard) lbBoard("lb-maire", function () { return cleClassement(niveau); }, function () { return "🏆 Classement général · Maire de Paris " + M.NIVEAUX[niveau].nom; });

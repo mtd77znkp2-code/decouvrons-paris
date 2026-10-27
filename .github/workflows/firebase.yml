@@ -10,13 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - name: Maire de Paris · base d'événements à jour et valide
         run: node tools/maire/construire.mjs --verifier
+      - name: Maire de Paris · quêtes du jour à jour
+        run: node tools/maire/quetes.mjs --verifier
       - name: Maire de Paris · tests du moteur et équilibrage
-        run: node tools/maire/test-moteur.mjs 300
+        # La simulation d'équilibrage (longue) ne tourne que si le moteur, les événements ou les tests ont changé
+        run: |
+          N=0
+          if ! git diff --quiet "${{ github.event.before }}" "${{ github.sha }}" -- public/maire/moteur.js public/maire/data tools/maire 2>/dev/null; then N=300; fi
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then N=300; fi
+          echo "Parties simulées par stratégie : $N"
+          node tools/maire/test-moteur.mjs $N
       - run: npm ci
         working-directory: functions
       - name: Mise en ligne
