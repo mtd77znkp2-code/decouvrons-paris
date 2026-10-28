@@ -19,7 +19,7 @@
   function virg(v) { return String(Math.round(v * 10) / 10).replace(".", ","); }
   function date(t) { var a = Math.floor((t - 1) / 4) + 1, q = (t - 1) % 4 + 1; return (q === 1 ? "1er" : q + "e") + " trimestre · année " + a; }
   function sauver() { try { localStorage.setItem(CLE, JSON.stringify(st)); } catch (e) {} }
-  function lireSauvegarde() { try { var s = JSON.parse(localStorage.getItem(CLE) || "null"); return s && (s.v === 3 || s.v === 4) ? s : null; } catch (e) { return null; } }
+  function lireSauvegarde() { try { var s = JSON.parse(localStorage.getItem(CLE) || "null"); return s && s.v >= 3 && s.v <= 5 ? s : null; } catch (e) { return null; } }
   function effacer() { try { localStorage.removeItem(CLE); } catch (e) {} }
   function haut() { var g = document.getElementById("g-maire"); if (g && g.getBoundingClientRect().top < 0) g.scrollIntoView({ behavior: "smooth" }); }
   function nivJ() { return G.nivJoueur(); }
@@ -55,6 +55,16 @@
   function quetes() {
     if (QUETES) return Promise.resolve(QUETES);
     return fetch("maire/data/quetes.json", { cache: "no-cache" }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (x) { QUETES = x; return x; });
+  }
+  // Les 3 quêtes du jour sont figées pour la journée (monter de niveau en pleine partie ne les change pas)
+  function quetesAuj() {
+    if (!QUETES) return [];
+    var j = G.jour(), c = null;
+    try { c = JSON.parse(localStorage.getItem("maire_quetes_j") || "null"); } catch (e) {}
+    if (c && c.j === j) return c.ids.map(function (id) { return QUETES.filter(function (q) { return q.id === id; })[0]; }).filter(Boolean);
+    var l = G.quetesDuJour(j, QUETES, nivJ());
+    if (l.length) try { localStorage.setItem("maire_quetes_j", JSON.stringify({ j: j, ids: l.map(function (q) { return q.id; }) })); } catch (e) {}
+    return l;
   }
   function chargerLots(noms) {
     noms = noms.concat(IDX.speciaux ? [IDX.speciaux.f] : []);
@@ -155,8 +165,9 @@
   function carteDeblocages(n) {
     var d = h("details", "m-debloc"); d.appendChild(h("summary", null, "🔓 Ce que tu as débloqué"));
     var u = h("ul");
-    M.MECANIQUES.concat(M.EXTRAS).sort(function (a, b) { return a.niv - b.niv; }).forEach(function (m) { u.appendChild(h("li", n >= m.niv ? "m-ok" : "", (n >= m.niv ? "✔ " : "🔒 Niveau " + m.niv + " · ") + m.nom)); });
-    Object.keys(M.C.PROJETS).forEach(function (id) { var p = M.C.PROJETS[id]; if (p.niv > 10) u.appendChild(h("li", n >= p.niv ? "m-ok" : "", (n >= p.niv ? "✔ " : "🔒 Niveau " + p.niv + " · ") + "Projet : " + p.nom)); });
+    var l = M.MECANIQUES.concat(M.EXTRAS).map(function (m) { return { niv: m.niv, txt: m.nom }; });
+    Object.keys(M.BATIMENTS).forEach(function (id) { var B = M.BATIMENTS[id]; if (!B.secret) l.push({ niv: B.niv || 1, txt: B.ico + " " + (B.projet ? "Projet : " : "") + B.nom }); });
+    l.sort(function (a, b) { return a.niv - b.niv; }).forEach(function (m) { u.appendChild(h("li", n >= m.niv ? "m-ok" : "", (n >= m.niv ? "✔ " : "🔒 Niveau " + m.niv + " · ") + m.txt)); });
     d.appendChild(u);
     return d;
   }
@@ -179,13 +190,13 @@
       }));
     }
     c.appendChild(df);
-    var q = h("div", "m-quetes"), qs = G.quetesDuJour(j, QUETES, n), ok = P.quetesJour[j] || [];
+    var q = h("div", "m-quetes"), qs = quetesAuj(), ok = P.quetesJour[j] || [];
     q.appendChild(h("p", "m-sur", "Quêtes du jour" + (qs.length ? " · " + ok.length + "/3" : "")));
     if (!qs.length) q.appendChild(h("span", null, "🔒 Se débloquent au niveau " + G.NIV_QUETES + "."));
     else {
       var u = h("ul", "m-qliste");
       qs.forEach(function (x) { var li = h("li", ok.indexOf(x.id) >= 0 ? "m-qok" : ""); ajout(li, h("span", null, (ok.indexOf(x.id) >= 0 ? "✔ " : "") + x.t), h("b", null, "+" + x.xp + " XP")); u.appendChild(li); });
-      ajout(q, u, h("small", null, "Valables dans n’importe quelle partie terminée aujourd’hui."));
+      ajout(q, u, h("small", null, "Elles se valident en pleine partie, dès que l’objectif est atteint."));
     }
     c.appendChild(q);
   }
@@ -213,7 +224,7 @@
     choixNiveau(d.niveau, true);
     box.innerHTML = ""; box.appendChild(h("p", "msg", "Préparation du défi…"));
     chargerLots(d.lots).then(function () {
-      st = M.nouvellePartie({ ligne: d.ligne, ambitions: d.ambitions, lots: d.lots, niveau: d.niveau, graine: d.graine, nivJoueur: d.nivJoueur, scenario: d.scenario, secrets: {} });
+      st = M.nouvellePartie({ ligne: d.ligne, ambitions: d.ambitions, lots: d.lots, niveau: d.niveau, graine: d.graine, nivJoueur: d.nivJoueur, xpJoueur: G.lire().xp, pid: Date.now().toString(36), scenario: d.scenario, secrets: {} });
       st.defi = d.jour; sauver(); demarrerPartie();
     }).catch(function () { alert("Impossible de charger les dossiers. Vérifie ta connexion et réessaie."); accueil(); });
   }
@@ -277,9 +288,10 @@
     maj();
   }
   function demarrer() {
+    quetes().catch(function () {});
     box.innerHTML = ""; box.appendChild(h("p", "msg", "Installation à l’Hôtel de Ville…"));
     index().then(function () { var l = choisirLots(); return chargerLots(l).then(function () { return l; }); }).then(function (lots) {
-      st = M.nouvellePartie({ ligne: CHOIX.ligne || "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, nivJoueur: nivJ(), secrets: G.lire().secrets });
+      st = M.nouvellePartie({ ligne: CHOIX.ligne || "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, xpJoueur: G.lire().xp, pid: Date.now().toString(36), secrets: G.lire().secrets });
       sauver(); demarrerPartie();
     }).catch(function () { alert("Impossible de charger les dossiers. Vérifie ta connexion et réessaie."); accueil(); });
   }
@@ -291,6 +303,7 @@
   }
   function reprise() {
     var s = lireSauvegarde(); if (!s) return accueil();
+    quetes().catch(function () {});
     index().then(function () {
       var dispo = IDX.lots.map(function (l) { return l.f; }), lots = (s.lots || []).filter(function (f) { return dispo.indexOf(f) >= 0; });
       if (!lots.length) lots = choisirLots();
@@ -329,6 +342,7 @@
 
   // ---------- Écran de jeu : une seule page, de haut en bas ----------
   function jeu() {
+    progresser();
     if (st.phase === "fin") return fin();
     if (st.phase === "election") return resultatElection();
     var y = window.scrollY; box.style.minHeight = box.offsetHeight + "px";
@@ -396,7 +410,32 @@
     ajout(d, ajout(h("div"), h("span", "m-sur", "Mandat " + st.mandat + (st.scenario ? " · défi du jour" : "")), h("strong", null, date(Math.max(1, st.t)))),
       ajout(h("div", "m-entete-d"), telephone(), h("span", "m-reste", st.scenario ? "🎯 Fin du défi dans " + (st.scenario.fin - st.t) + " trim." : "🗳️ Élection dans " + reste + " trimestre" + (reste > 1 ? "s" : ""))));
     var p = h("div", "m-prog"), pi = h("i"); pi.style.width = (M.trimMandat(st) / M.MANDAT * 100) + "%"; p.appendChild(pi); d.appendChild(p);
+    d.appendChild(barreXP());
     return d;
+  }
+  // Niveau et XP en direct : la barre se remplit à chaque action, le prochain déblocage est annoncé
+  var xpAffiche = null;
+  function barreXP() {
+    var xp = st.xp0 + st.xp, n = G.niveau(xp), d = h("div", "m-xp");
+    var barre = h("div", "m-xpbarre"), i = h("i"); barre.appendChild(i);
+    var avant = xpAffiche != null && xpAffiche.pid === st.pid && xpAffiche.xp < xp ? G.niveau(xpAffiche.xp) : null;
+    i.style.width = (avant && avant.n === n.n ? avant.pct : n.pct) + "%";
+    if (avant) requestAnimationFrame(function () { requestAnimationFrame(function () { i.style.width = n.pct + "%"; }); });
+    var suiv = prochainDeblocage();
+    ajout(d, ajout(h("div", "m-jt"), h("span", null, "⭐ Niveau " + n.n + " · " + n.titre),
+      ajout(h("b"), avant ? h("em", "m-xpplus", "+" + (xp - xpAffiche.xp) + " XP") : null, document.createTextNode(n.max ? "niveau max" : n.depuis + " / " + n.besoin + " XP"))), barre);
+    if (suiv) d.appendChild(h("small", null, "Prochain déblocage au niveau " + suiv.niv + " : " + suiv.txt));
+    xpAffiche = { pid: st.pid, xp: xp };
+    return d;
+  }
+  function prochainDeblocage() {
+    if (st.nivFixe) return null;
+    var l = [];
+    Object.keys(M.BATIMENTS).forEach(function (id) { var B = M.BATIMENTS[id]; if (!B.secret && B.niv > st.nivJ) l.push({ niv: B.niv, txt: B.ico + " " + B.nom }); });
+    M.MECANIQUES.concat(M.EXTRAS).forEach(function (m) { if (m.niv > st.nivJ && !st.meca[m.id]) l.push({ niv: m.niv, txt: m.nom }); });
+    if (!l.length) return null;
+    var nv = Math.min.apply(null, l.map(function (x) { return x.niv; }));
+    return { niv: nv, txt: l.filter(function (x) { return x.niv === nv; }).map(function (x) { return x.txt; }).join(", ") };
   }
   function sondage() {
     var v = M.sondage(st), d = h("div", "m-sondage " + (v > 52 ? "m-bien" : v > 48 ? "m-juste" : "m-mal"));
@@ -443,7 +482,7 @@
     var gain = Object.keys(B.e).map(function (k) { return (B.e[k] > 0 ? "+" : "−") + virg(Math.abs(B.e[k]) * M.P.gain * Math.pow(M.P.rendement, B.projet ? 0 : deja)) + " " + M.ICO[k]; });
     if (B.rev) gain.push("+" + argent(B.rev) + "/trim.");
     if (B.pop) gain.push("+" + B.pop + " popularité");
-    var neuf = (B.tier > 1 || B.secret || B.projet) && !G.guideVu("bat-" + id) && !deja;
+    var neuf = (B.niv > 1 || B.secret || B.projet) && !G.guideVu("bat-" + id) && !deja;
     var b = bouton("", "m-bat" + (B.projet ? " m-bat-projet" : "") + (B.secret ? " m-bat-secret" : "") + (neuf ? " m-new" : ""), function () {
       if (M.peutAcheter(st, id)) return;
       G.marquerGuide("bat-" + id);
@@ -458,13 +497,13 @@
   }
   function verrou(nom, txt) { var l = h("div", "m-bat m-bat-lock"); ajout(l, h("span", "m-bico", "🔒"), ajout(h("div"), h("strong", null, nom), h("small", null, txt))); return l; }
   function boutique() {
-    var d = h("div", "m-boutique"), n = nivJ(), g = h("div", "m-bats");
+    var d = h("div", "m-boutique"), n = st.nivJ, g = h("div", "m-bats");
     d.appendChild(h("h5", null, "🛒 Boutique de la Ville"));
-    Object.keys(M.BATIMENTS).forEach(function (id) {
-      var B = M.BATIMENTS[id]; if (B.projet || B.secret) return;
+    Object.keys(M.BATIMENTS).filter(function (id) { return !M.BATIMENTS[id].projet && !M.BATIMENTS[id].secret; })
+      .sort(function (a, b) { return (M.disponible(st, b) - M.disponible(st, a)) || ((M.BATIMENTS[a].niv || 1) - (M.BATIMENTS[b].niv || 1)); }).forEach(function (id) {
+      var B = M.BATIMENTS[id];
       if (!M.disponible(st, id)) {
-        var lvl = M.MECANIQUES.filter(function (m) { return m.id === ({ 1: "base", 2: "boutique2", 3: "boutique3" })[B.tier]; })[0].niv;
-        if (lvl <= n + 3) g.appendChild(verrou(B.nom, "Se débloque au niveau " + lvl)); return;
+        if (B.niv <= n + 2) g.appendChild(verrou(B.ico + " " + B.nom, "Se débloque au niveau " + B.niv + (st.nivFixe ? " (hors défi du jour)" : ""))); return;
       }
       g.appendChild(carteBat(id));
     });
@@ -478,7 +517,7 @@
       proj.forEach(function (id) {
         var B = M.BATIMENTS[id];
         if (M.disponible(st, id)) gp.appendChild(carteBat(id));
-        else if (B.niv <= n + 3) gp.appendChild(verrou(B.nom, "Se débloque au niveau " + B.niv));
+        else if (B.niv <= n + 2) gp.appendChild(verrou(B.ico + " " + B.nom, "Se débloque au niveau " + B.niv));
       });
       d.appendChild(gp);
     }
@@ -546,6 +585,74 @@
     setTimeout(function () { x.classList.add("m-toast-out"); }, 1600); setTimeout(function () { x.remove(); }, 2100);
   }
 
+  // ---------- Progression en pleine partie : XP, niveaux, succès et quêtes ----------
+  // Après chaque action : le profil reçoit l'XP, les succès et quêtes réussis sont rangés, et on prépare l'affichage
+  function progresser() {
+    if (!st || st.prog) return;
+    var r = G.suivrePartie(st, M, { quetes: quetesAuj() });
+    st = r.st;
+    var montees = st.montees || [];
+    if (montees.length) st = M.viderMontees(st);
+    sauver();
+    montees.forEach(function (m) { notifier({ type: "niveau", m: m }); });
+    r.chapitres.forEach(function (c) { notifier({ type: "fait", cls: "m-n-chap", sur: "📖 Chapitre " + c.num + " accompli", nom: c.titre, desc: c.objectif, xp: 200 }); });
+    r.quetes.forEach(function (q) { notifier({ type: "fait", cls: "m-n-quete", sur: "🎯 Quête du jour accomplie", nom: q.t, xp: q.xp }); });
+    var su = r.succes.slice(0, 4);
+    su.forEach(function (x) { notifier({ type: "fait", cls: "m-n-succes m-n-t" + x.t, sur: "🏆 Succès débloqué !", nom: x.nom, desc: x.desc, xp: G.XP_TIER[x.t] }); });
+    if (r.succes.length > su.length) notifier({ type: "fait", cls: "m-n-succes", sur: "🏆 Et ce n’est pas fini…", nom: "+" + (r.succes.length - su.length) + " autres succès débloqués" });
+    // Un seul « ça avance » à la fois par sorte (succès, quête), et seulement si rien n'a été réussi à ce moment-là
+    if (!r.succes.length && !r.quetes.length) {
+      var deja = {};
+      r.progres.forEach(function (p) { if (!deja[p.type]) { deja[p.type] = 1; notifier({ type: "progres", p: p }); } });
+    }
+  }
+  // File d'affichage : une réussite ou un niveau passe toujours avant les pastilles « ça avance », qui ne s'empilent jamais
+  var FILE = [], notifActive = null;
+  function notifier(n) {
+    if (n.type === "progres") {
+      if (FILE.some(function (x) { return x.type !== "progres"; })) return;
+      FILE = FILE.filter(function (x) { return x.p.type !== n.p.type; });
+    } else {
+      FILE = FILE.filter(function (x) { return x.type !== "progres"; });
+      if (notifActive && notifActive.type === "progres") notifActive.fermer();
+    }
+    FILE.push(n);
+    if (!notifActive) suivante();
+  }
+  function suivante() {
+    var n = FILE.shift(); notifActive = null;
+    if (!n) return;
+    var el, duree;
+    if (n.type === "progres") {
+      var p = n.p; el = h("div", "m-notif m-n-progres" + (p.type === "quete" ? " m-n-pq" : ""));
+      var barre = h("div", "m-barre"), i = h("i"); i.style.width = Math.round((p.cur - 1) / p.but * 100) + "%"; barre.appendChild(i);
+      ajout(el, ajout(h("div", "m-jt"), h("span", null, p.ico + " " + p.nom), h("b", null, p.cur + " / " + p.but)), barre);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { i.style.width = Math.round(p.cur / p.but * 100) + "%"; }); });
+      duree = 2200;
+    } else if (n.type === "niveau") {
+      var m = n.m, nv = G.niveau(G.xpPour(m.n));
+      el = h("div", "m-notif m-n-niveau");
+      ajout(el, h("p", "m-n-sur", "⬆️ Niveau " + m.n + " !"), h("strong", null, nv.titre));
+      var u = h("ul");
+      m.bats.forEach(function (id) { var B = M.BATIMENTS[id]; u.appendChild(h("li", null, "🔓 " + B.ico + " " + B.nom + (B.projet ? " (projet démesuré)" : "") + " · en boutique")); });
+      m.meca.forEach(function (t) { u.appendChild(h("li", null, "✨ " + t)); });
+      m.plusTard.forEach(function (t) { u.appendChild(h("li", "m-n-tard", "🔜 " + t + " · dès ta prochaine partie")); });
+      if (u.children.length) el.appendChild(u);
+      duree = 4200;
+    } else {
+      el = h("div", "m-notif " + n.cls);
+      ajout(el, h("p", "m-n-sur", n.sur), h("strong", null, n.nom), n.desc ? h("span", null, n.desc) : null, n.xp ? h("b", "m-n-xp", "+" + n.xp + " XP") : null);
+      duree = 3200;
+    }
+    el.setAttribute("role", "status");
+    var fini = false;
+    function fermer() { if (fini) return; fini = true; el.classList.add("m-notif-out"); setTimeout(function () { el.remove(); suivante(); }, 300); }
+    notifActive = { type: n.type, fermer: fermer };
+    el.onclick = fermer;
+    (document.getElementById("g-maire") || document.body).appendChild(el);
+    setTimeout(fermer, duree);
+  }
+
   // ---------- Guide intégré : une bulle pointe l'élément à utiliser, on avance en faisant l'action ----------
   // Chaque séquence : où elle peut se lancer (ecran), quand (si), et ses étapes { q: élément visé, t: une phrase, a: action attendue }.
   // a = "ok" : un bouton OK dans la bulle (ou toucher l'élément) suffit.
@@ -584,6 +691,8 @@
       { q: ".m-chantiers", t: "🏗️ Ton chantier avance chaque trimestre et se paie par tranches. Gare aux imprévus !", a: "ok" }] },
     { id: "rare", ecran: "modale", si: function () { return (st.special === "rare" || st.special === "legendaire") && st.phase === "evenement"; }, etapes: [
       { q: "#m-modale .m-choix", t: "✨ Un événement rare ! Aucune réponse n’est toujours la meilleure : à toi de jouer.", a: "choix" }] },
+    { id: "xp", ecran: "jeu", si: function () { return st.phase === "gestion" && st.t >= 2 && !st.nivFixe; }, etapes: [
+      { q: ".m-xp", t: "⭐ Chaque trimestre, achat, élection ou succès te rapporte de l’XP. À chaque niveau, un nouveau bâtiment arrive en boutique !", a: "ok" }] },
     { id: "nouveautes", ecran: "jeu", si: function () { return st.phase === "gestion" && !!document.querySelector(".m-bat.m-new:not(:disabled)"); }, rejouable: 1, etapes: [
       { q: ".m-bat.m-new:not(:disabled)", t: "✨ Nouveau en boutique ! Essaie-le.", a: "ok" }] }
   ];
@@ -593,11 +702,11 @@
     if (!GA) {
       var g = GUIDES.filter(function (x) {
         if (x.ecran !== ecran || !x.si()) return false;
-        var cle = x.rejouable ? x.id + "-" + nivJ() : x.id;
+        var cle = x.rejouable ? x.id + "-" + (st ? st.nivJ : nivJ()) : x.id;
         return !G.guideVu(cle);
       })[0];
       if (!g) return cacherBulle();
-      GA = { g: g, i: 0, cle: g.rejouable ? g.id + "-" + nivJ() : g.id };
+      GA = { g: g, i: 0, cle: g.rejouable ? g.id + "-" + (st ? st.nivJ : nivJ()) : g.id };
     }
     montrerEtape();
   }
@@ -843,8 +952,8 @@
     if (!st.prog && !comptage) {
       comptage = true;
       quetes().catch(function () { return []; }).then(function () {
-        var res = G.terminer(st, M, { quetes: G.quetesDuJour(G.jour(), QUETES || [], nivJ()) });
-        st.prog = { total: res.total, gains: res.gains, avant: res.avant.n, apres: res.apres.n, debloque: res.debloque.map(function (m) { return m.nom; }) };
+        var res = G.terminer(st, M, { quetes: quetesAuj() });
+        st = res.st; st.prog = { total: res.total, gains: res.gains, avant: res.avant.n, apres: res.apres.n, debloque: res.debloque.map(function (m) { return m.nom; }) };
         comptage = false; sauver(); gains(gz);
         if (window.lbSubmit && window.user) lbSubmit("xp_maire", res.profil.xp);
       });
@@ -885,7 +994,7 @@
     var n = G.niveau(G.lire().xp);
     c.appendChild(h("p", "m-sur", "Ce que cette partie te rapporte : +" + p.total + " XP"));
     if (p.apres > p.avant) c.appendChild(h("p", "m-lvlup", "⬆️ Niveau " + p.apres + " atteint : " + n.titre + " !"));
-    (p.debloque || []).forEach(function (nom) { c.appendChild(h("p", "m-debl", "🔓 Débloqué : " + nom + " — Léon t’expliquera tout à la prochaine partie.")); });
+    (p.debloque || []).forEach(function (nom) { c.appendChild(h("p", "m-debl", "🔓 Débloqué : " + nom)); });
     var u = h("ul", "m-liste");
     p.gains.forEach(function (x) { var li = h("li", "m-up"); ajout(li, h("span", null, x.txt), h("b", null, "+" + x.xp + " XP")); u.appendChild(li); });
     c.appendChild(u);

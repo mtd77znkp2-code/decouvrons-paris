@@ -2,7 +2,8 @@
 // Chaque clic fait passer un trimestre : l'argent rentre et sort, un dossier arrive, et tu achètes des bâtiments
 // qui font progresser les 4 piliers de la ville. Tous les 6 ans (24 trimestres), les Parisiens votent :
 // la partie continue tant que tu es réélu, ou jusqu'à la faillite.
-// Les mécaniques se débloquent avec le niveau du joueur (voir MECANIQUES) : une partie garde celles qu'elle avait au départ.
+// Le joueur gagne de l'XP pendant la partie (trimestres, achats, élections, succès…) : chaque niveau débloque un bâtiment
+// ou une mécanique tout de suite (voir MECANIQUES et le champ niv des bâtiments). On commence avec deux bâtiments.
 // L'état est un objet simple, sauvegardable tel quel ; chaque étape produit un nouvel état, si bien que recharger
 // la page ne rejoue jamais un effet déjà appliqué.
 (function (root) {
@@ -36,11 +37,11 @@
     { id: "base", niv: 1, nom: "Dossiers, boutique et élections" },
     { id: "budget", niv: 2, nom: "Le budget : régler les impôts" },
     { id: "opposant", niv: 3, nom: "L’opposition" },
-    { id: "boutique2", niv: 4, nom: "Nouveaux bâtiments et niveau Moyen" },
+    { id: "boutique2", niv: 4, nom: "Le niveau de difficulté Moyen" },
     { id: "cata", niv: 5, nom: "Catastrophes et coups de chance" },
     { id: "promesses", niv: 6, nom: "Les promesses de campagne" },
     { id: "ligne", niv: 7, nom: "La ligne politique" },
-    { id: "boutique3", niv: 8, nom: "Grands équipements, niveau Réaliste et défi du jour" },
+    { id: "boutique3", niv: 8, nom: "Le niveau Réaliste et le défi du jour" },
     { id: "projets", niv: 10, nom: "Les grands projets de Paris 2040" }
   ];
   // Mécaniques supplémentaires (sans chapitre d'histoire) : elles s'ajoutent en chemin
@@ -51,29 +52,38 @@
     { id: "historiques", niv: 5, nom: "Les décisions historiques" },
     { id: "grandsProjets", niv: 6, nom: "Les projets démesurés (chantiers de plusieurs trimestres)" }
   ];
+  // Ce qui se choisit en créant la partie (promesses, ligne, difficulté) n'arrive qu'à la partie suivante ;
+  // le reste s'active dès que le niveau est atteint, en pleine partie (l'opposant, lui, entre en scène au mandat suivant)
+  var EN_COURS = { budget: 1, opposant: 1, cata: 1, projets: 1, missions: 1, combos: 1, pari: 1, historiques: 1, grandsProjets: 1 };
   function mecaniques(nivJoueur) { var m = {}; MECANIQUES.concat(EXTRAS).forEach(function (x) { m[x.id] = nivJoueur >= x.niv; }); return m; }
 
   // ---------- Boutique ----------
   // cout : prix du premier exemplaire (chaque achat suivant coûte 15 % de plus) · ent : entretien par trimestre
   // e : gain sur les piliers (rendement décroissant) · rev : recette par trimestre · eco : dynamisme économique · pop : popularité à l'inauguration
   var BATIMENTS = {
-    parc: { nom: "Parc", ico: "🌳", tier: 1, cout: 40, ent: 2, e: { cadre: 3 }, ali: { g: 0, c: 1, d: 0, e: 2 } },
-    logements: { nom: "Logements sociaux", ico: "🏢", tier: 1, cout: 60, ent: 3, e: { logement: 3 }, ali: { g: 2, c: 0, d: -1, e: 1 } },
-    police: { nom: "Commissariat", ico: "🚓", tier: 1, cout: 50, ent: 4, e: { securite: 3 }, ali: { g: -1, c: 1, d: 2, e: 0 } },
-    velo: { nom: "Pistes cyclables", ico: "🚲", tier: 1, cout: 30, ent: 1, e: { transports: 2, cadre: 1 }, ali: { g: 1, c: 0, d: -1, e: 2 } },
-    ecole: { nom: "École", ico: "🏫", tier: 2, cout: 70, ent: 4, e: { cadre: 3, logement: 1 }, ali: { g: 1, c: 1, d: 0, e: 0 } },
-    tram: { nom: "Ligne de tramway", ico: "🚋", tier: 2, cout: 150, ent: 6, e: { transports: 6 }, ali: { g: 1, c: 1, d: 0, e: 2 } },
-    proprete: { nom: "Brigade de propreté", ico: "🧹", tier: 2, cout: 60, ent: 5, e: { cadre: 3, securite: 1 }, ali: { g: 1, c: 1, d: 1, e: 1 } },
-    marche: { nom: "Marché couvert", ico: "🧺", tier: 2, cout: 80, ent: 1, rev: 6, e: { logement: 1 }, eco: 2, ali: { g: 1, c: 1, d: 1, e: 1 } },
-    metro: { nom: "Station de métro", ico: "🚇", tier: 3, cout: 350, ent: 10, e: { transports: 9, logement: 1 }, eco: 2, ali: { g: 1, c: 2, d: 1, e: 1 } },
-    hopital: { nom: "Hôpital", ico: "🏥", tier: 3, cout: 300, ent: 12, e: { cadre: 6, securite: 2 }, ali: { g: 2, c: 1, d: 0, e: 0 } },
-    quartier: { nom: "Écoquartier", ico: "🏘️", tier: 3, cout: 400, ent: 8, e: { logement: 8, cadre: 2 }, ali: { g: 1, c: 1, d: 0, e: 2 } },
-    musee: { nom: "Grand musée", ico: "🎭", tier: 3, cout: 250, ent: 4, rev: 14, e: { cadre: 2 }, eco: 3, ali: { g: 0, c: 1, d: 1, e: 0 } }
+    parc: { niv: 1, nom: "Parc", ico: "🌳", tier: 1, cout: 40, ent: 2, e: { cadre: 3 }, ali: { g: 0, c: 1, d: 0, e: 2 } },
+    logements: { niv: 1, nom: "Logements sociaux", ico: "🏢", tier: 1, cout: 60, ent: 3, e: { logement: 3 }, ali: { g: 2, c: 0, d: -1, e: 1 } },
+    police: { niv: 3, nom: "Commissariat", ico: "🚓", tier: 1, cout: 50, ent: 4, e: { securite: 3 }, ali: { g: -1, c: 1, d: 2, e: 0 } },
+    velo: { niv: 2, nom: "Pistes cyclables", ico: "🚲", tier: 1, cout: 30, ent: 1, e: { transports: 2, cadre: 1 }, ali: { g: 1, c: 0, d: -1, e: 2 } },
+    ecole: { niv: 4, nom: "École", ico: "🏫", tier: 2, cout: 70, ent: 4, e: { cadre: 3, logement: 1 }, ali: { g: 1, c: 1, d: 0, e: 0 } },
+    tram: { niv: 7, nom: "Ligne de tramway", ico: "🚋", tier: 2, cout: 150, ent: 6, e: { transports: 6 }, ali: { g: 1, c: 1, d: 0, e: 2 } },
+    proprete: { niv: 6, nom: "Brigade de propreté", ico: "🧹", tier: 2, cout: 60, ent: 5, e: { cadre: 3, securite: 1 }, ali: { g: 1, c: 1, d: 1, e: 1 } },
+    marche: { niv: 5, nom: "Marché couvert", ico: "🧺", tier: 2, cout: 80, ent: 1, rev: 6, e: { logement: 1 }, eco: 2, ali: { g: 1, c: 1, d: 1, e: 1 } },
+    metro: { niv: 8, nom: "Station de métro", ico: "🚇", tier: 3, cout: 350, ent: 10, e: { transports: 9, logement: 1 }, eco: 2, ali: { g: 1, c: 2, d: 1, e: 1 } },
+    hopital: { niv: 9, nom: "Hôpital", ico: "🏥", tier: 3, cout: 300, ent: 12, e: { cadre: 6, securite: 2 }, ali: { g: 2, c: 1, d: 0, e: 0 } },
+    quartier: { niv: 11, nom: "Écoquartier", ico: "🏘️", tier: 3, cout: 400, ent: 8, e: { logement: 8, cadre: 2 }, ali: { g: 1, c: 1, d: 0, e: 2 } },
+    musee: { niv: 10, nom: "Grand musée", ico: "🎭", tier: 3, cout: 250, ent: 4, rev: 14, e: { cadre: 2 }, eco: 3, ali: { g: 0, c: 1, d: 1, e: 0 } }
   };
   // Projets démesurés (chantiers) et bâtiments secrets rejoignent la même boutique, avec les mêmes règles d'effets
   Object.keys(C.PROJETS).forEach(function (id) { BATIMENTS[id] = Object.assign({ projet: 1, unique: 1, ali: { g: 1, c: 1, d: 1, e: 1 } }, C.PROJETS[id]); });
   Object.keys(C.SECRETS).forEach(function (id) { BATIMENTS[id] = Object.assign({ secret: 1, unique: 1, ali: {} }, C.SECRETS[id]); });
-  var TIER_MECA = { 1: "base", 2: "boutique2", 3: "boutique3" };
+
+  // ---------- XP et niveaux (la courbe est partagée avec progression.js) ----------
+  var NIV_MAX = 50;
+  function xpPour(n) { return n <= 1 ? 0 : Math.round(80 * Math.pow(n - 1, 1.6)); }
+  function niveauXP(xp) { var n = 1; while (n < NIV_MAX && xp >= xpPour(n + 1)) n++; return n; }
+  // Ce que rapporte la partie elle-même (les succès, quêtes et chapitres s'y ajoutent : voir progression.js)
+  var XP = { trimestre: 3, trimestreMax: 150, achat: 4, achatMax: 100, election: { facile: 60, moyen: 120, difficile: 200 }, projet: 40, rare: 10, legendaire: 30, raresMax: 120 };
 
   // ---------- Opposants (personnages fictifs) : un nouveau tirage à chaque mandat, une attaque par an ----------
   var OPPOSANTS = [
@@ -202,21 +212,25 @@
   // ---------- Création de partie ----------
   // o : { ligne, ambitions (2 piliers), niveau, nivJoueur, graine, lots, secrets (bâtiments secrets déjà découverts), scenario (défi du jour) }
   function nouvellePartie(o) {
-    var nv = NIVEAUX[o.niveau] ? o.niveau : "moyen", m = mecaniques(o.nivJoueur || 99);
+    var nj = o.nivJoueur || (o.xpJoueur != null ? niveauXP(o.xpJoueur) : 99);
+    var nv = NIVEAUX[o.niveau] ? o.niveau : "moyen", m = mecaniques(nj);
     if (!m[NIVEAUX[nv].meca]) nv = "facile";
     var ligne = m.ligne ? o.ligne : "centre";
     if (!LIGNES[ligne]) throw new Error("Ligne politique inconnue");
     var amb = m.promesses ? (o.ambitions || []).filter(function (a, i, t) { return PILIERS[a] && t.indexOf(a) === i; }) : [];
     if (m.promesses && amb.length !== 2) throw new Error("Il faut choisir exactement deux promesses");
     var st = {
-      v: 4, niveau: nv, meca: m, nivJ: o.nivJoueur || 99, rng: (o.graine >>> 0) || ((Math.random() * 4294967296) >>> 0), lots: o.lots || [],
+      v: 5, niveau: nv, meca: m, nivJ: nj, rng: (o.graine >>> 0) || ((Math.random() * 4294967296) >>> 0), lots: o.lots || [],
       ligne: ligne, ambitions: amb, t: 0, mandat: 1, debutMandat: 0, phase: "pret",
       tresor: NIVEAUX[nv].tresor, dette: 0, pop: DEPART.pop, coh: DEPART.coh, humeur: 0, taux: 1, eco: 50,
       piliers: {}, base: {}, bat: {}, prevus: [], recurrents: [], suites: [], vus: {}, flags: {}, nid: 1,
       journal: [], historique: [], evenement: null, resultat: null, fin: null, cats: [], special: null, evPerso: null,
-      elections: [], rapport: null, notes: [], opposant: null
+      elections: [], rapport: null, notes: [], opposant: null,
+      // XP : celle du profil au départ, celle gagnée dans la partie ; le défi du jour garde les mêmes bâtiments pour tous
+      xp0: o.xpJoueur != null ? o.xpJoueur : xpPour(Math.min(nj, NIV_MAX)), nivFixe: nj >= 99 || !!o.scenario
     };
     migrer(st);
+    st.pid = o.pid ? String(o.pid) : "p" + (st.rng >>> 0).toString(36);
     Object.keys(o.secrets || {}).forEach(function (id) { if (C.SECRETS[id]) st.secrets[id] = 1; });
     st.rngT = (st.rng ^ 0x5bd1e995) | 0;
     PK.forEach(function (k) { st.base[k] = borne(46 + Math.round((rnd(st) - 0.5) * 10)); st.piliers[k] = st.base[k]; });
@@ -234,17 +248,57 @@
   }
   // Sauvegardes : les parties des versions précédentes reçoivent les nouveaux champs, sans rien perdre
   function migrer(st) {
-    if (!st || st.v > 4) return st;
-    var d = { chaos: 10, chantiers: [], incidents: [], messages: [], offre: null, bj: null, pariRes: null, mission: null, missionCd: 0, missionsOk: [],
+    if (!st || st.v > 5) return st;
+    var ancien = st.v < 5, d = { chaos: 10, chantiers: [], incidents: [], messages: [], offre: null, bj: null, pariRes: null, mission: null, missionCd: 0, missionsOk: [],
       combos: [], decouvertes: [], objets: [], secrets: {}, persos: {}, mods: { entretien: 1, recettes: 0 }, conditions: [], suitesSpe: [],
-      histoMandat: 0, alerte: null, repit: 0, pariMandat: 0, pariCd: 0, leon: null, uniques: {}, emprunts: 0, ampleur: {}, scenario: null };
+      histoMandat: 0, alerte: null, repit: 0, pariMandat: 0, pariCd: 0, leon: null, uniques: {}, emprunts: 0, ampleur: {}, scenario: null,
+      xp: 0, xpLog: [], xpSrc: {}, montees: [], succesPartie: [], suivi: {} };
     Object.keys(d).forEach(function (k) { if (st[k] == null) st[k] = d[k]; });
     if (st.nivJ == null) st.nivJ = 99;
     if (!st.meca) st.meca = mecaniques(st.nivJ);
     EXTRAS.forEach(function (x) { if (st.meca[x.id] == null) st.meca[x.id] = st.nivJ >= x.niv; });
     stats(st);
-    st.v = 4;
+    if (st.xp0 == null) st.xp0 = xpPour(Math.min(st.nivJ, NIV_MAX));
+    if (st.nivFixe == null) st.nivFixe = st.nivJ >= 99 || !!st.scenario;
+    if (!st.pid) st.pid = "p" + (st.rng >>> 0).toString(36) + "-" + st.t;
+    // Partie d'une version précédente : l'XP déjà méritée est comptée (sauf si la partie a déjà été soldée)
+    if (ancien && !st.prog) xpRetro(st);
+    st.v = 5;
     return st;
+  }
+  function xpRetro(st) {
+    var x = stats(st), nv = st.niveau || "moyen";
+    gagnerXP(st, "Trimestres à l’Hôtel de Ville", st.t * XP.trimestre, XP.trimestreMax);
+    gagnerXP(st, "Bâtiments achetés", x.achats * XP.achat, XP.achatMax);
+    (st.elections || []).forEach(function (e) { if (e.gagne) gagnerXP(st, "Élections gagnées", XP.election[nv]); });
+    (st.missionsOk || []).forEach(function (m) { gagnerXP(st, "Missions surprises réussies", m.xp); });
+    gagnerXP(st, "Projets démesurés inaugurés", x.projetsOk * XP.projet);
+    gagnerXP(st, "Événements rares vécus", x.rares * XP.rare + x.legendaires * XP.legendaire, XP.raresMax);
+  }
+  // Gagner de l'XP en pleine partie ; plafond : total maximum pour cette source dans la partie
+  function gagnerXP(st, txt, n, plafond) {
+    n = Math.round(n || 0);
+    if (plafond != null) { var deja = st.xpSrc[txt] || 0; n = Math.min(n, plafond - deja); if (n > 0) st.xpSrc[txt] = deja + n; }
+    if (n <= 0) return 0;
+    st.xp += n;
+    var g = st.xpLog.filter(function (y) { return y.txt === txt; })[0];
+    if (g) g.xp += n; else st.xpLog.push({ txt: txt, xp: n });
+    monterNiveau(st);
+    return n;
+  }
+  // Nouveau niveau : ses bâtiments arrivent tout de suite en boutique (l'interface le fête grâce à st.montees)
+  function monterNiveau(st) {
+    if (st.nivFixe || st.phase === "fin") return;
+    var cible = niveauXP(st.xp0 + st.xp);
+    while (st.nivJ < cible) {
+      var n = ++st.nivJ, m = { n: n, bats: [], meca: [], plusTard: [] };
+      MECANIQUES.concat(EXTRAS).forEach(function (x) {
+        if (x.niv !== n || st.meca[x.id]) return;
+        if (EN_COURS[x.id]) { st.meca[x.id] = true; m.meca.push(x.nom); } else m.plusTard.push(x.nom);
+      });
+      Object.keys(BATIMENTS).forEach(function (id) { var B = BATIMENTS[id]; if (!B.secret && B.niv === n && disponible(st, id)) m.bats.push(id); });
+      st.montees.push(m);
+    }
   }
   function tirerOpposant(st) {
     var fo = FORCE_OPP[st.niveau] || FORCE_OPP.moyen, avant = st.opposant ? st.opposant.i : -1, i;
@@ -328,7 +382,7 @@
   function promessesTenues(st) { return st.ambitions.filter(function (k) { return st.piliers[k] >= P.ambSeuil; }); }
   // Sondage : ce que donnerait l'élection aujourd'hui (sans le petit aléa du jour du vote)
   function sondage(st) {
-    var o = st.opposant, f = o && o.actif ? o.force : (st.meca.opposant ? 0 : 45);
+    var o = st.opposant, f = o ? (o.actif ? o.force : 0) : 45;
     var pct = 50 + (bonheur(st) - 50) * 0.45 + (st.pop - 50) * 0.55 + (st.ambitions.length ? (promessesTenues(st).length - 1) * 3 : 0)
       - (f - 45) * 0.1 + niv(st).elec - (st.mandat - 1) * P.usureMandat - st.dette / P.detteImpop * 2 + (st.bat.palais && bonheur(st) >= 55 ? 2 : 0);
     return Math.max(10, Math.min(90, arrondi(pct)));
@@ -490,6 +544,7 @@
     st.evPerso = versEvenement(st, ev, kind, extra); st.evenement = st.evPerso.id; st.uniques[ev.id] = st.t;
     st.special = kind === "chantier" ? "chantier" : kind === "historique" ? "historique" : ev.rar === "legendaire" ? "legendaire" : ev.rar === "rare" ? "rare" : "politique";
     if (ev.rar === "rare") stats(st).rares++; else if (ev.rar === "legendaire") stats(st).legendaires++;
+    if (ev.rar === "rare" || ev.rar === "legendaire") gagnerXP(st, "Événements rares vécus", ev.rar === "rare" ? XP.rare : XP.legendaire, XP.raresMax);
     if (ev.perso && st.persos[ev.perso] == null) { st.persos[ev.perso] = 0; stats(st).persos++; }
     if (ev.id.indexOf("pigeons") >= 0) stats(st).pigeons++;
     st.phase = "evenement";
@@ -603,6 +658,7 @@
     st.rapport = { t: st.t, recettes: r0, depenses: d0, solde: arrondi((st.tresor - st.dette) - (st0.tresor - st0.dette)), dette: arrondi(st.dette - dette0) };
     st.notes = notes;
     if (!ok) { faillite(st); return st; }
+    gagnerXP(st, "Trimestres à l’Hôtel de Ville", XP.trimestre, XP.trimestreMax);
     // Léon prévient quand la dette devient dangereuse
     if (st.dette > 1000 && dette0 <= 1000) leon(st, "detteHaute");
     // Dernier pari : une proposition risquée quand la ville est au bord du gouffre
@@ -628,6 +684,7 @@
       var el = election(st); st.elections.push(el);
       if (!el.gagne) { if (el.pct < 35) gagnerObjet(st, "bonnet"); st.fin = { gagne: false, raison: { type: "election", txt: "Les Parisiens ont choisi " + el.opposant + " : tu n’obtiens que " + String(el.pct).replace(".", ",") + " % des voix." }, t: st.t }; st.phase = "fin"; leon(st, "battu"); return st; }
       if (st.scenario && st.t >= st.scenario.fin) { finDefi(st); return st; }
+      gagnerXP(st, "Élections gagnées", XP.election[st.niveau] || XP.election.moyen);
       st.mandat++; st.debutMandat = st.t; st.pop = borne(st.pop + 5); st.pariMandat = 0;
       if (st.mandat >= 3) gagnerObjet(st, "echarpe");
       if (st.meca.opposant) tirerOpposant(st);
@@ -695,7 +752,7 @@
     st.bat[ch.id] = 1; st.ampleur[ch.id] = ch.ampleur;
     if (B.eco) st.eco = borne(st.eco + B.eco * ch.ampleur);
     st.pop = borne(st.pop + (B.pop || 0) * ch.ampleur);
-    stats(st).projetsOk++;
+    stats(st).projetsOk++; gagnerXP(st, "Projets démesurés inaugurés", XP.projet);
     notes.push({ txt: "✂️ Inauguration : " + B.ico + " " + B.nom + " ! " + (ch.ampleur < 1 ? "(version réduite)" : "Les Parisiens sont venus en foule."), d: { pop: arrondi((B.pop || 0) * ch.ampleur), bon: 0, coh: 0, bud: 0, pil: {} } });
     message(st, B.ico, "Inauguration : " + B.nom, "Le chantier est terminé. Ses effets s’appliquent dès maintenant.");
     leon(st, "projetOk");
@@ -724,8 +781,8 @@
     var m = st.mission; if (!m) return;
     var def = C.MISSIONS[m.id], b = bonheur(st), cb = combosActifs(st);
     if (def.ok(st, m, b, cb)) {
-      st.missionsOk.push({ id: m.id, xp: def.xp }); stats(st).missionsOk++; st.mission = null; st.missionCd = st.t + 4;
-      message(st, "✅", "Mission accomplie !", def.t + " (+" + def.xp + " XP en fin de partie)");
+      st.missionsOk.push({ id: m.id, xp: def.xp }); stats(st).missionsOk++; gagnerXP(st, "Missions surprises réussies", def.xp); st.mission = null; st.missionCd = st.t + 4;
+      message(st, "✅", "Mission accomplie !", def.t + " (+" + def.xp + " XP)");
       leon(st, "missionOk");
       if (rnd(st) < 0.35) {
         var o = Object.keys(C.OBJETS).filter(function (k) { return !C.OBJETS[k].secret && st.objets.indexOf(k) < 0 && ["statue", "medaille", "maquette", "carte"].indexOf(k) >= 0; });
@@ -937,13 +994,13 @@
     var B = BATIMENTS[id]; if (!B) return false;
     if (B.secret) return !!(st.secrets && st.secrets[id]);
     if (B.projet) return !!st.meca.grandsProjets && (st.nivJ || 99) >= B.niv;
-    return !!st.meca[TIER_MECA[B.tier]];
+    return (st.nivJ || 99) >= (B.niv || 1);
   }
   function enChantier(st, id) { return (st.chantiers || []).some(function (c) { return c.id === id; }); }
   function peutAcheter(st, id) {
     var B = BATIMENTS[id];
     if (!B || st.phase === "fin") return "Impossible pour l’instant.";
-    if (!disponible(st, id)) return B.projet ? "Se débloque au niveau " + B.niv + "." : "Se débloque plus tard.";
+    if (!disponible(st, id)) return "Se débloque au niveau " + B.niv + ".";
     if (B.unique && st.bat[id]) return "Déjà réalisé.";
     if (enChantier(st, id)) return "Chantier en cours.";
     if (B.projet && st.chantiers.length >= 2) return "Deux chantiers à la fois, pas plus.";
@@ -977,6 +1034,7 @@
     if (al) st.coh = borne(st.coh + (al > 0 ? al * 0.5 : al));
     st.pop = borne(st.pop + (B.pop || (px >= 150 ? 1 : 0.3)));
     if (!financement(st)) faillite(st); suivre(st);
+    gagnerXP(st, "Bâtiments achetés", XP.achat, XP.achatMax);
     st.historique.push({ t: st.t, titre: B.ico + " " + B.nom, choix: "Acheté pour " + px + " M€", d: { pop: 0, bon: 0, coh: 0, bud: -px, pil: {} }, c: "achat" });
     verifierCombos(st); suivreMission(st);
     return st;
@@ -997,6 +1055,8 @@
     return st;
   }
   // L'interface récupère ici les découvertes (objets, secrets, combos) pour les ranger dans le profil du joueur
+  function viderMontees(st0) { if (!st0.montees || !st0.montees.length) return st0; var st = copie(st0); st.montees = []; return st; }
+  function ajouterXP(st0, txt, n) { var st = copie(st0); gagnerXP(st, txt, n); return st; }
   function viderDecouvertes(st0) { if (!st0.decouvertes || !st0.decouvertes.length) return st0; var st = copie(st0); st.decouvertes = []; return st; }
 
   // ---------- Reprise d'une sauvegarde ----------
@@ -1089,6 +1149,7 @@
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
-    roulette: roulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi };
+    roulette: roulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
+    NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.Maire = API;
 })(this);

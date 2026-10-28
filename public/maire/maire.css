@@ -207,7 +207,7 @@ body.m-modal{overflow:hidden}
 .m-bat:disabled{opacity:.5;cursor:not-allowed}
 .m-bat:disabled small{color:var(--rg)}
 .m-bico{font-size:26px;line-height:1}
-.m-toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:1100;background:var(--pi,#1b2550);color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;box-shadow:0 10px 30px rgba(0,0,0,.4);transition:opacity .4s;max-width:90vw;text-align:center}
+.m-toast{position:fixed;left:50%;bottom:calc(170px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:1100;background:var(--pi,#1b2550);color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;box-shadow:0 10px 30px rgba(0,0,0,.4);transition:opacity .4s;max-width:90vw;text-align:center}
 .m-toast-out{opacity:0}
 .m-curseur{display:grid;gap:6px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.06)}
 .m-curseur input{width:100%;accent-color:var(--a)}
@@ -359,3 +359,43 @@ body.m-modal{overflow:hidden}
 .m-recit .btn.m-sec{color:var(--pi);box-shadow:inset 0 0 0 2px rgba(27,37,80,.35)}
 .m-rep{color:var(--a);font-weight:800}
 .m-lbjour{display:grid;gap:4px}.m-lbjour small{font-weight:800;color:var(--a)}
+
+/* ---------- v5 : XP en direct, montées de niveau, succès et quêtes en pleine partie ---------- */
+.m-xp{grid-column:1/-1;display:grid;gap:5px;margin-top:10px;padding:9px 12px;border-radius:12px;background:rgba(245,178,26,.1);box-shadow:inset 0 0 0 1px rgba(245,178,26,.3)}
+.m-xp .m-jt span{font-weight:800;color:var(--a);font-size:14px}
+.m-xp .m-jt b{font-size:13px;color:var(--c);display:flex;gap:8px;align-items:center}
+.m-xp small{font-size:12.5px;color:var(--mut);line-height:1.35}
+.m-xpbarre{height:9px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+.m-xpbarre i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#f5b21a,#ffd970);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.m-xpplus{font-style:normal;font-weight:800;color:#ffd970;animation:m-xpplus 1.6s ease forwards}
+@keyframes m-xpplus{0%{opacity:0;transform:translateY(6px)}20%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0}}
+.m-notif{position:fixed;left:50%;transform:translateX(-50%);z-index:1200;width:min(380px,calc(100vw - 32px));box-sizing:border-box;border-radius:16px;cursor:pointer;
+  box-shadow:0 14px 40px rgba(0,0,0,.5);animation:m-notif-in .35s cubic-bezier(.2,.9,.3,1.2);transition:opacity .3s,transform .3s}
+.m-notif-out{opacity:0;transform:translateX(-50%) translateY(-12px)}
+@keyframes m-notif-in{from{opacity:0;transform:translateX(-50%) translateY(-24px) scale(.95)}to{opacity:1;transform:translateX(-50%)}}
+/* Réussite : grande carte en haut de l'écran */
+.m-n-succes,.m-n-quete,.m-n-chap,.m-n-niveau{top:calc(12px + env(safe-area-inset-top,0px));display:grid;gap:3px;padding:14px 16px;text-align:center;color:#1b2550;background:linear-gradient(160deg,#fff7dc,#ffe08a)}
+.m-n-succes strong,.m-n-quete strong,.m-n-chap strong,.m-n-niveau strong{font-size:19px;line-height:1.2}
+.m-n-succes span,.m-n-quete span,.m-n-chap span{font-size:14px;color:#4a5170}
+.m-n-sur{margin:0;font-size:12.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#a86c00}
+.m-n-xp{justify-self:center;margin-top:4px;padding:3px 12px;border-radius:99px;background:#1b2550;color:#ffd970;font-size:14px}
+.m-n-t3{background:linear-gradient(160deg,#fff4c2,#ffc93c)}.m-n-t4{background:linear-gradient(160deg,#eef3ff,#b9c8ff)}
+.m-n-quete{background:linear-gradient(160deg,#e9fbef,#a9e8be)}.m-n-quete .m-n-sur{color:#1f7a44}
+.m-n-chap{background:linear-gradient(160deg,#f3eefe,#cdbbf7)}.m-n-chap .m-n-sur{color:#5b3aa8}
+.m-n-niveau{background:linear-gradient(160deg,#1b2550,#2b4fb3);color:#fff;box-shadow:0 0 0 3px #f5b21a,0 18px 50px rgba(0,0,0,.55)}
+.m-n-niveau .m-n-sur{font-size:22px;color:#ffd970;letter-spacing:.04em}
+.m-n-niveau strong{font-size:15px;color:#cfd8ff}
+.m-n-niveau ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:5px;text-align:left}
+.m-n-niveau li{padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.12);font-weight:700;font-size:14px}
+.m-n-niveau li.m-n-tard{font-weight:500;color:#cfd8ff;background:rgba(255,255,255,.06)}
+/* Progression : petite pastille au-dessus du bouton « Trimestre suivant » */
+.m-n-progres{bottom:calc(84px + env(safe-area-inset-bottom,0px));display:grid;gap:6px;padding:10px 14px;background:#1b2550;color:#fff;border:1px solid rgba(255,255,255,.18)}
+.m-n-progres .m-jt span{font-weight:700;font-size:14px}
+.m-n-progres .m-jt b{color:#ffd970;font-size:14px;white-space:nowrap}
+.m-n-progres .m-barre{height:7px}
+.m-n-progres .m-barre i{background:#ffd970;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.m-n-pq .m-barre i{background:#6fdc95}.m-n-pq .m-jt b{color:#6fdc95}
+@media (prefers-reduced-motion:reduce){.m-notif,.m-xpplus{animation:none}.m-xpbarre i,.m-n-progres .m-barre i{transition:none}}
+.m-entete .m-xp{flex-basis:100%;display:grid}
+.m-entete .m-xp .m-jt{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.m-entete .m-xpbarre{display:block}

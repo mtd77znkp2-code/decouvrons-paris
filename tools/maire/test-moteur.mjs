@@ -4,6 +4,9 @@ import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import assert from "node:assert/strict";
 
+// Profil du joueur en mémoire (le navigateur le garde dans localStorage)
+const memoire = {};
+globalThis.localStorage = { getItem: k => (k in memoire ? memoire[k] : null), setItem: (k, v) => { memoire[k] = String(v); }, removeItem: k => { delete memoire[k]; } };
 const require = createRequire(import.meta.url);
 const M = require("../../public/maire/moteur.js");
 const G = require("../../public/maire/progression.js");
@@ -156,9 +159,14 @@ test("sauvegardes : une partie de la version précédente se reprend sans rien p
   const ancien = JSON.parse(JSON.stringify(st));
   ["chaos", "chantiers", "incidents", "messages", "offre", "bj", "mission", "missionsOk", "combos", "decouvertes", "objets", "secrets", "persos", "mods", "conditions", "suitesSpe", "uniques", "ampleur"].forEach(k => delete ancien[k]);
   ["grandsProjets", "pari", "missions", "combos", "historiques"].forEach(k => delete ancien.meca[k]);
+  ["xp", "xp0", "xpLog", "xpSrc", "montees", "succesPartie", "suivi", "nivFixe", "pid"].forEach(k => delete ancien[k]);
   ancien.v = 3;
   let r = M.reprendre(ancien, base);
-  assert.equal(r.v, 4); assert.equal(r.t, st.t); assert.equal(r.tresor, st.tresor); assert.deepEqual(r.bat, st.bat); assert.deepEqual(r.piliers, st.piliers);
+  assert.equal(r.v, 5);
+  // L'XP déjà méritée dans l'ancienne partie est comptée une fois (elle n'était versée qu'à la fin auparavant)
+  assert.equal(r.xpLog.find(g => /Trimestres/.test(g.txt)).xp, st.t * M.XP.trimestre);
+  assert.equal(r.xpLog.find(g => /Bâtiments/.test(g.txt)).xp, Math.min(M.XP.achatMax, M.stats(st).achats * M.XP.achat));
+  assert.deepEqual(M.migrer(JSON.parse(JSON.stringify(r))), r);   // migrer deux fois ne change rien assert.equal(r.t, st.t); assert.equal(r.tresor, st.tresor); assert.deepEqual(r.bat, st.bat); assert.deepEqual(r.piliers, st.piliers);
   r = jouer(r, () => 0, null, r.t + 12);
   assert.ok(r.t >= st.t + 1);
 });
@@ -268,6 +276,47 @@ test("progression : niveaux, chapitres, plus de 120 succès, 400 quêtes adapté
   }
   assert.ok(faites.size >= 40, "quêtes atteintes : " + faites.size); assert.ok(succes.size >= 8, "succès atteints : " + succes.size);
   assert.equal(G.niveau(0).n, 1); assert.equal(G.niveau(G.xpPour(10)).n, 10);
+});
+
+test("progression en direct : XP pendant la partie, un bâtiment par niveau, succès et quêtes affichés tout de suite, sans double XP", () => {
+  localStorage.removeItem("maire_profil_v1");
+  let st = M.nouvellePartie({ ligne: "centre", ambitions: [], niveau: "facile", xpJoueur: 0, graine: 77, pid: "test-1" });
+  st.phase = "gestion";
+  const dispo = Object.keys(M.BATIMENTS).filter(id => M.disponible(st, id));
+  assert.deepEqual(dispo, ["parc", "logements"], "on commence avec deux bâtiments");
+  assert.equal(M.peutAcheter(st, "velo"), "Se débloque au niveau 2.");
+  // Chaque niveau débloque au moins un bâtiment, jusqu'au niveau 12
+  for (let n = 2; n <= 12; n++) assert.ok(Object.values(M.BATIMENTS).some(B => !B.secret && B.niv === n), "rien à débloquer au niveau " + n);
+  // Premier achat : succès « Première pierre » réussi et affiché, XP versée au profil
+  st = M.acheter(st, "parc");
+  let r = G.suivrePartie(st, M, {}); st = r.st;
+  assert.ok(r.succes.some(x => x.id === "ach1"), "succès affiché dès qu'il est réussi");
+  const P1 = G.lire(); assert.ok(P1.succes.ach1); assert.equal(P1.xp, st.xp);
+  const vieux = JSON.parse(JSON.stringify(st));
+  r = G.suivrePartie(st, M, {}); assert.equal(r.succes.length, 0); assert.equal(G.lire().xp, P1.xp, "rien n'est compté deux fois");
+  // Deuxième achat : le succès suivant progresse (affichage « 2 / 10 »)
+  st = M.acheter(r.st, "logements"); r = G.suivrePartie(st, M, {}); st = r.st;
+  const pr = r.progres.find(p => p.nom === "Bâtisseur"); assert.ok(pr && pr.cur === 2 && pr.but === 10, JSON.stringify(r.progres));
+  // Une vieille copie de la partie (rechargement) ne retire ni ne double l'XP
+  const xpAvant = G.lire().xp; G.suivrePartie(vieux, M, {}); assert.equal(G.lire().xp, xpAvant);
+  // Monter de niveau en pleine partie : le vélo arrive en boutique, les impôts s'activent
+  while (st.nivJ < 2) { st = M.acheter(st, "parc"); r = G.suivrePartie(st, M, {}); st = r.st; }
+  assert.equal(st.montees[0].n, 2); assert.deepEqual(st.montees[0].bats, ["velo"]); assert.ok(st.meca.budget);
+  assert.equal(M.peutAcheter(st, "velo"), ""); assert.deepEqual(M.viderMontees(st).montees, []);
+  // Quête du jour : validée en pleine partie, avec sa progression
+  const q = { id: "qt", k: "achats", n: 40, t: "Achète 40 bâtiments", xp: 50 };
+  r = G.suivrePartie(st, M, { quetes: [q] }); st = r.st;
+  st = M.acheter(st, "logements"); r = G.suivrePartie(st, M, { quetes: [q] }); st = r.st;
+  assert.ok(r.progres.some(p => p.type === "quete" && p.cur === M.stats(st).achats && p.but === 40));
+  // Fin de partie : le récapitulatif reprend toute l'XP gagnée, le profil l'a reçue exactement une fois
+  st = M.demissionner(st);
+  const res = G.terminer(st, M, { quetes: [] });
+  assert.equal(res.total, res.st.xp); assert.equal(res.gains.reduce((a, g) => a + g.xp, 0), res.total);
+  assert.equal(G.lire().xp, res.total); assert.equal(res.avant.n, 1);
+  // Défi du jour : mêmes bâtiments pour tout le monde, même si l'XP fait monter de niveau
+  let d = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 4, nivJoueur: 8, xpJoueur: 0, scenario: M.C.DEFIS_JOUR[0].id, pid: "defi" });
+  d = M.ajouterXP(d, "test", 99999); assert.equal(d.nivJ, 8); assert.deepEqual(d.montees, []);
+  localStorage.removeItem("maire_profil_v1");
 });
 
 console.log(ok + " tests réussis.\n");
