@@ -62,7 +62,8 @@
     return { v: 3, xp: 0, parties: 0, mandats: 0, mandatsNiv: { facile: 0, moyen: 0, difficile: 0 }, mandatsLigne: {}, meilleurMandats: 0,
       achats: 0, bats: {}, elims: 0, contres: 0, catas: 0, chances: 0, defis: 0, defiJours: {}, quetesTot: 0, quetesJour: {}, succes: {},
       scoreMax: 0, pertes: {}, chapitres: {}, tutos: {},
-      objets: {}, secrets: {}, combos: {}, rep: 0, missions: 0, historiques: 0, defiMeilleur: {}, verse: null };
+      objets: {}, secrets: {}, combos: {}, rep: 0, missions: 0, historiques: 0, defiMeilleur: {}, verse: null,
+      journaliers: null, pass: null, sac: {}, passBats: {}, titres: [], parfaites: 0, serie: null, passComplets: 0 };
   }
   function lire() {
     try {
@@ -272,6 +273,9 @@
   s2("prestige3", "Enchères", "Ville de prestige", "Remporte 3 enchères dans une même partie.", 3, function (R) { return R.x.encheres >= 3; });
   s2("mauvaisPerdant", "Enchères", "Mauvais perdant", "Perds 3 enchères dans une même partie.", 1, function (R) { return R.x.encheresPerdues >= 3; }, 1);
   s2("diversite", "Construction", "Paris aux mille visages", "Construis 25 bâtiments différents dans une même partie.", 3, function (R) { return Object.keys(R.x.bats).length >= 25; });
+  s2("jourParfait", "Défis", "Journée parfaite du maire", "Réussis les 5 succès du jour.", 2, function (R, P) { return (P.parfaites || 0) >= 1; });
+  s2("jourParfait7", "Défis", "Semaine sans faute", "Réussis les 5 succès du jour 7 fois.", 3, function (R, P) { return (P.parfaites || 0) >= 7; });
+  s2("passComplet", "Défis", "Pass de combat complété", "Atteins le palier 30 du pass de combat.", 4, function (R, P) { return (P.passComplets || 0) >= 1; });
   s2("reputation", "Exploration", "Personnalité nationale", "Atteins 350 points de réputation.", 3, function (R, P) { return (P.rep || 0) >= 350; });
 
   // ---------- Progression affichée en pleine partie (« 12 / 25 ») ----------
@@ -307,6 +311,123 @@
   };
   function queteProgres(q, R) { var f = QPROG[q.k], v = f ? f(q, R) : null; return v ? { cur: Math.min(v[0], v[1]), but: v[1] } : null; }
 
+  // ---------- Succès journaliers : 5 défis courts par jour, validés en pleine partie ----------
+  // f(R, st, M) : valeur actuelle dans la partie en cours ; but : valeur à atteindre ; niv : niveau du joueur requis (mécanique débloquée)
+  function parRayon(R, M, cat) { var n = 0; Object.keys(R.x.bats).forEach(function (id) { if (M.BATIMENTS[id] && M.BATIMENTS[id].cat === cat) n += R.x.bats[id]; }); return n; }
+  var JOURS = [];
+  function dj(id, t, niv, xp, but, f) { JOURS.push({ id: id, t: t, niv: niv, xp: xp, but: but, f: f }); }
+  dj("j_ach5", "Achète 5 bâtiments dans une partie", 1, 30, 5, function (R) { return R.x.achats; });
+  dj("j_ach12", "Achète 12 bâtiments dans une partie", 2, 50, 12, function (R) { return R.x.achats; });
+  dj("j_log2", "Construis 2 bâtiments de logement", 1, 30, 2, function (R, st, M) { return parRayon(R, M, "logement"); });
+  dj("j_cad3", "Construis 3 bâtiments de cadre de vie", 1, 40, 3, function (R, st, M) { return parRayon(R, M, "cadre"); });
+  dj("j_tra3", "Construis 3 bâtiments de transports", 2, 40, 3, function (R, st, M) { return parRayon(R, M, "transports"); });
+  dj("j_sec2", "Construis 2 bâtiments de sécurité", 3, 40, 2, function (R, st, M) { return parRayon(R, M, "securite"); });
+  dj("j_eco2", "Construis 2 bâtiments d’économie", 5, 50, 2, function (R, st, M) { return parRayon(R, M, "economie"); });
+  dj("j_div6", "Construis 6 bâtiments différents", 3, 40, 6, function (R) { return Object.keys(R.x.bats).length; });
+  dj("j_div10", "Construis 10 bâtiments différents", 6, 60, 10, function (R) { return Object.keys(R.x.bats).length; });
+  dj("j_t8", "Tiens 8 trimestres", 1, 30, 8, function (R) { return R.t; });
+  dj("j_t16", "Tiens 16 trimestres", 1, 50, 16, function (R) { return R.t; });
+  dj("j_dos10", "Traite 10 dossiers", 1, 30, 10, function (R) { return R.x.dossiers; });
+  dj("j_bon60", "Fais monter le bonheur à 60", 1, 40, 60, function (R) { return Math.floor(R.x.bonheurMax); });
+  dj("j_bon70", "Fais monter le bonheur à 70", 4, 70, 70, function (R) { return Math.floor(R.x.bonheurMax); });
+  dj("j_pop65", "Atteins 65 de popularité", 1, 40, 65, function (R, st) { return Math.floor(st.pop); });
+  dj("j_sond58", "Fais grimper le sondage à 58 %", 1, 50, 58, function (R, st, M) { return Math.floor(M.sondage(st)); });
+  dj("j_pil70", "Fais monter un pilier à 70", 2, 50, 70, function (R, st) { return Math.floor(Math.max.apply(null, Object.keys(st.piliers).map(function (k) { return st.piliers[k]; }))); });
+  dj("j_sansDette4", "Tiens 4 trimestres sans emprunter", 1, 30, 4, function (R) { return R.x.trimSansDette; });
+  dj("j_tresor900", "Accumule 900 M€ en caisse", 2, 50, 900, function (R) { return Math.floor(R.x.tresorMax); });
+  dj("j_invest400", "Investis 400 M€ dans la ville", 3, 50, 400, function (R) { return Math.floor(R.x.investi); });
+  dj("j_elu", "Gagne une élection", 1, 80, 1, function (R) { return R.mandats; });
+  dj("j_riposte", "Repousse une attaque de ton opposant", 3, 40, 1, function (R) { return R.x.contre + R.x.mobilise; });
+  dj("j_cata", "Traverse une catastrophe", 5, 40, 1, function (R) { return R.x.catastrophes; });
+  dj("j_rare", "Vis un événement rare ou légendaire", 2, 50, 1, function (R) { return R.x.rares + R.x.legendaires; });
+  dj("j_mission", "Réussis une mission surprise de Léon", 3, 60, 1, function (R) { return R.x.missionsOk; });
+  dj("j_combo", "Active un combo de bâtiments", 4, 50, 1, function (R) { return R.x.combos; });
+  dj("j_chantier", "Lance un projet démesuré", 6, 50, 1, function (R) { return R.x.lances || 0; });
+  dj("j_offre", "Fais une offre aux enchères", 6, 30, 1, function (R) { return (R.x.encheres || 0) + (R.x.encheresPerdues || 0); });
+  dj("j_adjuge", "Remporte une enchère", 6, 70, 1, function (R) { return R.x.encheres || 0; });
+  dj("j_objet", "Trouve un objet insolite", 2, 50, 1, function (R) { return R.x.objets; });
+  dj("j_histo", "Prends une décision historique", 5, 50, 1, function (R) { return R.x.historiques || 0; });
+  dj("j_genie", "Réussis un coup de génie", 2, 60, 1, function (R) { return R.x.genieOk; });
+  var JOUR_ID = {}; JOURS.forEach(function (d) { JOUR_ID[d.id] = d; });
+  var NB_JOUR = 5, PTS_JOUR = 100, PTS_PARFAIT = 200;
+  // Les 5 succès du jour sont tirés une fois par jour (selon le niveau du joueur ce jour-là), puis ne bougent plus
+  function journaliersP(P, j) {
+    if (!P.journaliers || P.journaliers.j !== j) {
+      var n = niveau(P.xp).n, ok = JOURS.filter(function (d) { return d.niv <= n; });
+      var ids = melange(ok.map(function (d) { return d.id; }), generateur(graine(j * 13 + 5))).slice(0, NB_JOUR);
+      P.journaliers = { j: j, ids: ids, faits: [] };
+    }
+    return P.journaliers;
+  }
+  function journaliers(j) {
+    var P = lire(), jr = journaliersP(P, j != null ? j : jour()); ecrire(P);
+    return jr.ids.map(function (id) { var d = JOUR_ID[id]; return { id: id, t: d.t, xp: d.xp, but: d.but, fait: jr.faits.indexOf(id) >= 0 }; });
+  }
+  // Où en est chaque succès du jour dans la partie en cours (pour l'affichage en jeu)
+  function journaliersPartie(st, M) {
+    var P = lire(), jr = journaliersP(P, jour()), R = resume(st, M);
+    return jr.ids.map(function (id) {
+      var d = JOUR_ID[id], v = 0; try { v = d.f(R, st, M); } catch (e) { v = 0; }
+      return { id: id, t: d.t, xp: d.xp, but: d.but, cur: Math.min(v, d.but), fait: jr.faits.indexOf(id) >= 0 };
+    });
+  }
+
+  // ---------- Pass de combat : une saison par mois, 30 paliers, des récompenses qui servent dans le jeu ----------
+  var MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+  function saisonDe(j) { var d = new Date(j * 86400000); return d.getUTCFullYear() + "-" + ("0" + (d.getUTCMonth() + 1)).slice(-2); }
+  function nomSaison(s) { var p = s.split("-"); return MOIS[+p[1] - 1] + " " + p[0]; }
+  var PASS_PTS = 300, SAC = { coupDePouce: { nom: "Coup de pouce", ico: "💰", txt: "+100 M€ en caisse au début d’une partie" },
+    bainDeFoule: { nom: "Bain de foule", ico: "📣", txt: "+4 popularité au début d’une partie" },
+    assurance: { nom: "Assurance catastrophe", ico: "🛡️", txt: "La prochaine catastrophe fait 50 % de dégâts en moins" } };
+  var PASS = [{ xp: 50 }, { sac: "coupDePouce" }, { xp: 75 }, { sac: "bainDeFoule" }, { sac: "assurance" }, { xp: 100 }, { sac: "coupDePouce" }, { bat: "kiosque" },
+    { xp: 100 }, { titre: "Maire de saison" }, { sac: "bainDeFoule" }, { xp: 125 }, { sac: "assurance" }, { sac: "coupDePouce" }, { xp: 150 }, { sac: "bainDeFoule" },
+    { sac: "coupDePouce" }, { bat: "fontaineMonumentale" }, { xp: 150 }, { titre: "Pilier de la saison" }, { sac: "assurance" }, { xp: 175 }, { sac: "coupDePouce" },
+    { sac: "bainDeFoule" }, { xp: 200 }, { sac: "assurance" }, { sac: "coupDePouce", n: 2 }, { xp: 250 }, { sac: "bainDeFoule" }, { bat: "arcLumieres", titre: "Légende de la saison" }];
+  function texteRecompense(r, M, s) {
+    var l = [];
+    if (r.xp) l.push("⭐ " + r.xp + " XP");
+    if (r.sac) l.push(SAC[r.sac].ico + " " + SAC[r.sac].nom + (r.n > 1 ? " × " + r.n : ""));
+    if (r.bat) { var B = (M || MO).BATIMENTS[r.bat]; l.push("🎟️ Bâtiment exclusif : " + B.ico + " " + B.nom); }
+    if (r.titre) l.push("🎖️ Titre « " + r.titre + (r.titre === "Légende de la saison" && s ? " (" + nomSaison(s) + ")" : "") + " »");
+    return l.join(" + ");
+  }
+  function passP(P, j) { var s = saisonDe(j); if (!P.pass || P.pass.saison !== s) P.pass = { saison: s, pts: 0, paliers: {} }; return P.pass; }
+  function palierDe(pts) { return Math.min(PASS.length, Math.floor(pts / PASS_PTS)); }
+  function pass(j) {
+    var P = lire(), ps = passP(P, j != null ? j : jour()), n = palierDe(ps.pts);
+    return { saison: ps.saison, nom: nomSaison(ps.saison), pts: ps.pts, palier: n, max: PASS.length, parPalier: PASS_PTS,
+      dans: ps.pts - n * PASS_PTS, paliers: PASS.map(function (r, i) { return { n: i + 1, txt: texteRecompense(r, MO, ps.saison), ok: !!ps.paliers[i + 1] }; }),
+      sac: P.sac || {}, titres: P.titres || [] };
+  }
+  // Points de pass gagnés : chaque palier franchi donne sa récompense tout de suite (dans la partie en cours si elle existe)
+  function gagnerPass(P, j, n, st, M, out) {
+    var ps = passP(P, j), avant = palierDe(ps.pts);
+    ps.pts += n; if (st) st.passPts = (st.passPts || 0) + n;
+    for (var k = avant + 1; k <= palierDe(ps.pts); k++) {
+      if (ps.paliers[k]) continue;
+      ps.paliers[k] = j; var r = PASS[k - 1];
+      if (r.xp) { if (st) { M.gagnerXP(st, "Pass de combat", r.xp); crediter(st, P); } else P.xp += r.xp; }
+      if (r.sac) { P.sac = P.sac || {}; P.sac[r.sac] = (P.sac[r.sac] || 0) + (r.n || 1); }
+      if (r.bat) {
+        P.passBats = P.passBats || {};
+        if (P.passBats[r.bat] && st) { M.gagnerXP(st, "Pass de combat", 150); crediter(st, P); }     // déjà gagné lors d'une saison passée
+        P.passBats[r.bat] = j; if (st) M.ajouterPassBat(st, r.bat);
+      }
+      if (r.titre) { P.titres = P.titres || []; P.titres.push(r.titre === "Légende de la saison" ? "Légende de " + nomSaison(ps.saison) : r.titre); }
+      if (k === PASS.length) P.passComplets = (P.passComplets || 0) + 1;
+      if (out) out.pass.push({ n: k, txt: texteRecompense(r, M, ps.saison) });
+    }
+  }
+  // Bonus du sac à dos utilisés en début de partie : retirés du profil, appliqués par le moteur
+  function utiliserSac(choix) {
+    var P = lire(), b = { tresor: 0, pop: 0, assurance: 0 }; P.sac = P.sac || {};
+    (choix || []).forEach(function (k) {
+      if (!(P.sac[k] > 0)) return; P.sac[k]--;
+      if (k === "coupDePouce") b.tresor += 100; else if (k === "bainDeFoule") b.pop += 4; else if (k === "assurance") b.assurance = 1;
+    });
+    ecrire(P); return b;
+  }
+
   // ---------- XP : versée au profil au fil de la partie, une seule fois ----------
   // Le profil retient combien d'XP de CETTE partie (pid) il a déjà reçue : recharger ou rejouer un écran ne la double jamais
   function crediter(st, P) {
@@ -315,10 +436,10 @@
   }
   // Chapitres, quêtes et succès réussis : rangés dans le profil, XP ajoutée à la partie (st est modifié)
   function evaluer(st, M, P, j, quetesJ) {
-    var out = { succes: [], quetes: [], chapitres: [] };
+    var out = { succes: [], quetes: [], chapitres: [], journaliers: [], pass: [], parfait: false };
     function xp(txt, n) { M.gagnerXP(st, txt, n); crediter(st, P); }
     for (var tour = 0; tour < 3; tour++) {
-      var R = resume(st, M), n0 = out.succes.length + out.quetes.length + out.chapitres.length;
+      var R = resume(st, M), n0 = out.succes.length + out.quetes.length + out.chapitres.length + out.journaliers.length;
       M.MECANIQUES.forEach(function (m) {
         var c = HISTOIRE[m.id]; if (!c || P.chapitres[m.id] || !R.meca[m.id]) return;
         var ok = false; try { ok = c.ok(R); } catch (e) { ok = false; }
@@ -326,15 +447,26 @@
       });
       var faites = P.quetesJour[j] || [];
       (quetesJ || []).forEach(function (q) {
-        if (faites.indexOf(q.id) < 0 && queteFaite(q, R)) { faites.push(q.id); P.quetesTot++; out.quetes.push(q); xp("Quête : " + q.t, q.xp); }
+        if (faites.indexOf(q.id) < 0 && queteFaite(q, R)) { faites.push(q.id); P.quetesTot++; out.quetes.push(q); xp("Quête : " + q.t, q.xp); gagnerPass(P, j, PTS_JOUR, st, M, out); }
       });
       P.quetesJour = {}; P.quetesJour[j] = faites;
+      var jr = journaliersP(P, j);
+      jr.ids.forEach(function (id) {
+        if (jr.faits.indexOf(id) >= 0) return;
+        var d = JOUR_ID[id], v = 0; try { v = d.f(R, st, M); } catch (e) { v = 0; }
+        if (v < d.but) return;
+        jr.faits.push(id); out.journaliers.push(d); xp("Succès du jour : " + d.t, d.xp); gagnerPass(P, j, PTS_JOUR, st, M, out);
+        if (jr.faits.length === jr.ids.length) {
+          out.parfait = true; P.parfaites = (P.parfaites || 0) + 1; gagnerPass(P, j, PTS_PARFAIT, st, M, out);
+          P.serie = { j: j, n: P.serie && P.serie.j === j - 1 ? P.serie.n + 1 : 1 };
+        }
+      });
       S.forEach(function (x) {
         if (P.succes[x.id]) return;
         var ok = false; try { ok = x.f(R, P); } catch (e) { ok = false; }
         if (ok) { P.succes[x.id] = j; out.succes.push(x); st.succesPartie.push(x.id); xp("Succès : " + x.nom, XP_TIER[x.t]); }
       });
-      if (out.succes.length + out.quetes.length + out.chapitres.length === n0) break;
+      if (out.succes.length + out.quetes.length + out.chapitres.length + out.journaliers.length === n0) break;
     }
     return out;
   }
@@ -343,6 +475,7 @@
   function suivrePartie(st0, M, opts) {
     opts = opts || {};
     var vide = { st: st0, succes: [], quetes: [], chapitres: [], progres: [] };
+    vide.journaliers = []; vide.pass = []; vide.parfait = false;
     if (!st0 || st0.prog || st0.phase === "fin") return vide;
     var st = JSON.parse(JSON.stringify(st0)), P = lire(), j = opts.jour != null ? opts.jour : jour();
     var out = evaluer(st, M, P, j, opts.quetes);
@@ -363,9 +496,16 @@
       var k = "q:" + q.id, avant = st.suivi[k]; st.suivi[k] = p.cur;
       if (avant != null && p.cur > avant) progres.push({ type: "quete", ico: "🎯", nom: q.t, cur: p.cur, but: p.but });
     });
+    var jr = journaliersP(P, j);
+    jr.ids.forEach(function (id) {
+      if (jr.faits.indexOf(id) >= 0) return;
+      var d = JOUR_ID[id], v = 0; try { v = Math.min(d.f(R, st, M), d.but); } catch (e) { v = 0; }
+      var k = "d:" + id, avant = st.suivi[k]; st.suivi[k] = v;
+      if (avant != null && v > avant && d.but <= 30) progres.push({ type: "jour", ico: "🌞", nom: d.t, cur: v, but: d.but });
+    });
     progres.sort(function (a, b) { return b.cur / b.but - a.cur / a.but; });
     ecrire(P);
-    return { st: st, succes: out.succes, quetes: out.quetes, chapitres: out.chapitres, progres: progres };
+    return { st: st, succes: out.succes, quetes: out.quetes, chapitres: out.chapitres, journaliers: out.journaliers, pass: out.pass, parfait: out.parfait, progres: progres };
   }
 
   // ---------- Fin de partie : ce qui ne se décide qu'à la fin, et le récapitulatif de toute l'XP gagnée ----------
@@ -391,16 +531,20 @@
     Object.keys(P.defiJours).forEach(function (k) { if (+k < j - 60) delete P.defiJours[k]; });
     crediter(st, P);
     var out = evaluer(st, M, P, j, opts.quetes);
+    // Points de pass de la partie elle-même : 50 par partie jouée, 50 par élection gagnée, 150 pour le défi du jour
+    gagnerPass(P, j, 50 + 50 * R.mandats + (R.finDefi ? 150 : 0), st, M, out);
     crediter(st, P);
     ecrire(P);
     var apres = niveau(P.xp), debloque = M.MECANIQUES.concat(M.EXTRAS).filter(function (m) { return m.niv > avant.n && m.niv <= apres.n; });
     var nouveaux = S.filter(function (x) { return st.succesPartie.indexOf(x.id) >= 0; });
     var quetesOk = (opts.quetes || []).filter(function (q) { return st.xpLog.some(function (g) { return g.txt === "Quête : " + q.t; }); });
-    return { st: st, gains: st.xpLog.slice(), total: st.xp, nouveaux: nouveaux, quetes: quetesOk, chapitres: out.chapitres,
+    return { st: st, gains: st.xpLog.slice(), total: st.xp, passPts: st.passPts || 0, passPaliers: out.pass, journaliers: out.journaliers, nouveaux: nouveaux, quetes: quetesOk, chapitres: out.chapitres,
       avant: avant, apres: apres, debloque: debloque, profil: P, rep: P.rep - repAvant };
   }
 
   var API = { jour: jour, niveau: niveau, xpPour: xpPour, lire: lire, ecrire: ecrire, profilVide: profilVide, resume: resume, terminer: terminer, suivrePartie: suivrePartie, queteProgres: queteProgres,
+    JOURS: JOURS, journaliers: journaliers, journaliersPartie: journaliersPartie, pass: pass, PASS: PASS, PASS_PTS: PASS_PTS, SAC: SAC, utiliserSac: utiliserSac,
+    saisonDe: saisonDe, nomSaison: nomSaison,
     nivJoueur: nivJoueur, fixerNiveau: fixerNiveau, synchroniser: synchroniser, reputation: reputation, oublierTutos: oublierTutos, guideVu: guideVu, marquerGuide: marquerGuide, chapitre: chapitre,
     HISTOIRE: HISTOIRE, quetesDuJour: quetesDuJour, queteFaite: queteFaite, TYPES_QUETES: Object.keys(QUETE), defiDuJour: defiDuJour,
     SUCCES: S, XP_TIER: XP_TIER, NOM_NIV: NOM_NIV, TITRES: TITRES, NIV_DEFI: NIV_DEFI, NIV_QUETES: NIV_QUETES, NIV_MAX: NIV_MAX };

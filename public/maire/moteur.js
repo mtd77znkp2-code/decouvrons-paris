@@ -86,6 +86,15 @@
   Object.keys(C.SECRETS).forEach(function (id) { BATIMENTS[id].cat = "secret"; });
   Object.keys(C.BATIMENTS2).forEach(function (id) { BATIMENTS[id] = Object.assign({ ali: {} }, C.BATIMENTS2[id]); });
   Object.keys(C.ENCHERES).forEach(function (id) { BATIMENTS[id] = Object.assign({ enchere: 1, unique: 1, cat: "enchere", ali: {} }, C.ENCHERES[id]); });
+  // Prérequis de construction : il faut déjà posséder certains bâtiments (le métro suppose un tram, l'hôpital un centre de santé…)
+  var APRES = { metro: { tram: 1 }, hopital: { centreSante: 1 }, quartier: { logements: 2 }, musee: { mediatheque: 1 }, rer: { metro: 1 }, tramTrain: { tram: 2 },
+    poleEchanges: { rer: 1 }, centreCrise: { pompiers: 1 }, policeProximite: { police: 2 }, villageVertical: { tourBois: 1 }, tourBois: { renovThermique: 1 },
+    quartierAffaires: { incubateur: 2 }, parcExpositions: { halleGourmande: 1 }, toitsVegetaux: { jardinsPartages: 2 }, conservatoire: { mediatheque: 1 },
+    stade: { piscine: 1 }, caisseCredit: { antiGaspi: 1 }, telepherique: { tram: 1 }, metroRevo: { metro: 1 }, gpe: { metro: 1 }, seine: { foretUrbaine: 1 },
+    jo: { stade: 1 }, museeMondial: { musee: 1 }, studios: { cinePleinAir: 1 }, rechercheMedicale: { hopital: 1 }, festival: { mediatheque: 1 } };
+  Object.keys(APRES).forEach(function (id) { BATIMENTS[id].si = Object.assign({}, BATIMENTS[id].si || {}, { apres: APRES[id] }); });
+  // Bâtiments exclusifs du pass de combat : gagnés une fois, disponibles pour toujours
+  Object.keys(C.PASS_BATIMENTS).forEach(function (id) { BATIMENTS[id] = Object.assign({ pass: 1, unique: 1, niv: 1, ali: {} }, C.PASS_BATIMENTS[id]); });
   var RAYONS = [{ id: "logement", nom: "Logement", ico: "🏠" }, { id: "transports", nom: "Transports", ico: "🚇" }, { id: "cadre", nom: "Cadre de vie", ico: "🌳" },
     { id: "securite", nom: "Sécurité", ico: "🛡️" }, { id: "economie", nom: "Économie", ico: "💶" }, { id: "enchere", nom: "Enchères", ico: "🔨" },
     { id: "projet", nom: "Projets", ico: "🏗️" }, { id: "secret", nom: "Secrets", ico: "🔐" }];
@@ -245,7 +254,14 @@
     };
     migrer(st);
     st.pid = o.pid ? String(o.pid) : "p" + (st.rng >>> 0).toString(36);
+    st.passBats = {}; Object.keys(o.passBats || {}).forEach(function (id) { if (C.PASS_BATIMENTS[id]) st.passBats[id] = 1; });
     marquerConnus(st);
+    // Bonus du pass de combat utilisés en début de partie (jamais pendant le défi du jour)
+    var bo = o.scenario ? {} : (o.bonus || {});
+    if (bo.tresor) st.tresor += Math.min(200, bo.tresor);
+    if (bo.pop) st.pop = borne(st.pop + Math.min(8, bo.pop));
+    if (bo.assurance) st.assurance = 1;
+    st.bonus = { tresor: bo.tresor || 0, pop: bo.pop || 0, assurance: bo.assurance ? 1 : 0 };
     Object.keys(o.secrets || {}).forEach(function (id) { if (C.SECRETS[id]) st.secrets[id] = 1; });
     st.rngT = (st.rng ^ 0x5bd1e995) | 0;
     PK.forEach(function (k) { st.base[k] = borne(46 + Math.round((rnd(st) - 0.5) * 10)); st.piliers[k] = st.base[k]; });
@@ -266,7 +282,7 @@
     if (!st || st.v > 6) return st;
     var ancien = st.v < 5, d = { chaos: 10, chantiers: [], incidents: [], messages: [], offre: null, bj: null, pariRes: null, mission: null, missionCd: 0, missionsOk: [],
       combos: [], decouvertes: [], objets: [], secrets: {}, persos: {}, mods: { entretien: 1, recettes: 0 }, conditions: [], suitesSpe: [],
-      histoMandat: 0, alerte: null, repit: 0, pariMandat: 0, pariCd: 0, leon: null, uniques: {}, emprunts: 0, ampleur: {}, scenario: null,
+      histoMandat: 0, alerte: null, repit: 0, pariMandat: 0, pariCd: 0, leon: null, uniques: {}, emprunts: 0, ampleur: {}, scenario: null, passBats: {}, assurance: 0,
       xp: 0, xpLog: [], xpSrc: {}, montees: [], succesPartie: [], suivi: {}, enchere: null, encheresCd: {} };
     Object.keys(d).forEach(function (k) { if (st[k] == null) st[k] = d[k]; });
     if (st.nivJ == null) st.nivJ = 99;
@@ -336,7 +352,7 @@
       rares: 0, legendaires: 0, crisesOk: 0, bonheurMax: 0, paris: 0, pariGain: 0, pariPerte: 0, projetsOk: 0, missionsOk: 0, combos: 0,
       secretsBatis: 0, absurdes: 0, genieOk: 0, genieKo: 0, hantises: 0, objets: 0, grandJour: 0, grandJourOk: 0, negSerie: 0, negSerieMax: 0,
       trimSansDette: 0, sauvetage: 0, pigeons: 0, persos: 0, financements: 0,
-      encheres: 0, encheresPerdues: 0, bonnesAffaires: 0 };
+      encheres: 0, encheresPerdues: 0, bonnesAffaires: 0, lances: 0 };
     if (!st.stats) st.stats = {};
     Object.keys(d).forEach(function (k) { if (st.stats[k] == null) st.stats[k] = d[k]; });
     return st.stats;
@@ -1008,6 +1024,7 @@
     var e = varier(st, c.e), extra = [];
     // Pompiers, centre de crise, forêt urbaine… : une partie des dégâts d'une catastrophe est évitée
     var prot = st.special === "catastrophe" ? protection(st) : 0;
+    if (st.special === "catastrophe" && st.assurance) { prot = Math.min(0.75, prot + 0.5); st.assurance = 0; extra.push("🛡️ Ton assurance catastrophe a joué : elle est maintenant utilisée."); }
     if (prot && e) {
       ["pop", "bon", "bud"].forEach(function (k) { if (e[k] < 0) e[k] = arrondi(e[k] * (1 - prot)); });
       if (e.dom) Object.keys(e.dom).forEach(function (k) { if (e.dom[k] < 0) e.dom[k] = arrondi(e.dom[k] * (1 - prot)); });
@@ -1050,22 +1067,34 @@
 
   // ---------- Boutique et budget ----------
   // Objectif de la partie à remplir avant de pouvoir construire (null s'il est rempli)
+  // Tous les prérequis d'un bâtiment, remplis ou non : niveau, trimestres tenus, réélections, bâtiments déjà construits
+  function prerequis(st, id) {
+    var B = BATIMENTS[id], c = B.si || {}, l = [], re = st.mandat - 1;
+    if ((B.niv || 1) > 1) l.push({ k: "niv", ok: (st.nivJ || 99) >= B.niv, txt: "Niveau " + B.niv, cur: Math.min(st.nivJ || 99, B.niv), but: B.niv });
+    if (c.t) l.push({ k: "t", ok: st.t >= c.t, txt: st.t >= c.t ? c.t + " trimestres tenus" : "Tiens encore " + (c.t - st.t) + " trimestre" + (c.t - st.t > 1 ? "s" : ""), cur: Math.min(st.t, c.t), but: c.t });
+    if (c.reel) l.push({ k: "reel", ok: re >= c.reel, txt: c.reel === 1 ? "Après ta 1re réélection" : "Après ta " + c.reel + "e réélection", cur: Math.min(re, c.reel), but: c.reel });
+    Object.keys(c.apres || {}).forEach(function (b) {
+      var n = c.apres[b], a = st.bat[b] || 0, A = BATIMENTS[b];
+      l.push({ k: "apres", ok: a >= n, txt: "Construis d’abord " + (n > 1 ? n + " × " : "") + A.ico + " " + A.nom, cur: Math.min(a, n), but: n });
+    });
+    return l;
+  }
+  // Premier objectif de partie non rempli (null s'ils le sont tous)
   function objectif(st, id) {
-    var c = BATIMENTS[id] && BATIMENTS[id].si; if (!c || st.sansLimite) return null;
-    if (c.t && st.t < c.t) { var r = c.t - st.t; return { txt: "Tiens encore " + r + " trimestre" + (r > 1 ? "s" : ""), cur: st.t, but: c.t }; }
-    var re = st.mandat - 1;
-    if (c.reel && re < c.reel) return { txt: c.reel === 1 ? "Après ta 1re réélection" : "Après ta " + c.reel + "e réélection", cur: re, but: c.reel };
-    return null;
+    if (!BATIMENTS[id] || !BATIMENTS[id].si || st.sansLimite) return null;
+    return prerequis(st, id).filter(function (x) { return x.k !== "niv" && !x.ok; })[0] || null;
   }
   function disponible(st, id) {
     var B = BATIMENTS[id]; if (!B) return false;
     if (st.sansLimite) return true;
     if (B.secret) return !!(st.secrets && st.secrets[id]);
+    if (B.pass) return !!(st.passBats && st.passBats[id]);
     if (B.projet && !st.meca.grandsProjets) return false;
     return (st.nivJ || 99) >= (B.niv || 1) && !objectif(st, id);
   }
   function verrou(st, id) {
     var B = BATIMENTS[id];
+    if (B.pass && !st.sansLimite && !(st.passBats && st.passBats[id])) return "Récompense du pass de combat.";
     if (B.projet && !st.meca.grandsProjets && !st.sansLimite) return "Se débloque au niveau " + Math.max(B.niv, 6) + ".";
     if ((st.nivJ || 99) < (B.niv || 1) && !st.sansLimite) return "Se débloque au niveau " + B.niv + ".";
     var o = objectif(st, id); return o ? o.txt + "." : "";
@@ -1091,7 +1120,7 @@
       var avance = Math.round(B.cout * 0.3);
       mouvement(st, -avance, "Lancement du chantier : " + B.nom);
       st.chantiers.push({ id: id, reste: B.duree, du: B.cout - avance, ampleur: 1, susp: 0, debut: st.t });
-      x.investi += B.cout;
+      x.investi += B.cout; x.lances++;
       if (st.tresor < 0) st.incidents.push({ t: st.t + 3, cid: id, type: "rallonge" });   // lancé sans réserves : la facture reviendra
       st.historique.push({ t: st.t, titre: B.ico + " Chantier lancé : " + B.nom, choix: "Avance de " + avance + " M€, " + B.duree + " trimestres de travaux", d: { pop: 0, bon: 0, coh: 0, bud: -avance, pil: {} }, c: "achat" });
       st.pop = borne(st.pop + 1);
@@ -1170,6 +1199,8 @@
   }
   function fermerEnchere(st0) { if (!st0.enchere || !st0.enchere.fini) return st0; var st = copie(st0); st.enchere = null; return st; }
   // Administrateur : passer les limites (niveau, trimestres, réélections) pour tous les bâtiments
+  // Récompense du pass gagnée en pleine partie : le bâtiment exclusif arrive tout de suite en boutique
+  function ajouterPassBat(st, id) { if (!C.PASS_BATIMENTS[id]) return; st.passBats = st.passBats || {}; st.passBats[id] = 1; annoncer(st); }
   function limites(st0, sans) {
     var st = copie(st0); st.sansLimite = !!sans; if (sans) st.triche = true;
     marquerConnus(st);
@@ -1286,8 +1317,8 @@
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
     roulette: roulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
-    RAYONS: RAYONS, gainAchat: gainAchat, objectif: objectif, verrou: verrou, atout: atout, interets: interets, protection: protection,
-    budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
+    RAYONS: RAYONS, gainAchat: gainAchat, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
+    ajouterPassBat: ajouterPassBat, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.Maire = API;
 })(this);

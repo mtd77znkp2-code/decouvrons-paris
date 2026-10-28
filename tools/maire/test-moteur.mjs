@@ -330,7 +330,9 @@ test("bâtiments : plus de 50 en boutique, chacun utile, objectifs de trimestres
     const B = M.BATIMENTS[id];
     assert.ok(rayons.includes(B.cat), id + " sans rayon");
     if (!B.secret) assert.ok(Object.values(B.e).some(v => v > 0) || ATOUTS.some(k => B[k]), id + " n’apporte rien");
-    if (B.si) assert.ok((B.si.t > 0 && B.si.t <= 24) || (B.si.reel >= 1 && B.si.reel <= 3), id + " : objectif");
+    if (B.si) assert.ok((B.si.t > 0 && B.si.t <= 24) || (B.si.reel >= 1 && B.si.reel <= 3) || B.si.apres, id + " : objectif");
+    // Un bâtiment prérequis existe, n'est pas lui-même un bâtiment exclusif, et s'obtient au plus tard au même niveau
+    Object.keys((B.si && B.si.apres) || {}).forEach(b => { const A = M.BATIMENTS[b]; assert.ok(A && !A.pass && !A.secret && !A.enchere, id + " → " + b); assert.ok((A.niv || 1) <= (B.niv || 1), id + " exige " + b + " plus tard"); });
     if (!B.secret) assert.ok(B.niv >= 1 && B.niv <= 20, id + " : niveau");
   }
   // Objectif de trimestres, puis annonce de l'arrivée en boutique
@@ -338,6 +340,10 @@ test("bâtiments : plus de 50 en boutique, chacun utile, objectifs de trimestres
   assert.equal(M.peutAcheter(st, "metro"), "Tiens encore 8 trimestres.");
   assert.equal(M.peutAcheter(st, "caisseCredit"), "Après ta 1re réélection.");
   while (st.t < 8) { st = jouer(st, () => 0, null, st.t + 1); }
+  // Les trimestres sont tenus, mais le métro exige un tram : tous les prérequis s'affichent, cochés ou non
+  assert.equal(M.peutAcheter(st, "metro"), "Construis d’abord 🚋 Ligne de tramway.");
+  assert.deepEqual(M.prerequis(st, "metro").map(x => [x.k, x.ok]), [["niv", true], ["t", true], ["apres", false]]);
+  st.tresor = 2000; st = M.acheter(st, "tram"); st = jouer(st, () => 0, null, st.t + 1);
   assert.ok(M.disponible(st, "metro")); assert.ok(st.montees.some(m => m.n === 0 && m.bats.includes("metro")), "arrivée annoncée");
   // Atouts : entretien, intérêts, sondage, catastrophes, usure
   let a = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 32, nivJoueur: 20, sansLimite: true });
@@ -390,6 +396,48 @@ test("enchères : 30 secondes face à une ville voisine, la meilleure offre gagn
     assert.equal(M.fermerEnchere(s).enchere, null);
   }
   assert.ok(gagnees > 5 && perdues > 5, gagnees + " gagnées / " + perdues + " perdues");
+});
+
+test("succès journaliers et pass de combat : 5 défis par jour en pleine partie, 30 paliers, récompenses utiles", () => {
+  localStorage.removeItem("maire_profil_v1");
+  const J = 20390;                                                // un jour fixe (octobre 2025)
+  assert.ok(G.JOURS.length >= 30); assert.equal(new Set(G.JOURS.map(d => d.id)).size, G.JOURS.length);
+  const a1 = G.journaliers(J), a2 = G.journaliers(J);
+  assert.equal(a1.length, 5); assert.deepEqual(a1, a2, "fixés pour la journée");
+  a1.forEach(d => assert.ok(G.JOURS.find(x => x.id === d.id).niv <= 1, "adaptés au niveau du joueur"));
+  // Les 5 succès du jour choisis pour le test, puis une partie qui les remplit
+  let P = G.lire(); P.journaliers = { j: J, ids: ["j_ach5", "j_t8", "j_log2", "j_cad3", "j_dos10"], faits: [] }; P.pass = { saison: G.saisonDe(J), pts: 280, paliers: {} }; localStorage.setItem("maire_profil_v1", JSON.stringify(P));
+  let st = M.nouvellePartie({ ligne: "centre", ambitions: [], niveau: "facile", xpJoueur: 0, graine: 90, pid: "jour" }); st.phase = "gestion";
+  for (const id of ["parc", "logements", "parc", "logements", "parc"]) st = M.acheter(st, id);
+  let r = G.suivrePartie(st, M, { jour: J }); st = r.st;
+  assert.deepEqual(r.journaliers.map(d => d.id).sort(), ["j_ach5", "j_cad3", "j_log2"]);
+  assert.ok(st.xpLog.some(g => /Succès du jour/.test(g.txt)));
+  // 280 + 3 × 100 points : palier 1 (50 XP) et palier 2 (un coup de pouce)
+  let ps = G.pass(J); assert.equal(ps.pts, 580); assert.equal(ps.palier, 1); assert.equal(r.pass.length, 1); assert.ok(st.xpLog.some(g => g.txt === "Pass de combat" && g.xp === 50));
+  r = G.suivrePartie(st, M, { jour: J }); assert.equal(r.journaliers.length, 0); assert.equal(G.pass(J).pts, 580, "pas de double comptage");
+  // Progression affichée en jeu (trimestres, dossiers), puis journée parfaite : bonus de 200 points
+  const etat = G.journaliersPartie(st, M); assert.equal(etat.length, 5);
+  st = jouer(st, () => 0, s => s, 16); r = G.suivrePartie(st, M, { jour: J }); st = r.st;
+  assert.ok(r.parfait, "journée parfaite"); assert.equal(G.pass(J).pts, 580 + 200 + 200);
+  assert.equal(G.lire().parfaites, 1); assert.ok(G.pass(J).sac.coupDePouce >= 1);
+  // Bâtiment exclusif du palier 8 : il arrive dans la partie en cours et reste acquis pour les suivantes
+  P = G.lire(); P.pass.pts = 8 * G.PASS_PTS - 10; localStorage.setItem("maire_profil_v1", JSON.stringify(P));
+  P = G.lire(); P.journaliers.faits = []; P.journaliers.ids = ["j_ach5"]; localStorage.setItem("maire_profil_v1", JSON.stringify(P));
+  r = G.suivrePartie(st, M, { jour: J }); st = r.st;
+  assert.ok(G.lire().passBats.kiosque); assert.ok(M.disponible(st, "kiosque"));
+  const suivante = M.nouvellePartie({ ligne: "centre", ambitions: [], graine: 91, nivJoueur: 3, passBats: G.lire().passBats });
+  assert.ok(M.disponible(suivante, "kiosque")); assert.ok(!M.disponible(M.nouvellePartie({ ligne: "centre", ambitions: [], graine: 91, nivJoueur: 3 }), "kiosque"));
+  // Sac à dos : un coup de pouce utilisé est retiré du profil et appliqué au départ, jamais pendant le défi du jour
+  const n0 = G.lire().sac.coupDePouce, bo = G.utiliserSac(["coupDePouce"]);
+  assert.equal(bo.tresor, 100); assert.equal(G.lire().sac.coupDePouce, n0 - 1);
+  const avec = M.nouvellePartie({ ligne: "centre", ambitions: [], niveau: "facile", graine: 92, nivJoueur: 3, bonus: bo });
+  assert.equal(avec.tresor, M.NIVEAUX.facile.tresor + 100);
+  const defi = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 92, nivJoueur: 8, scenario: M.C.DEFIS_JOUR[0].id, bonus: bo });
+  assert.deepEqual(defi.bonus, { tresor: 0, pop: 0, assurance: 0 });
+  // Nouvelle saison le mois suivant : les points repartent de zéro, les bâtiments exclusifs restent
+  assert.equal(G.pass(J + 40).pts, 0); assert.ok(G.lire().passBats.kiosque);
+  assert.equal(G.PASS.length, 30); G.PASS.forEach(x => assert.ok(x.xp || x.sac || x.bat || x.titre));
+  localStorage.removeItem("maire_profil_v1");
 });
 
 console.log(ok + " tests réussis.\n");

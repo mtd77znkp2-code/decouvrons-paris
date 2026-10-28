@@ -441,3 +441,25 @@ body.m-modal{overflow:hidden}
 .m-ench-gagne .m-ench-res{color:#1f7a44}.m-ench-perdu .m-ench-res{color:#a3261f}
 .m-ench .m-sec{color:var(--pi);box-shadow:inset 0 0 0 2px rgba(27,37,80,.3)}
 .m-ench .m-aide{color:var(--pm)}
+
+/* ---------- v7 : prérequis, succès du jour, pass de combat ---------- */
+.m-prereq{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px;font-size:13px;font-weight:700;color:#4a5170}
+.m-prereq li.m-ok{color:#2f8a52}
+.m-prereq .m-barre{margin-top:4px;height:5px}
+.m-jourcarte{border-radius:14px;padding:10px 14px;background:rgba(255,214,90,.1);box-shadow:inset 0 0 0 1px rgba(255,214,90,.3)}
+.m-jourcarte summary{display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;font-weight:800;list-style:none}
+.m-jourcarte summary::-webkit-details-marker{display:none}
+.m-jourcarte summary small{color:var(--a);font-size:13px}
+.m-jourcarte .m-qliste{margin:8px 0 4px}
+.m-jourcarte .m-jt{margin-top:6px;font-size:13px}
+.m-passcarte{display:grid;gap:7px;padding:14px;border-radius:16px;background:linear-gradient(135deg,rgba(124,77,255,.25),rgba(43,79,179,.25));box-shadow:inset 0 0 0 1px rgba(167,139,250,.45)}
+.m-passcarte .m-barre i{background:linear-gradient(90deg,#a78bfa,#f5b21a)}
+.m-passcarte small{color:var(--c);font-size:13.5px}
+.m-paliers{list-style:none;margin:10px 0;padding:0;display:grid;gap:6px}
+.m-paliers li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.06);font-size:14px}
+.m-paliers li .m-pn{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.12);font-weight:900}
+.m-paliers li.m-ok{background:rgba(47,138,82,.22)}.m-paliers li.m-ok .m-pn{background:#2f8a52}
+.m-paliers li.m-suivant{box-shadow:inset 0 0 0 2px var(--a)}
+.m-n-jour{background:linear-gradient(160deg,#fff8e1,#ffd36b)}.m-n-jour .m-n-sur{color:#a86c00}
+.m-n-pass{background:linear-gradient(160deg,#efe7ff,#bba4ff)}.m-n-pass .m-n-sur{color:#5b3aa8}
+.m-n-pj .m-barre i{background:#ffd36b}.m-n-pj .m-jt b{color:#ffd36b}
