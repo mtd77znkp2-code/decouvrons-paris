@@ -74,30 +74,54 @@
   }
 
   // ---------- Accueil ----------
+
+  // Accueil épuré : ton niveau, un gros bouton pour jouer, 4 tuiles ; le reste est replié
   function accueil() {
     box.innerHTML = ""; fermerModale();
-    var s = lireSauvegarde(), n = nivJ();
+    var s = lireSauvegarde(), n = nivJ(), P = G.lire(), nv = G.niveau(P.xp);
     choixNiveau(s && s.phase !== "fin" ? s.niveau : lireNiveau());
-    box.appendChild(carteChapitre(n));
-    box.appendChild(carteProfil());
+    var pr = h("div", "mx-profil"), barre = h("div", "mx-xpbarre"), bi = h("i"); bi.style.width = nv.pct + "%"; barre.appendChild(bi);
+    ajout(pr, h("span", "mx-niv mx-niv-gros", String(nv.n)), ajout(h("div"), h("strong", null, nv.titre + ((P.titres || []).length ? " · 🎖️ " + P.titres[P.titres.length - 1] : "")), barre,
+      h("small", null, nv.max ? "Niveau maximum" : nv.depuis + " / " + nv.besoin + " XP vers le niveau " + (nv.n + 1))));
+    box.appendChild(pr);
     if (s && s.phase !== "fin") {
-      var r = h("div", "m-reprise");
-      ajout(r, h("strong", null, "Partie en cours"),
-        h("span", null, (s.defi != null ? "Défi du jour · " : "") + "Mandat " + s.mandat + " · " + date(Math.max(1, s.t)) + " · " + M.NIVEAUX[s.niveau].nom),
-        bouton("Reprendre", "btn", reprise));
+      var r = bouton("", "mx-jouer", reprise);
+      ajout(r, h("strong", null, "▶ Reprendre ma partie"), h("small", null, (s.defi != null ? "Défi du jour · " : "") + "Mandat " + s.mandat + " · " + date(Math.max(1, s.t)) + " · " + M.NIVEAUX[s.niveau].nom));
       box.appendChild(r);
+      box.appendChild(bouton("Nouvelle partie", "mx-lien", function () { if (confirm("Commencer une nouvelle partie ? La partie en cours sera perdue.")) creation(); }));
+    } else {
+      var j = bouton("", "mx-jouer", creation); ajout(j, h("strong", null, "▶ Jouer"), h("small", null, "Deviens maire de Paris"));
+      box.appendChild(j);
     }
-    box.appendChild(bouton(s && s.phase !== "fin" ? "Nouvelle partie" : "▶ Jouer", s && s.phase !== "fin" ? "btn m-sec" : "btn m-go m-gros", function () {
-      if (s && s.phase !== "fin" && !confirm("Commencer une nouvelle partie ? La partie en cours sera perdue.")) return;
-      creation();
-    }));
+    // Quatre tuiles : chacune ouvre son écran
+    var se = G.serie(), ps = G.pass(), roue = G.roueDispo(), t = h("div", "mx-tuiles");
+    function tuile(ico, titre, sous, f, vif) { var b = bouton("", "mx-tuile" + (vif ? " mx-vif" : ""), f); ajout(b, h("span", null, ico), h("strong", null, titre), h("small", null, sous)); return b; }
+    ajout(t, tuile("🔥", se.n ? se.n + " jour" + (se.n > 1 ? "s" : "") : "Série", se.fait ? "validé aujourd’hui" : "joue aujourd’hui", ecranSerie, !se.fait),
+      tuile("🎟️", "Palier " + ps.palier, "pass de combat", ecranPass),
+      tuile("🎡", "Roue", roue ? "tour gratuit !" : "revient lundi", roue ? ecranRoue : function () { toast("🎡 Prochain tour gratuit lundi."); }, roue),
+      tuile("🏅", "Ligue", "de la semaine", ecranLigue));
+    box.appendChild(t);
+    var auj = h("details", "mx-replie"); auj.appendChild(h("summary", null, "📅 Aujourd’hui : défi, quêtes et succès du jour"));
+    var zone = h("div", "m-auj"); auj.appendChild(zone); box.appendChild(auj);
+    Promise.all([index(), quetes()]).then(function () { panneauJour(zone, s); }).catch(function () { zone.textContent = "Indisponible pour le moment."; });
+    var plus = h("details", "mx-replie"); plus.appendChild(h("summary", null, "📖 Mon parcours : histoire, succès, objets, déblocages"));
+    ajout(plus, carteChapitre(n), carteProfil(), carteDeblocages(n));
+    box.appendChild(plus);
+  }
+  function ecranSerie() {
+    box.innerHTML = ""; box.appendChild(bouton("← Retour", "btn m-sec", accueil));
+    box.appendChild(h("h5", null, "🔥 Série de jours"));
     box.appendChild(carteSerie());
-    if (G.roueDispo()) box.appendChild(carteRoue());
-    box.appendChild(cartePass());
-    var lg = h("div", "m-liguezone"); box.appendChild(lg); carteLigue(lg);
-    var auj = h("div", "m-auj"); box.appendChild(auj);
-    Promise.all([index(), quetes()]).then(function () { panneauJour(auj, s); }).catch(function () { auj.remove(); });
-    box.appendChild(carteDeblocages(n));
+    var u = h("ol", "m-paliers"), se = G.serie();
+    [1, 3, 5, 7, 10, 14, 21, 30].forEach(function (k) { var li = h("li", se.n >= k ? "m-ok" : ""); ajout(li, h("span", "m-pn", String(k)), h("span", null, G.texteSerie(G.recompenseSerie(k))), h("b", null, se.n >= k ? "✔" : "")); u.appendChild(li); });
+    ajout(box, h("p", "m-aide", "Joue au moins un trimestre par jour. Un joker (gagné chaque semaine de série) pardonne un jour manqué."), u);
+    haut();
+  }
+  function ecranLigue() {
+    box.innerHTML = ""; box.appendChild(bouton("← Retour", "btn m-sec", accueil));
+    box.appendChild(h("h5", null, "🏅 Ligue de la semaine"));
+    var z = h("div"); box.appendChild(z); carteLigue(z);
+    haut();
   }
   // ---------- Bureau des objets trouvés, bâtiments secrets et combos découverts ----------
   function collection() {
@@ -180,12 +204,6 @@
     return d;
   }
   // ---------- Roue de la fortune (une fois par semaine) ----------
-  function carteRoue() {
-    var d = h("div", "m-roue-carte");
-    ajout(d, h("span", "m-serie-feu", "🎡"), ajout(h("div"), h("strong", null, "Roue de la fortune"), h("small", null, "Un tour gratuit cette semaine : XP, points de pass, bonus… ou le jackpot !")),
-      bouton("Tourner", "btn m-go", ecranRoue));
-    return d;
-  }
   function ecranRoue() {
     box.innerHTML = ""; box.appendChild(bouton("← Retour", "btn m-sec", accueil));
     box.appendChild(h("h5", null, "🎡 Roue de la fortune"));
@@ -245,14 +263,6 @@
   }
 
   // ---------- Pass de combat ----------
-  function cartePass() {
-    var ps = G.pass(), d = h("div", "m-passcarte"), suiv = ps.paliers[ps.palier];
-    var barre = h("div", "m-barre"), i = h("i"); i.style.width = (ps.palier >= ps.max ? 100 : Math.round(ps.dans / ps.parPalier * 100)) + "%"; barre.appendChild(i);
-    ajout(d, ajout(h("div", "m-jt"), h("strong", null, "🎟️ Pass de combat · " + ps.nom), h("b", null, "Palier " + ps.palier + "/" + ps.max)), barre,
-      h("small", null, ps.palier >= ps.max ? "Pass terminé : bravo ! Nouvelle saison le mois prochain." : "Prochain palier (" + ps.dans + "/" + ps.parPalier + " pts) : " + suiv.txt),
-      bouton("Voir le pass", "btn m-sec", ecranPass));
-    return d;
-  }
   function ecranPass() {
     var ps = G.pass(); box.innerHTML = "";
     box.appendChild(bouton("← Retour", "btn m-sec", accueil));
@@ -337,7 +347,7 @@
     choixNiveau(d.niveau, true);
     box.innerHTML = ""; box.appendChild(h("p", "msg", "Préparation du défi…"));
     chargerLots(d.lots).then(function () {
-      st = M.nouvellePartie({ ligne: d.ligne, ambitions: d.ambitions, lots: d.lots, niveau: d.niveau, graine: d.graine, nivJoueur: d.nivJoueur, xpJoueur: G.lire().xp, pid: Date.now().toString(36), scenario: d.scenario, secrets: {}, passBats: G.lire().passBats });
+      st = M.nouvellePartie({ ligne: d.ligne, ambitions: d.ambitions, lots: d.lots, niveau: d.niveau, graine: d.graine, nivJoueur: d.nivJoueur, xpJoueur: G.lire().xp, pid: Date.now().toString(36), scenario: d.scenario, secrets: {}, passBats: G.lire().passBats, missions: false });
       st.defi = d.jour; sauver(); demarrerPartie();
     }).catch(function () { alert("Impossible de charger les dossiers. Vérifie ta connexion et réessaie."); accueil(); });
   }
@@ -418,7 +428,7 @@
     quetes().catch(function () {});
     box.innerHTML = ""; box.appendChild(h("p", "msg", "Installation à l’Hôtel de Ville…"));
     index().then(function () { var l = choisirLots(); return chargerLots(l).then(function () { return l; }); }).then(function (lots) {
-      st = M.nouvellePartie({ ligne: CHOIX.ligne || "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, xpJoueur: G.lire().xp, pid: Date.now().toString(36), secrets: G.lire().secrets, sansLimite: sansLimiteAdmin(),
+      st = M.nouvellePartie({ ligne: CHOIX.ligne || "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, xpJoueur: G.lire().xp, pid: Date.now().toString(36), secrets: G.lire().secrets, sansLimite: sansLimiteAdmin(), missions: false,
         passBats: G.lire().passBats, bonus: G.utiliserSac(CHOIX.sac) });
       sauver(); demarrerPartie();
     }).catch(function () { alert("Impossible de charger les dossiers. Vérifie ta connexion et réessaie."); accueil(); });
@@ -438,7 +448,7 @@
       s.lots = lots;
       return chargerLots(lots);
     }).then(function () {
-      st = M.reprendre(s, BASE); sauver(); choixNiveau(st.niveau, true);
+      st = M.reprendre(s, BASE); st.sansMissions = true; st.mission = null; sauver(); choixNiveau(st.niveau, true);
       if (st.phase === "pret") return demarrerPartie();
       jeu();
     }).catch(function () { alert("Impossible de charger les dossiers. Vérifie ta connexion et réessaie."); });
@@ -469,6 +479,7 @@
   }
 
   // ---------- Écran de jeu : une seule page, de haut en bas ----------
+
   function jeu() {
     progresser();
     if (st.phase === "fin") return fin();
@@ -476,22 +487,14 @@
     var y = window.scrollY; box.style.minHeight = box.offsetHeight + "px";
     decouvertes();
     box.innerHTML = "";
-    ajout(box, entete(), carteLeon(), sondage(), jauges(), piliers());
-    if (st.mission) box.appendChild(carteMission());
-    var cj = carteJour(); if (cj) box.appendChild(cj);
+    // Écran épuré : l'essentiel en haut (où j'en suis, est-ce que je gagne), la ville au milieu, la boutique, puis la gestion repliée
+    ajout(box, entete(), tableau(), piliers(), carteLeon());
     if (st.opposant) box.appendChild(bandeauOpp());
     if (st.rapport && st.notes && st.notes.length) box.appendChild(notes());
     if (st.chantiers.length) box.appendChild(chantiers());
     box.appendChild(carteVille(false));
-    ajout(box, boutique());
-    if (st.meca.budget) box.appendChild(budget());
-    box.appendChild(journal());
-    box.appendChild(ajout(h("div", "m-quitter"),
-      bouton("🏠 Menu principal", "btn m-sec", function () { sauver(); fermerModale(); accueil(); haut(); }),
-      bouton("🚪 Démissionner", "btn m-sec m-demission", function () {
-        if (!confirm("Démissionner ? La partie s’arrête ici : tu gardes l’XP de ce que tu as déjà accompli.")) return;
-        st = M.demissionner(st); sauver(); jeu();
-      })));
+    box.appendChild(boutique());
+    box.appendChild(gestion());
     box.appendChild(barreTrimestre());
     box.style.minHeight = ""; window.scrollTo(0, y);
     if (st.enchere) return reprendreEnchere();
@@ -514,29 +517,6 @@
     ajout(d, h("span", "m-leon-ico", "🧑‍💼"), h("p", null, st.leon.txt), bouton("×", "m-leonx", function () { leonVu = st.leon.t + st.leon.k; d.remove(); }));
     return d;
   }
-  // Succès du jour et pass de combat, repliés en jeu : on voit où on en est sans quitter la partie
-  var jourOuvert = false;
-  function carteJour() {
-    var l = G.journaliersPartie(st, M); if (!l.length) return null;
-    var faits = l.filter(function (d) { return d.fait; }).length, ps = G.pass();
-    var d = h("details", "m-jourcarte"); d.open = jourOuvert; d.ontoggle = function () { jourOuvert = d.open; };
-    d.appendChild(ajout(h("summary"), h("span", null, "🌞 Succès du jour " + faits + "/" + l.length), h("small", null, "🎟️ Palier " + ps.palier + "/" + ps.max)));
-    var u = h("ul", "m-qliste");
-    l.forEach(function (x) {
-      var li = h("li", x.fait ? "m-qok" : "");
-      ajout(li, h("span", null, (x.fait ? "✔ " : "") + x.t), h("b", null, x.fait ? "fait" : x.cur + " / " + x.but));
-      u.appendChild(li);
-    });
-    var barre = h("div", "m-barre"), i = h("i"); i.style.width = Math.round(ps.dans / ps.parPalier * 100) + "%"; barre.appendChild(i);
-    ajout(d, u, h("small", "m-aide", "Chaque succès du jour : +XP et +100 points de pass. Les 5 réussis : +200 points."),
-      ajout(h("div", "m-jt"), h("span", null, "🎟️ Pass de combat · " + ps.nom), h("b", null, ps.dans + " / " + ps.parPalier)), barre);
-    return d;
-  }
-  function carteMission() {
-    var m = st.mission, def = M.C.MISSIONS[m.id], reste = m.fin - st.t, d = h("div", "m-mission");
-    ajout(d, h("span", "m-sicon", "🎯"), ajout(h("div"), h("strong", null, "Mission surprise · " + def.xp + " XP"), h("span", null, def.t + " Encore " + reste + " trimestre" + (reste > 1 ? "s" : "") + ".")));
-    return d;
-  }
   function chantiers() {
     var d = h("div", "m-chantiers"); d.appendChild(h("h5", null, "🏗️ Chantiers en cours"));
     st.chantiers.forEach(function (c) {
@@ -557,76 +537,70 @@
     b.setAttribute("aria-label", "Téléphone du maire" + (nl ? ", " + nl + " message" + (nl > 1 ? "s" : "") + " non lu" + (nl > 1 ? "s" : "") : ""));
     return b;
   }
+
   function entete() {
-    var d = h("div", "m-entete"), reste = M.prochaineElection(st) - st.t;
-    ajout(d, ajout(h("div"), h("span", "m-sur", "Mandat " + st.mandat + (st.scenario ? " · défi du jour" : "")), h("strong", null, date(Math.max(1, st.t)))),
-      ajout(h("div", "m-entete-d"), telephone(), h("span", "m-reste", st.scenario ? "🎯 Fin du défi dans " + (st.scenario.fin - st.t) + " trim." : "🗳️ Élection dans " + reste + " trimestre" + (reste > 1 ? "s" : ""))));
-    var p = h("div", "m-prog"), pi = h("i"); pi.style.width = (M.trimMandat(st) / M.MANDAT * 100) + "%"; p.appendChild(pi); d.appendChild(p);
+    var d = h("div", "mx-hud"), reste = M.prochaineElection(st) - st.t, a = Math.floor((Math.max(1, st.t) - 1) / 4) + 1, q = (Math.max(1, st.t) - 1) % 4 + 1;
+    var gauche = ajout(h("div", "mx-quand"), h("strong", null, "Année " + a + " · T" + q), h("small", null, "Mandat " + st.mandat + (st.scenario ? " · défi du jour" : "")));
+    var vote = h("span", "mx-chip", st.scenario ? "🎯 " + (st.scenario.fin - st.t) + " trim." : "🗳️ " + reste + " trim.");
+    vote.title = st.scenario ? "Fin du défi" : "Prochaine élection";
+    ajout(d, ajout(h("div", "mx-ligne"), gauche, ajout(h("div", "mx-droite"), vote, telephone())));
+    var p = h("div", "mx-prog"), pi = h("i"); pi.style.width = (M.trimMandat(st) / M.MANDAT * 100) + "%"; p.appendChild(pi); d.appendChild(p);
     d.appendChild(barreXP());
     return d;
   }
   // Niveau et XP en direct : la barre se remplit à chaque action, le prochain déblocage est annoncé
   var xpAffiche = null;
+
   function barreXP() {
-    var xp = st.xp0 + st.xp, n = G.niveau(xp), d = h("div", "m-xp");
-    var barre = h("div", "m-xpbarre"), i = h("i"); barre.appendChild(i);
+    var xp = st.xp0 + st.xp, n = G.niveau(xp), d = h("div", "mx-xp");
+    var barre = h("div", "mx-xpbarre"), i = h("i"); barre.appendChild(i);
     var avant = xpAffiche != null && xpAffiche.pid === st.pid && xpAffiche.xp < xp ? G.niveau(xpAffiche.xp) : null;
     i.style.width = (avant && avant.n === n.n ? avant.pct : n.pct) + "%";
     if (avant) requestAnimationFrame(function () { requestAnimationFrame(function () { i.style.width = n.pct + "%"; }); });
-    var suiv = prochainDeblocage();
-    ajout(d, ajout(h("div", "m-jt"), h("span", null, "⭐ Niveau " + n.n + " · " + n.titre),
-      ajout(h("b"), avant ? h("em", "m-xpplus", "+" + (xp - xpAffiche.xp) + " XP") : null, document.createTextNode(n.max ? "niveau max" : n.depuis + " / " + n.besoin + " XP"))), barre);
-    if (suiv) d.appendChild(h("small", null, "Prochain déblocage au niveau " + suiv.niv + " : " + suiv.txt));
+    ajout(d, h("span", "mx-niv", String(n.n)), barre, avant ? h("em", "m-xpplus", "+" + (xp - xpAffiche.xp)) : h("small", null, n.max ? "max" : n.depuis + "/" + n.besoin));
+    d.title = "Niveau " + n.n + " · " + n.titre;
     xpAffiche = { pid: st.pid, xp: xp };
     return d;
   }
-  function prochainDeblocage() {
-    if (st.nivFixe) return null;
-    var l = [];
-    Object.keys(M.BATIMENTS).forEach(function (id) { var B = M.BATIMENTS[id]; if (!B.secret && B.niv > st.nivJ) l.push({ niv: B.niv, txt: B.ico + " " + B.nom }); });
-    M.MECANIQUES.concat(M.EXTRAS).forEach(function (m) { if (m.niv > st.nivJ && !st.meca[m.id]) l.push({ niv: m.niv, txt: m.nom }); });
-    if (!l.length) return null;
-    var nv = Math.min.apply(null, l.map(function (x) { return x.niv; }));
-    return { niv: nv, txt: l.filter(function (x) { return x.niv === nv; }).map(function (x) { return x.txt; }).join(", ") };
-  }
-  function sondage() {
-    var v = M.sondage(st), d = h("div", "m-sondage " + (v > 52 ? "m-bien" : v > 48 ? "m-juste" : "m-mal"));
-    ajout(d, h("span", "m-sicon", "🗳️"), ajout(h("div"), h("strong", null, "Sondage : " + virg(v) + " %"),
-      h("span", null, v > 52 ? "Si l’élection avait lieu aujourd’hui, tu serais réélu." : v > 48 ? "Au coude-à-coude : il te faut plus de 50 % le jour du vote." : "Tu serais battu : il te faut plus de 50 % le jour du vote.")));
+
+  // Tableau de bord : le sondage en grand (c'est lui qui décide de l'élection) et trois chiffres
+  function tableau() {
+    var v = M.sondage(st), etat = v > 52 ? "bien" : v > 48 ? "juste" : "mal", so = M.solde(st);
+    var d = h("div", "mx-tableau mx-" + etat);
+    var gauche = ajout(h("div", "mx-sond"), h("b", null, virg(v) + " %"), h("small", null, etat === "bien" ? "Sondage · tu serais réélu" : etat === "juste" ? "Sondage · au coude-à-coude" : "Sondage · tu serais battu"));
+    function stat(ico, val, lib, alerte, cls) { var e = h("div", "mx-stat" + (alerte ? " mx-alerte" : "") + (cls ? " " + cls : "")); ajout(e, h("span", null, ico), h("b", null, val), h("small", null, lib)); return e; }
+    var g = h("div", "mx-stats");
+    ajout(g, stat("💰", argent(st.tresor), (so >= 0 ? "+" : "") + argent(so) + "/trim." + (st.dette > 0 ? " · dette " + argent(st.dette) : ""), st.dette > M.PLAFOND_DETTE * 0.6 || so < 0),
+      stat("😊", String(Math.round(M.bonheur(st))), "bonheur", M.bonheur(st) < 40),
+      stat("📣", String(Math.round(st.pop)), "popularité", st.pop < 40));
+    if (st.meca.ligne) g.appendChild(stat("🧭", String(Math.round(st.coh)), "cohérence", st.coh < 40, "mx-coh"));
+    ajout(d, gauche, g);
     return d;
   }
-  function tuile(nom, val, sous, danger) {
-    var d = h("div", "m-jauge" + (danger ? " m-danger" : "")); ajout(d, h("span", null, nom), h("b", null, val)); if (sous) d.appendChild(h("small", null, sous)); return d;
-  }
-  function jauges() {
-    var t = h("div", "m-tab3"), so = M.solde(st);
-    ajout(t, tuile("💰 Trésorerie", argent(st.tresor), (so >= 0 ? "+" : "") + argent(so) + " / trimestre" + (st.dette > 0 ? " · dette " + argent(st.dette) : ""), st.dette > M.PLAFOND_DETTE * 0.6),
-      tuile("😊 Bonheur", String(Math.round(M.bonheur(st))), "moyenne des 4 piliers", M.bonheur(st) < 40),
-      tuile("📣 Popularité", String(Math.round(st.pop)), "s’use avec le temps", st.pop < 40));
-    if (st.meca.ligne) { var tc = tuile("🧭 Cohérence", String(Math.round(st.coh)), "ligne " + M.LIGNES[st.ligne].nom, st.coh < 40); tc.classList.add("m-jauge-coh"); t.appendChild(tc); }
-    return t;
-  }
+
   function piliers() {
-    var d = h("div", "m-piliers"), c = M.cible(st);
+    var d = h("div", "mx-piliers"), c = M.cible(st);
     Object.keys(M.PILIERS).forEach(function (k) {
-      var v = st.piliers[k], prom = st.ambitions.indexOf(k) >= 0, fl = c[k] > v + 0.5 ? " ↗" : c[k] < v - 0.5 ? " ↘" : "";
-      var p = h("div", "m-pilier" + (prom ? " m-prom" : ""));
-      var t = h("div", "m-jt"); ajout(t, h("span", null, M.ICO[k] + " " + M.PILIERS[k] + (prom ? " · 🎯 promesse" : "")), h("b", null, Math.round(v) + fl));
-      var barre = h("div", "m-barre"), r = h("i"); r.style.width = v + "%"; r.style.background = couleur(v); barre.appendChild(r);
-      if (prom) { var s = h("em", "m-cible"); s.style.left = M.P.ambSeuil + "%"; barre.appendChild(s); }
-      ajout(p, t, barre); d.appendChild(p);
+      var v = st.piliers[k], prom = st.ambitions.indexOf(k) >= 0, fl = c[k] > v + 0.5 ? "↗" : c[k] < v - 0.5 ? "↘" : "";
+      var p = h("div", "mx-pilier" + (prom ? " mx-prom" : ""));
+      var barre = h("div", "mx-barre"), r = h("i"); r.style.width = v + "%"; r.style.background = couleur(v); barre.appendChild(r);
+      if (prom) { var cible = h("em"); cible.style.left = M.P.ambSeuil + "%"; barre.appendChild(cible); }
+      ajout(p, h("span", "mx-pico", M.ICO[k]), ajout(h("div"), ajout(h("div", "mx-pt"), h("span", null, M.PILIERS[k] + (prom ? " 🎯" : "")), h("b", null, Math.round(v) + (fl ? " " + fl : ""))), barre));
+      d.appendChild(p);
     });
     return d;
   }
+
   function bandeauOpp() {
-    var o = M.opposant(st), b = h("div", "m-opp" + (o.actif ? "" : " m-opp-fini")), tm = M.trimMandat(st), proch = (Math.floor(tm / 4) + 1) * 4 - tm;
-    ajout(b, h("span", "m-rico", o.ico), ajout(h("div"), h("strong", null, "Opposant : " + o.nom),
-      h("span", null, o.actif ? "Influence " + Math.round(o.force) + "/100 · " + M.humeurOpp(o.force) + " · prochaine attaque dans " + proch + " trimestre" + (proch > 1 ? "s" : "") : "A renoncé jusqu’à la prochaine élection")));
+    var o = M.opposant(st), tm = M.trimMandat(st), proch = (Math.floor(tm / 4) + 1) * 4 - tm;
+    var b = h("div", "mx-opp" + (o.actif ? "" : " mx-opp-fini"));
+    ajout(b, h("span", null, o.ico), h("strong", null, o.nom), h("small", null, o.actif ? "⚔️ " + Math.round(o.force) + "/100 · attaque dans " + proch + " trim." : "a renoncé"));
     return b;
   }
+
   function notes() {
-    var r = h("div", "m-rapport"); r.appendChild(h("strong", null, "Ce trimestre"));
-    st.notes.forEach(function (x) { var p = h("div", "m-note"); p.appendChild(h("p", null, "⏳ " + x.txt)); variations(x.d, p); r.appendChild(p); });
+    var r = h("div", "mx-notes");
+    st.notes.slice(0, 3).forEach(function (x) { var p = h("div", "mx-note"); p.appendChild(h("p", null, "⏳ " + x.txt)); variations(x.d, p); r.appendChild(p); });
     return r;
   }
   // Ce que le bâtiment apporte en plus des piliers : c'est ce qui le rend unique
@@ -642,53 +616,77 @@
     if (B.eco) l.push("📈 économie +" + B.eco);
     return l;
   }
+
+  // Effet principal en une ligne (piliers et recettes) ; le reste est dans la fiche
+  function effetCourt(id) {
+    var B = M.BATIMENTS[id], ga = M.gainAchat(st, id), l = Object.keys(ga).filter(function (k) { return Math.abs(ga[k]) >= 0.1; })
+      .map(function (k) { return (ga[k] >= 0 ? "+" : "−") + virg(Math.abs(ga[k])) + M.ICO[k]; });
+    if (B.rev) l.push("+" + B.rev + " M€/t");
+    return l.slice(0, 3).join(" ");
+  }
+  function acheterBat(id) {
+    var B = M.BATIMENTS[id];
+    G.marquerGuide("bat-" + id);
+    if (B.enchere) { if (!M.peutEncherir(st, id)) enchere(id); return; }
+    if (M.peutAcheter(st, id)) return;
+    st = M.acheter(st, id); sauver(); signal("achat"); jeu(); toast(B.ico + " " + B.nom + (B.projet ? " : chantier lancé !" : " construit !"));
+  }
+  // Carte compacte : on touche pour construire ; « i » ouvre la fiche
   function carteBat(id) {
-    var B = M.BATIMENTS[id], ench = !!B.enchere, non = ench ? M.peutEncherir(st, id) : M.peutAcheter(st, id), px = B.projet || ench ? B.cout : M.prix(st, id), deja = st.bat[id] || 0;
-    var ga = M.gainAchat(st, id);
-    var gain = Object.keys(ga).map(function (k) { return (ga[k] >= 0 ? "+" : "−") + virg(Math.abs(ga[k])) + " " + M.ICO[k]; });
-    if (B.rev) gain.push("+" + argent(B.rev) + "/trim.");
-    if (B.pop) gain.push("+" + B.pop + " popularité");
+    var B = M.BATIMENTS[id], ench = !!B.enchere, non = ench ? M.peutEncherir(st, id) : M.peutAcheter(st, id), deja = st.bat[id] || 0;
+    var px = B.projet ? Math.round(B.cout * 0.3) : ench ? B.cout : M.prix(st, id);
     var neuf = (B.niv > 1 || B.secret || B.projet || B.si) && !G.guideVu("bat-" + id) && !deja;
-    var b = bouton("", "m-bat" + (B.projet ? " m-bat-projet" : "") + (B.secret ? " m-bat-secret" : "") + (ench ? " m-bat-ench" : "") + (neuf ? " m-new" : ""), function () {
-      G.marquerGuide("bat-" + id);
-      if (ench) { if (!M.peutEncherir(st, id)) enchere(id); return; }
-      if (M.peutAcheter(st, id)) return;
-      st = M.acheter(st, id); sauver(); signal("achat"); jeu(); toast(B.ico + " " + B.nom + (B.projet ? " : le chantier démarre !" : " : c’est fait !"));
-    });
-    b.disabled = !!non && !(ench && deja);
-    if (ench && deja) b.disabled = true;
-    var prixTxt = ench ? "🔨 Aux enchères · prix moyen ≈ " + argent(px) + (B.ent ? " · entretien " + argent(B.ent) + "/trim." : "")
-      : B.projet ? argent(px) + " au total (30 % au lancement) · " + B.duree + " trimestres" : (B.cout > 0 ? argent(px) : "rapporte " + argent(-px)) + (B.ent ? " · entretien " + argent(B.ent) + "/trim." : "");
-    var at = atouts(B);
-    ajout(b, h("span", "m-bico", B.ico), ajout(h("div"), h("strong", null, B.nom),
-      gain.length ? h("span", "m-gain", gain.join("  ")) : null, at.length ? h("span", "m-atouts", at.join(" · ")) : null,
-      B.txt ? h("span", "m-bat-txt", B.txt) : null, neuf ? h("i", "m-neuf", "Nouveau") : null,
-      h("small", null, non && non !== "Pas assez d’argent, même en empruntant." ? non : prixTxt)), deja && !B.unique ? h("em", null, "×" + deja) : null);
-    return b;
+    var c = h("div", "mx-batc");
+    var b = bouton("", "mx-bat" + (ench ? " mx-ench" : B.projet ? " mx-projet" : B.secret || B.pass ? " mx-rare" : "") + (neuf ? " mx-new" : ""), function () { acheterBat(id); });
+    b.disabled = !!non;
+    var prix = ench ? "🔨 ≈ " + argent(px) : B.projet ? argent(px) + " + tranches" : argent(px);
+    ajout(b, h("span", "mx-bico", B.ico), h("strong", null, B.nom), h("span", "mx-eff", effetCourt(id) || "✨ atout spécial"),
+      h("small", "mx-prix" + (non && /argent/.test(non) ? " mx-cher" : ""), non && !/argent/.test(non) ? non.replace(/\.$/, "") : prix),
+      deja && !B.unique ? h("em", null, "×" + deja) : null, neuf ? h("i", "mx-neuf", "Nouveau") : null);
+    var info = bouton("i", "mx-info", function () { fiche(id); }); info.setAttribute("aria-label", "Détails : " + B.nom);
+    ajout(c, b, info);
+    return c;
+  }
+  // Fiche d'un bâtiment : tout le détail, seulement quand on le demande
+  function fiche(id) {
+    var B = M.BATIMENTS[id], ench = !!B.enchere, non = ench ? M.peutEncherir(st, id) : M.peutAcheter(st, id), dispo = M.disponible(st, id);
+    var m = h("div", "m-pop mx-fichepop"), c = h("div", "mx-fiche");
+    function fermer() { m.remove(); document.body.classList.remove("m-modal"); }
+    m.onclick = function (e) { if (e.target === m) fermer(); };
+    ajout(c, ajout(h("div", "m-tel-tete"), h("strong", null, B.ico + " " + B.nom), bouton("✕", "m-leonx", fermer)));
+    if (B.txt) c.appendChild(h("p", "mx-ftxt", B.txt));
+    var l = h("ul", "mx-fl"), ga = M.gainAchat(st, id);
+    Object.keys(ga).forEach(function (k) { l.appendChild(h("li", null, M.ICO[k] + " " + M.PILIERS[k] + " : " + (ga[k] >= 0 ? "+" : "−") + virg(Math.abs(ga[k])))); });
+    if (B.rev) l.appendChild(h("li", null, "💶 Recettes : +" + B.rev + " M€ par trimestre"));
+    if (B.pop) l.appendChild(h("li", null, "📣 Popularité : +" + B.pop + " à l’inauguration"));
+    atouts(B).forEach(function (t) { l.appendChild(h("li", null, t)); });
+    l.appendChild(h("li", "mx-fcout", ench ? "🔨 Aux enchères · prix moyen ≈ " + argent(B.cout) : B.projet ? "🏗️ " + argent(B.cout) + " au total, 30 % au lancement, " + B.duree + " trimestres de travaux" : "💰 " + argent(M.prix(st, id)) + (B.ent ? " · entretien " + argent(B.ent) + "/trim." : "")));
+    c.appendChild(l);
+    if (!dispo) { var u = h("ul", "m-prereq"); M.prerequis(st, id).forEach(function (x) { u.appendChild(h("li", x.ok ? "m-ok" : "", (x.ok ? "✔ " : "🔒 ") + x.txt)); }); if (B.pass && !B.si) u.appendChild(h("li", null, "🎟️ " + (B.obtenu || "Récompense du pass de combat."))); c.appendChild(u); }
+    var go = bouton(ench ? "🔨 Enchérir" : B.projet ? "🏗️ Lancer le chantier" : "Construire", "btn m-go", function () { fermer(); acheterBat(id); });
+    go.disabled = !!non;
+    ajout(c, go, non ? h("small", "m-aide", non) : null);
+    m.appendChild(c); (document.getElementById("g-maire") || document.body).appendChild(m); document.body.classList.add("m-modal");
   }
   // Bâtiment pas encore disponible : ce qui manque (niveau, trimestres, réélection), avec une barre pour l'objectif de partie
   // Bâtiment pas encore disponible : tous ses prérequis (niveau, trimestres, réélection, bâtiments), cochés ou non
+
+  // Bâtiment pas encore disponible : une ligne, ce qui manque ; la fiche donne le détail
   function verrou(id) {
-    var B = M.BATIMENTS[id], l = h("div", "m-bat m-bat-lock"), corps = ajout(h("div"), h("strong", null, B.ico + " " + B.nom));
-    if (B.pass) corps.appendChild(h("small", null, "🎟️ Récompense du pass de combat."));
-    var u = h("ul", "m-prereq");
-    M.prerequis(st, id).forEach(function (x) {
-      var li = h("li", x.ok ? "m-ok" : "", (x.ok ? "✔ " : "🔒 ") + x.txt + (!x.ok && x.k === "niv" && st.nivFixe ? " (hors défi du jour)" : ""));
-      if (!x.ok && x.k !== "niv" && x.but > 1) { var barre = h("div", "m-barre"), i = h("i"); i.style.width = Math.round(x.cur / x.but * 100) + "%"; barre.appendChild(i); li.appendChild(barre); }
-      u.appendChild(li);
-    });
-    if (u.children.length) corps.appendChild(u);
-    ajout(l, h("span", "m-bico", "🔒"), corps);
+    var B = M.BATIMENTS[id], manque = M.prerequis(st, id).filter(function (x) { return !x.ok; });
+    var txt = B.pass && !manque.length ? "🎟️ " + (B.obtenu ? "série de 7 jours" : "pass de combat") : manque.map(function (x) { return x.k === "niv" ? "niv. " + x.but : x.k === "t" ? (x.but - x.cur) + " trim." : x.k === "reel" ? x.but + " réélection" + (x.but > 1 ? "s" : "") : x.txt.replace("Construis d’abord ", "après "); }).join(" · ");
+    var l = bouton("", "mx-lock", function () { fiche(id); });
+    ajout(l, h("span", null, "🔒 " + B.ico + " " + B.nom), h("small", null, txt));
     return l;
   }
   // Boutique rangée par rayons : on ouvre d'abord celui du pilier le plus faible
-  var RAYON = null;
+  var RAYON = null, gestionOuverte = false;
   function rayonDe(id) { return M.BATIMENTS[id].cat; }
+
   function boutique() {
-    var d = h("div", "m-boutique"), n = st.nivJ, nb = 0;
-    Object.keys(st.bat).forEach(function (id) { nb += st.bat[id]; });
-    d.appendChild(ajout(h("div", "m-btete"), h("h5", null, "🛒 Boutique de la Ville"), h("small", null, nb + " bâtiment" + (nb > 1 ? "s" : "") + " · entretien " + argent(M.entretien(st)) + "/trim.")));
-    if (window.ADMIN_UNLOCKED) d.appendChild(bouton(st.sansLimite ? "🛠 Limites des bâtiments : désactivées (admin)" : "🛠 Passer les limites pour les bâtiments", "btn m-sec m-adminbat", function () {
+    var d = h("div", "mx-boutique"), n = st.nivJ;
+    d.appendChild(h("h5", null, "🛒 Construire"));
+    if (window.ADMIN_UNLOCKED) d.appendChild(bouton(st.sansLimite ? "🛠 Limites désactivées (admin)" : "🛠 Passer les limites pour les bâtiments", "btn m-sec m-adminbat", function () {
       st = M.limites(st, !st.sansLimite); try { localStorage.setItem("maire_sanslimite", st.sansLimite ? "1" : ""); } catch (e) {} sauver(); jeu();
     }));
     var ids = Object.keys(M.BATIMENTS), visibles = M.RAYONS.filter(function (r) {
@@ -696,41 +694,28 @@
       if (r.id === "projet") return st.meca.grandsProjets || st.sansLimite || n >= 4;
       return true;
     });
-    if (!RAYON || !visibles.some(function (r) { return r.id === RAYON; })) {
-      var faible = Object.keys(M.PILIERS).sort(function (a, b) { return st.piliers[a] - st.piliers[b]; })[0]; RAYON = faible;
-    }
-    var onglets = h("div", "m-rayons"); onglets.setAttribute("role", "tablist");
+    if (!RAYON || !visibles.some(function (r) { return r.id === RAYON; })) RAYON = Object.keys(M.PILIERS).sort(function (a, b) { return st.piliers[a] - st.piliers[b]; })[0];
+    var onglets = h("div", "mx-rayons"); onglets.setAttribute("role", "tablist");
     visibles.forEach(function (r) {
       var l = ids.filter(function (id) { return rayonDe(id) === r.id; }), ok = l.filter(function (id) { return M.disponible(st, id); });
       var neuf = ok.some(function (id) { return !G.guideVu("bat-" + id) && !st.bat[id] && (M.BATIMENTS[id].niv > 1 || M.BATIMENTS[id].si); });
-      var t = bouton("", "m-rayon" + (neuf ? " m-rayon-neuf" : ""), function () { RAYON = r.id; var y = window.scrollY; jeu(); window.scrollTo(0, y); });
-      t.setAttribute("role", "tab"); t.setAttribute("aria-selected", r.id === RAYON);
-      ajout(t, h("span", null, r.ico + " " + r.nom), h("small", null, ok.length + "/" + l.length));
+      var t = bouton("", "mx-rayon" + (neuf ? " mx-rayon-neuf" : ""), function () { RAYON = r.id; var y = window.scrollY; jeu(); window.scrollTo(0, y); });
+      t.setAttribute("role", "tab"); t.setAttribute("aria-selected", r.id === RAYON); t.title = r.nom;
+      ajout(t, h("span", null, r.ico), h("small", null, r.nom));
       onglets.appendChild(t);
     });
     d.appendChild(onglets);
     var l = ids.filter(function (id) { return rayonDe(id) === RAYON; });
-    var ok = l.filter(function (id) { return M.disponible(st, id); }), bloques = l.filter(function (id) { return !M.disponible(st, id); });
     var tri = function (a, b) { var A = M.BATIMENTS[a], B = M.BATIMENTS[b]; return (A.niv || 1) - (B.niv || 1) || A.cout - B.cout; };
-    var g = h("div", "m-bats");
-    if (RAYON === "enchere") d.appendChild(h("p", "m-aide", "🔨 Les bâtiments de prestige se disputent avec une ville voisine : 30 secondes pour faire la meilleure offre. Le prix moyen de vente t’aide à savoir quand t’arrêter."));
-    ok.sort(tri).forEach(function (id) { g.appendChild(carteBat(id)); });
-    // Bientôt : les objectifs de partie en cours et les 2 prochains niveaux ; le reste est seulement compté
-    var proches = bloques.filter(function (id) { return (M.BATIMENTS[id].niv || 1) <= n + 2; }).sort(tri), loin = bloques.length - proches.length;
-    if (proches.length) { g.appendChild(h("p", "m-bientot", "Bientôt")); proches.forEach(function (id) { g.appendChild(verrou(id)); }); }
-    if (!ok.length && !proches.length && !loin) g.appendChild(h("p", "m-aide", "Rien dans ce rayon pour l’instant."));
+    var ok = l.filter(function (id) { return M.disponible(st, id); }).sort(tri), bloques = l.filter(function (id) { return !M.disponible(st, id); }).sort(tri);
+    if (RAYON === "enchere") d.appendChild(h("p", "mx-aide", "🔨 30 secondes d’enchères contre une ville voisine."));
+    var g = h("div", "mx-bats");
+    ok.forEach(function (id) { g.appendChild(carteBat(id)); });
+    if (!ok.length) g.appendChild(h("p", "mx-aide", "Rien à construire ici pour l’instant."));
     d.appendChild(g);
-    if (loin) d.appendChild(h("p", "m-aide", "🔒 Encore " + loin + " bâtiment" + (loin > 1 ? "s" : "") + " à découvrir dans ce rayon en montant de niveau."));
-    if (st.meca.combos) {
-      var dc = h("details", "m-combos"), act = M.combosActifs(st);
-      dc.appendChild(h("summary", null, "🧩 Combos de bâtiments (" + act.length + " actif" + (act.length > 1 ? "s" : "") + ")"));
-      Object.keys(M.C.COMBOS).forEach(function (k) {
-        var o = M.C.COMBOS[k], connu = st.combos.indexOf(k) >= 0 || G.lire().combos[k];
-        dc.appendChild(h("p", act.indexOf(k) >= 0 ? "m-ok" : "", (act.indexOf(k) >= 0 ? "✅ " : connu ? "◻️ " : "❔ ") + (connu ? o.nom + " : " + texteCombo(k) : "Indice : " + o.indice)));
-      });
-      d.appendChild(dc);
-    }
-    d.appendChild(h("p", "m-aide", "Chaque nouvel exemplaire coûte un peu plus cher et rapporte un peu moins : varie tes achats."));
+    // Les 3 prochains seulement ; le reste est compté
+    var proches = bloques.slice(0, 3), loin = bloques.length - proches.length;
+    if (proches.length) { var b = h("div", "mx-bientot"); b.appendChild(h("small", null, "Bientôt")); proches.forEach(function (id) { b.appendChild(verrou(id)); }); if (loin) b.appendChild(h("small", null, "+ " + loin + " à découvrir")); d.appendChild(b); }
     return d;
   }
 
@@ -819,28 +804,47 @@
     afficherEnchere();
   }
 
-  function budget() {
-    var d = h("div", "m-curseur");
-    var t = h("div", "m-jt"), val = h("b", null, Math.round(st.taux * 100) + " %");
-    ajout(t, h("span", null, "💶 Impôts locaux"), val);
-    var r = h("input"); r.type = "range"; r.min = 80; r.max = 130; r.step = 5; r.value = Math.round(st.taux * 100); r.setAttribute("aria-label", "Impôts locaux");
-    r.oninput = function () { val.textContent = r.value + " %"; };
-    r.onchange = function () { st = M.regler(st, { taux: r.value / 100 }); sauver(); signal("regler"); jeu(); };
-    ajout(d, t, r, h("small", null, "Recettes " + argent(M.recettes(st)) + " · dépenses " + argent(M.depenses(st)) + " (dont entretien " + argent(M.entretien(st)) + ") par trimestre. Plus d’impôts = plus d’argent, mais moins de popularité."));
-    return d;
-  }
-  function journal() {
-    var d = h("details", "m-journal"); d.appendChild(h("summary", null, "📜 Historique des décisions"));
-    if (!st.historique.length) d.appendChild(h("p", "m-vide", "Aucune décision pour l’instant."));
+
+  // Gestion repliée : impôts, combos, historique et options de la partie
+  function gestion() {
+    var d = h("details", "mx-gestion"); d.open = gestionOuverte; d.ontoggle = function () { gestionOuverte = d.open; };
+    d.appendChild(h("summary", null, "⚙️ Gestion de la ville"));
+    if (st.meca.budget) {
+      var c = h("div", "mx-impots"), val = h("b", null, Math.round(st.taux * 100) + " %");
+      var r = h("input"); r.type = "range"; r.min = 80; r.max = 130; r.step = 5; r.value = Math.round(st.taux * 100); r.setAttribute("aria-label", "Impôts locaux");
+      r.disabled = !!(st.scenario && st.scenario.tauxBloque);
+      r.oninput = function () { val.textContent = r.value + " %"; };
+      r.onchange = function () { st = M.regler(st, { taux: r.value / 100 }); sauver(); signal("regler"); jeu(); };
+      ajout(c, ajout(h("div", "mx-pt"), h("span", null, "💶 Impôts"), val), r, h("small", null, "Recettes " + argent(M.recettes(st)) + " · dépenses " + argent(M.depenses(st)) + " par trimestre. Plus d’impôts : plus d’argent, moins de popularité."));
+      d.appendChild(c);
+    }
+    if (st.meca.combos) {
+      var act = M.combosActifs(st), cb = h("div", "mx-combos");
+      cb.appendChild(h("strong", null, "🧩 Combos (" + act.length + " actif" + (act.length > 1 ? "s" : "") + ")"));
+      Object.keys(M.C.COMBOS).forEach(function (k) {
+        var o = M.C.COMBOS[k], connu = st.combos.indexOf(k) >= 0 || G.lire().combos[k];
+        cb.appendChild(h("small", act.indexOf(k) >= 0 ? "m-ok" : "", (act.indexOf(k) >= 0 ? "✅ " : connu ? "◻️ " : "❔ ") + (connu ? o.nom + " : " + texteCombo(k) : o.indice)));
+      });
+      d.appendChild(cb);
+    }
+    var j = h("details", "mx-histo"); j.appendChild(h("summary", null, "📜 Dernières décisions"));
+    if (!st.historique.length) j.appendChild(h("p", "m-vide", "Aucune décision pour l’instant."));
     else {
       var l = h("ol", "m-histo");
-      st.historique.slice().reverse().slice(0, 60).forEach(function (x) {
+      st.historique.slice().reverse().slice(0, 30).forEach(function (x) {
         var li = h("li"); ajout(li, h("span", "m-hs", "T" + x.t), h("strong", null, (x.sp === "catastrophe" ? "🚨 " : x.sp === "chance" ? "🍀 " : x.sp === "opposition" ? "⚔️ " : "") + x.titre), h("span", "m-hc", x.choix));
         if (x.c !== "achat") variations(x.d, li);
         l.appendChild(li);
       });
-      d.appendChild(l);
+      j.appendChild(l);
     }
+    d.appendChild(j);
+    d.appendChild(ajout(h("div", "mx-quitter"),
+      bouton("🏠 Menu principal", "btn m-sec", function () { sauver(); fermerModale(); accueil(); haut(); }),
+      bouton("🚪 Démissionner", "btn m-sec m-demission", function () {
+        if (!confirm("Démissionner ? La partie s’arrête ici : tu gardes l’XP de ce que tu as déjà accompli.")) return;
+        st = M.demissionner(st); sauver(); jeu();
+      })));
     return d;
   }
   function barreTrimestre() {
@@ -873,6 +877,8 @@
 
   // ---------- Progression en pleine partie : XP, niveaux, succès et quêtes ----------
   // Après chaque action : le profil reçoit l'XP, les succès et quêtes réussis sont rangés, et on prépare l'affichage
+
+  // Après chaque action : le profil reçoit l'XP ; les réussites s'annoncent par de petites pastilles discrètes (regroupées)
   function progresser() {
     if (!st || st.prog) return;
     var r = G.suivrePartie(st, M, { quetes: quetesAuj() });
@@ -881,33 +887,21 @@
     if (montees.length) st = M.viderMontees(st);
     sauver();
     montees.forEach(function (m) { notifier({ type: "niveau", m: m }); });
-    r.chapitres.forEach(function (c) { notifier({ type: "fait", cls: "m-n-chap", sur: "📖 Chapitre " + c.num + " accompli", nom: c.titre, desc: c.objectif, xp: 200 }); });
-    r.quetes.forEach(function (q) { notifier({ type: "fait", cls: "m-n-quete", sur: "🎯 Quête du jour accomplie", nom: q.t, xp: q.xp, pts: 100 }); });
-    r.journaliers.forEach(function (d) { notifier({ type: "fait", cls: "m-n-jour", sur: "🌞 Succès du jour !", nom: d.t, xp: d.xp, pts: 100 }); });
-    if (r.joker) notifier({ type: "fait", cls: "m-n-serie", sur: "🃏 Joker utilisé", nom: "Ta série de jours est sauvée" });
-    if (r.serie) notifier({ type: "fait", cls: "m-n-serie", sur: "🔥 Série de " + r.serie.n + " jour" + (r.serie.n > 1 ? "s" : "") + " !", nom: r.serie.txt });
-    if (r.parfait) notifier({ type: "fait", cls: "m-n-jour", sur: "🌞 Journée parfaite !", nom: "Les 5 succès du jour sont réussis", pts: 200 });
-    r.pass.forEach(function (x) { notifier({ type: "fait", cls: "m-n-pass", sur: "🎟️ Pass de combat · palier " + x.n, nom: x.txt }); });
-    var su = r.succes.slice(0, 4);
-    su.forEach(function (x) { notifier({ type: "fait", cls: "m-n-succes m-n-t" + x.t, sur: "🏆 Succès débloqué !", nom: x.nom, desc: x.desc, xp: G.XP_TIER[x.t] }); });
-    if (r.succes.length > su.length) notifier({ type: "fait", cls: "m-n-succes", sur: "🏆 Et ce n’est pas fini…", nom: "+" + (r.succes.length - su.length) + " autres succès débloqués" });
-    // Un seul « ça avance » à la fois par sorte (succès, quête), et seulement si rien n'a été réussi à ce moment-là
-    if (!r.succes.length && !r.quetes.length && !r.journaliers.length && !r.serie) {
-      var deja = {};
-      r.progres.forEach(function (p) { if (!deja[p.type]) { deja[p.type] = 1; notifier({ type: "progres", p: p }); } });
-    }
+    var xp = 0; r.succes.forEach(function (x) { xp += G.XP_TIER[x.t]; });
+    if (r.succes.length === 1) notifier({ type: "fait", txt: "🏆 " + r.succes[0].nom + " · +" + xp + " XP", titre: r.succes[0].desc });
+    else if (r.succes.length > 1) notifier({ type: "fait", txt: "🏆 " + r.succes.length + " succès débloqués · +" + xp + " XP", titre: r.succes.map(function (x) { return x.nom; }).join(", ") });
+    r.chapitres.forEach(function (c) { notifier({ type: "fait", txt: "📖 Chapitre " + c.num + " accompli · +" + G.XP_CHAPITRE + " XP" }); });
+    r.quetes.forEach(function (q) { notifier({ type: "fait", txt: "🎯 Quête du jour réussie · +" + q.xp + " XP", titre: q.t }); });
+    r.journaliers.forEach(function (d) { notifier({ type: "fait", txt: "🌞 Succès du jour · +" + d.xp + " XP", titre: d.t }); });
+    if (r.parfait) notifier({ type: "fait", txt: "🌞 Journée parfaite · +200 🎟️" });
+    if (r.joker) notifier({ type: "fait", txt: "🃏 Joker utilisé : ta série est sauvée" });
+    if (r.serie) notifier({ type: "fait", txt: "🔥 " + r.serie.n + " jour" + (r.serie.n > 1 ? "s" : "") + " d’affilée", titre: r.serie.txt });
+    r.pass.forEach(function (x) { notifier({ type: "fait", txt: "🎟️ Palier " + x.n + " du pass", titre: x.txt }); });
   }
-  // File d'affichage : une réussite ou un niveau passe toujours avant les pastilles « ça avance », qui ne s'empilent jamais
+  // File d'affichage : un niveau passe avant les petites pastilles ; elles ne s'empilent jamais au-delà de 4
   var FILE = [], notifActive = null;
   function notifier(n) {
-    if (n.type === "progres") {
-      if (FILE.some(function (x) { return x.type !== "progres"; })) return;
-      FILE = FILE.filter(function (x) { return x.p.type !== n.p.type; });
-    } else {
-      FILE = FILE.filter(function (x) { return x.type !== "progres"; });
-      if (notifActive && notifActive.type === "progres") notifActive.fermer();
-    }
-    FILE.push(n);
+    if (n.type === "niveau") FILE.unshift(n); else if (FILE.length < 4) FILE.push(n);
     if (!notifActive) suivante();
   }
   function suivante() {
@@ -919,27 +913,16 @@
       setTimeout(function () { notifActive = null; suivante(); }, 800); return;
     }
     var el, duree;
-    if (n.type === "progres") {
-      var p = n.p; el = h("div", "m-notif m-n-progres" + (p.type === "quete" ? " m-n-pq" : p.type === "jour" ? " m-n-pj" : ""));
-      var barre = h("div", "m-barre"), i = h("i"); i.style.width = Math.round((p.cur - 1) / p.but * 100) + "%"; barre.appendChild(i);
-      ajout(el, ajout(h("div", "m-jt"), h("span", null, p.ico + " " + p.nom), h("b", null, p.cur + " / " + p.but)), barre);
-      requestAnimationFrame(function () { requestAnimationFrame(function () { i.style.width = Math.round(p.cur / p.but * 100) + "%"; }); });
-      duree = 2200;
-    } else if (n.type === "niveau") {
-      var m = n.m, nv = m.n ? G.niveau(G.xpPour(m.n)) : null;
-      el = h("div", "m-notif m-n-niveau");
-      ajout(el, h("p", "m-n-sur", m.n ? "⬆️ Niveau " + m.n + " !" : "🔓 Nouveau en boutique !"), h("strong", null, nv ? nv.titre : "Objectif rempli : de nouveaux bâtiments arrivent"));
-      var u = h("ul");
-      m.bats.forEach(function (id) { var B = M.BATIMENTS[id]; u.appendChild(h("li", null, "🔓 " + B.ico + " " + B.nom + (B.projet ? " (projet démesuré)" : B.enchere ? " (aux enchères)" : "") + " · en boutique")); });
-      m.meca.forEach(function (t) { u.appendChild(h("li", null, "✨ " + t)); });
-      m.plusTard.forEach(function (t) { u.appendChild(h("li", "m-n-tard", "🔜 " + t + " · dès ta prochaine partie")); });
-      if (u.children.length) el.appendChild(u);
-      duree = 4200;
+    if (n.type === "niveau") {
+      // Nouveau niveau (ou objectif rempli) : une carte courte, ce qui arrive en boutique sur une ligne
+      var m = n.m, quoi = m.bats.map(function (id) { return M.BATIMENTS[id].ico + " " + M.BATIMENTS[id].nom; }).concat(m.meca.map(function (t) { return "✨ " + t; }));
+      el = h("div", "m-notif mx-niveau");
+      ajout(el, h("strong", null, m.n ? "⬆️ Niveau " + m.n : "🔓 Nouveau en boutique"), quoi.length ? h("span", null, quoi.slice(0, 3).join(" · ") + (quoi.length > 3 ? " +" + (quoi.length - 3) : "")) : null,
+        m.plusTard.length ? h("small", null, "🔜 " + m.plusTard.join(", ") + " : à la prochaine partie") : null);
+      duree = 3200;
     } else {
-      el = h("div", "m-notif " + n.cls);
-      ajout(el, h("p", "m-n-sur", n.sur), h("strong", null, n.nom), n.desc ? h("span", null, n.desc) : null,
-        n.xp || n.pts ? h("b", "m-n-xp", (n.xp ? "+" + n.xp + " XP" : "") + (n.xp && n.pts ? " · " : "") + (n.pts ? "+" + n.pts + " 🎟️" : "")) : null);
-      duree = FILE.length ? 2400 : 3200;              // plusieurs réussites d'affilée : on accélère un peu
+      el = h("div", "m-notif mx-mini", n.txt); if (n.titre) el.title = n.titre;
+      duree = FILE.length ? 1500 : 2300;
     }
     el.setAttribute("role", "status");
     var fini = false;
@@ -958,14 +941,14 @@
       { q: "#m-modale .m-choix", t: "📂 Un dossier arrive chaque trimestre. Choisis une réponse.", a: "choix" },
       { q: "#m-modale .m-delta, #m-modale .m-res", t: "Voilà les conséquences de ta décision.", a: "ok" },
       { q: "#m-modale .m-go", t: "Retourne à l’Hôtel de Ville.", a: "fermer" },
-      { q: ".m-sondage", t: "🗳️ Ton but : rester au-dessus de 50 % jusqu’à l’élection.", a: "ok" },
-      { q: ".m-piliers", t: "Ces 4 piliers font le bonheur des Parisiens. Ils baissent avec le temps.", a: "ok" },
-      { q: ".m-bat:not(:disabled):not(.m-bat-lock)", t: "🛒 Achète un bâtiment pour faire monter un pilier.", a: "achat" },
+      { q: ".mx-tableau", t: "🗳️ Ton but : rester au-dessus de 50 % jusqu’à l’élection.", a: "ok" },
+      { q: ".mx-piliers", t: "Ces 4 piliers font le bonheur des Parisiens. Ils baissent avec le temps.", a: "ok" },
+      { q: ".mx-bat:not(:disabled)", t: "🛒 Achète un bâtiment pour faire monter un pilier.", a: "achat" },
       { q: ".m-barmois .btn", t: "Bravo ! Passe au trimestre suivant.", a: "trimestre" }] },
     { id: "budget", ecran: "jeu", si: function () { return st.meca.budget && st.phase === "gestion"; }, etapes: [
-      { q: ".m-curseur", t: "💶 Nouveau : les impôts ! Plus d’argent… mais moins de popularité.", a: "ok" }] },
+      { q: ".mx-gestion summary", t: "💶 Nouveau : les impôts ! Règle-les dans « Gestion de la ville ».", a: "ok" }] },
     { id: "opposant", ecran: "jeu", si: function () { return st.meca.opposant && st.opposant && st.phase === "gestion"; }, etapes: [
-      { q: ".m-opp", t: "⚔️ Ton opposant attaque une fois par an. Son influence fait baisser ton sondage.", a: "ok" }] },
+      { q: ".mx-opp", t: "⚔️ Ton opposant attaque une fois par an. Son influence fait baisser ton sondage.", a: "ok" }] },
     { id: "attaque", ecran: "modale", si: function () { return st.special === "opposition" && st.phase === "evenement"; }, etapes: [
       { q: "#m-modale .m-choix", t: "Riposte, tente de le faire tomber… ou laisse faire, il reviendra plus fort.", a: "choix" }] },
     { id: "cata", ecran: "modale", si: function () { return st.special === "catastrophe" && st.phase === "evenement"; }, etapes: [
@@ -975,23 +958,21 @@
     { id: "promesses-crea", ecran: "creation", si: function () { return !!document.querySelector(".m-ambs"); }, etapes: [
       { q: ".m-ambs", t: "🎯 Choisis 2 piliers à promettre aux Parisiens.", a: "ok" }] },
     { id: "promesses", ecran: "jeu", si: function () { return st.ambitions.length && st.phase === "gestion"; }, etapes: [
-      { q: ".m-prom", t: "🎯 Ta promesse : dépasse le trait blanc avant l’élection pour gagner des voix.", a: "ok" }] },
+      { q: ".mx-prom", t: "🎯 Ta promesse : dépasse le trait blanc avant l’élection pour gagner des voix.", a: "ok" }] },
     { id: "ligne-crea", ecran: "creation", si: function () { return !!document.querySelector(".m-lignes"); }, etapes: [
       { q: ".m-lignes", t: "🧭 Choisis ton camp politique.", a: "ok" }] },
     { id: "ligne", ecran: "jeu", si: function () { return st.meca.ligne && st.phase === "gestion"; }, etapes: [
-      { q: ".m-jauge-coh", t: "🧭 Reste fidèle à ton camp : ta cohérence soutient ta popularité.", a: "ok" }] },
+      { q: ".mx-coh", t: "🧭 Reste fidèle à ton camp : ta cohérence soutient ta popularité.", a: "ok" }] },
     { id: "pari", ecran: "jeu", si: function () { return !!st.offre && st.phase === "gestion"; }, etapes: [
       { q: ".m-tel", t: "📱 Ton téléphone sonne : une proposition très risquée pour sauver les finances.", a: "ok" }] },
-    { id: "mission", ecran: "jeu", si: function () { return !!st.mission && st.phase === "gestion"; }, etapes: [
-      { q: ".m-mission", t: "🎯 Mission surprise de Léon : réussis-la à temps pour gagner de l’XP.", a: "ok" }] },
     { id: "chantier", ecran: "jeu", si: function () { return st.chantiers.length > 0 && st.phase === "gestion"; }, etapes: [
       { q: ".m-chantiers", t: "🏗️ Ton chantier avance chaque trimestre et se paie par tranches. Gare aux imprévus !", a: "ok" }] },
     { id: "rare", ecran: "modale", si: function () { return (st.special === "rare" || st.special === "legendaire") && st.phase === "evenement"; }, etapes: [
       { q: "#m-modale .m-choix", t: "✨ Un événement rare ! Aucune réponse n’est toujours la meilleure : à toi de jouer.", a: "choix" }] },
     { id: "xp", ecran: "jeu", si: function () { return st.phase === "gestion" && st.t >= 2 && !st.nivFixe; }, etapes: [
-      { q: ".m-xp", t: "⭐ Chaque trimestre, achat, élection ou succès te rapporte de l’XP. À chaque niveau, un nouveau bâtiment arrive en boutique !", a: "ok" }] },
-    { id: "nouveautes", ecran: "jeu", si: function () { return st.phase === "gestion" && !!document.querySelector(".m-bat.m-new:not(:disabled)"); }, rejouable: 1, etapes: [
-      { q: ".m-bat.m-new:not(:disabled)", t: "✨ Nouveau en boutique ! Essaie-le.", a: "ok" }] }
+      { q: ".mx-xp", t: "⭐ Chaque trimestre, achat, élection ou succès te rapporte de l’XP. À chaque niveau, un nouveau bâtiment arrive en boutique !", a: "ok" }] },
+    { id: "nouveautes", ecran: "jeu", si: function () { return st.phase === "gestion" && !!document.querySelector(".mx-bat.mx-new:not(:disabled)"); }, rejouable: 1, etapes: [
+      { q: ".mx-bat.mx-new:not(:disabled)", t: "✨ Nouveau en boutique ! Essaie-le.", a: "ok" }] }
   ];
   var GA = null, BULLE = null;   // séquence en cours : { g, i }
   function guide(ecran) {
@@ -1290,7 +1271,8 @@
     d.appendChild(ajout(h("summary"), h("span", null, "🗺️ " + (fin ? "Le Paris que tu laisses" : "Ton Paris")), h("small", null, l.length + " bâtiment" + (l.length > 1 ? "s" : "") + " sur le plan")));
     var p = plan(false, nouveaux); p.onclick = function () { pleinEcranVille(); }; d.appendChild(p);
     if (!l.length) d.appendChild(h("small", "m-aide", "Achète ton premier bâtiment : il apparaîtra ici, au cœur de Paris."));
-    d.appendChild(ajout(h("div", "m-bas"), bouton("🔍 Agrandir", "btn m-sec", pleinEcranVille), l.length ? bouton("📸 Partager ma ville", "btn " + (fin ? "m-go" : "m-sec"), partagerVille) : null));
+    if (fin) d.appendChild(ajout(h("div", "m-bas"), bouton("🔍 Agrandir", "btn m-sec", pleinEcranVille), l.length ? bouton("📸 Partager ma ville", "btn m-go", partagerVille) : null));
+    else if (l.length) d.appendChild(ajout(h("div", "mx-villebas"), h("small", null, "Touche le plan pour l’agrandir"), bouton("📸 Partager", "mx-lien", partagerVille)));
     return d;
   }
   function pleinEcranVille() {

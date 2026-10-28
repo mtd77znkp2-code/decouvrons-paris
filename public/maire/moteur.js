@@ -252,7 +252,8 @@
       // XP : celle du profil au départ, celle gagnée dans la partie ; le défi du jour garde les mêmes bâtiments pour tous
       xp0: o.xpJoueur != null ? o.xpJoueur : xpPour(Math.min(nj, NIV_MAX)), nivFixe: nj >= 99 || !!o.scenario,
       // Réservé à l'administrateur : tous les bâtiments sans attendre (la partie ne compte alors pas au classement)
-      sansLimite: !!o.sansLimite, triche: !!o.sansLimite
+      sansLimite: !!o.sansLimite, triche: !!o.sansLimite,
+      sansMissions: o.missions === false                     // l'interface peut se passer des missions surprises
     };
     migrer(st);
     st.pid = o.pid ? String(o.pid) : "p" + (st.rng >>> 0).toString(36);
@@ -774,7 +775,7 @@
     }
     // Missions surprises
     suivreMission(st);
-    if (st.meca.missions && !st.mission && st.t >= 4 && st.t >= st.missionCd && rnd(st) < 0.2) lancerMission(st);
+    if (st.meca.missions && !st.sansMissions && !st.mission && st.t >= 4 && st.t >= st.missionCd && rnd(st) < 0.2) lancerMission(st);
     // Élection
     if (st.t >= prochaineElection(st)) {
       st.conditions.forEach(function (cd) {
