@@ -470,9 +470,12 @@
     });
     return d;
   }
+  // Le téléphone du maire : un vieux téléphone rouge animé
+  function imgTel(cls) { var i = h("img", cls); i.src = "maire/img/telephone.gif"; i.alt = ""; i.width = 40; i.height = 40; i.decoding = "async"; return i; }
   function telephone() {
     var nl = st.messages.filter(function (m) { return !m.lu; }).length;
-    var b = bouton("📱" + (nl ? " " + nl : ""), "m-tel" + (st.offre ? " m-tel-offre" : nl ? " m-tel-nouv" : ""), ouvrirTelephone);
+    var b = bouton("", "m-tel" + (st.offre ? " m-tel-offre" : nl ? " m-tel-nouv" : ""), ouvrirTelephone);
+    ajout(b, imgTel("m-tel-img"), nl ? h("span", "m-tel-nb", String(nl)) : null);
     b.setAttribute("aria-label", "Téléphone du maire" + (nl ? ", " + nl + " message" + (nl > 1 ? "s" : "") + " non lu" + (nl > 1 ? "s" : "") : ""));
     return b;
   }
@@ -1028,7 +1031,7 @@
     function retourJeu() { fermerTel(); jeu(); }
     function dessin(v) {
       tel.innerHTML = "";
-      tel.appendChild(ajout(h("div", "m-tel-tete"), h("strong", null, "📱 Téléphone du maire"), bouton("✕", "m-leonx", retourJeu)));
+      tel.appendChild(ajout(h("div", "m-tel-tete"), ajout(h("strong", "m-tel-titre"), imgTel("m-tel-img"), document.createTextNode(" Téléphone du maire")), bouton("✕", "m-leonx", retourJeu)));
       if (st.bj) return blackjack();
       if (st.pariRes && st.pariRes.t === st.t) return resultatPari();
       if (st.offre && v === "bj") return choisirMise("bj");
