@@ -104,7 +104,9 @@
   function xpPour(n) { return n <= 1 ? 0 : Math.round(80 * Math.pow(n - 1, 1.6)); }
   function niveauXP(xp) { var n = 1; while (n < NIV_MAX && xp >= xpPour(n + 1)) n++; return n; }
   // Ce que rapporte la partie elle-même (les succès, quêtes et chapitres s'y ajoutent : voir progression.js)
-  var XP = { trimestre: 3, trimestreMax: 150, achat: 4, achatMax: 100, election: { facile: 60, moyen: 120, difficile: 200 }, projet: 40, rare: 10, legendaire: 30, raresMax: 120 };
+  var XP = { trimestre: 3, trimestreMax: 150, achat: 4, achatMax: 100, election: { facile: 60, moyen: 120, difficile: 200 }, projet: 40, rare: 10, legendaire: 30, raresMax: 120,
+    // Tenir ses engagements rapporte : décisions pour ses promesses, bâtiments qui les servent, décisions fidèles à sa ligne, promesses tenues le jour du vote
+    promesse: 8, promesseMax: 200, batPromesse: 3, batPromesseMax: 90, ligne: 4, ligneMax: 120, promesseTenue: 40 };
 
   // ---------- Opposants (personnages fictifs) : un nouveau tirage à chaque mandat, une attaque par an ----------
   var OPPOSANTS = [
@@ -751,6 +753,7 @@
       if (!el.gagne) { if (el.pct < 35) gagnerObjet(st, "bonnet"); st.fin = { gagne: false, raison: { type: "election", txt: "Les Parisiens ont choisi " + el.opposant + " : tu n’obtiens que " + String(el.pct).replace(".", ",") + " % des voix." }, t: st.t }; st.phase = "fin"; leon(st, "battu"); return st; }
       if (st.scenario && st.t >= st.scenario.fin) { finDefi(st); return st; }
       gagnerXP(st, "Élections gagnées", XP.election[st.niveau] || XP.election.moyen);
+      if (el.amb && el.amb.length) gagnerXP(st, "Promesses tenues le jour du vote", XP.promesseTenue * el.amb.length);
       st.mandat++; st.debutMandat = st.t; st.pop = borne(st.pop + 5); st.pariMandat = 0;
       annoncer(st);
       if (st.mandat >= 3) gagnerObjet(st, "echarpe");
@@ -1037,10 +1040,13 @@
       if (a <= -3 && !urgence) stats(st).trahisons++;
       d = appliquer(st, { coh: arrondi(a > 0 ? a * P.aliPlus : a * (urgence ? 0.8 : P.aliMoins)) }, lib, d);
       if (a <= -3 && !urgence && rnd(st) < 0.6) { d = appliquer(st, { pop: -2 }, lib, d); extra.push("Une partie de ton électorat se sent trahie."); }
+      if (a >= 2) { var gl = gagnerXP(st, "Décisions fidèles à ta ligne", XP.ligne, XP.ligneMax); if (gl) extra.push("🧭 Décision fidèle à ta ligne : +" + gl + " XP."); }
     }
+    var tenues = [];
     if (e && e.dom) Object.keys(e.dom).forEach(function (k) {
-      if (st.ambitions.indexOf(VERS[k]) >= 0 && e.dom[k] > 0) { d = appliquer(st, { pop: 1 }, lib, d); extra.push("Les Parisiens voient que tu tiens ta promesse sur « " + PILIERS[VERS[k]] + " »."); }
+      if (st.ambitions.indexOf(VERS[k]) >= 0 && e.dom[k] > 0 && tenues.indexOf(VERS[k]) < 0) { tenues.push(VERS[k]); d = appliquer(st, { pop: 1 }, lib, d); extra.push("Les Parisiens voient que tu tiens ta promesse sur « " + PILIERS[VERS[k]] + " »."); }
     });
+    if (tenues.length) { var gp = gagnerXP(st, "Mesures pour tes promesses", XP.promesse * tenues.length, XP.promesseMax); if (gp) extra.push("🎯 Engagement tenu : +" + gp + " XP."); }
     if (e && e.rec) st.recurrents.push({ id: st.nid++, m: e.rec.m * 3, n: Math.max(1, Math.round(e.rec.n / 13)), l: lib });
     var surprise = null;
     if (c.alea && rnd(st) * 100 < c.alea.p) { d = appliquer(st, varier(st, c.alea.e), lib + " (imprévu)", d); surprise = c.alea.txt; }
@@ -1143,6 +1149,7 @@
     st.pop = borne(st.pop + (B.pop || Math.min(1, Math.max(0.1, px / 200))));
     if (!financement(st)) faillite(st); suivre(st);
     gagnerXP(st, "Bâtiments achetés", XP.achat, XP.achatMax);
+    if (st.ambitions.some(function (k) { return (B.e[k] || 0) > 0; })) gagnerXP(st, "Bâtiments pour tes promesses", XP.batPromesse, XP.batPromesseMax);
     st.historique.push({ t: st.t, titre: B.ico + " " + B.nom, choix: "Acheté pour " + px + " M€", d: { pop: 0, bon: 0, coh: 0, bud: -px, pil: {} }, c: "achat" });
     verifierCombos(st); suivreMission(st);
     return st;

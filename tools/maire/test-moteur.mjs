@@ -440,6 +440,29 @@ test("succès journaliers et pass de combat : 5 défis par jour en pleine partie
   localStorage.removeItem("maire_profil_v1");
 });
 
+test("engagements : décisions et bâtiments au service des promesses, fidélité à sa ligne et promesses tenues rapportent de l'XP", () => {
+  const VERS = { proprete: "cadre", ecologie: "cadre", services: "cadre", logement: "logement", achat: "logement" };
+  const ev = base.liste.find(e => !e.cond && e.choix.some(c => c.e && c.e.dom && Object.keys(c.e.dom).some(k => VERS[k] && c.e.dom[k] > 0)));
+  const i = ev.choix.findIndex(c => c.e && c.e.dom && Object.keys(c.e.dom).some(k => VERS[k] && c.e.dom[k] > 0));
+  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 50, nivJoueur: 10 });
+  st.phase = "evenement"; st.evenement = ev.id; st.special = null; st.evPerso = null;
+  const r = M.choisir(st, base, i);
+  const g = r.xpLog.find(x => x.txt === "Mesures pour tes promesses");
+  assert.ok(g && g.xp >= M.XP.promesse, JSON.stringify(r.xpLog)); assert.ok(r.resultat.extra.some(t => /Engagement tenu/.test(t)));
+  // Plafond par partie
+  let s2 = JSON.parse(JSON.stringify(st)); for (let k = 0; k < 60; k++) { s2.phase = "evenement"; s2.evenement = ev.id; s2 = M.choisir(s2, base, i); }
+  assert.ok(s2.xpSrc["Mesures pour tes promesses"] <= M.XP.promesseMax);
+  // Un bâtiment qui sert une promesse
+  st.phase = "gestion"; st.tresor = 1000; const b = M.acheter(st, "parc");
+  assert.ok(b.xpLog.some(x => x.txt === "Bâtiments pour tes promesses"));
+  assert.ok(!M.acheter(st, "police").xpLog.some(x => x.txt === "Bâtiments pour tes promesses"));
+  // Le jour du vote : chaque promesse tenue rapporte
+  let e = JSON.parse(JSON.stringify(st)); e.t = M.MANDAT - 1; e.phase = "gestion";
+  ["cadre", "logement", "transports", "securite"].forEach(k => { e.piliers[k] = 80; e.base[k] = 80; }); e.pop = 80;
+  e = M.debutTour(e, base);
+  assert.equal(e.phase, "election"); assert.ok(e.xpLog.some(x => x.txt === "Promesses tenues le jour du vote" && x.xp === 2 * M.XP.promesseTenue));
+});
+
 console.log(ok + " tests réussis.\n");
 if (!N) { console.log("Simulation d’équilibrage ignorée (0 partie demandée)."); process.exit(0); }
 
