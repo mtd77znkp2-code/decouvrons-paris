@@ -14,6 +14,21 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Vote de la communauté (Maire de Paris) : un compteur par dossier et par réponse (c0 à c3).
+    // On ne peut qu'ajouter une voix, à une seule réponse à la fois.
+    function plusUn(k) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly([k])
+        && request.resource.data[k] == resource.data.get(k, 0) + 1;
+    }
+    match /votes/{id} {
+      allow create: if request.auth != null && id.size() <= 80
+        && request.resource.data.keys().hasOnly(["c0", "c1", "c2", "c3"]) && request.resource.data.size() == 1
+        && (request.resource.data.get("c0", 0) == 1 || request.resource.data.get("c1", 0) == 1
+          || request.resource.data.get("c2", 0) == 1 || request.resource.data.get("c3", 0) == 1);
+      allow update: if request.auth != null && request.resource.data.keys().hasOnly(["c0", "c1", "c2", "c3"])
+        && (plusUn("c0") || plusUn("c1") || plusUn("c2") || plusUn("c3"));
+    }
+
     // Classement : chaque joueur ne modifie que sa propre ligne.
     match /scores/{uid} {
       allow create, update: if request.auth != null && request.auth.uid == uid

@@ -309,6 +309,21 @@
     gagnerXP(st, "Projets démesurés inaugurés", x.projetsOk * XP.projet);
     gagnerXP(st, "Événements rares vécus", x.rares * XP.rare + x.legendaires * XP.legendaire, XP.raresMax);
   }
+  // Coffre de la victoire : une surprise à chaque élection gagnée (le contenu est tiré et appliqué tout de suite,
+  // l'interface le révèle quand le joueur l'ouvre) ; une fois sur dix, le jackpot
+  function ouvrirCoffre(st) {
+    var r = rnd(st), c;
+    if (r < 0.1) { c = { type: "jackpot", txt: "JACKPOT ! +300 M€, +5 popularité et +100 XP", m: 300, pop: 5, xp: 100 }; stats(st).jackpots = (stats(st).jackpots || 0) + 1; }
+    else if (r < 0.5) { var m = 80 + Math.round(rnd(st) * 12) * 10; c = { type: "argent", txt: "+" + m + " M€ pour la ville", m: m }; }
+    else if (r < 0.75) { var p = 3 + Math.floor(rnd(st) * 3); c = { type: "pop", txt: "+" + p + " popularité", pop: p }; }
+    else { var x = 60 + Math.round(rnd(st) * 9) * 10; c = { type: "xp", txt: "+" + x + " XP", xp: x }; }
+    if (c.m) mouvement(st, c.m, "Coffre de la victoire");
+    if (c.pop) st.pop = borne(st.pop + c.pop);
+    if (c.xp) gagnerXP(st, "Coffres de la victoire", c.xp);
+    st.coffre = Object.assign(c, { mandat: st.mandat, vu: false });
+    stats(st).coffres = (stats(st).coffres || 0) + 1;
+  }
+  function voirCoffre(st0) { if (!st0.coffre || st0.coffre.vu) return st0; var st = copie(st0); st.coffre.vu = true; return st; }
   // Bâtiments qui viennent d'arriver en boutique (niveau atteint, trimestres tenus, réélection) : annoncés une seule fois
   function nouveaux(st) {
     var l = Object.keys(BATIMENTS).filter(function (id) { return !BATIMENTS[id].secret && !st.connus[id] && disponible(st, id); });
@@ -756,6 +771,7 @@
       if (el.amb && el.amb.length) gagnerXP(st, "Promesses tenues le jour du vote", XP.promesseTenue * el.amb.length);
       st.mandat++; st.debutMandat = st.t; st.pop = borne(st.pop + 5); st.pariMandat = 0;
       annoncer(st);
+      ouvrirCoffre(st);
       if (st.mandat >= 3) gagnerObjet(st, "echarpe");
       if (st.meca.opposant) tirerOpposant(st);
       leon(st, "reelu");
@@ -1100,7 +1116,7 @@
   }
   function verrou(st, id) {
     var B = BATIMENTS[id];
-    if (B.pass && !st.sansLimite && !(st.passBats && st.passBats[id])) return "Récompense du pass de combat.";
+    if (B.pass && !st.sansLimite && !(st.passBats && st.passBats[id])) return B.obtenu || "Récompense du pass de combat.";
     if (B.projet && !st.meca.grandsProjets && !st.sansLimite) return "Se débloque au niveau " + Math.max(B.niv, 6) + ".";
     if ((st.nivJ || 99) < (B.niv || 1) && !st.sansLimite) return "Se débloque au niveau " + B.niv + ".";
     var o = objectif(st, id); return o ? o.txt + "." : "";
@@ -1325,7 +1341,7 @@
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
     roulette: roulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
     RAYONS: RAYONS, gainAchat: gainAchat, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
-    ajouterPassBat: ajouterPassBat, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
+    ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.Maire = API;
 })(this);

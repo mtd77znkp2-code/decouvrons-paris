@@ -463,6 +463,54 @@ test("engagements : décisions et bâtiments au service des promesses, fidélit�
   assert.equal(e.phase, "election"); assert.ok(e.xpLog.some(x => x.txt === "Promesses tenues le jour du vote" && x.xp === 2 * M.XP.promesseTenue));
 });
 
+test("addiction : coffre de la victoire, série de jours avec jokers, roue hebdomadaire, ligues avec montée et descente", () => {
+  // Coffre de la victoire : à chaque élection gagnée, contenu appliqué tout de suite et révélé ensuite
+  const types = new Set();
+  for (let g = 1; g <= 40; g++) {
+    let e = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 300 + g, nivJoueur: 10 }); e.t = M.MANDAT - 1; e.phase = "gestion";
+    ["cadre", "logement", "transports", "securite"].forEach(k => { e.piliers[k] = 85; e.base[k] = 85; }); e.pop = 85;
+    const t0 = e.tresor; e = M.debutTour(e, base);
+    assert.equal(e.phase, "election"); assert.ok(e.coffre && !e.coffre.vu && e.coffre.mandat === e.mandat, "coffre du nouveau mandat"); types.add(e.coffre.type);
+    if (e.coffre.m) assert.ok(e.journal.some(j => j.l === "Coffre de la victoire" && j.m === e.coffre.m));
+    assert.ok(M.voirCoffre(e).coffre.vu);
+  }
+  assert.ok(types.size >= 3, [...types].join());
+  // Série de jours : +1 par jour joué, un joker pardonne un jour manqué, sinon on repart à 1
+  localStorage.removeItem("maire_profil_v1");
+  let st = M.nouvellePartie({ ligne: "centre", ambitions: [], graine: 400, nivJoueur: 3, pid: "serie" }); st.phase = "gestion"; st = M.debutTour(st, base);
+  const J = 20500; let r;
+  for (let k = 0; k < 7; k++) { r = G.suivrePartie(st, M, { jour: J + k }); st = r.st; assert.equal(r.serie.n, k + 1); }
+  assert.ok(G.lire().passBats.statueAssidu, "jour 7 : bâtiment exclusif"); assert.ok(M.disponible(st, "statueAssidu"));
+  assert.equal(G.serie(J + 6).jokers, 1);
+  r = G.suivrePartie(st, M, { jour: J + 6 }); assert.equal(r.serie, null, "un seul gain par jour");
+  r = G.suivrePartie(st, M, { jour: J + 8 }); st = r.st; assert.ok(r.joker); assert.equal(r.serie.n, 8);
+  r = G.suivrePartie(st, M, { jour: J + 12 }); st = r.st; assert.equal(r.serie.n, 1, "série perdue");
+  assert.equal(G.lire().assidu.max, 8);
+  // Roue : un tour par semaine, la récompense est créditée
+  const W = 20510, xp0 = G.lire().xp;
+  assert.ok(G.roueDispo(W)); const t1 = G.tournerRoue(0.01, W); assert.equal(t1.i, 0); assert.equal(G.lire().xp, xp0 + 50);
+  assert.equal(G.tournerRoue(0.5, W + 1), null, "déjà tournée cette semaine");
+  const sem2 = W + 7 - ((W + 3) % 7); assert.ok(G.roueDispo(sem2)); assert.ok(G.tournerRoue(0.999, sem2).jackpot);
+  // Ligues : 20 % du haut montent, 20 % du bas descendent
+  const classe = Array.from({ length: 10 }, (_, k) => "u" + k);
+  assert.equal(G.nouvelleLigue(1, classe, "u0"), 2); assert.equal(G.nouvelleLigue(1, classe, "u1"), 2); assert.equal(G.nouvelleLigue(1, classe, "u5"), 1);
+  assert.equal(G.nouvelleLigue(1, classe, "u9"), 0); assert.equal(G.nouvelleLigue(4, classe, "u0"), 4); assert.equal(G.nouvelleLigue(0, classe, "u9"), 0);
+  let P = G.lire(); const w = G.semaine(J); P.ligue = { tier: 1, w: w - 1 }; localStorage.setItem("maire_profil_v1", JSON.stringify(P));
+  const docs = classe.map((id, k) => ({ id, name: id, s: { lgw: w - 1, lg: 1, lgx: 1000 - k * 50 } })).concat([{ id: "u3", name: "u3", s: { lgw: w, lg: 2, lgx: 40 } }]);
+  docs[0] = { id: "moi", name: "moi", s: { lgw: w - 1, lg: 1, lgx: 5000 } };
+  const L = G.ligue(docs, "moi", J);
+  assert.equal(L.tier, 2, "promu"); assert.equal(L.avant.nouveau, 2); assert.ok(L.membres.some(m => m.id === "u3"), "nouveaux voisins de ligue");
+  assert.equal(G.donneesLigue(J).lg, 2);
+  localStorage.removeItem("maire_profil_v1");
+});
+
+test("l'interface sait reprendre une partie de la version actuelle du moteur", () => {
+  const v = M.nouvellePartie({ ligne: "centre", ambitions: [], graine: 1, nivJoueur: 1 }).v;
+  const src = readFileSync(new URL("../../public/maire/jeu.js", import.meta.url), "utf8");
+  const m = src.match(/s\.v >= (\d+) && s\.v <= (\d+)/);
+  assert.ok(m && +m[1] <= 3 && +m[2] >= v, "lireSauvegarde n'accepte pas la version " + v);
+});
+
 console.log(ok + " tests réussis.\n");
 if (!N) { console.log("Simulation d’équilibrage ignorée (0 partie demandée)."); process.exit(0); }
 

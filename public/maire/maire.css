@@ -468,3 +468,45 @@ body.m-modal{overflow:hidden}
 .m-n-pass{background:linear-gradient(160deg,#efe7ff,#bba4ff)}.m-n-pass .m-n-sur{color:#5b3aa8}
 .m-n-pj .m-barre i{background:#ffd36b}.m-n-pj .m-jt b{color:#ffd36b}
 .m-entete .m-tel{width:fit-content;justify-self:start}
+
+/* ---------- v8 : coffre, flash, série, roue, vote, ligues ---------- */
+.m-coffre{display:grid;justify-items:center;gap:8px;margin:12px 0;padding:18px;border-radius:18px;text-align:center;background:linear-gradient(160deg,rgba(245,178,26,.22),rgba(124,77,255,.2));box-shadow:inset 0 0 0 2px rgba(245,178,26,.5)}
+.m-coffre-ico{font-size:58px;line-height:1}
+.m-coffre-secoue .m-coffre-ico{animation:m-secoue .15s linear infinite}
+@keyframes m-secoue{0%{transform:rotate(-10deg)}50%{transform:rotate(10deg) scale(1.08)}100%{transform:rotate(-10deg)}}
+.m-coffre-ouvert .m-coffre-ico{animation:m-pop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes m-pop{from{transform:scale(.3)}to{transform:scale(1)}}
+.m-coffre-jackpot{background:linear-gradient(160deg,#ffd970,#ff8a3d);color:#1b2550}
+.m-flash{position:fixed;inset:0;z-index:1400;display:grid;place-items:center;overflow:hidden;pointer-events:auto;background:radial-gradient(circle,rgba(255,217,112,.35),rgba(5,8,25,.85));animation:m-fond .3s ease;transition:opacity .5s}
+.m-flash strong{font-size:clamp(26px,8vw,48px);font-weight:900;color:#ffd970;text-align:center;padding:0 16px;text-shadow:0 0 24px rgba(255,217,112,.8);animation:m-pop .6s cubic-bezier(.2,1.6,.4,1)}
+.m-flash i{position:absolute;top:-10%;font-style:normal;font-size:28px;animation:m-pluie 1.8s linear forwards}
+@keyframes m-pluie{to{transform:translateY(120vh) rotate(360deg)}}
+.m-flash-out{opacity:0}
+.m-flash-jackpot{background:radial-gradient(circle,rgba(255,138,61,.45),rgba(5,8,25,.85))}
+.m-serie,.m-roue-carte{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 14px;border-radius:16px;background:rgba(255,120,60,.13);box-shadow:inset 0 0 0 1px rgba(255,140,80,.35)}
+.m-serie{grid-template-columns:auto 1fr}
+.m-serie div,.m-roue-carte div{display:grid;gap:2px}
+.m-serie small,.m-roue-carte small{color:var(--c);font-size:13px}
+.m-serie-feu{font-size:34px;line-height:1}
+.m-serie-eteint{filter:grayscale(1);opacity:.5}
+.m-roue-carte{background:rgba(124,77,255,.15);box-shadow:inset 0 0 0 1px rgba(167,139,250,.4)}
+.m-roue-zone{position:relative;width:min(320px,86vw);aspect-ratio:1;margin:12px auto}
+.m-roue2{position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 6px #fff,0 12px 40px rgba(0,0,0,.45)}
+.m-roue-lab{position:absolute;left:50%;top:50%;width:76px;margin:-9px 0 0 -38px;line-height:1.1;text-align:center;font-size:11.5px;font-weight:900;color:#fff;transform-origin:50% 50%;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.m-roue-fleche{position:absolute;left:50%;top:-18px;z-index:2;transform:translateX(-50%);font-size:30px;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.6)}
+.m-roue-res{min-height:1.4em;text-align:center;font-weight:800;font-size:18px}
+.m-vote{display:grid;gap:5px;margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(43,79,179,.08)}
+.m-vote p{margin:0;font-weight:800}
+.m-vote-l{display:grid;grid-template-columns:18px 1fr 44px;gap:8px;align-items:center;font-size:13px}
+.m-vote-l .m-barre{height:7px;background:rgba(27,37,80,.12)}
+.m-vote-l .m-barre i{background:#9aa3c7}
+.m-vote-moi .m-barre i{background:#2b4fb3}.m-vote-moi{font-weight:800}
+.m-vote-libre{font-weight:800;color:#7c4dff}
+.m-ligue{display:grid;gap:6px;padding:14px;border-radius:16px;background:rgba(63,174,104,.13);box-shadow:inset 0 0 0 1px rgba(63,174,104,.4)}
+.m-ligue small{color:var(--c);font-size:13px}
+.m-ligue-msg{margin:0;font-weight:800;color:var(--a)}
+.m-ligue-l{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:3px}
+.m-ligue-l li{display:flex;justify-content:space-between;gap:8px;padding:6px 10px;border-radius:9px;background:rgba(255,255,255,.05);font-size:14px}
+.m-ligue-l li.me{background:rgba(245,178,26,.2);font-weight:800}
+.m-n-serie{background:linear-gradient(160deg,#fff1e6,#ffb27a)}.m-n-serie .m-n-sur{color:#b4470b}
+@media (prefers-reduced-motion:reduce){.m-flash,.m-flash strong,.m-flash i,.m-coffre-secoue .m-coffre-ico,.m-coffre-ouvert .m-coffre-ico{animation:none}.m-flash i{display:none}}

@@ -19,7 +19,7 @@
   function virg(v) { return String(Math.round(v * 10) / 10).replace(".", ","); }
   function date(t) { var a = Math.floor((t - 1) / 4) + 1, q = (t - 1) % 4 + 1; return (q === 1 ? "1er" : q + "e") + " trimestre · année " + a; }
   function sauver() { try { localStorage.setItem(CLE, JSON.stringify(st)); } catch (e) {} }
-  function lireSauvegarde() { try { var s = JSON.parse(localStorage.getItem(CLE) || "null"); return s && s.v >= 3 && s.v <= 5 ? s : null; } catch (e) { return null; } }
+  function lireSauvegarde() { try { var s = JSON.parse(localStorage.getItem(CLE) || "null"); return s && s.v >= 3 && s.v <= 6 ? s : null; } catch (e) { return null; } }
   function effacer() { try { localStorage.removeItem(CLE); } catch (e) {} }
   function haut() { var g = document.getElementById("g-maire"); if (g && g.getBoundingClientRect().top < 0) g.scrollIntoView({ behavior: "smooth" }); }
   function nivJ() { return G.nivJoueur(); }
@@ -91,7 +91,10 @@
       if (s && s.phase !== "fin" && !confirm("Commencer une nouvelle partie ? La partie en cours sera perdue.")) return;
       creation();
     }));
+    box.appendChild(carteSerie());
+    if (G.roueDispo()) box.appendChild(carteRoue());
     box.appendChild(cartePass());
+    var lg = h("div", "m-liguezone"); box.appendChild(lg); carteLigue(lg);
     var auj = h("div", "m-auj"); box.appendChild(auj);
     Promise.all([index(), quetes()]).then(function () { panneauJour(auj, s); }).catch(function () { auj.remove(); });
     box.appendChild(carteDeblocages(n));
@@ -140,7 +143,7 @@
     var id = G.chapitre(M, n), c = G.HISTOIRE[id], P = G.lire(), d = h("div", "m-chap");
     ajout(d, h("p", "m-sur", "Chapitre " + c.num + " sur 9 · " + c.titre),
       ajout(h("div", "m-leon"), h("span", "m-leon-ico", "🧑‍💼"), h("p", null, "« " + c.recit + " » — Léon, ton directeur de cabinet")),
-      h("p", "m-chap-obj" + (P.chapitres[id] ? " m-ok" : ""), (P.chapitres[id] ? "✔ Objectif accompli : " : "🎯 Objectif du chapitre : ") + c.objectif + (P.chapitres[id] ? "" : " (+200 XP)")));
+      h("p", "m-chap-obj" + (P.chapitres[id] ? " m-ok" : ""), (P.chapitres[id] ? "✔ Objectif accompli : " : "🎯 Objectif du chapitre : ") + c.objectif + (P.chapitres[id] ? "" : " (+" + G.XP_CHAPITRE + " XP)")));
     var suiv = M.MECANIQUES.filter(function (m) { return m.niv > n; })[0];
     if (suiv) d.appendChild(h("small", null, "Prochain chapitre au niveau " + suiv.niv + " : « " + G.HISTOIRE[suiv.id].titre + " »."));
     else d.appendChild(h("small", null, "Tu as ouvert tous les chapitres de Paris 2040."));
@@ -167,6 +170,80 @@
     }
     return c;
   }
+  // ---------- Série de jours ----------
+  function carteSerie() {
+    var x = G.serie(), d = h("div", "m-serie");
+    ajout(d, h("span", "m-serie-feu" + (x.n ? "" : " m-serie-eteint"), "🔥"), ajout(h("div"),
+      h("strong", null, x.n ? x.n + " jour" + (x.n > 1 ? "s" : "") + " d’affilée" : "Lance ta série de jours"),
+      h("small", null, (x.fait ? "✔ Aujourd’hui validé · demain : " : "Joue un trimestre aujourd’hui : ") + x.txt),
+      h("small", null, "Record : " + x.max + " · 🃏 Jokers : " + x.jokers + " (un jour manqué pardonné)")));
+    return d;
+  }
+  // ---------- Roue de la fortune (une fois par semaine) ----------
+  function carteRoue() {
+    var d = h("div", "m-roue-carte");
+    ajout(d, h("span", "m-serie-feu", "🎡"), ajout(h("div"), h("strong", null, "Roue de la fortune"), h("small", null, "Un tour gratuit cette semaine : XP, points de pass, bonus… ou le jackpot !")),
+      bouton("Tourner", "btn m-go", ecranRoue));
+    return d;
+  }
+  function ecranRoue() {
+    box.innerHTML = ""; box.appendChild(bouton("← Retour", "btn m-sec", accueil));
+    box.appendChild(h("h5", null, "🎡 Roue de la fortune"));
+    var n = G.ROUE.length, cont = h("div", "m-roue-zone"), roue = h("div", "m-roue2"), fl = h("div", "m-roue-fleche", "▼");
+    var cols = ["#f5b21a", "#2b4fb3", "#3fae68", "#e0524b", "#7c4dff", "#1fa2c7", "#f08a30", "#c8352e"], g = [];
+    G.ROUE.forEach(function (x, k) {
+      g.push(cols[k % cols.length] + " " + (k * 360 / n) + "deg " + ((k + 1) * 360 / n) + "deg");
+      var lab = h("span", "m-roue-lab", x.txt.replace(/ :.*$/, "").replace("points de pass", "pts pass"));
+      lab.style.transform = "rotate(" + ((k + 0.5) * 360 / n) + "deg) translateY(calc(min(320px, 86vw) * -0.32))"; roue.appendChild(lab);
+    });
+    roue.style.background = "conic-gradient(" + g.join(",") + ")";
+    ajout(cont, fl, roue); box.appendChild(cont);
+    var res = h("p", "m-roue-res"), go = bouton("Lancer la roue", "btn m-go m-gros", function () {
+      go.disabled = true;
+      var r = G.tournerRoue(Math.random()); if (!r) { res.textContent = "Tu as déjà tourné la roue cette semaine."; return; }
+      var calme = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+      roue.style.transition = calme ? "none" : "transform 4s cubic-bezier(.15,.85,.2,1)";
+      roue.style.transform = "rotate(" + (360 * 6 - (r.i + 0.5) * 360 / n) + "deg)";
+      setTimeout(function () {
+        res.textContent = "🎉 Tu gagnes : " + r.txt + (r.pass.length ? " · palier " + r.pass.map(function (x) { return x.n; }).join(", ") + " du pass atteint !" : "");
+        if (r.jackpot) flash("🎰 JACKPOT ! 🎰", "m-flash-jackpot");
+        go.textContent = "Retour à l’accueil"; go.disabled = false; go.onclick = accueil;
+      }, calme ? 100 : 4100);
+    });
+    ajout(box, res, go, h("small", "m-aide", "Un tour gratuit chaque semaine (du lundi au dimanche)."));
+    haut();
+  }
+  // ---------- Ligues de la semaine ----------
+  function carteLigue(zone) {
+    zone.innerHTML = "";
+    var d = h("div", "m-ligue");
+    if (!window.user || !window.LB || !LB.uid) {
+      ajout(d, h("strong", null, "🏅 Ligues de la semaine"), h("small", null, "Connecte-toi depuis l’accueil du site (avec un pseudo) pour affronter les autres maires : les meilleurs montent de ligue chaque lundi."));
+      zone.appendChild(d); return;
+    }
+    var L = G.ligue(LB.docs || [], LB.uid);
+    envoyerLigue();
+    ajout(d, ajout(h("div", "m-jt"), h("strong", null, L.ico + " Ligue " + L.nom), h("b", null, L.rang + "e / " + L.total)),
+      h("small", null, "Ton XP cette semaine : " + L.xp + " · fin dans " + L.finDans + " jour" + (L.finDans > 1 ? "s" : "") + " · les 20 % du haut montent, les 20 % du bas descendent."));
+    if (L.avant && L.avant.nouveau !== L.avant.tier) d.appendChild(h("p", "m-ligue-msg", L.avant.nouveau > L.avant.tier ? "⬆️ Promotion ! Te voilà en ligue " + G.LIGUES[L.avant.nouveau].nom + "." : "⬇️ Descente en ligue " + G.LIGUES[L.avant.nouveau].nom + " : à toi de remonter !"));
+    var o = h("ol", "m-ligue-l");
+    L.membres.slice(0, 10).forEach(function (m, k) { var li = h("li", m.moi ? "me" : ""); ajout(li, h("span", null, (k + 1) + ". " + (m.moi ? window.user + " (toi)" : m.nom)), h("b", null, m.xp + " XP")); o.appendChild(li); });
+    if (L.rang > 10) { var li = h("li", "me"); ajout(li, h("span", null, L.rang + ". " + window.user + " (toi)"), h("b", null, L.xp + " XP")); o.appendChild(li); }
+    d.appendChild(o); zone.appendChild(d);
+  }
+  var ligueEnvoyee = null;
+  function envoyerLigue() {
+    if (!window.user || !window.LB || !LB.db || !LB.uid) return;
+    var x = G.donneesLigue(), cle = x.lgw + ":" + x.lgx + ":" + x.lg; if (ligueEnvoyee === cle) return;
+    var ref = LB.db.doc("scores/" + LB.uid);
+    ref.get().then(function (sn) {
+      var dd = sn.exists ? sn.data() : {}, m = Object.assign({}, dd.s || {});
+      if (m.lgw === x.lgw && m.lgx === x.lgx && m.lg === x.lg) { ligueEnvoyee = cle; return; }
+      m.lgw = x.lgw; m.lgx = x.lgx; m.lg = x.lg;
+      return ref.set({ name: window.user, s: m, at: Date.now() }).then(function () { ligueEnvoyee = cle; });
+    }).catch(function () {});
+  }
+
   // ---------- Pass de combat ----------
   function cartePass() {
     var ps = G.pass(), d = h("div", "m-passcarte"), suiv = ps.paliers[ps.palier];
@@ -806,13 +883,15 @@
     r.chapitres.forEach(function (c) { notifier({ type: "fait", cls: "m-n-chap", sur: "📖 Chapitre " + c.num + " accompli", nom: c.titre, desc: c.objectif, xp: 200 }); });
     r.quetes.forEach(function (q) { notifier({ type: "fait", cls: "m-n-quete", sur: "🎯 Quête du jour accomplie", nom: q.t, xp: q.xp, pts: 100 }); });
     r.journaliers.forEach(function (d) { notifier({ type: "fait", cls: "m-n-jour", sur: "🌞 Succès du jour !", nom: d.t, xp: d.xp, pts: 100 }); });
+    if (r.joker) notifier({ type: "fait", cls: "m-n-serie", sur: "🃏 Joker utilisé", nom: "Ta série de jours est sauvée" });
+    if (r.serie) notifier({ type: "fait", cls: "m-n-serie", sur: "🔥 Série de " + r.serie.n + " jour" + (r.serie.n > 1 ? "s" : "") + " !", nom: r.serie.txt });
     if (r.parfait) notifier({ type: "fait", cls: "m-n-jour", sur: "🌞 Journée parfaite !", nom: "Les 5 succès du jour sont réussis", pts: 200 });
     r.pass.forEach(function (x) { notifier({ type: "fait", cls: "m-n-pass", sur: "🎟️ Pass de combat · palier " + x.n, nom: x.txt }); });
     var su = r.succes.slice(0, 4);
     su.forEach(function (x) { notifier({ type: "fait", cls: "m-n-succes m-n-t" + x.t, sur: "🏆 Succès débloqué !", nom: x.nom, desc: x.desc, xp: G.XP_TIER[x.t] }); });
     if (r.succes.length > su.length) notifier({ type: "fait", cls: "m-n-succes", sur: "🏆 Et ce n’est pas fini…", nom: "+" + (r.succes.length - su.length) + " autres succès débloqués" });
     // Un seul « ça avance » à la fois par sorte (succès, quête), et seulement si rien n'a été réussi à ce moment-là
-    if (!r.succes.length && !r.quetes.length && !r.journaliers.length) {
+    if (!r.succes.length && !r.quetes.length && !r.journaliers.length && !r.serie) {
       var deja = {};
       r.progres.forEach(function (p) { if (!deja[p.type]) { deja[p.type] = 1; notifier({ type: "progres", p: p }); } });
     }
@@ -975,11 +1054,43 @@
   window.addEventListener("resize", function () { if (BULLE) placer(); });
 
   // ---------- Dossier du trimestre : fenêtre au premier plan ----------
+  var legendeVue = null;
+  // ---------- Vote de la communauté : ce qu'ont choisi les autres maires sur le même dossier ----------
+  var VOTE = null;
+  function cleVote() { return st.evPerso ? st.evPerso.src || null : st.evenement; }
+  function voter(cle, i) {
+    if (!cle || !window.LB || !LB.db || !LB.uid || !window.firebase || !firebase.firestore) return null;
+    var faits = {}; try { faits = JSON.parse(localStorage.getItem("maire_votes") || "{}"); } catch (e) {}
+    var ref = LB.db.doc("votes/" + cle), inc = {}; inc["c" + i] = firebase.firestore.FieldValue.increment(1);
+    var p = faits[cle] != null ? Promise.resolve() : ref.set(inc, { merge: true }).then(function () {
+      faits[cle] = i; var ks = Object.keys(faits); if (ks.length > 400) delete faits[ks[0]];
+      try { localStorage.setItem("maire_votes", JSON.stringify(faits)); } catch (e) {}
+    });
+    return p.catch(function () {}).then(function () { return ref.get(); }).then(function (sn) { return sn.exists ? sn.data() : null; }).catch(function () { return null; });
+  }
+  function afficherVote(carte, nb) {
+    var v = VOTE; if (!v || v.t !== st.t) return;
+    var zone = h("div", "m-vote"); zone.appendChild(h("small", null, "📊 Ce qu’ont choisi les autres maires…")); carte.appendChild(zone);
+    v.p.then(function (d) {
+      if (!d) return zone.remove();
+      var c = []; for (var k = 0; k < nb; k++) c.push(d["c" + k] || 0);
+      var tot = c.reduce(function (a, x) { return a + x; }, 0); zone.innerHTML = "";
+      if (tot < 3) return zone.appendChild(h("small", null, "📊 Tu fais partie des tout premiers maires à trancher ce dossier."));
+      var moi = Math.round(c[v.i] / tot * 100);
+      zone.appendChild(h("p", null, "📊 " + moi + " % des maires ont fait le même choix que toi (" + tot + " votes)."));
+      c.forEach(function (x, k) {
+        var pc = Math.round(x / tot * 100), l = h("div", "m-vote-l" + (k === v.i ? " m-vote-moi" : "")), barre = h("div", "m-barre"), b = h("i"); b.style.width = pc + "%"; barre.appendChild(b);
+        ajout(l, h("span", null, "ABCD"[k]), barre, h("b", null, pc + " %")); zone.appendChild(l);
+      });
+      if (moi < 20 && tot >= 10) { zone.appendChild(h("small", "m-vote-libre", "🦄 Esprit libre : tu vas à contre-courant !")); if (!v.note) { v.note = 1; G.noterVote(moi); } }
+    });
+  }
   function fermerModale() { var m = document.getElementById("m-modale"); if (m) m.remove(); document.body.classList.remove("m-modal"); cacherBulle(); }
   function modale() {
     fermerModale();
     var ev = M.evenementCourant(st, BASE);
     if (!ev || !(st.phase === "evenement" || (st.resultat && !st.resultatVu))) return;
+    if (st.special === "legendaire" && st.phase === "evenement" && legendeVue !== st.t) { legendeVue = st.t; flash("🌟 ÉVÉNEMENT LÉGENDAIRE 🌟", "m-flash-legende"); }
     var sp = st.special || "dossier", pop = h("div", "m-pop m-pop-" + sp); pop.id = "m-modale";
     pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "true");
     var cadre = h("div", "m-pop-in");
@@ -994,7 +1105,11 @@
       carte.appendChild(h("p", "m-desc", ev.desc));
       var ch = h("div", "m-choix");
       ev.choix.forEach(function (x, i) {
-        var b = bouton("", "m-option", function () { if (st.phase !== "evenement") return; st = M.choisir(st, BASE, i); sauver(); signal("choix"); jeu(); });
+        var b = bouton("", "m-option", function () {
+          if (st.phase !== "evenement") return;
+          var cle = cleVote(), t = st.t, p = voter(cle, i); VOTE = p ? { t: t, i: i, p: p } : null;
+          st = M.choisir(st, BASE, i); sauver(); signal("choix"); jeu();
+        });
         ajout(b, h("span", "m-lettre", "ABCD"[i]), h("strong", null, x.t));
         ch.appendChild(b);
       });
@@ -1006,6 +1121,7 @@
       if (r.surprise) carte.appendChild(h("p", "m-surprise", "⚡ Imprévu : " + r.surprise));
       (r.extra || []).forEach(function (t) { carte.appendChild(h("p", "m-extra", t)); });
       if (r.dif) carte.appendChild(h("p", "m-extra", "⏳ Cette décision aura encore des conséquences plus tard."));
+      afficherVote(carte, ev.choix.length);
       carte.appendChild(bouton("Retour à l’Hôtel de Ville", "btn m-go", function () { st.resultatVu = true; sauver(); fermerModale(); signal("fermer"); if (st.phase === "fin") jeu(); else guide("jeu"); }));
     }
     cadre.appendChild(carte); pop.appendChild(cadre); (document.getElementById("g-maire") || document.body).appendChild(pop);
@@ -1144,11 +1260,39 @@
       h("p", "m-raison", "Mandat n° " + st.mandat + ". Attention : chaque réélection est un peu plus difficile que la précédente."));
     box.appendChild(t);
     box.appendChild(carteElection(e));
+    if (st.coffre && st.coffre.mandat === st.mandat) box.appendChild(carteCoffre());
     box.appendChild(bouton(st.meca.opposant ? "Découvrir mon nouvel opposant" : "Commencer le mandat " + st.mandat, "btn m-go", function () {
       if (st.meca.opposant) return roulette();
       st = M.continuer(st, BASE); sauver(); jeu(); haut();
     }));
     haut();
+  }
+
+  // Coffre de la victoire : on le secoue, il s'ouvre, la surprise apparaît
+  function carteCoffre() {
+    var c = st.coffre, d = h("div", "m-coffre" + (c.vu ? " m-coffre-ouvert" : "") + (c.type === "jackpot" ? " m-coffre-jackpot" : ""));
+    var ico = h("span", "m-coffre-ico", c.vu ? (c.type === "jackpot" ? "🎰" : "✨") : "🎁"), txt = h("strong", null, c.vu ? c.txt : "Le coffre de la victoire t’attend");
+    ajout(d, ico, txt);
+    if (!c.vu) d.appendChild(bouton("Ouvrir le coffre", "btn m-go", function (ev) {
+      ev.currentTarget.remove(); d.classList.add("m-coffre-secoue");
+      setTimeout(function () {
+        st = M.voirCoffre(st); sauver();
+        d.classList.remove("m-coffre-secoue"); d.classList.add("m-coffre-ouvert");
+        if (st.coffre.type === "jackpot") d.classList.add("m-coffre-jackpot");
+        ico.textContent = st.coffre.type === "jackpot" ? "🎰" : "✨"; txt.textContent = st.coffre.txt;
+        if (st.coffre.type === "jackpot") flash("🎰 JACKPOT ! 🎰", "m-flash-jackpot");
+      }, 900);
+    }));
+    return d;
+  }
+  // Grand moment plein écran (événement légendaire, jackpot) : quelques secondes, puis on joue
+  function flash(texte, cls) {
+    var f = h("div", "m-flash " + (cls || "")); f.setAttribute("aria-hidden", "true");
+    f.appendChild(h("strong", null, texte));
+    for (var k = 0; k < 18; k++) { var e = h("i", null, ["✨", "🌟", "⭐", "💫"][k % 4]); e.style.left = (5 + Math.random() * 90) + "%"; e.style.animationDelay = (Math.random() * 0.6) + "s"; f.appendChild(e); }
+    (document.getElementById("g-maire") || document.body).appendChild(f);
+    f.onclick = function () { f.remove(); };
+    setTimeout(function () { f.classList.add("m-flash-out"); }, 1700); setTimeout(function () { f.remove(); }, 2200);
   }
 
   // ---------- Fin de partie ----------
@@ -1172,7 +1316,7 @@
         var res = G.terminer(st, M, { quetes: quetesAuj() });
         st = res.st; st.prog = { passPts: res.passPts, passPaliers: res.passPaliers, total: res.total, gains: res.gains, avant: res.avant.n, apres: res.apres.n, debloque: res.debloque.map(function (m) { return m.nom; }) };
         comptage = false; sauver(); gains(gz);
-        if (window.lbSubmit && window.user) lbSubmit("xp_maire", res.profil.xp);
+        if (window.lbSubmit && window.user) lbSubmit("xp_maire", res.profil.xp).then(function () { if (window.LB) G.ligue(LB.docs || [], LB.uid); envoyerLigue(); });
       });
     } else gains(gz);
     var msg = h("p", "msg m-msg"); box.appendChild(msg);

@@ -131,10 +131,11 @@
     aquarium: { nom: "Aquarium géant", ico: "🐠", niv: 12, si: { reel: 1 }, cout: 320, ent: 4, e: { cadre: 4 }, rev: 18, pop: 2, txt: "Des requins sous la Seine (dans des bassins, rassurez-vous)." },
     siegeInternational: { nom: "Siège d’une organisation internationale", ico: "🌐", niv: 10, si: { reel: 1 }, cout: 380, ent: 2, e: {}, rev: 20, eco: 4, vote: 1, txt: "Diplomates, congrès et prestige mondial." }
   };
-  // Bâtiments exclusifs du pass de combat (paliers 8, 18 et 30)
+  // Bâtiments exclusifs : pass de combat (paliers 8, 18 et 30) et série de 7 jours
   var PASS_BATIMENTS = {
     kiosque: { nom: "Kiosque à musique", ico: "🎺", cat: "cadre", cout: 60, ent: 1, e: { cadre: 3 }, popT: 0.1, txt: "Concerts gratuits le dimanche : exclusivité du pass de combat." },
     fontaineMonumentale: { nom: "Fontaine monumentale", ico: "🌊", cat: "cadre", cout: 150, ent: 2, e: { cadre: 4 }, rev: 5, pop: 2, vote: 0.5, txt: "Des jets d’eau de 30 mètres : exclusivité du pass de combat." },
+    statueAssidu: { nom: "Statue du maire assidu", ico: "🗽", cat: "cadre", cout: 80, ent: 1, e: { cadre: 2, securite: 1 }, vote: 0.5, obtenu: "Récompense de la série de 7 jours.", txt: "Pour ceux qui reviennent chaque jour : récompense de la série de 7 jours." },
     arcLumieres: { nom: "Arc de lumières", ico: "🌈", cat: "economie", cout: 250, ent: 3, e: { cadre: 3 }, rev: 12, vote: 1, popT: 0.1, txt: "Il illumine la ville chaque soir : récompense ultime du pass." }
   };
   // Les villes voisines qui enchérissent contre Paris

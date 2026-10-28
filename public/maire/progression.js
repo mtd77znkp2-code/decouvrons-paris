@@ -276,6 +276,13 @@
   s2("jourParfait", "Défis", "Journée parfaite du maire", "Réussis les 5 succès du jour.", 2, function (R, P) { return (P.parfaites || 0) >= 1; });
   s2("jourParfait7", "Défis", "Semaine sans faute", "Réussis les 5 succès du jour 7 fois.", 3, function (R, P) { return (P.parfaites || 0) >= 7; });
   s2("passComplet", "Défis", "Pass de combat complété", "Atteins le palier 30 du pass de combat.", 4, function (R, P) { return (P.passComplets || 0) >= 1; });
+  s2("serie7", "Défis", "Fidèle au poste", "Joue 7 jours d’affilée.", 2, function (R, P) { return ((P.assidu || {}).max || 0) >= 7; });
+  s2("serie30", "Défis", "Maire infatigable", "Joue 30 jours d’affilée.", 4, function (R, P) { return ((P.assidu || {}).max || 0) >= 30; });
+  s2("coffre1", "Événements rares", "Butin électoral", "Ouvre un coffre de la victoire.", 1, function (R) { return (R.x.coffres || 0) >= 1; });
+  s2("jackpot", "Événements rares", "Jackpot !", "Décroche un jackpot (coffre de la victoire ou roue de la fortune).", 3, function (R, P) { return (R.x.jackpots || 0) + (P.jackpots || 0) >= 1; }, 1);
+  s2("ligueMontee", "Défis", "Promu", "Monte dans une ligue supérieure.", 2, function (R, P) { return (P.montees || 0) >= 1; });
+  s2("ligueDiamant", "Défis", "Ligue de diamant", "Atteins la ligue Diamant.", 4, function (R, P) { return (P.ligueMax || 0) >= 4; });
+  s2("espritLibre", "Humour", "Esprit libre", "Prends 5 décisions que moins de 20 % des maires ont choisies.", 2, function (R, P) { return (P.minoritaires || 0) >= 5; }, 1);
   s2("reputation", "Exploration", "Personnalité nationale", "Atteins 350 points de réputation.", 3, function (R, P) { return (P.rep || 0) >= 350; });
 
   // ---------- Progression affichée en pleine partie (« 12 / 25 ») ----------
@@ -406,7 +413,7 @@
     for (var k = avant + 1; k <= palierDe(ps.pts); k++) {
       if (ps.paliers[k]) continue;
       ps.paliers[k] = j; var r = PASS[k - 1];
-      if (r.xp) { if (st) { M.gagnerXP(st, "Pass de combat", r.xp); crediter(st, P); } else P.xp += r.xp; }
+      if (r.xp) { if (st) { M.gagnerXP(st, "Pass de combat", r.xp); crediter(st, P); } else { P.xp += r.xp; ajouterHebdo(P, j, r.xp); } }
       if (r.sac) { P.sac = P.sac || {}; P.sac[r.sac] = (P.sac[r.sac] || 0) + (r.n || 1); }
       if (r.bat) {
         P.passBats = P.passBats || {};
@@ -428,11 +435,110 @@
     ecrire(P); return b;
   }
 
+  // ---------- Série de jours : jouer chaque jour rapporte de plus en plus ----------
+  // Un jour compte dès qu'un trimestre est joué. Un joker (1 par semaine de série, 2 au plus) pardonne un jour manqué.
+  var SERIE = { 3: { xp: 75, pts: 100 }, 5: { xp: 80, sac: "coupDePouce" }, 7: { bat: "statueAssidu", pts: 150 }, 10: { xp: 150 }, 14: { sac: "assurance", n: 2, pts: 200 },
+    21: { xp: 200, sac: "bainDeFoule", n: 2 }, 30: { titre: "Maire infatigable", pts: 300 } };
+  function recompenseSerie(n) { return SERIE[n] || (n > 30 && n % 7 === 2 ? { xp: 100, pts: 200 } : { xp: Math.min(110, 50 + n * 2) }); }
+  function texteSerie(r) {
+    var l = []; if (r.xp) l.push("⭐ " + r.xp + " XP"); if (r.pts) l.push("🎟️ +" + r.pts + " points de pass");
+    if (r.sac) l.push(SAC[r.sac].ico + " " + SAC[r.sac].nom + (r.n > 1 ? " × " + r.n : ""));
+    if (r.bat) { var B = MO.BATIMENTS[r.bat]; l.push("🎁 Bâtiment exclusif : " + B.ico + " " + B.nom); }
+    if (r.titre) l.push("🎖️ Titre « " + r.titre + " »");
+    return l.join(" + ");
+  }
+  function serieP(P, j) {
+    var a = P.assidu || { j: null, n: 0, max: 0, jokers: 0 };
+    // Série perdue (plus d'un jour manqué sans joker) : on l'affiche à zéro
+    var vivante = a.j != null && (j - a.j <= 1 || (j - a.j === 2 && a.jokers > 0));
+    return { n: vivante ? a.n : 0, max: a.max || 0, jokers: vivante ? a.jokers : 0, fait: a.j === j, prochaine: recompenseSerie((vivante ? a.n : 0) + 1) };
+  }
+  function serie(j) { var P = lire(), x = serieP(P, j != null ? j : jour()); x.txt = texteSerie(x.prochaine); return x; }
+  function jouerAujourdhui(P, j, st, M, out) {
+    var a = P.assidu || { j: null, n: 0, max: 0, jokers: 0 };
+    if (a.j === j) return;
+    var ecart = a.j == null ? 99 : j - a.j;
+    if (ecart === 1) a.n++;
+    else if (ecart === 2 && a.jokers > 0) { a.jokers--; a.n++; out.joker = true; }
+    else { a.n = 1; a.jokers = 0; }
+    a.j = j; a.max = Math.max(a.max || 0, a.n);
+    if (a.n % 7 === 0) a.jokers = Math.min(2, a.jokers + 1);
+    P.assidu = a;
+    var r = recompenseSerie(a.n);
+    if (r.xp) { M.gagnerXP(st, "Série de jours", r.xp); crediter(st, P); }
+    if (r.pts) gagnerPass(P, j, r.pts, st, M, out);
+    if (r.sac) { P.sac = P.sac || {}; P.sac[r.sac] = (P.sac[r.sac] || 0) + (r.n || 1); }
+    if (r.bat) { P.passBats = P.passBats || {}; if (!P.passBats[r.bat]) { P.passBats[r.bat] = j; M.ajouterPassBat(st, r.bat); } else { M.gagnerXP(st, "Série de jours", 100); crediter(st, P); } }
+    if (r.titre) { P.titres = P.titres || []; if (P.titres.indexOf(r.titre) < 0) P.titres.push(r.titre); }
+    out.serie = { n: a.n, txt: texteSerie(r) };
+  }
+
+  // ---------- Roue de la fortune : un tour gratuit par semaine ----------
+  function semaine(j) { return Math.floor((j + 3) / 7); }          // semaines du lundi au dimanche
+  var ROUE = [{ txt: "50 XP", xp: 50, p: 16 }, { txt: "100 points de pass", pts: 100, p: 16 }, { txt: "💰 Coup de pouce", sac: "coupDePouce", p: 14 },
+    { txt: "150 XP", xp: 150, p: 12 }, { txt: "📣 Bain de foule", sac: "bainDeFoule", p: 14 }, { txt: "200 points de pass", pts: 200, p: 12 },
+    { txt: "🛡️ Assurance", sac: "assurance", p: 12 }, { txt: "🎰 JACKPOT : 500 points de pass + 200 XP", pts: 500, xp: 200, jackpot: 1, p: 4 }];
+  function roueDispo(j) { var P = lire(); return P.roue !== semaine(j != null ? j : jour()); }
+  // alea : nombre entre 0 et 1 (tiré par l'interface) ; renvoie la case gagnée, déjà créditée
+  function tournerRoue(alea, j) {
+    j = j != null ? j : jour();
+    var P = lire(); if (P.roue === semaine(j)) return null;
+    var tot = ROUE.reduce(function (a, x) { return a + x.p; }, 0), v = alea * tot, i = 0;
+    while (i < ROUE.length - 1 && v >= ROUE[i].p) { v -= ROUE[i].p; i++; }
+    var r = ROUE[i], out = { pass: [] };
+    P.roue = semaine(j);
+    if (r.xp) P.xp += r.xp;
+    if (r.pts) gagnerPass(P, j, r.pts, null, MO, out);
+    if (r.sac) { P.sac = P.sac || {}; P.sac[r.sac] = (P.sac[r.sac] || 0) + 1; }
+    if (r.jackpot) P.jackpots = (P.jackpots || 0) + 1;
+    ajouterHebdo(P, j, r.xp || 0);
+    ecrire(P);
+    return { i: i, txt: r.txt, jackpot: !!r.jackpot, pass: out.pass };
+  }
+
+  // ---------- Ligues de la semaine : Bronze → Diamant, les meilleurs montent, les derniers descendent ----------
+  var LIGUES = [{ nom: "Bronze", ico: "🥉" }, { nom: "Argent", ico: "🥈" }, { nom: "Or", ico: "🥇" }, { nom: "Platine", ico: "💎" }, { nom: "Diamant", ico: "👑" }];
+  function ajouterHebdo(P, j, n) { var w = semaine(j); if (!P.hebdo || P.hebdo.w !== w) P.hebdo = { w: w, xp: 0 }; P.hebdo.xp += n; }
+  // Rang de la semaine passée → ligue de cette semaine (20 % du haut montent, 20 % du bas descendent, si au moins 5 joueurs)
+  function nouvelleLigue(tier, classe, moi) {
+    var n = classe.length, r = classe.indexOf(moi) + 1;
+    if (!r) return tier;
+    var quota = Math.max(1, Math.floor(n * 0.2));
+    if (r <= quota && tier < LIGUES.length - 1 && n >= 3) return tier + 1;
+    if (n >= 5 && r > n - quota && tier > 0) return tier - 1;
+    return tier;
+  }
+  // docs : lignes du classement en ligne ; uid : le joueur ; renvoie sa ligue de la semaine (et la met à jour si la semaine a changé)
+  function ligue(docs, uid, j) {
+    j = j != null ? j : jour();
+    var P = lire(), w = semaine(j), L = P.ligue || { tier: 0, w: w };
+    if (L.w !== w && docs && docs.length) {
+      var avant = docs.filter(function (d) { return d.s && d.s.lgw === L.w && (d.s.lg || 0) === L.tier && d.s.lgx > 0; })
+        .sort(function (a, b) { return b.s.lgx - a.s.lgx; }).map(function (d) { return d.id; });
+      var t = nouvelleLigue(L.tier, avant, uid);
+      P.ligueAvant = { tier: L.tier, nouveau: t, w: L.w };
+      if (t > L.tier) P.montees = (P.montees || 0) + 1;
+      L = { tier: t, w: w }; P.ligue = L; P.ligueMax = Math.max(P.ligueMax || 0, t); ecrire(P);
+    } else if (!P.ligue) { P.ligue = L; ecrire(P); }
+    var xp = P.hebdo && P.hebdo.w === w ? P.hebdo.xp : 0;
+    var membres = (docs || []).filter(function (d) { return d.s && d.s.lgw === w && (d.s.lg || 0) === L.tier && d.s.lgx > 0 && d.id !== uid; })
+      .map(function (d) { return { id: d.id, nom: d.name || "Anonyme", xp: d.s.lgx }; });
+    membres.push({ id: uid, nom: null, xp: xp, moi: true });
+    membres.sort(function (a, b) { return b.xp - a.xp; });
+    return { tier: L.tier, nom: LIGUES[L.tier].nom, ico: LIGUES[L.tier].ico, xp: xp, w: w, finDans: 7 - ((j + 3) % 7), membres: membres.slice(0, 30),
+      rang: membres.findIndex(function (m) { return m.moi; }) + 1, total: membres.length, avant: P.ligueAvant && P.ligueAvant.w === w - 1 ? P.ligueAvant : null };
+  }
+  // Ce qu'il faut publier dans sa ligne du classement en ligne
+  function donneesLigue(j) { j = j != null ? j : jour(); var P = lire(), w = semaine(j); return { lgw: w, lgx: P.hebdo && P.hebdo.w === w ? P.hebdo.xp : 0, lg: (P.ligue || { tier: 0 }).tier }; }
+
+  // Vote de la communauté : les choix qui vont à contre-courant sont comptés (pour un succès secret)
+  function noterVote(pct) { if (pct >= 20) return; var P = lire(); P.minoritaires = (P.minoritaires || 0) + 1; ecrire(P); }
+
   // ---------- XP : versée au profil au fil de la partie, une seule fois ----------
   // Le profil retient combien d'XP de CETTE partie (pid) il a déjà reçue : recharger ou rejouer un écran ne la double jamais
   function crediter(st, P) {
     var deja = P.verse && P.verse.pid === st.pid ? P.verse.xp : 0;
-    if (st.xp > deja) { P.xp += st.xp - deja; P.verse = { pid: st.pid, xp: st.xp }; }
+    if (st.xp > deja) { ajouterHebdo(P, jour(), st.xp - deja); P.xp += st.xp - deja; P.verse = { pid: st.pid, xp: st.xp }; }
   }
   // Chapitres, quêtes et succès réussis : rangés dans le profil, XP ajoutée à la partie (st est modifié)
   function evaluer(st, M, P, j, quetesJ) {
@@ -475,10 +581,11 @@
   function suivrePartie(st0, M, opts) {
     opts = opts || {};
     var vide = { st: st0, succes: [], quetes: [], chapitres: [], progres: [] };
-    vide.journaliers = []; vide.pass = []; vide.parfait = false;
+    vide.journaliers = []; vide.pass = []; vide.parfait = false; vide.serie = null;
     if (!st0 || st0.prog || st0.phase === "fin") return vide;
     var st = JSON.parse(JSON.stringify(st0)), P = lire(), j = opts.jour != null ? opts.jour : jour();
     var out = evaluer(st, M, P, j, opts.quetes);
+    if (st.t >= 1) jouerAujourdhui(P, j, st, M, out);
     crediter(st, P);
     // Ce qui a avancé depuis le dernier affichage (la première mesure sert de point de départ)
     var R = resume(st, M), progres = [], vus = {}, faits = {};
@@ -505,7 +612,8 @@
     });
     progres.sort(function (a, b) { return b.cur / b.but - a.cur / a.but; });
     ecrire(P);
-    return { st: st, succes: out.succes, quetes: out.quetes, chapitres: out.chapitres, journaliers: out.journaliers, pass: out.pass, parfait: out.parfait, progres: progres };
+    return { st: st, succes: out.succes, quetes: out.quetes, chapitres: out.chapitres, journaliers: out.journaliers, pass: out.pass, parfait: out.parfait, progres: progres,
+      serie: out.serie || null, joker: !!out.joker };
   }
 
   // ---------- Fin de partie : ce qui ne se décide qu'à la fin, et le récapitulatif de toute l'XP gagnée ----------
@@ -544,9 +652,10 @@
 
   var API = { jour: jour, niveau: niveau, xpPour: xpPour, lire: lire, ecrire: ecrire, profilVide: profilVide, resume: resume, terminer: terminer, suivrePartie: suivrePartie, queteProgres: queteProgres,
     JOURS: JOURS, journaliers: journaliers, journaliersPartie: journaliersPartie, pass: pass, PASS: PASS, PASS_PTS: PASS_PTS, SAC: SAC, utiliserSac: utiliserSac,
-    saisonDe: saisonDe, nomSaison: nomSaison,
+    saisonDe: saisonDe, nomSaison: nomSaison, serie: serie, SERIE: SERIE, texteSerie: texteSerie, recompenseSerie: recompenseSerie,
+    ROUE: ROUE, roueDispo: roueDispo, tournerRoue: tournerRoue, semaine: semaine, LIGUES: LIGUES, ligue: ligue, nouvelleLigue: nouvelleLigue, donneesLigue: donneesLigue, noterVote: noterVote,
     nivJoueur: nivJoueur, fixerNiveau: fixerNiveau, synchroniser: synchroniser, reputation: reputation, oublierTutos: oublierTutos, guideVu: guideVu, marquerGuide: marquerGuide, chapitre: chapitre,
     HISTOIRE: HISTOIRE, quetesDuJour: quetesDuJour, queteFaite: queteFaite, TYPES_QUETES: Object.keys(QUETE), defiDuJour: defiDuJour,
-    SUCCES: S, XP_TIER: XP_TIER, NOM_NIV: NOM_NIV, TITRES: TITRES, NIV_DEFI: NIV_DEFI, NIV_QUETES: NIV_QUETES, NIV_MAX: NIV_MAX };
+    SUCCES: S, XP_TIER: XP_TIER, XP_CHAPITRE: XP_CHAPITRE, NOM_NIV: NOM_NIV, TITRES: TITRES, NIV_DEFI: NIV_DEFI, NIV_QUETES: NIV_QUETES, NIV_MAX: NIV_MAX };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.MaireProg = API;
 })(this);
