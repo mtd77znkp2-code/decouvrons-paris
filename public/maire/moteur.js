@@ -17,8 +17,8 @@
   // Réglages d'équilibrage (vérifiés par tools/maire/test-moteur.mjs)
   var P = {
     impot: 620, fonct: 540, vit: 0.3, usure: 0.4, plancher: 15, rendement: 0.85, inflation: 1.15, evtBase: 0.4,
-    popVit: 0.2, usurePop: 0.45, detteImpop: 250, humeurVit: 0.7, aliPlus: 0.8, aliMoins: 1.6,
-    ambSeuil: 60, retombees: 0.16, cata: 0.09, chance: 0.05, usureMandat: 3, ecoRecettes: 250, gain: 2
+    popVit: 0.2, usurePop: 0.45, detteImpop: 200, humeurVit: 0.7, aliPlus: 0.8, aliMoins: 1.6,
+    ambSeuil: 60, retombees: 0.16, cata: 0.09, chance: 0.05, usureMandat: 3, ecoRecettes: 250, gain: 2, foule: 0.94
   };
 
   // ---------- Les 4 piliers de la ville ----------
@@ -77,6 +77,18 @@
   // Projets démesurés (chantiers) et bâtiments secrets rejoignent la même boutique, avec les mêmes règles d'effets
   Object.keys(C.PROJETS).forEach(function (id) { BATIMENTS[id] = Object.assign({ projet: 1, unique: 1, ali: { g: 1, c: 1, d: 1, e: 1 } }, C.PROJETS[id]); });
   Object.keys(C.SECRETS).forEach(function (id) { BATIMENTS[id] = Object.assign({ secret: 1, unique: 1, ali: {} }, C.SECRETS[id]); });
+  // Rayon de la boutique et objectif de partie (si : t = trimestres tenus, reel = réélections) des bâtiments d'origine et des projets
+  var RANGEMENT = { parc: ["cadre"], logements: ["logement"], police: ["securite"], velo: ["transports"], ecole: ["cadre"], tram: ["transports", { t: 4 }],
+    proprete: ["cadre"], marche: ["economie"], metro: ["transports", { t: 8 }], hopital: ["cadre", { t: 8 }], quartier: ["logement", { t: 12 }], musee: ["economie", { t: 8 }],
+    grandParc: ["projet", { t: 4 }], pieton: ["projet", { t: 6 }], renovation: ["projet", { t: 8 }], telepherique: ["projet", { t: 10 }], metroRevo: ["projet", { t: 12 }],
+    jo: ["projet", { reel: 1 }], gpe: ["projet", { reel: 1 }], seine: ["projet", { reel: 1 }], museeMondial: ["projet", { reel: 1 }], toboggan: ["projet", { reel: 2 }] };
+  Object.keys(RANGEMENT).forEach(function (id) { BATIMENTS[id].cat = RANGEMENT[id][0]; if (RANGEMENT[id][1]) BATIMENTS[id].si = RANGEMENT[id][1]; });
+  Object.keys(C.SECRETS).forEach(function (id) { BATIMENTS[id].cat = "secret"; });
+  Object.keys(C.BATIMENTS2).forEach(function (id) { BATIMENTS[id] = Object.assign({ ali: {} }, C.BATIMENTS2[id]); });
+  Object.keys(C.ENCHERES).forEach(function (id) { BATIMENTS[id] = Object.assign({ enchere: 1, unique: 1, cat: "enchere", ali: {} }, C.ENCHERES[id]); });
+  var RAYONS = [{ id: "logement", nom: "Logement", ico: "🏠" }, { id: "transports", nom: "Transports", ico: "🚇" }, { id: "cadre", nom: "Cadre de vie", ico: "🌳" },
+    { id: "securite", nom: "Sécurité", ico: "🛡️" }, { id: "economie", nom: "Économie", ico: "💶" }, { id: "enchere", nom: "Enchères", ico: "🔨" },
+    { id: "projet", nom: "Projets", ico: "🏗️" }, { id: "secret", nom: "Secrets", ico: "🔐" }];
 
   // ---------- XP et niveaux (la courbe est partagée avec progression.js) ----------
   var NIV_MAX = 50;
@@ -220,17 +232,20 @@
     var amb = m.promesses ? (o.ambitions || []).filter(function (a, i, t) { return PILIERS[a] && t.indexOf(a) === i; }) : [];
     if (m.promesses && amb.length !== 2) throw new Error("Il faut choisir exactement deux promesses");
     var st = {
-      v: 5, niveau: nv, meca: m, nivJ: nj, rng: (o.graine >>> 0) || ((Math.random() * 4294967296) >>> 0), lots: o.lots || [],
+      v: 6, niveau: nv, meca: m, nivJ: nj, rng: (o.graine >>> 0) || ((Math.random() * 4294967296) >>> 0), lots: o.lots || [],
       ligne: ligne, ambitions: amb, t: 0, mandat: 1, debutMandat: 0, phase: "pret",
       tresor: NIVEAUX[nv].tresor, dette: 0, pop: DEPART.pop, coh: DEPART.coh, humeur: 0, taux: 1, eco: 50,
       piliers: {}, base: {}, bat: {}, prevus: [], recurrents: [], suites: [], vus: {}, flags: {}, nid: 1,
       journal: [], historique: [], evenement: null, resultat: null, fin: null, cats: [], special: null, evPerso: null,
       elections: [], rapport: null, notes: [], opposant: null,
       // XP : celle du profil au départ, celle gagnée dans la partie ; le défi du jour garde les mêmes bâtiments pour tous
-      xp0: o.xpJoueur != null ? o.xpJoueur : xpPour(Math.min(nj, NIV_MAX)), nivFixe: nj >= 99 || !!o.scenario
+      xp0: o.xpJoueur != null ? o.xpJoueur : xpPour(Math.min(nj, NIV_MAX)), nivFixe: nj >= 99 || !!o.scenario,
+      // Réservé à l'administrateur : tous les bâtiments sans attendre (la partie ne compte alors pas au classement)
+      sansLimite: !!o.sansLimite, triche: !!o.sansLimite
     };
     migrer(st);
     st.pid = o.pid ? String(o.pid) : "p" + (st.rng >>> 0).toString(36);
+    marquerConnus(st);
     Object.keys(o.secrets || {}).forEach(function (id) { if (C.SECRETS[id]) st.secrets[id] = 1; });
     st.rngT = (st.rng ^ 0x5bd1e995) | 0;
     PK.forEach(function (k) { st.base[k] = borne(46 + Math.round((rnd(st) - 0.5) * 10)); st.piliers[k] = st.base[k]; });
@@ -248,11 +263,11 @@
   }
   // Sauvegardes : les parties des versions précédentes reçoivent les nouveaux champs, sans rien perdre
   function migrer(st) {
-    if (!st || st.v > 5) return st;
+    if (!st || st.v > 6) return st;
     var ancien = st.v < 5, d = { chaos: 10, chantiers: [], incidents: [], messages: [], offre: null, bj: null, pariRes: null, mission: null, missionCd: 0, missionsOk: [],
       combos: [], decouvertes: [], objets: [], secrets: {}, persos: {}, mods: { entretien: 1, recettes: 0 }, conditions: [], suitesSpe: [],
       histoMandat: 0, alerte: null, repit: 0, pariMandat: 0, pariCd: 0, leon: null, uniques: {}, emprunts: 0, ampleur: {}, scenario: null,
-      xp: 0, xpLog: [], xpSrc: {}, montees: [], succesPartie: [], suivi: {} };
+      xp: 0, xpLog: [], xpSrc: {}, montees: [], succesPartie: [], suivi: {}, enchere: null, encheresCd: {} };
     Object.keys(d).forEach(function (k) { if (st[k] == null) st[k] = d[k]; });
     if (st.nivJ == null) st.nivJ = 99;
     if (!st.meca) st.meca = mecaniques(st.nivJ);
@@ -263,7 +278,8 @@
     if (!st.pid) st.pid = "p" + (st.rng >>> 0).toString(36) + "-" + st.t;
     // Partie d'une version précédente : l'XP déjà méritée est comptée (sauf si la partie a déjà été soldée)
     if (ancien && !st.prog) xpRetro(st);
-    st.v = 5;
+    if (!st.connus) { st.connus = {}; marquerConnus(st); }
+    st.v = 6;
     return st;
   }
   function xpRetro(st) {
@@ -275,6 +291,14 @@
     gagnerXP(st, "Projets démesurés inaugurés", x.projetsOk * XP.projet);
     gagnerXP(st, "Événements rares vécus", x.rares * XP.rare + x.legendaires * XP.legendaire, XP.raresMax);
   }
+  // Bâtiments qui viennent d'arriver en boutique (niveau atteint, trimestres tenus, réélection) : annoncés une seule fois
+  function nouveaux(st) {
+    var l = Object.keys(BATIMENTS).filter(function (id) { return !BATIMENTS[id].secret && !st.connus[id] && disponible(st, id); });
+    l.forEach(function (id) { st.connus[id] = 1; });
+    return l;
+  }
+  function annoncer(st) { var l = nouveaux(st); if (l.length) st.montees.push({ n: 0, bats: l, meca: [], plusTard: [] }); }
+  function marquerConnus(st) { Object.keys(BATIMENTS).forEach(function (id) { if (!BATIMENTS[id].secret && disponible(st, id)) st.connus[id] = 1; }); }
   // Gagner de l'XP en pleine partie ; plafond : total maximum pour cette source dans la partie
   function gagnerXP(st, txt, n, plafond) {
     n = Math.round(n || 0);
@@ -296,7 +320,7 @@
         if (x.niv !== n || st.meca[x.id]) return;
         if (EN_COURS[x.id]) { st.meca[x.id] = true; m.meca.push(x.nom); } else m.plusTard.push(x.nom);
       });
-      Object.keys(BATIMENTS).forEach(function (id) { var B = BATIMENTS[id]; if (!B.secret && B.niv === n && disponible(st, id)) m.bats.push(id); });
+      m.bats = nouveaux(st);
       st.montees.push(m);
     }
   }
@@ -311,7 +335,8 @@
       subi: 0, elimines: 0, catastrophes: 0, chances: 0, cats: {}, retombees: 0, achats: 0, bats: {}, investi: 0, dossiers: 0, tresorMax: st.tresor,
       rares: 0, legendaires: 0, crisesOk: 0, bonheurMax: 0, paris: 0, pariGain: 0, pariPerte: 0, projetsOk: 0, missionsOk: 0, combos: 0,
       secretsBatis: 0, absurdes: 0, genieOk: 0, genieKo: 0, hantises: 0, objets: 0, grandJour: 0, grandJourOk: 0, negSerie: 0, negSerieMax: 0,
-      trimSansDette: 0, sauvetage: 0, pigeons: 0, persos: 0, financements: 0 };
+      trimSansDette: 0, sauvetage: 0, pigeons: 0, persos: 0, financements: 0,
+      encheres: 0, encheresPerdues: 0, bonnesAffaires: 0 };
     if (!st.stats) st.stats = {};
     Object.keys(d).forEach(function (k) { if (st.stats[k] == null) st.stats[k] = d[k]; });
     return st.stats;
@@ -347,16 +372,37 @@
       return Object.keys(b).every(function (k) { return (k === "transport" ? nbTransports(st) : (st.bat[k] || 0)) >= b[k]; });
     });
   }
-  function bonusBat(st) {
-    var b = {};
-    Object.keys(st.bat).forEach(function (id) {
-      var B = BATIMENTS[id], n = st.bat[id], m = 0; if (!B || !n) return;
+  // Atouts des bâtiments (au plus 3 exemplaires comptent) ; chaque atout a un plafond pour rester raisonnable
+  function atout(st, k) { var t = 0; Object.keys(st.bat).forEach(function (id) { var B = BATIMENTS[id]; if (B && B[k] && st.bat[id]) t += B[k] * Math.min(st.bat[id], 3); }); return t; }
+  function usurePilier(st, k) {
+    var r = 0; Object.keys(st.bat).forEach(function (id) { var B = BATIMENTS[id]; if (B && B.usure && B.usure[k] && st.bat[id]) r += B.usure[k] * Math.min(st.bat[id], 3); });
+    return niv(st).usure * (1 - Math.min(0.5, r));
+  }
+  function interets(st) { return arrondi(st.dette * TAUX * (1 - Math.min(0.5, atout(st, "interet")))); }
+  function protection(st) { return Math.min(0.5, atout(st, "cata")); }
+  // Effet des bâtiments sur les piliers : chaque exemplaire d'un même bâtiment rapporte un peu moins (rendement),
+  // et plus un pilier compte de bâtiments, moins chacun pèse (foule) : varier aide, mais ne suffit pas à tout gagner
+  function foule(n) { return n <= 1 ? 1 : (1 - Math.pow(P.foule, n)) / ((1 - P.foule) * n); }
+  function bonusBat(st, plus) {
+    var b = {}, pos = {}, nb = {}, neg = {}, compte = Object.assign({}, st.bat);
+    if (plus) compte[plus] = (compte[plus] || 0) + 1;
+    Object.keys(compte).forEach(function (id) {
+      var B = BATIMENTS[id], n = compte[id], m = 0; if (!B || !n) return;
       for (var j = 0; j < n; j++) m += Math.pow(P.rendement, j);
       m *= (st.ampleur && st.ampleur[id]) || 1;
-      Object.keys(B.e).forEach(function (k) { b[k] = (b[k] || 0) + B.e[k] * m * P.gain; });
+      Object.keys(B.e).forEach(function (k) {
+        if (B.e[k] > 0) { pos[k] = (pos[k] || 0) + B.e[k] * m; nb[k] = (nb[k] || 0) + n; } else neg[k] = (neg[k] || 0) + B.e[k] * m;
+      });
     });
+    PK.forEach(function (k) { if (pos[k] || neg[k]) b[k] = ((pos[k] || 0) * foule(nb[k] || 0) + (neg[k] || 0)) * P.gain; });
     combosActifs(st).forEach(function (id) { var e = C.COMBOS[id].e; Object.keys(e).forEach(function (k) { b[k] = (b[k] || 0) + e[k] * P.gain; }); });
     return b;
+  }
+  // Ce qu'un exemplaire de plus ajouterait réellement à chaque pilier (affiché en boutique)
+  function gainAchat(st, id) {
+    var a = bonusBat(st), b = bonusBat(st, id), g = {};
+    Object.keys(BATIMENTS[id].e).forEach(function (k) { g[k] = arrondi((b[k] || 0) - (a[k] || 0)); });
+    return g;
   }
   function cible(st) {
     var b = bonusBat(st), c = {};
@@ -366,7 +412,8 @@
   function prix(st, id) { var B = BATIMENTS[id]; return Math.round(B.cout * Math.pow(P.inflation, st.bat[id] || 0)); }
   function recettes(st) {
     var r = P.impot * st.taux * (0.8 + st.eco / P.ecoRecettes) * niv(st).recettes;
-    Object.keys(st.bat).forEach(function (id) { r += (BATIMENTS[id].rev || 0) * st.bat[id] * ((st.ampleur && st.ampleur[id]) || 1); });
+    // Un même commerce rapporte un peu moins à chaque exemplaire (la clientèle se partage)
+    Object.keys(st.bat).forEach(function (id) { var R = BATIMENTS[id].rev || 0; if (R) r += R * ((1 - Math.pow(P.rendement, st.bat[id])) / (1 - P.rendement)) * ((st.ampleur && st.ampleur[id]) || 1); });
     combosActifs(st).forEach(function (id) { r += C.COMBOS[id].rev || 0; });
     return arrondi(r + ((st.mods && st.mods.recettes) || 0));
   }
@@ -374,17 +421,17 @@
     var t = 0;
     Object.keys(st.bat).forEach(function (id) { t += BATIMENTS[id].ent * st.bat[id]; });
     combosActifs(st).forEach(function (id) { t += C.COMBOS[id].ent || 0; });
-    return arrondi(t * ((st.mods && st.mods.entretien) || 1));
+    return arrondi(t * ((st.mods && st.mods.entretien) || 1) * (1 - Math.min(0.25, atout(st, "entretienPct") / 100)));
   }
   function depenses(st) { return arrondi(P.fonct + entretien(st)); }
   function chantierTranches(st) { var t = 0; (st.chantiers || []).forEach(function (c) { if (!c.susp) t += Math.round(c.du / Math.max(1, c.reste)); }); return t; }
-  function solde(st) { var r = 0; st.recurrents.forEach(function (x) { r += x.m; }); return arrondi(recettes(st) - depenses(st) + r - st.dette * TAUX - chantierTranches(st)); }
+  function solde(st) { var r = 0; st.recurrents.forEach(function (x) { r += x.m; }); return arrondi(recettes(st) - depenses(st) + r - interets(st) - chantierTranches(st)); }
   function promessesTenues(st) { return st.ambitions.filter(function (k) { return st.piliers[k] >= P.ambSeuil; }); }
   // Sondage : ce que donnerait l'élection aujourd'hui (sans le petit aléa du jour du vote)
   function sondage(st) {
     var o = st.opposant, f = o ? (o.actif ? o.force : 0) : 45;
     var pct = 50 + (bonheur(st) - 50) * 0.45 + (st.pop - 50) * 0.55 + (st.ambitions.length ? (promessesTenues(st).length - 1) * 3 : 0)
-      - (f - 45) * 0.1 + niv(st).elec - (st.mandat - 1) * P.usureMandat - st.dette / P.detteImpop * 2 + (st.bat.palais && bonheur(st) >= 55 ? 2 : 0);
+      - (f - 45) * 0.1 + niv(st).elec - (st.mandat - 1) * P.usureMandat - st.dette / P.detteImpop * 2 + (st.bat.palais && bonheur(st) >= 55 ? 2 : 0) + Math.min(3, atout(st, "vote"));
     return Math.max(10, Math.min(90, arrondi(pct)));
   }
 
@@ -610,9 +657,11 @@
   function debutTour(st0, base) {
     if (st0.phase !== "pret" && st0.phase !== "gestion") return st0;    // un dossier attend une décision : rien à rejouer
     if (st0.bj && !st0.bj.fini) return st0;                              // une partie de cartes est en cours
+    if (st0.enchere && !st0.enchere.fini) return st0;                    // une enchère est en cours
     var st = copie(st0), notes = [], x = stats(st), dette0 = st.dette;
     st.t++; st.resultat = null; st.evPerso = null; st.special = null; st.evenement = null; st.pariRes = null;
     if (st.bj && st.bj.fini) st.bj = null;
+    if (st.enchere && st.enchere.fini) st.enchere = null;
     if (st.offre && st.offre.t < st.t) { st.offre = null; message(st, "📵", "Offre expirée", "Monsieur Valentin est reparti. « Une autre fois, peut-être. »"); }
     var r0 = recettes(st), d0 = depenses(st);
     mouvement(st, r0, "Impôts et recettes de la ville");
@@ -620,7 +669,7 @@
     var rec = 0; st.recurrents.forEach(function (r) { rec += r.m; r.n--; });
     if (st.recurrents.length) mouvement(st, rec, "Engagements récurrents (" + st.recurrents.length + ")");
     st.recurrents = st.recurrents.filter(function (r) { return r.n > 0; });
-    if (st.dette > 0) mouvement(st, -arrondi(st.dette * TAUX), "Intérêts de la dette");
+    if (st.dette > 0) mouvement(st, -interets(st), "Intérêts de la dette");
     // Chantiers : une tranche par trimestre, des incidents possibles, l'inauguration au bout
     var finis = [];
     st.chantiers.forEach(function (ch) {
@@ -640,25 +689,26 @@
     });
     st.prevus = restants;
     // La ville vit : sans entretien, chaque pilier recule ; les bâtiments le tirent vers le haut
-    PK.forEach(function (k) { st.base[k] = Math.max(P.plancher, Math.round((st.base[k] - niv(st).usure) * 100) / 100); });
+    PK.forEach(function (k) { st.base[k] = Math.max(P.plancher, Math.round((st.base[k] - usurePilier(st, k)) * 100) / 100); });
     var c = cible(st);
     PK.forEach(function (k) { st.piliers[k] = borne(st.piliers[k] + (c[k] - st.piliers[k]) * P.vit); });
     st.eco = borne(st.eco + (50 - st.eco) * 0.05 - Math.max(0, st.taux - 1) * 3);
     st.humeur = arrondi(st.humeur * P.humeurVit);
     var cib = bonheur(st) * 0.6 + st.coh * 0.2 + 14 - Math.max(0, trimMandat(st)) * P.usurePop - st.dette / P.detteImpop - (st.coh < 40 ? 4 : 0) - Math.max(0, st.taux - 1) * 30;
-    st.pop = borne(st.pop + (cib - st.pop) * P.popVit);
+    st.pop = borne(st.pop + (cib - st.pop) * P.popVit + Math.min(0.6, atout(st, "popT")));
     if (st.meca.ligne) st.coh = borne(st.coh + (50 - st.coh) * 0.03);
     // Le Palais du Maire fait scandale quand la ville va mal
     if (st.bat.palais && (st.dette > 800 || bonheur(st) < 45)) { st.pop = borne(st.pop - 0.8); notes.push({ txt: "👑 Le Palais du Maire fait jaser : « Il vit dans le luxe pendant que la ville souffre ! »", d: { pop: -0.8, bon: 0, coh: 0, bud: 0, pil: {} } }); }
     // Le chaos parisien monte avec le temps (et les bâtiments étranges), et redescend après un événement extraordinaire
     var chaosBat = 0; Object.keys(st.bat).forEach(function (id) { if (BATIMENTS[id].chaos) chaosBat += BATIMENTS[id].chaos / 10; });
-    st.chaos = Math.min(100, st.chaos + 3 + chaosBat);
+    st.chaos = Math.max(0, Math.min(100, st.chaos + 3 + chaosBat + Math.max(-2, atout(st, "chaosT"))));
     var ok = financement(st); suivre(st);
     if (st.dette > dette0 + 0.5) st.emprunts++; else { st.emprunts = 0; x.trimSansDette++; }
     st.rapport = { t: st.t, recettes: r0, depenses: d0, solde: arrondi((st.tresor - st.dette) - (st0.tresor - st0.dette)), dette: arrondi(st.dette - dette0) };
     st.notes = notes;
     if (!ok) { faillite(st); return st; }
     gagnerXP(st, "Trimestres à l’Hôtel de Ville", XP.trimestre, XP.trimestreMax);
+    annoncer(st);
     // Léon prévient quand la dette devient dangereuse
     if (st.dette > 1000 && dette0 <= 1000) leon(st, "detteHaute");
     // Dernier pari : une proposition risquée quand la ville est au bord du gouffre
@@ -686,6 +736,7 @@
       if (st.scenario && st.t >= st.scenario.fin) { finDefi(st); return st; }
       gagnerXP(st, "Élections gagnées", XP.election[st.niveau] || XP.election.moyen);
       st.mandat++; st.debutMandat = st.t; st.pop = borne(st.pop + 5); st.pariMandat = 0;
+      annoncer(st);
       if (st.mandat >= 3) gagnerObjet(st, "echarpe");
       if (st.meca.opposant) tirerOpposant(st);
       leon(st, "reelu");
@@ -954,7 +1005,15 @@
     }
     var ev = base.parId[st0.evenement]; if (!ev || !ev.choix[i]) return st0;
     var st = copie(st0), c = ev.choix[i], lib = ev.titre + " : " + c.t;
-    var e = varier(st, c.e), d = appliquer(st, e, lib), extra = [];
+    var e = varier(st, c.e), extra = [];
+    // Pompiers, centre de crise, forêt urbaine… : une partie des dégâts d'une catastrophe est évitée
+    var prot = st.special === "catastrophe" ? protection(st) : 0;
+    if (prot && e) {
+      ["pop", "bon", "bud"].forEach(function (k) { if (e[k] < 0) e[k] = arrondi(e[k] * (1 - prot)); });
+      if (e.dom) Object.keys(e.dom).forEach(function (k) { if (e.dom[k] < 0) e.dom[k] = arrondi(e.dom[k] * (1 - prot)); });
+      extra.push("🚒 Tes équipements de secours ont évité " + Math.round(prot * 100) + " % des dégâts.");
+    }
+    var d = appliquer(st, e, lib);
     var a = st.meca.ligne ? (c.ali && c.ali[LETTRE[st.ligne]]) || 0 : 0;
     if (a) {
       var urgence = ev.cat === "crise" || ev.cat === "catastrophe";
@@ -990,18 +1049,34 @@
   }
 
   // ---------- Boutique et budget ----------
+  // Objectif de la partie à remplir avant de pouvoir construire (null s'il est rempli)
+  function objectif(st, id) {
+    var c = BATIMENTS[id] && BATIMENTS[id].si; if (!c || st.sansLimite) return null;
+    if (c.t && st.t < c.t) { var r = c.t - st.t; return { txt: "Tiens encore " + r + " trimestre" + (r > 1 ? "s" : ""), cur: st.t, but: c.t }; }
+    var re = st.mandat - 1;
+    if (c.reel && re < c.reel) return { txt: c.reel === 1 ? "Après ta 1re réélection" : "Après ta " + c.reel + "e réélection", cur: re, but: c.reel };
+    return null;
+  }
   function disponible(st, id) {
     var B = BATIMENTS[id]; if (!B) return false;
+    if (st.sansLimite) return true;
     if (B.secret) return !!(st.secrets && st.secrets[id]);
-    if (B.projet) return !!st.meca.grandsProjets && (st.nivJ || 99) >= B.niv;
-    return (st.nivJ || 99) >= (B.niv || 1);
+    if (B.projet && !st.meca.grandsProjets) return false;
+    return (st.nivJ || 99) >= (B.niv || 1) && !objectif(st, id);
+  }
+  function verrou(st, id) {
+    var B = BATIMENTS[id];
+    if (B.projet && !st.meca.grandsProjets && !st.sansLimite) return "Se débloque au niveau " + Math.max(B.niv, 6) + ".";
+    if ((st.nivJ || 99) < (B.niv || 1) && !st.sansLimite) return "Se débloque au niveau " + B.niv + ".";
+    var o = objectif(st, id); return o ? o.txt + "." : "";
   }
   function enChantier(st, id) { return (st.chantiers || []).some(function (c) { return c.id === id; }); }
   function peutAcheter(st, id) {
     var B = BATIMENTS[id];
     if (!B || st.phase === "fin") return "Impossible pour l’instant.";
-    if (!disponible(st, id)) return "Se débloque au niveau " + B.niv + ".";
+    if (!disponible(st, id)) return verrou(st, id) || "Se débloque plus tard.";
     if (B.unique && st.bat[id]) return "Déjà réalisé.";
+    if (B.enchere) return "Aux enchères uniquement.";
     if (enChantier(st, id)) return "Chantier en cours.";
     if (B.projet && st.chantiers.length >= 2) return "Deux chantiers à la fois, pas plus.";
     var px = B.projet ? Math.round(B.cout * 0.3) : prix(st, id);
@@ -1023,20 +1098,81 @@
       if (!financement(st)) faillite(st); suivre(st);
       return st;
     }
-    var px = prix(st0, id);
+    return construire(st, id, prix(st0, id), B.nom);
+  }
+  // Un bâtiment rejoint la ville (achat en boutique ou enchère remportée)
+  function construire(st, id, px, libelle) {
+    var B = BATIMENTS[id], x = stats(st);
     st.bat[id] = (st.bat[id] || 0) + 1;
-    mouvement(st, -px, B.nom);
+    mouvement(st, -px, libelle);
     x.achats++; x.bats[id] = (x.bats[id] || 0) + 1; x.investi += px;
     if (B.secret) x.secretsBatis++;
     if (B.eco) st.eco = borne(st.eco + B.eco);
     if (B.chaos) st.chaos = Math.min(100, st.chaos + B.chaos);
     var al = st.meca.ligne ? (B.ali && B.ali[LETTRE[st.ligne]]) || 0 : 0;
     if (al) st.coh = borne(st.coh + (al > 0 ? al * 0.5 : al));
-    st.pop = borne(st.pop + (B.pop || (px >= 150 ? 1 : 0.3)));
+    st.pop = borne(st.pop + (B.pop || Math.min(1, Math.max(0.1, px / 200))));
     if (!financement(st)) faillite(st); suivre(st);
     gagnerXP(st, "Bâtiments achetés", XP.achat, XP.achatMax);
     st.historique.push({ t: st.t, titre: B.ico + " " + B.nom, choix: "Acheté pour " + px + " M€", d: { pop: 0, bon: 0, coh: 0, bud: -px, pil: {} }, c: "achat" });
     verifierCombos(st); suivreMission(st);
+    return st;
+  }
+  // ---------- Enchères : les bâtiments de prestige se disputent avec une ville voisine ----------
+  // La ville voisine a un prix maximum secret, autour du prix moyen de vente : elle surenchérit tant qu'elle peut.
+  // L'interface donne 30 secondes ; à la fin, la meilleure offre l'emporte.
+  function budgetEnchere(st) { return Math.max(0, Math.floor(st.tresor + (PLAFOND_DETTE - st.dette) * 0.5)); }
+  function peutEncherir(st, id) {
+    var B = BATIMENTS[id];
+    if (!B || !B.enchere || st.phase === "fin") return "Impossible pour l’instant.";
+    if (!disponible(st, id)) return verrou(st, id) || "Se débloque plus tard.";
+    if (st.bat[id]) return "Déjà à toi.";
+    var cd = (st.encheresCd || {})[id] || 0;
+    if (cd > st.t) return "De retour aux enchères dans " + (cd - st.t) + " trimestre" + (cd - st.t > 1 ? "s" : "") + ".";
+    if (st.phase !== "gestion" || (st.enchere && !st.enchere.fini) || (st.bj && !st.bj.fini)) return "Termine d’abord ce que tu as en cours.";
+    if (budgetEnchere(st) < Math.round(B.cout * 0.7)) return "Pas assez d’argent pour enchérir.";
+    return "";
+  }
+  function ouvrirEnchere(st0, id) {
+    if (peutEncherir(st0, id)) return st0;
+    var st = copie(st0), B = BATIMENTS[id], moyen = B.cout, pas = Math.max(5, Math.round(moyen * 0.05 / 5) * 5);
+    var e = { id: id, ville: C.VOISINES[Math.floor(rnd(st) * C.VOISINES.length)], moyen: moyen, pas: pas, j: 0,
+      v: Math.round(moyen * 0.55 / 5) * 5, max: Math.round(moyen * (0.8 + rnd(st) * 0.45)), offres: [], fini: false, res: null };
+    e.offres.push({ qui: "v", m: e.v });
+    st.enchere = e;
+    return st;
+  }
+  function encherir(st0, montant) {
+    var e = st0.enchere; montant = Math.round(montant);
+    if (!e || e.fini || montant < Math.max(e.v, e.j) + e.pas || montant > budgetEnchere(st0)) return st0;
+    var st = copie(st0), x = st.enchere;
+    x.j = montant; x.offres.push({ qui: "j", m: montant });
+    if (montant < x.max) { var r = Math.min(x.max, montant + x.pas * (1 + Math.floor(rnd(st) * 2))); x.v = r; x.offres.push({ qui: "v", m: r }); }
+    return st;
+  }
+  // Fin du temps (ou abandon) : la meilleure offre l'emporte ; perdu, le bâtiment revient aux enchères 4 trimestres plus tard
+  function finirEnchere(st0) {
+    var e = st0.enchere; if (!e || e.fini) return st0;
+    var st = copie(st0), x = st.enchere, B = BATIMENTS[x.id], s = stats(st);
+    x.fini = true;
+    if (x.j > x.v) {
+      x.res = { gagne: true, prix: x.j };
+      construire(st, x.id, x.j, "Enchère remportée : " + B.nom);
+      s.encheres++; if (x.j <= x.moyen) s.bonnesAffaires++;
+      gagnerXP(st, "Enchères remportées", 20);
+      message(st, "🔨", "Adjugé : " + B.nom, "Paris l’emporte face à " + x.ville + " pour " + x.j + " M€ (prix moyen : " + x.moyen + " M€).");
+    } else {
+      x.res = { gagne: false, prix: x.v };
+      st.encheresCd[x.id] = st.t + 4; s.encheresPerdues++;
+      message(st, "🔨", x.ville + " remporte l’enchère", B.nom + " part à " + x.ville + " pour " + x.v + " M€. Il reviendra aux enchères dans 4 trimestres.");
+    }
+    return st;
+  }
+  function fermerEnchere(st0) { if (!st0.enchere || !st0.enchere.fini) return st0; var st = copie(st0); st.enchere = null; return st; }
+  // Administrateur : passer les limites (niveau, trimestres, réélections) pour tous les bâtiments
+  function limites(st0, sans) {
+    var st = copie(st0); st.sansLimite = !!sans; if (sans) st.triche = true;
+    marquerConnus(st);
     return st;
   }
   function duree(t) { return t < 4 ? t + " trimestre" + (t > 1 ? "s" : "") : String(Math.round(t / 4 * 10) / 10).replace(".", ",") + " ans"; }
@@ -1150,6 +1286,8 @@
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
     roulette: roulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
+    RAYONS: RAYONS, gainAchat: gainAchat, objectif: objectif, verrou: verrou, atout: atout, interets: interets, protection: protection,
+    budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.Maire = API;
 })(this);

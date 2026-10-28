@@ -23,6 +23,7 @@
   function effacer() { try { localStorage.removeItem(CLE); } catch (e) {} }
   function haut() { var g = document.getElementById("g-maire"); if (g && g.getBoundingClientRect().top < 0) g.scrollIntoView({ behavior: "smooth" }); }
   function nivJ() { return G.nivJoueur(); }
+  function sansLimiteAdmin() { try { return !!window.ADMIN_UNLOCKED && localStorage.getItem("maire_sanslimite") === "1"; } catch (e) { return false; } }
   function couleur(v) { var t = Math.max(0, Math.min(1, (v - 30) / 45)); return "hsl(" + Math.round(t * 125) + ",62%,42%)"; }
 
   // ---------- Niveau de difficulté : les boutons au-dessus du jeu (certains se débloquent avec le niveau du joueur) ----------
@@ -157,7 +158,10 @@
       var a = h("div", "m-admin"), sel = h("select");
       for (var k = 1; k <= G.NIV_MAX; k++) { var o = h("option", null, "Niveau " + k); o.value = k; if (k === n.n) o.selected = true; sel.appendChild(o); }
       sel.onchange = function () { G.fixerNiveau(+sel.value); accueil(); };
-      ajout(a, h("span", null, "🛠 Admin : se placer au"), sel, bouton("Revoir le guide", "btn m-sec", function () { G.oublierTutos(); alert("Le guide réapparaîtra dans ta prochaine partie."); }));
+      var lab = h("label", "m-admin-lim"), cb = h("input"); cb.type = "checkbox"; cb.checked = sansLimiteAdmin();
+      cb.onchange = function () { try { localStorage.setItem("maire_sanslimite", cb.checked ? "1" : ""); } catch (e) {} };
+      ajout(lab, cb, document.createTextNode(" Passer les limites pour les bâtiments (niveaux, trimestres, réélections)"));
+      ajout(a, h("span", null, "🛠 Admin : se placer au"), sel, lab, bouton("Revoir le guide", "btn m-sec", function () { G.oublierTutos(); alert("Le guide réapparaîtra dans ta prochaine partie."); }));
       c.appendChild(a);
     }
     return c;
@@ -291,7 +295,7 @@
     quetes().catch(function () {});
     box.innerHTML = ""; box.appendChild(h("p", "msg", "Installation à l’Hôtel de Ville…"));
     index().then(function () { var l = choisirLots(); return chargerLots(l).then(function () { return l; }); }).then(function (lots) {
-      st = M.nouvellePartie({ ligne: CHOIX.ligne || "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, xpJoueur: G.lire().xp, pid: Date.now().toString(36), secrets: G.lire().secrets });
+      st = M.nouvellePartie({ ligne: CHOIX.ligne || "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, xpJoueur: G.lire().xp, pid: Date.now().toString(36), secrets: G.lire().secrets, sansLimite: sansLimiteAdmin() });
       sauver(); demarrerPartie();
     }).catch(function () { alert("Impossible de charger les dossiers. Vérifie ta connexion et réessaie."); accueil(); });
   }
@@ -364,6 +368,7 @@
       })));
     box.appendChild(barreTrimestre());
     box.style.minHeight = ""; window.scrollTo(0, y);
+    if (st.enchere) return reprendreEnchere();
     modale();
     guide(document.getElementById("m-modale") ? "modale" : "jeu");
   }
@@ -477,50 +482,91 @@
     st.notes.forEach(function (x) { var p = h("div", "m-note"); p.appendChild(h("p", null, "⏳ " + x.txt)); variations(x.d, p); r.appendChild(p); });
     return r;
   }
+  // Ce que le bâtiment apporte en plus des piliers : c'est ce qui le rend unique
+  function atouts(B) {
+    var l = [];
+    if (B.popT) l.push("📣 +" + virg(B.popT) + " popularité / trim.");
+    if (B.vote) l.push("🗳️ +" + virg(B.vote) + " pt au sondage");
+    Object.keys(B.usure || {}).forEach(function (k) { l.push(M.ICO[k] + " s’use " + Math.round(B.usure[k] * 100) + " % moins vite"); });
+    if (B.entretienPct) l.push("🧾 −" + B.entretienPct + " % d’entretien partout");
+    if (B.interet) l.push("🏦 −" + Math.round(B.interet * 100) + " % d’intérêts");
+    if (B.cata) l.push("🚒 −" + Math.round(B.cata * 100) + " % de dégâts des catastrophes");
+    if (B.chaosT) l.push("🌙 calme le chaos parisien");
+    if (B.eco) l.push("📈 économie +" + B.eco);
+    return l;
+  }
   function carteBat(id) {
-    var B = M.BATIMENTS[id], non = M.peutAcheter(st, id), px = B.projet ? B.cout : M.prix(st, id), deja = st.bat[id] || 0;
-    var gain = Object.keys(B.e).map(function (k) { return (B.e[k] > 0 ? "+" : "−") + virg(Math.abs(B.e[k]) * M.P.gain * Math.pow(M.P.rendement, B.projet ? 0 : deja)) + " " + M.ICO[k]; });
+    var B = M.BATIMENTS[id], ench = !!B.enchere, non = ench ? M.peutEncherir(st, id) : M.peutAcheter(st, id), px = B.projet || ench ? B.cout : M.prix(st, id), deja = st.bat[id] || 0;
+    var ga = M.gainAchat(st, id);
+    var gain = Object.keys(ga).map(function (k) { return (ga[k] >= 0 ? "+" : "−") + virg(Math.abs(ga[k])) + " " + M.ICO[k]; });
     if (B.rev) gain.push("+" + argent(B.rev) + "/trim.");
     if (B.pop) gain.push("+" + B.pop + " popularité");
-    var neuf = (B.niv > 1 || B.secret || B.projet) && !G.guideVu("bat-" + id) && !deja;
-    var b = bouton("", "m-bat" + (B.projet ? " m-bat-projet" : "") + (B.secret ? " m-bat-secret" : "") + (neuf ? " m-new" : ""), function () {
-      if (M.peutAcheter(st, id)) return;
+    var neuf = (B.niv > 1 || B.secret || B.projet || B.si) && !G.guideVu("bat-" + id) && !deja;
+    var b = bouton("", "m-bat" + (B.projet ? " m-bat-projet" : "") + (B.secret ? " m-bat-secret" : "") + (ench ? " m-bat-ench" : "") + (neuf ? " m-new" : ""), function () {
       G.marquerGuide("bat-" + id);
+      if (ench) { if (!M.peutEncherir(st, id)) enchere(id); return; }
+      if (M.peutAcheter(st, id)) return;
       st = M.acheter(st, id); sauver(); signal("achat"); jeu(); toast(B.ico + " " + B.nom + (B.projet ? " : le chantier démarre !" : " : c’est fait !"));
     });
-    b.disabled = !!non;
-    var prixTxt = B.projet ? argent(px) + " au total (30 % au lancement) · " + B.duree + " trimestres" : (B.cout > 0 ? argent(px) : "rapporte " + argent(-px)) + (B.ent ? " · entretien " + argent(B.ent) + "/trim." : "");
+    b.disabled = !!non && !(ench && deja);
+    if (ench && deja) b.disabled = true;
+    var prixTxt = ench ? "🔨 Aux enchères · prix moyen ≈ " + argent(px) + (B.ent ? " · entretien " + argent(B.ent) + "/trim." : "")
+      : B.projet ? argent(px) + " au total (30 % au lancement) · " + B.duree + " trimestres" : (B.cout > 0 ? argent(px) : "rapporte " + argent(-px)) + (B.ent ? " · entretien " + argent(B.ent) + "/trim." : "");
+    var at = atouts(B);
     ajout(b, h("span", "m-bico", B.ico), ajout(h("div"), h("strong", null, B.nom),
-      h("span", "m-gain", gain.join("  ")), B.txt ? h("span", "m-bat-txt", B.txt) : null, neuf ? h("i", "m-neuf", "Nouveau") : null,
+      gain.length ? h("span", "m-gain", gain.join("  ")) : null, at.length ? h("span", "m-atouts", at.join(" · ")) : null,
+      B.txt ? h("span", "m-bat-txt", B.txt) : null, neuf ? h("i", "m-neuf", "Nouveau") : null,
       h("small", null, non && non !== "Pas assez d’argent, même en empruntant." ? non : prixTxt)), deja && !B.unique ? h("em", null, "×" + deja) : null);
     return b;
   }
-  function verrou(nom, txt) { var l = h("div", "m-bat m-bat-lock"); ajout(l, h("span", "m-bico", "🔒"), ajout(h("div"), h("strong", null, nom), h("small", null, txt))); return l; }
+  // Bâtiment pas encore disponible : ce qui manque (niveau, trimestres, réélection), avec une barre pour l'objectif de partie
+  function verrou(id) {
+    var B = M.BATIMENTS[id], l = h("div", "m-bat m-bat-lock"), o = M.objectif(st, id), raison = M.verrou(st, id);
+    var corps = ajout(h("div"), h("strong", null, B.ico + " " + B.nom), h("small", null, raison + (st.nivFixe && /niveau/.test(raison) ? " (hors défi du jour)" : "")));
+    if (o && !/niveau/.test(raison)) { var barre = h("div", "m-barre"), i = h("i"); i.style.width = Math.round(o.cur / o.but * 100) + "%"; barre.appendChild(i); corps.appendChild(barre); }
+    ajout(l, h("span", "m-bico", "🔒"), corps);
+    return l;
+  }
+  // Boutique rangée par rayons : on ouvre d'abord celui du pilier le plus faible
+  var RAYON = null;
+  function rayonDe(id) { return M.BATIMENTS[id].cat; }
   function boutique() {
-    var d = h("div", "m-boutique"), n = st.nivJ, g = h("div", "m-bats");
-    d.appendChild(h("h5", null, "🛒 Boutique de la Ville"));
-    Object.keys(M.BATIMENTS).filter(function (id) { return !M.BATIMENTS[id].projet && !M.BATIMENTS[id].secret; })
-      .sort(function (a, b) { return (M.disponible(st, b) - M.disponible(st, a)) || ((M.BATIMENTS[a].niv || 1) - (M.BATIMENTS[b].niv || 1)); }).forEach(function (id) {
-      var B = M.BATIMENTS[id];
-      if (!M.disponible(st, id)) {
-        if (B.niv <= n + 2) g.appendChild(verrou(B.ico + " " + B.nom, "Se débloque au niveau " + B.niv + (st.nivFixe ? " (hors défi du jour)" : ""))); return;
-      }
-      g.appendChild(carteBat(id));
+    var d = h("div", "m-boutique"), n = st.nivJ, nb = 0;
+    Object.keys(st.bat).forEach(function (id) { nb += st.bat[id]; });
+    d.appendChild(ajout(h("div", "m-btete"), h("h5", null, "🛒 Boutique de la Ville"), h("small", null, nb + " bâtiment" + (nb > 1 ? "s" : "") + " · entretien " + argent(M.entretien(st)) + "/trim.")));
+    if (window.ADMIN_UNLOCKED) d.appendChild(bouton(st.sansLimite ? "🛠 Limites des bâtiments : désactivées (admin)" : "🛠 Passer les limites pour les bâtiments", "btn m-sec m-adminbat", function () {
+      st = M.limites(st, !st.sansLimite); try { localStorage.setItem("maire_sanslimite", st.sansLimite ? "1" : ""); } catch (e) {} sauver(); jeu();
+    }));
+    var ids = Object.keys(M.BATIMENTS), visibles = M.RAYONS.filter(function (r) {
+      if (r.id === "secret") return ids.some(function (id) { return rayonDe(id) === "secret" && M.disponible(st, id); });
+      if (r.id === "projet") return st.meca.grandsProjets || st.sansLimite || n >= 4;
+      return true;
     });
-    d.appendChild(g);
-    var sec = Object.keys(M.BATIMENTS).filter(function (id) { return M.BATIMENTS[id].secret && M.disponible(st, id); });
-    if (sec.length) { d.appendChild(h("h5", null, "🔐 Bâtiments secrets")); var gs = h("div", "m-bats"); sec.forEach(function (id) { gs.appendChild(carteBat(id)); }); d.appendChild(gs); }
-    var proj = Object.keys(M.BATIMENTS).filter(function (id) { return M.BATIMENTS[id].projet; });
-    if (st.meca.grandsProjets || n >= 4) {
-      d.appendChild(h("h5", null, "🏗️ Projets démesurés"));
-      var gp = h("div", "m-bats");
-      proj.forEach(function (id) {
-        var B = M.BATIMENTS[id];
-        if (M.disponible(st, id)) gp.appendChild(carteBat(id));
-        else if (B.niv <= n + 2) gp.appendChild(verrou(B.ico + " " + B.nom, "Se débloque au niveau " + B.niv));
-      });
-      d.appendChild(gp);
+    if (!RAYON || !visibles.some(function (r) { return r.id === RAYON; })) {
+      var faible = Object.keys(M.PILIERS).sort(function (a, b) { return st.piliers[a] - st.piliers[b]; })[0]; RAYON = faible;
     }
+    var onglets = h("div", "m-rayons"); onglets.setAttribute("role", "tablist");
+    visibles.forEach(function (r) {
+      var l = ids.filter(function (id) { return rayonDe(id) === r.id; }), ok = l.filter(function (id) { return M.disponible(st, id); });
+      var neuf = ok.some(function (id) { return !G.guideVu("bat-" + id) && !st.bat[id] && (M.BATIMENTS[id].niv > 1 || M.BATIMENTS[id].si); });
+      var t = bouton("", "m-rayon" + (neuf ? " m-rayon-neuf" : ""), function () { RAYON = r.id; var y = window.scrollY; jeu(); window.scrollTo(0, y); });
+      t.setAttribute("role", "tab"); t.setAttribute("aria-selected", r.id === RAYON);
+      ajout(t, h("span", null, r.ico + " " + r.nom), h("small", null, ok.length + "/" + l.length));
+      onglets.appendChild(t);
+    });
+    d.appendChild(onglets);
+    var l = ids.filter(function (id) { return rayonDe(id) === RAYON; });
+    var ok = l.filter(function (id) { return M.disponible(st, id); }), bloques = l.filter(function (id) { return !M.disponible(st, id); });
+    var tri = function (a, b) { var A = M.BATIMENTS[a], B = M.BATIMENTS[b]; return (A.niv || 1) - (B.niv || 1) || A.cout - B.cout; };
+    var g = h("div", "m-bats");
+    if (RAYON === "enchere") d.appendChild(h("p", "m-aide", "🔨 Les bâtiments de prestige se disputent avec une ville voisine : 30 secondes pour faire la meilleure offre. Le prix moyen de vente t’aide à savoir quand t’arrêter."));
+    ok.sort(tri).forEach(function (id) { g.appendChild(carteBat(id)); });
+    // Bientôt : les objectifs de partie en cours et les 2 prochains niveaux ; le reste est seulement compté
+    var proches = bloques.filter(function (id) { return (M.BATIMENTS[id].niv || 1) <= n + 2; }).sort(tri), loin = bloques.length - proches.length;
+    if (proches.length) { g.appendChild(h("p", "m-bientot", "Bientôt")); proches.forEach(function (id) { g.appendChild(verrou(id)); }); }
+    if (!ok.length && !proches.length && !loin) g.appendChild(h("p", "m-aide", "Rien dans ce rayon pour l’instant."));
+    d.appendChild(g);
+    if (loin) d.appendChild(h("p", "m-aide", "🔒 Encore " + loin + " bâtiment" + (loin > 1 ? "s" : "") + " à découvrir dans ce rayon en montant de niveau."));
     if (st.meca.combos) {
       var dc = h("details", "m-combos"), act = M.combosActifs(st);
       dc.appendChild(h("summary", null, "🧩 Combos de bâtiments (" + act.length + " actif" + (act.length > 1 ? "s" : "") + ")"));
@@ -533,6 +579,92 @@
     d.appendChild(h("p", "m-aide", "Chaque nouvel exemplaire coûte un peu plus cher et rapporte un peu moins : varie tes achats."));
     return d;
   }
+
+  // ---------- Enchères : 30 secondes contre une ville voisine ----------
+  var ENCH = null;   // enchère affichée : { fin (horloge), attente (la ville réfléchit), minuteur }
+  function fermerEnchUI() { var m = document.getElementById("m-enchmod"); if (m) m.remove(); document.body.classList.remove("m-modal"); if (ENCH && ENCH.minuteur) clearInterval(ENCH.minuteur); ENCH = null; }
+  function enchere(id) {
+    st = M.ouvrirEnchere(st, id); sauver();
+    if (!st.enchere) return;
+    ENCH = { fin: Date.now() + 30000, attente: 0, vu: st.enchere.v };
+    if (notifActive) notifActive.fermer();
+    afficherEnchere();
+    ENCH.minuteur = setInterval(tic, 100);
+  }
+  function tic() {
+    if (!ENCH || !st.enchere) return;
+    if (st.enchere.fini) { clearInterval(ENCH.minuteur); return; }
+    var reste = ENCH.fin - Date.now();
+    if (ENCH.attente && Date.now() >= ENCH.attente) { ENCH.attente = 0; ENCH.vu = st.enchere.v; afficherEnchere(); }
+    var c = document.getElementById("m-ench-temps");
+    if (c) {
+      c.textContent = Math.max(0, Math.ceil(reste / 1000)) + " s";
+      var bar = document.getElementById("m-ench-barre"); if (bar) bar.style.width = Math.max(0, reste / 300) + "%";
+      document.getElementById("m-enchmod").classList.toggle("m-ench-urgent", reste < 8000);
+    }
+    if (reste <= 0) { clearInterval(ENCH.minuteur); ENCH.attente = 0; st = M.finirEnchere(st); sauver(); afficherEnchere(); }
+  }
+  function afficherEnchere() {
+    var e = st.enchere; if (!e) return fermerEnchUI();
+    var B = M.BATIMENTS[e.id], m = document.getElementById("m-enchmod");
+    if (!m) { m = h("div", "m-pop m-pop-enchere"); m.id = "m-enchmod"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true"); (document.getElementById("g-maire") || document.body).appendChild(m); document.body.classList.add("m-modal"); }
+    m.innerHTML = "";
+    var c = h("div", "m-pop-in m-ench");
+    ajout(c, h("p", "m-sur", "🔨 Enchère face à " + e.ville), h("h4", null, B.ico + " " + B.nom));
+    if (!e.fini) {
+      var vVu = ENCH && ENCH.attente ? ENCH.vu : e.v, toiTete = e.j > vVu;
+      var tps = h("div", "m-ench-tps"), barre = h("div", "m-barre"), i = h("i"); i.id = "m-ench-barre"; barre.appendChild(i);
+      var nb = h("b", null, Math.max(0, Math.ceil(((ENCH ? ENCH.fin : Date.now()) - Date.now()) / 1000)) + " s"); nb.id = "m-ench-temps";
+      ajout(tps, ajout(h("div", "m-jt"), h("span", null, "⏱️ Temps restant"), nb), barre); c.appendChild(tps);
+      c.appendChild(h("p", "m-ench-moyen", "💡 Prix moyen de vente : ≈ " + argent(e.moyen) + ". Au-delà, tu paies plus cher que la normale."));
+      var t = h("div", "m-ench-tete " + (toiTete ? "m-ench-toi" : "m-ench-eux"));
+      ajout(t, h("span", null, toiTete ? "🙋 Tu mènes" : "🏙️ " + e.ville + " mène"), h("strong", null, argent(toiTete ? e.j : vVu)));
+      c.appendChild(t);
+      if (ENCH && ENCH.attente) c.appendChild(h("p", "m-ench-reflexion", "🤔 " + e.ville + " réfléchit…"));
+      var budget = M.budgetEnchere(st), base = Math.max(e.v, e.j), g = h("div", "m-ench-btns");
+      [1, 2, 5].forEach(function (k) {
+        var montant = base + k * e.pas;
+        var bt = bouton("+" + argent(k * e.pas) + "\n= " + argent(montant), "btn m-go", function () {
+          if (!st.enchere || st.enchere.fini || (ENCH && ENCH.attente)) return;
+          var v0 = st.enchere.v; st = M.encherir(st, montant); sauver();
+          if (st.enchere.v > v0) {
+            var reste = ENCH.fin - Date.now();
+            ENCH.vu = v0; ENCH.attente = Date.now() + Math.max(150, Math.min(500 + Math.random() * 1000, reste - 300));
+          } else ENCH.vu = st.enchere.v;
+          afficherEnchere();
+        });
+        bt.disabled = toiTete || montant > budget || !!(ENCH && ENCH.attente);
+        g.appendChild(bt);
+      });
+      c.appendChild(g);
+      c.appendChild(h("small", "m-aide", "Ton budget maximum : " + argent(budget) + " (trésorerie + emprunt possible)."));
+      var hist = h("ul", "m-ench-hist");
+      e.offres.slice(-6).reverse().forEach(function (o, k) {
+        if (o.qui === "v" && ENCH && ENCH.attente && k === 0) return;
+        hist.appendChild(h("li", o.qui === "j" ? "m-ench-j" : "", (o.qui === "j" ? "🙋 Toi" : "🏙️ " + e.ville) + " : " + argent(o.m)));
+      });
+      c.appendChild(hist);
+      c.appendChild(bouton("Abandonner", "btn m-sec", function () { if (ENCH) clearInterval(ENCH.minuteur); st = M.finirEnchere(st); sauver(); afficherEnchere(); }));
+    } else {
+      var r = e.res, ecart = r.prix - e.moyen;
+      c.classList.add(r.gagne ? "m-ench-gagne" : "m-ench-perdu");
+      ajout(c, h("p", "m-ench-res", r.gagne ? "🔨 Adjugé ! Paris l’emporte." : "❌ " + e.ville + " l’emporte."),
+        h("p", null, r.gagne ? B.nom + " est à toi pour " + argent(r.prix) + " (" + (ecart <= 0 ? "une bonne affaire : " + argent(-ecart) + " sous le prix moyen" : argent(ecart) + " au-dessus du prix moyen") + ")."
+          : B.nom + " part à " + e.ville + " pour " + argent(r.prix) + ". Il reviendra aux enchères dans 4 trimestres."),
+        bouton("Retour à l’Hôtel de Ville", "btn m-go", function () { st = M.fermerEnchere(st); sauver(); fermerEnchUI(); jeu(); }));
+      if (r.gagne) toast(B.ico + " " + B.nom + " rejoint Paris !");
+    }
+    m.appendChild(c);
+    tic();
+  }
+  // Enchère interrompue (page rechargée) : le temps est écoulé, la meilleure offre l'emporte
+  function reprendreEnchere() {
+    if (!st.enchere || ENCH) return;
+    if (!st.enchere.fini) { st = M.finirEnchere(st); sauver(); }
+    ENCH = { fin: 0, attente: 0, vu: st.enchere.v };
+    afficherEnchere();
+  }
+
   function budget() {
     var d = h("div", "m-curseur");
     var t = h("div", "m-jt"), val = h("b", null, Math.round(st.taux * 100) + " %");
@@ -559,7 +691,7 @@
   }
   function barreTrimestre() {
     var b = h("div", "m-barmois");
-    var cartes = st.bj && !st.bj.fini;
+    var cartes = (st.bj && !st.bj.fini) || (st.enchere && !st.enchere.fini);
     b.appendChild(bouton(st.phase === "evenement" ? "📂 Un dossier t’attend" : cartes ? "🃏 Une partie de cartes est en cours" : "Trimestre suivant →", "btn m-go", function () {
       if (st.phase === "evenement" || (st.resultat && !st.resultatVu)) return modale();
       if (st.bj && !st.bj.fini) return ouvrirTelephone();
@@ -622,6 +754,11 @@
   function suivante() {
     var n = FILE.shift(); notifActive = null;
     if (!n) return;
+    // Pendant une enchère, rien ne vient cacher le chrono : les annonces attendent la fin
+    if (st && st.enchere && !st.enchere.fini && document.getElementById("m-enchmod")) {
+      FILE.unshift(n); notifActive = { type: "pause", fermer: function () {} };
+      setTimeout(function () { notifActive = null; suivante(); }, 800); return;
+    }
     var el, duree;
     if (n.type === "progres") {
       var p = n.p; el = h("div", "m-notif m-n-progres" + (p.type === "quete" ? " m-n-pq" : ""));
@@ -630,11 +767,11 @@
       requestAnimationFrame(function () { requestAnimationFrame(function () { i.style.width = Math.round(p.cur / p.but * 100) + "%"; }); });
       duree = 2200;
     } else if (n.type === "niveau") {
-      var m = n.m, nv = G.niveau(G.xpPour(m.n));
+      var m = n.m, nv = m.n ? G.niveau(G.xpPour(m.n)) : null;
       el = h("div", "m-notif m-n-niveau");
-      ajout(el, h("p", "m-n-sur", "⬆️ Niveau " + m.n + " !"), h("strong", null, nv.titre));
+      ajout(el, h("p", "m-n-sur", m.n ? "⬆️ Niveau " + m.n + " !" : "🔓 Nouveau en boutique !"), h("strong", null, nv ? nv.titre : "Objectif rempli : de nouveaux bâtiments arrivent"));
       var u = h("ul");
-      m.bats.forEach(function (id) { var B = M.BATIMENTS[id]; u.appendChild(h("li", null, "🔓 " + B.ico + " " + B.nom + (B.projet ? " (projet démesuré)" : "") + " · en boutique")); });
+      m.bats.forEach(function (id) { var B = M.BATIMENTS[id]; u.appendChild(h("li", null, "🔓 " + B.ico + " " + B.nom + (B.projet ? " (projet démesuré)" : B.enchere ? " (aux enchères)" : "") + " · en boutique")); });
       m.meca.forEach(function (t) { u.appendChild(h("li", null, "✨ " + t)); });
       m.plusTard.forEach(function (t) { u.appendChild(h("li", "m-n-tard", "🔜 " + t + " · dès ta prochaine partie")); });
       if (u.children.length) el.appendChild(u);
@@ -959,7 +1096,8 @@
       });
     } else gains(gz);
     var msg = h("p", "msg m-msg"); box.appendChild(msg);
-    if (!st.envoye && st.scenario) { st.envoye = true; sauver(); if (st.defi === G.jour()) envoyerScoreJour(st.defi, b.score); }
+    if (st.triche) { if (!st.envoye) { st.envoye = true; sauver(); } msg.textContent = "Partie jouée sans limites (admin) : elle ne compte pas au classement."; }
+    else if (!st.envoye && st.scenario) { st.envoye = true; sauver(); if (st.defi === G.jour()) envoyerScoreJour(st.defi, b.score); }
     else if (!st.envoye && window.lbSubmit) { st.envoye = true; sauver(); lbSubmit(cleClassement(st.niveau), b.score).then(function (x) { msg.textContent = x; }); }
     var bas = h("div", "m-bas");
     ajout(bas, bouton("Accueil", "btn m-sec", function () { effacer(); st = null; accueil(); haut(); }),

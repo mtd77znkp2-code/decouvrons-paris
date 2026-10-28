@@ -267,6 +267,11 @@
   s2("missions10", "Défis", "Homme ou femme de mission", "Réussis 10 missions surprises au total.", 3, function (R, P) { return P.missions >= 10; });
   s2("historiques3", "Gestion", "Main de l’histoire", "Prends 3 décisions historiques au total.", 2, function (R, P) { return P.historiques >= 3; });
   s2("gaspard", "Exploration", "Ami des milliardaires", "Gagne la confiance de Gaspard Mallet.", 2, function (R) { return (R.persos.gaspard || 0) >= 2; }, 1);
+  s2("adjuge", "Enchères", "Adjugé, vendu !", "Remporte une enchère face à une ville voisine.", 2, function (R) { return R.x.encheres >= 1; });
+  s2("bonneAffaire", "Enchères", "Bonne affaire", "Remporte une enchère sous le prix moyen de vente.", 2, function (R) { return R.x.bonnesAffaires >= 1; });
+  s2("prestige3", "Enchères", "Ville de prestige", "Remporte 3 enchères dans une même partie.", 3, function (R) { return R.x.encheres >= 3; });
+  s2("mauvaisPerdant", "Enchères", "Mauvais perdant", "Perds 3 enchères dans une même partie.", 1, function (R) { return R.x.encheresPerdues >= 3; }, 1);
+  s2("diversite", "Construction", "Paris aux mille visages", "Construis 25 bâtiments différents dans une même partie.", 3, function (R) { return Object.keys(R.x.bats).length >= 25; });
   s2("reputation", "Exploration", "Personnalité nationale", "Atteins 350 points de réputation.", 3, function (R, P) { return (P.rep || 0) >= 350; });
 
   // ---------- Progression affichée en pleine partie (« 12 / 25 ») ----------
@@ -285,6 +290,8 @@
   suivi([["combosTous", 4]], "combos", function (R, P) { return Object.keys(P.combos || {}).length; });
   suivi([["mission1", 1]], "mission", function (R) { return R.x.missionsOk; });
   suivi([["legende1", 1]], "legende", function (R) { return R.x.legendaires; });
+  suivi([["adjuge", 1], ["prestige3", 3]], "enchere", function (R) { return R.x.encheres || 0; });
+  suivi([["diversite", 25]], "diversite", function (R) { return Object.keys(R.x.bats).length; });
   // Les quêtes du jour qui se comptent : [valeur actuelle, objectif]
   var QPROG = {
     mandats: function (q, R) { return nmin(q, R) && (!q.ligne || R.ligne === q.ligne) ? [R.mandats, q.n] : null; },

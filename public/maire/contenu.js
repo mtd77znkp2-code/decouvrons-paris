@@ -73,6 +73,67 @@
     toboggan: { nom: "Toboggan géant de Montmartre", ico: "🛝", niv: 12, cout: 200, duree: 4, ent: 3, e: { cadre: 1 }, rev: 18, pop: 2, risque: 0.4, txt: "Idée absurde. Succès touristique… ou fiasco planétaire ?" }
   };
 
+  // ---------- 41 bâtiments supplémentaires : chacun a un rôle (pilier, recettes, ou un atout qui change la partie) ----------
+  // niv : niveau du joueur · si : objectif de la partie en cours (t : trimestres tenus, reel : réélections) · cat : rayon de la boutique
+  // Atouts : popT (popularité par trimestre), vote (points au sondage), usure (un pilier s'use moins vite), entretienPct (% d'entretien
+  // économisé sur toute la ville), interet (part des intérêts de la dette effacée), cata (part des dégâts de catastrophe évitée), chaosT
+  var BATIMENTS2 = {
+    residenceEtudiante: { nom: "Résidence étudiante", ico: "🎓", cat: "logement", niv: 2, cout: 55, ent: 3, e: { logement: 2, cadre: 1 }, eco: 1, ali: { g: 1, c: 1, d: 0, e: 1 }, txt: "Des chambres abordables : la jeunesse reste à Paris." },
+    foyerJeunes: { nom: "Foyer de jeunes travailleurs", ico: "🛏️", cat: "logement", niv: 3, si: { t: 4 }, cout: 45, ent: 2, e: { logement: 2 }, popT: 0.08, ali: { g: 2, c: 0, d: 0, e: 0 }, txt: "Un premier toit pour les apprentis." },
+    renovThermique: { nom: "Rénovation thermique", ico: "🧱", cat: "logement", niv: 4, si: { t: 4 }, cout: 90, ent: 0, e: { logement: 2, cadre: 1 }, entretienPct: 3, ali: { g: 1, c: 1, d: 0, e: 2 }, txt: "Moins de chauffage gaspillé dans les bâtiments de la ville." },
+    intergeneration: { nom: "Habitat intergénérationnel", ico: "👵", cat: "logement", niv: 5, si: { t: 6 }, cout: 70, ent: 2, e: { logement: 3 }, popT: 0.08, ali: { g: 1, c: 1, d: 1, e: 1 }, txt: "Étudiants et retraités sous le même toit." },
+    hebergementUrgence: { nom: "Centre d’hébergement d’urgence", ico: "🛟", cat: "logement", niv: 6, si: { t: 8 }, cout: 80, ent: 5, e: { logement: 3, securite: 1 }, cata: 0.1, ali: { g: 2, c: 1, d: -1, e: 1 }, txt: "Personne dehors pendant les crises." },
+    cooperative: { nom: "Coopérative d’habitants", ico: "🤝", cat: "logement", niv: 8, si: { t: 10 }, cout: 120, ent: 3, e: { logement: 4, cadre: 1 }, vote: 0.5, ali: { g: 2, c: 0, d: -1, e: 2 }, txt: "Les habitants conçoivent leur immeuble." },
+    tourBois: { nom: "Tour en bois écologique", ico: "🌲", cat: "logement", niv: 10, si: { t: 12 }, cout: 260, ent: 6, e: { logement: 7, cadre: 2 }, pop: 2, ali: { g: 1, c: 1, d: 0, e: 2 }, txt: "Trente étages de bois : une première mondiale." },
+    villageVertical: { nom: "Village vertical", ico: "🏙️", cat: "logement", niv: 14, si: { reel: 1 }, cout: 420, ent: 9, e: { logement: 11, cadre: 2 }, ali: { g: 1, c: 1, d: 0, e: 1 }, txt: "Logements, écoles et jardins empilés dans une seule tour." },
+    velib: { nom: "Stations Vélib’", ico: "🚴", cat: "transports", niv: 3, si: { t: 2 }, cout: 35, ent: 2, e: { transports: 2 }, rev: 1, ali: { g: 1, c: 1, d: 0, e: 2 }, txt: "Des vélos en libre-service à chaque coin de rue." },
+    covoiturage: { nom: "Plateforme de covoiturage", ico: "📲", cat: "transports", niv: 4, si: { t: 4 }, cout: 40, ent: 1, e: { transports: 2 }, vote: 0.3, ali: { g: 0, c: 2, d: 1, e: 1 }, txt: "Moins de voitures vides aux heures de pointe." },
+    busElec: { nom: "Bus électriques", ico: "🚌", cat: "transports", niv: 4, si: { t: 4 }, cout: 80, ent: 4, e: { transports: 3, cadre: 1 }, ali: { g: 1, c: 1, d: 0, e: 2 }, txt: "Silencieux et propres." },
+    parkingRelais: { nom: "Parking relais", ico: "🅿️", cat: "transports", niv: 5, si: { t: 6 }, cout: 65, ent: 2, e: { transports: 2 }, rev: 2, ali: { g: 0, c: 1, d: 2, e: -1 }, txt: "On laisse la voiture aux portes de Paris." },
+    navette: { nom: "Navettes fluviales", ico: "⛴️", cat: "transports", niv: 7, si: { t: 8 }, cout: 110, ent: 4, e: { transports: 3 }, rev: 3, eco: 1, ali: { g: 1, c: 1, d: 1, e: 1 }, txt: "La Seine devient une ligne de transport." },
+    rer: { nom: "Gare RER modernisée", ico: "🚆", cat: "transports", niv: 9, si: { t: 10 }, cout: 230, ent: 7, e: { transports: 7 }, eco: 2, ali: { g: 1, c: 1, d: 1, e: 1 }, txt: "Des quais neufs, des trains à l’heure (presque)." },
+    tramTrain: { nom: "Tram-train express", ico: "🚈", cat: "transports", niv: 12, si: { t: 14 }, cout: 300, ent: 8, e: { transports: 8, logement: 1 }, ali: { g: 1, c: 1, d: 0, e: 2 }, txt: "Paris relié à la banlieue en quelques minutes." },
+    poleEchanges: { nom: "Pôle d’échanges multimodal", ico: "🔀", cat: "transports", niv: 16, si: { reel: 1 }, cout: 450, ent: 10, e: { transports: 12 }, eco: 3, ali: { g: 1, c: 2, d: 1, e: 1 }, txt: "Métro, train, bus et vélos sous un même toit." },
+    jardinsPartages: { nom: "Jardins partagés", ico: "🥕", cat: "cadre", niv: 2, cout: 25, ent: 1, e: { cadre: 2 }, popT: 0.05, ali: { g: 1, c: 1, d: 0, e: 2 }, txt: "Des tomates au pied des immeubles." },
+    fontaines: { nom: "Fontaines et brumisateurs", ico: "⛲", cat: "cadre", niv: 3, si: { t: 2 }, cout: 30, ent: 1, e: { cadre: 2 }, cata: 0.05, ali: { g: 1, c: 1, d: 1, e: 1 }, txt: "Indispensables pendant les canicules." },
+    cinePleinAir: { nom: "Cinéma en plein air", ico: "🎬", cat: "cadre", niv: 3, si: { t: 4 }, cout: 35, ent: 2, e: { cadre: 2 }, pop: 1, ali: { g: 1, c: 1, d: 1, e: 1 }, txt: "Des films sous les étoiles, gratuits tout l’été." },
+    mediatheque: { nom: "Médiathèque", ico: "📚", cat: "cadre", niv: 4, si: { t: 4 }, cout: 75, ent: 4, e: { cadre: 3 }, vote: 0.5, ali: { g: 1, c: 1, d: 0, e: 1 }, txt: "Livres, jeux et ateliers pour tous les âges." },
+    piscine: { nom: "Piscine municipale", ico: "🏊", cat: "cadre", niv: 5, si: { t: 6 }, cout: 110, ent: 6, e: { cadre: 4 }, pop: 1, ali: { g: 1, c: 1, d: 1, e: 0 }, txt: "Enfin des créneaux le dimanche matin." },
+    centreSante: { nom: "Centre de santé", ico: "🩺", cat: "cadre", niv: 6, si: { t: 6 }, cout: 95, ent: 5, e: { cadre: 3, securite: 1 }, usure: { cadre: 0.1 }, ali: { g: 2, c: 1, d: 0, e: 0 }, txt: "Des médecins sans rendez-vous à trois mois." },
+    foretUrbaine: { nom: "Forêt urbaine", ico: "🌳", cat: "cadre", niv: 7, si: { t: 8 }, cout: 130, ent: 3, e: { cadre: 5 }, cata: 0.1, ali: { g: 1, c: 1, d: 0, e: 3 }, txt: "Des milliers d’arbres : la ville respire et se rafraîchit." },
+    stade: { nom: "Stade de quartier", ico: "🏟️", cat: "cadre", niv: 8, si: { t: 10 }, cout: 160, ent: 6, e: { cadre: 4 }, rev: 4, pop: 1, ali: { g: 1, c: 1, d: 1, e: 0 }, txt: "Le club du quartier joue enfin à domicile." },
+    conservatoire: { nom: "Conservatoire de musique", ico: "🎻", cat: "cadre", niv: 9, si: { t: 10 }, cout: 140, ent: 5, e: { cadre: 4 }, vote: 0.5, ali: { g: 1, c: 1, d: 1, e: 0 }, txt: "Cours de violon pour tous les enfants." },
+    toitsVegetaux: { nom: "Toits végétalisés", ico: "🌿", cat: "cadre", niv: 11, si: { t: 12 }, cout: 180, ent: 2, e: { cadre: 4, logement: 1 }, usure: { cadre: 0.15 }, ali: { g: 1, c: 1, d: 0, e: 3 }, txt: "Les toits de Paris deviennent des jardins." },
+    eclairageLed: { nom: "Éclairage public LED", ico: "💡", cat: "securite", niv: 2, si: { t: 2 }, cout: 30, ent: 1, e: { securite: 2 }, entretienPct: 2, ali: { g: 1, c: 1, d: 1, e: 1 }, txt: "Des rues mieux éclairées pour moins cher." },
+    mediateurs: { nom: "Médiateurs de nuit", ico: "🌙", cat: "securite", niv: 4, si: { t: 4 }, cout: 45, ent: 3, e: { securite: 2, cadre: 1 }, chaosT: -0.6, ali: { g: 2, c: 1, d: 0, e: 1 }, txt: "Ils apaisent les tensions : le chaos parisien monte moins vite." },
+    pompiers: { nom: "Caserne de pompiers", ico: "🚒", cat: "securite", niv: 5, si: { t: 6 }, cout: 120, ent: 6, e: { securite: 4 }, cata: 0.2, ali: { g: 1, c: 1, d: 1, e: 1 }, txt: "Les catastrophes font beaucoup moins de dégâts." },
+    videoprotection: { nom: "Vidéoprotection", ico: "📹", cat: "securite", niv: 6, si: { t: 6 }, cout: 85, ent: 3, e: { securite: 3 }, ali: { g: -2, c: 1, d: 3, e: -1 }, txt: "Efficace… mais ne plaît pas à tout le monde." },
+    policeProximite: { nom: "Police municipale de proximité", ico: "👮", cat: "securite", niv: 7, si: { t: 8 }, cout: 140, ent: 7, e: { securite: 5 }, ali: { g: 0, c: 1, d: 2, e: 0 }, txt: "Des agents qui connaissent chaque rue." },
+    prevention: { nom: "Maison de la prévention", ico: "🧑‍🤝‍🧑", cat: "securite", niv: 8, si: { t: 10 }, cout: 90, ent: 4, e: { securite: 3, cadre: 1 }, usure: { securite: 0.15 }, ali: { g: 2, c: 1, d: 0, e: 1 }, txt: "Agir avant les problèmes : la sécurité s’use moins vite." },
+    centreCrise: { nom: "Centre de gestion de crise", ico: "🛰️", cat: "securite", niv: 10, si: { t: 12 }, cout: 220, ent: 6, e: { securite: 4 }, cata: 0.25, ali: { g: 1, c: 2, d: 1, e: 1 }, txt: "Une salle de crise prête à tout : catastrophes bien moins graves." },
+    incubateur: { nom: "Incubateur de start-up", ico: "🚀", cat: "economie", niv: 4, si: { t: 4 }, cout: 90, ent: 2, e: {}, rev: 5, eco: 2, ali: { g: 0, c: 2, d: 2, e: 0 }, txt: "Les entreprises de demain naissent ici." },
+    halleGourmande: { nom: "Halle gourmande", ico: "🧀", cat: "economie", niv: 5, si: { t: 6 }, cout: 100, ent: 2, e: { cadre: 1 }, rev: 6, eco: 1, ali: { g: 1, c: 1, d: 1, e: 1 }, txt: "Fromages, pains et touristes affamés." },
+    officeTourisme: { nom: "Office du tourisme", ico: "🗺️", cat: "economie", niv: 6, si: { t: 8 }, cout: 70, ent: 2, e: {}, rev: 4, ali: { g: 0, c: 2, d: 1, e: 0 }, txt: "Les visiteurs dépensent plus quand on les guide." },
+    maisonEmploi: { nom: "Maison de l’emploi", ico: "💼", cat: "economie", niv: 7, si: { t: 8 }, cout: 85, ent: 3, e: { logement: 1 }, eco: 3, popT: 0.08, ali: { g: 2, c: 1, d: 0, e: 0 }, txt: "Un emploi trouvé, un électeur content." },
+    antiGaspi: { nom: "Cellule anti-gaspillage", ico: "🧾", cat: "economie", niv: 8, si: { t: 10 }, cout: 120, ent: 0, e: {}, entretienPct: 8, ali: { g: 0, c: 2, d: 2, e: 1 }, txt: "Elle traque chaque euro dépensé pour rien : −8 % d’entretien." },
+    caisseCredit: { nom: "Caisse municipale de crédit", ico: "🏦", cat: "economie", niv: 9, si: { reel: 1 }, cout: 150, ent: 2, e: {}, interet: 0.3, ali: { g: 1, c: 2, d: 1, e: 0 }, txt: "La ville emprunte à elle-même : −30 % d’intérêts sur la dette." },
+    parcExpositions: { nom: "Parc des expositions", ico: "🎪", cat: "economie", niv: 11, si: { t: 12 }, cout: 280, ent: 5, e: {}, rev: 14, eco: 3, ali: { g: 0, c: 2, d: 2, e: 0 }, txt: "Salons et congrès du monde entier." },
+    quartierAffaires: { nom: "Quartier d’affaires", ico: "🏢", cat: "economie", niv: 13, si: { reel: 1 }, cout: 400, ent: 8, e: { logement: -1 }, rev: 20, eco: 4, ali: { g: -2, c: 1, d: 3, e: -1 }, txt: "Des tours de bureaux : beaucoup de recettes, un peu moins de logements." }
+  };
+  // Bâtiments de prestige : uniques, ils se gagnent aux enchères contre une ville voisine (cout = prix moyen de vente)
+  var ENCHERES = {
+    tourDeFrance: { nom: "Arrivée d’une course cycliste mythique", ico: "🚵", niv: 6, si: { t: 8 }, cout: 140, ent: 0, e: { transports: 2 }, rev: 6, pop: 3, txt: "Chaque été, le monde entier regarde Paris." },
+    impressionnistes: { nom: "Collection impressionniste", ico: "🖼️", niv: 7, si: { t: 8 }, cout: 160, ent: 2, e: { cadre: 3 }, rev: 8, pop: 2, vote: 1, txt: "Des chefs-d’œuvre légués par un collectionneur." },
+    grandeRoue: { nom: "Grande roue géante", ico: "🎡", niv: 7, si: { t: 10 }, cout: 200, ent: 3, e: { cadre: 3 }, rev: 10, pop: 2, txt: "La plus haute d’Europe, avec vue sur toute la ville." },
+    festival: { nom: "Festival international de musique", ico: "🎤", niv: 8, si: { t: 12 }, cout: 220, ent: 0, e: { cadre: 4 }, rev: 12, popT: 0.15, txt: "Trois jours de concerts : toute la ville en parle encore." },
+    studios: { nom: "Studios de cinéma", ico: "🎥", niv: 9, si: { t: 12 }, cout: 300, ent: 4, e: { cadre: 2 }, rev: 16, eco: 3, txt: "Hollywood-sur-Seine." },
+    rechercheMedicale: { nom: "Centre de recherche médicale", ico: "🧬", niv: 11, si: { reel: 1 }, cout: 350, ent: 6, e: { cadre: 6, securite: 2 }, rev: 6, eco: 2, txt: "Des chercheurs du monde entier, des soins de pointe." },
+    aquarium: { nom: "Aquarium géant", ico: "🐠", niv: 12, si: { reel: 1 }, cout: 320, ent: 4, e: { cadre: 4 }, rev: 18, pop: 2, txt: "Des requins sous la Seine (dans des bassins, rassurez-vous)." },
+    siegeInternational: { nom: "Siège d’une organisation internationale", ico: "🌐", niv: 10, si: { reel: 1 }, cout: 380, ent: 2, e: {}, rev: 20, eco: 4, vote: 1, txt: "Diplomates, congrès et prestige mondial." }
+  };
+  // Les villes voisines qui enchérissent contre Paris
+  var VOISINES = ["Boulogne-Billancourt", "Saint-Denis", "Montreuil", "Vincennes", "Neuilly-sur-Seine", "Issy-les-Moulineaux", "Levallois-Perret", "Ivry-sur-Seine"];
+
   // ---------- Missions surprises (« défis improbables ») : une à la fois, courtes ----------
   // depart(st) : mémorise ce qu'il faut ; ok(st, m) : réussie ? · si(st) : peut-elle apparaître ?
   var MISSIONS = {
@@ -288,6 +349,6 @@
   ];
 
   var API = { PERSONNAGES: PERSONNAGES, OBJETS: OBJETS, SECRETS: SECRETS, COMBOS: COMBOS, PROJETS: PROJETS, MISSIONS: MISSIONS,
-    HISTORIQUES: HISTORIQUES, EVENEMENTS: EVENEMENTS, LEON: LEON, REPUTATION: REPUTATION, DEFIS_JOUR: DEFIS_JOUR };
+    HISTORIQUES: HISTORIQUES, EVENEMENTS: EVENEMENTS, BATIMENTS2: BATIMENTS2, ENCHERES: ENCHERES, VOISINES: VOISINES, LEON: LEON, REPUTATION: REPUTATION, DEFIS_JOUR: DEFIS_JOUR };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.MaireContenu = API;
 })(this);
