@@ -323,6 +323,23 @@
     st.coffre = Object.assign(c, { mandat: st.mandat, vu: false });
     stats(st).coffres = (stats(st).coffres || 0) + 1;
   }
+  // Plan de la ville : chaque bâtiment construit occupe un emplacement du plan de Paris, du centre vers l'extérieur.
+  // Les exemplaires sont répartis à tour de rôle (1er parc, 1er commissariat… puis 2e parc…) pour mélanger les quartiers.
+  function planVille(st) {
+    var ids = Object.keys(st.bat).filter(function (id) { return BATIMENTS[id] && st.bat[id] > 0; }), l = [], k = 0, reste = true;
+    while (reste && l.length < C.PLAN.length) {
+      reste = false;
+      ids.forEach(function (id) {
+        if (st.bat[id] > k && l.length < C.PLAN.length) {
+          var B = BATIMENTS[id], p = C.PLAN[l.length];
+          l.push({ id: id, k: k, ico: B.ico, nom: B.nom, x: p[0], y: p[1], gros: !!(B.projet || B.enchere || B.pass || B.secret) });
+          reste = true;
+        }
+      });
+      k++;
+    }
+    return l;
+  }
   function voirCoffre(st0) { if (!st0.coffre || st0.coffre.vu) return st0; var st = copie(st0); st.coffre.vu = true; return st; }
   // Bâtiments qui viennent d'arriver en boutique (niveau atteint, trimestres tenus, réélection) : annoncés une seule fois
   function nouveaux(st) {
@@ -1341,7 +1358,7 @@
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
     roulette: roulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
     RAYONS: RAYONS, gainAchat: gainAchat, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
-    ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
+    ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, planVille: planVille, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.Maire = API;
 })(this);

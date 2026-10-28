@@ -511,6 +511,24 @@ test("l'interface sait reprendre une partie de la version actuelle du moteur", (
   assert.ok(m && +m[1] <= 3 && +m[2] >= v, "lireSauvegarde n'accepte pas la version " + v);
 });
 
+test("plan de Paris : chaque bâtiment a sa place, sans doublon, espacé au début, du centre vers l’extérieur", () => {
+  assert.ok(M.C.PLAN.length >= 300);
+  assert.equal(new Set(M.C.PLAN.map(p => p.join())).size, M.C.PLAN.length, "emplacements uniques");
+  M.C.PLAN.forEach(p => assert.ok(p[0] > 0 && p[0] < 100 && p[1] > 0 && p[1] < 100));
+  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 600, nivJoueur: 20, sansLimite: true });
+  st.tresor = 9000; st.phase = "gestion";
+  assert.deepEqual(M.planVille(st), []);
+  for (const id of ["parc", "parc", "parc", "police", "tram"]) st = M.acheter(st, id);
+  st.bat.grandParc = 1;
+  const l = M.planVille(st);
+  assert.equal(l.length, 6); assert.equal(new Set(l.map(b => b.x + ":" + b.y)).size, 6);
+  assert.deepEqual(l.slice(0, 4).map(b => b.id), ["parc", "police", "tram", "grandParc"], "un exemplaire de chaque d'abord");
+  assert.ok(l.find(b => b.id === "grandParc").gros); assert.ok(!l.find(b => b.id === "parc").gros);
+  assert.deepEqual([l[0].x, l[0].y], M.C.PLAN[0], "le premier bâtiment est au cœur de Paris");
+  for (let a = 0; a < 60; a++) for (let c = a + 1; c < 60; c++) { const P1 = M.C.PLAN[a], P2 = M.C.PLAN[c]; assert.ok(Math.hypot((P1[0] - P2[0]) * 1.5, P1[1] - P2[1]) > 5.5, "les 60 premiers ne se chevauchent pas"); }
+  st.bat.parc = 5000; assert.equal(M.planVille(st).length, M.C.PLAN.length, "jamais plus que le plan ne peut en contenir");
+});
+
 console.log(ok + " tests réussis.\n");
 if (!N) { console.log("Simulation d’équilibrage ignorée (0 partie demandée)."); process.exit(0); }
 

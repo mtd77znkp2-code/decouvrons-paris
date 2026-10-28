@@ -482,6 +482,7 @@
     if (st.opposant) box.appendChild(bandeauOpp());
     if (st.rapport && st.notes && st.notes.length) box.appendChild(notes());
     if (st.chantiers.length) box.appendChild(chantiers());
+    box.appendChild(carteVille(false));
     ajout(box, boutique());
     if (st.meca.budget) box.appendChild(budget());
     box.appendChild(journal());
@@ -1268,6 +1269,75 @@
     haut();
   }
 
+  // ---------- Plan de Paris : la ville se construit sous tes yeux ----------
+  var villeVue = null, villeOuverte = true;
+  function plan(grand, nouveaux) {
+    var cadre = h("div", "m-plan" + (grand ? " m-plan-grand" : "")), img = h("img");
+    img.src = grand ? "maire/img/plan-paris.webp" : "maire/img/plan-paris-petit.webp"; img.alt = "Plan de Paris"; img.width = 1536; img.height = 1024; img.decoding = "async";
+    cadre.appendChild(img);
+    M.planVille(st).forEach(function (b) {
+      var e = h("span", "m-v" + (b.gros ? " m-v-gros" : "") + (nouveaux && nouveaux[b.id + ":" + b.k] ? " m-v-neuf" : ""), b.ico);
+      e.style.left = b.x + "%"; e.style.top = b.y + "%"; e.title = b.nom; cadre.appendChild(e);
+    });
+    return cadre;
+  }
+  function carteVille(fin) {
+    var l = M.planVille(st), nouveaux = {};
+    // Ce qui vient d'être construit depuis le dernier affichage apparaît avec une petite animation
+    if (villeVue && villeVue.pid === st.pid) l.forEach(function (b) { if (!villeVue.l[b.id + ":" + b.k]) nouveaux[b.id + ":" + b.k] = 1; });
+    villeVue = { pid: st.pid, l: {} }; l.forEach(function (b) { villeVue.l[b.id + ":" + b.k] = 1; });
+    var d = h("details", "m-ville"); d.open = fin || villeOuverte; d.ontoggle = function () { if (!fin) villeOuverte = d.open; };
+    d.appendChild(ajout(h("summary"), h("span", null, "🗺️ " + (fin ? "Le Paris que tu laisses" : "Ton Paris")), h("small", null, l.length + " bâtiment" + (l.length > 1 ? "s" : "") + " sur le plan")));
+    var p = plan(false, nouveaux); p.onclick = function () { pleinEcranVille(); }; d.appendChild(p);
+    if (!l.length) d.appendChild(h("small", "m-aide", "Achète ton premier bâtiment : il apparaîtra ici, au cœur de Paris."));
+    d.appendChild(ajout(h("div", "m-bas"), bouton("🔍 Agrandir", "btn m-sec", pleinEcranVille), l.length ? bouton("📸 Partager ma ville", "btn " + (fin ? "m-go" : "m-sec"), partagerVille) : null));
+    return d;
+  }
+  function pleinEcranVille() {
+    var m = h("div", "m-pop m-pop-ville"); m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true");
+    var c = h("div", "m-ville-plein"), z = h("div", "m-ville-zoom");
+    z.appendChild(plan(true));
+    function fermer() { m.remove(); document.body.classList.remove("m-modal"); }
+    ajout(c, ajout(h("div", "m-tel-tete"), h("strong", null, "🗺️ Ton Paris · " + M.planVille(st).length + " bâtiments"), bouton("✕", "m-leonx", fermer)), z,
+      h("small", "m-aide", "Fais glisser pour te promener dans la ville."), bouton("📸 Partager ma ville", "btn m-go", partagerVille));
+    m.appendChild(c); m.onclick = function (e) { if (e.target === m) fermer(); };
+    (document.getElementById("g-maire") || document.body).appendChild(m); document.body.classList.add("m-modal");
+    setTimeout(function () { z.scrollLeft = (z.scrollWidth - z.clientWidth) / 2; z.scrollTop = (z.scrollHeight - z.clientHeight) / 2; }, 50);
+  }
+  // Image à partager : le plan, les bâtiments, et un bandeau avec le bilan
+  function partagerVille(ev) {
+    var bt = ev && ev.currentTarget, l = M.planVille(st), img = new Image();
+    if (bt) { bt.disabled = true; bt.textContent = "Préparation de l’image…"; }
+    img.onload = function () {
+      var W = 1536, H = 1024, c = document.createElement("canvas"); c.width = W; c.height = H + 150;
+      var x = c.getContext("2d");
+      x.fillStyle = "#1b2550"; x.fillRect(0, 0, W, H + 150); x.drawImage(img, 0, 150, W, H);
+      x.textAlign = "center"; x.textBaseline = "middle";
+      l.forEach(function (b) {
+        var px = b.x / 100 * W, py = 150 + b.y / 100 * H, r = b.gros ? 30 : 21;
+        x.fillStyle = "rgba(255,255,255,.88)"; x.beginPath(); x.arc(px, py, r, 0, Math.PI * 2); x.fill();
+        x.font = (b.gros ? 38 : 26) + "px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif"; x.fillText(b.ico, px, py + 2);
+      });
+      var bi = M.bilan(st);
+      x.fillStyle = "#ffd970"; x.font = "bold 54px system-ui,sans-serif"; x.fillText("🏛️ Mon Paris · " + l.length + " bâtiments", W / 2, 58);
+      x.fillStyle = "#ffffff"; x.font = "32px system-ui,sans-serif";
+      x.fillText("Mandat " + st.mandat + " · " + M.duree(st.t) + " à l’Hôtel de Ville · score " + bi.score + " · " + location.host, W / 2, 112);
+      c.toBlob(function (blob) {
+        if (bt) { bt.disabled = false; bt.textContent = "📸 Partager ma ville"; }
+        if (!blob) return;
+        var f = null; try { f = new File([blob], "mon-paris.jpg", { type: "image/jpeg" }); } catch (e) {}
+        if (f && navigator.canShare && navigator.canShare({ files: [f] })) {
+          navigator.share({ files: [f], title: "Mon Paris", text: "Voilà le Paris que j’ai construit ! " + location.origin + location.pathname }).catch(function () {});
+        } else {
+          var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "mon-paris.jpg"; document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000); toast("📸 Image enregistrée : mon-paris.jpg");
+        }
+      }, "image/jpeg", 0.86);
+    };
+    img.onerror = function () { if (bt) { bt.disabled = false; bt.textContent = "📸 Partager ma ville"; } toast("Impossible de préparer l’image."); };
+    img.src = "maire/img/plan-paris.webp";
+  }
+
   // Coffre de la victoire : on le secoue, il s'ouvre, la surprise apparaît
   function carteCoffre() {
     var c = st.coffre, d = h("div", "m-coffre" + (c.vu ? " m-coffre-ouvert" : "") + (c.type === "jackpot" ? " m-coffre-jackpot" : ""));
@@ -1309,6 +1379,7 @@
     if (e && st.fin.raison.type === "election") box.appendChild(carteElection(e));
     if (an) { var a = h("div", "m-analyse"); ajout(a, h("p", "m-sur", "Ce qui s’est passé"), h("p", null, an.phrase), h("p", "m-conseil", "💡 " + an.conseil)); box.appendChild(a); }
     box.appendChild(carteRecit(b));
+    box.appendChild(carteVille(true));
     var gz = h("div", "m-gains"); box.appendChild(gz);
     if (!st.prog && !comptage) {
       comptage = true;
