@@ -1701,18 +1701,61 @@
     if (st.habDelta > 3000) sujet(3, "Paris attire : " + st.habDelta.toLocaleString("fr-FR") + " nouveaux habitants", ["On vient d’emménager, on adore le quartier !", "Paris, ça reste Paris."]);
     if (M.bonheur(st) >= 60) sujet(2, "Les Parisiens heureux", ["Franchement, la ville n’a jamais été aussi agréable.", "Bravo à la mairie pour le quartier."]);
     if (st.pop >= 55) sujet(1, "Le maire au sommet des sondages", ["Je revoterai pour lui sans hésiter.", "Enfin un maire qui écoute."]);
+    // Besoins non comblés : on le demande, puis on s'énerve, puis on part
+    M.etatBesoins(st).forEach(function (b) {
+      if (b.ok) return;
+      var c = CITS_BESOINS[b.id] || ["Il nous faudrait des " + b.nom + ".", "Toujours pas de " + b.nom + " !", "On part, il n’y a pas de " + b.nom + " ici."];
+      var et = b.age >= 4 ? 2 : b.age >= 2 ? 1 : 0;
+      sujet(16 + b.age * 3, [b.ico + " Les Parisiens réclament des " + b.nom, b.ico + " Toujours pas de " + b.nom + " : la colère monte", b.ico + " Faute de " + b.nom + ", des familles quittent Paris"][et], [c[et]]);
+    });
+    Object.keys(st.besoinsOk || {}).forEach(function (id) {
+      var b = M.BESOINS.filter(function (x) { return x.id === id; })[0]; if (b && st.besoinsOk[id] === st.t) sujet(5, b.ico + " Enfin des " + b.nom + " !", ["Merci pour les nouveaux " + b.nom + ", ça change la vie."]);
+    });
     if (!l.length) sujet(0, "Une semaine calme à Paris", ["Rien à signaler, et c’est tant mieux.", "Paris tourne, tranquillement."]);
     l.sort(function (a, b) { return b.g - a.g; });
     var d = h("div", "m-journal");
-    ajout(d, ajout(h("div", "m-journal-tete"), h("b", null, "Le Journal de Paris"), h("small", null, "n° " + st.t)), h("p", "m-journal-une", l[0].une));
+    d.appendChild(ajout(h("div", "m-journal-tete"), h("b", null, "Le Journal de Paris"), h("small", null, "n° " + st.t)));
+    // Dépêche du rival : en tête du journal, tant que le manque n'est pas comblé
+    var o = st.opposant && st.opposant.actif ? M.opposant(st) : null;
+    if (st.depeche && o) {
+      var bd = M.BESOINS.filter(function (x) { return x.id === st.depeche.id; })[0];
+      d.appendChild(ajout(h("div", "m-depeche"), h("b", null, "⚡ DÉPÊCHE · " + o.nom), h("q", null, (DEPECHES[st.depeche.id] || "Ce maire laisse Paris sans " + (bd ? bd.nom : "rien") + " !")),
+        h("small", null, "Des Parisiens partent chaque trimestre tant que tu ne construis pas de " + (bd ? bd.nom : "quoi répondre") + ".")));
+    }
+    d.appendChild(h("p", "m-journal-une", l[0].une));
     var u = h("ul");
     l.slice(0, 3).forEach(function (x, k) {
       var c = x.cits[(st.t + k) % x.cits.length], n = PRENOMS[(st.t * 7 + k * 3) % PRENOMS.length], age = 19 + (st.t * 13 + k * 17) % 60, arr = 1 + (st.t * 5 + k * 11) % 20;
       u.appendChild(ajout(h("li"), h("q", null, c), h("small", null, n + ", " + age + " ans, " + arr + (arr === 1 ? "er" : "e"))));
     });
     d.appendChild(u);
+    // Le mot du rival, à chaque numéro
+    if (o) {
+      var tm = M.trimMandat(st), proch = (Math.floor(tm / 4) + 1) * 4 - tm, so = M.sondage(st);
+      var mot = st.depeche ? "Je l’avais dit : ce maire n’écoute personne." : so < 48 ? "Les Parisiens en ont assez. Je serai leur prochain maire." : proch <= 1 ? "Mon heure approche. Ce maire va le sentir passer." : so > 55 ? "Profitez-en, ça ne durera pas." : "Je surveille chaque erreur de ce maire.";
+      d.appendChild(ajout(h("div", "m-rival"), h("span", null, o.ico), ajout(h("div"), h("small", null, "Le mot de ton rival · " + o.nom + (st.opposant.revanche ? " (revanche n° " + st.opposant.revanche + ")" : "")), h("q", null, mot))));
+    }
     return d;
   }
+  var CITS_BESOINS = {
+    parcs: ["Un petit parc pour les enfants, c’est trop demander ?", "Toujours pas un brin d’herbe dans le quartier !", "On déménage à la campagne, ici il n’y a même pas un parc."],
+    manger: ["Il faut traverser tout l’arrondissement pour acheter du pain.", "Pas une boulangerie, pas un kebab : on mange quoi ?", "On part, ici on ne trouve même pas de quoi manger."],
+    transports: ["Il nous faudrait des pistes cyclables et des bus.", "Toujours aucun transport correct, ça devient pénible !", "Trop loin de tout : on quitte Paris."],
+    police: ["Un commissariat de quartier, ça rassurerait tout le monde.", "Toujours pas de policiers, la nuit ça craint !", "On part, on ne se sent plus en sécurité."],
+    ecoles: ["Mes enfants font 40 minutes de trajet pour aller à l’école.", "Toujours pas d’école dans le quartier, c’est une honte !", "On quitte Paris : pas d’école pour nos enfants."],
+    culture: ["Une médiathèque, un cinéma… il n’y a rien à faire ici.", "Toujours aucun lieu de culture, Paris s’ennuie !", "On part, cette ville est devenue une cité-dortoir."],
+    pompiers: ["Si le feu prend, les pompiers mettent une éternité.", "Toujours pas de caserne de pompiers, on a peur !", "On part avant qu’un drame arrive."],
+    sport: ["Pas une piscine ni un stade pour faire du sport.", "Toujours pas d’équipement sportif, nos jeunes tournent en rond !", "On part, il n’y a rien pour bouger ici."],
+    proprete: ["Les trottoirs sont sales, il faut des agents de propreté.", "Les poubelles débordent, toujours personne pour nettoyer !", "On part, la rue est devenue une décharge."],
+    sante: ["Trois mois d’attente pour voir un médecin.", "Toujours pas de centre de santé, on se soigne comment ?", "On part : se soigner à Paris est devenu impossible."]
+  };
+  var DEPECHES = {
+    parcs: "Pas un parc digne de ce nom : ce maire étouffe les Parisiens !", manger: "Des quartiers entiers sans un commerce : ce maire affame Paris !",
+    transports: "Paris paralysé : ce maire laisse les Parisiens à pied !", police: "Les rues livrées à elles-mêmes : où est la police de ce maire ?",
+    ecoles: "Pas une école digne de ce nom : ce maire abandonne nos enfants !", culture: "Paris, capitale de la culture ? Sous ce maire, il n’y a plus rien !",
+    pompiers: "Sans caserne de pompiers, ce maire joue avec la vie des Parisiens !", sport: "Ni piscine ni stade : ce maire oublie la jeunesse !",
+    proprete: "Paris croule sous les déchets : ce maire a baissé les bras !", sante: "Des déserts médicaux en plein Paris : ce maire est responsable !"
+  };
   function pleinEcranVille() {
     var m = h("div", "m-pop m-pop-ville"); m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true");
     var c = h("div", "m-ville-plein"), z = h("div", "m-ville-zoom");

@@ -747,6 +747,9 @@ function acheteMalin(st, reserve, essais) {
       const vise = (st.objectifs || []).filter(o => !M.objectifs(st).find(e => e.k === o.k && e.ok && e.txt === o.txt));
       let v = 0; for (const k in B.e) v += B.e[k] * Math.max(0, 75 - st.piliers[k]) / 20 * (st.ambitions.includes(k) ? 1.5 : 1) * (vise.some(o => o.k === "pilier" && o.p === k) ? 1.8 : 1);
       if (vise.some(o => o.k === "rayon" && o.r === B.cat)) v *= 1.6;
+      // Il lit le Journal de Paris : ce qui comble un besoin des habitants passe en priorité
+      const manques = M.etatBesoins(st).filter(b => !b.ok).map(b => b.id);
+      if (M.BESOINS.some(b => manques.includes(b.id) && b.bats.includes(id))) v = v * 3 + 2;
       v = v / (px + B.ent * 16) * 100 + (B.rev || 0) * 16 / px * (st.tresor < 300 ? 3 : 1) + (B.pop || 0) / 3;
       if (v > bv) { bv = v; best = id; }
     }
@@ -761,6 +764,7 @@ const STRATS = {
   "réfléchi": { choix: (st, ev) => ev.choix.map((c, i) => [valeur(st, c, 1), i]).sort((a, b) => b[0] - a[0])[0][1],
     gere: st => {
       if (st.meca.budget) { const s = M.solde(st); if (s < -15 && st.taux < 1.1) st = M.regler(st, { taux: st.taux + 0.05 }); else if (s > 40 && st.taux > 0.95) st = M.regler(st, { taux: st.taux - 0.05 }); }
+      if (M.anticipeePossible(st)) st = M.demanderAnticipee(st);
       return acheteMalin(st, 150, 1);
     } },
   "dépensier": { choix: (st, ev) => ev.choix.map((c, i) => [valeur(st, c, 0), i]).sort((a, b) => b[0] - a[0])[0][1], gere: st => acheteMalin(st, -3000, 3) },

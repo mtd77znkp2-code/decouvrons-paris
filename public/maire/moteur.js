@@ -310,7 +310,7 @@
       combos: [], decouvertes: [], objets: [], secrets: {}, persos: {}, mods: { entretien: 1, recettes: 0 }, conditions: [], suitesSpe: [],
       histoMandat: 0, alerte: null, repit: 0, pariMandat: 0, pariCd: 0, leon: null, uniques: {}, emprunts: 0, ampleur: {}, scenario: null, passBats: {}, assurance: 0,
       maire: null, crise: null, objectifs: [], prochainDossier: 0, anticipee: null, mandatBats: {}, mandatTypes: {}, mandatBase: {},
-      xp: 0, xpLog: [], xpSrc: {}, montees: [], succesPartie: [], suivi: {}, enchere: null, encheresCd: {}, hab: HAB0, habDelta: 0 };
+      xp: 0, xpLog: [], xpSrc: {}, montees: [], succesPartie: [], suivi: {}, enchere: null, encheresCd: {}, hab: HAB0, habDelta: 0, besoins: {}, besoinsOk: {}, depeche: null };
     Object.keys(d).forEach(function (k) { if (st[k] == null) st[k] = d[k]; });
     if (st.nivJ == null) st.nivJ = 99;
     if (!st.meca) st.meca = mecaniques(st.nivJ);
@@ -601,6 +601,54 @@
     var n = EMP0 + (bonusMaire(st).emplois || 0); Object.keys(st.bat || {}).forEach(function (id) { var B = BATIMENTS[id]; if (!B) return; n += (B.emplois || (B.cat === "economie" ? 3000 : 0)) * st.bat[id]; });
     return n;
   }
+  // ---------- Besoins des habitants : écoles, médecins, pompiers, commerces de bouche… ----------
+  // Un besoin apparaît dès que le joueur peut construire de quoi y répondre (lien avec sa progression).
+  // Il faut 1 bâtiment, puis 1 de plus par tranche d'habitants supplémentaires (« par »).
+  // Non comblé : les habitants s'en plaignent (journal), puis, au bout d'un an, quelques familles partent, un peu plus chaque trimestre.
+  var BESOINS = [
+    { id: "parcs", nom: "parcs", ico: "🌳", bats: ["parc", "jardinsPartages", "foretUrbaine", "grandParc"], par: 120000 },
+    { id: "manger", nom: "commerces pour faire ses courses", ico: "🥖", bats: ["boulangerie", "kebab", "franprix", "tastyCrousty", "monop", "mcdo", "marche", "halleGourmande"], par: 100000 },
+    { id: "transports", nom: "transports", ico: "🚲", bats: ["velo", "velib", "busElec", "tram", "metro"], par: 150000 },
+    { id: "police", nom: "policiers", ico: "🚓", bats: ["police", "mediateurs", "policeProximite"], par: 150000 },
+    { id: "ecoles", nom: "écoles", ico: "🏫", bats: ["ecole", "conservatoire"], par: 120000 },
+    { id: "culture", nom: "lieux de culture", ico: "📚", bats: ["mediatheque", "cinePleinAir", "musee"], par: 200000 },
+    { id: "pompiers", nom: "casernes de pompiers", ico: "🚒", bats: ["pompiers", "centreCrise"], par: 250000 },
+    { id: "sport", nom: "équipements sportifs", ico: "🏊", bats: ["piscine", "stade"], par: 200000 },
+    { id: "proprete", nom: "agents de propreté", ico: "🧹", bats: ["proprete"], par: 250000 },
+    { id: "sante", nom: "médecins", ico: "🩺", bats: ["centreSante", "hopital"], par: 150000 }
+  ];
+  function etatBesoins(st) {
+    return BESOINS.filter(function (b) { return b.bats.some(function (id) { return BATIMENTS[id] && (BATIMENTS[id].niv || 1) <= (st.nivJ || 99); }); }).map(function (b) {
+      var a = 0; b.bats.forEach(function (id) { a += (st.bat && st.bat[id]) || 0; });
+      var requis = 1 + Math.floor(Math.max(0, (st.hab || HAB0) - HAB0) / b.par), x = (st.besoins || {})[b.id];
+      return { id: b.id, nom: b.nom, ico: b.ico, a: a, requis: requis, ok: a >= requis, age: a >= requis || !x ? 0 : st.t - x.depuis };
+    });
+  }
+  // Une fois par trimestre : âge des besoins non comblés, départs proportionnés, dépêches du rival
+  function suivreBesoins(st) {
+    var l = etatBesoins(st), pct = 0, dep = st.depeche;
+    st.besoins = st.besoins || {}; st.besoinsOk = {};
+    l.forEach(function (b) {
+      if (b.ok) { if (st.besoins[b.id]) { st.besoinsOk[b.id] = st.t; delete st.besoins[b.id]; } return; }
+      if (!st.besoins[b.id]) st.besoins[b.id] = { depuis: st.t };
+      var age = st.t - st.besoins[b.id].depuis;
+      if (age >= 4) pct -= 0.02 * Math.min(3, age - 3);
+    });
+    // Départs proportionnés : quelques centaines de familles par besoin, jamais plus de 0,2 % de la ville par trimestre
+    pct = Math.max(-0.2, pct);
+    // Dépêche du rival : il pointe un manque de la ville ; tant qu'il n'est pas comblé, des Parisiens partent et la popularité s'effrite
+    if (dep && (!st.besoins[dep.id])) { st.depeche = null; dep = null; }
+    if (dep) { pct -= 0.05; st.pop = borne(st.pop - 0.3); }
+    else if (st.opposant && st.opposant.actif && st.meca.opposant) {
+      var cand = l.filter(function (b) { return !b.ok && st.t - st.besoins[b.id].depuis >= 2; });
+      if (cand.length && rnd(st) < 0.2) {
+        var c = cand[Math.floor(rnd(st) * cand.length)];
+        st.depeche = { id: c.id, t: st.t, opp: st.opposant.i };
+        message(st, "⚡", "Dépêche de " + OPPOSANTS[st.opposant.i].nom, "Ton rival dénonce le manque de " + c.nom + " à Paris. Tant que ce n’est pas réglé, des Parisiens partent.");
+      }
+    }
+    return pct;
+  }
   function chomage(st) { var actifs = (st.hab || HAB0) * 0.5; return Math.max(2, Math.min(25, Math.round((actifs - emplois(st)) / actifs * 1000) / 10)); }
   function bougerHab(st, pct) { var a = st.hab || HAB0, n = Math.round(a * (1 + pct / 100)); n = Math.max(Math.round(HAB0 * 0.75), Math.min(Math.round(HAB0 * 1.3), n)); st.hab = n; return n - a; }
   function demographie(st, popAvant) {
@@ -609,7 +657,8 @@
     else if (tend < -0.8) pct = (tend + 0.8) * 0.12;
     else if (tend > 0.4) pct = tend * 0.15;
     // Besoins des habitants : sécurité et cadre de vie à la hauteur de la population, et du travail pour tous
-    var bes = besoin(st), manque = Math.max(0, bes - st.piliers.securite) + Math.max(0, bes - st.piliers.cadre), ch = chomage(st);
+    var bes = besoin(st), manque = Math.max(0, bes - st.piliers.securite) + Math.max(0, bes - st.piliers.cadre), ch = chomage(st), pb = suivreBesoins(st);
+    if (pb < 0) pct = Math.min(pct, 0) + pb;
     if (manque > 0) pct = Math.min(pct, 0) - manque * 0.03;
     if (ch > 10) pct = Math.min(pct, 0) - (ch - 10) * 0.04;
     // Les arrivées s'arrêtent quand tous les logements sont occupés
@@ -1681,7 +1730,7 @@
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
-    roulette: roulette, anticipeePossible: anticipeePossible, demanderAnticipee: demanderAnticipee, HAB0: HAB0, LOGE: LOGE, capacite: capacite, besoin: besoin, emplois: emplois, chomage: chomage, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, mjPoker: mjPoker, mjPokerLigne: mjPokerLigne, mjPokerResultat: mjPokerResultat, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
+    roulette: roulette, anticipeePossible: anticipeePossible, demanderAnticipee: demanderAnticipee, HAB0: HAB0, LOGE: LOGE, capacite: capacite, besoin: besoin, emplois: emplois, chomage: chomage, BESOINS: BESOINS, etatBesoins: etatBesoins, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, mjPoker: mjPoker, mjPokerLigne: mjPokerLigne, mjPokerResultat: mjPokerResultat, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
     palier: palier, PALIERS: PALIERS, RAYONS: RAYONS, gainAchat: gainAchat, coutBat: coutBat, objectifs: objectifs, objectifsOk: objectifsOk, retraite: retraite, criseEnCours: criseEnCours, bonusMaire: bonusMaire, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
     ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, planVille: planVille, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };
