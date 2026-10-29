@@ -242,13 +242,25 @@ var musique=(function(){
       }).then(function(x){clics[k]=x}).catch(function(){});
     });
   }
+  // Effets sonores du jeu : window.sfx("carte") joue audio/sfx-carte.mp3 (chargé à la première demande, puis instantané)
+  var SFX={},SFXc={};
+  function jouerBuf(buf,vol){if(!ctx||!buf||muet)return;if(ctx.state==="suspended")ctx.resume();var s=ctx.createBufferSource(),g=ctx.createGain();g.gain.value=vol==null?.8:vol;s.buffer=buf;s.connect(g);g.connect(ctx.destination);s.start(0)}
+  function chargerSfx(nom,puis){
+    if(SFX[nom]||SFXc[nom]||!ctx)return;SFXc[nom]=1;
+    fetch("audio/sfx-"+nom+".mp3").then(function(r){return r.arrayBuffer()}).then(function(b){
+      return new Promise(function(ok,ko){var p=ctx.decodeAudioData(b,ok,ko);if(p&&p.then)p.then(ok,ko)});
+    }).then(function(x){SFX[nom]=x;if(puis)puis(x)}).catch(function(){SFXc[nom]=0});
+  }
+  window.sfx=function(nom,vol){chargerClic();if(SFX[nom])jouerBuf(SFX[nom],vol);else chargerSfx(nom,function(x){jouerBuf(x,vol)})};
+  // Préchargés pour être prêts au bon moment
+  setTimeout(function(){chargerClic();["carte"].forEach(function(n){chargerSfx(n)})},1500);
   function clic(e){
     var b=e.target&&e.target.closest&&e.target.closest("button,.btn,[role=button]");
     if(!b||muet||b.disabled||b.id==="jouer"||b.classList.contains("entree"))return;
     var buf=clics[b.matches(SECONDAIRE)?"b":"a"];
     chargerClic();if(!ctx||!buf)return;
     if(ctx.state==="suspended")ctx.resume();
-    var s=ctx.createBufferSource(),g=ctx.createGain();g.gain.value=.6;s.buffer=buf;s.connect(g);g.connect(ctx.destination);s.start(0);
+    jouerBuf(buf,.6);
   }
   document.addEventListener("click",clic,true);
   chargerClic();

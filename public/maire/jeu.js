@@ -1262,7 +1262,7 @@
       (function dessin() {
         zone.innerHTML = "";
         var b = J().bj, cache = !b.fini;
-        function main(t, l, val) { var m = h("div", "m-bj-main"); l.forEach(function (c, k) { var e = carteJeu(c, cache && t === "c" && k === 1); e.style.animationDelay = (e.classList.contains("m-donne") ? k * 0.12 : 0) + "s"; m.appendChild(e); }); return ajout(h("div", "m-bj-ligne"), h("small", "m-bj-val", (t === "j" ? "Toi" : "Croupier") + (val != null ? " · " + val : "")), m); }
+        function main(t, l, val) { var m = h("div", "m-bj-main"); l.forEach(function (c, k) { var e = carteJeu(c, cache && t === "c" && k === 1); posee(e, k); m.appendChild(e); }); return ajout(h("div", "m-bj-ligne"), h("small", "m-bj-val", (t === "j" ? "Toi" : "Croupier") + (val != null ? " · " + val : "")), m); }
         zone.appendChild(ajout(tapis(), main("c", b.c, cache ? null : M.valeurMain(b.c)), main("j", b.j, M.valeurMain(b.j))));
         if (!b.fini) {
           zone.appendChild(ajout(h("div", "m-bas"), bouton("Tirer une carte", "btn m-sec", function () { st = M.mjBlackjack(st, i, "tirer"); sauver(); dessin(); }),
@@ -1300,6 +1300,14 @@
     if (!avant) d.classList.add("m-donne"); else if (avant === "cache" && !cache) d.classList.add("m-retourne");
     cartesVues[cle] = cache ? "cache" : "vue";
     return d;
+  }
+  // Carte distribuée : petit décalage entre les cartes d'une main, et son de carte qui glisse au moment où elle arrive
+  var dernierSonCarte = 0;
+  function posee(e, k) {
+    if (!e.classList.contains("m-donne")) return;
+    e.style.animationDelay = k * 0.12 + "s";
+    var quand = Math.max(Date.now() + k * 120, dernierSonCarte + 110); dernierSonCarte = quand;
+    setTimeout(function () { if (window.sfx) window.sfx("carte"); }, quand - Date.now());
   }
   // Tapis vert du blackjack : sabot de cartes et pile de jetons en décor
   function tapis() {
@@ -1439,7 +1447,7 @@
       tel.appendChild(h("h4", null, "🃏 Blackjack · mise " + argent(b.mise)));
       var main = function (titre, cartes, cache) {
         var d = h("div", "m-main"); d.appendChild(h("small", null, titre + " · " + (cache ? "?" : M.valeurMain(cartes))));
-        var r = h("div", "m-cartes"); cartes.forEach(function (c, i) { var e = carteJeu(c, cache && i === 1); e.style.animationDelay = (e.classList.contains("m-donne") ? i * 0.12 : 0) + "s"; r.appendChild(e); }); d.appendChild(r); return d;
+        var r = h("div", "m-cartes"); cartes.forEach(function (c, i) { var e = carteJeu(c, cache && i === 1); posee(e, i); r.appendChild(e); }); d.appendChild(r); return d;
       };
       if (!b.fini && b.j.length === 2 && b.c.length === 2) cartesVues = {};
       tel.appendChild(ajout(tapis(), main("Croupier (Monsieur Valentin)", b.c, !b.fini), main("Toi", b.j, false)));
