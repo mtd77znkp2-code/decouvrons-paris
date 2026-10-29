@@ -223,7 +223,8 @@ var musique=(function(){
   function entree(){
     if(document.querySelector(".entree"))return;
     var d=document.createElement("button");d.type="button";d.className="entree";
-    d.innerHTML='<img src="img/logo.webp" alt="" width="200" height="200"><span>Touche l’écran pour entrer</span><small>🎵 avec le son</small>';
+    var souris=window.matchMedia&&matchMedia("(hover: hover) and (pointer: fine)").matches;
+    d.innerHTML='<img src="img/logo.webp" alt="" width="200" height="200"><span>'+(souris?"Clique pour entrer":"Touche l’écran pour entrer")+'</span>';
     d.onclick=function(){geste();d.classList.add("entree-fin");setTimeout(function(){d.remove()},450)};
     document.body.appendChild(d);
   }
