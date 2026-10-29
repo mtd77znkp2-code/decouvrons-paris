@@ -99,7 +99,7 @@ function tab(s){
   if(s==="videos"&&window.dInit)setTimeout(dInit,0);
   if(s==="jeux")loadMaire();
 }
-Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){b.onclick=function(){tab(b.dataset.s);document.getElementById("site").scrollIntoView({block:"start"})}});
+Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){b.onclick=function(){tab(b.dataset.s);enHaut()}});
 
 // Connexion (pseudo, gardé sur cet appareil)
 window.user="";
@@ -185,22 +185,34 @@ $("adminLogout").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut(
   // La vidéo s'arrête quand on ne voit plus l'accueil (batterie et données)
   if("IntersectionObserver" in window)new IntersectionObserver(function(e){if(calme)return;if(e[0].isIntersecting){var p=v.play();if(p&&p.catch)p.catch(function(){})}else v.pause()}).observe(document.getElementById("home"));
 })();
-function goTo(s){var st=document.getElementById("site");st.hidden=false;tab(s);setTimeout(function(){st.scrollIntoView({behavior:"smooth",block:"start"})},50)}
+// L'accueil et le site sont deux écrans séparés : on passe de l'un à l'autre sans défiler
+function enHaut(){var h=document.documentElement;h.style.scrollBehavior="auto";window.scrollTo(0,0);h.style.scrollBehavior=""}
+function ecran(s){
+  var home=document.getElementById("home"),st=document.getElementById("site");
+  home.hidden=!!s;st.hidden=!s;
+  if(s)tab(s);
+  var v=document.getElementById("homeVideo");if(v&&s)v.pause();else if(v&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)){var p=v.play();if(p&&p.catch)p.catch(function(){})}
+  enHaut();
+}
+// Adresses : #jouer et #decouvre (pas les id des sections, sinon le navigateur défile tout seul jusqu'à elles)
+var ADR={jeux:"#jouer",videos:"#decouvre"};
+function depuisAdr(h){return h==="#jouer"||h==="#jeux"?"jeux":h==="#decouvre"||h==="#videos"?"videos":""}
+function goTo(s){ecran(s);if(location.hash!==ADR[s]){history.pushState(null,"",ADR[s]);window._dejaPousse=1}}
+function menuPrincipal(){if(window._dejaPousse&&location.hash)history.back();else{ecran("");history.replaceState(null,"",location.pathname+location.search)}}
+window.addEventListener("popstate",function(){var s=depuisAdr(location.hash);ecran(s);if(s&&location.hash!==ADR[s]){history.replaceState(null,"",ADR[s]);setTimeout(enHaut,30)}});
 document.querySelector(".hdecouvre").onclick=function(){goTo("videos")};
-// « Jouer » : l'écran se dérègle façon bug informatique, puis le jeu apparaît
+// « Jouer » : l'écran se dérègle façon bug informatique, puis le jeu le remplace
 document.getElementById("jouer").onclick=function(){
   if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return goTo("jeux");
   var g=document.createElement("div");g.className="glitch";g.setAttribute("aria-hidden","true");
   for(var i=0,b="";i<9;i++)b+='<i class="gl-b" style="top:'+Math.round(Math.random()*95)+'%;height:'+(2+Math.round(Math.random()*9))+'%;--d:'+(Math.random()<.5?"-":"")+(4+Math.round(Math.random()*14))+'%"></i>';
   g.innerHTML=b;
   document.body.appendChild(g);document.body.classList.add("glitching");
-  function vaJeu(){var st=document.getElementById("site"),h=document.documentElement;h.style.scrollBehavior="auto";window.scrollTo(0,st.getBoundingClientRect().top+window.scrollY);h.style.scrollBehavior=""}
-  setTimeout(function(){document.getElementById("site").hidden=false;tab("jeux");vaJeu()},230);
+  setTimeout(function(){goTo("jeux")},230);
   setTimeout(function(){g.classList.add("gl-fin")},440);
-  setTimeout(function(){g.remove();document.body.classList.remove("glitching");vaJeu()},600);
+  setTimeout(function(){g.remove();document.body.classList.remove("glitching")},600);
 };
-document.getElementById("back").onclick=function(){document.getElementById("home").scrollIntoView({behavior:"smooth",block:"start"})};
-// Arrivée sur le site : toujours en haut, sur la vidéo (le navigateur ne reprend pas l'ancienne position)
+document.getElementById("back").onclick=menuPrincipal;
 if("scrollRestoration" in history)history.scrollRestoration="manual";
-if(location.hash==="#jeux")goTo("jeux");else window.scrollTo(0,0);
-window.addEventListener("pageshow",function(e){if(e.persisted&&location.hash!=="#jeux")window.scrollTo(0,0)});
+(function(){var s=depuisAdr(location.hash);if(s){ecran(s);history.replaceState(null,"",ADR[s])}else enHaut()})();
+window.addEventListener("pageshow",function(e){if(e.persisted)enHaut()});

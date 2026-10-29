@@ -277,3 +277,6 @@ h2{font-size:clamp(26px,6vw,32px);margin:22px 0 4px}
 .gl-fin{opacity:0;transition:opacity .12s}
 body.glitching #home,body.glitching #site{animation:gl-secoue .26s steps(5) both}
 @keyframes gl-secoue{20%{transform:translate(12px,-5px) skewX(-7deg)}40%{transform:translate(-10px,4px) skewX(6deg)}60%{transform:translate(6px,6px) scale(1.04)}80%{transform:translate(-4px,-2px) skewX(-3deg)}100%{transform:none}}
+.brand .mp{display:inline-flex;align-items:center;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);font-size:14px;font-weight:800;color:#fff}
+.brand:hover .mp{background:rgba(255,255,255,.18)}
+@media (max-width:600px){.brand .mp{display:inline-flex}.brand img{display:none}.brand .mp-l{display:none}}
