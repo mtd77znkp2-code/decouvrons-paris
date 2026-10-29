@@ -598,6 +598,16 @@ test("personnages : avantages et défauts réels, déblocage selon le profil", (
 test("casino des dossiers : chaque réponse se gagne au blackjack ou à la roulette, sauf la réponse libre", () => {
   // Toujours au moins une réponse libre : « Rien », « Refuser », « Laisser faire »… ou, à défaut, la plus faible
   for (const ev of tous) if (ev.choix && ev.choix.length >= 2) { const l = M.choixLibre(ev); assert.ok(l.length >= 1 && l.length < ev.choix.length || ev.choix.every(c => /^(rien|ne rien|ne pas |refuser|laisser|attendre)/i.test(c.t)), ev.id); }
+  // Répartition équitable : sur beaucoup de dossiers, chaque jeu tombe environ une fois sur trois, et jamais deux fois dans le même dossier
+  const compte = { bj: 0, roulette: 0, poker: 0 };
+  for (let g = 1; g <= 600; g++) {
+    let s0 = M.nouvellePartie({ ligne: "centre", ambitions: ["transports", "cadre"], graine: g, nivJoueur: 40 }); s0 = M.debutTour(s0, base);
+    if (s0.phase !== "evenement" || s0.evPerso) continue;
+    const jx = M.preparerMiniJeu(s0, base).mj.jeux.filter(x => x).map(x => x.jeu);
+    assert.equal(new Set(jx).size, Math.min(jx.length, 3)); jx.forEach(j => compte[j]++);
+  }
+  const tot = compte.bj + compte.roulette + compte.poker;
+  Object.values(compte).forEach(n => assert.ok(n / tot > 0.28 && n / tot < 0.39, JSON.stringify(compte)));
   let vus = { bj: 0, roulette: 0 }, gagnes = 0, perdus = 0;
   for (let g = 1; g <= 400 && (vus.bj < 15 || vus.roulette < 15); g++) {
     let st = M.nouvellePartie({ ligne: "centre", ambitions: ["transports", "cadre"], graine: g, nivJoueur: 40 });

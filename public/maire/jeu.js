@@ -1229,7 +1229,7 @@
         });
         ajout(b, h("span", "m-lettre", mj && mj.etat === "perdu" ? "🔒" : "ABCD"[i]), h("strong", null, x.t));
         var best = st.mj && st.mj.best === i ? "⭐ Meilleur choix · " : "";
-        if (mj) b.appendChild(h("small", "m-mj-tag", mj.etat === "a_jouer" ? best + "se joue " + (mj.jeu === "bj" ? "au 🃏 blackjack" : "à la 🎡 roulette")
+        if (mj) b.appendChild(h("small", "m-mj-tag", mj.etat === "a_jouer" ? best + "se joue " + ({ bj: "au 🃏 blackjack", roulette: "à la 🎡 roulette", poker: "au ♠️ poker" })[mj.jeu]
           : mj.etat === "gagne" ? "✅ Gagné au casino : à toi de le prendre" : "❌ Perdu au casino : ce choix t’échappe"));
         if (best && mj && mj.etat === "a_jouer") b.classList.add("m-mj-best");
         if (mj && mj.etat === "perdu") b.disabled = true;
