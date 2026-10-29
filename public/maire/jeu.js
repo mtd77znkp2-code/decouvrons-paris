@@ -1198,15 +1198,23 @@
     ajout(carte, h("p", "m-cat", (LIB[st.special] || M.FAMILLE[st.special || ev.cat] || "📂 Dossier") + " · " + date(st.t)), h("h4", null, ev.titre));
     if (ev.perso && M.C.PERSONNAGES[ev.perso]) { var pe = M.C.PERSONNAGES[ev.perso]; carte.appendChild(ajout(h("div", "m-perso"), h("span", null, pe.ico), h("small", null, pe.nom + " · " + pe.txt))); }
     if (st.phase === "evenement") {
+      // Le meilleur choix du dossier se décroche en gagnant un mini-jeu du téléphone (blackjack ou roulette)
+      if (!st.evPerso) { var avant = st.mj; st = M.preparerMiniJeu(st, BASE); if (st.mj !== avant) sauver(); }
+      var mj = st.mj && st.mj.t === st.t && st.mj.ev === st.evenement ? st.mj : null;
       carte.appendChild(h("p", "m-desc", ev.desc));
       var ch = h("div", "m-choix");
       ev.choix.forEach(function (x, i) {
-        var b = bouton("", "m-option", function () {
+        var defi = mj && mj.i === i, b = bouton("", "m-option" + (defi ? " m-mj m-mj-" + mj.etat : ""), function () {
           if (st.phase !== "evenement") return;
+          if (defi && mj.etat === "a_jouer") return miniJeu(carte, ev);
+          if (defi && mj.etat === "perdu") return;
           var cle = cleVote(), t = st.t, p = voter(cle, i); VOTE = p ? { t: t, i: i, p: p } : null;
           st = M.choisir(st, BASE, i); sauver(); signal("choix"); jeu();
         });
-        ajout(b, h("span", "m-lettre", "ABCD"[i]), h("strong", null, x.t));
+        ajout(b, h("span", "m-lettre", defi && mj.etat === "perdu" ? "🔒" : "ABCD"[i]), h("strong", null, x.t));
+        if (defi) b.appendChild(h("small", "m-mj-tag", mj.etat === "a_jouer" ? "🎲 Meilleur choix · gagne " + (mj.jeu === "bj" ? "au 🃏 blackjack" : "à la 🎡 roulette") + " pour le prendre"
+          : mj.etat === "gagne" ? "✅ Décroché au mini-jeu : à toi de le prendre" : "❌ Raté au mini-jeu : ce choix t’échappe"));
+        if (defi && mj.etat === "perdu") b.disabled = true;
         ch.appendChild(b);
       });
       carte.appendChild(ch);
@@ -1224,6 +1232,53 @@
     document.body.classList.add("m-modal");
     var f = carte.querySelector("button"); if (f) setTimeout(function () { f.focus({ preventScroll: true }); }, 50);
     setTimeout(function () { guide("modale"); }, 30);
+  }
+
+  // ---------- Mini-jeu d'un dossier : blackjack ou roulette, sans mise, pour décrocher le meilleur choix ----------
+  function miniJeu(carte, ev) {
+    var mj = st.mj, x = ev.choix[mj.i];
+    cacherBulle(); carte.innerHTML = "";
+    ajout(carte, h("p", "m-cat", "🎲 Mini-jeu · " + ev.titre), h("h4", null, mj.jeu === "bj" ? "🃏 Blackjack du maire" : "🎡 Roulette de l’Hôtel de Ville"),
+      h("p", "m-desc", "Gagne pour décrocher le meilleur choix : « " + x.t + " ». Si tu perds, ce choix t’échappe pour ce dossier."));
+    var zone = h("div", "m-mj-zone"); carte.appendChild(zone);
+    function fin() {
+      var g = st.mj.etat === "gagne";
+      zone.appendChild(h("p", "m-mj-res " + (g ? "m-mj-ok" : "m-mj-ko"), g ? "🎉 Gagné ! Le meilleur choix est à toi" + (st.mj.xp ? " · +" + st.mj.xp + " XP" : "") + "." : "😬 Perdu… Ce choix t’échappe, choisis parmi les autres."));
+      zone.appendChild(bouton(g ? "Prendre ce choix" : "Retour au dossier", "btn m-go", function () {
+        if (g) { st = M.choisir(st, BASE, st.mj.i); sauver(); signal("choix"); return jeu(); }
+        modale();
+      }));
+      if (g) zone.appendChild(bouton("Revoir le dossier", "btn m-sec", modale));
+    }
+    if (mj.jeu === "bj") {
+      if (!st.mj.bj) { st = M.mjBlackjack(st, "donner"); sauver(); }
+      (function dessin() {
+        zone.innerHTML = "";
+        var b = st.mj.bj, cache = !b.fini;
+        function main(t, l, val) { var m = h("div", "m-bj-main"); l.forEach(function (c, k) { m.appendChild(carteJeu(c, cache && t === "c" && k === 1)); }); return ajout(h("div", "m-bj-ligne"), h("small", null, (t === "j" ? "Toi" : "Croupier") + (val != null ? " · " + val : "")), m); }
+        ajout(zone, main("c", b.c, cache ? null : M.valeurMain(b.c)), main("j", b.j, M.valeurMain(b.j)));
+        if (!b.fini) {
+          zone.appendChild(ajout(h("div", "m-bas"), bouton("Tirer une carte", "btn m-sec", function () { st = M.mjBlackjack(st, "tirer"); sauver(); dessin(); }),
+            bouton("Rester", "btn m-go", function () { st = M.mjBlackjack(st, "rester"); sauver(); dessin(); })));
+        } else if (b.res === "egal") {
+          zone.appendChild(h("p", "m-mj-res", "🤝 Égalité (" + M.valeurMain(b.j) + ") : on redistribue !"));
+          zone.appendChild(bouton("Nouvelle main", "btn m-go", function () { st = M.mjBlackjack(st, "donner"); sauver(); dessin(); }));
+        } else fin();
+      })();
+    } else {
+      var n = h("div", "m-roue", "?"); zone.appendChild(n);
+      var g = ajout(h("div", "m-bas"), bouton("🔴 Rouge", "btn m-mj-rouge", function () { lancer("rouge"); }), bouton("⚫ Noir", "btn m-mj-noir", function () { lancer("noir"); }));
+      zone.appendChild(g); zone.appendChild(h("small", "m-aide", "Le zéro (vert) fait perdre."));
+      function lancer(pari) {
+        if (st.mj.roue) return;
+        st = M.mjRoulette(st, pari); sauver(); g.remove();
+        var k = 0, r = st.mj.roue, calme = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+        (function tick() {
+          if (calme || k > 18) { n.textContent = String(r.n); n.className = "m-roue " + (r.n === 0 ? "m-vert" : r.rouge ? "m-rouge" : "m-noir"); return setTimeout(fin, 500); }
+          n.textContent = String(Math.floor(Math.random() * 37)); k++; setTimeout(tick, 50 + k * 12);
+        })();
+      }
+    }
   }
 
   // ---------- Téléphone du maire et dernier pari ----------

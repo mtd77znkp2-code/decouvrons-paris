@@ -592,6 +592,27 @@ test("personnages : avantages et défauts réels, déblocage selon le profil", (
   localStorage.removeItem("maire_profil_v1");
 });
 
+test("mini-jeux des dossiers : le meilleur choix se gagne au blackjack ou à la roulette", () => {
+  let vus = { bj: 0, roulette: 0 }, gagnes = 0, perdus = 0;
+  for (let g = 1; g <= 400 && (vus.bj < 15 || vus.roulette < 15); g++) {
+    let st = M.nouvellePartie({ ligne: "centre", ambitions: ["transports", "cadre"], graine: g, nivJoueur: 40 });
+    st = M.debutTour(st, base);
+    if (st.phase !== "evenement") continue;
+    const p = M.preparerMiniJeu(st, base); if (!p.mj) continue;
+    const i = p.mj.i; vus[p.mj.jeu]++;
+    // Tant que le mini-jeu n'est pas gagné, le meilleur choix est refusé ; les autres restent possibles
+    assert.deepEqual(M.choisir(p, base, i), p);
+    assert.deepEqual(M.preparerMiniJeu(p, base), p);
+    let q = p;
+    if (q.mj.jeu === "roulette") { q = M.mjRoulette(q, "rouge"); assert.deepEqual(M.mjRoulette(q, "noir"), q); }
+    else { q = M.mjBlackjack(q, "donner"); for (let k = 0; k < 20 && q.mj.etat === "a_jouer"; k++) q = M.mjBlackjack(q, q.mj.bj.fini ? "donner" : M.valeurMain(q.mj.bj.j) < 15 ? "tirer" : "rester"); }
+    assert.ok(q.mj.etat === "gagne" || q.mj.etat === "perdu");
+    if (q.mj.etat === "gagne") { gagnes++; assert.ok(q.xp > p.xp); const r = M.choisir(q, base, i); assert.equal(r.phase, "gestion"); assert.equal(r.resultat.i, i); }
+    else { perdus++; assert.deepEqual(M.choisir(q, base, i), q); assert.equal(M.choisir(q, base, (i + 1) % 2).phase, "gestion"); }
+  }
+  assert.ok(vus.bj >= 15 && vus.roulette >= 15, JSON.stringify(vus));
+  assert.ok(gagnes > 5 && perdus > 5, gagnes + " / " + perdus);
+});
 test("élections anticipées : 3 trimestres après avoir rempli ses objectifs, sauf si le vote est déjà proche", () => {
   const prep = (t) => { const st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 950, nivJoueur: 40 });
     st.phase = "gestion"; st.t = t; st.objectifs = [{ k: "pop", but: 1, ico: "📣", txt: "a" }, { k: "pop", but: 2, ico: "📣", txt: "b" }, { k: "pop", but: 99, ico: "📣", txt: "c" }]; return st; };

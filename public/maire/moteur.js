@@ -107,7 +107,9 @@
   // Ce que rapporte la partie elle-même (les succès, quêtes et chapitres s'y ajoutent : voir progression.js)
   var XP = { trimestre: 2, trimestreMax: 100, achat: 2, achatMax: 50, election: { facile: 60, moyen: 120, difficile: 200 }, projet: 40, rare: 10, legendaire: 30, raresMax: 120,
     // Tenir ses engagements rapporte : décisions pour ses promesses, bâtiments qui les servent, décisions fidèles à sa ligne, promesses tenues le jour du vote
-    promesse: 8, promesseMax: 200, batPromesse: 3, batPromesseMax: 90, ligne: 4, ligneMax: 120, promesseTenue: 40, objectif: 40, mandatReussi: 150 };
+    promesse: 8, promesseMax: 200, batPromesse: 3, batPromesseMax: 90, ligne: 4, ligneMax: 120, promesseTenue: 40, objectif: 40, mandatReussi: 150,
+    // Mini-jeu gagné pour décrocher le meilleur choix d'un dossier
+    miniJeu: 12, miniJeuMax: 240 };
 
   // ---------- Opposants (personnages fictifs) : un nouveau tirage à chaque mandat, une attaque par an ----------
   var OPPOSANTS = [
@@ -1178,8 +1180,73 @@
   }
 
   // ---------- Décision sur le dossier du trimestre ----------
+  // ---------- Mini-jeux des dossiers : le meilleur choix se gagne au blackjack ou à la roulette ----------
+  // Valeur d'un choix : popularité, bonheur, piliers de la ville, argent (immédiat et récurrent)
+  function valeurChoix(c) {
+    var e = c.e || {}, v = (e.pop || 0) + (e.bon || 0) + (e.bud || 0) / 40;
+    Object.keys(e.dom || {}).forEach(function (k) { v += e.dom[k] * 1.5; });
+    if (e.rec) v += e.rec.m * Math.min(e.rec.n, 104) / 13 / 40;
+    return v;
+  }
+  // Index du meilleur choix du dossier en cours (null s'il n'y en a pas de nettement meilleur)
+  function meilleurChoix(st, base) {
+    if (st.phase !== "evenement" || st.evPerso) return null;
+    var ev = base.parId[st.evenement]; if (!ev || !ev.choix || ev.choix.length < 2) return null;
+    var v = ev.choix.map(valeurChoix), m = 0;
+    v.forEach(function (x, i) { if (x > v[m]) m = i; });
+    var deux = v.slice().sort(function (a, b) { return b - a; })[1];
+    return v[m] > 0 && v[m] - deux >= 0.5 ? m : null;
+  }
+  // Prépare le mini-jeu du dossier (une fois par dossier) : blackjack ou roulette, tiré au sort
+  function preparerMiniJeu(st0, base) {
+    if (st0.mj && st0.mj.t === st0.t && st0.mj.ev === st0.evenement) return st0;
+    var i = meilleurChoix(st0, base); if (i == null) return st0.mj ? Object.assign(copie(st0), { mj: null }) : st0;
+    var st = copie(st0);
+    st.mj = { t: st.t, ev: st.evenement, i: i, jeu: rnd(st) < 0.5 ? "bj" : "roulette", etat: "a_jouer", bj: null, roue: null };
+    return st;
+  }
+  function finMiniJeu(st, gagne) {
+    st.mj.etat = gagne ? "gagne" : "perdu";
+    var x = stats(st); x.miniJeux = (x.miniJeux || 0) + 1; if (gagne) x.miniJeuxOk = (x.miniJeuxOk || 0) + 1;
+    if (gagne) st.mj.xp = gagnerXP(st, "Mini-jeux des dossiers", XP.miniJeu, XP.miniJeuMax);
+  }
+  // Blackjack sans mise : battre le croupier (qui tire jusqu'à 17). Égalité : on redistribue.
+  function mjDonne(st) {
+    var deck = []; for (var i = 0; i < 52; i++) deck.push(i);
+    for (var j = deck.length - 1; j > 0; j--) { var k = Math.floor(rnd(st) * (j + 1)), t = deck[j]; deck[j] = deck[k]; deck[k] = t; }
+    st.mj.bj = { deck: deck, j: [deck.pop(), deck.pop()], c: [deck.pop(), deck.pop()], fini: false, res: null };
+    var b = st.mj.bj; if (valeurMain(b.j) === 21 || valeurMain(b.c) === 21) mjCroupier(st);
+  }
+  function mjCroupier(st) {
+    var b = st.mj.bj;
+    if (valeurMain(b.j) <= 21) while (valeurMain(b.c) < 17) b.c.push(b.deck.pop());
+    var vj = valeurMain(b.j), vc = valeurMain(b.c), nat = vj === 21 && b.j.length === 2, natC = vc === 21 && b.c.length === 2;
+    b.fini = true;
+    if (vj > 21) b.res = "perdu"; else if (nat && !natC) b.res = "gagne"; else if (natC && !nat) b.res = "perdu";
+    else if (vc > 21 || vj > vc) b.res = "gagne"; else if (vj === vc) b.res = "egal"; else b.res = "perdu";
+    if (b.res !== "egal") finMiniJeu(st, b.res === "gagne");
+  }
+  function mjBlackjack(st0, action) {
+    var m = st0.mj; if (!m || m.jeu !== "bj" || m.etat !== "a_jouer" || st0.phase !== "evenement") return st0;
+    var st = copie(st0), b = st.mj.bj;
+    if (action === "donner") { if (!b || (b.fini && b.res === "egal")) mjDonne(st); return st; }
+    if (!b || b.fini) return st0;
+    if (action === "tirer") { b.j.push(b.deck.pop()); if (valeurMain(b.j) >= 21) mjCroupier(st); }
+    else if (action === "rester") mjCroupier(st);
+    return st;
+  }
+  // Roulette : rouge ou noir (le zéro fait perdre)
+  function mjRoulette(st0, pari) {
+    var m = st0.mj; if (!m || m.jeu !== "roulette" || m.etat !== "a_jouer" || st0.phase !== "evenement" || (pari !== "rouge" && pari !== "noir")) return st0;
+    var st = copie(st0), n = Math.floor(rnd(st) * 37), rouge = ROUGES.indexOf(n) >= 0;
+    st.mj.roue = { n: n, rouge: rouge, pari: pari };
+    finMiniJeu(st, n > 0 && (pari === "rouge") === rouge);
+    return st;
+  }
   function choisir(st0, base, i) {
     if (st0.phase !== "evenement") return st0;
+    // Le meilleur choix ne se prend qu'après avoir gagné son mini-jeu
+    if (st0.mj && st0.mj.t === st0.t && st0.mj.ev === st0.evenement && st0.mj.i === i && st0.mj.etat !== "gagne") return st0;
     if (st0.evPerso) {
       if (!st0.evPerso.choix[i]) return st0;
       var so = copie(st0), kind = so.evPerso.kind || "opposition", ro = kind === "opposition" ? choisirOpposition(so, i) : choisirSpe(so, i), co = so.evPerso.choix[i];
@@ -1521,7 +1588,7 @@
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
-    roulette: roulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
+    roulette: roulette, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
     palier: palier, PALIERS: PALIERS, RAYONS: RAYONS, gainAchat: gainAchat, coutBat: coutBat, objectifs: objectifs, objectifsOk: objectifsOk, retraite: retraite, criseEnCours: criseEnCours, bonusMaire: bonusMaire, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
     ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, planVille: planVille, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };

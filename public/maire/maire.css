@@ -773,3 +773,15 @@ body.m-fond-on:has(#site[hidden]) .m-fond,body.m-fond-on:has(#jeux[hidden]) .m-f
 #g-maire.m-menu>h3{text-shadow:0 2px 12px rgba(0,0,0,.6)}
 #g-maire.m-menu .mx-profil,#g-maire.m-menu .mx-tuile,#g-maire.m-menu .mx-replie,#g-maire.m-menu .lb{background:rgba(12,17,46,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #g-maire.m-menu .lb{border-radius:16px;padding:14px 16px}
+/* Mini-jeu des dossiers : le meilleur choix se décroche au blackjack ou à la roulette */
+.m-option.m-mj{box-shadow:inset 0 0 0 2px #f5b21a}
+.m-option.m-mj-a_jouer{background:linear-gradient(90deg,rgba(245,178,26,.18),rgba(245,178,26,.04))}
+.m-option.m-mj-gagne{box-shadow:inset 0 0 0 2px #2f8a52;background:rgba(47,138,82,.12)}
+.m-option.m-mj-perdu{opacity:.55;box-shadow:none;text-decoration:line-through;cursor:not-allowed}
+.m-mj-tag{grid-column:2;margin-top:2px;font-size:13px;font-weight:700;text-decoration:none;display:block}
+.m-mj-zone{display:grid;gap:12px;justify-items:center;margin-top:8px}
+.m-bj-ligne{display:grid;gap:6px;justify-items:center}
+.m-bj-main{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.m-mj-res{font-weight:800;text-align:center;margin:4px 0}
+.m-mj-ok{color:#2f8a52}.m-mj-ko{color:#c8352e}
+.m-mj-rouge{background:#c8352e;color:#fff}.m-mj-noir{background:#1b2550;color:#fff}

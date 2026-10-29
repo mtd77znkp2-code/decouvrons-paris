@@ -238,7 +238,7 @@ var musique=(function(){
     var q=quelle();if(!q)return;
     var a=P[q].a;try{a.volume=0}catch(e){}
     var r=a.play();
-    if(r&&r.then)r.then(function(){debloque=true;GESTES.forEach(function(g){document.removeEventListener(g,geste,true)});maj()}).catch(entree);
+    if(r&&r.then)r.then(function(){debloque=true;GESTES.forEach(function(g){document.removeEventListener(g,geste,true)});maj()}).catch(function(e){if(e&&e.name==="NotAllowedError")entree()});
     else{debloque=true;maj()}
   })();
   return maj;
