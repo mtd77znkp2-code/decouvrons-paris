@@ -4,7 +4,7 @@ Site de @decouvronsparis1 : Découvre ! (vidéos et carte), quiz, devine où c'e
 
 - `public/` : le site.
   - `index.html` (pages), `css/site.css` (style), `img/` (images)
-  - `js/app.js` (bases : Firebase, classement, navigation, connexions), `js/carte.js` (cartes), `js/jeux.js` (3 jeux), `js/decouvre.js` (vidéos et carte Découvre)
+  - `js/app.js` (bases : Firebase, classement, navigation, connexions), `js/carte.js` (cartes), `maire/` (le jeu Maire de Paris), `js/decouvre.js` (vidéos et carte Découvre)
   - chargés seulement pour l'admin : `js/admin.js`, `css/admin.css`, `js/donnees.js` (données de départ)
   - `mentions-legales.html`, `confidentialite.html` : pages légales (à compléter : nom et e-mail de contact)
 - Hébergement : **Firebase Hosting** (projet `decouvrons-paris`), adresse https://decouvrons-paris.web.app.
