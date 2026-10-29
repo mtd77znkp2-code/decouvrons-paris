@@ -218,7 +218,22 @@ var musique=(function(){
   // Paris s'éteint : bruit du groupe électrogène qui s'arrête, toujours depuis le début
   var coupure=new Audio("audio/accueil-eteint.mp3");coupure.preload="auto";
   maj.coupure=function(){if(muet)return;try{coupure.currentTime=0}catch(e){}var r=coupure.play();if(r&&r.catch)r.catch(function(){})};
-  maj();
+  // Aucun navigateur n'accepte de jouer du son avant que la personne ait touché la page.
+  // Si la musique est bloquée à l'arrivée, un écran « Touche pour entrer » fournit ce premier toucher.
+  function entree(){
+    if(document.querySelector(".entree"))return;
+    var d=document.createElement("button");d.type="button";d.className="entree";
+    d.innerHTML='<img src="img/logo.webp" alt="" width="200" height="200"><span>Touche l’écran pour entrer</span><small>🎵 avec le son</small>';
+    d.onclick=function(){geste();d.classList.add("entree-fin");setTimeout(function(){d.remove()},450)};
+    document.body.appendChild(d);
+  }
+  (function(){
+    var q=quelle();if(!q)return;
+    var a=P[q].a;try{a.volume=0}catch(e){}
+    var r=a.play();
+    if(r&&r.then)r.then(function(){debloque=true;GESTES.forEach(function(g){document.removeEventListener(g,geste,true)});maj()}).catch(entree);
+    else{debloque=true;maj()}
+  })();
   return maj;
 })();
 (function(){
