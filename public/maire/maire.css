@@ -763,8 +763,13 @@ body.m-modal{overflow:hidden}
 .mx-antic{margin:2px 0;padding:8px 10px;border-radius:10px;background:rgba(245,178,26,.2);font-weight:800;font-size:14px}
 .mx-gris{color:var(--mut)!important}
 @media (prefers-reduced-motion:reduce){.mx-trim-carte,.mx-trim-ico,.mx-trim-net,.mx-anticipee{animation:none}}
-/* Menu du jeu : vidéo de rue en pixel art en fond, assombrie pour garder le texte lisible */
+/* Menu du jeu : vidéo de rue en pixel art en plein écran derrière le site, assombrie pour garder le texte lisible */
 .m-fond{display:none}
-#g-maire.m-menu{position:relative;overflow:hidden;isolation:isolate;background:#0b0f2a}
-#g-maire.m-menu .m-fond{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;image-rendering:pixelated;pointer-events:none}
-#g-maire.m-menu::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(10,14,40,.2) 0%,rgba(10,14,40,.45) 45%,rgba(10,14,40,.8) 100%)}
+body.m-fond-on .m-fond{display:block;position:fixed;inset:0;width:100vw;height:100vh;height:100lvh;object-fit:cover;z-index:0;image-rendering:pixelated;pointer-events:none}
+body.m-fond-on::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,14,40,.15) 0%,rgba(10,14,40,.35) 50%,rgba(10,14,40,.7) 100%)}
+body.m-fond-on #site{position:relative;z-index:1}
+body.m-fond-on:has(#site[hidden]) .m-fond,body.m-fond-on:has(#jeux[hidden]) .m-fond,body.m-fond-on:has(#site[hidden])::before,body.m-fond-on:has(#jeux[hidden])::before{display:none}
+#g-maire.m-menu{background:transparent;padding-left:0;padding-right:0}
+#g-maire.m-menu>h3{text-shadow:0 2px 12px rgba(0,0,0,.6)}
+#g-maire.m-menu .mx-profil,#g-maire.m-menu .mx-tuile,#g-maire.m-menu .mx-replie,#g-maire.m-menu .lb{background:rgba(12,17,46,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#g-maire.m-menu .lb{border-radius:16px;padding:14px 16px}

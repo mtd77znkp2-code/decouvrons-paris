@@ -72,12 +72,12 @@
   function vider() { box.innerHTML = ""; fondMenu(false); }
   function fondMenu(on) {
     var g = document.getElementById("g-maire"); if (!g) return;
-    g.classList.toggle("m-menu", on);
+    g.classList.toggle("m-menu", on); document.body.classList.toggle("m-fond-on", on);
     var calme = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (on && !fondV) {
       fondV = document.createElement("video"); fondV.className = "m-fond"; fondV.muted = true; fondV.loop = true; fondV.playsInline = true;
       fondV.setAttribute("muted", ""); fondV.setAttribute("playsinline", ""); fondV.setAttribute("aria-hidden", "true"); fondV.tabIndex = -1;
-      g.insertBefore(fondV, g.firstChild);
+      document.body.insertBefore(fondV, document.body.firstChild);
       window.addEventListener("resize", function () { clearTimeout(fondMenu.t); fondMenu.t = setTimeout(function () { if (g.classList.contains("m-menu")) fondMenu(true); }, 300); });
       if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { if (!g.classList.contains("m-menu") || calme) return; if (e[0].isIntersecting) { var p = fondV.play(); if (p && p.catch) p.catch(function () {}); } else fondV.pause(); }).observe(g);
     }
