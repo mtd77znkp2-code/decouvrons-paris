@@ -63,7 +63,7 @@
       achats: 0, bats: {}, elims: 0, contres: 0, catas: 0, chances: 0, defis: 0, defiJours: {}, quetesTot: 0, quetesJour: {}, succes: {},
       scoreMax: 0, pertes: {}, chapitres: {}, tutos: {},
       objets: {}, secrets: {}, combos: {}, rep: 0, missions: 0, historiques: 0, defiMeilleur: {}, verse: null,
-      journaliers: null, pass: null, sac: {}, passBats: {}, titres: [], parfaites: 0, serie: null, passComplets: 0 };
+      mandatsReussis: 0, mandatsParfaits: 0, journaliers: null, pass: null, sac: {}, passBats: {}, titres: [], parfaites: 0, serie: null, passComplets: 0 };
   }
   function lire() {
     try {
@@ -236,8 +236,8 @@
   });
   s("histoire", "Toute l’histoire", "Accomplis les objectifs des 9 chapitres.", 4, function (R, P) { return Object.keys(HISTOIRE).every(function (k) { return P.chapitres[k]; }); });
   s("fidele", "Fidèle", "Gagne une élection sans jamais avoir renié ta ligne.", 2, function (R) { return R.meca.ligne && R.mandats >= 1 && R.x.trahisons === 0; });
-  s("dossiers50", "Bourreau de travail", "Traite 50 dossiers dans une partie.", 2, function (R) { return R.x.dossiers >= 50; });
-  s("crise", "Gestionnaire de crise", "Traite 5 dossiers de crise dans une partie.", 2, function (R) { return (R.fam.crise || 0) >= 5; });
+  s("dossiers50", "Bourreau de travail", "Traite 25 dossiers dans une partie.", 2, function (R) { return R.x.dossiers >= 25; });
+  s("crise", "Gestionnaire de crise", "Traite 3 dossiers de crise dans une partie.", 2, function (R) { return (R.fam.crise || 0) >= 3; });
   // ---------- Succès des nouvelles mécaniques (dont des succès secrets, cachés tant qu'ils ne sont pas obtenus) ----------
   function s2(id, cat, nom, desc, t, f, secret) { s(id, nom, desc, t, f); S[S.length - 1].cat = cat; if (secret) S[S.length - 1].secret = 1; }
   s2("comptable", "Finances", "Comptable du dimanche", "Termine un trimestre sans que la dette augmente.", 1, function (R) { return R.x.trimSansDette >= 1; });
@@ -283,6 +283,11 @@
   s2("ligueMontee", "Défis", "Promu", "Monte dans une ligue supérieure.", 2, function (R, P) { return (P.montees || 0) >= 1; });
   s2("ligueDiamant", "Défis", "Ligue de diamant", "Atteins la ligue Diamant.", 4, function (R, P) { return (P.ligueMax || 0) >= 4; });
   s2("espritLibre", "Humour", "Esprit libre", "Prends 5 décisions que moins de 20 % des maires ont choisies.", 2, function (R, P) { return (P.minoritaires || 0) >= 5; }, 1);
+  s2("mandatReussi", "Gestion", "Mission accomplie", "Réussis un mandat (au moins 2 objectifs sur 3).", 1, function (R) { return (R.x.mandatsReussis || 0) >= 1; });
+  s2("mandatParfait", "Gestion", "Sans faute", "Réussis les 3 objectifs d’un mandat.", 2, function (R) { return (R.x.mandatsParfaits || 0) >= 1; });
+  s2("mandats3Reussis", "Gestion", "Le maire qui tient parole", "Réussis 3 mandats dans une même partie.", 3, function (R) { return (R.x.mandatsReussis || 0) >= 3; });
+  s2("retraite", "Gestion", "Partir au sommet", "Termine une partie en vainqueur, après une réélection.", 1, function (R) { return R.perte === "retraite"; });
+  s2("tousMaires", "Exploration", "Mille visages", "Débloque les 9 personnages.", 3, function (R, P) { return Object.keys(MO.C.MAIRES).every(function (id) { return maireDispoP(P, id); }); });
   s2("reputation", "Exploration", "Personnalité nationale", "Atteins 350 points de réputation.", 3, function (R, P) { return (P.rep || 0) >= 350; });
 
   // ---------- Progression affichée en pleine partie (« 12 / 25 ») ----------
@@ -293,7 +298,7 @@
   Object.keys(BATS).forEach(function (id) { suivi([["b_" + id, BATS[id][2]]], "b_" + id, function (R) { return R.x.bats[id] || 0; }); });
   suivi([["oppElim", 1], ["oppElim3", 3]], "elim", function (R) { return R.x.elimines; });
   suivi([["cata1", 1], ["cata3", 3]], "cata", function (R) { return R.x.catastrophes; });
-  suivi([["crise", 5]], "crise", function (R) { return R.fam.crise || 0; });
+  suivi([["crise", 3]], "crise", function (R) { return R.fam.crise || 0; });
   suivi([["chantier1", 1], ["chantier3", 3]], "chantier", function (R) { return R.x.projetsOk; });
   suivi([["combo1", 1]], "combo", function (R) { return R.x.combos; });
   suivi([["objet1", 1]], "objet", function (R) { return R.x.objets; });
@@ -334,7 +339,7 @@
   dj("j_div10", "Construis 10 bâtiments différents", 6, 60, 10, function (R) { return Object.keys(R.x.bats).length; });
   dj("j_t8", "Tiens 8 trimestres", 1, 30, 8, function (R) { return R.t; });
   dj("j_t16", "Tiens 16 trimestres", 1, 50, 16, function (R) { return R.t; });
-  dj("j_dos10", "Traite 10 dossiers", 1, 30, 10, function (R) { return R.x.dossiers; });
+  dj("j_dos5", "Traite 5 dossiers", 1, 30, 5, function (R) { return R.x.dossiers; });
   dj("j_bon60", "Fais monter le bonheur à 60", 1, 40, 60, function (R) { return Math.floor(R.x.bonheurMax); });
   dj("j_bon70", "Fais monter le bonheur à 70", 4, 70, 70, function (R) { return Math.floor(R.x.bonheurMax); });
   dj("j_pop65", "Atteins 65 de popularité", 1, 40, 65, function (R, st) { return Math.floor(st.pop); });
@@ -616,6 +621,25 @@
       serie: out.serie || null, joker: !!out.joker };
   }
 
+  // ---------- Personnages jouables : débloqués selon le profil ----------
+  function maireDispoP(P, id) {
+    var c = MO.C.MAIRES[id] && MO.C.MAIRES[id].si; if (!c) return true;
+    if (c.niv && niveau(P.xp).n < c.niv) return false;
+    if (c.succes && !P.succes[c.succes]) return false;
+    if (c.mandats && (P.mandats || 0) < c.mandats) return false;
+    if (c.reussis && (P.mandatsReussis || 0) < c.reussis) return false;
+    return true;
+  }
+  function condMaire(id) {
+    var c = MO.C.MAIRES[id].si || {};
+    if (c.niv) return "Atteins le niveau " + c.niv;
+    if (c.succes) { var x = S.filter(function (y) { return y.id === c.succes; })[0]; return "Succès « " + (x ? x.nom : c.succes) + " » : " + (x ? x.desc.replace(/\.$/, "").toLowerCase() : ""); }
+    if (c.mandats) return "Gagne " + c.mandats + " élections au total";
+    if (c.reussis) return "Réussis " + c.reussis + " mandats au total";
+    return "";
+  }
+  function maires() { var P = lire(); return Object.keys(MO.C.MAIRES).map(function (id) { var m = MO.C.MAIRES[id]; return { id: id, nom: m.nom, ico: m.ico, txt: m.txt, ligne: m.ligne, dispo: maireDispoP(P, id), cond: condMaire(id) }; }); }
+
   // ---------- Fin de partie : ce qui ne se décide qu'à la fin, et le récapitulatif de toute l'XP gagnée ----------
   function terminer(st0, M, opts) {
     opts = opts || {};
@@ -628,6 +652,7 @@
     P.achats += R.x.achats; Object.keys(R.x.bats).forEach(function (k) { P.bats[k] = (P.bats[k] || 0) + R.x.bats[k]; });
     P.elims += R.x.elimines; P.contres += R.x.contre + R.x.mobilise; P.catas += R.x.catastrophes; P.chances += R.x.chances;
     P.missions += R.missions.length; P.historiques += R.x.historiques || 0;
+    P.mandatsReussis = (P.mandatsReussis || 0) + (R.x.mandatsReussis || 0); P.mandatsParfaits = (P.mandatsParfaits || 0) + (R.x.mandatsParfaits || 0);
     R.objets.forEach(function (o) { if (!P.objets[o]) P.objets[o] = j; }); R.combos.forEach(function (c) { if (!P.combos[c]) P.combos[c] = j; });
     Object.keys(st.secrets || {}).forEach(function (k) { if (!P.secrets[k]) P.secrets[k] = j; });
     var repAvant = P.rep || 0;
@@ -651,7 +676,7 @@
   }
 
   var API = { jour: jour, niveau: niveau, xpPour: xpPour, lire: lire, ecrire: ecrire, profilVide: profilVide, resume: resume, terminer: terminer, suivrePartie: suivrePartie, queteProgres: queteProgres,
-    JOURS: JOURS, journaliers: journaliers, journaliersPartie: journaliersPartie, pass: pass, PASS: PASS, PASS_PTS: PASS_PTS, SAC: SAC, utiliserSac: utiliserSac,
+    maires: maires, JOURS: JOURS, journaliers: journaliers, journaliersPartie: journaliersPartie, pass: pass, PASS: PASS, PASS_PTS: PASS_PTS, SAC: SAC, utiliserSac: utiliserSac,
     saisonDe: saisonDe, nomSaison: nomSaison, serie: serie, SERIE: SERIE, texteSerie: texteSerie, recompenseSerie: recompenseSerie,
     ROUE: ROUE, roueDispo: roueDispo, tournerRoue: tournerRoue, semaine: semaine, LIGUES: LIGUES, ligue: ligue, nouvelleLigue: nouvelleLigue, donneesLigue: donneesLigue, noterVote: noterVote,
     nivJoueur: nivJoueur, fixerNiveau: fixerNiveau, synchroniser: synchroniser, reputation: reputation, oublierTutos: oublierTutos, guideVu: guideVu, marquerGuide: marquerGuide, chapitre: chapitre,

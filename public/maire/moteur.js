@@ -18,7 +18,8 @@
   var P = {
     impot: 620, fonct: 540, vit: 0.3, usure: 0.4, plancher: 15, rendement: 0.85, inflation: 1.15, evtBase: 0.4,
     popVit: 0.2, usurePop: 0.45, detteImpop: 200, humeurVit: 0.7, aliPlus: 0.8, aliMoins: 1.6,
-    ambSeuil: 60, retombees: 0.16, cata: 0.09, chance: 0.05, usureMandat: 3, ecoRecettes: 250, gain: 2, foule: 0.94
+    ambSeuil: 60, retombees: 0.16, cata: 0.09, chance: 0.05, usureMandat: 3, ecoRecettes: 250, gain: 2, foule: 0.94,
+    fort: 2, objVote: 3, cadence: 2
   };
 
   // ---------- Les 4 piliers de la ville ----------
@@ -106,7 +107,7 @@
   // Ce que rapporte la partie elle-même (les succès, quêtes et chapitres s'y ajoutent : voir progression.js)
   var XP = { trimestre: 3, trimestreMax: 150, achat: 4, achatMax: 100, election: { facile: 60, moyen: 120, difficile: 200 }, projet: 40, rare: 10, legendaire: 30, raresMax: 120,
     // Tenir ses engagements rapporte : décisions pour ses promesses, bâtiments qui les servent, décisions fidèles à sa ligne, promesses tenues le jour du vote
-    promesse: 8, promesseMax: 200, batPromesse: 3, batPromesseMax: 90, ligne: 4, ligneMax: 120, promesseTenue: 40 };
+    promesse: 8, promesseMax: 200, batPromesse: 3, batPromesseMax: 90, ligne: 4, ligneMax: 120, promesseTenue: 40, objectif: 40, mandatReussi: 150 };
 
   // ---------- Opposants (personnages fictifs) : un nouveau tirage à chaque mandat, une attaque par an ----------
   var OPPOSANTS = [
@@ -238,12 +239,13 @@
     var nj = o.nivJoueur || (o.xpJoueur != null ? niveauXP(o.xpJoueur) : 99);
     var nv = NIVEAUX[o.niveau] ? o.niveau : "moyen", m = mecaniques(nj);
     if (!m[NIVEAUX[nv].meca]) nv = "facile";
-    var ligne = m.ligne ? o.ligne : "centre";
+    var maire = o.maire && C.MAIRES[o.maire] ? o.maire : null;
+    var ligne = maire ? C.MAIRES[maire].ligne : m.ligne ? o.ligne : "centre";
     if (!LIGNES[ligne]) throw new Error("Ligne politique inconnue");
     var amb = m.promesses ? (o.ambitions || []).filter(function (a, i, t) { return PILIERS[a] && t.indexOf(a) === i; }) : [];
     if (m.promesses && amb.length !== 2) throw new Error("Il faut choisir exactement deux promesses");
     var st = {
-      v: 6, niveau: nv, meca: m, nivJ: nj, rng: (o.graine >>> 0) || ((Math.random() * 4294967296) >>> 0), lots: o.lots || [],
+      v: 7, niveau: nv, maire: maire, meca: m, nivJ: nj, rng: (o.graine >>> 0) || ((Math.random() * 4294967296) >>> 0), lots: o.lots || [],
       ligne: ligne, ambitions: amb, t: 0, mandat: 1, debutMandat: 0, phase: "pret",
       tresor: NIVEAUX[nv].tresor, dette: 0, pop: DEPART.pop, coh: DEPART.coh, humeur: 0, taux: 1, eco: 50,
       piliers: {}, base: {}, bat: {}, prevus: [], recurrents: [], suites: [], vus: {}, flags: {}, nid: 1,
@@ -277,15 +279,20 @@
       if (dp.elec) st.debutMandat = dp.elec - MANDAT;
     }
     stats(st);
+    var bm = bonusMaire(st);
+    if (bm.tresor) st.tresor += bm.tresor;
+    if (bm.pop) st.pop = borne(st.pop + bm.pop);
+    if (!st.scenario) tirerMandat(st);
     leon(st, "debut");
     return st;
   }
   // Sauvegardes : les parties des versions précédentes reçoivent les nouveaux champs, sans rien perdre
   function migrer(st) {
-    if (!st || st.v > 6) return st;
+    if (!st || st.v > 7) return st;
     var ancien = st.v < 5, d = { chaos: 10, chantiers: [], incidents: [], messages: [], offre: null, bj: null, pariRes: null, mission: null, missionCd: 0, missionsOk: [],
       combos: [], decouvertes: [], objets: [], secrets: {}, persos: {}, mods: { entretien: 1, recettes: 0 }, conditions: [], suitesSpe: [],
       histoMandat: 0, alerte: null, repit: 0, pariMandat: 0, pariCd: 0, leon: null, uniques: {}, emprunts: 0, ampleur: {}, scenario: null, passBats: {}, assurance: 0,
+      maire: null, crise: null, objectifs: [], prochainDossier: 0, mandatBats: {}, mandatTypes: {}, mandatBase: {},
       xp: 0, xpLog: [], xpSrc: {}, montees: [], succesPartie: [], suivi: {}, enchere: null, encheresCd: {} };
     Object.keys(d).forEach(function (k) { if (st[k] == null) st[k] = d[k]; });
     if (st.nivJ == null) st.nivJ = 99;
@@ -298,7 +305,9 @@
     // Partie d'une version précédente : l'XP déjà méritée est comptée (sauf si la partie a déjà été soldée)
     if (ancien && !st.prog) xpRetro(st);
     if (!st.connus) { st.connus = {}; marquerConnus(st); }
-    st.v = 6;
+    // Partie d'avant les objectifs de mandat : deux objectifs, sans crise (le mandat est déjà commencé)
+    if (st.v < 7 && !st.scenario && !st.objectifs.length && st.phase !== "fin") tirerMandat(st, true);
+    st.v = 7;
     return st;
   }
   function xpRetro(st) {
@@ -379,6 +388,7 @@
     var fo = FORCE_OPP[st.niveau] || FORCE_OPP.moyen, avant = st.opposant ? st.opposant.i : -1, i;
     do { i = Math.floor(rnd(st) * OPPOSANTS.length); } while (i === avant);
     st.opposant = { i: i, force: Math.round(fo[0] + rnd(st) * (fo[1] - fo[0]) + (st.mandat - 1) * 4), actif: true, contres: 0 };
+    if (bonusMaire(st).opp) st.opposant.force = Math.max(10, st.opposant.force + bonusMaire(st).opp);
     st.opposant.depart = st.opposant.force;
   }
   function stats(st) {
@@ -423,13 +433,98 @@
       return Object.keys(b).every(function (k) { return (k === "transport" ? nbTransports(st) : (st.bat[k] || 0)) >= b[k]; });
     });
   }
+  // ---------- Personnage joué et crise du mandat ----------
+  function bonusMaire(st) { return (st.maire && C.MAIRES[st.maire] && C.MAIRES[st.maire].bonus) || {}; }
+  function criseEnCours(st) { return st.crise && C.CRISES[st.crise.id] || null; }
+  // Prix de base d'un bâtiment, après la remise du personnage sur son rayon
+  function coutBat(st, id) { var B = BATIMENTS[id], r = (bonusMaire(st).remise || {})[B.cat] || 0; return Math.round(B.cout * (1 - r)); }
+
+  // ---------- Objectifs de mandat ----------
+  // Cibles selon la difficulté : facile, moyen, réaliste
+  // (réglées sur ce qu'atteint un joueur appliqué au moment du vote : le Réaliste part de plus bas, ses cibles aussi)
+  var CIBLES = { pilier: [61, 58, 55], bonheur: [60, 56, 53], pop: [56, 52, 48], dette: [250, 200, 150], tresor: [500, 280, 220], rayon: [4, 4, 4], rayonCrise: [3, 3, 3], diversite: [6, 6, 6], coherence: [56, 50, 45] };
+  var RAYON_NOM = { logement: "de logement", transports: "de transports", cadre: "de cadre de vie", securite: "de sécurité", economie: "d’économie" };
+  function cibleObj(k, st) { return CIBLES[k][{ facile: 0, moyen: 1, difficile: 2 }[st.niveau] || 1]; }
+  function creerObjectif(st, o, crise) {
+    var x = { k: o.k }; if (o.p) x.p = o.p; if (o.r) x.r = o.r;
+    // Les objectifs imposés par la crise partent de plus loin : cibles un peu plus basses
+    if (o.k === "pilier") { x.but = cibleObj("pilier", st) - (crise ? 4 : 0); x.ico = ICO[o.p]; x.txt = "Monte " + ({ logement: "le logement", transports: "les transports", cadre: "le cadre de vie", securite: "la sécurité" })[o.p] + " à " + x.but; }
+    else if (o.k === "bonheur") { x.but = cibleObj("bonheur", st); x.ico = "😊"; x.txt = "Bonheur des Parisiens à " + x.but; }
+    else if (o.k === "pop") { x.but = cibleObj("pop", st); x.ico = "📣"; x.txt = "Popularité à " + x.but; }
+    else if (o.k === "dette") { x.but = cibleObj("dette", st); x.ico = "💸"; x.txt = x.but ? "Dette sous " + x.but + " M€ le jour du vote" : "Aucune dette le jour du vote"; }
+    else if (o.k === "tresor") { x.but = cibleObj("tresor", st) - (crise ? 80 : 0); x.ico = "💰"; x.txt = "Au moins " + x.but + " M€ en caisse le jour du vote"; }
+    else if (o.k === "rayon") { x.but = cibleObj(crise ? "rayonCrise" : "rayon", st); x.ico = "🏗️"; x.txt = "Construis " + x.but + " bâtiments " + RAYON_NOM[o.r]; }
+    else if (o.k === "diversite") { x.but = cibleObj("diversite", st); x.ico = "🧩"; x.txt = "Construis " + x.but + " bâtiments différents"; }
+    else if (o.k === "projet") { x.but = 1; x.ico = "✂️"; x.txt = "Inaugure un projet démesuré"; }
+    else if (o.k === "opposant") { x.but = 1; x.ico = "⚔️"; x.txt = "Pousse ton opposant à renoncer"; }
+    else if (o.k === "coherence") { x.but = cibleObj("coherence", st); x.ico = "🧭"; x.txt = "Garde une cohérence de " + x.but; }
+    else if (o.k === "enchere") { x.but = 1; x.ico = "🔨"; x.txt = "Remporte une enchère"; }
+    if (crise) x.crise = 1;
+    return x;
+  }
+  // Où en est un objectif : cur / but, ok ; « garde » : à tenir jusqu'au vote (sinon, une fois atteint, c'est acquis)
+  function etatObjectif(st, o) {
+    var x = stats(st), b = st.mandatBase || {}, cur = 0, ok = false, garde = true;
+    if (o.k === "pilier") cur = Math.round(st.piliers[o.p]);
+    else if (o.k === "bonheur") cur = Math.round(bonheur(st));
+    else if (o.k === "pop") cur = Math.round(st.pop);
+    else if (o.k === "coherence") cur = Math.round(st.coh);
+    else if (o.k === "tresor") cur = Math.round(st.tresor);
+    else if (o.k === "dette") { cur = Math.round(st.dette); ok = cur <= o.but; }
+    else { garde = false;
+      cur = o.k === "rayon" ? (st.mandatBats[o.r] || 0) : o.k === "diversite" ? Object.keys(st.mandatTypes).length : o.k === "projet" ? x.projetsOk - (b.projetsOk || 0)
+        : o.k === "enchere" ? (x.encheres || 0) - (b.encheres || 0) : (st.opposant && !st.opposant.actif ? 1 : 0); }
+    if (o.k !== "dette") ok = cur >= o.but;
+    return { k: o.k, ico: o.ico, txt: o.txt, but: o.but, cur: cur, ok: ok, garde: garde, crise: !!o.crise, inverse: o.k === "dette" };
+  }
+  function objectifs(st) { return (st.objectifs || []).map(function (o) { return etatObjectif(st, o); }); }
+  function objectifsOk(st) { return objectifs(st).filter(function (o) { return o.ok; }).length; }
+  // Nouveau mandat : une crise (différente de la précédente) et trois objectifs, dont celui de la crise
+  function tirerMandat(st, sansCrise) {
+    var ids = Object.keys(C.CRISES).filter(function (id) { return !st.crise || st.crise.id !== id; }), cr = null;
+    if (!sansCrise) {
+      var id = ids[Math.floor(rnd(st) * ids.length)]; cr = C.CRISES[id];
+      st.crise = { id: id, mandat: st.mandat };
+      var d = cr.depart || {};
+      Object.keys(d.pil || {}).forEach(function (k) { st.base[k] = Math.max(P.plancher, st.base[k] + d.pil[k]); st.piliers[k] = borne(st.piliers[k] + d.pil[k]); });
+      if (d.dette) st.dette = Math.min(PLAFOND_DETTE * 0.8, st.dette + d.dette);
+      if (d.pop) st.pop = borne(st.pop + d.pop);
+      if (d.opp && st.opposant) st.opposant.force = Math.min(100, st.opposant.force + d.opp);
+    } else st.crise = null;
+    var liste = [], pris = {};
+    if (cr) { liste.push(creerObjectif(st, cr.obj, true)); pris[cr.obj.k + (cr.obj.p || cr.obj.r || "")] = 1; }
+    var pool = PK.map(function (k) { return { k: "pilier", p: k }; }).concat([{ k: "bonheur" }, { k: "pop" }, { k: "dette" }, { k: "tresor" }, { k: "diversite" }],
+      ["logement", "transports", "cadre", "securite", "economie"].map(function (r) { return { k: "rayon", r: r }; }));
+    if (st.meca.grandsProjets) pool.push({ k: "projet" });
+    if (st.meca.opposant && st.opposant) pool.push({ k: "opposant" });
+    if (st.meca.ligne) pool.push({ k: "coherence" });
+    if ((st.nivJ || 99) >= 7) pool.push({ k: "enchere" });
+    while (liste.length < 3 && pool.length) {
+      var o = pool.splice(Math.floor(rnd(st) * pool.length), 1)[0], cle = o.k + (o.p || o.r || "");
+      if (pris[cle] || (o.k === "rayon" && liste.some(function (y) { return y.k === "rayon"; }))) continue;
+      pris[cle] = 1; liste.push(creerObjectif(st, o, false));
+    }
+    st.objectifs = liste;
+    st.mandatBats = {}; st.mandatTypes = {};
+    var x = stats(st); st.mandatBase = { projetsOk: x.projetsOk, encheres: x.encheres || 0 };
+  }
+  // Fin de partie choisie après une réélection : on part en vainqueur
+  function retraite(st0) {
+    if (st0.phase !== "election") return st0;
+    var st = copie(st0), r = (stats(st).mandatsReussis || 0);
+    st.fin = { gagne: true, raison: { type: "retraite", txt: "Tu quittes l’Hôtel de Ville par la grande porte après " + (st.mandat - 1) + " mandat" + (st.mandat > 2 ? "s" : "") + (r ? ", dont " + r + " réussi" + (r > 1 ? "s" : "") : "") + "." }, t: st.t };
+    st.phase = "fin";
+    return st;
+  }
+
   // Atouts des bâtiments (au plus 3 exemplaires comptent) ; chaque atout a un plafond pour rester raisonnable
   function atout(st, k) { var t = 0; Object.keys(st.bat).forEach(function (id) { var B = BATIMENTS[id]; if (B && B[k] && st.bat[id]) t += B[k] * Math.min(st.bat[id], 3); }); return t; }
   function usurePilier(st, k) {
     var r = 0; Object.keys(st.bat).forEach(function (id) { var B = BATIMENTS[id]; if (B && B.usure && B.usure[k] && st.bat[id]) r += B.usure[k] * Math.min(st.bat[id], 3); });
-    return niv(st).usure * (1 - Math.min(0.5, r));
+    var cr = criseEnCours(st);
+    return niv(st).usure * (1 - Math.min(0.5, r)) * ((cr && cr.usure && cr.usure[k]) || 1);
   }
-  function interets(st) { return arrondi(st.dette * TAUX * (1 - Math.min(0.5, atout(st, "interet")))); }
+  function interets(st) { return arrondi(st.dette * TAUX * (1 - Math.min(0.6, atout(st, "interet") + (bonusMaire(st).interet || 0)))); }
   function protection(st) { return Math.min(0.5, atout(st, "cata")); }
   // Effet des bâtiments sur les piliers : chaque exemplaire d'un même bâtiment rapporte un peu moins (rendement),
   // et plus un pilier compte de bâtiments, moins chacun pèse (foule) : varier aide, mais ne suffit pas à tout gagner
@@ -460,9 +555,9 @@
     PK.forEach(function (k) { c[k] = borne(st.base[k] + (b[k] || 0) - (k === "logement" ? Math.max(0, st.taux - 1) * 25 : 0)); });
     return c;
   }
-  function prix(st, id) { var B = BATIMENTS[id]; return Math.round(B.cout * Math.pow(P.inflation, st.bat[id] || 0)); }
+  function prix(st, id) { return Math.round(coutBat(st, id) * Math.pow(P.inflation, st.bat[id] || 0)); }
   function recettes(st) {
-    var r = P.impot * st.taux * (0.8 + st.eco / P.ecoRecettes) * niv(st).recettes;
+    var cr = criseEnCours(st), r = P.impot * st.taux * (0.8 + st.eco / P.ecoRecettes) * niv(st).recettes * (bonusMaire(st).recettes || 1) * ((cr && cr.recettes) || 1);
     // Un même commerce rapporte un peu moins à chaque exemplaire (la clientèle se partage)
     Object.keys(st.bat).forEach(function (id) { var R = BATIMENTS[id].rev || 0; if (R) r += R * ((1 - Math.pow(P.rendement, st.bat[id])) / (1 - P.rendement)) * ((st.ampleur && st.ampleur[id]) || 1); });
     combosActifs(st).forEach(function (id) { r += C.COMBOS[id].rev || 0; });
@@ -482,7 +577,7 @@
   function sondage(st) {
     var o = st.opposant, f = o ? (o.actif ? o.force : 0) : 45;
     var pct = 50 + (bonheur(st) - 50) * 0.45 + (st.pop - 50) * 0.55 + (st.ambitions.length ? (promessesTenues(st).length - 1) * 3 : 0)
-      - (f - 45) * 0.1 + niv(st).elec - (st.mandat - 1) * P.usureMandat - st.dette / P.detteImpop * 2 + (st.bat.palais && bonheur(st) >= 55 ? 2 : 0) + Math.min(3, atout(st, "vote"));
+      - (f - 45) * 0.1 + niv(st).elec - (st.mandat - 1) * P.usureMandat - (st.dette / P.detteImpop * 2 + Math.max(0, st.dette - 900) / 60) * (bonusMaire(st).detteImpop || 1) + objectifsOk(st) * (bonusMaire(st).objVote || P.objVote) + (st.bat.palais && bonheur(st) >= 55 ? 2 : 0) + Math.min(3, atout(st, "vote"));
     return Math.max(10, Math.min(90, arrondi(pct)));
   }
 
@@ -691,7 +786,9 @@
   function election(st) {
     var pct = Math.max(10, Math.min(90, arrondi(sondage(st) + (rnd(st) - 0.5) * 6)));
     var piliers = {}; PK.forEach(function (k) { piliers[k] = st.piliers[k]; });
+    var ob = objectifs(st), nok = ob.filter(function (o) { return o.ok; }).length;
     return { mandat: st.mandat, t: st.t, pct: pct, gagne: pct > 50, opposant: st.opposant ? OPPOSANTS[st.opposant.i].nom : "l’opposition",
+      objectifs: ob, nok: nok, reussi: ob.length > 0 && nok >= 2, parfait: ob.length > 0 && nok === ob.length, crise: st.crise ? st.crise.id : null,
       popu: st.pop, bon: bonheur(st), coh: st.coh, taux: st.taux, amb: promessesTenues(st), piliers: piliers, tresor: st.tresor, dette: st.dette };
   }
   function faillite(st) {
@@ -745,7 +842,7 @@
     PK.forEach(function (k) { st.piliers[k] = borne(st.piliers[k] + (c[k] - st.piliers[k]) * P.vit); });
     st.eco = borne(st.eco + (50 - st.eco) * 0.05 - Math.max(0, st.taux - 1) * 3);
     st.humeur = arrondi(st.humeur * P.humeurVit);
-    var cib = bonheur(st) * 0.6 + st.coh * 0.2 + 14 - Math.max(0, trimMandat(st)) * P.usurePop - st.dette / P.detteImpop - (st.coh < 40 ? 4 : 0) - Math.max(0, st.taux - 1) * 30;
+    var cib = bonheur(st) * 0.6 + st.coh * 0.2 + 14 - Math.max(0, trimMandat(st)) * P.usurePop * (bonusMaire(st).usurePop || 1) - st.dette / P.detteImpop * (bonusMaire(st).detteImpop || 1) - (st.coh < 40 ? 4 : 0) - Math.max(0, st.taux - 1) * 30;
     st.pop = borne(st.pop + (cib - st.pop) * P.popVit + Math.min(0.6, atout(st, "popT")));
     if (st.meca.ligne) st.coh = borne(st.coh + (50 - st.coh) * 0.03);
     // Le Palais du Maire fait scandale quand la ville va mal
@@ -786,12 +883,17 @@
       if (!el.gagne) { if (el.pct < 35) gagnerObjet(st, "bonnet"); st.fin = { gagne: false, raison: { type: "election", txt: "Les Parisiens ont choisi " + el.opposant + " : tu n’obtiens que " + String(el.pct).replace(".", ",") + " % des voix." }, t: st.t }; st.phase = "fin"; leon(st, "battu"); return st; }
       if (st.scenario && st.t >= st.scenario.fin) { finDefi(st); return st; }
       gagnerXP(st, "Élections gagnées", XP.election[st.niveau] || XP.election.moyen);
+      if (el.nok) { x.objectifsOk = (x.objectifsOk || 0) + el.nok; gagnerXP(st, "Objectifs de mandat atteints", XP.objectif * el.nok); }
+      if (el.reussi) { x.mandatsReussis = (x.mandatsReussis || 0) + 1; gagnerXP(st, "Mandats réussis", XP.mandatReussi); }
+      if (el.parfait) x.mandatsParfaits = (x.mandatsParfaits || 0) + 1;
       if (el.amb && el.amb.length) gagnerXP(st, "Promesses tenues le jour du vote", XP.promesseTenue * el.amb.length);
       st.mandat++; st.debutMandat = st.t; st.pop = borne(st.pop + 5); st.pariMandat = 0;
       annoncer(st);
       ouvrirCoffre(st);
       if (st.mandat >= 3) gagnerObjet(st, "echarpe");
       if (st.meca.opposant) tirerOpposant(st);
+      if (!st.scenario) tirerMandat(st);
+      st.prochainDossier = 0;
       leon(st, "reelu");
       if (bonheur(st) < 50 || st.dette > 1000) x.sauvetage++;
       st.phase = "election"; return st;
@@ -801,7 +903,13 @@
     return tirerDossier(st, base);
   }
   function continuer(st0, base) { if (st0.phase !== "election") return st0; return tirerDossier(copie(st0), base); }
+  // Un dossier tous les 2 ou 3 trimestres ; les urgences (catastrophe annoncée, attaque, chantiers, suites) n'attendent pas
   function tirerDossier(st, base) {
+    var r = tirerDossier0(st, base);
+    if (r.phase === "evenement") st.prochainDossier = st.t + P.cadence + (rnd(st) < 0.5 ? 1 : 0);
+    return r;
+  }
+  function tirerDossier0(st, base) {
     var o = st.opposant, ev = null, tm = trimMandat(st);
     // 1. La catastrophe annoncée le trimestre précédent arrive
     if (st.alerte && st.alerte.t <= st.t) {
@@ -824,6 +932,8 @@
       var dispo = C.HISTORIQUES.filter(function (h) { return !st.uniques[h.id]; });
       if (dispo.length) { st.histoMandat = st.mandat; leon(st, "historique"); return lancerSpe(st, dispo[Math.floor(rnd(st) * dispo.length)], "historique"); }
     }
+    // Entre deux dossiers : un trimestre de gestion, sans décision à prendre
+    if (st.t < (st.prochainDossier || 0)) { st.phase = "gestion"; st.evenement = null; return st; }
     // 6. Le chaos parisien : plus il monte, plus l'extraordinaire devient probable
     var ch = st.chaos, r = rnd(st), pL = ch >= 40 ? 0.006 + ch / 5000 : 0, pR = 0.03 + ch / 800 + (st.bat.coffre ? 0.03 : 0), pP = 0.05;
     var rar = r < pL ? "legendaire" : r < pL + pR ? "rare" : r < pL + pR + pP ? "politique" : null;
@@ -834,7 +944,8 @@
     // 7. Catastrophes (annoncées un trimestre à l'avance) et coups de chance
     if (st.meca.cata) {
       var rc = rnd(st);
-      if (rc < P.cata && st.t >= st.repit && !st.alerte) {
+      var crc = criseEnCours(st);
+      if (rc < P.cata * ((crc && crc.cata) || 1) && st.t >= st.repit && !st.alerte) {
         st.alerte = { t: st.t + 1 };
         message(st, "⚠️", "Alerte pour le trimestre prochain", "Les services de la ville s’attendent à un coup dur. Garde de l’argent de côté.");
         leon(st, "alerte");
@@ -854,6 +965,7 @@
     var B = BATIMENTS[ch.id];
     st.chantiers = st.chantiers.filter(function (c) { return c !== ch; });
     st.bat[ch.id] = 1; st.ampleur[ch.id] = ch.ampleur;
+    if (st.mandatTypes) st.mandatTypes[ch.id] = 1;
     if (B.eco) st.eco = borne(st.eco + B.eco * ch.ampleur);
     st.pop = borne(st.pop + (B.pop || 0) * ch.ampleur);
     stats(st).projetsOk++; gagnerXP(st, "Projets démesurés inaugurés", XP.projet);
@@ -1059,6 +1171,8 @@
     var ev = base.parId[st0.evenement]; if (!ev || !ev.choix[i]) return st0;
     var st = copie(st0), c = ev.choix[i], lib = ev.titre + " : " + c.t;
     var e = varier(st, c.e), extra = [];
+    // Dossiers ordinaires : moins fréquents (tous les 2 ou 3 trimestres), donc plus marquants
+    if (e && !st.special) { ["pop", "bon", "bud"].forEach(function (k) { if (e[k]) e[k] = arrondi(e[k] * P.fort); }); if (e.dom) Object.keys(e.dom).forEach(function (k) { e.dom[k] = arrondi(e.dom[k] * P.fort); }); if (e.rec) e.rec = { m: e.rec.m * P.fort, n: e.rec.n }; }
     // Pompiers, centre de crise, forêt urbaine… : une partie des dégâts d'une catastrophe est évitée
     var prot = st.special === "catastrophe" ? protection(st) : 0;
     if (st.special === "catastrophe" && st.assurance) { prot = Math.min(0.75, prot + 0.5); st.assurance = 0; extra.push("🛡️ Ton assurance catastrophe a joué : elle est maintenant utilisée."); }
@@ -1072,7 +1186,7 @@
     if (a) {
       var urgence = ev.cat === "crise" || ev.cat === "catastrophe";
       if (a <= -3 && !urgence) stats(st).trahisons++;
-      d = appliquer(st, { coh: arrondi(a > 0 ? a * P.aliPlus : a * (urgence ? 0.8 : P.aliMoins)) }, lib, d);
+      d = appliquer(st, { coh: arrondi(a > 0 ? a * P.aliPlus : a * (urgence ? 0.8 : P.aliMoins) * (bonusMaire(st).aliDoux || 1)) }, lib, d);
       if (a <= -3 && !urgence && rnd(st) < 0.6) { d = appliquer(st, { pop: -2 }, lib, d); extra.push("Une partie de ton électorat se sent trahie."); }
       if (a >= 2) { var gl = gagnerXP(st, "Décisions fidèles à ta ligne", XP.ligne, XP.ligneMax); if (gl) extra.push("🧭 Décision fidèle à ta ligne : +" + gl + " XP."); }
     }
@@ -1146,9 +1260,10 @@
     if (!disponible(st, id)) return verrou(st, id) || "Se débloque plus tard.";
     if (B.unique && st.bat[id]) return "Déjà réalisé.";
     if (B.enchere) return "Aux enchères uniquement.";
+    if ((bonusMaire(st).interdit || []).indexOf(id) >= 0) return "Ton personnage refuse de construire ça.";
     if (enChantier(st, id)) return "Chantier en cours.";
     if (B.projet && st.chantiers.length >= 2) return "Deux chantiers à la fois, pas plus.";
-    var px = B.projet ? Math.round(B.cout * 0.3) : prix(st, id);
+    var px = B.projet ? Math.round(coutBat(st, id) * 0.3) : prix(st, id);
     if (px > st.tresor + (PLAFOND_DETTE - st.dette) * 0.5) return "Pas assez d’argent, même en empruntant.";
     return "";
   }
@@ -1157,10 +1272,10 @@
     var st = copie(st0), B = BATIMENTS[id], x = stats(st);
     if (B.projet) {
       // Projet démesuré : 30 % tout de suite, le reste par tranches pendant le chantier
-      var avance = Math.round(B.cout * 0.3);
+      var cb = coutBat(st, id), avance = Math.round(cb * 0.3);
       mouvement(st, -avance, "Lancement du chantier : " + B.nom);
-      st.chantiers.push({ id: id, reste: B.duree, du: B.cout - avance, ampleur: 1, susp: 0, debut: st.t });
-      x.investi += B.cout; x.lances++;
+      st.chantiers.push({ id: id, reste: B.duree, du: cb - avance, ampleur: 1, susp: 0, debut: st.t });
+      x.investi += cb; x.lances++;
       if (st.tresor < 0) st.incidents.push({ t: st.t + 3, cid: id, type: "rallonge" });   // lancé sans réserves : la facture reviendra
       st.historique.push({ t: st.t, titre: B.ico + " Chantier lancé : " + B.nom, choix: "Avance de " + avance + " M€, " + B.duree + " trimestres de travaux", d: { pop: 0, bon: 0, coh: 0, bud: -avance, pil: {} }, c: "achat" });
       st.pop = borne(st.pop + 1);
@@ -1173,6 +1288,7 @@
   function construire(st, id, px, libelle) {
     var B = BATIMENTS[id], x = stats(st);
     st.bat[id] = (st.bat[id] || 0) + 1;
+    if (st.mandatBats) { st.mandatBats[B.cat] = (st.mandatBats[B.cat] || 0) + 1; st.mandatTypes[id] = 1; }
     mouvement(st, -px, libelle);
     x.achats++; x.bats[id] = (x.bats[id] || 0) + 1; x.investi += px;
     if (B.secret) x.secretsBatis++;
@@ -1285,11 +1401,38 @@
   }
   function bilan(st) {
     var gagnes = st.elections.filter(function (e) { return e.gagne; }).length, t = st.fin ? st.fin.t : st.t, x = stats(st);
-    var score = Math.round(t * 12 + gagnes * 150 + bonheur(st) * 2 + x.achats * 3 + x.projetsOk * 40 + (st.missionsOk || []).length * 15 + Math.max(-100, Math.min(100, (st.tresor - st.dette) / 10)));
+    var score = Math.round(t * 12 + gagnes * 150 + (x.mandatsReussis || 0) * 150 + (x.objectifsOk || 0) * 40 + bonheur(st) * 2 + x.achats * 3 + x.projetsOk * 40 + (st.missionsOk || []).length * 15 + Math.max(-100, Math.min(100, (st.tresor - st.dette) / 10)));
     var poids = st.historique.filter(function (h) { return h.c !== "achat" && h.c !== "pari"; }).map(function (h) { return { t: h.t, titre: h.titre, choix: h.choix, v: h.d.pop + h.d.bon }; })
       .sort(function (a, b) { return a.v - b.v; });
     return { score: st.scenario ? scoreDefi(st) : Math.max(0, score), mandats: gagnes, t: t, annees: t / 4, bonheur: bonheur(st), pires: poids.slice(0, 5), meilleures: poids.slice(-5).reverse(),
-      stats: x, objets: st.objets.slice(), combos: st.combos.slice(), recit: recit(st) };
+      stats: x, objets: st.objets.slice(), combos: st.combos.slice(), recit: recit(st), style: style(st), meilleur: meilleurMandat(st) };
+  }
+  // Le titre qui résume ta façon de jouer (le premier qui correspond, du plus marquant au plus courant)
+  function style(st) {
+    var x = stats(st), gagnes = st.elections.filter(function (e) { return e.gagne; }).length, fin = st.fin ? st.fin.raison.type : null;
+    var fort = PK.slice().sort(function (a, b) { return st.piliers[b] - st.piliers[a]; })[0];
+    var NOMS = { logement: "Le maire du logement", transports: "Le maire des transports", cadre: "Le maire jardinier", securite: "Le shérif de Paris" };
+    var l = [
+      [fin === "faillite", "Le maire banqueroute", "La ville a fini sans le sou : on en parlera longtemps."],
+      [(x.mandatsParfaits || 0) >= 2, "Le maire exemplaire", "Plusieurs mandats sans faute : du jamais-vu."],
+      [x.projetsOk >= 3, "Le Grand Bâtisseur", "Tes chantiers démesurés ont changé la face de Paris."],
+      [x.detteMax > 1000 && gagnes >= 1, "Le maire endetté mais adoré", "Des caisses vides, mais des Parisiens qui te réélisent."],
+      [x.detteMax === 0 && gagnes >= 1, "Le gardien des finances", "Pas un euro emprunté de toute ta carrière."],
+      [x.elimines >= 2, "Le tombeur d’opposants", "Tes adversaires ont appris à se méfier de toi."],
+      [x.absurdes >= 3, "Le maire imprévisible", "Léon n’a jamais su ce que tu allais décider."],
+      [x.achats >= 45, "Le maire bétonneur", "Pas un trottoir sans un nouveau bâtiment."],
+      [st.piliers[fort] >= 75, NOMS[fort], "Ton pilier préféré a atteint des sommets."],
+      [gagnes >= 3, "Le maire indéboulonnable", "Les Parisiens ne voulaient plus te voir partir."],
+      [gagnes >= 1, "Le maire qui a tenu bon", "Au moins une réélection : pas si simple à Paris."],
+      [true, "Le maire éphémère", "Un passage éclair à l’Hôtel de Ville."]];
+    var r = l.filter(function (y) { return y[0]; })[0];
+    return { titre: r[1], txt: r[2] };
+  }
+  // Le meilleur mandat : le plus d'objectifs atteints, puis le meilleur score au vote
+  function meilleurMandat(st) {
+    var l = st.elections.filter(function (e) { return e.gagne; }); if (!l.length) return null;
+    var e = l.slice().sort(function (a, b) { return (b.nok || 0) - (a.nok || 0) || b.pct - a.pct; })[0];
+    return { mandat: e.mandat, pct: e.pct, nok: e.nok || 0, nb: (e.objectifs || []).length, crise: e.crise && C.CRISES[e.crise] ? C.CRISES[e.crise] : null };
   }
   // Un résumé à raconter, construit uniquement à partir de ce qui s'est vraiment passé dans la partie
   function recit(st) {
@@ -1312,12 +1455,12 @@
       var r = st.fin.raison.type;
       p.push(r === "election" ? (st.dette > 600 ? "Malgré ces résultats, la dette a fragilisé ta dernière campagne." : "Mais les Parisiens ont fini par vouloir changer de maire.") :
         r === "faillite" ? "Hélas, la ville a fait faillite avec " + Math.round(st.dette) + " M€ de dette." :
-        r === "demission" ? "Tu as préféré rendre ton écharpe avant la fin." : "Défi terminé : il ne reste plus qu’à comparer ton score.");
+        r === "demission" ? "Tu as préféré rendre ton écharpe avant la fin." : r === "retraite" ? "Tu as choisi de partir au sommet, sous les applaudissements." : "Défi terminé : il ne reste plus qu’à comparer ton score.");
     }
     return p.join(" ");
   }
   function analyse(st) {
-    if (!st.fin || st.fin.raison.type === "demission" || st.fin.raison.type === "defi") return null;
+    if (!st.fin || st.fin.raison.type === "demission" || st.fin.raison.type === "defi" || st.fin.raison.type === "retraite") return null;
     if (st.fin.raison.type === "election") {
       var el = st.elections[st.elections.length - 1], o = opposant(st), raisons = [];
       if (st.pop < 50) raisons.push("ta popularité (" + Math.round(st.pop) + ") était trop basse");
@@ -1358,7 +1501,7 @@
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
     roulette: roulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
-    RAYONS: RAYONS, gainAchat: gainAchat, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
+    RAYONS: RAYONS, gainAchat: gainAchat, coutBat: coutBat, objectifs: objectifs, objectifsOk: objectifsOk, retraite: retraite, criseEnCours: criseEnCours, bonusMaire: bonusMaire, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
     ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, planVille: planVille, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.Maire = API;

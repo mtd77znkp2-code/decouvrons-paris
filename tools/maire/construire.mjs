@@ -110,7 +110,38 @@ for (let i = 0; i < sig.length; i++) for (let j = i + 1; j < sig.length; j++) {
 const tousValides = base.liste.filter((ev) => !doublons.has(ev.id));
 // Catastrophes et coups de chance : un fichier à part, chargé dans toutes les parties
 const speciaux = tousValides.filter((ev) => Maire.SPECIAUX[ev.cat]);
-const valides = tousValides.filter((ev) => !Maire.SPECIAUX[ev.cat]);
+const candidats = tousValides.filter((ev) => !Maire.SPECIAUX[ev.cat]);
+// ---------- Sélection des 1000 dossiers les plus marquants ----------
+// Un dossier tombe tous les 2 ou 3 trimestres : on garde les vrais dilemmes (chaque réponse a un prix, les réponses
+// s'opposent) aux effets nets, avec des conséquences qui reviennent plus tard. Chaque catégorie garde la même part.
+const MAX_DOSSIERS = 1000;
+function valeurChoix(c) {
+  const e = c.e || {}, d = e.dom || {};
+  return { pop: (e.pop || 0) + (e.bon || 0), argent: (e.bud || 0) / 8 + (e.rec ? e.rec.m * e.rec.n / 8 : 0), ville: Object.values(d).reduce((a, v) => a + v, 0) };
+}
+function force(ev) {
+  const v = ev.choix.map(valeurChoix);
+  const ampleur = v.reduce((a, x) => a + Math.abs(x.pop) + Math.abs(x.argent) + Math.abs(x.ville), 0) / v.length;
+  // Dilemme : chaque réponse perd quelque chose, et aucune ne domine toutes les autres
+  const prix = v.filter((x) => x.pop < 0 || x.argent < 0 || x.ville < 0).length / v.length;
+  const domine = v.some((x, i) => v.every((y, j) => i === j || (x.pop >= y.pop && x.argent >= y.argent && x.ville >= y.ville)));
+  const ecart = ["pop", "argent", "ville"].reduce((a, k) => a + Math.max(...v.map((x) => x[k])) - Math.min(...v.map((x) => x[k])), 0);
+  const suites = ev.choix.reduce((a, c) => a + (c.dif ? c.dif.length : 0) + (c.alea ? 1 : 0) + (c.suite ? 2 : 0), 0);
+  return ampleur + ecart * 0.6 + prix * 3 + (domine ? -4 : 2) + suites * 0.8;
+}
+const cibles0 = new Set(); candidats.forEach((ev) => ev.choix.forEach((c) => { if (c.suite) cibles0.add(c.suite.id); }));
+const parCatC = {}; candidats.filter((ev) => !cibles0.has(ev.id)).forEach((ev) => { (parCatC[ev.cat] = parCatC[ev.cat] || []).push(ev); });
+const cats = Object.keys(parCatC).sort(), garder = new Set(), suiteDe = (ev) => ev.choix.filter((c) => c.suite && base.parId[c.suite.id]).map((c) => base.parId[c.suite.id]);
+const chaine = (ev) => { const l = [ev]; for (let i = 0; i < l.length; i++) suiteDe(l[i]).forEach((x) => { if (!l.includes(x)) l.push(x); }); return l; };
+cats.forEach((cat, i) => {
+  const quota = Math.floor(MAX_DOSSIERS / cats.length) + (i < MAX_DOSSIERS % cats.length ? 1 : 0);
+  let n = 0;
+  for (const ev of parCatC[cat].sort((a, b) => force(b) - force(a) || (a.id < b.id ? -1 : 1))) {
+    const ch = chaine(ev); if (n + ch.length > quota) continue;
+    ch.forEach((x) => garder.add(x.id)); n += ch.length;
+  }
+});
+const valides = candidats.filter((ev) => garder.has(ev.id));
 // Une suite doit rester dans le même lot que l'événement qui l'annonce : on garde les chaînes ensemble
 const groupes = [], dansGroupe = {}, cibles = new Set();
 valides.forEach((ev) => ev.choix.forEach((c) => { if (c.suite) cibles.add(c.suite.id); }));
@@ -135,13 +166,13 @@ if (lot.length) lots.push(lot);
 const parCat = {}; valides.forEach((ev) => { parCat[ev.cat] = (parCat[ev.cat] || 0) + 1; });
 const index = {
   total: valides.length, lots: lots.map((l, i) => ({ f: `lot-${String(i + 1).padStart(3, "0")}.json`, n: l.length })),
-  parCat, rejetes: tous.length - tousValides.length,
+  parCat, rejetes: tous.length - tousValides.length, ecartes: candidats.length - valides.length,
   speciaux: { f: "speciaux.json", catastrophe: speciaux.filter((e) => e.cat === "catastrophe").length, chance: speciaux.filter((e) => e.cat === "chance").length }
 };
 const sorties = { "index.json": JSON.stringify(index), "speciaux.json": JSON.stringify(speciaux) };
 lots.forEach((l, i) => { sorties[index.lots[i].f] = JSON.stringify(l); });
 
-console.log(`Événements lus : ${tous.length} · valides : ${valides.length} (+ ${index.speciaux.catastrophe} catastrophes, ${index.speciaux.chance} coups de chance) · rejetés : ${index.rejetes}`);
+console.log(`Événements lus : ${tous.length} · gardés : ${valides.length} sur ${candidats.length} valides (+ ${index.speciaux.catastrophe} catastrophes, ${index.speciaux.chance} coups de chance) · rejetés : ${index.rejetes}`);
 console.log("Par catégorie :", Object.entries(parCat).map(([k, v]) => `${Maire.CATS[k]} ${v}`).join(" · "));
 if (err.length) { console.log(`\n${err.length} problème(s) :`); err.slice(0, 80).forEach((e) => console.log(" - " + e)); }
 

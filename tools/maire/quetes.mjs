@@ -54,7 +54,8 @@ for (const v of [60, 70, 80, 90]) ajout("jauge", `Gagne une élection avec une c
 for (const [p, pn] of Object.entries(PIL)) ajout("promesse", `Gagne une élection en tenant ta promesse ${pn}.`, 80, { p }, 6);
 for (const nmin of [0, 1, 2]) ajout("deuxPromesses", `Gagne une élection${NIV[nmin]} en tenant tes deux promesses.`, 100 * mult(nmin), { nmin }, Math.max(6, NIVN[nmin]));
 // Dossiers par famille
-for (const [f, fn] of Object.entries(FAM)) for (const n of [3, 5, 8, 10, 12, 15, 20]) ajout("famille", `Traite ${n} dossiers ${fn} dans une partie.`, 10 + n * 4, { f, n });
+// Un dossier tous les 2 ou 3 trimestres : les objectifs restent atteignables en une partie
+for (const [f, fn] of Object.entries(FAM)) for (const n of [1, 2, 3, 4, 5, 6, 7]) ajout("famille", `Traite ${n} dossier${n > 1 ? "s" : ""} ${fn} dans une partie.`, 10 + n * 12, { f, n });
 // Catastrophes, chance, opposant
 for (const n of [1, 2, 3, 4, 5]) ajout("catastrophes", `Affronte ${n} catastrophe${n > 1 ? "s" : ""} dans une partie.`, 20 + n * 18, { n }, 5);
 for (const n of [1, 2, 3]) ajout("chance", n === 1 ? "Profite d’un coup de chance." : `Profite de ${n} coups de chance dans une partie.`, 25 + n * 25, { n }, 5);
@@ -67,12 +68,12 @@ ajout("oppIntact", "Gagne une élection sans qu’aucune attaque de l’oppositi
 for (let v = 400; v <= 3000; v += 100) ajout("score", `Atteins un score d’au moins ${v}.`, 15 + (v - 300) * 0.07, { v });
 for (const v of [500, 750, 1000, 1500]) ajout("score", `En Réaliste, atteins un score d’au moins ${v}.`, 60 + (v - 400) * 0.12, { v, nmin: 2 }, 8);
 for (const n of [0, 1, 2, 3]) ajout("fidele", `Gagne une élection en reniant ta ligne ${n ? "au plus " + n + " fois" : "zéro fois"}.`, 110 - n * 20, { n }, 7);
-for (const [l, nom] of Object.entries(LIGNES)) ajout("fidele", `Avec la ligne ${nom}, gagne une élection sans jamais la renier.`, 110, { n: 0, ligne: l }, 7);
+for (const [l, nom] of Object.entries(LIGNES)) ajout("fidele", `Avec un maire de ligne ${nom}, gagne une élection sans jamais renier cette ligne.`, 110, { n: 0, ligne: l }, 7);
 // Compléments
 for (const [id, [un, des, px, nv]] of Object.entries(BATS)) if (nv < 8) for (const n of [8, 10]) ajout("achat", `Achète ${n} ${des} dans une partie.`, 10 + Math.sqrt(px) * n * 2, { b: id, n }, nv);
 for (const [p, pn] of Object.entries(PIL)) for (const nmin of [1, 2]) for (const v of [70, 75]) ajout("pilier", `Gagne une élection${NIV[nmin]} avec le pilier ${pn} à ${v} ou plus.`, (60 + (v - 65) * 8) * mult(nmin), { p, v, nmin }, NIVN[nmin]);
 for (const nmin of [0, 1, 2]) for (const n of [30, 36]) ajout("annees", `Reste ${n} ans à l’Hôtel de Ville${NIV[nmin]}.`, (10 + n * 7) * mult(nmin), { n, nmin }, NIVN[nmin]);
-for (const [f, fn] of Object.entries(FAM)) for (const n of [25, 30]) ajout("famille", `Traite ${n} dossiers ${fn} dans une partie.`, 10 + n * 4, { f, n });
+for (const [f, fn] of Object.entries(FAM)) for (const n of [8, 10]) ajout("famille", `Traite ${n} dossiers ${fn} dans une partie.`, 10 + n * 12, { f, n });
 for (const nmin of [1, 2]) for (const v of [52, 55, 60]) ajout("voix", `Gagne une élection${NIV[nmin]} avec au moins ${v} % des voix.`, (40 + (v - 50) * 9) * mult(nmin), { v, nmin }, NIVN[nmin]);
 for (const nmin of [1, 2]) for (const v of [55, 60]) ajout("tousPiliers", `Gagne une élection${NIV[nmin]} avec les 4 piliers à ${v} ou plus.`, (40 + (v - 45) * 8) * mult(nmin), { v, nmin }, NIVN[nmin]);
 for (const v of [55, 60, 65, 70]) { ajout("jauge", `En Réaliste, gagne une élection avec un bonheur d’au moins ${v}.`, (30 + (v - 50) * 6) * 2.4, { j: "bon", v, nmin: 2 }, 8); ajout("jauge", `En Réaliste, gagne une élection avec une popularité d’au moins ${v}.`, (30 + (v - 50) * 6) * 2.4, { j: "popu", v, nmin: 2 }, 8); }

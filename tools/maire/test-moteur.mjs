@@ -161,14 +161,15 @@ test("sauvegardes : une partie de la version précédente se reprend sans rien p
   const ancien = JSON.parse(JSON.stringify(st));
   ["chaos", "chantiers", "incidents", "messages", "offre", "bj", "mission", "missionsOk", "combos", "decouvertes", "objets", "secrets", "persos", "mods", "conditions", "suitesSpe", "uniques", "ampleur"].forEach(k => delete ancien[k]);
   ["grandsProjets", "pari", "missions", "combos", "historiques"].forEach(k => delete ancien.meca[k]);
-  ["xp", "xp0", "xpLog", "xpSrc", "montees", "succesPartie", "suivi", "nivFixe", "pid", "connus", "enchere", "encheresCd", "sansLimite", "triche"].forEach(k => delete ancien[k]);
+  ["xp", "xp0", "xpLog", "xpSrc", "montees", "succesPartie", "suivi", "nivFixe", "pid", "connus", "enchere", "encheresCd", "sansLimite", "triche", "maire", "crise", "objectifs", "prochainDossier", "mandatBats", "mandatTypes", "mandatBase"].forEach(k => delete ancien[k]);
   ancien.v = 3;
   let r = M.reprendre(ancien, base);
-  assert.equal(r.v, 6);
+  assert.equal(r.v, 7);
+  assert.equal(r.objectifs.length, 3); assert.equal(r.crise, null, "partie en cours : objectifs sans crise ajoutée");
   // L'XP déjà méritée dans l'ancienne partie est comptée une fois (elle n'était versée qu'à la fin auparavant)
   assert.equal(r.xpLog.find(g => /Trimestres/.test(g.txt)).xp, st.t * M.XP.trimestre);
   assert.equal(r.xpLog.find(g => /Bâtiments/.test(g.txt)).xp, Math.min(M.XP.achatMax, M.stats(st).achats * M.XP.achat));
-  assert.deepEqual(M.migrer(JSON.parse(JSON.stringify(r))), r);   // migrer deux fois ne change rien assert.equal(r.t, st.t); assert.equal(r.tresor, st.tresor); assert.deepEqual(r.bat, st.bat); assert.deepEqual(r.piliers, st.piliers);
+  { const r2 = M.migrer(JSON.parse(JSON.stringify(r))); for (const k of Object.keys(r2)) assert.deepEqual(r2[k], r[k], "migrer deux fois change " + k); }   // migrer deux fois ne change rien assert.equal(r.t, st.t); assert.equal(r.tresor, st.tresor); assert.deepEqual(r.bat, st.bat); assert.deepEqual(r.piliers, st.piliers);
   r = jouer(r, () => 0, null, r.t + 12);
   assert.ok(r.t >= st.t + 1);
 });
@@ -234,7 +235,7 @@ test("opposant une fois par an, élection tous les 6 ans, fin de partie si battu
       if (g % 2) st = M.acheter(st, ["parc", "logements", "police", "velo"][st.t % 4]);
       st = M.debutTour(st, base);
       if (st.phase === "fin" || st.phase === "election") {
-        if (st.t % M.MANDAT === 0) {
+        if (st.t % M.MANDAT === 0 && st.elections.length && st.elections[st.elections.length - 1].t === st.t) {
           const e = st.elections[st.elections.length - 1];
           assert.equal(e.gagne, e.pct > 50); assert.equal(st.phase === "fin", !e.gagne);
           if (e.gagne) assert.equal(st.mandat, mandat + 1);
@@ -406,7 +407,7 @@ test("succès journaliers et pass de combat : 5 défis par jour en pleine partie
   assert.equal(a1.length, 5); assert.deepEqual(a1, a2, "fixés pour la journée");
   a1.forEach(d => assert.ok(G.JOURS.find(x => x.id === d.id).niv <= 1, "adaptés au niveau du joueur"));
   // Les 5 succès du jour choisis pour le test, puis une partie qui les remplit
-  let P = G.lire(); P.journaliers = { j: J, ids: ["j_ach5", "j_t8", "j_log2", "j_cad3", "j_dos10"], faits: [] }; P.pass = { saison: G.saisonDe(J), pts: 280, paliers: {} }; localStorage.setItem("maire_profil_v1", JSON.stringify(P));
+  let P = G.lire(); P.journaliers = { j: J, ids: ["j_ach5", "j_t8", "j_log2", "j_cad3", "j_dos5"], faits: [] }; P.pass = { saison: G.saisonDe(J), pts: 280, paliers: {} }; localStorage.setItem("maire_profil_v1", JSON.stringify(P));
   let st = M.nouvellePartie({ ligne: "centre", ambitions: [], niveau: "facile", xpJoueur: 0, graine: 90, pid: "jour" }); st.phase = "gestion";
   for (const id of ["parc", "logements", "parc", "logements", "parc"]) st = M.acheter(st, id);
   let r = G.suivrePartie(st, M, { jour: J }); st = r.st;
@@ -529,6 +530,67 @@ test("plan de Paris : chaque bâtiment a sa place, sans doublon, espacé au déb
   st.bat.parc = 5000; assert.equal(M.planVille(st).length, M.C.PLAN.length, "jamais plus que le plan ne peut en contenir");
 });
 
+test("mandats : un dossier tous les 2 ou 3 trimestres, une crise et 3 objectifs tirés à chaque mandat, victoire et fin en vainqueur", () => {
+  assert.equal(idx.total, 1000, "base de 1000 dossiers");
+  // Rythme : entre deux dossiers ordinaires, 2 ou 3 trimestres
+  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 700, nivJoueur: 2, niveau: "facile" });
+  const quand = [];
+  while (st.t < 40 && st.phase !== "fin") {
+    if (st.phase === "election") { st = M.continuer(st, base); continue; }
+    if (st.phase === "evenement") { if (!st.evPerso && !st.special) quand.push(st.t); st = M.choisir(st, base, 0); continue; }
+    st = M.debutTour(st, base);
+  }
+  assert.ok(quand.length >= st.t / 4 - 1 && quand.length <= st.t / 2 + 1, "dossiers : " + quand.length + " en " + st.t + " trimestres");
+  for (let i = 1; i < quand.length; i++) assert.ok(quand[i] - quand[i - 1] >= 2, "écart " + quand.slice(i - 1, i + 1));
+  // Crise et objectifs dès le départ
+  let m = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 701, nivJoueur: 10 });
+  assert.ok(M.C.CRISES[m.crise.id]); assert.equal(m.objectifs.length, 3); assert.ok(m.objectifs[0].crise);
+  assert.equal(new Set(m.objectifs.map(o => o.k + (o.p || o.r || ""))).size, 3, "trois objectifs différents");
+  for (let g = 0; g < 60; g++) {
+    const x = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 800 + g, nivJoueur: 12, niveau: "moyen" });
+    M.objectifs(x).forEach(o => assert.ok(o.txt && o.but != null && o.ico, JSON.stringify(o)));
+    if (x.crise.id === "dette") assert.ok(x.dette >= 300);
+  }
+  // Un objectif atteint donne des voix ; à l'élection, 2 objectifs sur 3 = mandat réussi
+  m.phase = "gestion"; const vrais = m.objectifs;
+  m.objectifs = [{ k: "pop", but: 99, ico: "📣", txt: "t" }]; const s0 = M.sondage(m);
+  m.objectifs = [{ k: "pop", but: 10, ico: "📣", txt: "t" }, { k: "pop", but: 10, ico: "📣", txt: "t" }, { k: "pop", but: 99, ico: "📣", txt: "t" }];
+  assert.ok(M.sondage(m) >= s0 + 2 * M.P.objVote - 0.5);
+  m.t = M.MANDAT - 1; ["cadre", "logement", "transports", "securite"].forEach(k => { m.piliers[k] = 85; m.base[k] = 85; }); m.pop = 85; m.dette = 0;
+  const crise1 = m.crise.id; m = M.debutTour(m, base);
+  assert.equal(m.phase, "election"); const e = m.elections[0];
+  assert.equal(e.nok, 2); assert.ok(e.reussi); assert.ok(!e.parfait); assert.equal(M.stats(m).mandatsReussis, 1);
+  assert.ok(m.xpLog.some(g => g.txt === "Mandats réussis"));
+  assert.ok(m.crise.id !== crise1, "nouvelle crise au nouveau mandat"); assert.equal(m.objectifs.length, 3);
+  // Choisir d'arrêter : fin en vainqueur
+  const f = M.retraite(m); assert.equal(f.phase, "fin"); assert.ok(f.fin.gagne); assert.equal(f.fin.raison.type, "retraite");
+  const b = M.bilan(f); assert.ok(b.style.titre && b.meilleur && b.meilleur.nok === 2);
+  assert.equal(M.retraite(M.nouvellePartie({ ligne: "centre", ambitions: [], graine: 3, nivJoueur: 1 })).phase, "pret", "seulement après une réélection");
+});
+
+test("personnages : avantages et défauts réels, déblocage selon le profil", () => {
+  const ids = Object.keys(M.C.MAIRES); assert.equal(ids.length, 9);
+  ids.forEach(id => { const x = M.C.MAIRES[id]; assert.ok(M.LIGNES[x.ligne] && x.txt && x.bonus, id); });
+  const p = (maire, o) => M.nouvellePartie(Object.assign({ maire, ligne: "gauche", ambitions: ["cadre", "logement"], graine: 900, nivJoueur: 5, niveau: "facile" }, o || {}));
+  const ref = p(null);
+  assert.equal(p("gestionnaire").tresor, ref.tresor + 150); assert.equal(p("heritier").tresor, ref.tresor + 400);
+  assert.equal(p("ecolo").ligne, "ecologie"); assert.equal(p("tribun").ligne, "gauche");
+  const ec = p("ecolo"); ec.phase = "gestion"; ec.tresor = 3000;
+  assert.equal(M.prix(ec, "parc"), Math.round(M.BATIMENTS.parc.cout * 0.75)); assert.equal(M.prix(ec, "police"), M.BATIMENTS.police.cout);
+  ec.nivJ = 20; ec.sansLimite = true; assert.equal(M.peutAcheter(ec, "parkingRelais"), "Ton personnage refuse de construire ça.");
+  const g = p("gestionnaire"); g.dette = 1000; const r0 = p(null); r0.dette = 1000; assert.ok(M.interets(g) < M.interets(r0));
+  const ren = p("renard", { nivJoueur: 10 }), r1 = p(null, { nivJoueur: 10 }); assert.equal(ren.opposant.force, Math.max(10, r1.opposant.force - 15));
+  const bat = p("batisseuse", { nivJoueur: 10 }); assert.equal(M.coutBat(bat, "grandParc"), Math.round(M.BATIMENTS.grandParc.cout * 0.75));
+  // Déblocage
+  localStorage.removeItem("maire_profil_v1");
+  let L = G.maires(); assert.deepEqual(L.filter(x => x.dispo).map(x => x.id), ["gestionnaire", "ecolo"]);
+  assert.ok(L.find(x => x.id === "batisseuse").cond.length > 10);
+  const P = G.lire(); P.xp = G.xpPour(10); P.succes.chantier1 = 1; P.mandats = 3; localStorage.setItem("maire_profil_v1", JSON.stringify(P));
+  L = G.maires(); ["tribun", "notable", "star", "batisseuse", "renard"].forEach(id => assert.ok(L.find(x => x.id === id).dispo, id));
+  assert.ok(!L.find(x => x.id === "rassembleuse").dispo && !L.find(x => x.id === "heritier").dispo);
+  localStorage.removeItem("maire_profil_v1");
+});
+
 console.log(ok + " tests réussis.\n");
 if (!N) { console.log("Simulation d’équilibrage ignorée (0 partie demandée)."); process.exit(0); }
 
@@ -553,7 +615,10 @@ function acheteMalin(st, reserve, essais) {
     for (const id of IDS) {
       const B = M.BATIMENTS[id]; if (M.peutAcheter(st, id)) continue;
       const px = M.prix(st, id); if (st.tresor - px < reserve) continue;
-      let v = 0; for (const k in B.e) v += B.e[k] * Math.max(0, 75 - st.piliers[k]) / 20 * (st.ambitions.includes(k) ? 1.5 : 1);
+      // Un joueur réfléchi vise aussi ses objectifs de mandat (pilier ou rayon à atteindre)
+      const vise = (st.objectifs || []).filter(o => !M.objectifs(st).find(e => e.k === o.k && e.ok && e.txt === o.txt));
+      let v = 0; for (const k in B.e) v += B.e[k] * Math.max(0, 75 - st.piliers[k]) / 20 * (st.ambitions.includes(k) ? 1.5 : 1) * (vise.some(o => o.k === "pilier" && o.p === k) ? 1.8 : 1);
+      if (vise.some(o => o.k === "rayon" && o.r === B.cat)) v *= 1.6;
       v = v / (px + B.ent * 16) * 100 + (B.rev || 0) * 16 / px * (st.tresor < 300 ? 3 : 1) + (B.pop || 0) / 3;
       if (v > bv) { bv = v; best = id; }
     }

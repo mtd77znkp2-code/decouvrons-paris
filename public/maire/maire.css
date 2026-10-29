@@ -684,3 +684,36 @@ body.m-modal{overflow:hidden}
 .m-plan-grand .m-v-img{width:84px}
 .m-plan .m-v-img{position:absolute;width:9%;height:auto;object-fit:contain}
 .m-plan-grand .m-v-img{width:84px}
+
+/* ---------- v12 : personnages, objectifs de mandat, bilan de carrière ---------- */
+.mx-maires{display:grid;gap:8px}
+.mx-maire{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;padding:10px 12px;border-radius:16px;border:2px solid rgba(255,255,255,.12);font:inherit;text-align:left;color:var(--ink);background:rgba(255,255,255,.05);cursor:pointer}
+.mx-maire[aria-pressed="true"]{border-color:var(--a);background:rgba(245,178,26,.14)}
+.mx-maire div{display:grid;gap:2px}
+.mx-maire small{color:var(--c);font-size:12.5px;line-height:1.35}
+.mx-mico{font-size:30px}
+.mx-verrouille{opacity:.5}
+.mx-objectifs{display:grid;gap:6px;padding:12px 14px;border-radius:18px;background:rgba(245,178,26,.08);box-shadow:inset 0 0 0 1px rgba(245,178,26,.35)}
+.mx-objn{padding:2px 9px;border-radius:99px;background:rgba(255,255,255,.12);font-size:14px}
+.mx-objbon{background:#2f8a52;color:#fff}
+.mx-criseinfo{color:#ffb27a;font-size:12.5px;line-height:1.3}
+.mx-objl{display:grid;grid-template-columns:22px 1fr auto;gap:6px;align-items:center;font-size:13.5px}
+.mx-objl b{font-size:12.5px;color:var(--mut);white-space:nowrap}
+.mx-objl.mx-ok b{color:#6fdc95}
+.mx-objl.mx-rate{opacity:.75}
+.mx-tirage{display:grid;gap:10px;margin-top:10px}
+.mx-crise{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;padding:12px;border-radius:14px;background:rgba(224,82,75,.15);box-shadow:inset 0 0 0 1px rgba(224,82,75,.45)}
+.mx-crise>span{font-size:30px}
+.mx-crise div{display:grid;gap:2px}
+.mx-crise small{color:var(--c)}
+.mx-objliste{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.mx-objliste li{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.07);font-weight:700}
+.mx-obj-in{animation:mx-apparait .45s ease both}
+@keyframes mx-apparait{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.mx-choixfin{display:grid;gap:8px}
+.mx-style{display:grid;gap:6px;padding:14px;border-radius:18px;text-align:center;background:linear-gradient(160deg,rgba(245,178,26,.22),rgba(124,77,255,.18))}
+.mx-titre{font-size:24px;color:#ffd970}
+.mx-faits{display:grid;gap:6px;margin-top:6px;text-align:left}
+.mx-faits div{display:grid;gap:1px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.07)}
+.mx-faits small{color:var(--mut);font-size:12.5px}
+@media (prefers-reduced-motion:reduce){.mx-obj-in{animation:none}}
