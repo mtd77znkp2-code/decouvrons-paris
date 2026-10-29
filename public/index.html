@@ -33,15 +33,12 @@
     </form>
     <div id="loggedBox" hidden><p id="welcome"></p><button class="btn" id="logout">Se déconnecter</button></div>
   </div>
-  <div>
+  <div class="hcentre">
     <h1 class="sr">Découvrons Paris</h1>
-    <div class="float"><img class="logo" alt="Découvrons Paris" src="img/logo.webp" width="220" height="220"></div>
-    <p class="hello">Que veux-tu découvrir ?</p>
-    <div class="choices">
-      <button class="choice" data-go="videos"><span class="t">🧭 Découvre !</span><span class="d">Mes vidéos et mes adresses sur la carte</span></button>
-      <button class="choice" data-go="jeux"><span class="t">🏛️ Maire de Paris</span><span class="d">Le jeu : gouverne Paris, mandat après mandat</span></button>
-    </div>
+    <p class="hello sr">Que veux-tu découvrir ?</p>
+    <button class="hjouer" type="button" id="jouer" data-go="jeux">Jouer</button>
   </div>
+  <button class="hdecouvre" type="button" data-go="videos">🧭 Découvre</button>
 </div>
 
 <div class="wrap" id="site" hidden>

@@ -186,6 +186,21 @@ $("adminLogout").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut(
   if("IntersectionObserver" in window)new IntersectionObserver(function(e){if(calme)return;if(e[0].isIntersecting){var p=v.play();if(p&&p.catch)p.catch(function(){})}else v.pause()}).observe(document.getElementById("home"));
 })();
 function goTo(s){var st=document.getElementById("site");st.hidden=false;tab(s);setTimeout(function(){st.scrollIntoView({behavior:"smooth",block:"start"})},50)}
-Array.prototype.forEach.call(document.querySelectorAll(".choice"),function(b){b.onclick=function(){goTo(b.dataset.go)}});
+document.querySelector(".hdecouvre").onclick=function(){goTo("videos")};
+// « Jouer » : l'écran se dérègle façon bug informatique, puis le jeu apparaît
+document.getElementById("jouer").onclick=function(){
+  if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return goTo("jeux");
+  var g=document.createElement("div");g.className="glitch";g.setAttribute("aria-hidden","true");
+  g.innerHTML='<span class="gl-t" data-t="MAIRE DE PARIS">MAIRE DE PARIS</span><i class="gl-b gl-b1"></i><i class="gl-b gl-b2"></i><i class="gl-b gl-b3"></i>';
+  document.body.appendChild(g);document.body.classList.add("glitching");
+  function vaJeu(){var st=document.getElementById("site"),h=document.documentElement;h.style.scrollBehavior="auto";window.scrollTo(0,st.getBoundingClientRect().top+window.scrollY);h.style.scrollBehavior=""}
+  setTimeout(function(){document.getElementById("site").hidden=false;tab("jeux");vaJeu()},450);
+  setTimeout(vaJeu,950);
+  setTimeout(function(){g.classList.add("gl-fin");document.body.classList.remove("glitching")},900);
+  setTimeout(function(){g.remove()},1250);
+};
 document.getElementById("back").onclick=function(){document.getElementById("home").scrollIntoView({behavior:"smooth",block:"start"})};
-if(location.hash==="#jeux")goTo("jeux");
+// Arrivée sur le site : toujours en haut, sur la vidéo (le navigateur ne reprend pas l'ancienne position)
+if("scrollRestoration" in history)history.scrollRestoration="manual";
+if(location.hash==="#jeux")goTo("jeux");else window.scrollTo(0,0);
+window.addEventListener("pageshow",function(e){if(e.persisted&&location.hash!=="#jeux")window.scrollTo(0,0)});

@@ -256,3 +256,32 @@ h2{font-size:clamp(26px,6vw,32px);margin:22px 0 4px}
 #home>div:not(#loginBox){position:relative;z-index:2}
 #home>.hbg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 #home::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(14,23,64,.25) 0%,rgba(14,23,64,.55) 55%,var(--bg) 100%)}
+/* Accueil épuré : « Jouer » au centre, « Découvre » discret en bas à droite */
+.hcentre{display:grid;justify-items:center;gap:26px}
+.hlogo{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);left:14px;width:46px;height:46px;border-radius:50%;box-shadow:0 0 0 2px var(--a),0 6px 18px rgba(0,0,0,.5)}
+#home .hlogo{position:absolute}
+.hjouer{font:inherit;font-size:clamp(30px,9vw,44px);font-weight:800;letter-spacing:.02em;color:var(--bg);background:#fff;border:none;border-radius:26px;padding:20px 64px;cursor:pointer;
+  box-shadow:0 0 0 4px rgba(255,255,255,.25),0 18px 50px rgba(0,0,0,.55);animation:hpulse 2.4s ease-in-out infinite;transition:transform .15s}
+.hjouer:hover,.hjouer:focus-visible{transform:scale(1.04)}
+.hjouer:active{transform:scale(.97)}
+@keyframes hpulse{50%{box-shadow:0 0 0 12px rgba(255,255,255,.08),0 18px 50px rgba(0,0,0,.55)}}
+.hdecouvre{position:absolute;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);z-index:3;font:inherit;font-size:14px;font-weight:800;color:#fff;padding:8px 14px;border-radius:99px;cursor:pointer;
+  background:rgba(14,23,64,.55);border:1px solid rgba(245,178,26,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.hdecouvre:hover,.hdecouvre:focus-visible{border-color:var(--a)}
+/* Transition « bug » vers le jeu */
+.glitch{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;overflow:hidden;background:#05081a;animation:gl-fond .9s steps(1) both;pointer-events:none}
+.gl-fin{opacity:0;transition:opacity .35s}
+@keyframes gl-fond{0%{background:#05081a}12%{background:#1b0533}24%{background:#05081a}36%{background:#001f2e}48%{background:#05081a}}
+.gl-t{position:relative;font:800 clamp(28px,9vw,64px)/1 "Bricolage Grotesque",system-ui,sans-serif;color:#fff;letter-spacing:.06em;animation:gl-saut .9s steps(2) both}
+.gl-t::before,.gl-t::after{content:attr(data-t);position:absolute;inset:0}
+.gl-t::before{color:#ff2a6d;transform:translate(-4px,0);clip-path:inset(0 0 55% 0);animation:gl-coupe1 .45s steps(3) infinite}
+.gl-t::after{color:#05d9e8;transform:translate(4px,0);clip-path:inset(50% 0 0 0);animation:gl-coupe2 .4s steps(3) infinite}
+@keyframes gl-saut{0%{transform:skewX(0)}20%{transform:skewX(-12deg) translateX(-8px)}40%{transform:skewX(8deg) translateX(6px)}60%{transform:none}80%{transform:skewX(-4deg)}}
+@keyframes gl-coupe1{0%{clip-path:inset(0 0 70% 0)}33%{clip-path:inset(30% 0 40% 0)}66%{clip-path:inset(60% 0 10% 0)}}
+@keyframes gl-coupe2{0%{clip-path:inset(65% 0 0 0)}33%{clip-path:inset(20% 0 55% 0)}66%{clip-path:inset(45% 0 30% 0)}}
+.gl-b{position:absolute;left:0;right:0;height:8%;background:rgba(5,217,232,.18);mix-blend-mode:screen;animation:gl-bande .3s steps(4) infinite}
+.gl-b1{top:15%}.gl-b2{top:48%;background:rgba(255,42,109,.2);animation-duration:.25s}.gl-b3{top:78%;animation-duration:.35s}
+@keyframes gl-bande{0%{transform:translateX(-30%)}25%{transform:translateX(20%)}50%{transform:translateX(-10%)}75%{transform:translateX(35%)}}
+.glitch::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.06) 0 1px,transparent 1px 3px)}
+body.glitching #home{animation:gl-secoue .45s steps(4)}
+@keyframes gl-secoue{25%{transform:translate(6px,-3px)}50%{transform:translate(-5px,2px)}75%{transform:translate(3px,4px)}}
