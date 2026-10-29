@@ -1215,7 +1215,6 @@
         var best = st.mj && st.mj.best === i ? "⭐ Meilleur choix · " : "";
         if (mj) b.appendChild(h("small", "m-mj-tag", mj.etat === "a_jouer" ? best + "se joue " + (mj.jeu === "bj" ? "au 🃏 blackjack" : "à la 🎡 roulette")
           : mj.etat === "gagne" ? "✅ Gagné au casino : à toi de le prendre" : "❌ Perdu au casino : ce choix t’échappe"));
-        else if (st.mj) b.appendChild(h("small", "m-mj-tag m-mj-libre", "Sans casino"));
         if (best && mj && mj.etat === "a_jouer") b.classList.add("m-mj-best");
         if (mj && mj.etat === "perdu") b.disabled = true;
         ch.appendChild(b);
