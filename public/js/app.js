@@ -174,14 +174,19 @@ $("adminLogout").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut(
 // Un son se met en pause dès que son image n'est plus à l'écran (ou qu'on quitte l'accueil) et reprend là où il s'était arrêté.
 var musique=(function(){
   function piste(src,vol){var a=new Audio(src);a.loop=true;a.preload="none";return{a:a,vol:vol,fondu:null}}
-  var P={base:piste("audio/accueil-musique.mp3",.7),allumee:piste("audio/accueil-neige.mp3",.8),jeu:piste("audio/maire-menu.mp3",.35)};
+  var P={base:piste("audio/accueil-musique.mp3",.7),allumee:piste("audio/accueil-neige.mp3",.8),jeu:piste("audio/maire-menu.mp3",.35),casino:piste("audio/casino.mp3",.45)};
   var f=document.getElementById("homeFond"),bt=document.getElementById("hson"),muet=false;
   try{muet=localStorage.getItem("musique_off")==="1"}catch(e){}
   function quelle(){
     var home=document.getElementById("home"),jeux=document.getElementById("jeux");
     if(muet||document.hidden)return "";
     // Menu du jeu Maire de Paris (pas pendant la partie)
-    if(home.hidden)return !document.getElementById("site").hidden&&!jeux.hidden&&document.body.classList.contains("m-son")?"jeu":"";
+    if(home.hidden){
+      if(document.getElementById("site").hidden||jeux.hidden)return "";
+      // Une partie de casino (blackjack, roulette) passe avant tout le reste
+      if(document.body.classList.contains("m-casino"))return "casino";
+      return document.body.classList.contains("m-son")?"jeu":"";
+    }
     if(document.body.classList.contains("eteint"))return "";
     return f&&f.classList.contains("interf")?"allumee":"base";
   }

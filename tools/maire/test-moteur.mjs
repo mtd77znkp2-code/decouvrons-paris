@@ -592,23 +592,29 @@ test("personnages : avantages et défauts réels, déblocage selon le profil", (
   localStorage.removeItem("maire_profil_v1");
 });
 
-test("mini-jeux des dossiers : le meilleur choix se gagne au blackjack ou à la roulette", () => {
+test("casino des dossiers : chaque réponse se gagne au blackjack ou à la roulette, sauf la réponse libre", () => {
+  // Toujours au moins une réponse libre : « Rien », « Refuser », « Laisser faire »… ou, à défaut, la plus faible
+  for (const ev of tous) if (ev.choix && ev.choix.length >= 2) { const l = M.choixLibre(ev); assert.ok(l.length >= 1 && l.length < ev.choix.length || ev.choix.every(c => /^(rien|ne rien|ne pas |refuser|laisser|attendre)/i.test(c.t)), ev.id); }
   let vus = { bj: 0, roulette: 0 }, gagnes = 0, perdus = 0;
   for (let g = 1; g <= 400 && (vus.bj < 15 || vus.roulette < 15); g++) {
     let st = M.nouvellePartie({ ligne: "centre", ambitions: ["transports", "cadre"], graine: g, nivJoueur: 40 });
     st = M.debutTour(st, base);
-    if (st.phase !== "evenement") continue;
-    const p = M.preparerMiniJeu(st, base); if (!p.mj) continue;
-    const i = p.mj.i; vus[p.mj.jeu]++;
-    // Tant que le mini-jeu n'est pas gagné, le meilleur choix est refusé ; les autres restent possibles
+    if (st.phase !== "evenement" || st.evPerso) continue;
+    const p = M.preparerMiniJeu(st, base); assert.ok(p.mj, st.evenement);
+    const ev = M.evenementCourant(p, base), libres = M.choixLibre(ev);
+    libres.forEach(i => assert.equal(M.jeuDe(p, i), null));
+    const i = p.mj.jeux.findIndex(x => x); if (i < 0) continue;
+    vus[p.mj.jeux[i].jeu]++;
+    // Tant que la partie n'est pas gagnée, la réponse est refusée ; la réponse libre reste possible
     assert.deepEqual(M.choisir(p, base, i), p);
     assert.deepEqual(M.preparerMiniJeu(p, base), p);
+    assert.equal(M.choisir(p, base, libres[0]).phase, "gestion");
     let q = p;
-    if (q.mj.jeu === "roulette") { q = M.mjRoulette(q, "rouge"); assert.deepEqual(M.mjRoulette(q, "noir"), q); }
-    else { q = M.mjBlackjack(q, "donner"); for (let k = 0; k < 20 && q.mj.etat === "a_jouer"; k++) q = M.mjBlackjack(q, q.mj.bj.fini ? "donner" : M.valeurMain(q.mj.bj.j) < 15 ? "tirer" : "rester"); }
-    assert.ok(q.mj.etat === "gagne" || q.mj.etat === "perdu");
-    if (q.mj.etat === "gagne") { gagnes++; assert.ok(q.xp > p.xp); const r = M.choisir(q, base, i); assert.equal(r.phase, "gestion"); assert.equal(r.resultat.i, i); }
-    else { perdus++; assert.deepEqual(M.choisir(q, base, i), q); assert.equal(M.choisir(q, base, (i + 1) % 2).phase, "gestion"); }
+    if (q.mj.jeux[i].jeu === "roulette") { q = M.mjRoulette(q, i, "rouge"); assert.deepEqual(M.mjRoulette(q, i, "noir"), q); }
+    else { q = M.mjBlackjack(q, i, "donner"); for (let k = 0; k < 20 && q.mj.jeux[i].etat === "a_jouer"; k++) { const b = q.mj.jeux[i].bj; q = M.mjBlackjack(q, i, b.fini ? "donner" : M.valeurMain(b.j) < 15 ? "tirer" : "rester"); } }
+    const j = q.mj.jeux[i]; assert.ok(j.etat === "gagne" || j.etat === "perdu");
+    if (j.etat === "gagne") { gagnes++; assert.ok(q.xp > p.xp); const r = M.choisir(q, base, i); assert.equal(r.phase, "gestion"); assert.equal(r.resultat.i, i); }
+    else { perdus++; assert.deepEqual(M.choisir(q, base, i), q); }
   }
   assert.ok(vus.bj >= 15 && vus.roulette >= 15, JSON.stringify(vus));
   assert.ok(gagnes > 5 && perdus > 5, gagnes + " / " + perdus);
