@@ -10,7 +10,7 @@ service cloud.firestore {
     // Tout le contenu du site (questions, prix, lieux…) : lecture publique, écriture admin.
     // Sauf « prive » (jeton Instagram) : personne ne peut le lire depuis le site.
     match /{collection}/{id} {
-      allow read: if collection != "prive";
+      allow read: if collection != "prive" && collection != "poker_tables";
       allow write: if isAdmin();
     }
 
@@ -27,6 +27,23 @@ service cloud.firestore {
           || request.resource.data.get("c2", 0) == 1 || request.resource.data.get("c3", 0) == 1);
       allow update: if request.auth != null && request.resource.data.keys().hasOnly(["c0", "c1", "c2", "c3"])
         && (plusUn("c0") || plusUn("c1") || plusUn("c2") || plusUn("c3"));
+    }
+
+    // Poker entre joueurs : file d'attente (chacun sa ligne ; un autre joueur peut seulement y inscrire la table créée)
+    match /poker_attente/{uid} {
+      allow create: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(["at", "nom", "table"]) && request.resource.data.nom is string && request.resource.data.nom.size() <= 20;
+      allow update: if request.auth != null && (request.auth.uid == uid
+        || (resource.data.table == null && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["table"]) && request.resource.data.table is string));
+      allow delete: if request.auth != null && request.auth.uid == uid;
+    }
+    // Tables de poker : seuls les deux joueurs les lisent et les modifient
+    match /poker_tables/{id} {
+      allow read: if request.auth != null && request.auth.uid in resource.data.joueurs;
+      allow create: if request.auth != null && request.resource.data.joueurs is list && request.resource.data.joueurs.size() == 2
+        && request.auth.uid in request.resource.data.joueurs && request.resource.data.etat is string && request.resource.data.etat.size() < 20000;
+      allow update: if request.auth != null && request.auth.uid in resource.data.joueurs
+        && request.resource.data.joueurs == resource.data.joueurs && request.resource.data.etat is string && request.resource.data.etat.size() < 20000;
     }
 
     // Classement : chaque joueur ne modifie que sa propre ligne.

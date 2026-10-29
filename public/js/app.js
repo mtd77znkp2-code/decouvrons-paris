@@ -169,6 +169,70 @@ $("adminLogin").onsubmit=function(e){
 };
 $("adminLogout").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut();window.scrollTo(0,0)};
 
+// Poker entre joueurs : un maire qui lance une partie de poker attend 5 secondes qu'un autre se présente, sinon il joue contre le bot.
+// File d'attente : poker_attente/{uid} ; table : poker_tables/{id} (l'état de la table est gardé en texte JSON).
+window.PokerLigne=(function(){
+  function pret(){return LB.db&&LB.uid&&window.Poker}
+  function nom(){return (window.user||"Un maire").slice(0,20)}
+  function lire(d){var x=d.data()||{};try{x.t=JSON.parse(x.etat)}catch(e){x.t=null}return x}
+  // Cherche un adversaire pendant ms millisecondes ; renvoie {id, siege} ou null (=> bot)
+  function chercher(ms){
+    if(!pret())return Promise.resolve(null);
+    var db=LB.db,moi=LB.uid,maintenant=Date.now();
+    return db.collection("poker_attente").where("at",">",maintenant-20000).get().then(function(q){
+      var cands=q.docs.filter(function(d){var x=d.data();return d.id!==moi&&!x.table});
+      cands.sort(function(a,b){return a.data().at-b.data().at});
+      // On rejoint le maire qui attend depuis le plus longtemps
+      function essayer(k){
+        if(k>=cands.length)return attendre();
+        var ref=cands[k].ref,tref=db.collection("poker_tables").doc();
+        return db.runTransaction(function(tx){
+          return tx.get(ref).then(function(d){
+            var x=d.exists?d.data():null;
+            if(!x||x.table||x.at<Date.now()-20000)return null;
+            var t=window.Poker.nouvelleTable(Math.floor(Math.random()*2147483647));
+            tx.set(tref,{joueurs:[d.id,moi],noms:[x.nom||"Un maire",nom()],etat:JSON.stringify(t),maj:Date.now()});
+            tx.update(ref,{table:tref.id});
+            return {id:tref.id,siege:1};
+          });
+        }).then(function(r){return r||essayer(k+1)}).catch(function(){return essayer(k+1)});
+      }
+      return essayer(0);
+    }).catch(function(){return null});
+    // Personne : on s'inscrit et on attend qu'un autre maire nous rejoigne
+    function attendre(){
+      var ref=db.collection("poker_attente").doc(moi);
+      return ref.set({at:Date.now(),nom:nom(),table:null}).then(function(){
+        return new Promise(function(ok){
+          var fini=false,stop=ref.onSnapshot(function(d){var x=d.data();if(!fini&&x&&x.table){fini=true;stop();ref.delete().catch(function(){});ok({id:x.table,siege:0})}},function(){});
+          setTimeout(function(){
+            if(fini)return;
+            db.runTransaction(function(tx){return tx.get(ref).then(function(d){var x=d.exists?d.data():null;if(x&&x.table)return x.table;tx.delete(ref);return null})})
+              .then(function(id){if(fini)return;fini=true;stop();if(id){ref.delete().catch(function(){});ok({id:id,siege:0})}else ok(null)})
+              .catch(function(){if(!fini){fini=true;stop();ok(null)}});
+          },ms);
+        });
+      }).catch(function(){return null});
+    }
+  }
+  function ecouter(id,cb){if(!pret())return function(){};return LB.db.collection("poker_tables").doc(id).onSnapshot(function(d){if(d.exists)cb(lire(d))},function(){})}
+  // Joue une action (ou « donner » la main suivante) ; « pourAutre » : l'adversaire ne joue plus depuis 30 s, il se couche d'office
+  function agir(id,siege,action,montant,pourAutre){
+    if(!pret())return Promise.resolve();
+    var ref=LB.db.collection("poker_tables").doc(id);
+    return LB.db.runTransaction(function(tx){
+      return tx.get(ref).then(function(d){
+        if(!d.exists)return;var x=lire(d),t=x.t,n;if(!t)return;
+        if(action==="donner")n=window.Poker.donner(t);
+        else if(pourAutre){if(Date.now()-x.maj<30000)return;n=window.Poker.agir(t,1-siege,"coucher")}
+        else n=window.Poker.agir(t,siege,action,montant);
+        if(n!==t)tx.update(ref,{etat:JSON.stringify(n),maj:Date.now()});
+      });
+    }).catch(function(){});
+  }
+  return {chercher:chercher,ecouter:ecouter,agir:agir};
+})();
+
 // Accueil : Paris sous la neige ; de temps en temps, une « interférence » montre 3 s la tour Eiffel illuminée
 // Chaque image de l'accueil a son son : La Bohème sur Paris sous la neige, la neige sur la tour illuminée.
 // Un son se met en pause dès que son image n'est plus à l'écran (ou qu'on quitte l'accueil) et reprend là où il s'était arrêté.

@@ -1288,6 +1288,15 @@
     if (t.fini) finMiniJeu(st, j, t.gagnant === 0);
     return st;
   }
+  // Poker contre un autre maire : la table vit en ligne ; la partie retient où la retrouver, puis son résultat
+  function mjPokerLigne(st0, i, ligne) {
+    var j0 = jeuDe(st0, i); if (!j0 || j0.jeu !== "poker" || j0.etat !== "a_jouer" || j0.pk || j0.ligne || !ligne || !ligne.id) return st0;
+    var st = copie(st0); st.mj.jeux[i].ligne = { id: String(ligne.id), siege: ligne.siege ? 1 : 0, nom: ligne.nom || "" }; return st;
+  }
+  function mjPokerResultat(st0, i, gagne) {
+    var j0 = jeuDe(st0, i); if (!j0 || !j0.ligne || j0.etat !== "a_jouer") return st0;
+    var st = copie(st0), j = st.mj.jeux[i]; finMiniJeu(st, j, !!gagne); if (gagne) stats(st).pokerHumain = (stats(st).pokerHumain || 0) + 1; return st;
+  }
   function choisir(st0, base, i) {
     if (st0.phase !== "evenement") return st0;
     // Une réponse jouée au casino ne se prend qu'après avoir gagné sa partie
@@ -1636,7 +1645,7 @@
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
-    roulette: roulette, HAB0: HAB0, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, mjPoker: mjPoker, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
+    roulette: roulette, HAB0: HAB0, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, mjPoker: mjPoker, mjPokerLigne: mjPokerLigne, mjPokerResultat: mjPokerResultat, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
     palier: palier, PALIERS: PALIERS, RAYONS: RAYONS, gainAchat: gainAchat, coutBat: coutBat, objectifs: objectifs, objectifsOk: objectifsOk, retraite: retraite, criseEnCours: criseEnCours, bonusMaire: bonusMaire, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
     ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, planVille: planVille, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };

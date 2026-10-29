@@ -1246,10 +1246,25 @@
   // Les cartes du poker (2 = 0 … As = 12) converties pour le dessin des cartes (As = 0, 2 = 1 … Roi = 12)
   function pkCarte(c) { var r = c % 13; return Math.floor(c / 13) * 13 + (r === 12 ? 0 : r + 1); }
   var NOM_ACT = { coucher: "se couche", suivre: "suit", parler: "parle", relancer: "relance à", tapis: "fait tapis !" };
+  var pokerStop = null;
   function pokerVue(zone, i, J, fin) {
     var Pk = window.Poker, mainVue = -1;
-    if (!J().pk) { st = M.mjPoker(st, i, "commencer"); sauver(); }
-    (function dessin() {
+    if (pokerStop) { pokerStop(); pokerStop = null; }
+    // Déjà à une table en ligne (partie reprise) : on la retrouve
+    if (J().ligne) return pokerLigne(zone, i, J, fin, Pk);
+    if (J().pk) return dessin();
+    // 5 secondes pour trouver un autre maire qui joue au poker, sinon le croupier (bot)
+    var n = 5, info = h("p", "m-pk-cherche", ""), anim = h("div", "m-pk-radar"); zone.innerHTML = ""; ajout(zone, anim, info);
+    function compte() { info.textContent = "🔎 Recherche d’un autre maire… " + n + " s"; }
+    compte(); var tic = setInterval(function () { n = Math.max(0, n - 1); compte(); }, 1000);
+    (window.PokerLigne ? window.PokerLigne.chercher(5000) : Promise.resolve(null)).then(function (r) {
+      clearInterval(tic);
+      if (!J() || J().etat !== "a_jouer" || !zone.isConnected) return;
+      if (r) { st = M.mjPokerLigne(st, i, r); sauver(); return pokerLigne(zone, i, J, fin, Pk); }
+      info.textContent = "Personne pour l’instant : tu joues contre le croupier.";
+      setTimeout(function () { if (!zone.isConnected) return; st = M.mjPoker(st, i, "commencer"); sauver(); dessin(); }, 700);
+    });
+    function dessin() {
       zone.innerHTML = "";
       var t = J().pk, m = t.main, montre = m.fini && m.res && m.res.abattage;
       if (t.mains !== mainVue) { cartesVues = {}; mainVue = t.mains; }
@@ -1285,7 +1300,60 @@
       if (o.relancerMin != null && o.relancerMin < o.relancerMax) acts.appendChild(bouton("Relancer à " + o.relancerMin, "btn m-go", function () { jouer("relancer", o.relancerMin); }));
       if (o.relancerMax != null) acts.appendChild(bouton("Tapis (" + o.relancerMax + ")", "btn m-go m-pk-tapis", function () { jouer("tapis"); }));
       zone.appendChild(acts);
-    })();
+    }
+  }
+  // Table en ligne contre un autre maire : l'affichage suit la table partagée, chacun joue à son tour
+  function pokerLigne(zone, i, J, fin, Pk) {
+    var L = J().ligne, moi = L.siege, lui = 1 - moi, mainVue = -1, derniere = null, chrono = null, envoi = false;
+    function act(a, n, pourAutre) { if (envoi) return; envoi = true; window.PokerLigne.agir(L.id, moi, a, n, pourAutre).then(function () { envoi = false; }); }
+    var stop = window.PokerLigne.ecouter(L.id, function (x) { derniere = x; dessin(); });
+    pokerStop = function () { stop(); clearInterval(chrono); };
+    zone.innerHTML = ""; zone.appendChild(h("p", "m-pk-cherche", "🤝 Connexion à la table…"));
+    // Chaque seconde, seulement pendant que l'autre réfléchit : le compte à rebours de 30 s avance
+    chrono = setInterval(function () { if (derniere && derniere.t && !derniere.t.fini && !derniere.t.main.fini && !Pk.options(derniere.t, moi)) dessin(); }, 1000);
+    function dessin() {
+      if (!zone.isConnected) { pokerStop(); return; }
+      var x = derniere, t = x.t; if (!t) return;
+      zone.innerHTML = "";
+      var m = t.main, montre = m.fini && m.res && m.res.abattage, noms = x.noms || ["Un maire", "Un maire"];
+      if (t.mains !== mainVue) { cartesVues = {}; mainVue = t.mains; }
+      function siege(s) {
+        var r = h("div", "m-pk-siege"), c = h("div", "m-bj-main");
+        m.cartes[s].forEach(function (cc, k) { var e = carteJeu(pkCarte(cc), s === lui && !montre); posee(e, k); c.appendChild(e); });
+        ajout(r, h("small", "m-bj-val", (s === moi ? "Toi" : "👤 " + noms[s]) + (t.bouton === s ? " 🔘" : "") + " · " + t.piles[s] + " jetons" + (m.mises[s] ? " · mise " + m.mises[s] : "")), c);
+        if (montre) r.appendChild(h("small", "m-pk-main", m.res.noms[s]));
+        return r;
+      }
+      var b = h("div", "m-pk-board");
+      for (var k = 0; k < 5; k++) { if (m.board[k] != null) { var e = carteJeu(pkCarte(m.board[k]), false); posee(e, k < 3 ? k : 0); b.appendChild(e); } else b.appendChild(h("span", "m-carte-jeu m-pk-vide")); }
+      var pot = m.fini && m.potFinal != null ? m.potFinal : m.pot + m.mises[0] + m.mises[1];
+      zone.appendChild(ajout(tapis(), siege(lui), b, h("small", "m-pk-pot", "Pot : " + pot + " jetons"), siege(moi)));
+      if (t.fini) {
+        pokerStop();
+        if (J().etat === "a_jouer") { st = M.mjPokerResultat(st, i, t.gagnant === moi); sauver(); }
+        return fin();
+      }
+      if (m.fini) {
+        var g = m.res.couche != null ? (m.res.couche === moi ? "Tu te couches : " + noms[lui] + " prend le pot." : noms[lui] + " se couche : tu prends le pot !")
+          : m.res.gagnant === moi ? "Tu gagnes le pot avec : " + m.res.noms[moi] + " !" : m.res.gagnant === lui ? noms[lui] + " gagne avec : " + m.res.noms[lui] + "." : "Égalité : le pot est partagé.";
+        zone.appendChild(h("p", "m-mj-res " + (m.res.gagnant === moi ? "m-mj-ok" : m.res.gagnant === lui ? "m-mj-ko" : ""), g));
+        zone.appendChild(bouton("Main suivante", "btn m-go", function () { act("donner"); }));
+        return;
+      }
+      var o = Pk.options(t, moi);
+      if (!o) {
+        var attente = Math.max(0, 30 - Math.floor((Date.now() - x.maj) / 1000));
+        zone.appendChild(h("p", "m-pk-info", "⏳ " + noms[lui] + " réfléchit… " + (attente ? attente + " s" : "")));
+        if (!attente) zone.appendChild(bouton("Il ne joue plus : il se couche", "btn m-sec", function () { act(null, 0, true); }));
+        return;
+      }
+      var acts = h("div", "m-bas m-pk-acts");
+      if (o.coucher) acts.appendChild(bouton("Se coucher", "btn m-sec", function () { act("coucher"); }));
+      acts.appendChild(bouton(o.suivre ? "Suivre (" + o.suivre + ")" : "Parler", "btn m-go", function () { act("suivre"); }));
+      if (o.relancerMin != null && o.relancerMin < o.relancerMax) acts.appendChild(bouton("Relancer à " + o.relancerMin, "btn m-go", function () { act("relancer", o.relancerMin); }));
+      if (o.relancerMax != null) acts.appendChild(bouton("Tapis (" + o.relancerMax + ")", "btn m-go m-pk-tapis", function () { act("tapis"); }));
+      zone.appendChild(acts);
+    }
   }
   // Bouton « Règles » de chaque jeu du casino (s'ouvre et se referme sur place)
   var REGLES = {

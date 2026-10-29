@@ -837,3 +837,9 @@ body.m-fond-on:has(#site[hidden]) .m-fond,body.m-fond-on:has(#jeux[hidden]) .m-f
 .m-regles summary{cursor:pointer;font-weight:800;color:var(--bl)}
 .m-regles ul{margin:6px 0 4px;padding-left:18px;display:grid;gap:4px;font-size:14px;color:var(--pi)}
 .m-regles li{color:var(--pi)}
+/* Recherche d'un adversaire au poker */
+.m-pk-cherche{margin:4px 0;font-weight:800;text-align:center}
+.m-pk-radar{width:70px;height:70px;margin:8px auto;border-radius:50%;border:3px solid #f5b21a;position:relative;animation:m-radar 1.2s ease-out infinite}
+.m-pk-radar::after{content:"♠";position:absolute;inset:0;display:grid;place-items:center;font-size:30px;color:#1b2550}
+@keyframes m-radar{0%{box-shadow:0 0 0 0 rgba(245,178,26,.6)}100%{box-shadow:0 0 0 26px rgba(245,178,26,0)}}
+.m-pk-siege .m-bj-val{max-width:68%;text-align:center;line-height:1.3}
