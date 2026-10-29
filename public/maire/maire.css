@@ -673,3 +673,14 @@ body.m-modal{overflow:hidden}
 .mx-pico{font-size:18px}
 .m-toast{font-size:14px;padding:8px 16px;border-radius:99px;white-space:nowrap;max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis}
 .mx-villebas{display:flex;justify-content:space-between;align-items:center;margin-top:6px}.mx-villebas small{color:var(--mut);font-size:12px}
+
+/* ---------- v11 : bâtiments illustrés ---------- */
+.mx-img{display:block;object-fit:contain}
+.mx-bat .mx-bico.mx-img{width:64px;height:64px;margin:-4px 0 0 -4px}
+.mx-fimg{width:150px;height:150px;justify-self:center;margin:-6px 0}
+.m-v-img{width:9%;height:auto;aspect-ratio:1;border-radius:0;background:none;box-shadow:none;transform:translate(-50%,-78%);filter:drop-shadow(0 2px 2px rgba(0,0,0,.45))}
+.m-v-img.m-v-neuf{animation:m-pose-img .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes m-pose-img{0%{transform:translate(-50%,-200%) scale(.3);opacity:0}60%{opacity:1}100%{transform:translate(-50%,-78%) scale(1)}}
+.m-plan-grand .m-v-img{width:84px}
+.m-plan .m-v-img{position:absolute;width:9%;height:auto;object-fit:contain}
+.m-plan-grand .m-v-img{width:84px}

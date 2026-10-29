@@ -618,6 +618,13 @@
   }
 
   // Effet principal en une ligne (piliers et recettes) ; le reste est dans la fiche
+  // Illustration du bâtiment si elle existe, sinon son emoji
+  var DESSINS = {}; (M.C.ILLUSTRES || []).forEach(function (id) { DESSINS[id] = 1; });
+  function srcBat(id) { return "maire/img/bat/" + id + ".webp"; }
+  function icone(id, cls) {
+    if (!DESSINS[id]) return h("span", cls, M.BATIMENTS[id].ico);
+    var i = h("img", cls + " mx-img"); i.src = srcBat(id); i.alt = ""; i.loading = "lazy"; i.decoding = "async"; i.width = 96; i.height = 96; return i;
+  }
   function effetCourt(id) {
     var B = M.BATIMENTS[id], ga = M.gainAchat(st, id), l = Object.keys(ga).filter(function (k) { return Math.abs(ga[k]) >= 0.1; })
       .map(function (k) { return (ga[k] >= 0 ? "+" : "−") + virg(Math.abs(ga[k])) + M.ICO[k]; });
@@ -640,7 +647,7 @@
     var b = bouton("", "mx-bat" + (ench ? " mx-ench" : B.projet ? " mx-projet" : B.secret || B.pass ? " mx-rare" : "") + (neuf ? " mx-new" : ""), function () { acheterBat(id); });
     b.disabled = !!non;
     var prix = ench ? "🔨 ≈ " + argent(px) : B.projet ? argent(px) + " + tranches" : argent(px);
-    ajout(b, h("span", "mx-bico", B.ico), h("strong", null, B.nom), h("span", "mx-eff", effetCourt(id) || "✨ atout spécial"),
+    ajout(b, icone(id, "mx-bico"), h("strong", null, B.nom), h("span", "mx-eff", effetCourt(id) || "✨ atout spécial"),
       h("small", "mx-prix" + (non && /argent/.test(non) ? " mx-cher" : ""), non && !/argent/.test(non) ? non.replace(/\.$/, "") : prix),
       deja && !B.unique ? h("em", null, "×" + deja) : null, neuf ? h("i", "mx-neuf", "Nouveau") : null);
     var info = bouton("i", "mx-info", function () { fiche(id); }); info.setAttribute("aria-label", "Détails : " + B.nom);
@@ -653,7 +660,8 @@
     var m = h("div", "m-pop mx-fichepop"), c = h("div", "mx-fiche");
     function fermer() { m.remove(); document.body.classList.remove("m-modal"); }
     m.onclick = function (e) { if (e.target === m) fermer(); };
-    ajout(c, ajout(h("div", "m-tel-tete"), h("strong", null, B.ico + " " + B.nom), bouton("✕", "m-leonx", fermer)));
+    ajout(c, ajout(h("div", "m-tel-tete"), h("strong", null, (DESSINS[id] ? "" : B.ico + " ") + B.nom), bouton("✕", "m-leonx", fermer)));
+    if (DESSINS[id]) c.appendChild(icone(id, "mx-fimg"));
     if (B.txt) c.appendChild(h("p", "mx-ftxt", B.txt));
     var l = h("ul", "mx-fl"), ga = M.gainAchat(st, id);
     Object.keys(ga).forEach(function (k) { l.appendChild(h("li", null, M.ICO[k] + " " + M.PILIERS[k] + " : " + (ga[k] >= 0 ? "+" : "−") + virg(Math.abs(ga[k])))); });
@@ -1257,8 +1265,10 @@
     img.src = grand ? "maire/img/plan-paris.webp" : "maire/img/plan-paris-petit.webp"; img.alt = "Plan de Paris"; img.width = 1536; img.height = 1024; img.decoding = "async";
     cadre.appendChild(img);
     M.planVille(st).forEach(function (b) {
-      var e = h("span", "m-v" + (b.gros ? " m-v-gros" : "") + (nouveaux && nouveaux[b.id + ":" + b.k] ? " m-v-neuf" : ""), b.ico);
-      e.style.left = b.x + "%"; e.style.top = b.y + "%"; e.title = b.nom; cadre.appendChild(e);
+      var dessin = !!DESSINS[b.id], e = dessin ? h("img", "m-v m-v-img") : h("span", "m-v" + (b.gros ? " m-v-gros" : ""), b.ico);
+      if (dessin) { e.src = srcBat(b.id); e.alt = ""; e.decoding = "async"; }
+      if (nouveaux && nouveaux[b.id + ":" + b.k]) e.classList.add("m-v-neuf");
+      e.style.left = b.x + "%"; e.style.top = b.y + "%"; e.style.zIndex = Math.round(b.y * 10); e.title = b.nom; cadre.appendChild(e);
     });
     return cadre;
   }
@@ -1291,12 +1301,19 @@
     var bt = ev && ev.currentTarget, l = M.planVille(st), img = new Image();
     if (bt) { bt.disabled = true; bt.textContent = "Préparation de l’image…"; }
     img.onload = function () {
+      // Les dessins des bâtiments sont chargés avant de composer l'image
+      var a = {}, att = 0;
+      l.forEach(function (b) { if (DESSINS[b.id] && !a[b.id]) { att++; var i = new Image(); a[b.id] = i; i.onload = i.onerror = function () { if (--att === 0) composer(a); }; i.src = srcBat(b.id); } });
+      if (!att) composer(a);
+    };
+    function composer(dessins) {
       var W = 1536, H = 1024, c = document.createElement("canvas"); c.width = W; c.height = H + 150;
       var x = c.getContext("2d");
       x.fillStyle = "#1b2550"; x.fillRect(0, 0, W, H + 150); x.drawImage(img, 0, 150, W, H);
       x.textAlign = "center"; x.textBaseline = "middle";
       l.forEach(function (b) {
-        var px = b.x / 100 * W, py = 150 + b.y / 100 * H, r = b.gros ? 30 : 21;
+        var px = b.x / 100 * W, py = 150 + b.y / 100 * H, r = b.gros ? 30 : 21, d = dessins[b.id];
+        if (d && d.naturalWidth) { x.drawImage(d, px - 48, py - 76, 96, 96); return; }
         x.fillStyle = "rgba(255,255,255,.88)"; x.beginPath(); x.arc(px, py, r, 0, Math.PI * 2); x.fill();
         x.font = (b.gros ? 38 : 26) + "px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif"; x.fillText(b.ico, px, py + 2);
       });
@@ -1315,7 +1332,7 @@
           setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000); toast("📸 Image enregistrée : mon-paris.jpg");
         }
       }, "image/jpeg", 0.86);
-    };
+    }
     img.onerror = function () { if (bt) { bt.disabled = false; bt.textContent = "📸 Partager ma ville"; } toast("Impossible de préparer l’image."); };
     img.src = "maire/img/plan-paris.webp";
   }
