@@ -229,6 +229,24 @@ var musique=(function(){
   // Paris s'éteint : bruit du groupe électrogène qui s'arrête, toujours depuis le début
   var coupure=new Audio("audio/accueil-eteint.mp3");coupure.preload="auto";
   maj.coupure=function(){if(muet)return;try{coupure.currentTime=0}catch(e){}var r=coupure.play();if(r&&r.catch)r.catch(function(){})};
+  // Petit clic sur chaque bouton (sauf « Jouer », qui a son propre son). Web Audio : sans délai et superposable.
+  var AC=window.AudioContext||window.webkitAudioContext,ctx=null,clicBuf=null,clicCharge=false;
+  function chargerClic(){
+    if(clicCharge||!AC)return;clicCharge=true;
+    try{ctx=new AC()}catch(e){return}
+    fetch("audio/clic.mp3").then(function(r){return r.arrayBuffer()}).then(function(b){
+      return new Promise(function(ok,ko){var p=ctx.decodeAudioData(b,ok,ko);if(p&&p.then)p.then(ok,ko)});
+    }).then(function(x){clicBuf=x}).catch(function(){});
+  }
+  function clic(e){
+    var b=e.target&&e.target.closest&&e.target.closest("button,.btn,[role=button]");
+    if(!b||muet||b.disabled||b.id==="jouer"||b.classList.contains("entree"))return;
+    chargerClic();if(!ctx||!clicBuf)return;
+    if(ctx.state==="suspended")ctx.resume();
+    var s=ctx.createBufferSource(),g=ctx.createGain();g.gain.value=.6;s.buffer=clicBuf;s.connect(g);g.connect(ctx.destination);s.start(0);
+  }
+  document.addEventListener("click",clic,true);
+  chargerClic();
   // Aucun navigateur n'accepte de jouer du son avant que la personne ait touché la page.
   // Si la musique est bloquée à l'arrivée, un écran « Touche pour entrer » fournit ce premier toucher.
   function entree(){
