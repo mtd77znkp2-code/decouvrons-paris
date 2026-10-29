@@ -191,13 +191,13 @@ document.querySelector(".hdecouvre").onclick=function(){goTo("videos")};
 document.getElementById("jouer").onclick=function(){
   if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return goTo("jeux");
   var g=document.createElement("div");g.className="glitch";g.setAttribute("aria-hidden","true");
-  g.innerHTML='<span class="gl-t" data-t="MAIRE DE PARIS">MAIRE DE PARIS</span><i class="gl-b gl-b1"></i><i class="gl-b gl-b2"></i><i class="gl-b gl-b3"></i>';
+  for(var i=0,b="";i<9;i++)b+='<i class="gl-b" style="top:'+Math.round(Math.random()*95)+'%;height:'+(2+Math.round(Math.random()*9))+'%;--d:'+(Math.random()<.5?"-":"")+(4+Math.round(Math.random()*14))+'%"></i>';
+  g.innerHTML=b;
   document.body.appendChild(g);document.body.classList.add("glitching");
   function vaJeu(){var st=document.getElementById("site"),h=document.documentElement;h.style.scrollBehavior="auto";window.scrollTo(0,st.getBoundingClientRect().top+window.scrollY);h.style.scrollBehavior=""}
-  setTimeout(function(){document.getElementById("site").hidden=false;tab("jeux");vaJeu()},450);
-  setTimeout(vaJeu,950);
-  setTimeout(function(){g.classList.add("gl-fin");document.body.classList.remove("glitching")},900);
-  setTimeout(function(){g.remove()},1250);
+  setTimeout(function(){document.getElementById("site").hidden=false;tab("jeux");vaJeu()},230);
+  setTimeout(function(){g.classList.add("gl-fin")},440);
+  setTimeout(function(){g.remove();document.body.classList.remove("glitching");vaJeu()},600);
 };
 document.getElementById("back").onclick=function(){document.getElementById("home").scrollIntoView({behavior:"smooth",block:"start"})};
 // Arrivée sur le site : toujours en haut, sur la vidéo (le navigateur ne reprend pas l'ancienne position)
