@@ -181,7 +181,7 @@ var musique=(function(){
     var home=document.getElementById("home"),jeux=document.getElementById("jeux");
     if(muet||document.hidden)return "";
     // Menu du jeu Maire de Paris (pas pendant la partie)
-    if(home.hidden)return !document.getElementById("site").hidden&&!jeux.hidden&&document.body.classList.contains("m-fond-on")?"jeu":"";
+    if(home.hidden)return !document.getElementById("site").hidden&&!jeux.hidden&&document.body.classList.contains("m-son")?"jeu":"";
     if(document.body.classList.contains("eteint"))return "";
     return f&&f.classList.contains("interf")?"allumee":"base";
   }
@@ -261,6 +261,8 @@ function ecran(s){
   home.hidden=!!s;st.hidden=!s;
   if(s)tab(s);
   document.body.classList.remove("eteint");
+  // Retour à l'accueil : on recrée la neige animée (sur iPhone un GIF caché peut rester figé ou vide)
+  if(!s){var fl=document.querySelector(".hb-flocons");if(fl){var n=document.createElement("i");n.className="hb-flocons";fl.parentNode.replaceChild(n,fl)}}
   musique();
   enHaut();
 }

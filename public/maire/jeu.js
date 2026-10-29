@@ -69,7 +69,8 @@
   // Accueil épuré : ton niveau, un gros bouton pour jouer, 4 tuiles ; le reste est replié
   // ---------- Fond vidéo (rue de Paris en pixel art) derrière le menu du jeu, pas pendant la partie ----------
   var fondV = null, fondF = "";
-  function vider() { box.innerHTML = ""; fondMenu(false); }
+  // menu = true pour le menu et ses sections (série, pass, roue, ligue, succès, objets) : la musique du menu continue
+  function vider(menu) { box.innerHTML = ""; fondMenu(false); document.body.classList.toggle("m-son", !!menu); if (window.musique) setTimeout(window.musique, 0); }
   function fondMenu(on) {
     var g = document.getElementById("g-maire"); if (!g) return;
     g.classList.toggle("m-menu", on); document.body.classList.toggle("m-fond-on", on);
@@ -89,7 +90,7 @@
     if (!calme) { var p = fondV.play(); if (p && p.catch) p.catch(function () {}); }
   }
   function accueil() {
-    vider(); fondMenu(true); fermerModale();
+    vider(true); fondMenu(true); fermerModale();
     var s = lireSauvegarde(), n = nivJ(), P = G.lire(), nv = G.niveau(P.xp);
     choixNiveau(s && s.phase !== "fin" ? s.niveau : lireNiveau());
     var pr = h("div", "mx-profil"), barre = h("div", "mx-xpbarre"), bi = h("i"); bi.style.width = nv.pct + "%"; barre.appendChild(bi);
@@ -121,7 +122,7 @@
     box.appendChild(plus);
   }
   function ecranSerie() {
-    vider(); box.appendChild(bouton("← Retour", "btn m-sec", accueil));
+    vider(true); box.appendChild(bouton("← Retour", "btn m-sec", accueil));
     box.appendChild(h("h5", null, "🔥 Série de jours"));
     box.appendChild(carteSerie());
     var u = h("ol", "m-paliers"), se = G.serie();
@@ -130,14 +131,14 @@
     haut();
   }
   function ecranLigue() {
-    vider(); box.appendChild(bouton("← Retour", "btn m-sec", accueil));
+    vider(true); box.appendChild(bouton("← Retour", "btn m-sec", accueil));
     box.appendChild(h("h5", null, "🏅 Ligue de la semaine"));
     var z = h("div"); box.appendChild(z); carteLigue(z);
     haut();
   }
   // ---------- Bureau des objets trouvés, bâtiments secrets et combos découverts ----------
   function collection() {
-    var P = G.lire(), C = M.C; vider();
+    var P = G.lire(), C = M.C; vider(true);
     box.appendChild(bouton("← Retour", "btn m-sec", accueil));
     var no = Object.keys(C.OBJETS).filter(function (k) { return P.objets[k]; }).length;
     box.appendChild(h("h5", null, "🗃️ Bureau des objets trouvés · " + no + " / " + Object.keys(C.OBJETS).length));
@@ -217,7 +218,7 @@
   }
   // ---------- Roue de la fortune (une fois par semaine) ----------
   function ecranRoue() {
-    vider(); box.appendChild(bouton("← Retour", "btn m-sec", accueil));
+    vider(true); box.appendChild(bouton("← Retour", "btn m-sec", accueil));
     box.appendChild(h("h5", null, "🎡 Roue de la fortune"));
     var n = G.ROUE.length, cont = h("div", "m-roue-zone"), roue = h("div", "m-roue2"), fl = h("div", "m-roue-fleche", "▼");
     var cols = ["#f5b21a", "#2b4fb3", "#3fae68", "#e0524b", "#7c4dff", "#1fa2c7", "#f08a30", "#c8352e"], g = [];
@@ -276,7 +277,7 @@
 
   // ---------- Pass de combat ----------
   function ecranPass() {
-    var ps = G.pass(); vider();
+    var ps = G.pass(); vider(true);
     box.appendChild(bouton("← Retour", "btn m-sec", accueil));
     box.appendChild(h("h5", null, "🎟️ Pass de combat · saison " + ps.nom));
     box.appendChild(h("p", "m-aide", "Gagne des points avec les succès du jour (+100, +200 si les 5 sont réussis), les quêtes (+100), chaque partie (+50) et chaque élection gagnée (+50). Tous les " + ps.parPalier + " points, un palier et sa récompense. Les points repartent à zéro chaque mois ; les bâtiments exclusifs et les titres restent."));
@@ -364,7 +365,7 @@
     }).catch(function () { alert("Impossible de charger les dossiers. Vérifie ta connexion et réessaie."); accueil(); });
   }
   function succes() {
-    var P = G.lire(); vider();
+    var P = G.lire(); vider(true);
     box.appendChild(bouton("← Retour", "btn m-sec", accueil));
     var nb = G.SUCCES.filter(function (x) { return P.succes[x.id]; }).length;
     box.appendChild(h("h5", null, "Succès · " + nb + " / " + G.SUCCES.length));
