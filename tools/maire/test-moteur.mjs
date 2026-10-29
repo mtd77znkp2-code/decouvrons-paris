@@ -603,7 +603,7 @@ test("casino des dossiers : chaque réponse se gagne au blackjack ou à la roule
     const p = M.preparerMiniJeu(st, base); assert.ok(p.mj, st.evenement);
     const ev = M.evenementCourant(p, base), libres = M.choixLibre(ev);
     libres.forEach(i => assert.equal(M.jeuDe(p, i), null));
-    const i = p.mj.jeux.findIndex(x => x); if (i < 0) continue;
+    const i = p.mj.jeux.findIndex(x => x && x.jeu !== "poker"); if (i < 0) continue;
     vus[p.mj.jeux[i].jeu]++;
     // Tant que la partie n'est pas gagnée, la réponse est refusée ; la réponse libre reste possible
     assert.deepEqual(M.choisir(p, base, i), p);
@@ -618,6 +618,32 @@ test("casino des dossiers : chaque réponse se gagne au blackjack ou à la roule
   }
   assert.ok(vus.bj >= 15 && vus.roulette >= 15, JSON.stringify(vus));
   assert.ok(gagnes > 5 && perdus > 5, gagnes + " / " + perdus);
+});
+test("poker contre le bot : 100 jetons, blindes 10/20, jetons conservés, partie jusqu'à ce qu'un joueur n'ait plus rien", () => {
+  const P = require("../../public/maire/poker.js");
+  for (let g = 1; g <= 60; g++) {
+    let t = P.nouvelleTable(g), k = 0;
+    assert.equal(t.piles[0] + t.piles[1] + t.main.mises[0] + t.main.mises[1], 200);
+    while (!t.fini && k++ < 2000) {
+      if (t.main.fini) { t = P.donner(t); continue; }
+      const s = t.main.aQui, avant = t; t = s === 0 ? P.agir(t, 0, g % 3 ? "suivre" : "tapis") : P.botAgir(t, 1);
+      assert.notDeepEqual(t, avant);
+      assert.equal(t.piles[0] + t.piles[1] + (t.main.fini ? 0 : t.main.pot + t.main.mises[0] + t.main.mises[1]), 200);
+    }
+    assert.ok(t.fini && (t.piles[0] === 200 || t.piles[1] === 200));
+  }
+  // Dans un dossier : la réponse jouée au poker se gagne en ruinant le bot
+  let vus = 0;
+  for (let g = 1; g <= 300 && vus < 6; g++) {
+    let st = M.nouvellePartie({ ligne: "centre", ambitions: ["transports", "cadre"], graine: g, nivJoueur: 40 });
+    st = M.debutTour(st, base); if (st.phase !== "evenement" || st.evPerso) continue;
+    st = M.preparerMiniJeu(st, base); const i = st.mj.jeux.findIndex(x => x && x.jeu === "poker"); if (i < 0) continue;
+    vus++; st = M.mjPoker(st, i, "commencer");
+    for (let k = 0; k < 400 && M.jeuDe(st, i).etat === "a_jouer"; k++) { const t = M.jeuDe(st, i).pk; st = M.mjPoker(st, i, t.main.fini ? "donner" : "tapis"); }
+    const j = M.jeuDe(st, i); assert.ok(j.etat === "gagne" || j.etat === "perdu");
+    assert.equal(M.choisir(st, base, i).phase === "gestion", j.etat === "gagne");
+  }
+  assert.ok(vus >= 6);
 });
 test("habitants : la population suit la tendance électorale et fait varier les impôts", () => {
   let st = M.nouvellePartie({ ligne: "centre", ambitions: ["transports", "cadre"], graine: 3, nivJoueur: 40 });

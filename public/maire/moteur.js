@@ -10,6 +10,8 @@
   "use strict";
   // Contenu fait main (personnages, objets, secrets, combos, projets, événements rares…) : voir contenu.js
   var C = (typeof module !== "undefined" && module.exports) ? require("./contenu.js") : root.MaireContenu;
+  var POKER = null;   // poker (poker.js), chargé à la demande
+  function poker() { return POKER || (POKER = (typeof module !== "undefined" && module.exports) ? require("./poker.js") : root.Poker); }
 
   var MANDAT = 24, PLAFOND_DETTE = 1500, TAUX = 0.012;   // 24 trimestres = 6 ans ; dette autorisée (M€) ; intérêts par trimestre
   var DEPART = { pop: 58, coh: 70 };
@@ -1227,7 +1229,8 @@
     if (!ev || !ev.choix || ev.choix.length < 2) return st0.mj ? Object.assign(copie(st0), { mj: null }) : st0;
     var st = copie(st0), libres = choixLibre(ev);
     st.mj = { t: st.t, ev: st.evenement, best: meilleurChoix(st0, base), jeux: ev.choix.map(function (c, i) {
-      return libres.indexOf(i) >= 0 ? null : { jeu: rnd(st) < 0.5 ? "bj" : "roulette", etat: "a_jouer", bj: null, roue: null };
+      if (libres.indexOf(i) >= 0) return null;
+      var r = rnd(st); return { jeu: r < 1 / 3 ? "bj" : r < 2 / 3 ? "roulette" : "poker", etat: "a_jouer", bj: null, roue: null, pk: null };
     }) };
     return st;
   }
@@ -1269,6 +1272,20 @@
     var st = copie(st0), j = st.mj.jeux[i], n = Math.floor(rnd(st) * 37), rouge = ROUGES.indexOf(n) >= 0;
     j.roue = { n: n, rouge: rouge, pari: pari };
     finMiniJeu(st, j, n > 0 && (pari === "rouge") === rouge);
+    return st;
+  }
+  // Poker contre le bot : 100 jetons chacun, blindes 10/20, jusqu'à ce qu'un des deux n'ait plus rien.
+  // Le joueur est au siège 0 ; après son action, le bot joue jusqu'à ce que ce soit de nouveau au joueur ou que la main soit finie.
+  function mjPoker(st0, i, action, montant) {
+    var j0 = jeuDe(st0, i), Pk = poker(); if (!j0 || j0.jeu !== "poker" || j0.etat !== "a_jouer" || st0.phase !== "evenement" || !Pk) return st0;
+    var st = copie(st0), j = st.mj.jeux[i], t = j.pk;
+    if (action === "commencer") { if (t) return st0; t = Pk.nouvelleTable(Math.floor(rnd(st) * 2147483647)); }
+    else if (!t || t.fini) return st0;
+    else if (action === "donner") { if (!t.main.fini) return st0; t = Pk.donner(t); }
+    else { var t2 = Pk.agir(t, 0, action, montant); if (t2 === t) return st0; t = t2; }
+    for (var k = 0; k < 20 && !t.fini && !t.main.fini && t.main.aQui === 1; k++) t = Pk.botAgir(t, 1);
+    j.pk = t;
+    if (t.fini) finMiniJeu(st, j, t.gagnant === 0);
     return st;
   }
   function choisir(st0, base, i) {
@@ -1619,7 +1636,7 @@
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
-    roulette: roulette, HAB0: HAB0, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
+    roulette: roulette, HAB0: HAB0, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, mjPoker: mjPoker, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
     palier: palier, PALIERS: PALIERS, RAYONS: RAYONS, gainAchat: gainAchat, coutBat: coutBat, objectifs: objectifs, objectifsOk: objectifsOk, retraite: retraite, criseEnCours: criseEnCours, bonusMaire: bonusMaire, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
     ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, planVille: planVille, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };

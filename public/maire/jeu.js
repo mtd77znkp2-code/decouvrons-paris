@@ -1087,7 +1087,7 @@
     { id: "habitants", ecran: "jeu", si: function () { return st.phase === "gestion"; }, etapes: [
       { q: ".mx-hab", t: "👥 Les habitants : plus Paris est peuplé, plus les impôts rapportent. Quand ta popularité baisse ou passe sous 50 %, ou après une mauvaise décision, des Parisiens partent ; quand elle monte, ils arrivent. Sinon, la population ne bouge pas.", a: "ok" }] },
     { id: "casino", ecran: "modale", si: function () { return st.phase === "evenement" && !!document.querySelector("#m-modale .m-mj"); }, etapes: [
-      { q: "#m-modale .m-mj", t: "🎰 Chaque réponse se joue au casino (blackjack ou roulette) : gagne pour la prendre. La réponse « ne rien faire » reste libre.", a: "ok" }] },
+      { q: "#m-modale .m-mj", t: "🎰 Chaque réponse se joue au casino (blackjack, roulette ou poker) : gagne pour la prendre. La réponse « ne rien faire » reste libre.", a: "ok" }] },
     { id: "xp", ecran: "jeu", si: function () { return st.phase === "gestion" && st.t >= 2 && !st.nivFixe; }, etapes: [
       { q: ".mx-xp", t: "⭐ Chaque trimestre, achat, élection ou succès te rapporte de l’XP. À chaque niveau, un nouveau bâtiment arrive en boutique !", a: "ok" }] },
     { id: "nouveautes", ecran: "jeu", si: function () { return st.phase === "gestion" && !!document.querySelector(".mx-bat.mx-new:not(:disabled)"); }, rejouable: 1, etapes: [
@@ -1242,14 +1242,72 @@
   }
 
   // ---------- Mini-jeu d'un dossier : blackjack ou roulette, sans mise, pour décrocher le meilleur choix ----------
+  // ---------- Poker contre le croupier (bot) ----------
+  // Les cartes du poker (2 = 0 … As = 12) converties pour le dessin des cartes (As = 0, 2 = 1 … Roi = 12)
+  function pkCarte(c) { var r = c % 13; return Math.floor(c / 13) * 13 + (r === 12 ? 0 : r + 1); }
+  var NOM_ACT = { coucher: "se couche", suivre: "suit", parler: "parle", relancer: "relance à", tapis: "fait tapis !" };
+  function pokerVue(zone, i, J, fin) {
+    var Pk = window.Poker, mainVue = -1;
+    if (!J().pk) { st = M.mjPoker(st, i, "commencer"); sauver(); }
+    (function dessin() {
+      zone.innerHTML = "";
+      var t = J().pk, m = t.main, montre = m.fini && m.res && m.res.abattage;
+      if (t.mains !== mainVue) { cartesVues = {}; mainVue = t.mains; }
+      function siege(s) {
+        var r = h("div", "m-pk-siege"), c = h("div", "m-bj-main");
+        m.cartes[s].forEach(function (x, k) { var e = carteJeu(pkCarte(x), s === 1 && !montre); posee(e, k); c.appendChild(e); });
+        var mise = m.mises[s] ? " · mise " + m.mises[s] : "", bout = t.bouton === s ? " 🔘" : "";
+        ajout(r, h("small", "m-bj-val", (s === 0 ? "Toi" : "🤖 Le croupier") + bout + " · " + t.piles[s] + " jetons" + mise), c);
+        if (montre) r.appendChild(h("small", "m-pk-main", m.res.noms[s]));
+        return r;
+      }
+      var b = h("div", "m-pk-board");
+      for (var k = 0; k < 5; k++) { if (m.board[k] != null) { var e = carteJeu(pkCarte(m.board[k]), false); posee(e, k < 3 ? k : 0); b.appendChild(e); } else b.appendChild(h("span", "m-carte-jeu m-pk-vide")); }
+      var pot = m.fini && m.potFinal != null ? m.potFinal : m.pot + m.mises[0] + m.mises[1];
+      var tp = ajout(tapis(), siege(1), b, h("small", "m-pk-pot", "Pot : " + pot + " jetons"), siege(0));
+      zone.appendChild(tp);
+      // Ce que vient de faire le croupier
+      var der = m.actions.filter(function (a) { return a.s === 1; }).pop();
+      if (der && !m.fini) zone.appendChild(h("p", "m-pk-info", "🤖 Le croupier " + NOM_ACT[der.a] + (der.a === "relancer" ? " " + der.n : "") + "."));
+      if (t.fini) return fin();
+      if (m.fini) {
+        var g = m.res.couche != null ? (m.res.couche === 0 ? "Tu te couches : le croupier prend le pot." : "Le croupier se couche : tu prends le pot !")
+          : m.res.gagnant === 0 ? "Tu gagnes le pot avec : " + m.res.noms[0] + " !" : m.res.gagnant === 1 ? "Le croupier gagne avec : " + m.res.noms[1] + "." : "Égalité : le pot est partagé.";
+        zone.appendChild(h("p", "m-mj-res " + (m.res.gagnant === 0 ? "m-mj-ok" : m.res.gagnant === 1 ? "m-mj-ko" : ""), g));
+        zone.appendChild(bouton("Main suivante", "btn m-go", function () { st = M.mjPoker(st, i, "donner"); sauver(); dessin(); }));
+        return;
+      }
+      var o = Pk.options(t, 0); if (!o) return;
+      var acts = h("div", "m-bas m-pk-acts");
+      function jouer(a, n) { st = M.mjPoker(st, i, a, n); sauver(); dessin(); }
+      if (o.coucher) acts.appendChild(bouton("Se coucher", "btn m-sec", function () { jouer("coucher"); }));
+      acts.appendChild(bouton(o.suivre ? "Suivre (" + o.suivre + ")" : "Parler", "btn m-go", function () { jouer("suivre"); }));
+      if (o.relancerMin != null && o.relancerMin < o.relancerMax) acts.appendChild(bouton("Relancer à " + o.relancerMin, "btn m-go", function () { jouer("relancer", o.relancerMin); }));
+      if (o.relancerMax != null) acts.appendChild(bouton("Tapis (" + o.relancerMax + ")", "btn m-go m-pk-tapis", function () { jouer("tapis"); }));
+      zone.appendChild(acts);
+    })();
+  }
+  // Bouton « Règles » de chaque jeu du casino (s'ouvre et se referme sur place)
+  var REGLES = {
+    bj: ["Approche-toi de 21 sans le dépasser.", "Les figures (V, D, R) valent 10, l’As vaut 1 ou 11, les autres cartes leur chiffre.", "« Tirer » : une carte de plus. « Rester » : tu t’arrêtes, le croupier joue.", "Le croupier tire jusqu’à 17 au moins.", "Tu gagnes si tu as plus que lui sans dépasser 21, ou s’il dépasse 21. Égalité : on redistribue."],
+    roulette: ["Choisis rouge ou noir.", "La bille s’arrête sur un numéro de 0 à 36.", "Si le numéro est de ta couleur, tu gagnes.", "Le 0 (vert) fait perdre tout le monde."],
+    poker: ["Texas Hold’em à deux contre le croupier : 100 jetons chacun.", "Petite blinde 10, grosse blinde 20 : elles changent de joueur à chaque main.", "Tu reçois 2 cartes cachées, puis 5 cartes communes arrivent : le flop (3), le turn (1), la river (1).", "À chaque étape : « Se coucher » (tu abandonnes la main), « Parler » ou « Suivre » (tu payes la mise), « Relancer » (tu augmentes), « Tapis » (tu mises tout).", "À la fin, la meilleure main de 5 cartes gagne le pot : hauteur < paire < double paire < brelan < suite < couleur < full < carré < quinte flush.", "Prends tous les jetons du croupier pour gagner la partie."],
+    bjTel: ["Approche-toi de 21 sans le dépasser. L’As vaut 1 ou 11, les figures 10.", "Le croupier tire jusqu’à 17.", "Blackjack d’entrée : la mise × 1,5. « Doubler » : tu doubles la mise et reçois une seule carte.", "Si tu gagnes, la ville empoche la mise ; si tu perds, elle la doit à Monsieur Valentin."],
+    rouletteTel: ["Rouge ou noir : la mise × 2. Une douzaine (1-12, 13-24, 25-36) : × 3. Le zéro : × 36.", "Si tu perds, la ville doit la mise à Monsieur Valentin."]
+  };
+  function regles(type) {
+    var d = h("details", "m-regles"); d.appendChild(h("summary", null, "📖 Règles du jeu"));
+    var l = h("ul"); REGLES[type].forEach(function (t) { l.appendChild(h("li", null, t)); }); d.appendChild(l);
+    return d;
+  }
   // Musique du casino : joue tant qu'une partie de casino est à l'écran, reprend où elle s'était arrêtée
   function casino(on) { document.body.classList.toggle("m-casino", !!on); if (window.musique) window.musique(); }
   function miniJeu(carte, ev, i) {
     var mj = M.jeuDe(st, i), x = ev.choix[i];
     function J() { return M.jeuDe(st, i); }
     cacherBulle(); carte.innerHTML = ""; casino(true);
-    ajout(carte, h("p", "m-cat", "🎰 Casino · " + ev.titre), h("h4", null, mj.jeu === "bj" ? "🃏 Blackjack du maire" : "🎡 Roulette de l’Hôtel de Ville"),
-      h("p", "m-desc", "Gagne pour prendre la réponse « " + x.t + " ». Si tu perds, elle t’échappe pour ce dossier."));
+    ajout(carte, h("p", "m-cat", "🎰 Casino · " + ev.titre), h("h4", null, mj.jeu === "bj" ? "🃏 Blackjack du maire" : mj.jeu === "poker" ? "♠️ Poker de l’Hôtel de Ville" : "🎡 Roulette de l’Hôtel de Ville"),
+      h("p", "m-desc", "Gagne pour prendre la réponse « " + x.t + " ». Si tu perds, elle t’échappe pour ce dossier."), regles(mj.jeu));
     var zone = h("div", "m-mj-zone"); carte.appendChild(zone);
     function fin() {
       var g = J().etat === "gagne";
@@ -1261,6 +1319,7 @@
       }));
       if (g) zone.appendChild(bouton("Revoir le dossier", "btn m-sec", modale));
     }
+    if (mj.jeu === "poker") return pokerVue(zone, i, J, fin);
     if (mj.jeu === "bj") {
       if (!J().bj) { st = M.mjBlackjack(st, i, "donner"); sauver(); }
       cartesVues = {};
@@ -1424,6 +1483,7 @@
     function choisirMise(type) {
       var max = M.pariMise(st), mises = [50, 100, 150, 200, 250].filter(function (x) { return x < max; }).concat([max]).filter(function (x, i, a) { return x >= 20 && a.indexOf(x) === i; }), mise = mises[0], pari = "rouge";
       tel.appendChild(h("h4", null, type === "bj" ? "🃏 Le blackjack municipal" : "🎡 La roulette de l’Hôtel de Ville"));
+      tel.appendChild(regles(type === "bj" ? "bjTel" : "rouletteTel"));
       tel.appendChild(h("p", "m-desc", type === "bj" ? "Approche-toi de 21 sans le dépasser. L’as vaut 1 ou 11, les figures 10. Le croupier tire jusqu’à 17. Blackjack d’entrée : la mise × 1,5. Tu peux doubler sur tes deux premières cartes." :
         "Choisis ta mise et ton pari. Rouge ou noir rapporte la mise, une douzaine le double, le zéro 35 fois la mise. Si tu perds, la ville doit la mise."));
       var gm = h("div", "m-mises");
@@ -1450,6 +1510,7 @@
     function blackjack() {
       var b = st.bj;
       tel.appendChild(h("h4", null, "🃏 Blackjack · mise " + argent(b.mise)));
+      tel.appendChild(regles("bjTel"));
       var main = function (titre, cartes, cache) {
         var d = h("div", "m-main"); d.appendChild(h("small", null, titre + " · " + (cache ? "?" : M.valeurMain(cartes))));
         var r = h("div", "m-cartes"); cartes.forEach(function (c, i) { var e = carteJeu(c, cache && i === 1); posee(e, i); r.appendChild(e); }); d.appendChild(r); return d;

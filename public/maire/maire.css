@@ -822,3 +822,18 @@ body.m-fond-on:has(#site[hidden]) .m-fond,body.m-fond-on:has(#jeux[hidden]) .m-f
 .m-mj-res{font-weight:800;text-align:center;margin:4px 0}
 .m-mj-ok{color:#2f8a52}.m-mj-ko{color:#c8352e}
 .m-mj-rouge{background:#c8352e;color:#fff}.m-mj-noir{background:#1b2550;color:#fff}
+/* Poker : sièges, cartes communes, pot, actions */
+.m-pk-siege{display:grid;gap:6px;justify-items:center}
+.m-pk-board{display:flex;gap:5px;justify-content:center;flex-wrap:nowrap}
+.m-pk-board .m-carte-jeu{width:46px;height:66px}.m-pk-board .m-carte-jeu>i{font-size:24px}
+.m-pk-vide{background:rgba(255,255,255,.08);border:1.5px dashed rgba(245,178,26,.45);box-shadow:none}
+.m-pk-pot{display:inline-block;padding:3px 12px;border-radius:99px;background:rgba(0,0,0,.35);color:#f5b21a!important;font-weight:900}
+.m-pk-main{color:#f5b21a!important;font-weight:900}
+.m-pk-info{margin:0;font-weight:800;text-align:center}
+.m-pk-acts{flex-wrap:wrap;justify-content:center}
+.m-pk-tapis{background:#c8352e}
+/* Règles des jeux */
+.m-regles{border-radius:12px;background:rgba(27,37,80,.06);padding:6px 12px}
+.m-regles summary{cursor:pointer;font-weight:800;color:var(--bl)}
+.m-regles ul{margin:6px 0 4px;padding-left:18px;display:grid;gap:4px;font-size:14px;color:var(--pi)}
+.m-regles li{color:var(--pi)}
