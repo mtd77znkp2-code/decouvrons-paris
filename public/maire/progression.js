@@ -631,17 +631,24 @@
     if (c.succes && !P.succes[c.succes]) return false;
     if (c.mandats && (P.mandats || 0) < c.mandats) return false;
     if (c.reussis && (P.mandatsReussis || 0) < c.reussis) return false;
+    if (c.batsCat && batsCat(P, c.batsCat.cat) < c.batsCat.n) return false;
+    if (c.elims && (P.elims || 0) < c.elims) return false;
     return true;
   }
+  // Bâtiments d'une catégorie construits sur toute la carrière (parties terminées)
+  function batsCat(P, cat) { var n = 0; Object.keys(P.bats || {}).forEach(function (id) { if (MO.BATIMENTS[id] && MO.BATIMENTS[id].cat === cat) n += P.bats[id]; }); return n; }
+  var NOM_CAT = { securite: "de sécurité", commerce: "commerces", transports: "de transports", logement: "de logement", cadre: "de cadre de vie" };
   function condMaire(id) {
     var c = MO.C.MAIRES[id].si || {};
     if (c.niv) return "Atteins le niveau " + c.niv;
     if (c.succes) { var x = S.filter(function (y) { return y.id === c.succes; })[0]; return "Succès « " + (x ? x.nom : c.succes) + " » : " + (x ? x.desc.replace(/\.$/, "").toLowerCase() : ""); }
     if (c.mandats) return "Gagne " + c.mandats + " élections au total";
     if (c.reussis) return "Réussis " + c.reussis + " mandats au total";
+    if (c.batsCat) { var P = lire(); return (c.batsCat.cat === "commerce" ? "Ouvre " + c.batsCat.n + " commerces" : "Construis " + c.batsCat.n + " bâtiments " + NOM_CAT[c.batsCat.cat]) + " au fil de tes parties (" + Math.min(batsCat(P, c.batsCat.cat), c.batsCat.n) + "/" + c.batsCat.n + ")"; }
+    if (c.elims) return "Fais renoncer " + c.elims + " rivaux au total (" + Math.min(lire().elims || 0, c.elims) + "/" + c.elims + ")";
     return "";
   }
-  function maires() { var P = lire(); return Object.keys(MO.C.MAIRES).map(function (id) { var m = MO.C.MAIRES[id]; return { id: id, nom: m.nom, ico: m.ico, txt: m.txt, ligne: m.ligne, dispo: maireDispoP(P, id), cond: condMaire(id) }; }); }
+  function maires() { var P = lire(); return Object.keys(MO.C.MAIRES).map(function (id) { var m = MO.C.MAIRES[id]; return { id: id, nom: m.nom, ico: m.ico, txt: m.txt, ligne: m.ligne, promesses: m.promesses || [], slogan: m.slogan || "", dispo: maireDispoP(P, id), cond: condMaire(id) }; }); }
 
   // ---------- Fin de partie : ce qui ne se décide qu'à la fin, et le récapitulatif de toute l'XP gagnée ----------
   function terminer(st0, M, opts) {

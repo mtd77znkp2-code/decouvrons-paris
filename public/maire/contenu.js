@@ -173,17 +173,22 @@
   // ---------- Personnages jouables : chacun a sa ligne politique, un avantage et un défaut ----------
   // bonus : tresor, pop (au départ) · remise { rayon: part } · interet · recettes · usurePop · opp · interdit · detteImpop · aliDoux · objVote
   // si : condition pour le débloquer (niv : niveau du joueur · succes : un succès obtenu · mandats : élections gagnées au total · reussis : mandats réussis)
+  // Les maires à incarner : un nom qui est un jeu de mots sur leur promesse de campagne (promesses = 2 piliers suivis par les électeurs),
+  // un avantage, un défaut, et pour certains un vrai prérequis de carrière (si).
   var MAIRES = {
-    gestionnaire: { nom: "La Gestionnaire", ico: "🧮", ligne: "centre", txt: "+150 M€ au départ et −20 % d’intérêts, mais −3 de popularité.", bonus: { tresor: 150, interet: 0.2, pop: -3 } },
-    ecolo: { nom: "Le Militant vert", ico: "🌱", ligne: "ecologie", txt: "−25 % sur le cadre de vie, mais refuse parkings, tours de bureaux et caméras.", bonus: { remise: { cadre: 0.25 }, interdit: ["parkingRelais", "quartierAffaires", "videoprotection"] } },
-    tribun: { nom: "Le Tribun du peuple", ico: "✊", ligne: "gauche", txt: "−25 % sur le logement et +3 de popularité, mais −3 % de recettes.", bonus: { remise: { logement: 0.25 }, pop: 3, recettes: 0.97 }, si: { niv: 3 } },
-    notable: { nom: "Le Notable", ico: "🏛️", ligne: "droite", txt: "−25 % sur la sécurité et +4 % de recettes, mais une popularité qui s’use plus vite.", bonus: { remise: { securite: 0.25 }, recettes: 1.04, usurePop: 1.15 }, si: { niv: 5 } },
-    batisseuse: { nom: "La Bâtisseuse", ico: "🏗️", ligne: "centre", txt: "Projets démesurés −25 %, mais la dette pèse plus dans les sondages.", bonus: { remise: { projet: 0.25 }, detteImpop: 1.3 }, si: { succes: "chantier1" } },
-    star: { nom: "La Star des réseaux", ico: "🎤", ligne: "centre", txt: "+10 de popularité au départ, mais elle s’use 30 % plus vite.", bonus: { pop: 10, usurePop: 1.3 }, si: { niv: 10 } },
-    renard: { nom: "Le Vieux Renard", ico: "🦊", ligne: "droite", txt: "Ses opposants partent avec 15 d’influence en moins.", bonus: { opp: -15 }, si: { mandats: 3 } },
-    rassembleuse: { nom: "La Rassembleuse", ico: "🕊️", ligne: "centre", txt: "Chaque objectif réussi rapporte +5 % au vote (au lieu de +3 %), et trahir sa ligne coûte moitié moins.", bonus: { objVote: 5, aliDoux: 0.5 }, si: { reussis: 3 } },
-    heritier: { nom: "L’Héritier", ico: "🎩", ligne: "droite", txt: "+400 M€ au départ, mais −6 de popularité (« fils à papa »).", bonus: { tresor: 400, pop: -6 }, si: { succes: "banquier" } }
+    tribun: { nom: "Lou Gement", ico: "🏠", ligne: "gauche", promesses: ["logement", "cadre"], slogan: "« Un toit pour chaque Parisien. »", txt: "−25 % sur le logement et +3 de popularité, mais −3 % de recettes.", bonus: { remise: { logement: 0.25 }, pop: 3, recettes: 0.97 } },
+    gestionnaire: { nom: "Thérèse Orerie", ico: "🧮", ligne: "centre", promesses: ["securite", "transports"], slogan: "« Des comptes propres, une ville qui tourne. »", txt: "+150 M€ au départ et −20 % d’intérêts, mais −3 de popularité.", bonus: { tresor: 150, interet: 0.2, pop: -3 } },
+    ecolo: { nom: "Vert Onique", ico: "🌱", ligne: "ecologie", promesses: ["cadre", "transports"], slogan: "« Des arbres, des vélos, de l’air. »", txt: "−25 % sur le cadre de vie, mais refuse parkings, tours de bureaux et caméras.", bonus: { remise: { cadre: 0.25 }, interdit: ["parkingRelais", "quartierAffaires", "videoprotection"] }, si: { niv: 3 } },
+    notable: { nom: "Paul Ice", ico: "🚓", ligne: "droite", promesses: ["securite", "cadre"], slogan: "« Des rues sûres, jour et nuit. »", txt: "−25 % sur la sécurité et +4 % de recettes, mais une popularité qui s’use plus vite.", bonus: { remise: { securite: 0.25 }, recettes: 1.04, usurePop: 1.15 }, si: { batsCat: { cat: "securite", n: 8 } } },
+    emploi: { nom: "Paul Emploi", ico: "💼", ligne: "centre", promesses: ["logement", "transports"], slogan: "« Un travail pour chacun, au coin de la rue. »", txt: "−25 % sur les commerces et −2 points de chômage, mais −2 de popularité.", bonus: { remise: { commerce: 0.25 }, emplois: 25000, pop: -2 }, si: { batsCat: { cat: "commerce", n: 6 } } },
+    rer: { nom: "Ray Erre", ico: "🚆", ligne: "centre", promesses: ["transports", "logement"], slogan: "« Des trains à l’heure, enfin. »", txt: "−25 % sur les transports, mais −2 % de recettes.", bonus: { remise: { transports: 0.25 }, recettes: 0.98 }, si: { batsCat: { cat: "transports", n: 10 } } },
+    star: { nom: "Insta Grâce", ico: "🤳", ligne: "centre", promesses: ["cadre", "securite"], slogan: "« Paris, la ville la plus likée du monde. »", txt: "+10 de popularité au départ, mais elle s’use 30 % plus vite.", bonus: { pop: 10, usurePop: 1.3 }, si: { mandats: 2 } },
+    batisseuse: { nom: "Béa Tonnière", ico: "🏗️", ligne: "centre", promesses: ["logement", "transports"], slogan: "« Des grues partout, des chantiers géants. »", txt: "Projets démesurés −25 %, mais la dette pèse plus dans les sondages.", bonus: { remise: { projet: 0.25 }, detteImpop: 1.3 }, si: { succes: "chantier1" } },
+    renard: { nom: "Jean-Marc Hiavel", ico: "🦊", ligne: "droite", promesses: ["securite", "logement"], slogan: "« La fin justifie les moyens. »", txt: "Ses rivaux partent avec 15 d’influence en moins.", bonus: { opp: -15 }, si: { elims: 3 } },
+    rassembleuse: { nom: "Anne Unité", ico: "🕊️", ligne: "centre", promesses: ["cadre", "logement"], slogan: "« Tous ensemble, tous Parisiens. »", txt: "Chaque objectif réussi rapporte +5 % au vote (au lieu de +3 %), et trahir sa ligne coûte moitié moins.", bonus: { objVote: 5, aliDoux: 0.5 }, si: { reussis: 3 } },
+    heritier: { nom: "Louis Sor", ico: "🎩", ligne: "droite", promesses: ["securite", "cadre"], slogan: "« L’argent n’a pas d’odeur, Paris si. »", txt: "+400 M€ au départ, mais −6 de popularité (« fils à papa »).", bonus: { tresor: 400, pop: -6 }, si: { succes: "banquier" } }
   };
+
   // Les villes voisines qui enchérissent contre Paris
   var VOISINES = ["Boulogne-Billancourt", "Saint-Denis", "Montreuil", "Vincennes", "Neuilly-sur-Seine", "Issy-les-Moulineaux", "Levallois-Perret", "Ivry-sur-Seine"];
 

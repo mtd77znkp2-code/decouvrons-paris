@@ -258,7 +258,8 @@
     var maire = o.maire && C.MAIRES[o.maire] ? o.maire : null;
     var ligne = maire ? C.MAIRES[maire].ligne : m.ligne ? o.ligne : "centre";
     if (!LIGNES[ligne]) throw new Error("Ligne politique inconnue");
-    var amb = m.promesses ? (o.ambitions || []).filter(function (a, i, t) { return PILIERS[a] && t.indexOf(a) === i; }) : [];
+    // Les promesses de campagne sont celles du maire incarné (sinon, celles choisies)
+    var amb = !m.promesses ? [] : maire && C.MAIRES[maire].promesses ? C.MAIRES[maire].promesses.slice() : (o.ambitions || []).filter(function (a, i, t) { return PILIERS[a] && t.indexOf(a) === i; });
     if (m.promesses && amb.length !== 2) throw new Error("Il faut choisir exactement deux promesses");
     var st = {
       v: 8, niveau: "progressif", maire: maire, meca: m, nivJ: nj, rng: (o.graine >>> 0) || ((Math.random() * 4294967296) >>> 0), lots: o.lots || [],
@@ -441,6 +442,16 @@
   function trimMandat(st) { return st.t - st.debutMandat; }
   // Élection prévue : fin du mandat, ou plus tôt si des élections anticipées ont été annoncées
   function prochaineElection(st) { return st.anticipee || st.debutMandat + MANDAT; }
+  // Élections anticipées : possibles quand 2 objectifs sur 3 sont remplis et que le vote prévu est encore à 5 trimestres ou plus
+  function anticipeePossible(st) {
+    return !st.anticipee && !st.scenario && st.phase === "gestion" && !!(st.objectifs && st.objectifs.length) && objectifsOk(st) >= 2 && st.debutMandat + MANDAT - st.t >= 5;
+  }
+  function demanderAnticipee(st0) {
+    if (!anticipeePossible(st0)) return st0;
+    var st = copie(st0); st.anticipee = st.t + 3;
+    message(st, "🗳️", "Élections anticipées", "C’est décidé : les Parisiens votent dans 3 trimestres. Garde le cap jusqu’au vote.");
+    return st;
+  }
   function nbTransports(st) { return (st.bat.tram || 0) + (st.bat.metro || 0) + (st.bat.metroRevo || 0) + (st.bat.gpe || 0) + (st.bat.telepherique || 0); }
   // Combos : certains bâtiments fonctionnent mieux ensemble (débloqué au niveau 4)
   function combosActifs(st) {
@@ -587,7 +598,7 @@
   // Emplois : la ville en offre 970 000 au départ ; commerces et économie en créent. La moitié des habitants cherche un travail.
   var EMP0 = 970000;
   function emplois(st) {
-    var n = EMP0; Object.keys(st.bat || {}).forEach(function (id) { var B = BATIMENTS[id]; if (!B) return; n += (B.emplois || (B.cat === "economie" ? 3000 : 0)) * st.bat[id]; });
+    var n = EMP0 + (bonusMaire(st).emplois || 0); Object.keys(st.bat || {}).forEach(function (id) { var B = BATIMENTS[id]; if (!B) return; n += (B.emplois || (B.cat === "economie" ? 3000 : 0)) * st.bat[id]; });
     return n;
   }
   function chomage(st) { var actifs = (st.hab || HAB0) * 0.5; return Math.max(2, Math.min(25, Math.round((actifs - emplois(st)) / actifs * 1000) / 10)); }
@@ -908,12 +919,8 @@
     if (!ok) { faillite(st); return st; }
     gagnerXP(st, "Trimestres à l’Hôtel de Ville", XP.trimestre, XP.trimestreMax);
     annoncer(st);
-    // Objectifs remplis (2 sur 3) : élections anticipées 3 trimestres plus tard, sauf si le vote est déjà proche
-    if (!st.anticipee && !st.scenario && st.objectifs && st.objectifs.length && objectifsOk(st) >= 2 && st.debutMandat + MANDAT - st.t >= 5) {
-      st.anticipee = st.t + 3;
-      notes.push({ txt: "🗳️ Objectifs remplis ! Des élections anticipées auront lieu dans 3 trimestres : tiens bon jusque-là.", d: { pop: 0, bon: 0, coh: 0, bud: 0, pil: {} } });
-      message(st, "🗳️", "Élections anticipées", "Tes objectifs sont remplis : les Parisiens votent dans 3 trimestres. Garde le cap jusqu’au vote.");
-    }
+    // Objectifs remplis (2 sur 3) : le maire peut demander des élections anticipées (bouton dans « Objectifs du mandat »)
+    if (anticipeePossible(st) && !st.anticipeeDite) { st.anticipeeDite = st.mandat; message(st, "🗳️", "Objectifs remplis", "Tu peux demander des élections anticipées : elles auront lieu 3 trimestres plus tard."); }
     // Léon prévient quand la dette devient dangereuse
     if (st.dette > 1000 && dette0 <= 1000) leon(st, "detteHaute");
     // Dernier pari : une proposition risquée quand la ville est au bord du gouffre
@@ -949,7 +956,14 @@
       annoncer(st);
       ouvrirCoffre(st);
       if (st.mandat >= 3) gagnerObjet(st, "echarpe");
-      if (st.meca.opposant) tirerOpposant(st);
+      // Le rival reste le même tant qu'on ne l'a pas battu : il faut le faire renoncer, ou l'écraser dans les urnes (60 % ou plus)
+      if (st.meca.opposant) {
+        if (st.opposant && st.opposant.actif && el.pct < 60) {
+          var fo = FORCE_OPP[palier(st)], o = st.opposant;
+          o.force = Math.min(100, Math.max(o.force, fo[0] + (st.mandat - 1) * 4) + 5); o.depart = o.force; o.revanche = (o.revanche || 0) + 1;
+          message(st, OPPOSANTS[o.i].ico, OPPOSANTS[o.i].nom + " ne lâche rien", "Battu mais pas abattu, ton rival revient pour le mandat suivant, encore plus déterminé.");
+        } else tirerOpposant(st);
+      }
       if (!st.scenario) tirerMandat(st);
       st.prochainDossier = 0;
       leon(st, "reelu");
@@ -1667,7 +1681,7 @@
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
-    roulette: roulette, HAB0: HAB0, LOGE: LOGE, capacite: capacite, besoin: besoin, emplois: emplois, chomage: chomage, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, mjPoker: mjPoker, mjPokerLigne: mjPokerLigne, mjPokerResultat: mjPokerResultat, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
+    roulette: roulette, anticipeePossible: anticipeePossible, demanderAnticipee: demanderAnticipee, HAB0: HAB0, LOGE: LOGE, capacite: capacite, besoin: besoin, emplois: emplois, chomage: chomage, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, mjPoker: mjPoker, mjPokerLigne: mjPokerLigne, mjPokerResultat: mjPokerResultat, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
     palier: palier, PALIERS: PALIERS, RAYONS: RAYONS, gainAchat: gainAchat, coutBat: coutBat, objectifs: objectifs, objectifsOk: objectifsOk, retraite: retraite, criseEnCours: criseEnCours, bonusMaire: bonusMaire, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
     ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, planVille: planVille, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };

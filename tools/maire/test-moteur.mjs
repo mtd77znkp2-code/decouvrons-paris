@@ -573,8 +573,10 @@ test("mandats : un dossier tous les 2 ou 3 trimestres, une crise et 3 objectifs 
 });
 
 test("personnages : avantages et défauts réels, déblocage selon le profil", () => {
-  const ids = Object.keys(M.C.MAIRES); assert.equal(ids.length, 9);
-  ids.forEach(id => { const x = M.C.MAIRES[id]; assert.ok(M.LIGNES[x.ligne] && x.txt && x.bonus, id); });
+  const ids = Object.keys(M.C.MAIRES); assert.equal(ids.length, 11);
+  ids.forEach(id => { const x = M.C.MAIRES[id]; assert.ok(M.LIGNES[x.ligne] && x.txt && x.bonus && x.slogan, id); assert.equal(x.promesses.length, 2, id); x.promesses.forEach(k => assert.ok(M.PILIERS[k], id)); });
+  // Les promesses de campagne sont celles du maire incarné
+  assert.deepEqual(M.nouvellePartie({ maire: "tribun", graine: 1, nivJoueur: 40 }).ambitions, ["logement", "cadre"]);
   const p = (maire, o) => M.nouvellePartie(Object.assign({ maire, ligne: "gauche", ambitions: ["cadre", "logement"], graine: 900, nivJoueur: 5, niveau: "facile" }, o || {}));
   const ref = p(null);
   assert.equal(p("gestionnaire").tresor, ref.tresor + 150); assert.equal(p("heritier").tresor, ref.tresor + 400);
@@ -587,11 +589,15 @@ test("personnages : avantages et défauts réels, déblocage selon le profil", (
   const bat = p("batisseuse", { nivJoueur: 40 }); assert.equal(M.coutBat(bat, "grandParc"), Math.round(M.BATIMENTS.grandParc.cout * 0.75));
   // Déblocage
   localStorage.removeItem("maire_profil_v1");
-  let L = G.maires(); assert.deepEqual(L.filter(x => x.dispo).map(x => x.id), ["gestionnaire", "ecolo"]);
+  let L = G.maires(); assert.deepEqual(L.filter(x => x.dispo).map(x => x.id), ["tribun", "gestionnaire"]);
   assert.ok(L.find(x => x.id === "batisseuse").cond.length > 10);
   const P = G.lire(); P.xp = G.xpPour(10); P.succes.chantier1 = 1; P.mandats = 3; localStorage.setItem("maire_profil_v1", JSON.stringify(P));
-  L = G.maires(); ["tribun", "notable", "star", "batisseuse", "renard"].forEach(id => assert.ok(L.find(x => x.id === id).dispo, id));
-  assert.ok(!L.find(x => x.id === "rassembleuse").dispo && !L.find(x => x.id === "heritier").dispo);
+  L = G.maires(); ["tribun", "ecolo", "star", "batisseuse"].forEach(id => assert.ok(L.find(x => x.id === id).dispo, id));
+  ["notable", "emploi", "rer", "renard", "rassembleuse", "heritier"].forEach(id => assert.ok(!L.find(x => x.id === id).dispo, id));
+  // Vrais prérequis de carrière : bâtiments construits par catégorie, rivaux éliminés
+  P.bats = { police: 5, videoprotection: 3 }; P.elims = 3; localStorage.setItem("maire_profil_v1", JSON.stringify(P));
+  L = G.maires(); assert.ok(L.find(x => x.id === "notable").dispo && L.find(x => x.id === "renard").dispo && !L.find(x => x.id === "emploi").dispo);
+  assert.ok(/0\/6/.test(L.find(x => x.id === "emploi").cond));
   localStorage.removeItem("maire_profil_v1");
 });
 
@@ -682,19 +688,36 @@ test("habitants : la population suit la tendance électorale et fait varier les 
   haut.bat = Object.assign({}, haut.bat, { logements: 3 }); assert.equal(M.capacite(haut), M.HAB0 + 3 * M.LOGE.logements);
   const avant = haut.hab; haut = M.debutTour(haut, base); assert.ok(haut.pop > 52.4 ? haut.hab > avant : true);
 });
-test("élections anticipées : 3 trimestres après avoir rempli ses objectifs, sauf si le vote est déjà proche", () => {
+test("le rival reste le même tant qu'on ne l'a pas battu (renoncement ou victoire écrasante)", () => {
+  let gardes = 0, changes = 0;
+  for (let g = 1; g <= 40; g++) {
+    let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 3000 + g, nivJoueur: 40 });
+    st.phase = "gestion"; st.t = M.MANDAT - 1; st.pop = 50 + (g % 3) * 10; Object.keys(st.piliers).forEach(k => { st.piliers[k] = 60; st.base[k] = 60; });
+    const avant = st.opposant.i, actif = st.opposant.actif;
+    st = M.debutTour(st, base); if (st.phase !== "election") continue;
+    const el = st.elections[st.elections.length - 1]; if (!el.gagne) continue;
+    if (actif && el.pct < 60) { assert.equal(st.opposant.i, avant, "même rival"); gardes++; } else { assert.notEqual(st.opposant.i, avant); changes++; }
+  }
+  assert.ok(gardes > 0, "au moins un rival qui revient");
+});
+test("élections anticipées : à la demande du maire quand ses objectifs sont remplis, 3 trimestres plus tard, sauf si le vote est déjà proche", () => {
   const prep = (t) => { const st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 950, nivJoueur: 40 });
     st.phase = "gestion"; st.t = t; st.objectifs = [{ k: "pop", but: 1, ico: "📣", txt: "a" }, { k: "pop", but: 2, ico: "📣", txt: "b" }, { k: "pop", but: 99, ico: "📣", txt: "c" }]; return st; };
-  let st = M.debutTour(prep(5), base);
-  assert.equal(st.anticipee, 9); assert.equal(M.prochaineElection(st), 9);
-  assert.ok(st.notes.some(n => /anticipées/.test(n.txt)));
-  const fixe = st.anticipee; st.phase = "gestion"; st = M.debutTour(st, base); assert.equal(st.anticipee, fixe, "la date ne bouge plus");
-  while (st.phase !== "election" && st.phase !== "fin" && st.t < 12) st = st.phase === "evenement" ? M.choisir(st, base, 0) : M.debutTour(st, base);
-  assert.equal(st.t, 9, "vote au trimestre annoncé");
-  if (st.phase === "election") { assert.equal(st.anticipee, null); assert.equal(st.debutMandat, 9); assert.equal(M.prochaineElection(st), 9 + M.MANDAT); assert.equal(M.stats(st).anticipees, 1); }
-  // Vote prévu dans moins de 5 trimestres : pas d'anticipées
-  st = M.debutTour(prep(M.MANDAT - 5), base); assert.equal(st.anticipee, null);
+  // Plus rien d'automatique : le compte à rebours ne démarre qu'avec le bouton
+  let st = M.debutTour(prep(5), base); assert.equal(st.anticipee, null);
+  if (st.phase !== "gestion") { st.phase = "gestion"; }
+  assert.ok(M.anticipeePossible(st));
+  st = M.demanderAnticipee(st); assert.equal(st.anticipee, st.t + 3); assert.equal(M.prochaineElection(st), st.t + 3);
+  const fixe = st.anticipee; assert.deepEqual(M.demanderAnticipee(st), st, "une seule demande");
+  st = M.debutTour(st, base); assert.equal(st.anticipee, fixe, "la date ne bouge plus");
+  while (st.phase !== "election" && st.phase !== "fin" && st.t < 14) st = st.phase === "evenement" ? M.choisir(st, base, 0) : M.debutTour(st, base);
+  assert.equal(st.t, fixe, "vote au trimestre annoncé");
+  if (st.phase === "election") { assert.equal(st.anticipee, null); assert.equal(st.debutMandat, fixe); assert.equal(M.stats(st).anticipees, 1); }
+  // Objectifs pas remplis, ou vote prévu dans moins de 5 trimestres : pas d'anticipées
+  const sans = prep(5); sans.objectifs[1].but = 99; assert.ok(!M.anticipeePossible(sans));
+  assert.ok(!M.anticipeePossible(prep(M.MANDAT - 4)));
 });
+
 
 console.log(ok + " tests réussis.\n");
 if (!N) { console.log("Simulation d’équilibrage ignorée (0 partie demandée)."); process.exit(0); }

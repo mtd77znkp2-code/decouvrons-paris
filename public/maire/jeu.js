@@ -390,7 +390,7 @@
     vider();
     box.appendChild(h("p", "m-nivtxt", "La difficulté monte à chaque mandat : le premier est indulgent, les suivants de plus en plus exigeants."));
     // Le personnage remplace la ligne politique : chacun a la sienne, un avantage et un défaut
-    box.appendChild(h("p", "m-etape", "Ton personnage"));
+    box.appendChild(h("p", "m-etape", "Le maire que tu incarnes"));
     var lg = h("div", "mx-maires");
     liste.forEach(function (x) {
       var b = bouton("", "mx-maire" + (x.dispo ? "" : " mx-verrouille"), function () {
@@ -398,25 +398,12 @@
         CHOIX.maire = x.id; Array.prototype.forEach.call(lg.children, function (y) { y.setAttribute("aria-pressed", y.dataset.id === x.id); }); maj();
       });
       b.dataset.id = x.id; b.setAttribute("aria-pressed", x.id === CHOIX.maire);
-      ajout(b, h("span", "mx-mico", x.dispo ? x.ico : "🔒"), ajout(h("div"), h("strong", null, x.nom + (m.ligne ? " · " + M.LIGNES[x.ligne].nom : "")), h("small", null, x.dispo ? x.txt : x.cond)));
+      var prom = x.promesses.map(function (k) { return M.ICO[k] + " " + M.PILIERS[k]; }).join(" · ");
+      ajout(b, h("span", "mx-mico", x.dispo ? x.ico : "🔒"), ajout(h("div"), h("strong", null, x.nom + (m.ligne ? " · " + M.LIGNES[x.ligne].nom : "")),
+        x.slogan ? h("em", "mx-slogan", x.slogan) : null, m.promesses && prom ? h("small", "mx-prom-maire", "🎯 Promesses : " + prom) : null, h("small", null, x.dispo ? x.txt : "🔒 " + x.cond)));
       lg.appendChild(b);
     });
     box.appendChild(lg);
-    if (m.promesses) {
-      box.appendChild(h("p", "m-etape", "Tes deux promesses de campagne"));
-      var am = h("div", "m-ambs");
-      Object.keys(M.PILIERS).forEach(function (k) {
-        var b = bouton(M.ICO[k] + " " + M.PILIERS[k], "m-amb", function () {
-          var i = CHOIX.amb.indexOf(k);
-          if (i >= 0) CHOIX.amb.splice(i, 1); else { if (CHOIX.amb.length === 2) CHOIX.amb.shift(); CHOIX.amb.push(k); }
-          Array.prototype.forEach.call(am.children, function (x) { x.setAttribute("aria-pressed", CHOIX.amb.indexOf(x.dataset.k) >= 0); });
-          maj();
-        });
-        b.dataset.k = k; b.setAttribute("aria-pressed", "false");
-        am.appendChild(b);
-      });
-      box.appendChild(am);
-    }
     // Bonus gagnés dans le pass de combat : on choisit ceux à utiliser pour cette partie
     if (sacOk.length) {
       box.appendChild(h("p", "m-etape", "🎒 Tes bonus du pass de combat (facultatif)"));
@@ -435,9 +422,9 @@
     box.appendChild(bas); box.appendChild(msg);
     setTimeout(function () { guide("creation"); }, 50);
     function maj() {
-      var ok = CHOIX.maire && (!m.promesses || CHOIX.amb.length === 2);
+      var ok = !!CHOIX.maire;
       go.disabled = !ok;
-      msg.textContent = !CHOIX.maire ? "Choisis ton personnage." : m.promesses && CHOIX.amb.length < 2 ? "Choisis encore " + (2 - CHOIX.amb.length) + " promesse" + (CHOIX.amb.length ? "." : "s.") : "";
+      msg.textContent = !CHOIX.maire ? "Choisis le maire que tu veux incarner." : "";
     }
     maj();
   }
@@ -644,14 +631,23 @@
     var cr = M.criseEnCours(st), n = ob.filter(function (o) { return o.ok; }).length, d = h("div", "mx-objectifs");
     ajout(d, ajout(h("div", "mx-pt"), h("strong", null, "🎯 Objectifs du mandat"), h("b", "mx-objn" + (n >= 2 ? " mx-objbon" : ""), n + "/" + ob.length)));
     if (cr) d.appendChild(h("small", "mx-criseinfo", cr.ico + " " + cr.nom + " · " + cr.txt));
-    if (st.anticipee) d.appendChild(h("p", "mx-antic", "🗳️ Objectifs remplis : élections anticipées dans " + (st.anticipee - st.t) + " trimestre" + (st.anticipee - st.t > 1 ? "s" : "") + " !"));
-    else if (!st.scenario) d.appendChild(h("small", "mx-criseinfo mx-gris", "2 objectifs sur 3 remplis = élections anticipées 3 trimestres plus tard (si le vote est encore loin)."));
     ob.forEach(function (o) {
       var l = h("div", "mx-objl" + (o.ok ? " mx-ok" : ""));
       var etat = o.ok ? (o.garde ? "✔ à tenir" : "✔") : o.inverse ? o.cur + " M€ (max " + o.but + ")" : o.cur + " / " + o.but;
       ajout(l, h("span", null, o.ico), h("span", null, o.txt), h("b", null, etat));
       d.appendChild(l);
     });
+    // Élections anticipées : à la demande, quand 2 objectifs sur 3 sont remplis (bouton gris tant que ce n'est pas possible)
+    if (st.anticipee) d.appendChild(h("p", "mx-antic", "🗳️ Élections anticipées dans " + (st.anticipee - st.t) + " trimestre" + (st.anticipee - st.t > 1 ? "s" : "") + " : tiens bon !"));
+    else if (!st.scenario) {
+      var ok = M.anticipeePossible(st), b = bouton("🗳️ Demander des élections anticipées", "mx-antic-btn" + (ok ? " mx-pret" : ""), function () {
+        if (!M.anticipeePossible(st)) return toast(n < 2 ? "🎯 Remplis 2 objectifs sur 3 pour pouvoir le demander." : "🗳️ Le vote prévu est déjà trop proche.");
+        if (!confirm("Demander des élections anticipées ? Les Parisiens voteront dans 3 trimestres.")) return;
+        st = M.demanderAnticipee(st); sauver(); jeu();
+      });
+      b.setAttribute("aria-disabled", ok ? "false" : "true");
+      ajout(d, b, h("small", "mx-criseinfo mx-gris", ok ? "Objectifs remplis : le vote aurait lieu 3 trimestres plus tard." : "Possible quand 2 objectifs sur 3 sont remplis (et que le vote prévu est encore loin)."));
+    }
     return d;
   }
   // Tableau de bord : le sondage en grand (c'est lui qui décide de l'élection) et trois chiffres
@@ -1079,8 +1075,8 @@
       { q: "#m-modale .m-choix", t: "🚨 Une catastrophe ! Choisis comment limiter les dégâts.", a: "choix" }] },
     { id: "chance", ecran: "modale", si: function () { return st.special === "chance" && st.phase === "evenement"; }, etapes: [
       { q: "#m-modale .m-choix", t: "🍀 Un coup de chance ! À toi d’en profiter.", a: "choix" }] },
-    { id: "promesses-crea", ecran: "creation", si: function () { return !!document.querySelector(".m-ambs"); }, etapes: [
-      { q: ".m-ambs", t: "🎯 Choisis 2 piliers à promettre aux Parisiens.", a: "ok" }] },
+    { id: "maire-crea", ecran: "creation", si: function () { return !!document.querySelector(".mx-maires"); }, etapes: [
+      { q: ".mx-maires", t: "🎩 Choisis le maire que tu incarnes : son nom cache sa promesse de campagne. Certains se débloquent au fil de ta carrière.", a: "ok" }] },
     { id: "promesses", ecran: "jeu", si: function () { return st.ambitions.length && st.phase === "gestion"; }, etapes: [
       { q: ".mx-prom", t: "🎯 Ta promesse : dépasse le trait blanc avant l’élection pour gagner des voix.", a: "ok" }] },
     { id: "ligne-crea", ecran: "creation", si: function () { return !!document.querySelector(".m-lignes"); }, etapes: [
