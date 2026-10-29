@@ -293,3 +293,8 @@ body.glitching #home,body.glitching #site{animation:gl-secoue .26s steps(5) both
 .brand .mp{display:inline-flex;align-items:center;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);font-size:14px;font-weight:800;color:#fff}
 .brand:hover .mp{background:rgba(255,255,255,.18)}
 @media (max-width:600px){.brand .mp{display:inline-flex}.brand img{display:none}.brand .mp-l{display:none}}
+.hson{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);left:14px;z-index:3;width:40px;height:40px;border-radius:50%;border:0;font-size:18px;line-height:1;color:#fff;background:rgba(14,23,64,.55);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+/* Logo de l'accueil : petite secousse douce, en boucle */
+#home .float{animation:logo-secoue 3.2s ease-in-out infinite;transform-origin:50% 60%}
+@keyframes logo-secoue{0%,62%,100%{transform:rotate(0) translate(0,0)}66%{transform:rotate(-3deg) translate(-2px,0)}70%{transform:rotate(2.5deg) translate(2px,-1px)}74%{transform:rotate(-2deg) translate(-1px,1px)}78%{transform:rotate(1.5deg) translate(1px,0)}82%{transform:rotate(-.6deg)}86%{transform:rotate(0)}30%{transform:translateY(-6px)}}
+@media (prefers-reduced-motion:reduce){#home .float{animation:none}}

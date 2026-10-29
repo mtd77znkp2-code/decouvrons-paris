@@ -169,6 +169,27 @@ $("adminLogin").onsubmit=function(e){
 $("adminLogout").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut();window.scrollTo(0,0)};
 
 // Accueil : Paris sous la neige ; de temps en temps, une « interférence » montre 3 s la tour Eiffel illuminée
+// La musique joue tant que Paris sous la neige est à l'écran, se met en pause sinon et reprend là où elle s'était arrêtée
+var musique=(function(){
+  var a=new Audio("audio/accueil-musique.mp3");a.loop=true;a.preload="none";a.volume=0;
+  var f=document.getElementById("homeFond"),bt=document.getElementById("hson"),fondu=null,muet=false;
+  try{muet=localStorage.getItem("musique_off")==="1"}catch(e){}
+  function doitJouer(){var home=document.getElementById("home");return !muet&&!home.hidden&&!document.hidden&&!(f&&f.classList.contains("interf"))&&!document.body.classList.contains("eteint")}
+  function vers(v,fin){clearInterval(fondu);fondu=setInterval(function(){var d=v-a.volume;if(Math.abs(d)<.06){a.volume=v;clearInterval(fondu);if(fin)fin()}else a.volume+=d>0?.06:-.06},25)}
+  function maj(){
+    if(doitJouer()){if(a.paused){var p=a.play();if(p&&p.catch)p.catch(function(){})}vers(.7)}
+    else if(!a.paused)vers(0,function(){a.pause()});
+  }
+  function bouton(){bt.textContent=muet?"🔇":"🔊";bt.setAttribute("aria-pressed",muet?"true":"false");bt.setAttribute("aria-label",muet?"Remettre la musique":"Couper la musique")}
+  bt.onclick=function(e){e.stopPropagation();muet=!muet;try{localStorage.setItem("musique_off",muet?"1":"0")}catch(x){}bouton();maj()};
+  bouton();
+  // Les navigateurs bloquent le son tant qu'on n'a pas touché la page : on relance au premier geste
+  function geste(){maj();if(!a.paused){document.removeEventListener("pointerdown",geste,true);document.removeEventListener("keydown",geste,true)}}
+  document.addEventListener("pointerdown",geste,true);document.addEventListener("keydown",geste,true);
+  document.addEventListener("visibilitychange",maj);
+  maj();
+  return maj;
+})();
 (function(){
   var f=document.getElementById("homeFond");if(!f)return;
   if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;
@@ -176,7 +197,7 @@ $("adminLogout").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut(
   function interf(){
     var home=document.getElementById("home");
     if(home.hidden||document.hidden||document.body.classList.contains("eteint"))return prochaine();
-    f.classList.add("interf");setTimeout(function(){f.classList.remove("interf");prochaine()},3400);
+    f.classList.add("interf");musique();setTimeout(function(){f.classList.remove("interf");musique();prochaine()},3400);
   }
   prochaine();
 })();
@@ -187,6 +208,7 @@ function ecran(s){
   home.hidden=!!s;st.hidden=!s;
   if(s)tab(s);
   document.body.classList.remove("eteint");
+  musique();
   enHaut();
 }
 // Adresses : #jouer et #decouvre (pas les id des sections, sinon le navigateur défile tout seul jusqu'à elles)
@@ -201,7 +223,7 @@ document.getElementById("jouer").onclick=function(){
   if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return goTo("jeux");
   // Paris s'éteint une demi-seconde (plus aucun bouton), puis l'écran bugge et le jeu apparaît
   if(document.body.classList.contains("eteint"))return;
-  document.body.classList.add("eteint");
+  document.body.classList.add("eteint");musique();
   setTimeout(function(){
     var g=document.createElement("div");g.className="glitch";g.setAttribute("aria-hidden","true");
     for(var i=0,b="";i<9;i++)b+='<i class="gl-b" style="top:'+Math.round(Math.random()*95)+'%;height:'+(2+Math.round(Math.random()*9))+'%;--d:'+(Math.random()<.5?"-":"")+(4+Math.round(Math.random()*14))+'%"></i>';
