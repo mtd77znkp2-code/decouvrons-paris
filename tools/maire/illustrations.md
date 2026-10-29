@@ -204,3 +204,47 @@ Crée 3 illustrations séparées, format paysage 1536 × 1024, style défini, sa
 2. Défaite : place de l'Hôtel de Ville sous la pluie, affiches qui s'envolent, ambiance mélancolique mais drôle
 3. Coffre de la victoire : coffre doré ouvert qui brille, pièces et étoiles qui jaillissent (fond TRANSPARENT)
 ```
+
+---
+
+## 7. Mini-jeux des dossiers : blackjack et roulette (1 planche + 2 fonds)
+
+Toujours dans la même conversation (après le bloc STYLE). Les chiffres et figures des cartes sont dessinés par le jeu :
+les images ne doivent toujours contenir aucun texte ni chiffre.
+
+**Planche J — Objets des mini-jeux** (fond transparent, grille 3 × 3, 1536 × 1536)
+
+```
+Crée une planche de 9 icônes, dans le style défini, disposées en grille 3 × 3 régulière,
+image carrée 1536 × 1536, chaque icône centrée dans sa case de 512 × 512 avec de la marge, fond TRANSPARENT.
+De gauche à droite puis de haut en bas :
+1. Dos de carte à jouer, vertical, bleu marine avec un motif doré de l'Hôtel de Ville de Paris au centre et une fine bordure dorée
+2. Roulette de casino vue de dessus, parfaitement ronde et centrée, cases alternées rouge et noir avec une seule case verte, rebord en bois verni et centre doré, SANS aucun chiffre
+3. Petite bille de roulette blanche et brillante
+4. Pile de jetons de casino bleu marine et or, avec une rosace dorée sur le dessus
+5. Croupier élégant (personnage fictif) en gilet bleu marine et nœud papillon doré, vu en buste, souriant, mains sur la table
+6. Trophée doré avec des confettis bleu, blanc, rouge qui jaillissent (victoire)
+7. Cadenas doré fermé, légèrement fissuré (choix perdu)
+8. Éventail de cinq cartes à jouer vues de dos, dos bleu marine et or
+9. Petit sablier doré avec du sable bleu
+```
+
+**Fond 1 — Table de blackjack** (image seule, verticale)
+
+```
+Crée une seule image verticale 1024 × 1536, dans le style défini, sans texte :
+une table de blackjack vue de dessus, tapis de feutre vert profond, bord arrondi en bois verni avec une fine moulure dorée,
+emplacements des cartes marqués par de légers arcs dorés (sans écriture), éclairage chaleureux de lampe au centre,
+coins plus sombres. Le centre doit rester assez uni pour qu'on y pose des cartes par-dessus.
+```
+
+**Fond 2 — Salon de la roulette** (image seule, verticale)
+
+```
+Crée une seule image verticale 1024 × 1536, dans le style défini, sans texte :
+un salon feutré de l'Hôtel de Ville transformé en petit casino, vu de dessus en légère perspective :
+tapis de feutre vert, boiseries, lustre doré en haut, rideaux bleu marine sur les côtés.
+Le centre de l'image doit rester dégagé et sombre (on y place la roulette par-dessus).
+```
+
+À envoyer : la planche J en PNG (fond transparent) et les deux fonds.
