@@ -1243,6 +1243,7 @@
     var zone = h("div", "m-mj-zone"); carte.appendChild(zone);
     function fin() {
       var g = st.mj.etat === "gagne";
+      if (g) confettis(); else { carte.classList.remove("m-secoue"); void carte.offsetWidth; carte.classList.add("m-secoue"); zone.appendChild(h("span", "m-mj-cadenas", "🔒")); }
       zone.appendChild(h("p", "m-mj-res " + (g ? "m-mj-ok" : "m-mj-ko"), g ? "🎉 Gagné ! Le meilleur choix est à toi" + (st.mj.xp ? " · +" + st.mj.xp + " XP" : "") + "." : "😬 Perdu… Ce choix t’échappe, choisis parmi les autres."));
       zone.appendChild(bouton(g ? "Prendre ce choix" : "Retour au dossier", "btn m-go", function () {
         if (g) { st = M.choisir(st, BASE, st.mj.i); sauver(); signal("choix"); return jeu(); }
@@ -1252,41 +1253,117 @@
     }
     if (mj.jeu === "bj") {
       if (!st.mj.bj) { st = M.mjBlackjack(st, "donner"); sauver(); }
+      cartesVues = {};
       (function dessin() {
         zone.innerHTML = "";
         var b = st.mj.bj, cache = !b.fini;
-        function main(t, l, val) { var m = h("div", "m-bj-main"); l.forEach(function (c, k) { m.appendChild(carteJeu(c, cache && t === "c" && k === 1)); }); return ajout(h("div", "m-bj-ligne"), h("small", null, (t === "j" ? "Toi" : "Croupier") + (val != null ? " · " + val : "")), m); }
-        ajout(zone, main("c", b.c, cache ? null : M.valeurMain(b.c)), main("j", b.j, M.valeurMain(b.j)));
+        function main(t, l, val) { var m = h("div", "m-bj-main"); l.forEach(function (c, k) { var e = carteJeu(c, cache && t === "c" && k === 1); e.style.animationDelay = (e.classList.contains("m-donne") ? k * 0.12 : 0) + "s"; m.appendChild(e); }); return ajout(h("div", "m-bj-ligne"), h("small", "m-bj-val", (t === "j" ? "Toi" : "Croupier") + (val != null ? " · " + val : "")), m); }
+        zone.appendChild(ajout(tapis(), main("c", b.c, cache ? null : M.valeurMain(b.c)), main("j", b.j, M.valeurMain(b.j))));
         if (!b.fini) {
           zone.appendChild(ajout(h("div", "m-bas"), bouton("Tirer une carte", "btn m-sec", function () { st = M.mjBlackjack(st, "tirer"); sauver(); dessin(); }),
             bouton("Rester", "btn m-go", function () { st = M.mjBlackjack(st, "rester"); sauver(); dessin(); })));
         } else if (b.res === "egal") {
           zone.appendChild(h("p", "m-mj-res", "🤝 Égalité (" + M.valeurMain(b.j) + ") : on redistribue !"));
-          zone.appendChild(bouton("Nouvelle main", "btn m-go", function () { st = M.mjBlackjack(st, "donner"); sauver(); dessin(); }));
+          zone.appendChild(bouton("Nouvelle main", "btn m-go", function () { st = M.mjBlackjack(st, "donner"); sauver(); cartesVues = {}; dessin(); }));
         } else fin();
       })();
     } else {
-      var n = h("div", "m-roue", "?"); zone.appendChild(n);
+      var roue = roueSVG(); zone.appendChild(roue.el);
       var g = ajout(h("div", "m-bas"), bouton("🔴 Rouge", "btn m-mj-rouge", function () { lancer("rouge"); }), bouton("⚫ Noir", "btn m-mj-noir", function () { lancer("noir"); }));
-      zone.appendChild(g); zone.appendChild(h("small", "m-aide", "Le zéro (vert) fait perdre."));
+      var aide = h("small", "m-aide", "Le zéro (vert) fait perdre.");
+      zone.appendChild(g); zone.appendChild(aide);
       function lancer(pari) {
         if (st.mj.roue) return;
-        st = M.mjRoulette(st, pari); sauver(); g.remove();
-        var k = 0, r = st.mj.roue, calme = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-        (function tick() {
-          if (calme || k > 18) { n.textContent = String(r.n); n.className = "m-roue " + (r.n === 0 ? "m-vert" : r.rouge ? "m-rouge" : "m-noir"); return setTimeout(fin, 500); }
-          n.textContent = String(Math.floor(Math.random() * 37)); k++; setTimeout(tick, 50 + k * 12);
-        })();
+        st = M.mjRoulette(st, pari); sauver(); g.remove(); aide.remove();
+        roue.lancer(st.mj.roue.n, fin);
       }
     }
   }
 
   // ---------- Téléphone du maire et dernier pari ----------
   function fermerTel() { var m = document.getElementById("m-telmod"); if (m) m.remove(); document.body.classList.remove("m-modal"); cacherBulle(); }
+  // Cartes à jouer dessinées en code : valeur dans les coins, grand symbole au centre.
+  // Une carte qui apparaît pour la première fois est distribuée, une carte cachée qui se dévoile se retourne.
+  var cartesVues = {};
   function carteJeu(c, cache) {
-    var d = h("span", "m-carte-jeu" + (cache ? " m-cachee" : ""));
-    if (!cache) { var v = c % 13 + 1, coul = Math.floor(c / 13); d.textContent = ({ 1: "A", 11: "V", 12: "D", 13: "R" })[v] || String(v); d.appendChild(h("i", null, ["♠", "♥", "♦", "♣"][coul])); if (coul === 1 || coul === 2) d.classList.add("m-rouge"); }
+    var d = h("span", "m-carte-jeu" + (cache ? " m-cachee" : "")), cle = String(c), avant = cartesVues[cle];
+    if (!cache) {
+      var v = c % 13 + 1, coul = Math.floor(c / 13), val = ({ 1: "A", 11: "V", 12: "D", 13: "R" })[v] || String(v), sym = ["♠", "♥", "♦", "♣"][coul];
+      ajout(d, h("b", "m-cj-coin", val + "\n" + sym), h("i", null, sym), h("b", "m-cj-coin m-cj-bas", val + "\n" + sym));
+      if (coul === 1 || coul === 2) d.classList.add("m-rouge");
+    }
+    if (!avant) d.classList.add("m-donne"); else if (avant === "cache" && !cache) d.classList.add("m-retourne");
+    cartesVues[cle] = cache ? "cache" : "vue";
     return d;
+  }
+  // Tapis vert du blackjack : sabot de cartes et pile de jetons en décor
+  function tapis() {
+    var t = h("div", "m-tapis");
+    ajout(t, ajout(h("div", "m-sabot"), h("i"), h("i"), h("i")), ajout(h("div", "m-jetons"), h("i"), h("i"), h("i"), h("i")));
+    return t;
+  }
+  // Roulette européenne dessinée en SVG : 37 cases dans l'ordre réel, la roue tourne, la bille roule puis tombe dans la case tirée
+  var ORDRE_ROUE = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
+  var ROUGES_ROUE = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
+  function roueSVG() {
+    var NS = "http://www.w3.org/2000/svg", pas = 360 / 37;
+    function el(n, a, p) { var e = document.createElementNS(NS, n); Object.keys(a).forEach(function (k) { e.setAttribute(k, a[k]); }); if (p) p.appendChild(e); return e; }
+    function pt(r, a) { var t = (a - 90) * Math.PI / 180; return [150 + r * Math.cos(t), 150 + r * Math.sin(t)]; }
+    function secteur(r1, r2, a1, a2) { var p1 = pt(r2, a1), p2 = pt(r2, a2), p3 = pt(r1, a2), p4 = pt(r1, a1); return "M" + p1 + "A" + r2 + "," + r2 + " 0 0 1 " + p2 + "L" + p3 + "A" + r1 + "," + r1 + " 0 0 0 " + p4 + "Z"; }
+    var boite = h("div", "m-roulette"), svg = el("svg", { viewBox: "0 0 300 300", "aria-hidden": "true" });
+    var defs = el("defs", {}, svg), gb = el("radialGradient", { id: "m-rb", cx: "50%", cy: "45%", r: "60%" }, defs);
+    el("stop", { offset: "0", "stop-color": "#a0612b" }, gb); el("stop", { offset: "1", "stop-color": "#5a2f12" }, gb);
+    var go = el("radialGradient", { id: "m-ro", cx: "40%", cy: "35%", r: "70%" }, defs);
+    el("stop", { offset: "0", "stop-color": "#ffe9a8" }, go); el("stop", { offset: ".55", "stop-color": "#f5b21a" }, go); el("stop", { offset: "1", "stop-color": "#9a6a08" }, go);
+    el("circle", { cx: 150, cy: 150, r: 148, fill: "url(#m-rb)" }, svg);
+    el("circle", { cx: 150, cy: 150, r: 141, fill: "none", stroke: "#f5b21a", "stroke-width": 2 }, svg);
+    var roue = el("g", { "class": "m-roue-tourne" }, svg);
+    ORDRE_ROUE.forEach(function (n, k) {
+      var a1 = k * pas - pas / 2, a2 = a1 + pas, coul = n === 0 ? "#1f8a4c" : ROUGES_ROUE.indexOf(n) >= 0 ? "#c8352e" : "#151515";
+      el("path", { d: secteur(100, 138, a1, a2), fill: coul, stroke: "#e9c46a", "stroke-width": .8 }, roue);
+      el("path", { d: secteur(80, 100, a1, a2), fill: coul, opacity: .75, stroke: "#e9c46a", "stroke-width": .6 }, roue);
+      var q = pt(121, k * pas), t = el("text", { x: q[0], y: q[1], fill: "#fff", "font-size": 11, "font-weight": 800, "text-anchor": "middle", "dominant-baseline": "central", transform: "rotate(" + (k * pas) + " " + q[0] + " " + q[1] + ")" }, roue);
+      t.textContent = String(n);
+    });
+    el("circle", { cx: 150, cy: 150, r: 80, fill: "none", stroke: "#e9c46a", "stroke-width": 1.5 }, roue);
+    el("circle", { cx: 150, cy: 150, r: 62, fill: "url(#m-rb)" }, roue);
+    el("circle", { cx: 150, cy: 150, r: 34, fill: "url(#m-ro)" }, roue);
+    [0, 45, 90, 135].forEach(function (a) { var p1 = pt(56, a), p2 = pt(56, a + 180); el("line", { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1], stroke: "#f5b21a", "stroke-width": 5, "stroke-linecap": "round" }, roue); });
+    el("circle", { cx: 150, cy: 150, r: 12, fill: "#fff3c4", stroke: "#9a6a08", "stroke-width": 2 }, roue);
+    boite.appendChild(svg);
+    var orbite = h("div", "m-bille-orbite"), bille = h("i", "m-bille"); orbite.appendChild(bille); boite.appendChild(orbite);
+    boite.appendChild(h("span", "m-roue-fl", "▼"));
+    var res = h("span", "m-roue-num"); boite.appendChild(res);
+    return {
+      el: boite,
+      lancer: function (n, fini) {
+        var k = ORDRE_ROUE.indexOf(n), fin = 360 * 5 - k * pas, calme = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+        function montrer() {
+          roue.setAttribute("transform", "rotate(" + (fin % 360) + " 150 150)"); orbite.style.transform = "rotate(0deg)"; bille.style.top = "20%";
+          res.textContent = String(n); res.className = "m-roue-num " + (n === 0 ? "m-vert" : ROUGES_ROUE.indexOf(n) >= 0 ? "m-rouge" : "m-noir");
+          setTimeout(fini, calme ? 300 : 900);
+        }
+        if (calme || !roue.animate) return montrer();
+        var D = 4200;
+        roue.animate([{ transform: "rotate(0deg)" }, { transform: "rotate(" + fin + "deg)" }], { duration: D, easing: "cubic-bezier(.15,.6,.25,1)", fill: "forwards" });
+        orbite.animate([{ transform: "rotate(0deg)" }, { transform: "rotate(-1440deg)" }], { duration: D, easing: "cubic-bezier(.2,.65,.3,1)", fill: "forwards" });
+        // La bille roule sur le bord (rayon 131 sur 300) puis descend dans les cases (rayon 90) : positions en % pour suivre la taille de la roue
+        bille.animate([{ top: "6.3%" }, { top: "6.3%", offset: .55 }, { top: "15.3%", offset: .75 }, { top: "18%", offset: .85 }, { top: "20%" }], { duration: D, easing: "ease-out", fill: "forwards" });
+        setTimeout(montrer, D + 50);
+      }
+    };
+  }
+  // Victoire : pluie de confettis bleu, blanc, rouge et or
+  function confettis() {
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var c = h("div", "m-confettis"), COUL = ["#2b4fb3", "#ffffff", "#c8352e", "#f5b21a"];
+    for (var i = 0; i < 70; i++) {
+      var e = h("i"); e.style.left = Math.random() * 100 + "%"; e.style.background = COUL[i % 4];
+      e.style.animationDelay = Math.random() * .5 + "s"; e.style.animationDuration = 1.6 + Math.random() * 1.2 + "s";
+      e.style.setProperty("--dx", (Math.random() * 160 - 80) + "px"); e.style.setProperty("--r", (Math.random() * 720 - 360) + "deg");
+      c.appendChild(e);
+    }
+    document.body.appendChild(c); setTimeout(function () { c.remove(); }, 3400);
   }
   function ouvrirTelephone(vue) {
     fermerTel(); fermerModale();
@@ -1348,21 +1425,19 @@
         })));
     }
     function animerRoulette() {
-      tel.innerHTML = ""; var n = h("div", "m-roue", "?"); tel.appendChild(h("h4", null, "🎡 La bille tourne…")); tel.appendChild(n);
-      var k = 0, fin = st.pariRes.n, calme = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-      (function tick() {
-        if (calme || k > 18) { n.textContent = String(fin); n.className = "m-roue " + (fin === 0 ? "m-vert" : st.pariRes.rouge ? "m-rouge" : "m-noir"); return setTimeout(function () { dessin(); }, 700); }
-        n.textContent = String(Math.floor(Math.random() * 37)); k++; setTimeout(tick, 50 + k * 12);
-      })();
+      tel.innerHTML = ""; tel.appendChild(h("h4", null, "🎡 La bille tourne…"));
+      var roue = roueSVG(); tel.appendChild(roue.el);
+      roue.lancer(st.pariRes.n, function () { if (st.pariRes.gain > 0) confettis(); dessin(); });
     }
     function blackjack() {
       var b = st.bj;
       tel.appendChild(h("h4", null, "🃏 Blackjack · mise " + argent(b.mise)));
       var main = function (titre, cartes, cache) {
         var d = h("div", "m-main"); d.appendChild(h("small", null, titre + " · " + (cache ? "?" : M.valeurMain(cartes))));
-        var r = h("div", "m-cartes"); cartes.forEach(function (c, i) { r.appendChild(carteJeu(c, cache && i === 1)); }); d.appendChild(r); return d;
+        var r = h("div", "m-cartes"); cartes.forEach(function (c, i) { var e = carteJeu(c, cache && i === 1); e.style.animationDelay = (e.classList.contains("m-donne") ? i * 0.12 : 0) + "s"; r.appendChild(e); }); d.appendChild(r); return d;
       };
-      ajout(tel, main("Croupier (Monsieur Valentin)", b.c, !b.fini), main("Toi", b.j, false));
+      if (!b.fini && b.j.length === 2 && b.c.length === 2) cartesVues = {};
+      tel.appendChild(ajout(tapis(), main("Croupier (Monsieur Valentin)", b.c, !b.fini), main("Toi", b.j, false)));
       if (!b.fini) {
         var acts = h("div", "m-bas");
         acts.appendChild(bouton("Tirer une carte", "btn m-go", function () { st = M.bjTirer(st); sauver(); dessin(); }));

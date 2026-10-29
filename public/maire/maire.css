@@ -347,10 +347,46 @@ body.m-modal{overflow:hidden}
 .m-mise.on{background:var(--pi);border-color:var(--pi);color:#fff}
 .m-main{display:grid;gap:6px}.m-main small{font-weight:800;color:var(--pm)}
 .m-cartes{display:flex;gap:6px;flex-wrap:wrap}
-.m-carte-jeu{display:grid;place-items:center;width:48px;height:68px;border-radius:8px;background:#fff;border:1.5px solid #cfc6b2;font-weight:900;font-size:19px;color:#1b2550;box-shadow:0 3px 8px rgba(0,0,0,.15);animation:m-entree .25s ease}
-.m-carte-jeu i{font-style:normal;font-size:17px;line-height:1}
+.m-carte-jeu{position:relative;display:grid;place-items:center;width:56px;height:80px;border-radius:9px;background:linear-gradient(160deg,#fff 0%,#f4efe3 100%);border:1px solid #cfc6b2;color:#1b2550;box-shadow:0 4px 10px rgba(0,0,0,.28);font-family:Georgia,serif}
+.m-carte-jeu>i{font-style:normal;font-size:30px;line-height:1}
+.m-cj-coin{position:absolute;top:4px;left:5px;font-size:12px;font-weight:900;line-height:1.05;white-space:pre;text-align:center}
+.m-cj-bas{top:auto;left:auto;bottom:4px;right:5px;transform:rotate(180deg)}
 .m-carte-jeu.m-rouge{color:#c8352e}
-.m-cachee{background:repeating-linear-gradient(45deg,#2b4fb3 0 6px,#1b2550 6px 12px);border-color:#1b2550}
+.m-cachee{background:radial-gradient(circle at 50% 50%,#f5b21a 0 7px,transparent 8px),repeating-linear-gradient(45deg,rgba(245,178,26,.55) 0 2px,transparent 2px 9px),repeating-linear-gradient(-45deg,rgba(245,178,26,.55) 0 2px,transparent 2px 9px),#1b2550;border:3px solid #fff;outline:1.5px solid #f5b21a;outline-offset:-6px}
+.m-donne{animation:m-donne .45s cubic-bezier(.2,.8,.3,1.1) both}
+@keyframes m-donne{from{opacity:0;transform:translate(90px,-70px) rotate(25deg) scale(.7)}}
+.m-retourne{animation:m-retourne .45s ease both}
+@keyframes m-retourne{0%{transform:rotateY(90deg)}100%{transform:none}}
+/* Tapis de blackjack : feutre vert, bord en bois, liseré doré */
+.m-tapis{position:relative;display:grid;gap:18px;justify-items:center;width:100%;padding:22px 12px 26px;border-radius:26px;background:radial-gradient(ellipse at 50% 40%,#1f8a4c 0%,#136338 60%,#0b4426 100%);box-shadow:inset 0 0 0 3px #f5b21a,inset 0 0 0 9px #6b3a17,inset 0 0 0 11px #a0612b,inset 0 0 40px rgba(0,0,0,.45),0 8px 20px rgba(0,0,0,.3)}
+.m-tapis .m-main,.m-tapis .m-bj-ligne{justify-items:center}
+.m-tapis small,.m-tapis .m-bj-val{color:#fdf6e3;font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.m-tapis .m-cartes{justify-content:center}
+.m-sabot{position:absolute;top:14px;right:16px;width:34px;height:46px}
+.m-sabot i{position:absolute;inset:0;border-radius:5px;background:repeating-linear-gradient(45deg,rgba(245,178,26,.6) 0 2px,transparent 2px 6px),#1b2550;border:2px solid #fff;box-shadow:0 2px 4px rgba(0,0,0,.4)}
+.m-sabot i:nth-child(2){transform:translate(-3px,3px)}.m-sabot i:nth-child(3){transform:translate(-6px,6px)}
+.m-jetons{position:absolute;top:18px;left:18px;width:34px;height:40px}
+.m-jetons i{position:absolute;left:0;width:34px;height:12px;border-radius:50%;background:repeating-conic-gradient(#f5b21a 0 20deg,#1b2550 20deg 40deg);box-shadow:inset 0 0 0 3px #1b2550,0 2px 2px rgba(0,0,0,.4)}
+.m-jetons i:nth-child(1){bottom:0}.m-jetons i:nth-child(2){bottom:6px}.m-jetons i:nth-child(3){bottom:12px}.m-jetons i:nth-child(4){bottom:18px}
+/* Roulette : roue SVG, bille, flèche, numéro tiré au centre */
+.m-roulette{position:relative;width:min(300px,78vw);aspect-ratio:1;margin:6px auto;filter:drop-shadow(0 10px 18px rgba(0,0,0,.4))}
+.m-roulette svg{display:block;width:100%;height:100%}
+.m-roue-tourne{transform-origin:150px 150px;transform-box:view-box}
+.m-bille-orbite{position:absolute;inset:0;pointer-events:none}
+.m-bille{position:absolute;left:50%;width:4.4%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 35%,#d6d6d6 70%,#9a9a9a 100%);box-shadow:0 1px 3px rgba(0,0,0,.6);top:6.3%;transform:translate(-50%,-50%)}
+.m-roue-fl{position:absolute;left:50%;top:-6px;transform:translateX(-50%);font-size:22px;color:#f5b21a;text-shadow:0 2px 3px rgba(0,0,0,.6)}
+.m-roue-num{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(0);display:grid;place-items:center;width:62px;height:62px;border-radius:50%;font-size:28px;font-weight:900;color:#fff;border:4px solid #f5b21a;transition:transform .35s cubic-bezier(.2,.9,.3,1.4)}
+.m-roue-num.m-rouge,.m-roue-num.m-noir,.m-roue-num.m-vert{transform:translate(-50%,-50%) scale(1)}
+.m-roue-num.m-rouge{background:#c8352e}.m-roue-num.m-noir{background:#151515}.m-roue-num.m-vert{background:#1f8a4c}
+/* Confettis de victoire et défaite qui secoue */
+.m-confettis{position:fixed;inset:0;z-index:2000;pointer-events:none;overflow:hidden}
+.m-confettis i{position:absolute;top:-20px;width:9px;height:14px;border-radius:2px;animation:m-confetti 2s cubic-bezier(.3,.6,.5,1) forwards}
+@keyframes m-confetti{to{transform:translate(var(--dx),110vh) rotate(var(--r));opacity:.8}}
+.m-secoue{animation:m-mj-secoue .5s ease}
+@keyframes m-mj-secoue{20%{transform:translateX(-10px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(3px)}}
+.m-mj-cadenas{font-size:44px;line-height:1;animation:m-cadenas .5s cubic-bezier(.2,.9,.3,1.5) both}
+@keyframes m-cadenas{from{transform:scale(0) rotate(-30deg)}}
+@media (prefers-reduced-motion:reduce){.m-donne,.m-retourne,.m-secoue,.m-mj-cadenas{animation:none}}
 .m-roue{display:grid;place-items:center;width:110px;height:110px;margin:6px auto;border-radius:50%;font-size:40px;font-weight:900;color:#fff;background:#1b2550;border:6px solid #f5b21a}
 .m-roue.m-rouge{background:#c8352e}.m-roue.m-noir{background:#111}.m-roue.m-vert{background:#2f8a52}
 .m-res.m-gain{color:#2f8a52;font-weight:800}.m-res.m-perte{color:#c8352e;font-weight:800}
