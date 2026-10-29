@@ -21,7 +21,7 @@ function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null
 
 // Classement général (base partagée si disponible)
 var LB={db:null,uid:null,docs:[],boards:{}};
-function lbBoard(id,key,title){LB.boards[id]={k:key,t:title};lbDraw(id)}
+function lbBoard(id,key,title,fmt){LB.boards[id]={k:key,t:title,f:fmt};lbDraw(id)}
 function lbRender(){for(var id in LB.boards)lbDraw(id)}
 function lbDraw(id){
   var b=LB.boards[id],box=$(id);if(!b||!box)return;
@@ -30,18 +30,23 @@ function lbDraw(id){
   var key=b.k(),rows=LB.docs.filter(function(d){return d.s&&d.s[key]>0}).sort(function(x,y){return y.s[key]-x.s[key]}).slice(0,10);
   if(!rows.length){box.appendChild(el("p","lbn","Aucun score pour l’instant. Sois le premier !"));return}
   var t=el("ol","lbl");
-  rows.forEach(function(d){var li=el("li",d.id===LB.uid?"me":"");li.appendChild(el("span","nm",d.name||"Anonyme"));li.appendChild(el("span","sc",String(d.s[key])));t.appendChild(li)});
+  rows.forEach(function(d){var li=el("li",d.id===LB.uid?"me":"");li.appendChild(el("span","nm",d.name||"Anonyme"));li.appendChild(el("span","sc",b.f?b.f(d.s[key]):String(d.s[key])));t.appendChild(li)});
   box.appendChild(t);
 }
 function lbSubmit(key,score){
-  if(!window.user)return Promise.resolve("Connecte-toi depuis l’accueil pour apparaître au classement général.");
   if(!LB.db||!LB.uid)return Promise.resolve("Le classement général n’est pas disponible ici.");
+  // Sans pseudo, le joueur apparaît quand même, sous un nom de maire tiré de son identifiant
+  var nom=window.user||("Maire n°"+LB.uid.slice(-4).toUpperCase());
   var ref=LB.db.doc("scores/"+LB.uid);
   return ref.get().then(function(s){
     var d=s.exists?s.data():{},m=Object.assign({},d.s||{});
-    if(!(score>(m[key]||0)))return "Ton meilleur score reste inchangé au classement.";
+    if(!(score>(m[key]||0))){
+      // Le score ne bouge pas, mais le pseudo a pu changer depuis
+      if(d.name!==nom&&s.exists)return ref.set({name:nom,s:m,at:Date.now()}).then(function(){return "Ton meilleur score reste inchangé au classement."});
+      return "Ton meilleur score reste inchangé au classement.";
+    }
     m[key]=score;
-    return ref.set({name:window.user,s:m,at:Date.now()}).then(function(){return "Ton score est dans le classement général !"});
+    return ref.set({name:nom,s:m,at:Date.now()}).then(function(){return "Ton score est dans le classement général !"});
   }).catch(function(){return "Impossible d’enregistrer ton score dans le classement."});
 }
 (function(){
@@ -288,8 +293,12 @@ var musique=(function(){
     else{debloque=true;maj()}
   }
   GESTES.forEach(function(g){document.addEventListener(g,geste,true)});
-  document.addEventListener("visibilitychange",maj);
-  window.addEventListener("pagehide",function(){Object.keys(P).forEach(function(k){P[k].a.pause()})});
+  // On quitte la page (autre appli, écran verrouillé, onglet changé) : tout se coupe tout de suite, sans fondu
+  // (sur téléphone, les minuteries du fondu sont gelées quand la page est cachée, le son continuait)
+  function couperTout(){Object.keys(P).forEach(function(k){clearInterval(P[k].fondu);P[k].a.pause()});try{coupure.pause()}catch(e){}if(ctx&&ctx.state==="running")ctx.suspend().catch(function(){})}
+  document.addEventListener("visibilitychange",function(){if(document.hidden)couperTout();else{if(ctx&&ctx.state==="suspended")ctx.resume().catch(function(){});maj()}});
+  window.addEventListener("pagehide",couperTout);
+  window.addEventListener("blur",function(){setTimeout(function(){if(document.hidden)couperTout()},300)});
   // Paris s'éteint : bruit du groupe électrogène qui s'arrête, toujours depuis le début
   var coupure=new Audio("audio/accueil-eteint.mp3");coupure.preload="auto";
   maj.coupure=function(){if(muet)return;try{coupure.currentTime=0}catch(e){}var r=coupure.play();if(r&&r.catch)r.catch(function(){})};

@@ -578,6 +578,9 @@
   // La population suit la tendance électorale : popularité qui monte = arrivées ; popularité qui baisse ou sous 50 % = départs ; sinon elle stagne.
   // Les mauvaises décisions font aussi partir des Parisiens.
   var HAB0 = 2100000;
+  // Pour accueillir plus de monde, il faut des logements : chaque bâtiment d'habitation ouvre de la place
+  var LOGE = { logements: 18000, residenceEtudiante: 12000, intergeneration: 18000, cooperative: 24000, renovation: 66000, jo: 60000, quartier: 48000, villageVertical: 66000 };
+  function capacite(st) { var c = HAB0; Object.keys(LOGE).forEach(function (id) { c += LOGE[id] * ((st.bat && st.bat[id]) || 0); }); return c; }
   function facteurHab(st) { return Math.max(0.8, Math.min(1.2, (st.hab || HAB0) / HAB0)); }
   function bougerHab(st, pct) { var a = st.hab || HAB0, n = Math.round(a * (1 + pct / 100)); n = Math.max(Math.round(HAB0 * 0.75), Math.min(Math.round(HAB0 * 1.3), n)); st.hab = n; return n - a; }
   function demographie(st, popAvant) {
@@ -585,6 +588,8 @@
     if (st.pop < 50) pct = -(50 - st.pop) * 0.02 + Math.min(0, tend + 0.5) * 0.08;
     else if (tend < -0.8) pct = (tend + 0.8) * 0.12;
     else if (tend > 0.4) pct = tend * 0.15;
+    // Les arrivées s'arrêtent quand tous les logements sont occupés
+    if (pct > 0) { var cap = capacite(st), a = st.hab || HAB0; pct = a >= cap ? 0 : Math.min(pct, (cap - a) / a * 100); }
     st.habDelta = pct ? bougerHab(st, pct) : 0;
   }
   function recettes(st) {
@@ -1645,7 +1650,7 @@
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
-    roulette: roulette, HAB0: HAB0, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, mjPoker: mjPoker, mjPokerLigne: mjPokerLigne, mjPokerResultat: mjPokerResultat, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
+    roulette: roulette, HAB0: HAB0, LOGE: LOGE, capacite: capacite, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, mjPoker: mjPoker, mjPokerLigne: mjPokerLigne, mjPokerResultat: mjPokerResultat, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
     palier: palier, PALIERS: PALIERS, RAYONS: RAYONS, gainAchat: gainAchat, coutBat: coutBat, objectifs: objectifs, objectifsOk: objectifsOk, retraite: retraite, criseEnCours: criseEnCours, bonusMaire: bonusMaire, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
     ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, planVille: planVille, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };

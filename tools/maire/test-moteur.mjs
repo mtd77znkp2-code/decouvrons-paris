@@ -658,7 +658,10 @@ test("habitants : la population suit la tendance électorale et fait varier les 
   // Une popularité qui monte au-dessus de 50 % attire des habitants
   let haut = JSON.parse(JSON.stringify(st)); haut.phase = "gestion"; haut.pop = 52; haut.coh = 95; haut.humeur = 30;
   Object.keys(haut.piliers).forEach(k => { haut.piliers[k] = 90; haut.base[k] = 90; });
-  haut = M.debutTour(haut, base); assert.ok(haut.pop > 52 + 0.4 ? haut.hab > M.HAB0 : true);
+  // Sans logements, Paris est plein : personne n'arrive ; avec des logements sociaux, la ville peut grandir
+  let plein2 = JSON.parse(JSON.stringify(haut)); plein2 = M.debutTour(plein2, base); assert.ok(plein2.hab <= M.capacite(plein2));
+  haut.bat = Object.assign({}, haut.bat, { logements: 3 }); assert.equal(M.capacite(haut), M.HAB0 + 3 * M.LOGE.logements);
+  const avant = haut.hab; haut = M.debutTour(haut, base); assert.ok(haut.pop > 52.4 ? haut.hab > avant : true);
 });
 test("élections anticipées : 3 trimestres après avoir rempli ses objectifs, sauf si le vote est déjà proche", () => {
   const prep = (t) => { const st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 950, nivJoueur: 40 });

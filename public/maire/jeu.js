@@ -555,6 +555,7 @@
   // ---------- Écran de jeu : une seule page, de haut en bas ----------
 
   function jeu() {
+    envoyerClassement();
     progresser();
     if (st.phase === "fin") return fin();
     if (st.phase === "election") return resultatElection();
@@ -663,7 +664,8 @@
     ajout(g, stat("💰", argent(st.tresor), (so >= 0 ? "+" : "") + argent(so) + "/trim." + (st.dette > 0 ? " · dette " + argent(st.dette) : ""), st.dette > M.PLAFOND_DETTE * 0.6 || so < 0),
       stat("😊", String(Math.round(M.bonheur(st))), "bonheur", M.bonheur(st) < 40),
       stat("📣", String(Math.round(st.pop)), "popularité", st.pop < 40),
-      stat("👥", (Math.round((st.hab || M.HAB0) / 10000) / 100).toFixed(2).replace(".", ",") + " M", st.habDelta ? (st.habDelta > 0 ? "+" : "−") + Math.abs(st.habDelta).toLocaleString("fr-FR") + " habitants" : "habitants · stable", st.habDelta < 0, "mx-hab"));
+      stat("👥", (Math.round((st.hab || M.HAB0) / 10000) / 100).toFixed(2).replace(".", ",") + " M", st.habDelta ? (st.habDelta > 0 ? "+" : "−") + Math.abs(st.habDelta).toLocaleString("fr-FR") + " habitants"
+        : (st.hab || M.HAB0) >= M.capacite(st) ? "habitants · ville pleine 🏠" : "habitants · stable", st.habDelta < 0, "mx-hab"));
     if (st.meca.ligne) g.appendChild(stat("🧭", String(Math.round(st.coh)), "cohérence", st.coh < 40, "mx-coh"));
     ajout(d, gauche, g);
     return d;
@@ -758,6 +760,7 @@
     Object.keys(ga).forEach(function (k) { l.appendChild(h("li", null, M.ICO[k] + " " + M.PILIERS[k] + " : " + (ga[k] >= 0 ? "+" : "−") + virg(Math.abs(ga[k])))); });
     if (B.rev) l.appendChild(h("li", null, "💶 Recettes : +" + B.rev + " M€ par trimestre"));
     if (B.pop) l.appendChild(h("li", null, "📣 Popularité : +" + B.pop + " à l’inauguration"));
+    if (M.LOGE[id]) l.appendChild(h("li", null, "🏠 Logements : place pour " + M.LOGE[id].toLocaleString("fr-FR") + " Parisiens de plus"));
     atouts(B).forEach(function (t) { l.appendChild(h("li", null, t)); });
     l.appendChild(h("li", "mx-fcout", ench ? "🔨 Aux enchères · prix moyen ≈ " + argent(B.cout) : B.projet ? "🏗️ " + argent(M.coutBat(st, id)) + " au total, 30 % au lancement, " + B.duree + " trimestres de travaux" : "💰 " + argent(M.prix(st, id)) + (B.ent ? " · entretien " + argent(B.ent) + "/trim." : "")));
     c.appendChild(l);
@@ -1084,8 +1087,8 @@
       { q: ".m-chantiers", t: "🏗️ Ton chantier avance chaque trimestre et se paie par tranches. Gare aux imprévus !", a: "ok" }] },
     { id: "rare", ecran: "modale", si: function () { return (st.special === "rare" || st.special === "legendaire") && st.phase === "evenement"; }, etapes: [
       { q: "#m-modale .m-choix", t: "✨ Un événement rare ! Aucune réponse n’est toujours la meilleure : à toi de jouer.", a: "choix" }] },
-    { id: "habitants", ecran: "jeu", si: function () { return st.phase === "gestion"; }, etapes: [
-      { q: ".mx-hab", t: "👥 Les habitants : plus Paris est peuplé, plus les impôts rapportent. Quand ta popularité baisse ou passe sous 50 %, ou après une mauvaise décision, des Parisiens partent ; quand elle monte, ils arrivent. Sinon, la population ne bouge pas.", a: "ok" }] },
+    { id: "habitants2", ecran: "jeu", si: function () { return st.phase === "gestion"; }, etapes: [
+      { q: ".mx-hab", t: "👥 Les habitants : plus Paris est peuplé, plus les impôts rapportent. Quand ta popularité baisse ou passe sous 50 %, ou après une mauvaise décision, des Parisiens partent ; quand elle monte, ils arrivent… à condition d’avoir de la place : construis des logements (logements sociaux, résidence étudiante…) pour en accueillir plus. Sinon, la population ne bouge pas.", a: "ok" }] },
     { id: "casino", ecran: "modale", si: function () { return st.phase === "evenement" && !!document.querySelector("#m-modale .m-mj"); }, etapes: [
       { q: "#m-modale .m-mj", t: "🎰 Chaque réponse se joue au casino (blackjack, roulette ou poker) : gagne pour la prendre. La réponse « ne rien faire » reste libre.", a: "ok" }] },
     { id: "xp", ecran: "jeu", si: function () { return st.phase === "gestion" && st.t >= 2 && !st.nivFixe; }, etapes: [
@@ -1777,7 +1780,7 @@
         var res = G.terminer(st, M, { quetes: quetesAuj() });
         st = res.st; st.prog = { passPts: res.passPts, passPaliers: res.passPaliers, total: res.total, gains: res.gains, avant: res.avant.n, apres: res.apres.n, debloque: res.debloque.map(function (m) { return m.nom; }) };
         comptage = false; sauver(); gains(gz);
-        if (window.lbSubmit && window.user) lbSubmit("xp_maire", res.profil.xp).then(function () { if (window.LB) G.ligue(LB.docs || [], LB.uid); envoyerLigue(); });
+        if (window.lbSubmit) lbSubmit("xp_maire", res.profil.xp).then(function () { if (window.LB) G.ligue(LB.docs || [], LB.uid); envoyerLigue(); });
       });
     } else gains(gz);
     var msg = h("p", "msg m-msg"); box.appendChild(msg);
@@ -1845,12 +1848,22 @@
     ajout(c, h("small", null, "Niveau " + n.n + " · " + n.titre + (n.max ? "" : " · " + n.depuis + " / " + n.besoin + " XP")), barre);
   }
 
+  // Envoie l'XP totale au classement général (au plus une fois par minute, et seulement si elle a augmenté)
+  var xpEnvoye = 0, xpEnvoyeA = 0;
+  function envoyerClassement(force) {
+    if (!window.lbSubmit) return;
+    var tot = (G.lire().xp || 0) + (st && st.phase !== "fin" ? st.xp || 0 : 0);
+    if (tot <= xpEnvoye || (!force && Date.now() - xpEnvoyeA < 60000)) return;
+    xpEnvoye = tot; xpEnvoyeA = Date.now();
+    lbSubmit("xp_maire", tot).then(function () { if (window.lbRender) lbRender(); });
+  }
   window.maireInit = function () {
     box = document.getElementById("m-app");
     if (!box || box.dataset.ok) return;
     box.dataset.ok = "1";
     choixNiveau();
-    if (window.lbBoard) lbBoard("lb-maire", function () { return cleClassement(); }, function () { return "🏆 Classement général · Maire de Paris"; });
+    // Classement général : l'XP de maire (profil + partie en cours), mise à jour pendant qu'on joue
+    if (window.lbBoard) lbBoard("lb-maire", function () { return "xp_maire"; }, function () { return "🏆 Classement général · Maire de Paris"; }, function (x) { return "Niv. " + G.niveau(x).n + " · " + x.toLocaleString("fr-FR") + " XP"; });
     accueil();
   };
   window.maireStop = function () { fermerModale(); };
