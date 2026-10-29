@@ -229,21 +229,26 @@ var musique=(function(){
   // Paris s'éteint : bruit du groupe électrogène qui s'arrête, toujours depuis le début
   var coupure=new Audio("audio/accueil-eteint.mp3");coupure.preload="auto";
   maj.coupure=function(){if(muet)return;try{coupure.currentTime=0}catch(e){}var r=coupure.play();if(r&&r.catch)r.catch(function(){})};
-  // Petit clic sur chaque bouton (sauf « Jouer », qui a son propre son). Web Audio : sans délai et superposable.
-  var AC=window.AudioContext||window.webkitAudioContext,ctx=null,clicBuf=null,clicCharge=false;
+  // Clic sur chaque bouton (sauf « Jouer », qui a son propre son) : clic A pour les boutons principaux, clic B pour les secondaires.
+  // Web Audio : sans délai et superposable.
+  var AC=window.AudioContext||window.webkitAudioContext,ctx=null,clics={},clicCharge=false;
+  var SECONDAIRE=".m-sec,.mx-lien,.m-leonx,.tab,.hdecouvre,.hson,#loginBtn,#back,.m-mise,.ghost,.m-bulle-passer,.m-bulle-ok,.mx-info,.mx-rayon,.mx-lock,[class*=ap-]";
   function chargerClic(){
     if(clicCharge||!AC)return;clicCharge=true;
     try{ctx=new AC()}catch(e){return}
-    fetch("audio/clic.mp3").then(function(r){return r.arrayBuffer()}).then(function(b){
-      return new Promise(function(ok,ko){var p=ctx.decodeAudioData(b,ok,ko);if(p&&p.then)p.then(ok,ko)});
-    }).then(function(x){clicBuf=x}).catch(function(){});
+    ["a","b"].forEach(function(k){
+      fetch("audio/clic-"+k+".mp3").then(function(r){return r.arrayBuffer()}).then(function(b){
+        return new Promise(function(ok,ko){var p=ctx.decodeAudioData(b,ok,ko);if(p&&p.then)p.then(ok,ko)});
+      }).then(function(x){clics[k]=x}).catch(function(){});
+    });
   }
   function clic(e){
     var b=e.target&&e.target.closest&&e.target.closest("button,.btn,[role=button]");
     if(!b||muet||b.disabled||b.id==="jouer"||b.classList.contains("entree"))return;
-    chargerClic();if(!ctx||!clicBuf)return;
+    var buf=clics[b.matches(SECONDAIRE)?"b":"a"];
+    chargerClic();if(!ctx||!buf)return;
     if(ctx.state==="suspended")ctx.resume();
-    var s=ctx.createBufferSource(),g=ctx.createGain();g.gain.value=.6;s.buffer=clicBuf;s.connect(g);g.connect(ctx.destination);s.start(0);
+    var s=ctx.createBufferSource(),g=ctx.createGain();g.gain.value=.6;s.buffer=buf;s.connect(g);g.connect(ctx.destination);s.start(0);
   }
   document.addEventListener("click",clic,true);
   chargerClic();
