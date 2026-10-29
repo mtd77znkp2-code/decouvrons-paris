@@ -305,3 +305,5 @@ body.glitching #home,body.glitching #site{animation:gl-secoue .26s steps(5) both
 .entree small{font-size:15px;opacity:.75}
 .entree-fin{opacity:0;pointer-events:none}
 @keyframes entree-pulse{50%{opacity:.55}}
+/* Neige qui tombe (GIF en mosaïque) par-dessus les 3 images de l'accueil */
+.hb-flocons{position:absolute;inset:0;background:url(../img/neige.gif) repeat;background-size:200px 200px;pointer-events:none}

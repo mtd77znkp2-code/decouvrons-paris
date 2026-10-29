@@ -98,6 +98,7 @@ function tab(s){
   Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){if(b.dataset.s===s)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
   if(s==="videos"&&window.dInit)setTimeout(dInit,0);
   if(s==="jeux")loadMaire();
+  if(window.musique)musique();
 }
 Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){b.onclick=function(){tab(b.dataset.s);enHaut()}});
 
@@ -173,12 +174,15 @@ $("adminLogout").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut(
 // Un son se met en pause dès que son image n'est plus à l'écran (ou qu'on quitte l'accueil) et reprend là où il s'était arrêté.
 var musique=(function(){
   function piste(src,vol){var a=new Audio(src);a.loop=true;a.preload="none";return{a:a,vol:vol,fondu:null}}
-  var P={base:piste("audio/accueil-musique.mp3",.7),allumee:piste("audio/accueil-neige.mp3",.8)};
+  var P={base:piste("audio/accueil-musique.mp3",.7),allumee:piste("audio/accueil-neige.mp3",.8),jeu:piste("audio/maire-menu.mp3",.35)};
   var f=document.getElementById("homeFond"),bt=document.getElementById("hson"),muet=false;
   try{muet=localStorage.getItem("musique_off")==="1"}catch(e){}
   function quelle(){
-    var home=document.getElementById("home");
-    if(muet||home.hidden||document.hidden||document.body.classList.contains("eteint"))return "";
+    var home=document.getElementById("home"),jeux=document.getElementById("jeux");
+    if(muet||document.hidden)return "";
+    // Menu du jeu Maire de Paris (pas pendant la partie)
+    if(home.hidden)return !document.getElementById("site").hidden&&!jeux.hidden&&document.body.classList.contains("m-fond-on")?"jeu":"";
+    if(document.body.classList.contains("eteint"))return "";
     return f&&f.classList.contains("interf")?"allumee":"base";
   }
   // Petit fondu ; sur iPhone le volume ne se règle pas, d'où la limite de temps qui coupe quand même
@@ -198,6 +202,8 @@ var musique=(function(){
       else if(!p.a.paused){fondu(p,0,function(){if(quelle()!==k)p.a.pause()})}
     });
   }
+  // Sur iPhone, chaque son doit avoir été lancé une fois pendant un toucher : on les « amorce » en silence
+  maj.amorce=function(){var q=quelle();Object.keys(P).forEach(function(k){var a=P[k].a;if(k===q||!a.paused||a.amorce)return;a.amorce=1;a.muted=true;var r=a.play();if(r&&r.then)r.then(function(){if(quelle()!==k)a.pause();a.muted=false}).catch(function(){a.muted=false;a.amorce=0})})};
   function bouton(){bt.textContent=muet?"🔇":"🔊";bt.setAttribute("aria-pressed",muet?"true":"false");bt.setAttribute("aria-label",muet?"Remettre la musique":"Couper la musique")}
   bt.onclick=function(e){e.stopPropagation();muet=!muet;try{localStorage.setItem("musique_off",muet?"1":"0")}catch(x){}bouton();maj()};
   bouton();
@@ -209,12 +215,12 @@ var musique=(function(){
     var q=quelle();if(!q)return;
     var a=P[q].a;try{a.volume=0}catch(e){}
     var r=a.play();
-    if(r&&r.then)r.then(function(){debloque=true;GESTES.forEach(function(g){document.removeEventListener(g,geste,true)});maj()}).catch(function(){});
+    if(r&&r.then)r.then(function(){debloque=true;GESTES.forEach(function(g){document.removeEventListener(g,geste,true)});maj();maj.amorce()}).catch(function(){});
     else{debloque=true;maj()}
   }
   GESTES.forEach(function(g){document.addEventListener(g,geste,true)});
   document.addEventListener("visibilitychange",maj);
-  window.addEventListener("pagehide",function(){P.base.a.pause();P.allumee.a.pause()});
+  window.addEventListener("pagehide",function(){Object.keys(P).forEach(function(k){P[k].a.pause()})});
   // Paris s'éteint : bruit du groupe électrogène qui s'arrête, toujours depuis le début
   var coupure=new Audio("audio/accueil-eteint.mp3");coupure.preload="auto";
   maj.coupure=function(){if(muet)return;try{coupure.currentTime=0}catch(e){}var r=coupure.play();if(r&&r.catch)r.catch(function(){})};
@@ -270,7 +276,7 @@ document.getElementById("jouer").onclick=function(){
   if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return goTo("jeux");
   // Paris s'éteint 0,8 seconde (plus aucun bouton), puis l'écran bugge et le jeu apparaît
   if(document.body.classList.contains("eteint"))return;
-  document.body.classList.add("eteint");musique();musique.coupure();
+  document.body.classList.add("eteint");musique.amorce();musique();musique.coupure();
   setTimeout(function(){
     var g=document.createElement("div");g.className="glitch";g.setAttribute("aria-hidden","true");
     for(var i=0,b="";i<9;i++)b+='<i class="gl-b" style="top:'+Math.round(Math.random()*95)+'%;height:'+(2+Math.round(Math.random()*9))+'%;--d:'+(Math.random()<.5?"-":"")+(4+Math.round(Math.random()*14))+'%"></i>';

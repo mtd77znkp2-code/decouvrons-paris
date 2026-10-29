@@ -73,6 +73,7 @@
   function fondMenu(on) {
     var g = document.getElementById("g-maire"); if (!g) return;
     g.classList.toggle("m-menu", on); document.body.classList.toggle("m-fond-on", on);
+    if (window.musique) setTimeout(window.musique, 0);
     var calme = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (on && !fondV) {
       fondV = document.createElement("video"); fondV.className = "m-fond"; fondV.muted = true; fondV.loop = true; fondV.playsInline = true;
