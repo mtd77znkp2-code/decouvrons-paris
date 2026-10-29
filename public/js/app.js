@@ -169,24 +169,43 @@ $("adminLogin").onsubmit=function(e){
 $("adminLogout").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut();window.scrollTo(0,0)};
 
 // Accueil : Paris sous la neige ; de temps en temps, une « interférence » montre 3 s la tour Eiffel illuminée
-// La musique joue tant que Paris sous la neige est à l'écran, se met en pause sinon et reprend là où elle s'était arrêtée
+// Chaque image de l'accueil a son son : La Bohème sur Paris sous la neige, la neige sur la tour illuminée.
+// Un son se met en pause dès que son image n'est plus à l'écran (ou qu'on quitte l'accueil) et reprend là où il s'était arrêté.
 var musique=(function(){
-  var a=new Audio("audio/accueil-musique.mp3");a.loop=true;a.preload="none";a.volume=0;
-  var f=document.getElementById("homeFond"),bt=document.getElementById("hson"),fondu=null,muet=false;
+  function piste(src,vol){var a=new Audio(src);a.loop=true;a.preload="none";return{a:a,vol:vol,fondu:null}}
+  var P={base:piste("audio/accueil-musique.mp3",.7),allumee:piste("audio/accueil-neige.mp3",.8)};
+  var f=document.getElementById("homeFond"),bt=document.getElementById("hson"),muet=false;
   try{muet=localStorage.getItem("musique_off")==="1"}catch(e){}
-  function doitJouer(){var home=document.getElementById("home");return !muet&&!home.hidden&&!document.hidden&&!(f&&f.classList.contains("interf"))&&!document.body.classList.contains("eteint")}
-  function vers(v,fin){clearInterval(fondu);fondu=setInterval(function(){var d=v-a.volume;if(Math.abs(d)<.06){a.volume=v;clearInterval(fondu);if(fin)fin()}else a.volume+=d>0?.06:-.06},25)}
+  function quelle(){
+    var home=document.getElementById("home");
+    if(muet||home.hidden||document.hidden||document.body.classList.contains("eteint"))return "";
+    return f&&f.classList.contains("interf")?"allumee":"base";
+  }
+  // Petit fondu ; sur iPhone le volume ne se règle pas, d'où la limite de temps qui coupe quand même
+  function fondu(p,v,fin){
+    clearInterval(p.fondu);var t=0;
+    p.fondu=setInterval(function(){
+      t+=25;var d=v-p.a.volume;
+      if(Math.abs(d)<.06||t>=300){clearInterval(p.fondu);try{p.a.volume=v}catch(e){}if(fin)fin()}
+      else try{p.a.volume=Math.max(0,Math.min(1,p.a.volume+(d>0?.06:-.06)))}catch(e){}
+    },25);
+  }
   function maj(){
-    if(doitJouer()){if(a.paused){var p=a.play();if(p&&p.catch)p.catch(function(){})}vers(.7)}
-    else if(!a.paused)vers(0,function(){a.pause()});
+    var q=quelle();
+    Object.keys(P).forEach(function(k){
+      var p=P[k];
+      if(k===q){if(p.a.paused){try{p.a.volume=0}catch(e){}var r=p.a.play();if(r&&r.catch)r.catch(function(){})}fondu(p,p.vol)}
+      else if(!p.a.paused){fondu(p,0,function(){if(quelle()!==k)p.a.pause()})}
+    });
   }
   function bouton(){bt.textContent=muet?"🔇":"🔊";bt.setAttribute("aria-pressed",muet?"true":"false");bt.setAttribute("aria-label",muet?"Remettre la musique":"Couper la musique")}
   bt.onclick=function(e){e.stopPropagation();muet=!muet;try{localStorage.setItem("musique_off",muet?"1":"0")}catch(x){}bouton();maj()};
   bouton();
   // Les navigateurs bloquent le son tant qu'on n'a pas touché la page : on relance au premier geste
-  function geste(){maj();if(!a.paused){document.removeEventListener("pointerdown",geste,true);document.removeEventListener("keydown",geste,true)}}
+  function geste(){maj();if(!P.base.a.paused||!P.allumee.a.paused){document.removeEventListener("pointerdown",geste,true);document.removeEventListener("keydown",geste,true)}}
   document.addEventListener("pointerdown",geste,true);document.addEventListener("keydown",geste,true);
   document.addEventListener("visibilitychange",maj);
+  window.addEventListener("pagehide",function(){P.base.a.pause();P.allumee.a.pause()});
   maj();
   return maj;
 })();
