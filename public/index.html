@@ -15,14 +15,13 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="css/site.css">
-<link rel="preload" as="image" href="img/accueil-portrait.webp" media="(orientation: portrait)">
-<link rel="preload" as="image" href="img/accueil-paysage.webp" media="(orientation: landscape)">
+<link rel="preload" as="image" href="img/accueil-neige.webp">
 </head>
 <body>
 <button id="adminBadge" type="button" hidden title="Ouvrir l’administration"><i aria-hidden="true"></i>Admin mode</button>
 <button id="adminLogout" type="button" hidden>Se déconnecter</button>
 <div id="home">
-  <video class="hbg" id="homeVideo" muted loop playsinline autoplay preload="auto" aria-hidden="true" tabindex="-1"></video>
+  <div class="hbg" id="homeFond" aria-hidden="true"><img class="hb hb-base" src="img/accueil-neige.webp" alt=""><img class="hb hb-allumee" src="img/accueil-neige-allumee.webp" alt=""><img class="hb hb-eteinte" src="img/accueil-neige-eteinte.webp" alt=""></div>
   <button class="btn" id="loginBtn">👤 Connexion</button>
   <div id="loginBox" hidden>
     <form id="loginForm">

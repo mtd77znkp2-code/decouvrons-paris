@@ -253,8 +253,21 @@ h2{font-size:clamp(26px,6vw,32px);margin:22px 0 4px}
 #site{scroll-margin-top:0}
 /* Accueil : vidéo de Paris en fond, assombrie pour que le texte reste lisible */
 #home{background:var(--bg)}
-#home>div:not(#loginBox){position:relative;z-index:2}
-#home>.hbg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+#home>div:not(#loginBox):not(.hbg){position:relative;z-index:2}
+#home>.hbg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.hb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%}
+.hb-base{animation:hb-zoom 40s ease-in-out infinite alternate}
+@keyframes hb-zoom{to{transform:scale(1.08)}}
+.hb-allumee,.hb-eteinte{opacity:0}
+/* Interférence : la tour illuminée apparaît en grésillant, reste 3 s, puis disparaît en grésillant */
+.hbg.interf .hb-allumee{animation:hb-interf 3.4s linear both}
+@keyframes hb-interf{0%{opacity:0}2%{opacity:1;transform:translateX(-14px) skewX(-4deg);filter:hue-rotate(40deg) saturate(2)}4%{opacity:0}6%{opacity:1;transform:translateX(10px);filter:none}8%{opacity:.4;transform:translateX(-4px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none;filter:none}92%{opacity:0}94%{opacity:1;transform:translateX(12px) skewX(3deg);filter:hue-rotate(-40deg) saturate(2)}96%{opacity:.3}98%,100%{opacity:0;transform:none}}
+.hbg::after{content:"";position:absolute;inset:0;opacity:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 1px,transparent 1px 3px)}
+.hbg.interf::after{animation:hb-lignes 3.4s steps(1) both}
+@keyframes hb-lignes{0%{opacity:1}11%{opacity:0}89%{opacity:0}90%{opacity:1}99%{opacity:0}}
+/* « Jouer » : Paris s'éteint une demi-seconde, plus aucun bouton */
+body.eteint #home .hb-eteinte{opacity:1}
+body.eteint #home>*:not(.hbg),body.eteint #home::before{visibility:hidden}
 #home::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(14,23,64,.25) 0%,rgba(14,23,64,.55) 55%,var(--bg) 100%)}
 /* Accueil épuré : « Jouer » au centre, « Découvre » discret en bas à droite */
 .hcentre{display:grid;justify-items:center;gap:26px}

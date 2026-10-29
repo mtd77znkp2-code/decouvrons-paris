@@ -168,22 +168,17 @@ $("adminLogin").onsubmit=function(e){
 };
 $("adminLogout").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut();window.scrollTo(0,0)};
 
-// Accueil : la vidéo de fond, verticale sur téléphone, horizontale sur ordinateur (image fixe si l'on préfère moins d'animations)
+// Accueil : Paris sous la neige ; de temps en temps, une « interférence » montre 3 s la tour Eiffel illuminée
 (function(){
-  var v=document.getElementById("homeVideo");if(!v)return;
-  var calme=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function format(){return window.innerHeight>window.innerWidth?"portrait":"paysage"}
-  var cur="";
-  function charge(){
-    var f=format();if(f===cur)return;cur=f;
-    v.poster="img/accueil-"+f+".webp";
-    if(calme){v.removeAttribute("src");return}
-    v.src="img/accueil-"+f+".mp4";var p=v.play();if(p&&p.catch)p.catch(function(){});
+  var f=document.getElementById("homeFond");if(!f)return;
+  if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  function prochaine(){setTimeout(interf,9000+Math.random()*14000)}
+  function interf(){
+    var home=document.getElementById("home");
+    if(home.hidden||document.hidden||document.body.classList.contains("eteint"))return prochaine();
+    f.classList.add("interf");setTimeout(function(){f.classList.remove("interf");prochaine()},3400);
   }
-  charge();
-  window.addEventListener("resize",function(){clearTimeout(charge.t);charge.t=setTimeout(charge,300)});
-  // La vidéo s'arrête quand on ne voit plus l'accueil (batterie et données)
-  if("IntersectionObserver" in window)new IntersectionObserver(function(e){if(calme)return;if(e[0].isIntersecting){var p=v.play();if(p&&p.catch)p.catch(function(){})}else v.pause()}).observe(document.getElementById("home"));
+  prochaine();
 })();
 // L'accueil et le site sont deux écrans séparés : on passe de l'un à l'autre sans défiler
 function enHaut(){var h=document.documentElement;h.style.scrollBehavior="auto";window.scrollTo(0,0);h.style.scrollBehavior=""}
@@ -191,7 +186,7 @@ function ecran(s){
   var home=document.getElementById("home"),st=document.getElementById("site");
   home.hidden=!!s;st.hidden=!s;
   if(s)tab(s);
-  var v=document.getElementById("homeVideo");if(v&&s)v.pause();else if(v&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)){var p=v.play();if(p&&p.catch)p.catch(function(){})}
+  document.body.classList.remove("eteint");
   enHaut();
 }
 // Adresses : #jouer et #decouvre (pas les id des sections, sinon le navigateur défile tout seul jusqu'à elles)
@@ -204,13 +199,18 @@ document.querySelector(".hdecouvre").onclick=function(){goTo("videos")};
 // « Jouer » : l'écran se dérègle façon bug informatique, puis le jeu le remplace
 document.getElementById("jouer").onclick=function(){
   if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return goTo("jeux");
-  var g=document.createElement("div");g.className="glitch";g.setAttribute("aria-hidden","true");
-  for(var i=0,b="";i<9;i++)b+='<i class="gl-b" style="top:'+Math.round(Math.random()*95)+'%;height:'+(2+Math.round(Math.random()*9))+'%;--d:'+(Math.random()<.5?"-":"")+(4+Math.round(Math.random()*14))+'%"></i>';
-  g.innerHTML=b;
-  document.body.appendChild(g);document.body.classList.add("glitching");
-  setTimeout(function(){goTo("jeux")},230);
-  setTimeout(function(){g.classList.add("gl-fin")},440);
-  setTimeout(function(){g.remove();document.body.classList.remove("glitching")},600);
+  // Paris s'éteint une demi-seconde (plus aucun bouton), puis l'écran bugge et le jeu apparaît
+  if(document.body.classList.contains("eteint"))return;
+  document.body.classList.add("eteint");
+  setTimeout(function(){
+    var g=document.createElement("div");g.className="glitch";g.setAttribute("aria-hidden","true");
+    for(var i=0,b="";i<9;i++)b+='<i class="gl-b" style="top:'+Math.round(Math.random()*95)+'%;height:'+(2+Math.round(Math.random()*9))+'%;--d:'+(Math.random()<.5?"-":"")+(4+Math.round(Math.random()*14))+'%"></i>';
+    g.innerHTML=b;
+    document.body.appendChild(g);document.body.classList.add("glitching");
+    setTimeout(function(){goTo("jeux")},230);
+    setTimeout(function(){g.classList.add("gl-fin")},440);
+    setTimeout(function(){g.remove();document.body.classList.remove("glitching")},600);
+  },500);
 };
 document.getElementById("back").onclick=menuPrincipal;
 if("scrollRestoration" in history)history.scrollRestoration="manual";
