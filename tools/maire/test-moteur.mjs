@@ -47,17 +47,18 @@ test("un événement invalide est rejeté", () => {
 
 test("mécaniques débloquées selon le niveau du joueur", () => {
   const debutant = M.nouvellePartie({ ligne: "gauche", ambitions: [], niveau: "difficile", nivJoueur: 1, graine: 1 });
-  assert.equal(debutant.niveau, "facile");                         // le niveau Réaliste n'est pas encore ouvert
+  assert.equal(M.palier(debutant), "facile");                      // la difficulté ne dépend plus d'un choix : elle suit le mandat
   assert.equal(debutant.ligne, "centre"); assert.deepEqual(debutant.ambitions, []); assert.equal(debutant.opposant, null);
   assert.ok(M.peutAcheter(debutant, "tram")); assert.equal(M.peutAcheter(debutant, "parc"), "");
   assert.deepEqual(M.regler(debutant, { taux: 1.2 }), debutant);   // impôts pas encore débloqués
-  assert.throws(() => M.nouvellePartie({ ligne: "gauche", ambitions: ["logement"], nivJoueur: 10 }));
-  const expert = M.nouvellePartie({ ligne: "gauche", ambitions: ["logement", "cadre"], niveau: "difficile", nivJoueur: 10, graine: 1 });
-  assert.equal(expert.niveau, "difficile"); assert.ok(expert.opposant); assert.equal(M.peutAcheter(expert, "jo") === "Se débloque plus tard.", false);
+  assert.throws(() => M.nouvellePartie({ ligne: "gauche", ambitions: ["logement"], nivJoueur: 40 }));
+  const expert = M.nouvellePartie({ ligne: "gauche", ambitions: ["logement", "cadre"], niveau: "difficile", nivJoueur: 40, graine: 1 });
+  assert.equal(M.palier(expert), "facile"); assert.ok(expert.opposant);
+  const m2 = JSON.parse(JSON.stringify(expert)); m2.mandat = 2; assert.equal(M.palier(m2), "moyen"); m2.mandat = 5; assert.equal(M.palier(m2), "difficile"); assert.equal(M.peutAcheter(expert, "jo") === "Se débloque plus tard.", false);
 });
 
 test("pas de double application (rechargement, double clic)", () => {
-  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["transports", "cadre"], graine: 7, nivJoueur: 10 });
+  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["transports", "cadre"], graine: 7, nivJoueur: 40 });
   st = M.debutTour(st, base);
   assert.equal(st.phase, "evenement");
   const copie = JSON.parse(JSON.stringify(st));
@@ -69,7 +70,7 @@ test("pas de double application (rechargement, double clic)", () => {
 
 test("parties reproductibles avec la même graine, et sauvegarde JSON fidèle", () => {
   const partie = (sauver) => {
-    let st = M.nouvellePartie({ ligne: "ecologie", ambitions: ["cadre", "transports"], graine: 42, nivJoueur: 10 });
+    let st = M.nouvellePartie({ ligne: "ecologie", ambitions: ["cadre", "transports"], graine: 42, nivJoueur: 40 });
     for (let t = 0; t < 80 && st.phase !== "fin"; t++) {
       if (st.phase === "election") st = M.continuer(st, base);
       else if (st.phase === "evenement") st = M.choisir(st, base, t % 3);
@@ -82,7 +83,7 @@ test("parties reproductibles avec la même graine, et sauvegarde JSON fidèle", 
 });
 
 test("boutique : prix croissant, effet sur le pilier, grands projets uniques ; impôts bornés", () => {
-  let st = M.nouvellePartie({ ligne: "droite", ambitions: ["securite", "cadre"], graine: 3, nivJoueur: 10 });
+  let st = M.nouvellePartie({ ligne: "droite", ambitions: ["securite", "cadre"], graine: 3, nivJoueur: 40 });
   const t0 = st.tresor, p1 = M.prix(st, "police");
   st = M.acheter(st, "police");
   assert.equal(st.tresor, t0 - p1); assert.equal(st.bat.police, 1); assert.ok(M.prix(st, "police") > p1);
@@ -91,7 +92,7 @@ test("boutique : prix croissant, effet sur le pilier, grands projets uniques ; i
 });
 
 test("projets démesurés : 30 % au lancement, tranches à chaque trimestre, inauguration au bout", () => {
-  let st = M.nouvellePartie({ ligne: "gauche", ambitions: ["cadre", "logement"], graine: 5, nivJoueur: 12 });
+  let st = M.nouvellePartie({ ligne: "gauche", ambitions: ["cadre", "logement"], graine: 5, nivJoueur: 40 });
   st.tresor = 3000; st.phase = "gestion";
   assert.equal(M.peutAcheter(st, "grandParc"), "Tiens encore 4 trimestres.");   // objectif de partie pas encore rempli
   st.t = 4;
@@ -107,7 +108,7 @@ test("projets démesurés : 30 % au lancement, tranches à chaque trimestre, ina
 });
 
 test("combos de bâtiments : bonus réel une fois les conditions réunies", () => {
-  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 6, nivJoueur: 10 });
+  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 6, nivJoueur: 40 });
   st.tresor = 2000; st.phase = "gestion";
   const r0 = M.recettes(st);
   st = M.acheter(st, "marche"); st = M.acheter(st, "parc"); assert.deepEqual(M.combosActifs(st), []);
@@ -119,7 +120,7 @@ test("combos de bâtiments : bonus réel une fois les conditions réunies", () =
 });
 
 test("dernier pari : n'apparaît qu'en crise, blackjack et roulette justes, financements avec contreparties", () => {
-  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 8, nivJoueur: 10 });
+  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 8, nivJoueur: 40 });
   st.phase = "gestion";
   assert.equal(M.bjCommencer(st, 50), st);                           // pas d'offre : rien
   for (let k = 0; k < 8; k++) st = jouer(st, () => 0, null, st.t + 1);
@@ -127,7 +128,7 @@ test("dernier pari : n'apparaît qu'en crise, blackjack et roulette justes, fina
   st.dette = 1000; st.tresor = 0; st.phase = "gestion"; st.pariCd = 0;
   st = M.debutTour(st, base); while (st.phase === "evenement") st = M.choisir(st, base, 0);
   assert.ok(st.offre, "offre en pleine crise"); const max = M.pariMise(st);
-  assert.ok(max > 0 && max <= M.NIVEAUX.moyen.pariMax && st.dette + max <= M.PLAFOND_DETTE);
+  assert.ok(max > 0 && max <= M.PALIERS[Math.min(4, st.mandat - 1)].pariMax && st.dette + max <= M.PLAFOND_DETTE);
   assert.equal(M.bjCommencer(st, max + 10), st);                     // mise trop haute refusée
   // Blackjack : le gain annoncé est exactement ce qui entre (ou sort) de la trésorerie, dette comprise
   for (let g = 1; g <= 40; g++) {
@@ -156,15 +157,15 @@ test("dernier pari : n'apparaît qu'en crise, blackjack et roulette justes, fina
 });
 
 test("sauvegardes : une partie de la version précédente se reprend sans rien perdre", () => {
-  let st = M.nouvellePartie({ ligne: "gauche", ambitions: ["cadre", "logement"], graine: 12, nivJoueur: 10 });
+  let st = M.nouvellePartie({ ligne: "gauche", ambitions: ["cadre", "logement"], graine: 12, nivJoueur: 40 });
   st = jouer(st, (s, ev) => 0, s => M.acheter(s, "parc"), 10);
   const ancien = JSON.parse(JSON.stringify(st));
   ["chaos", "chantiers", "incidents", "messages", "offre", "bj", "mission", "missionsOk", "combos", "decouvertes", "objets", "secrets", "persos", "mods", "conditions", "suitesSpe", "uniques", "ampleur"].forEach(k => delete ancien[k]);
   ["grandsProjets", "pari", "missions", "combos", "historiques"].forEach(k => delete ancien.meca[k]);
-  ["xp", "xp0", "xpLog", "xpSrc", "montees", "succesPartie", "suivi", "nivFixe", "pid", "connus", "enchere", "encheresCd", "sansLimite", "triche", "maire", "crise", "objectifs", "prochainDossier", "mandatBats", "mandatTypes", "mandatBase"].forEach(k => delete ancien[k]);
+  ["xp", "xp0", "xpLog", "xpSrc", "montees", "succesPartie", "suivi", "nivFixe", "pid", "connus", "enchere", "encheresCd", "sansLimite", "triche", "maire", "crise", "objectifs", "prochainDossier", "mandatBats", "mandatTypes", "mandatBase", "anticipee"].forEach(k => delete ancien[k]);
   ancien.v = 3;
   let r = M.reprendre(ancien, base);
-  assert.equal(r.v, 7);
+  assert.equal(r.v, 8);
   assert.equal(r.objectifs.length, 3); assert.equal(r.crise, null, "partie en cours : objectifs sans crise ajoutée");
   // L'XP déjà méritée dans l'ancienne partie est comptée une fois (elle n'était versée qu'à la fin auparavant)
   assert.equal(r.xpLog.find(g => /Trimestres/.test(g.txt)).xp, st.t * M.XP.trimestre);
@@ -197,7 +198,7 @@ test("contenu : événements spéciaux, objets, secrets, projets et missions coh
   Object.values(C.COMBOS).forEach(c => Object.keys(c.besoin).forEach(b => assert.ok(b === "transport" || M.BATIMENTS[b], b)));
   // Chaque événement spécial se joue sans erreur, avec ses trois choix
   C.EVENEMENTS.forEach(ev => [0, 1, 2].forEach(i => {
-    let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 3, nivJoueur: 12 });
+    let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 3, nivJoueur: 40 });
     st.t = 30; st.phase = "gestion"; st.chantiers = [{ id: "grandParc", reste: 4, du: 100, ampleur: 1, susp: 0 }];
     st.evPerso = { id: "t", kind: "special", cid: "grandParc", titre: ev.titre, desc: ev.desc, choix: JSON.parse(JSON.stringify(ev.choix)) };
     st.evenement = "t"; st.phase = "evenement";
@@ -227,7 +228,7 @@ test("le récit de fin de partie ne parle que de ce qui s'est vraiment passé", 
 
 test("opposant une fois par an, élection tous les 6 ans, fin de partie si battu", () => {
   for (let g = 1; g <= 15; g++) {
-    let st = M.nouvellePartie({ ligne: "gauche", ambitions: ["logement", "cadre"], graine: g, niveau: ["facile", "moyen", "difficile"][g % 3], nivJoueur: 10 });
+    let st = M.nouvellePartie({ ligne: "gauche", ambitions: ["logement", "cadre"], graine: g, niveau: ["facile", "moyen", "difficile"][g % 3], nivJoueur: 40 });
     while (st.phase !== "fin" && st.t < 120) {
       const actif = st.opposant.actif, mandat = st.mandat;
       if (st.phase === "election") { st = M.continuer(st, base); continue; }
@@ -270,7 +271,7 @@ test("progression : niveaux, chapitres, plus de 120 succès, 400 quêtes adapté
   assert.deepEqual(G.defiDuJour(20000, M, idx.lots, 600), G.defiDuJour(20000, M, idx.lots, 600));
   const faites = new Set(), succes = new Set();
   for (let g = 1; g <= 6; g++) {
-    let st = M.nouvellePartie({ ligne: ["gauche", "centre", "droite", "ecologie"][g % 4], ambitions: ["logement", "transports"], graine: g, niveau: ["facile", "moyen", "difficile"][g % 3], nivJoueur: 10 });
+    let st = M.nouvellePartie({ ligne: ["gauche", "centre", "droite", "ecologie"][g % 4], ambitions: ["logement", "transports"], graine: g, niveau: ["facile", "moyen", "difficile"][g % 3], nivJoueur: 40 });
     st = jouer(st, (s, ev) => g % ev.choix.length, s => M.acheter(s, ["parc", "ecole", "logements", "marche", "police", "tram"][s.t % 6]), 80);
     if (st.phase !== "fin") { st.fin = { gagne: false, raison: { type: "election", txt: "" }, t: st.t }; st.phase = "fin"; }
     const R = G.resume(st, M), P = G.profilVide(); P.parties = 1;
@@ -289,7 +290,7 @@ test("progression en direct : XP pendant la partie, un bâtiment par niveau, suc
   assert.deepEqual(dispo, ["parc", "logements"], "on commence avec deux bâtiments");
   assert.equal(M.peutAcheter(st, "velo"), "Se débloque au niveau 2.");
   // Chaque niveau débloque au moins un bâtiment, jusqu'au niveau 12
-  for (let n = 2; n <= 12; n++) assert.ok(Object.values(M.BATIMENTS).some(B => !B.secret && B.niv === n), "rien à débloquer au niveau " + n);
+  for (let n = 2; n <= 35; n++) assert.equal(Object.values(M.BATIMENTS).filter(B => !B.secret && !B.pass && B.niv === n).length, 2, "2 bâtiments débloqués au niveau " + n);
   // Premier achat : succès « Première pierre » réussi et affiché, XP versée au profil
   st = M.acheter(st, "parc");
   let r = G.suivrePartie(st, M, {}); st = r.st;
@@ -334,10 +335,10 @@ test("bâtiments : plus de 50 en boutique, chacun utile, objectifs de trimestres
     if (B.si) assert.ok((B.si.t > 0 && B.si.t <= 24) || (B.si.reel >= 1 && B.si.reel <= 3) || B.si.apres, id + " : objectif");
     // Un bâtiment prérequis existe, n'est pas lui-même un bâtiment exclusif, et s'obtient au plus tard au même niveau
     Object.keys((B.si && B.si.apres) || {}).forEach(b => { const A = M.BATIMENTS[b]; assert.ok(A && !A.pass && !A.secret && !A.enchere, id + " → " + b); assert.ok((A.niv || 1) <= (B.niv || 1), id + " exige " + b + " plus tard"); });
-    if (!B.secret) assert.ok(B.niv >= 1 && B.niv <= 20, id + " : niveau");
+    if (!B.secret) assert.ok(B.niv >= 1 && B.niv <= 40, id + " : niveau");
   }
   // Objectif de trimestres, puis annonce de l'arrivée en boutique
-  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 31, nivJoueur: 20 });
+  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 31, nivJoueur: 40 });
   assert.equal(M.peutAcheter(st, "metro"), "Tiens encore 8 trimestres.");
   assert.equal(M.peutAcheter(st, "caisseCredit"), "Après ta 1re réélection.");
   while (st.t < 8) { st = jouer(st, () => 0, null, st.t + 1); }
@@ -347,7 +348,7 @@ test("bâtiments : plus de 50 en boutique, chacun utile, objectifs de trimestres
   st.tresor = 2000; st = M.acheter(st, "tram"); st = jouer(st, () => 0, null, st.t + 1);
   assert.ok(M.disponible(st, "metro")); assert.ok(st.montees.some(m => m.n === 0 && m.bats.includes("metro")), "arrivée annoncée");
   // Atouts : entretien, intérêts, sondage, catastrophes, usure
-  let a = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 32, nivJoueur: 20, sansLimite: true });
+  let a = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 32, nivJoueur: 40, sansLimite: true });
   a.tresor = 5000; a.phase = "gestion"; a = M.acheter(a, "parc"); a = M.acheter(a, "police");
   const ent0 = M.entretien(a); a.dette = 1000; const int0 = M.interets(a);
   a = M.acheter(a, "antiGaspi"); assert.ok(M.entretien(a) < ent0, "anti-gaspillage");
@@ -367,7 +368,7 @@ test("bâtiments : plus de 50 en boutique, chacun utile, objectifs de trimestres
 });
 
 test("enchères : 30 secondes face à une ville voisine, la meilleure offre gagne, prix moyen affiché", () => {
-  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 40, nivJoueur: 20, sansLimite: true });
+  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 40, nivJoueur: 40, sansLimite: true });
   st.tresor = 2000; st.phase = "gestion";
   assert.equal(M.peutAcheter(st, "grandeRoue"), "Aux enchères uniquement."); assert.equal(M.acheter(st, "grandeRoue"), st);
   let gagnees = 0, perdues = 0;
@@ -432,7 +433,7 @@ test("succès journaliers et pass de combat : 5 défis par jour en pleine partie
   const n0 = G.lire().sac.coupDePouce, bo = G.utiliserSac(["coupDePouce"]);
   assert.equal(bo.tresor, 100); assert.equal(G.lire().sac.coupDePouce, n0 - 1);
   const avec = M.nouvellePartie({ ligne: "centre", ambitions: [], niveau: "facile", graine: 92, nivJoueur: 3, bonus: bo });
-  assert.equal(avec.tresor, M.NIVEAUX.facile.tresor + 100);
+  assert.equal(avec.tresor, M.PALIERS[0].tresor + 100);
   const defi = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 92, nivJoueur: 8, scenario: M.C.DEFIS_JOUR[0].id, bonus: bo });
   assert.deepEqual(defi.bonus, { tresor: 0, pop: 0, assurance: 0 });
   // Nouvelle saison le mois suivant : les points repartent de zéro, les bâtiments exclusifs restent
@@ -445,7 +446,7 @@ test("engagements : décisions et bâtiments au service des promesses, fidélit�
   const VERS = { proprete: "cadre", ecologie: "cadre", services: "cadre", logement: "logement", achat: "logement" };
   const ev = base.liste.find(e => !e.cond && e.choix.some(c => c.e && c.e.dom && Object.keys(c.e.dom).some(k => VERS[k] && c.e.dom[k] > 0)));
   const i = ev.choix.findIndex(c => c.e && c.e.dom && Object.keys(c.e.dom).some(k => VERS[k] && c.e.dom[k] > 0));
-  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 50, nivJoueur: 10 });
+  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 50, nivJoueur: 40 });
   st.phase = "evenement"; st.evenement = ev.id; st.special = null; st.evPerso = null;
   const r = M.choisir(st, base, i);
   const g = r.xpLog.find(x => x.txt === "Mesures pour tes promesses");
@@ -468,7 +469,7 @@ test("addiction : coffre de la victoire, série de jours avec jokers, roue hebdo
   // Coffre de la victoire : à chaque élection gagnée, contenu appliqué tout de suite et révélé ensuite
   const types = new Set();
   for (let g = 1; g <= 40; g++) {
-    let e = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 300 + g, nivJoueur: 10 }); e.t = M.MANDAT - 1; e.phase = "gestion";
+    let e = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 300 + g, nivJoueur: 40 }); e.t = M.MANDAT - 1; e.phase = "gestion";
     ["cadre", "logement", "transports", "securite"].forEach(k => { e.piliers[k] = 85; e.base[k] = 85; }); e.pop = 85;
     const t0 = e.tresor; e = M.debutTour(e, base);
     assert.equal(e.phase, "election"); assert.ok(e.coffre && !e.coffre.vu && e.coffre.mandat === e.mandat, "coffre du nouveau mandat"); types.add(e.coffre.type);
@@ -516,7 +517,7 @@ test("plan de Paris : chaque bâtiment a sa place, sans doublon, espacé au déb
   assert.ok(M.C.PLAN.length >= 300);
   assert.equal(new Set(M.C.PLAN.map(p => p.join())).size, M.C.PLAN.length, "emplacements uniques");
   M.C.PLAN.forEach(p => assert.ok(p[0] > 0 && p[0] < 100 && p[1] > 0 && p[1] < 100));
-  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 600, nivJoueur: 20, sansLimite: true });
+  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 600, nivJoueur: 40, sansLimite: true });
   st.tresor = 9000; st.phase = "gestion";
   assert.deepEqual(M.planVille(st), []);
   for (const id of ["parc", "parc", "parc", "police", "tram"]) st = M.acheter(st, id);
@@ -543,11 +544,11 @@ test("mandats : un dossier tous les 2 ou 3 trimestres, une crise et 3 objectifs 
   assert.ok(quand.length >= st.t / 4 - 1 && quand.length <= st.t / 2 + 1, "dossiers : " + quand.length + " en " + st.t + " trimestres");
   for (let i = 1; i < quand.length; i++) assert.ok(quand[i] - quand[i - 1] >= 2, "écart " + quand.slice(i - 1, i + 1));
   // Crise et objectifs dès le départ
-  let m = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 701, nivJoueur: 10 });
+  let m = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 701, nivJoueur: 40 });
   assert.ok(M.C.CRISES[m.crise.id]); assert.equal(m.objectifs.length, 3); assert.ok(m.objectifs[0].crise);
   assert.equal(new Set(m.objectifs.map(o => o.k + (o.p || o.r || ""))).size, 3, "trois objectifs différents");
   for (let g = 0; g < 60; g++) {
-    const x = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 800 + g, nivJoueur: 12, niveau: "moyen" });
+    const x = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 800 + g, nivJoueur: 40, niveau: "moyen" });
     M.objectifs(x).forEach(o => assert.ok(o.txt && o.but != null && o.ico, JSON.stringify(o)));
     if (x.crise.id === "dette") assert.ok(x.dette >= 300);
   }
@@ -579,8 +580,8 @@ test("personnages : avantages et défauts réels, déblocage selon le profil", (
   assert.equal(M.prix(ec, "parc"), Math.round(M.BATIMENTS.parc.cout * 0.75)); assert.equal(M.prix(ec, "police"), M.BATIMENTS.police.cout);
   ec.nivJ = 20; ec.sansLimite = true; assert.equal(M.peutAcheter(ec, "parkingRelais"), "Ton personnage refuse de construire ça.");
   const g = p("gestionnaire"); g.dette = 1000; const r0 = p(null); r0.dette = 1000; assert.ok(M.interets(g) < M.interets(r0));
-  const ren = p("renard", { nivJoueur: 10 }), r1 = p(null, { nivJoueur: 10 }); assert.equal(ren.opposant.force, Math.max(10, r1.opposant.force - 15));
-  const bat = p("batisseuse", { nivJoueur: 10 }); assert.equal(M.coutBat(bat, "grandParc"), Math.round(M.BATIMENTS.grandParc.cout * 0.75));
+  const ren = p("renard", { nivJoueur: 40 }), r1 = p(null, { nivJoueur: 40 }); assert.equal(ren.opposant.force, Math.max(10, r1.opposant.force - 15));
+  const bat = p("batisseuse", { nivJoueur: 40 }); assert.equal(M.coutBat(bat, "grandParc"), Math.round(M.BATIMENTS.grandParc.cout * 0.75));
   // Déblocage
   localStorage.removeItem("maire_profil_v1");
   let L = G.maires(); assert.deepEqual(L.filter(x => x.dispo).map(x => x.id), ["gestionnaire", "ecolo"]);
@@ -589,6 +590,20 @@ test("personnages : avantages et défauts réels, déblocage selon le profil", (
   L = G.maires(); ["tribun", "notable", "star", "batisseuse", "renard"].forEach(id => assert.ok(L.find(x => x.id === id).dispo, id));
   assert.ok(!L.find(x => x.id === "rassembleuse").dispo && !L.find(x => x.id === "heritier").dispo);
   localStorage.removeItem("maire_profil_v1");
+});
+
+test("élections anticipées : 3 trimestres après avoir rempli ses objectifs, sauf si le vote est déjà proche", () => {
+  const prep = (t) => { const st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 950, nivJoueur: 40 });
+    st.phase = "gestion"; st.t = t; st.objectifs = [{ k: "pop", but: 1, ico: "📣", txt: "a" }, { k: "pop", but: 2, ico: "📣", txt: "b" }, { k: "pop", but: 99, ico: "📣", txt: "c" }]; return st; };
+  let st = M.debutTour(prep(5), base);
+  assert.equal(st.anticipee, 9); assert.equal(M.prochaineElection(st), 9);
+  assert.ok(st.notes.some(n => /anticipées/.test(n.txt)));
+  const fixe = st.anticipee; st.phase = "gestion"; st = M.debutTour(st, base); assert.equal(st.anticipee, fixe, "la date ne bouge plus");
+  while (st.phase !== "election" && st.phase !== "fin" && st.t < 12) st = st.phase === "evenement" ? M.choisir(st, base, 0) : M.debutTour(st, base);
+  assert.equal(st.t, 9, "vote au trimestre annoncé");
+  if (st.phase === "election") { assert.equal(st.anticipee, null); assert.equal(st.debutMandat, 9); assert.equal(M.prochaineElection(st), 9 + M.MANDAT); assert.equal(M.stats(st).anticipees, 1); }
+  // Vote prévu dans moins de 5 trimestres : pas d'anticipées
+  st = M.debutTour(prep(M.MANDAT - 5), base); assert.equal(st.anticipee, null);
 });
 
 console.log(ok + " tests réussis.\n");
@@ -653,43 +668,42 @@ const STRATS = {
       return STRATS["réfléchi"].gere(st);
     } },
 };
-function simuler(niveau, nivJoueur) {
-  console.log(`Simulation niveau ${M.NIVEAUX[niveau].nom}, joueur de niveau ${nivJoueur} : ${N} parties par stratégie`);
+function simuler(titre, nivJoueur) {
+  console.log(`Simulation ${titre} (joueur de niveau ${nivJoueur}) : ${N} parties par stratégie`);
   const T = {};
   for (const [nom, S] of Object.entries(STRATS)) {
-    graineSim = 1; let r1 = 0, mandats = 0, t = 0, fa = 0, ach = 0, sc = 0, tmax = 0, rares = 0, proj = 0;
+    graineSim = 1; const r = [0, 0, 0, 0]; let mandats = 0, t = 0, fa = 0, ach = 0, sc = 0, tmax = 0, rares = 0, proj = 0, ant = 0, reussis = 0;
     for (let p = 0; p < N; p++) {
       const a = PK.slice().sort(() => alea() - 0.5).slice(0, 2);
-      const st = jouer(M.nouvellePartie({ ligne: LIGNES[p % 4], ambitions: a, graine: p * 7919 + 1, niveau, nivJoueur }), S.choix, S.gere, 200);
-      const w = st.elections.filter(e => e.gagne).length;
-      if (w >= 1) r1++; mandats += w; t += st.t; ach += M.stats(st).achats; sc += M.bilan(st).score;
-      tmax = Math.max(tmax, M.stats(st).tresorMax); rares += M.stats(st).rares + M.stats(st).legendaires; proj += M.stats(st).projetsOk;
+      const st = jouer(M.nouvellePartie({ ligne: LIGNES[p % 4], ambitions: a, graine: p * 7919 + 1, nivJoueur }), S.choix, S.gere, 200);
+      const w = st.elections.filter(e => e.gagne).length, x = M.stats(st);
+      for (let k = 1; k <= 3; k++) if (w >= k) r[k]++;
+      mandats += w; t += st.t; ach += x.achats; sc += M.bilan(st).score; ant += x.anticipees || 0; reussis += x.mandatsReussis || 0;
+      tmax = Math.max(tmax, x.tresorMax); rares += x.rares + x.legendaires; proj += x.projetsOk;
       if (st.fin && st.fin.raison.type === "faillite") fa++;
     }
-    T[nom] = { r1: r1 / N, mandats: mandats / N, faillite: fa / N, tmax: tmax };
-    console.log(`  ${nom.padEnd(10)} 1re réélection ${Math.round(r1 / N * 100).toString().padStart(3)} % · élections gagnées ${(mandats / N).toFixed(1)} · ` +
-      `durée ${(t / N / 4).toFixed(1)} ans · faillites ${Math.round(fa / N * 100)} % · achats ${Math.round(ach / N)} · projets ${(proj / N).toFixed(1)} · rares ${(rares / N).toFixed(1)} · trésor max ${Math.round(tmax)} · score ${Math.round(sc / N)}`);
+    T[nom] = { r1: r[1] / N, r2: r[2] / N, r3: r[3] / N, mandats: mandats / N, faillite: fa / N, tmax };
+    const pc = (v) => Math.round(v / N * 100).toString().padStart(3) + " %";
+    console.log(`  ${nom.padEnd(10)} réélu 1×/2×/3× ${pc(r[1])} ${pc(r[2])} ${pc(r[3])} · élections ${(mandats / N).toFixed(1)} · mandats réussis ${(reussis / N).toFixed(1)} · anticipées ${(ant / N).toFixed(1)} · ` +
+      `durée ${(t / N / 4).toFixed(1)} ans · faillites ${Math.round(fa / N * 100)} % · achats ${Math.round(ach / N)} · projets ${(proj / N).toFixed(1)} · trésor max ${Math.round(tmax)} · score ${Math.round(sc / N)}`);
   }
   return T;
 }
-const T = { debutant: simuler("facile", 1), facile: simuler("facile", 10), moyen: simuler("moyen", 10), difficile: simuler("difficile", 10) };
+const T = { debutant: simuler("d’un débutant", 1), expert: simuler("d’un joueur confirmé", 40) };
+const R = T.expert["réfléchi"];
 const bornes = [
-  ["débutant (niveau 1, Facile) : en achetant intelligemment, on gagne sa 1re élection (≥ 90 %)", T.debutant["réfléchi"].r1 >= 0.9],
+  ["débutant : en achetant intelligemment, on gagne sa 1re élection (≥ 90 %)", T.debutant["réfléchi"].r1 >= 0.9],
   ["débutant : sans rien acheter, on perd (≤ 20 % de réélection)", T.debutant["passif"].r1 <= 0.2],
-  ["moyen : un joueur réfléchi gagne sa 1re élection (≥ 85 %) et en moyenne plus d’une", T.moyen["réfléchi"].r1 >= 0.85 && T.moyen["réfléchi"].mandats >= 1.3],
-  ["moyen : sans rien acheter, on perd (≤ 10 %)", T.moyen["passif"].r1 <= 0.1],
-  ["moyen : acheter sans compter mène souvent à la faillite (≥ 50 %)", T.moyen["dépensier"].faillite >= 0.5],
-  ["réaliste : un joueur réfléchi gagne sa 1re élection au moins une fois sur deux", T.difficile["réfléchi"].r1 >= 0.5],
-  ["réaliste : sans rien acheter, on perd presque toujours (≤ 5 %)", T.difficile["passif"].r1 <= 0.05],
-  ["réaliste : acheter sans compter mène presque toujours à la faillite (≥ 70 %)", T.difficile["dépensier"].faillite >= 0.7],
-  ["le dernier pari ne sauve pas une gestion désastreuse (Moyen, faillite ≥ 50 %)", T.moyen["flambeur"].faillite >= 0.5],
-  ["les financements de secours ne remplacent pas une bonne gestion (Moyen)", T.moyen["assisté"].mandats < T.moyen["réfléchi"].mandats],
-  ["les projets démesurés sont une stratégie viable (Moyen, ≥ 70 % de 1re réélection)", T.moyen["bâtisseur"].r1 >= 0.7],
-  ["avec 50 bâtiments et plus, dépenser sans compter reste bien moins bon qu'acheter avec réflexion (Moyen et Réaliste)",
-    T.moyen["dépensier"].mandats < T.moyen["réfléchi"].mandats * 0.6 && T.difficile["dépensier"].mandats < T.difficile["réfléchi"].mandats * 0.6],
-  ["un joueur réfléchi en Moyen ne gagne pas indéfiniment (moins de 4 élections en moyenne)", T.moyen["réfléchi"].mandats < 4],
+  ["confirmé : un joueur réfléchi gagne sa 1re élection (≥ 85 %) et en moyenne plus d’une", R.r1 >= 0.85 && R.mandats >= 1.3],
+  ["confirmé : sans rien acheter, on perd (≤ 10 %)", T.expert["passif"].r1 <= 0.1],
+  ["chaque mandat est plus dur que le précédent (taux de réélection 1er > 2e > 3e)", R.r1 > R.r2 / Math.max(0.01, R.r1) && R.r2 / Math.max(0.01, R.r1) > R.r3 / Math.max(0.01, R.r2)],
+  ["un joueur réfléchi ne gagne pas indéfiniment (moins de 5 élections en moyenne)", R.mandats < 5],
+  ["acheter sans compter finit mal : faillite ou défaite avant le 3e mandat (≥ 60 %)", 1 - T.expert["dépensier"].r3 >= 0.6],
+  ["dépenser sans compter reste bien moins bon qu'acheter avec réflexion", T.expert["dépensier"].mandats < R.mandats * 0.6],
+  ["le dernier pari ne sauve pas une gestion désastreuse (≥ 60 % s'arrêtent avant le 3e mandat)", 1 - T.expert["flambeur"].r3 >= 0.6],
+  ["les financements de secours ne remplacent pas une bonne gestion", T.expert["assisté"].mandats < R.mandats],
+  ["les projets démesurés sont une stratégie viable (≥ 70 % de 1re réélection)", T.expert["bâtisseur"].r1 >= 0.7],
   ["aucune stratégie ne crée d'argent infini (trésor max < 15 milliards)", Object.values(T).every(x => Object.values(x).every(y => y.tmax < 15000))],
-  ["chaque niveau est plus dur que le précédent pour un joueur réfléchi", T.facile["réfléchi"].mandats > T.moyen["réfléchi"].mandats && T.moyen["réfléchi"].mandats > T.difficile["réfléchi"].mandats],
 ];
 let echec = 0;
 for (const [t, v] of bornes) { console.log((v ? "  ✓ " : "  ✗ ") + t); if (!v) echec++; }

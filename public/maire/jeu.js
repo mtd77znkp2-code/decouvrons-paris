@@ -19,28 +19,19 @@
   function virg(v) { return String(Math.round(v * 10) / 10).replace(".", ","); }
   function date(t) { var a = Math.floor((t - 1) / 4) + 1, q = (t - 1) % 4 + 1; return (q === 1 ? "1er" : q + "e") + " trimestre · année " + a; }
   function sauver() { try { localStorage.setItem(CLE, JSON.stringify(st)); } catch (e) {} }
-  function lireSauvegarde() { try { var s = JSON.parse(localStorage.getItem(CLE) || "null"); return s && s.v >= 3 && s.v <= 7 ? s : null; } catch (e) { return null; } }
+  function lireSauvegarde() { try { var s = JSON.parse(localStorage.getItem(CLE) || "null"); return s && s.v >= 3 && s.v <= 8 ? s : null; } catch (e) { return null; } }
   function effacer() { try { localStorage.removeItem(CLE); } catch (e) {} }
   function haut() { var g = document.getElementById("g-maire"); if (g && g.getBoundingClientRect().top < 0) g.scrollIntoView({ behavior: "smooth" }); }
   function nivJ() { return G.nivJoueur(); }
   function sansLimiteAdmin() { try { return !!window.ADMIN_UNLOCKED && localStorage.getItem("maire_sanslimite") === "1"; } catch (e) { return false; } }
   function couleur(v) { var t = Math.max(0, Math.min(1, (v - 30) / 45)); return "hsl(" + Math.round(t * 125) + ",62%,42%)"; }
 
-  // ---------- Niveau de difficulté : les boutons au-dessus du jeu (certains se débloquent avec le niveau du joueur) ----------
-  function ouvert(n) { return M.mecaniques(nivJ())[M.NIVEAUX[n].meca]; }
-  function lireNiveau() { try { var n = localStorage.getItem("maire_niveau"); return M.NIVEAUX[n] && ouvert(n) ? n : "facile"; } catch (e) { return "facile"; } }
-  function choixNiveau(n, bloque) {
-    niveau = M.NIVEAUX[n] ? n : "facile";
-    var lv = document.getElementById("m-lvls");
-    if (lv) Array.prototype.forEach.call(lv.children, function (b) {
-      var o = ouvert(b.dataset.l);
-      b.classList.toggle("on", b.dataset.l === niveau); b.disabled = !!bloque || !o;
-      b.textContent = (o ? "" : "🔒 ") + M.NIVEAUX[b.dataset.l].nom;
-      b.title = o ? "" : "Se débloque au niveau " + (b.dataset.l === "moyen" ? 4 : 8);
-    });
-    if (window.lbRender) lbRender();
-  }
-  function cleClassement(n) { return n === "moyen" ? "maire" : "maire_" + n; }
+  // ---------- Plus de niveau de difficulté à choisir : elle monte d'elle-même, de mandat en mandat ----------
+  function lireNiveau() { return "progressif"; }
+  function choixNiveau() { niveau = "progressif"; var lv = document.getElementById("m-lvls"); if (lv) lv.style.display = "none"; }
+  // Étoiles de difficulté du mandat en cours
+  function etoiles(s0) { var k = { facile: 1, moyen: 2, difficile: 3 }[M.palier(s0)]; return "★★★".slice(0, k) + "☆☆☆".slice(0, 3 - k); }
+  function cleClassement() { return "maire"; }
 
   // ---------- Données ----------
   function index() {
@@ -86,7 +77,7 @@
     box.appendChild(pr);
     if (s && s.phase !== "fin") {
       var r = bouton("", "mx-jouer", reprise);
-      ajout(r, h("strong", null, "▶ Reprendre ma partie"), h("small", null, (s.defi != null ? "Défi du jour · " : "") + "Mandat " + s.mandat + " · " + date(Math.max(1, s.t)) + " · " + M.NIVEAUX[s.niveau].nom));
+      ajout(r, h("strong", null, "▶ Reprendre ma partie"), h("small", null, (s.defi != null ? "Défi du jour · " : "") + "Mandat " + s.mandat + " · " + date(Math.max(1, s.t))));
       box.appendChild(r);
       box.appendChild(bouton("Nouvelle partie", "mx-lien", function () { if (confirm("Commencer une nouvelle partie ? La partie en cours sera perdue.")) creation(); }));
     } else {
@@ -375,7 +366,7 @@
     choixNiveau(lireNiveau());
     var sac = G.lire().sac || {}, sacOk = Object.keys(G.SAC).filter(function (k) { return sac[k] > 0; });
     box.innerHTML = "";
-    box.appendChild(h("p", "m-nivtxt", "Niveau " + M.NIVEAUX[niveau].nom + " : " + M.NIVEAUX[niveau].txt));
+    box.appendChild(h("p", "m-nivtxt", "La difficulté monte à chaque mandat : le premier est indulgent, les suivants de plus en plus exigeants."));
     // Le personnage remplace la ligne politique : chacun a la sienne, un avantage et un défaut
     box.appendChild(h("p", "m-etape", "Ton personnage"));
     var lg = h("div", "mx-maires");
@@ -601,9 +592,9 @@
 
   function entete() {
     var d = h("div", "mx-hud"), reste = M.prochaineElection(st) - st.t, a = Math.floor((Math.max(1, st.t) - 1) / 4) + 1, q = (Math.max(1, st.t) - 1) % 4 + 1;
-    var gauche = ajout(h("div", "mx-quand"), h("strong", null, "Année " + a + " · T" + q), h("small", null, "Mandat " + st.mandat + (st.scenario ? " · défi du jour" : "")));
-    var vote = h("span", "mx-chip", st.scenario ? "🎯 " + (st.scenario.fin - st.t) + " trim." : "🗳️ " + reste + " trim.");
-    vote.title = st.scenario ? "Fin du défi" : "Prochaine élection";
+    var gauche = ajout(h("div", "mx-quand"), h("strong", null, "Année " + a + " · T" + q), h("small", null, "Mandat " + st.mandat + (st.scenario ? " · défi du jour" : " · " + etoiles(st))));
+    var vote = h("span", "mx-chip" + (st.anticipee ? " mx-anticipee" : ""), st.scenario ? "🎯 " + (st.scenario.fin - st.t) + " trim." : "🗳️ " + reste + " trim.");
+    vote.title = st.scenario ? "Fin du défi" : st.anticipee ? "Élections anticipées" : "Prochaine élection";
     ajout(d, ajout(h("div", "mx-ligne"), gauche, ajout(h("div", "mx-droite"), vote, telephone())));
     var p = h("div", "mx-prog"), pi = h("i"); pi.style.width = (M.trimMandat(st) / M.MANDAT * 100) + "%"; p.appendChild(pi); d.appendChild(p);
     d.appendChild(barreXP());
@@ -630,6 +621,8 @@
     var cr = M.criseEnCours(st), n = ob.filter(function (o) { return o.ok; }).length, d = h("div", "mx-objectifs");
     ajout(d, ajout(h("div", "mx-pt"), h("strong", null, "🎯 Objectifs du mandat"), h("b", "mx-objn" + (n >= 2 ? " mx-objbon" : ""), n + "/" + ob.length)));
     if (cr) d.appendChild(h("small", "mx-criseinfo", cr.ico + " " + cr.nom + " · " + cr.txt));
+    if (st.anticipee) d.appendChild(h("p", "mx-antic", "🗳️ Objectifs remplis : élections anticipées dans " + (st.anticipee - st.t) + " trimestre" + (st.anticipee - st.t > 1 ? "s" : "") + " !"));
+    else if (!st.scenario) d.appendChild(h("small", "mx-criseinfo mx-gris", "2 objectifs sur 3 remplis = élections anticipées 3 trimestres plus tard (si le vote est encore loin)."));
     ob.forEach(function (o) {
       var l = h("div", "mx-objl" + (o.ok ? " mx-ok" : ""));
       var etat = o.ok ? (o.garde ? "✔ à tenir" : "✔") : o.inverse ? o.cur + " M€ (max " + o.but + ")" : o.cur + " / " + o.but;
@@ -936,9 +929,25 @@
     b.appendChild(bouton(st.phase === "evenement" ? "📂 Un dossier t’attend" : cartes ? "🃏 Une partie de cartes est en cours" : "Trimestre suivant →", "btn m-go", function () {
       if (st.phase === "evenement" || (st.resultat && !st.resultatVu)) return modale();
       if (st.bj && !st.bj.fini) return ouvrirTelephone();
+      var avant = { t: st.t, net: st.tresor - st.dette };
       st = M.debutTour(st, BASE); sauver(); signal("trimestre"); jeu();
+      if (st.t > avant.t) animTrimestre(avant);
     }));
     return b;
+  }
+  // Passage au trimestre suivant : la date tourne comme une page de calendrier, avec la saison et ce que la ville a gagné ou perdu
+  var SAISONS = [["❄️", "Hiver"], ["🌸", "Printemps"], ["☀️", "Été"], ["🍂", "Automne"]];
+  function animTrimestre(avant) {
+    if (calme() || st.phase === "fin" || st.phase === "election") return;
+    var a = Math.floor((st.t - 1) / 4) + 1, q = (st.t - 1) % 4, sa = SAISONS[q], net = Math.round((st.tresor - st.dette) - avant.net);
+    var f = h("div", "mx-trim"); f.setAttribute("aria-hidden", "true");
+    var c = h("div", "mx-trim-carte");
+    ajout(c, h("span", "mx-trim-ico", sa[0]), h("strong", null, sa[1] + " · année " + a), h("small", null, "Trimestre " + st.t),
+      h("b", "mx-trim-net " + (net >= 0 ? "mx-plus" : "mx-moins"), (net >= 0 ? "+" : "−") + argent(Math.abs(net))));
+    if (st.anticipee && st.anticipee - st.t <= 3) c.appendChild(h("small", "mx-trim-vote", "🗳️ Vote dans " + (st.anticipee - st.t) + " trim."));
+    f.appendChild(c); f.onclick = function () { f.remove(); };
+    (document.getElementById("g-maire") || document.body).appendChild(f);
+    setTimeout(function () { f.classList.add("mx-trim-out"); }, 900); setTimeout(function () { f.remove(); }, 1300);
   }
   function variations(d, parent) {
     var l = h("ul", "m-delta");
@@ -1455,7 +1464,7 @@
     var type = st.fin.raison.type, t = h("div", "m-final " + (type === "defi" || type === "retraite" ? "m-gagne" : "m-perdu"));
     ajout(t, h("p", "m-sur", (st.defi != null ? "Défi du jour · " : "") + ({ election: "Battu aux élections", faillite: "Faillite", demission: "Démission", defi: "Défi terminé", retraite: "Victoire" })[type]),
       h("h4", null, b.mandats ? "Fin de règne après " + M.duree(b.t) + " et " + b.mandats + " réélection" + (b.mandats > 1 ? "s" : "") : "Ton aventure s’arrête au bout de " + M.duree(b.t)),
-      h("p", "m-raison", st.fin.raison.txt), h("p", "m-score", "Score : " + b.score + " · " + M.NIVEAUX[st.niveau].nom));
+      h("p", "m-raison", st.fin.raison.txt), h("p", "m-score", "Score : " + b.score));
     box.appendChild(t);
     box.appendChild(carteStyle(b));
     if (e && st.fin.raison.type === "election") box.appendChild(carteElection(e));
@@ -1493,7 +1502,7 @@
     var cle = cleClassement(st.niveau), docs = ((window.LB && LB.docs) || []).filter(function (y) { return y.s && y.s[cle] > 0 && y.id !== (window.LB && LB.uid); });
     if (docs.length >= 3) {
       var mieux = docs.filter(function (y) { return y.s[cle] < b.score; }).length, pc = Math.round(mieux / docs.length * 100);
-      l.appendChild(ajout(h("div"), h("b", null, "📊 Mieux que " + pc + " % des maires"), h("small", null, "sur " + docs.length + " joueurs en " + M.NIVEAUX[st.niveau].nom)));
+      l.appendChild(ajout(h("div"), h("b", null, "📊 Mieux que " + pc + " % des maires"), h("small", null, "sur " + docs.length + " joueurs classés")));
     }
     var rec = P.scoreMax || 0;
     l.appendChild(ajout(h("div"), h("b", null, b.score >= rec ? "⭐ Record personnel !" : "⭐ Ton record : " + rec), h("small", null, b.score >= rec ? "ta meilleure partie à ce jour" : "il te manque " + (rec - b.score) + " points")));
@@ -1511,7 +1520,7 @@
       g.appendChild(ajout(h("div", "m-chiffre"), h("span", null, y[0]), h("b", null, String(y[1]))));
     });
     d.appendChild(g);
-    var texte = "🏛️ Maire de Paris — « " + b.style.titre + " ». " + b.recit + " Score : " + b.score + " (" + M.NIVEAUX[st.niveau].nom + "). " + location.origin + location.pathname;
+    var texte = "🏛️ Maire de Paris — « " + b.style.titre + " ». " + b.recit + " Score : " + b.score + ". " + location.origin + location.pathname;
     var bas = h("div", "m-bas");
     bas.appendChild(bouton("📋 Copier le résumé", "btn m-sec", function (e) {
       var bt = e.currentTarget, ok = function () { bt.textContent = "✔ Copié !"; };
@@ -1541,17 +1550,8 @@
     box = document.getElementById("m-app");
     if (!box || box.dataset.ok) return;
     box.dataset.ok = "1";
-    niveau = lireNiveau();
-    var lv = document.getElementById("m-lvls");
-    if (lv) Array.prototype.forEach.call(lv.children, function (b) {
-      b.onclick = function () {
-        if (b.disabled) return;
-        choixNiveau(b.dataset.l);
-        try { localStorage.setItem("maire_niveau", niveau); } catch (e) {}
-        var t = box.querySelector(".m-nivtxt"); if (t) t.textContent = "Niveau " + M.NIVEAUX[niveau].nom + " : " + M.NIVEAUX[niveau].txt;
-      };
-    });
-    if (window.lbBoard) lbBoard("lb-maire", function () { return cleClassement(niveau); }, function () { return "🏆 Classement général · Maire de Paris " + M.NIVEAUX[niveau].nom; });
+    choixNiveau();
+    if (window.lbBoard) lbBoard("lb-maire", function () { return cleClassement(); }, function () { return "🏆 Classement général · Maire de Paris"; });
     accueil();
   };
   window.maireStop = function () { fermerModale(); };

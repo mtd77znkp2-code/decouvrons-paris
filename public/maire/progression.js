@@ -44,7 +44,7 @@
     opposant: { num: 3, titre: "L’opposition se réveille", recit: "Ton succès agace : un adversaire se dresse contre toi.",
       objectif: "Pousse un opposant à renoncer.", ok: function (R) { return R.x.elimines >= 1; } },
     boutique2: { num: 4, titre: "Voir plus grand", recit: "Les services techniques te proposent de nouveaux équipements.",
-      objectif: "Gagne une élection en Moyen.", ok: function (R) { return R.mandats >= 1 && R.rang >= 1; } },
+      objectif: "Gagne 2 élections dans une même partie.", ok: function (R) { return R.mandats >= 2; } },
     cata: { num: 5, titre: "Paris face aux éléments", recit: "Crues, incendies, pannes géantes… Paris doit être prête à tout.",
       objectif: "Gagne une élection après avoir affronté une catastrophe.", ok: function (R) { return R.mandats >= 1 && R.x.catastrophes >= 1; } },
     promesses: { num: 6, titre: "Tenir parole", recit: "Cette fois, tu fais campagne sur deux promesses.",
@@ -52,7 +52,7 @@
     ligne: { num: 7, titre: "Garder le cap", recit: "Ton camp attend que tu restes fidèle à tes idées.",
       objectif: "Gagne une élection avec une cohérence d’au moins 70.", ok: function (R) { return R.el.some(function (e) { return e.coh >= 70; }); } },
     boutique3: { num: 8, titre: "Les grands chantiers", recit: "Paris voit grand : métro, hôpital, écoquartier…",
-      objectif: "Gagne une élection en Réaliste.", ok: function (R) { return R.mandats >= 1 && R.rang >= 2; } },
+      objectif: "Gagne 3 élections dans une même partie.", ok: function (R) { return R.mandats >= 3; } },
     projets: { num: 9, titre: "Paris 2040", recit: "Les trois grands projets de Paris 2040 sont sur la table.",
       objectif: "Réalise les trois grands projets de Paris 2040 dans une même partie.", ok: function (R) { return R.bat.jo && R.bat.gpe && R.bat.seine; } }
   };
@@ -102,7 +102,9 @@
   function resume(st, M) {
     var b = M.bilan(st), x = M.stats(st), gagnees = (st.elections || []).filter(function (e) { return e.gagne; }), fam = {};
     Object.keys(x.cats).forEach(function (c) { var f = FAM[c]; if (f) fam[f] = (fam[f] || 0) + x.cats[c]; });
-    return { niveau: st.niveau || "moyen", rang: RANG[st.niveau || "moyen"], ligne: st.ligne, ambitions: st.ambitions, meca: st.meca,
+    // Plus de niveau choisi : le « rang » d'une partie, c'est le palier de difficulté atteint (2e mandat gagné = moyen, 3e = difficile)
+    var rg = Math.max(0, Math.min(2, gagnees.length - 1));
+    return { niveau: ["facile", "moyen", "difficile"][rg], rang: rg, ligne: st.ligne, ambitions: st.ambitions, meca: st.meca,
       mandats: gagnees.length, t: st.fin ? st.fin.t : st.t, perte: st.fin ? st.fin.raison.type : null, score: b.score, x: x, fam: fam,
       el: gagnees, bat: st.bat || {}, defi: st.defi != null ? st.defi : null, flags: st.flags || {}, persos: st.persos || {},
       missions: st.missionsOk || [], objets: st.objets || [], combos: st.combos || [], scenario: st.scenario, finDefi: st.fin && st.fin.raison.type === "defi" };
@@ -166,10 +168,10 @@
     .forEach(function (a) { s("mandats" + a[0], a[2], a[3], a[1], function (R) { return R.mandats >= a[0]; }); });
   [[10, 2, "Élu en série", "Gagne 10 élections au total."], [25, 3, "Bête politique", "Gagne 25 élections au total."]]
     .forEach(function (a) { s("mandatsTot" + a[0], a[2], a[3], a[1], function (R, P) { return P.mandats >= a[0]; }); });
-  s("eFacile", "Premiers pas", "Gagne une élection en Facile.", 1, function (R) { return R.mandats >= 1 && R.niveau === "facile"; });
-  s("eMoyen", "Maire confirmé", "Gagne une élection en Moyen.", 2, function (R) { return R.mandats >= 1 && R.niveau === "moyen"; });
-  s("eReal", "Réaliste et réélu", "Gagne une élection en Réaliste.", 3, function (R) { return R.mandats >= 1 && R.niveau === "difficile"; });
-  s("eReal3", "Dompteur de Paris", "Gagne 3 élections dans une partie en Réaliste.", 4, function (R) { return R.mandats >= 3 && R.niveau === "difficile"; });
+  s("eFacile", "Premiers pas", "Gagne ton premier mandat sans faute de débutant : réélu avec au moins 52 %.", 1, function (R) { return une(R, function (e) { return e.pct >= 52; }); });
+  s("eMoyen", "Maire confirmé", "Fais réussir ton 2e mandat (au moins 2 objectifs).", 2, function (R) { return (R.x.mandatsReussis || 0) >= 2; });
+  s("eReal", "Réaliste et réélu", "Gagne une élection au palier ★★★ (à partir du 3e mandat).", 3, function (R) { return R.mandats >= 3; });
+  s("eReal3", "Dompteur de Paris", "Gagne 6 élections dans une même partie.", 4, function (R) { return R.mandats >= 6; });
   var LG = { gauche: "Gauche", centre: "Centre", droite: "Droite", ecologie: "Écologie" };
   Object.keys(LG).forEach(function (l) {
     s("eL_" + l, "Réélu : " + LG[l], "Gagne une élection avec la ligne " + LG[l] + ".", 2, function (R) { return R.meca.ligne && R.mandats >= 1 && R.ligne === l; });
@@ -182,7 +184,7 @@
   s("ruine", "Ruiné", "Perds une partie par faillite.", 1, function (R) { return R.perte === "faillite"; });
   s("prom1", "Promesse tenue", "Gagne une élection en tenant au moins une promesse.", 2, function (R) { return une(R, function (e) { return e.amb.length >= 1; }); });
   s("prom2", "Parole d’honneur", "Gagne une élection en tenant tes deux promesses.", 2, function (R) { return une(R, function (e) { return e.amb.length === 2; }); });
-  s("prom2Real", "Promesses de fer", "Gagne une élection en Réaliste en tenant tes deux promesses.", 4, function (R) { return R.niveau === "difficile" && une(R, function (e) { return e.amb.length === 2; }); });
+  s("prom2Real", "Promesses de fer", "Gagne ta 3e élection en tenant tes deux promesses.", 4, function (R) { return R.mandats >= 3 && R.el[2] && R.el[2].amb.length === 2; });
   var PIL = { logement: ["Toit pour tous", "🏠 Logement"], transports: ["Ville fluide", "🚇 Transports"], cadre: ["Capitale verte", "🌳 Cadre de vie"], securite: ["Ville sûre", "🛡️ Sécurité"] };
   Object.keys(PIL).forEach(function (p) {
     s("p70_" + p, PIL[p][0], "Gagne une élection avec le pilier " + PIL[p][1] + " à 70 ou plus.", 2, function (R) { return une(R, function (e) { return e.piliers[p] >= 70; }); });
@@ -208,7 +210,7 @@
   s("paris2040", "Paris 2040", "Réalise les trois grands projets dans une même partie.", 4, function (R) { return R.bat.jo && R.bat.gpe && R.bat.seine; });
   s("tresor1000", "Bas de laine", "Accumule 1 milliard en caisse.", 2, function (R) { return R.x.tresorMax >= 1000; });
   s("sansDette", "Zéro dette", "Gagne une élection sans jamais avoir emprunté.", 2, function (R) { return R.mandats >= 1 && R.x.detteMax === 0; });
-  s("sansDetteReal", "Rigueur réaliste", "Gagne une élection en Réaliste sans jamais avoir emprunté.", 4, function (R) { return R.mandats >= 1 && R.niveau === "difficile" && R.x.detteMax === 0; });
+  s("sansDetteReal", "Rigueur réaliste", "Gagne 3 élections sans jamais avoir emprunté.", 4, function (R) { return R.mandats >= 3 && R.x.detteMax === 0; });
   s("impotsBas", "Robin des bois", "Gagne une élection avec des impôts à 90 % ou moins.", 3, function (R) { return une(R, function (e) { return e.taux <= 0.9; }); });
   s("opp1", "Riposte", "Contre une attaque de ton opposant.", 1, function (R) { return R.x.contre + R.x.mobilise >= 1; });
   s("oppNuire", "Coup de maître", "Réussis à faire tomber ton opposant.", 1, function (R) { return R.x.nuireOk >= 1; });
@@ -283,6 +285,7 @@
   s2("ligueMontee", "Défis", "Promu", "Monte dans une ligue supérieure.", 2, function (R, P) { return (P.montees || 0) >= 1; });
   s2("ligueDiamant", "Défis", "Ligue de diamant", "Atteins la ligue Diamant.", 4, function (R, P) { return (P.ligueMax || 0) >= 4; });
   s2("espritLibre", "Humour", "Esprit libre", "Prends 5 décisions que moins de 20 % des maires ont choisies.", 2, function (R, P) { return (P.minoritaires || 0) >= 5; }, 1);
+  s2("anticipee", "Gestion", "Pressé de gagner", "Déclenche des élections anticipées en remplissant tes objectifs.", 2, function (R) { return (R.x.anticipees || 0) >= 1; });
   s2("mandatReussi", "Gestion", "Mission accomplie", "Réussis un mandat (au moins 2 objectifs sur 3).", 1, function (R) { return (R.x.mandatsReussis || 0) >= 1; });
   s2("mandatParfait", "Gestion", "Sans faute", "Réussis les 3 objectifs d’un mandat.", 2, function (R) { return (R.x.mandatsParfaits || 0) >= 1; });
   s2("mandats3Reussis", "Gestion", "Le maire qui tient parole", "Réussis 3 mandats dans une même partie.", 3, function (R) { return (R.x.mandatsReussis || 0) >= 3; });

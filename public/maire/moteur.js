@@ -16,7 +16,7 @@
 
   // Réglages d'équilibrage (vérifiés par tools/maire/test-moteur.mjs)
   var P = {
-    impot: 620, fonct: 540, vit: 0.3, usure: 0.4, plancher: 15, rendement: 0.85, inflation: 1.15, evtBase: 0.4,
+    impot: 620, fonct: 540, vit: 0.3, usure: 0.4, plancher: 15, rendement: 0.85, inflation: 1.22, evtBase: 0.4,
     popVit: 0.2, usurePop: 0.45, detteImpop: 200, humeurVit: 0.7, aliPlus: 0.8, aliMoins: 1.6,
     ambSeuil: 60, retombees: 0.16, cata: 0.09, chance: 0.05, usureMandat: 3, ecoRecettes: 250, gain: 2, foule: 0.94,
     fort: 2, objVote: 3, cadence: 2
@@ -38,11 +38,11 @@
     { id: "base", niv: 1, nom: "Dossiers, boutique et élections" },
     { id: "budget", niv: 2, nom: "Le budget : régler les impôts" },
     { id: "opposant", niv: 3, nom: "L’opposition" },
-    { id: "boutique2", niv: 4, nom: "Le niveau de difficulté Moyen" },
+    { id: "boutique2", niv: 4, nom: "Des bâtiments plus ambitieux" },
     { id: "cata", niv: 5, nom: "Catastrophes et coups de chance" },
     { id: "promesses", niv: 6, nom: "Les promesses de campagne" },
     { id: "ligne", niv: 7, nom: "La ligne politique" },
-    { id: "boutique3", niv: 8, nom: "Le niveau Réaliste et le défi du jour" },
+    { id: "boutique3", niv: 8, nom: "Le défi du jour" },
     { id: "projets", niv: 10, nom: "Les grands projets de Paris 2040" }
   ];
   // Mécaniques supplémentaires (sans chapitre d'histoire) : elles s'ajoutent en chemin
@@ -64,16 +64,16 @@
   var BATIMENTS = {
     parc: { niv: 1, nom: "Parc", ico: "🌳", tier: 1, cout: 40, ent: 2, e: { cadre: 3 }, ali: { g: 0, c: 1, d: 0, e: 2 } },
     logements: { niv: 1, nom: "Logements sociaux", ico: "🏢", tier: 1, cout: 60, ent: 3, e: { logement: 3 }, ali: { g: 2, c: 0, d: -1, e: 1 } },
-    police: { niv: 3, nom: "Commissariat", ico: "🚓", tier: 1, cout: 50, ent: 4, e: { securite: 3 }, ali: { g: -1, c: 1, d: 2, e: 0 } },
+    police: { niv: 6, nom: "Commissariat", ico: "🚓", tier: 1, cout: 50, ent: 4, e: { securite: 3 }, ali: { g: -1, c: 1, d: 2, e: 0 } },
     velo: { niv: 2, nom: "Pistes cyclables", ico: "🚲", tier: 1, cout: 30, ent: 1, e: { transports: 2, cadre: 1 }, ali: { g: 1, c: 0, d: -1, e: 2 } },
-    ecole: { niv: 4, nom: "École", ico: "🏫", tier: 2, cout: 70, ent: 4, e: { cadre: 3, logement: 1 }, ali: { g: 1, c: 1, d: 0, e: 0 } },
-    tram: { niv: 7, nom: "Ligne de tramway", ico: "🚋", tier: 2, cout: 150, ent: 6, e: { transports: 6 }, ali: { g: 1, c: 1, d: 0, e: 2 } },
-    proprete: { niv: 6, nom: "Brigade de propreté", ico: "🧹", tier: 2, cout: 60, ent: 5, e: { cadre: 3, securite: 1 }, ali: { g: 1, c: 1, d: 1, e: 1 } },
-    marche: { niv: 5, nom: "Marché couvert", ico: "🧺", tier: 2, cout: 80, ent: 1, rev: 6, e: { logement: 1 }, eco: 2, ali: { g: 1, c: 1, d: 1, e: 1 } },
-    metro: { niv: 8, nom: "Station de métro", ico: "🚇", tier: 3, cout: 350, ent: 10, e: { transports: 9, logement: 1 }, eco: 2, ali: { g: 1, c: 2, d: 1, e: 1 } },
-    hopital: { niv: 9, nom: "Hôpital", ico: "🏥", tier: 3, cout: 300, ent: 12, e: { cadre: 6, securite: 2 }, ali: { g: 2, c: 1, d: 0, e: 0 } },
-    quartier: { niv: 11, nom: "Écoquartier", ico: "🏘️", tier: 3, cout: 400, ent: 8, e: { logement: 8, cadre: 2 }, ali: { g: 1, c: 1, d: 0, e: 2 } },
-    musee: { niv: 10, nom: "Grand musée", ico: "🎭", tier: 3, cout: 250, ent: 4, rev: 14, e: { cadre: 2 }, eco: 3, ali: { g: 0, c: 1, d: 1, e: 0 } }
+    ecole: { niv: 7, nom: "École", ico: "🏫", tier: 2, cout: 70, ent: 4, e: { cadre: 3, logement: 1 }, ali: { g: 1, c: 1, d: 0, e: 0 } },
+    tram: { niv: 18, nom: "Ligne de tramway", ico: "🚋", tier: 2, cout: 150, ent: 6, e: { transports: 6 }, ali: { g: 1, c: 1, d: 0, e: 2 } },
+    proprete: { niv: 13, nom: "Brigade de propreté", ico: "🧹", tier: 2, cout: 60, ent: 5, e: { cadre: 3, securite: 1 }, ali: { g: 1, c: 1, d: 1, e: 1 } },
+    marche: { niv: 11, nom: "Marché couvert", ico: "🧺", tier: 2, cout: 80, ent: 1, rev: 6, e: { logement: 1 }, eco: 2, ali: { g: 1, c: 1, d: 1, e: 1 } },
+    metro: { niv: 23, nom: "Station de métro", ico: "🚇", tier: 3, cout: 350, ent: 10, e: { transports: 9, logement: 1 }, eco: 2, ali: { g: 1, c: 2, d: 1, e: 1 } },
+    hopital: { niv: 25, nom: "Hôpital", ico: "🏥", tier: 3, cout: 300, ent: 12, e: { cadre: 6, securite: 2 }, ali: { g: 2, c: 1, d: 0, e: 0 } },
+    quartier: { niv: 32, nom: "Écoquartier", ico: "🏘️", tier: 3, cout: 400, ent: 8, e: { logement: 8, cadre: 2 }, ali: { g: 1, c: 1, d: 0, e: 2 } },
+    musee: { niv: 28, nom: "Grand musée", ico: "🎭", tier: 3, cout: 250, ent: 4, rev: 14, e: { cadre: 2 }, eco: 3, ali: { g: 0, c: 1, d: 1, e: 0 } }
   };
   // Projets démesurés (chantiers) et bâtiments secrets rejoignent la même boutique, avec les mêmes règles d'effets
   Object.keys(C.PROJETS).forEach(function (id) { BATIMENTS[id] = Object.assign({ projet: 1, unique: 1, ali: { g: 1, c: 1, d: 1, e: 1 } }, C.PROJETS[id]); });
@@ -102,10 +102,10 @@
 
   // ---------- XP et niveaux (la courbe est partagée avec progression.js) ----------
   var NIV_MAX = 50;
-  function xpPour(n) { return n <= 1 ? 0 : Math.round(80 * Math.pow(n - 1, 1.6)); }
+  function xpPour(n) { return n <= 1 ? 0 : Math.round(100 * Math.pow(n - 1, 1.75)); }
   function niveauXP(xp) { var n = 1; while (n < NIV_MAX && xp >= xpPour(n + 1)) n++; return n; }
   // Ce que rapporte la partie elle-même (les succès, quêtes et chapitres s'y ajoutent : voir progression.js)
-  var XP = { trimestre: 3, trimestreMax: 150, achat: 4, achatMax: 100, election: { facile: 60, moyen: 120, difficile: 200 }, projet: 40, rare: 10, legendaire: 30, raresMax: 120,
+  var XP = { trimestre: 2, trimestreMax: 100, achat: 2, achatMax: 50, election: { facile: 60, moyen: 120, difficile: 200 }, projet: 40, rare: 10, legendaire: 30, raresMax: 120,
     // Tenir ses engagements rapporte : décisions pour ses promesses, bâtiments qui les servent, décisions fidèles à sa ligne, promesses tenues le jour du vote
     promesse: 8, promesseMax: 200, batPromesse: 3, batPromesseMax: 90, ligne: 4, ligneMax: 120, promesseTenue: 40, objectif: 40, mandatReussi: 150 };
 
@@ -157,13 +157,26 @@
   var COND = ["popMin", "popMax", "bonMin", "bonMax", "cohMin", "cohMax", "tresorMin", "tresorMax", "detteMin",
     "apres", "avant", "ligne", "amb", "flag", "sansFlag"];
 
-  // ---------- Niveaux de difficulté (« difficile » s'affiche « Réaliste ») ----------
+  // ---------- Difficulté : elle monte de mandat en mandat (1er mandat « facile », 2e « moyen », puis « difficile ») ----------
+  // (le défi du jour reste au palier moyen, pour que tout le monde joue dans les mêmes conditions)
   var NIVEAUX = {
     facile: { nom: "Facile", txt: "Caisses pleines et Parisiens indulgents.", meca: "base", tresor: 800, recettes: 1.04, elec: 2, usure: 0.3, pariMax: 250 },
     moyen: { nom: "Moyen", txt: "Chaque euro compte, chaque élection se prépare.", meca: "boutique2", tresor: 500, recettes: 1, elec: 0, usure: P.usure, pariMax: 200 },
     difficile: { nom: "Réaliste", txt: "Caisses presque vides, Parisiens exigeants.", meca: "boutique3", tresor: 350, recettes: 0.99, elec: -1, usure: 0.45, pariMax: 150 }
   };
-  function niv(st) { return NIVEAUX[st && st.niveau] || NIVEAUX.moyen; }
+  function palier(st) {
+    if (!st) return "moyen";
+    if (st.scenario) return "moyen";
+    return ["facile", "moyen", "difficile"][Math.max(0, Math.min(2, (st.mandat || 1) - 1))];
+  }
+  // Réglages concrets de chaque mandat : le 1er est indulgent, puis chaque mandat serre la vis (au-delà du 5e, on reste au plus dur)
+  var PALIERS = [
+    { tresor: 650, recettes: 1.02, elec: -0.3, usure: 0.36, pariMax: 250 },
+    { tresor: 500, recettes: 1, elec: 0, usure: 0.4, pariMax: 200 },
+    { tresor: 350, recettes: 0.98, elec: -1.5, usure: 0.45, pariMax: 150 },
+    { tresor: 350, recettes: 0.96, elec: -3, usure: 0.5, pariMax: 150 },
+    { tresor: 350, recettes: 0.94, elec: -4.5, usure: 0.55, pariMax: 120 }];
+  function niv(st) { return PALIERS[st && !st.scenario ? Math.max(0, Math.min(4, (st.mandat || 1) - 1)) : 1]; }
 
   // ---------- Hasard reproductible (sauvegardé dans l'état) ----------
   function rnd(st) {
@@ -237,17 +250,16 @@
   // o : { ligne, ambitions (2 piliers), niveau, nivJoueur, graine, lots, secrets (bâtiments secrets déjà découverts), scenario (défi du jour) }
   function nouvellePartie(o) {
     var nj = o.nivJoueur || (o.xpJoueur != null ? niveauXP(o.xpJoueur) : 99);
-    var nv = NIVEAUX[o.niveau] ? o.niveau : "moyen", m = mecaniques(nj);
-    if (!m[NIVEAUX[nv].meca]) nv = "facile";
+    var nv = o.scenario ? "moyen" : "facile", m = mecaniques(nj);
     var maire = o.maire && C.MAIRES[o.maire] ? o.maire : null;
     var ligne = maire ? C.MAIRES[maire].ligne : m.ligne ? o.ligne : "centre";
     if (!LIGNES[ligne]) throw new Error("Ligne politique inconnue");
     var amb = m.promesses ? (o.ambitions || []).filter(function (a, i, t) { return PILIERS[a] && t.indexOf(a) === i; }) : [];
     if (m.promesses && amb.length !== 2) throw new Error("Il faut choisir exactement deux promesses");
     var st = {
-      v: 7, niveau: nv, maire: maire, meca: m, nivJ: nj, rng: (o.graine >>> 0) || ((Math.random() * 4294967296) >>> 0), lots: o.lots || [],
+      v: 8, niveau: "progressif", maire: maire, meca: m, nivJ: nj, rng: (o.graine >>> 0) || ((Math.random() * 4294967296) >>> 0), lots: o.lots || [],
       ligne: ligne, ambitions: amb, t: 0, mandat: 1, debutMandat: 0, phase: "pret",
-      tresor: NIVEAUX[nv].tresor, dette: 0, pop: DEPART.pop, coh: DEPART.coh, humeur: 0, taux: 1, eco: 50,
+      tresor: o.scenario ? PALIERS[1].tresor : PALIERS[0].tresor, dette: 0, pop: DEPART.pop, coh: DEPART.coh, humeur: 0, taux: 1, eco: 50,
       piliers: {}, base: {}, bat: {}, prevus: [], recurrents: [], suites: [], vus: {}, flags: {}, nid: 1,
       journal: [], historique: [], evenement: null, resultat: null, fin: null, cats: [], special: null, evPerso: null,
       elections: [], rapport: null, notes: [], opposant: null,
@@ -288,11 +300,11 @@
   }
   // Sauvegardes : les parties des versions précédentes reçoivent les nouveaux champs, sans rien perdre
   function migrer(st) {
-    if (!st || st.v > 7) return st;
+    if (!st || st.v > 8) return st;
     var ancien = st.v < 5, d = { chaos: 10, chantiers: [], incidents: [], messages: [], offre: null, bj: null, pariRes: null, mission: null, missionCd: 0, missionsOk: [],
       combos: [], decouvertes: [], objets: [], secrets: {}, persos: {}, mods: { entretien: 1, recettes: 0 }, conditions: [], suitesSpe: [],
       histoMandat: 0, alerte: null, repit: 0, pariMandat: 0, pariCd: 0, leon: null, uniques: {}, emprunts: 0, ampleur: {}, scenario: null, passBats: {}, assurance: 0,
-      maire: null, crise: null, objectifs: [], prochainDossier: 0, mandatBats: {}, mandatTypes: {}, mandatBase: {},
+      maire: null, crise: null, objectifs: [], prochainDossier: 0, anticipee: null, mandatBats: {}, mandatTypes: {}, mandatBase: {},
       xp: 0, xpLog: [], xpSrc: {}, montees: [], succesPartie: [], suivi: {}, enchere: null, encheresCd: {} };
     Object.keys(d).forEach(function (k) { if (st[k] == null) st[k] = d[k]; });
     if (st.nivJ == null) st.nivJ = 99;
@@ -307,11 +319,11 @@
     if (!st.connus) { st.connus = {}; marquerConnus(st); }
     // Partie d'avant les objectifs de mandat : deux objectifs, sans crise (le mandat est déjà commencé)
     if (st.v < 7 && !st.scenario && !st.objectifs.length && st.phase !== "fin") tirerMandat(st, true);
-    st.v = 7;
+    st.v = 8;
     return st;
   }
   function xpRetro(st) {
-    var x = stats(st), nv = st.niveau || "moyen";
+    var x = stats(st), nv = palier(st);
     gagnerXP(st, "Trimestres à l’Hôtel de Ville", st.t * XP.trimestre, XP.trimestreMax);
     gagnerXP(st, "Bâtiments achetés", x.achats * XP.achat, XP.achatMax);
     (st.elections || []).forEach(function (e) { if (e.gagne) gagnerXP(st, "Élections gagnées", XP.election[nv]); });
@@ -385,7 +397,7 @@
     }
   }
   function tirerOpposant(st) {
-    var fo = FORCE_OPP[st.niveau] || FORCE_OPP.moyen, avant = st.opposant ? st.opposant.i : -1, i;
+    var fo = FORCE_OPP[palier(st)], avant = st.opposant ? st.opposant.i : -1, i;
     do { i = Math.floor(rnd(st) * OPPOSANTS.length); } while (i === avant);
     st.opposant = { i: i, force: Math.round(fo[0] + rnd(st) * (fo[1] - fo[0]) + (st.mandat - 1) * 4), actif: true, contres: 0 };
     if (bonusMaire(st).opp) st.opposant.force = Math.max(10, st.opposant.force + bonusMaire(st).opp);
@@ -423,7 +435,8 @@
   // ---------- Calculs ----------
   function bonheur(st) { var t = 0; PK.forEach(function (k) { t += st.piliers[k]; }); return borne(t / PK.length + st.humeur); }
   function trimMandat(st) { return st.t - st.debutMandat; }
-  function prochaineElection(st) { return st.debutMandat + MANDAT; }
+  // Élection prévue : fin du mandat, ou plus tôt si des élections anticipées ont été annoncées
+  function prochaineElection(st) { return st.anticipee || st.debutMandat + MANDAT; }
   function nbTransports(st) { return (st.bat.tram || 0) + (st.bat.metro || 0) + (st.bat.metroRevo || 0) + (st.bat.gpe || 0) + (st.bat.telepherique || 0); }
   // Combos : certains bâtiments fonctionnent mieux ensemble (débloqué au niveau 4)
   function combosActifs(st) {
@@ -444,7 +457,7 @@
   // (réglées sur ce qu'atteint un joueur appliqué au moment du vote : le Réaliste part de plus bas, ses cibles aussi)
   var CIBLES = { pilier: [61, 58, 55], bonheur: [60, 56, 53], pop: [56, 52, 48], dette: [250, 200, 150], tresor: [500, 280, 220], rayon: [4, 4, 4], rayonCrise: [3, 3, 3], diversite: [6, 6, 6], coherence: [56, 50, 45] };
   var RAYON_NOM = { logement: "de logement", transports: "de transports", cadre: "de cadre de vie", securite: "de sécurité", economie: "d’économie" };
-  function cibleObj(k, st) { return CIBLES[k][{ facile: 0, moyen: 1, difficile: 2 }[st.niveau] || 1]; }
+  function cibleObj(k, st) { return CIBLES[k][{ facile: 0, moyen: 1, difficile: 2 }[palier(st)]]; }
   function creerObjectif(st, o, crise) {
     var x = { k: o.k }; if (o.p) x.p = o.p; if (o.r) x.r = o.r;
     // Les objectifs imposés par la crise partent de plus loin : cibles un peu plus basses
@@ -491,9 +504,10 @@
       if (d.pop) st.pop = borne(st.pop + d.pop);
       if (d.opp && st.opposant) st.opposant.force = Math.min(100, st.opposant.force + d.opp);
     } else st.crise = null;
+    // (« garder de l'argent » ou « ne pas s'endetter » ne sont tirés que par les crises qui les imposent : sinon, ne rien faire suffirait)
     var liste = [], pris = {};
     if (cr) { liste.push(creerObjectif(st, cr.obj, true)); pris[cr.obj.k + (cr.obj.p || cr.obj.r || "")] = 1; }
-    var pool = PK.map(function (k) { return { k: "pilier", p: k }; }).concat([{ k: "bonheur" }, { k: "pop" }, { k: "dette" }, { k: "tresor" }, { k: "diversite" }],
+    var pool = PK.map(function (k) { return { k: "pilier", p: k }; }).concat([{ k: "bonheur" }, { k: "pop" }, { k: "diversite" }],
       ["logement", "transports", "cadre", "securite", "economie"].map(function (r) { return { k: "rayon", r: r }; }));
     if (st.meca.grandsProjets) pool.push({ k: "projet" });
     if (st.meca.opposant && st.opposant) pool.push({ k: "opposant" });
@@ -857,6 +871,12 @@
     if (!ok) { faillite(st); return st; }
     gagnerXP(st, "Trimestres à l’Hôtel de Ville", XP.trimestre, XP.trimestreMax);
     annoncer(st);
+    // Objectifs remplis (2 sur 3) : élections anticipées 3 trimestres plus tard, sauf si le vote est déjà proche
+    if (!st.anticipee && !st.scenario && st.objectifs && st.objectifs.length && objectifsOk(st) >= 2 && st.debutMandat + MANDAT - st.t >= 5) {
+      st.anticipee = st.t + 3;
+      notes.push({ txt: "🗳️ Objectifs remplis ! Des élections anticipées auront lieu dans 3 trimestres : tiens bon jusque-là.", d: { pop: 0, bon: 0, coh: 0, bud: 0, pil: {} } });
+      message(st, "🗳️", "Élections anticipées", "Tes objectifs sont remplis : les Parisiens votent dans 3 trimestres. Garde le cap jusqu’au vote.");
+    }
     // Léon prévient quand la dette devient dangereuse
     if (st.dette > 1000 && dette0 <= 1000) leon(st, "detteHaute");
     // Dernier pari : une proposition risquée quand la ville est au bord du gouffre
@@ -882,12 +902,13 @@
       var el = election(st); st.elections.push(el);
       if (!el.gagne) { if (el.pct < 35) gagnerObjet(st, "bonnet"); st.fin = { gagne: false, raison: { type: "election", txt: "Les Parisiens ont choisi " + el.opposant + " : tu n’obtiens que " + String(el.pct).replace(".", ",") + " % des voix." }, t: st.t }; st.phase = "fin"; leon(st, "battu"); return st; }
       if (st.scenario && st.t >= st.scenario.fin) { finDefi(st); return st; }
-      gagnerXP(st, "Élections gagnées", XP.election[st.niveau] || XP.election.moyen);
+      gagnerXP(st, "Élections gagnées", XP.election[palier(st)]);
       if (el.nok) { x.objectifsOk = (x.objectifsOk || 0) + el.nok; gagnerXP(st, "Objectifs de mandat atteints", XP.objectif * el.nok); }
       if (el.reussi) { x.mandatsReussis = (x.mandatsReussis || 0) + 1; gagnerXP(st, "Mandats réussis", XP.mandatReussi); }
       if (el.parfait) x.mandatsParfaits = (x.mandatsParfaits || 0) + 1;
       if (el.amb && el.amb.length) gagnerXP(st, "Promesses tenues le jour du vote", XP.promesseTenue * el.amb.length);
-      st.mandat++; st.debutMandat = st.t; st.pop = borne(st.pop + 5); st.pariMandat = 0;
+      if (st.anticipee) x.anticipees = (x.anticipees || 0) + 1;
+      st.mandat++; st.debutMandat = st.t; st.anticipee = null; st.pop = borne(st.pop + 5); st.pariMandat = 0;
       annoncer(st);
       ouvrirCoffre(st);
       if (st.mandat >= 3) gagnerObjet(st, "echarpe");
@@ -899,7 +920,7 @@
       st.phase = "election"; return st;
     }
     if (st.scenario && st.t >= st.scenario.fin) { finDefi(st); return st; }
-    if (trimMandat(st) === MANDAT - 2) leon(st, "election");
+    if (prochaineElection(st) - st.t === 2) leon(st, "election");
     return tirerDossier(st, base);
   }
   function continuer(st0, base) { if (st0.phase !== "election") return st0; return tirerDossier(copie(st0), base); }
@@ -1501,7 +1522,7 @@
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
     roulette: roulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
-    RAYONS: RAYONS, gainAchat: gainAchat, coutBat: coutBat, objectifs: objectifs, objectifsOk: objectifsOk, retraite: retraite, criseEnCours: criseEnCours, bonusMaire: bonusMaire, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
+    palier: palier, PALIERS: PALIERS, RAYONS: RAYONS, gainAchat: gainAchat, coutBat: coutBat, objectifs: objectifs, objectifsOk: objectifsOk, retraite: retraite, criseEnCours: criseEnCours, bonusMaire: bonusMaire, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
     ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, planVille: planVille, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.Maire = API;

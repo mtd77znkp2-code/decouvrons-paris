@@ -747,3 +747,19 @@ body.m-modal{overflow:hidden}
 .mx-oppres div{display:grid;gap:2px}
 .mx-oppres small{color:var(--c)}
 @media (prefers-reduced-motion:reduce){.mx-carte,.mx-entre,.mx-retournee .mx-recto::after{animation:none}.mx-carte-in{transition:none}}
+
+/* ---------- v14 : passage de trimestre, élections anticipées ---------- */
+.mx-trim{position:fixed;inset:0;z-index:1350;display:grid;place-items:center;background:rgba(5,8,25,.45);backdrop-filter:blur(2px);animation:m-fond .2s ease;transition:opacity .4s}
+.mx-trim-out{opacity:0}
+.mx-trim-carte{display:grid;justify-items:center;gap:2px;min-width:220px;padding:18px 26px;border-radius:22px;background:linear-gradient(160deg,#fff8e1,#ffe5a3);color:#1b2550;box-shadow:0 0 0 3px #f5b21a,0 20px 50px rgba(0,0,0,.5);transform-origin:50% 0;animation:mx-page .55s cubic-bezier(.2,1.3,.4,1)}
+@keyframes mx-page{0%{transform:perspective(600px) rotateX(-85deg);opacity:0}100%{transform:none;opacity:1}}
+.mx-trim-ico{font-size:44px;line-height:1.1;animation:m-pop .5s .15s cubic-bezier(.2,1.6,.4,1) both}
+.mx-trim-carte strong{font-size:21px}
+.mx-trim-carte small{color:#5b6386;font-weight:700}
+.mx-trim-net{margin-top:6px;padding:3px 12px;border-radius:99px;font-size:17px;animation:mx-apparait .4s .3s ease both}
+.mx-plus{background:#dff5e7;color:#1f7a44}.mx-moins{background:#fde4e2;color:#a3261f}
+.mx-trim-vote{color:#a86c00!important}
+.mx-anticipee{background:#f5b21a;color:#1b2550;animation:m-clign 1.2s ease-in-out infinite}
+.mx-antic{margin:2px 0;padding:8px 10px;border-radius:10px;background:rgba(245,178,26,.2);font-weight:800;font-size:14px}
+.mx-gris{color:var(--mut)!important}
+@media (prefers-reduced-motion:reduce){.mx-trim-carte,.mx-trim-ico,.mx-trim-net,.mx-anticipee{animation:none}}

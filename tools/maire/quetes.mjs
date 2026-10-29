@@ -4,7 +4,8 @@
 import { readFileSync, writeFileSync } from "node:fs";
 
 const SORTIE = new URL("../../public/maire/data/quetes.json", import.meta.url);
-const NIV = ["", " en Moyen ou Réaliste", " en Réaliste"];
+// Plus de niveau à choisir : les quêtes difficiles demandent d'aller plus loin dans la partie (la difficulté monte à chaque mandat)
+const NIV = ["", " lors de ton 2e mandat ou après", " à partir de ton 3e mandat"];
 const LIGNES = { gauche: "Gauche", centre: "Centre", droite: "Droite", ecologie: "Écologie" };
 const DOMS = { securite: "Sécurité", proprete: "Propreté", logement: "Logement", transports: "Transports", ecologie: "Écologie",
   achat: "Pouvoir d’achat", economie: "Économie", services: "Services publics" };
@@ -15,7 +16,7 @@ const q = [];
 // niv : niveau du joueur à partir duquel la quête peut sortir (les mécaniques nécessaires sont débloquées)
 const ajout = (k, t, xp, p = {}, niv = 1) => q.push({ k, t, xp: Math.max(10, Math.min(300, Math.round(xp / 5) * 5)), niv, ...p });
 const mult = (nmin) => [1, 1.6, 2.4][nmin || 0];
-const NIVN = [1, 4, 8];                  // Moyen débloqué au niveau 4, Réaliste au niveau 8
+const NIVN = [1, 4, 8];                  // niveau du joueur requis pour proposer ces quêtes
 const PIL = { logement: "🏠 Logement", transports: "🚇 Transports", cadre: "🌳 Cadre de vie", securite: "🛡️ Sécurité" };
 const FAM = { budget: "💶 Budget", securite: "🛡️ Sécurité", logement: "🏠 Logement", transports: "🚇 Transports", cadre: "🌳 Cadre de vie", politique: "🏛️ Politique", crise: "🚨 Crise" };
 const BATS = { parc: ["un parc", "parcs", 40, 1], logements: ["des logements sociaux", "ensembles de logements sociaux", 60, 1], police: ["un commissariat", "commissariats", 50, 1],
@@ -66,7 +67,7 @@ for (const n of [1, 2, 3]) ajout("opp", `Pousse ${n === 1 ? "un opposant" : n + 
 ajout("oppIntact", "Gagne une élection sans qu’aucune attaque de l’opposition ne t’atteigne.", 130, {}, 3);
 // Score et fidélité
 for (let v = 400; v <= 3000; v += 100) ajout("score", `Atteins un score d’au moins ${v}.`, 15 + (v - 300) * 0.07, { v });
-for (const v of [500, 750, 1000, 1500]) ajout("score", `En Réaliste, atteins un score d’au moins ${v}.`, 60 + (v - 400) * 0.12, { v, nmin: 2 }, 8);
+for (const v of [500, 750, 1000, 1500]) ajout("score", `Après 3 élections gagnées, atteins un score d’au moins ${v}.`, 60 + (v - 400) * 0.12, { v, nmin: 2 }, 8);
 for (const n of [0, 1, 2, 3]) ajout("fidele", `Gagne une élection en reniant ta ligne ${n ? "au plus " + n + " fois" : "zéro fois"}.`, 110 - n * 20, { n }, 7);
 for (const [l, nom] of Object.entries(LIGNES)) ajout("fidele", `Avec un maire de ligne ${nom}, gagne une élection sans jamais renier cette ligne.`, 110, { n: 0, ligne: l }, 7);
 // Compléments
@@ -76,13 +77,13 @@ for (const nmin of [0, 1, 2]) for (const n of [30, 36]) ajout("annees", `Reste $
 for (const [f, fn] of Object.entries(FAM)) for (const n of [8, 10]) ajout("famille", `Traite ${n} dossiers ${fn} dans une partie.`, 10 + n * 12, { f, n });
 for (const nmin of [1, 2]) for (const v of [52, 55, 60]) ajout("voix", `Gagne une élection${NIV[nmin]} avec au moins ${v} % des voix.`, (40 + (v - 50) * 9) * mult(nmin), { v, nmin }, NIVN[nmin]);
 for (const nmin of [1, 2]) for (const v of [55, 60]) ajout("tousPiliers", `Gagne une élection${NIV[nmin]} avec les 4 piliers à ${v} ou plus.`, (40 + (v - 45) * 8) * mult(nmin), { v, nmin }, NIVN[nmin]);
-for (const v of [55, 60, 65, 70]) { ajout("jauge", `En Réaliste, gagne une élection avec un bonheur d’au moins ${v}.`, (30 + (v - 50) * 6) * 2.4, { j: "bon", v, nmin: 2 }, 8); ajout("jauge", `En Réaliste, gagne une élection avec une popularité d’au moins ${v}.`, (30 + (v - 50) * 6) * 2.4, { j: "popu", v, nmin: 2 }, 8); }
+for (const v of [55, 60, 65, 70]) { ajout("jauge", `À partir de ton 3e mandat, gagne une élection avec un bonheur d’au moins ${v}.`, (30 + (v - 50) * 6) * 2.4, { j: "bon", v, nmin: 2 }, 8); ajout("jauge", `À partir de ton 3e mandat, gagne une élection avec une popularité d’au moins ${v}.`, (30 + (v - 50) * 6) * 2.4, { j: "popu", v, nmin: 2 }, 8); }
 for (const [p, pn] of Object.entries(PIL)) for (const nmin of [1, 2]) ajout("promesse", `Gagne une élection${NIV[nmin]} en tenant ta promesse ${pn}.`, 80 * mult(nmin), { p, nmin }, Math.max(6, NIVN[nmin]));
 for (const n of [6, 8]) ajout("catastrophes", `Affronte ${n} catastrophes dans une partie.`, 20 + n * 18, { n }, 5);
 for (const n of [12, 15]) ajout("opp", `Contre ${n} attaques de l’opposition.`, 20 + n * 12, { s: "contre", n }, 3);
 ajout("opp", "Réussis 4 tentatives pour faire tomber un opposant.", 170, { s: "nuireOk", n: 4 }, 3);
 for (const n of [4, 5]) ajout("opp", `Pousse ${n} opposants à renoncer.`, 50 + n * 50, { s: "elimines", n }, 3);
-for (let v = 600; v <= 1500; v += 100) ajout("score", `En Moyen ou Réaliste, atteins un score d’au moins ${v}.`, 30 + (v - 400) * 0.1, { v, nmin: 1 }, 4);
+for (let v = 600; v <= 1500; v += 100) ajout("score", `Après 2 élections gagnées, atteins un score d’au moins ${v}.`, 30 + (v - 400) * 0.1, { v, nmin: 1 }, 4);
 
 const textes = new Set();
 for (const x of q) { if (textes.has(x.t)) throw new Error("Quête en double : " + x.t); textes.add(x.t); }
