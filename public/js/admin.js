@@ -1,7 +1,7 @@
 // Administration : page à part, un tableau par jeu avec recherche, filtres et tri
 (function(){
   var LVN={facile:"Facile",moyen:"Moyen",difficile:"Difficile"},LVO={facile:0,moyen:1,difficile:2};
-  var st={t:"quiz",q:"",lvl:"",vis:"",zone:"",ok:"",cat:"",sk:null,sd:1};
+  var st={t:"maire",q:"",lvl:"",vis:"",zone:"",ok:"",cat:"",sk:null,sd:1};
   function norm(s){return String(s==null?"":s).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase()}
   function eur(n){n=+n;return (n%1?n.toFixed(2).replace(".",","):String(n))+" €"}
   function day(ms){if(!ms)return "—";var d=new Date(ms);return d.toLocaleDateString("fr-FR",{day:"numeric",month:"short"})+" "+d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})}
@@ -134,7 +134,7 @@
     scores:{coll:"scores",one:"joueur",many:"joueurs",noAdd:true,noEdit:true,
       cols:[
         {h:"Joueur",k:function(x){return norm(x.name)},c:function(x){return el("span","ap-strong",x.name||"Anonyme")}},
-        sc("loc","Devine où c’est"),sc("quiz","Quiz sur Paris"),sc("prix","Devine le prix"),sc("maire","Maire de Paris"),
+        sc("maire","Maire de Paris"),
         {h:"Dernière partie",k:function(x){return x.at||0},c:function(x){return el("span","ap-mut",day(x.at))}}
       ],
       find:function(x){return x.name},

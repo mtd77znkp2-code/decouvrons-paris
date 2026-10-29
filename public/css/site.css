@@ -251,3 +251,8 @@ h2{font-size:clamp(26px,6vw,32px);margin:22px 0 4px}
 /* Téléphone : boutons de niveau et jeux plus compacts */
 @media (max-width:600px){.lvl{padding:6px 14px;font-size:15px}.gic{width:64px;height:64px}.gic svg{width:36px;height:36px}.game{padding:16px}}
 #site{scroll-margin-top:0}
+/* Accueil : vidéo de Paris en fond, assombrie pour que le texte reste lisible */
+#home{background:var(--bg)}
+#home>div:not(#loginBox){position:relative;z-index:2}
+#home>.hbg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+#home::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(14,23,64,.25) 0%,rgba(14,23,64,.55) 55%,var(--bg) 100%)}

@@ -97,6 +97,7 @@ function tab(s){
   });
   Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){if(b.dataset.s===s)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
   if(s==="videos"&&window.dInit)setTimeout(dInit,0);
+  if(s==="jeux")loadMaire();
 }
 Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){b.onclick=function(){tab(b.dataset.s);document.getElementById("site").scrollIntoView({block:"start"})}});
 
@@ -126,25 +127,13 @@ paintUser();
 // Mode maintenance : les joueurs voient un message, l'admin peut toujours tester
 function applyMaint(){
   var M=window.MAINT||{},adm=!!window.ADMIN_UNLOCKED;
-  [["g-loc","loc","locStop"],["g-quiz","quiz","quizStop"],["g-prix","prix","prixStop"],["g-maire","maire","maireStop"]].forEach(function(g){
+  [["g-maire","maire","maireStop"]].forEach(function(g){
     var on=!!M[g[1]],box=$(g[0]);if(!box)return;
     box.classList.toggle("maint",on&&!adm);box.classList.toggle("maint-adm",on&&adm);
     var tl=document.querySelector('.gtile[data-g="'+g[0]+'"]');if(tl)tl.classList.toggle("off",on&&!adm);
     if(on&&!adm&&window[g[2]])window[g[2]]();
   });
 }
-
-// Choix du jeu
-Array.prototype.forEach.call(document.querySelectorAll(".gtile"),function(b){
-  b.onclick=function(){
-    if(window.quizStop)quizStop();
-    if(window.prixStop)prixStop();
-    if(window.locStop)locStop();
-    Array.prototype.forEach.call(document.querySelectorAll(".gtile"),function(x){x.classList.toggle("on",x===b)});
-    ["g-loc","g-quiz","g-prix","g-maire"].forEach(function(id){$(id).hidden=(id!==b.dataset.g)});
-    if(b.dataset.g==="g-maire")loadMaire();
-  };
-});
 
 // Chargement à la demande : le code de l'admin et les données de départ ne sont téléchargés que si besoin
 var LOADED={};
@@ -179,7 +168,23 @@ $("adminLogin").onsubmit=function(e){
 };
 $("adminLogout").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut();window.scrollTo(0,0)};
 
-// Accueil
+// Accueil : la vidéo de fond, verticale sur téléphone, horizontale sur ordinateur (image fixe si l'on préfère moins d'animations)
+(function(){
+  var v=document.getElementById("homeVideo");if(!v)return;
+  var calme=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function format(){return window.innerHeight>window.innerWidth?"portrait":"paysage"}
+  var cur="";
+  function charge(){
+    var f=format();if(f===cur)return;cur=f;
+    v.poster="img/accueil-"+f+".webp";
+    if(calme){v.removeAttribute("src");return}
+    v.src="img/accueil-"+f+".mp4";var p=v.play();if(p&&p.catch)p.catch(function(){});
+  }
+  charge();
+  window.addEventListener("resize",function(){clearTimeout(charge.t);charge.t=setTimeout(charge,300)});
+  // La vidéo s'arrête quand on ne voit plus l'accueil (batterie et données)
+  if("IntersectionObserver" in window)new IntersectionObserver(function(e){if(calme)return;if(e[0].isIntersecting){var p=v.play();if(p&&p.catch)p.catch(function(){})}else v.pause()}).observe(document.getElementById("home"));
+})();
 function goTo(s){var st=document.getElementById("site");st.hidden=false;tab(s);setTimeout(function(){st.scrollIntoView({behavior:"smooth",block:"start"})},50)}
 Array.prototype.forEach.call(document.querySelectorAll(".choice"),function(b){b.onclick=function(){goTo(b.dataset.go)}});
 document.getElementById("back").onclick=function(){document.getElementById("home").scrollIntoView({behavior:"smooth",block:"start"})};
