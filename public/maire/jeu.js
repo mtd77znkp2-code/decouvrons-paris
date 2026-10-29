@@ -662,7 +662,8 @@
     var g = h("div", "mx-stats");
     ajout(g, stat("💰", argent(st.tresor), (so >= 0 ? "+" : "") + argent(so) + "/trim." + (st.dette > 0 ? " · dette " + argent(st.dette) : ""), st.dette > M.PLAFOND_DETTE * 0.6 || so < 0),
       stat("😊", String(Math.round(M.bonheur(st))), "bonheur", M.bonheur(st) < 40),
-      stat("📣", String(Math.round(st.pop)), "popularité", st.pop < 40));
+      stat("📣", String(Math.round(st.pop)), "popularité", st.pop < 40),
+      stat("👥", (Math.round((st.hab || M.HAB0) / 10000) / 100).toFixed(2).replace(".", ",") + " M", st.habDelta ? (st.habDelta > 0 ? "+" : "−") + Math.abs(st.habDelta).toLocaleString("fr-FR") + " habitants" : "habitants · stable", st.habDelta < 0, "mx-hab"));
     if (st.meca.ligne) g.appendChild(stat("🧭", String(Math.round(st.coh)), "cohérence", st.coh < 40, "mx-coh"));
     ajout(d, gauche, g);
     return d;
@@ -1083,6 +1084,10 @@
       { q: ".m-chantiers", t: "🏗️ Ton chantier avance chaque trimestre et se paie par tranches. Gare aux imprévus !", a: "ok" }] },
     { id: "rare", ecran: "modale", si: function () { return (st.special === "rare" || st.special === "legendaire") && st.phase === "evenement"; }, etapes: [
       { q: "#m-modale .m-choix", t: "✨ Un événement rare ! Aucune réponse n’est toujours la meilleure : à toi de jouer.", a: "choix" }] },
+    { id: "habitants", ecran: "jeu", si: function () { return st.phase === "gestion"; }, etapes: [
+      { q: ".mx-hab", t: "👥 Les habitants : plus Paris est peuplé, plus les impôts rapportent. Quand ta popularité baisse ou passe sous 50 %, ou après une mauvaise décision, des Parisiens partent ; quand elle monte, ils arrivent. Sinon, la population ne bouge pas.", a: "ok" }] },
+    { id: "casino", ecran: "modale", si: function () { return st.phase === "evenement" && !!document.querySelector("#m-modale .m-mj"); }, etapes: [
+      { q: "#m-modale .m-mj", t: "🎰 Chaque réponse se joue au casino (blackjack ou roulette) : gagne pour la prendre. La réponse « ne rien faire » reste libre.", a: "ok" }] },
     { id: "xp", ecran: "jeu", si: function () { return st.phase === "gestion" && st.t >= 2 && !st.nivFixe; }, etapes: [
       { q: ".mx-xp", t: "⭐ Chaque trimestre, achat, élection ou succès te rapporte de l’XP. À chaque niveau, un nouveau bâtiment arrive en boutique !", a: "ok" }] },
     { id: "nouveautes", ecran: "jeu", si: function () { return st.phase === "gestion" && !!document.querySelector(".mx-bat.mx-new:not(:disabled)"); }, rejouable: 1, etapes: [

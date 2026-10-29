@@ -307,7 +307,7 @@
       combos: [], decouvertes: [], objets: [], secrets: {}, persos: {}, mods: { entretien: 1, recettes: 0 }, conditions: [], suitesSpe: [],
       histoMandat: 0, alerte: null, repit: 0, pariMandat: 0, pariCd: 0, leon: null, uniques: {}, emprunts: 0, ampleur: {}, scenario: null, passBats: {}, assurance: 0,
       maire: null, crise: null, objectifs: [], prochainDossier: 0, anticipee: null, mandatBats: {}, mandatTypes: {}, mandatBase: {},
-      xp: 0, xpLog: [], xpSrc: {}, montees: [], succesPartie: [], suivi: {}, enchere: null, encheresCd: {} };
+      xp: 0, xpLog: [], xpSrc: {}, montees: [], succesPartie: [], suivi: {}, enchere: null, encheresCd: {}, hab: HAB0, habDelta: 0 };
     Object.keys(d).forEach(function (k) { if (st[k] == null) st[k] = d[k]; });
     if (st.nivJ == null) st.nivJ = 99;
     if (!st.meca) st.meca = mecaniques(st.nivJ);
@@ -572,8 +572,21 @@
     return c;
   }
   function prix(st, id) { return Math.round(coutBat(st, id) * Math.pow(P.inflation, st.bat[id] || 0)); }
+  // ---------- Habitants : plus Paris est peuplé, plus les impôts rapportent ----------
+  // La population suit la tendance électorale : popularité qui monte = arrivées ; popularité qui baisse ou sous 50 % = départs ; sinon elle stagne.
+  // Les mauvaises décisions font aussi partir des Parisiens.
+  var HAB0 = 2100000;
+  function facteurHab(st) { return Math.max(0.8, Math.min(1.2, (st.hab || HAB0) / HAB0)); }
+  function bougerHab(st, pct) { var a = st.hab || HAB0, n = Math.round(a * (1 + pct / 100)); n = Math.max(Math.round(HAB0 * 0.75), Math.min(Math.round(HAB0 * 1.3), n)); st.hab = n; return n - a; }
+  function demographie(st, popAvant) {
+    var tend = st.pop - popAvant, pct = 0;
+    if (st.pop < 50) pct = -(50 - st.pop) * 0.02 + Math.min(0, tend + 0.5) * 0.08;
+    else if (tend < -0.8) pct = (tend + 0.8) * 0.12;
+    else if (tend > 0.4) pct = tend * 0.15;
+    st.habDelta = pct ? bougerHab(st, pct) : 0;
+  }
   function recettes(st) {
-    var cr = criseEnCours(st), r = P.impot * st.taux * (0.8 + st.eco / P.ecoRecettes) * niv(st).recettes * (bonusMaire(st).recettes || 1) * ((cr && cr.recettes) || 1);
+    var cr = criseEnCours(st), r = P.impot * st.taux * (0.8 + st.eco / P.ecoRecettes) * niv(st).recettes * (bonusMaire(st).recettes || 1) * ((cr && cr.recettes) || 1) * facteurHab(st);
     // Un même commerce rapporte un peu moins à chaque exemplaire (la clientèle se partage)
     Object.keys(st.bat).forEach(function (id) { var R = BATIMENTS[id].rev || 0; if (R) r += R * ((1 - Math.pow(P.rendement, st.bat[id])) / (1 - P.rendement)) * ((st.ampleur && st.ampleur[id]) || 1); });
     combosActifs(st).forEach(function (id) { r += C.COMBOS[id].rev || 0; });
@@ -859,7 +872,9 @@
     st.eco = borne(st.eco + (50 - st.eco) * 0.05 - Math.max(0, st.taux - 1) * 3);
     st.humeur = arrondi(st.humeur * P.humeurVit);
     var cib = bonheur(st) * 0.6 + st.coh * 0.2 + 14 - Math.max(0, trimMandat(st)) * P.usurePop * (bonusMaire(st).usurePop || 1) - st.dette / P.detteImpop * (bonusMaire(st).detteImpop || 1) - (st.coh < 40 ? 4 : 0) - Math.max(0, st.taux - 1) * 30;
+    var popAvant = st.pop;
     st.pop = borne(st.pop + (cib - st.pop) * P.popVit + Math.min(0.6, atout(st, "popT")));
+    demographie(st, popAvant);
     if (st.meca.ligne) st.coh = borne(st.coh + (50 - st.coh) * 0.03);
     // Le Palais du Maire fait scandale quand la ville va mal
     if (st.bat.palais && (st.dette > 800 || bonheur(st) < 45)) { st.pop = borne(st.pop - 0.8); notes.push({ txt: "👑 Le Palais du Maire fait jaser : « Il vit dans le luxe pendant que la ville souffre ! »", d: { pop: -0.8, bon: 0, coh: 0, bud: 0, pil: {} } }); }
@@ -1312,6 +1327,9 @@
     if (ev.cat === "catastrophe" || ev.cat === "crise") x.crisesOk++;
     if (e && e.bud < 0) x.depenses += -e.bud;
     var neg = (d.pop || 0) + (d.bon || 0) < 0; x.negSerie = neg ? x.negSerie + 1 : 0; x.negSerieMax = Math.max(x.negSerieMax, x.negSerie);
+    // Une mauvaise décision fait partir des Parisiens
+    var mauvais = (d.pop || 0) + (d.bon || 0);
+    if (mauvais <= -2) { var dep = bougerHab(st, Math.max(-1.2, mauvais * 0.12)); if (dep < 0) extra.push("🧳 " + Math.abs(dep).toLocaleString("fr-FR") + " Parisiens quittent la ville après cette décision."); }
     st.resultat = { i: i, d: d, surprise: surprise, extra: extra, rec: e && e.rec ? e.rec : null, dif: (c.dif || []).length };
     st.historique.push({ t: st.t, titre: ev.titre, choix: c.t, d: d, sp: st.special || "", c: ev.cat });
     if (st.historique.length > 300) st.historique.splice(0, st.historique.length - 300);
@@ -1601,7 +1619,7 @@
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
-    roulette: roulette, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
+    roulette: roulette, HAB0: HAB0, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
     palier: palier, PALIERS: PALIERS, RAYONS: RAYONS, gainAchat: gainAchat, coutBat: coutBat, objectifs: objectifs, objectifsOk: objectifsOk, retraite: retraite, criseEnCours: criseEnCours, bonusMaire: bonusMaire, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
     ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, planVille: planVille, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };

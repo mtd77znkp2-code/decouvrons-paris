@@ -619,6 +619,21 @@ test("casino des dossiers : chaque réponse se gagne au blackjack ou à la roule
   assert.ok(vus.bj >= 15 && vus.roulette >= 15, JSON.stringify(vus));
   assert.ok(gagnes > 5 && perdus > 5, gagnes + " / " + perdus);
 });
+test("habitants : la population suit la tendance électorale et fait varier les impôts", () => {
+  let st = M.nouvellePartie({ ligne: "centre", ambitions: ["transports", "cadre"], graine: 3, nivJoueur: 40 });
+  assert.equal(st.hab, M.HAB0);
+  // Popularité basse : des Parisiens partent chaque trimestre
+  let bas = JSON.parse(JSON.stringify(st)); bas.pop = 35; bas.phase = "gestion";
+  bas = M.debutTour(bas, base); assert.ok(bas.hab < M.HAB0, "départs sous 50 %");
+  // Plus d'habitants, plus d'impôts (dans la limite de ±20 %)
+  const plein = JSON.parse(JSON.stringify(st)); plein.hab = M.HAB0 * 1.1;
+  assert.ok(M.facteurHab(plein) > M.facteurHab(st));
+  plein.hab = M.HAB0 * 2; assert.equal(M.facteurHab(plein), 1.2);
+  // Une popularité qui monte au-dessus de 50 % attire des habitants
+  let haut = JSON.parse(JSON.stringify(st)); haut.phase = "gestion"; haut.pop = 52; haut.coh = 95; haut.humeur = 30;
+  Object.keys(haut.piliers).forEach(k => { haut.piliers[k] = 90; haut.base[k] = 90; });
+  haut = M.debutTour(haut, base); assert.ok(haut.pop > 52 + 0.4 ? haut.hab > M.HAB0 : true);
+});
 test("élections anticipées : 3 trimestres après avoir rempli ses objectifs, sauf si le vote est déjà proche", () => {
   const prep = (t) => { const st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 950, nivJoueur: 40 });
     st.phase = "gestion"; st.t = t; st.objectifs = [{ k: "pop", but: 1, ico: "📣", txt: "a" }, { k: "pop", but: 2, ico: "📣", txt: "b" }, { k: "pop", but: 99, ico: "📣", txt: "c" }]; return st; };
