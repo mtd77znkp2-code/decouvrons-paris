@@ -258,8 +258,7 @@ h2{font-size:clamp(26px,6vw,32px);margin:22px 0 4px}
 #home::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(14,23,64,.25) 0%,rgba(14,23,64,.55) 55%,var(--bg) 100%)}
 /* Accueil épuré : « Jouer » au centre, « Découvre » discret en bas à droite */
 .hcentre{display:grid;justify-items:center;gap:26px}
-.hlogo{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);left:14px;width:46px;height:46px;border-radius:50%;box-shadow:0 0 0 2px var(--a),0 6px 18px rgba(0,0,0,.5)}
-#home .hlogo{position:absolute}
+.hcentre .logo{margin:0 auto}
 .hjouer{font:inherit;font-size:clamp(30px,9vw,44px);font-weight:800;letter-spacing:.02em;color:var(--bg);background:#fff;border:none;border-radius:26px;padding:20px 64px;cursor:pointer;
   box-shadow:0 0 0 4px rgba(255,255,255,.25),0 18px 50px rgba(0,0,0,.55);animation:hpulse 2.4s ease-in-out infinite;transition:transform .15s}
 .hjouer:hover,.hjouer:focus-visible{transform:scale(1.04)}
