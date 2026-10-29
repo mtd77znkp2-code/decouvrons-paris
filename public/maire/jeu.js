@@ -659,13 +659,17 @@
     var v = M.sondage(st), etat = v > 52 ? "bien" : v > 48 ? "juste" : "mal", so = M.solde(st);
     var d = h("div", "mx-tableau mx-" + etat);
     var gauche = ajout(h("div", "mx-sond"), h("b", null, virg(v) + " %"), h("small", null, etat === "bien" ? "Sondage · tu serais réélu" : etat === "juste" ? "Sondage · au coude-à-coude" : "Sondage · tu serais battu"));
-    function stat(ico, val, lib, alerte, cls) { var e = h("div", "mx-stat" + (alerte ? " mx-alerte" : "") + (cls ? " " + cls : "")); ajout(e, h("span", null, ico), h("b", null, val), h("small", null, lib)); return e; }
+    // Jauge du sondage : le trait marque la barre des 50 %
+    var jg = h("div", "mx-jauge"), ji = h("i"); ji.style.width = Math.max(2, Math.min(100, v)) + "%"; jg.appendChild(ji); gauche.appendChild(jg);
+    function stat(ico, val, lib, alerte, cls) { var e = h("div", "mx-stat" + (alerte ? " mx-alerte" : "") + (cls ? " " + cls : "")), b = h("b"); b.innerHTML = val; ajout(e, h("span", null, ico), b, h("small", null, lib)); return e; }
+    function millions(n) { return (Math.round(n / 10000) / 100).toFixed(2).replace(".", ",") + " M"; }
     var g = h("div", "mx-stats");
     ajout(g, stat("💰", argent(st.tresor), (so >= 0 ? "+" : "") + argent(so) + "/trim." + (st.dette > 0 ? " · dette " + argent(st.dette) : ""), st.dette > M.PLAFOND_DETTE * 0.6 || so < 0),
       stat("😊", String(Math.round(M.bonheur(st))), "bonheur", M.bonheur(st) < 40),
       stat("📣", String(Math.round(st.pop)), "popularité", st.pop < 40),
-      stat("👥", (Math.round((st.hab || M.HAB0) / 10000) / 100).toFixed(2).replace(".", ",") + " M", st.habDelta ? (st.habDelta > 0 ? "+" : "−") + Math.abs(st.habDelta).toLocaleString("fr-FR") + " habitants"
-        : (st.hab || M.HAB0) >= M.capacite(st) ? "habitants · ville pleine 🏠" : "habitants · stable", st.habDelta < 0, "mx-hab"));
+      stat("👥", millions(st.hab || M.HAB0), "habitants · max " + millions(M.capacite(st)) + ((st.hab || M.HAB0) >= M.capacite(st) ? " 🏠 plein" : "")
+        + (st.habDelta ? " · " + (st.habDelta > 0 ? "+" : "−") + Math.abs(st.habDelta).toLocaleString("fr-FR") : ""), st.habDelta < 0, "mx-hab"),
+      stat("💼", virg(M.chomage(st)) + " %", "chômage", M.chomage(st) > 10, "mx-chom"));
     if (st.meca.ligne) g.appendChild(stat("🧭", String(Math.round(st.coh)), "cohérence", st.coh < 40, "mx-coh"));
     ajout(d, gauche, g);
     return d;
@@ -722,6 +726,7 @@
     var B = M.BATIMENTS[id], ga = M.gainAchat(st, id), l = Object.keys(ga).filter(function (k) { return Math.abs(ga[k]) >= 0.1; })
       .map(function (k) { return (ga[k] >= 0 ? "+" : "−") + virg(Math.abs(ga[k])) + M.ICO[k]; });
     if (B.rev) l.push("+" + B.rev + " M€/t");
+    if (B.emplois) l.push("+" + (B.emplois >= 1000 ? virg(B.emplois / 1000) + " k" : B.emplois) + "💼");
     return l.slice(0, 3).join(" ");
   }
   function acheterBat(id) {
@@ -761,6 +766,7 @@
     if (B.rev) l.appendChild(h("li", null, "💶 Recettes : +" + B.rev + " M€ par trimestre"));
     if (B.pop) l.appendChild(h("li", null, "📣 Popularité : +" + B.pop + " à l’inauguration"));
     if (M.LOGE[id]) l.appendChild(h("li", null, "🏠 Logements : place pour " + M.LOGE[id].toLocaleString("fr-FR") + " Parisiens de plus"));
+    if (B.emplois) l.appendChild(h("li", null, "💼 Emplois : " + B.emplois.toLocaleString("fr-FR") + " postes créés (le chômage baisse)"));
     atouts(B).forEach(function (t) { l.appendChild(h("li", null, t)); });
     l.appendChild(h("li", "mx-fcout", ench ? "🔨 Aux enchères · prix moyen ≈ " + argent(B.cout) : B.projet ? "🏗️ " + argent(M.coutBat(st, id)) + " au total, 30 % au lancement, " + B.duree + " trimestres de travaux" : "💰 " + argent(M.prix(st, id)) + (B.ent ? " · entretien " + argent(B.ent) + "/trim." : "")));
     c.appendChild(l);
@@ -1087,8 +1093,10 @@
       { q: ".m-chantiers", t: "🏗️ Ton chantier avance chaque trimestre et se paie par tranches. Gare aux imprévus !", a: "ok" }] },
     { id: "rare", ecran: "modale", si: function () { return (st.special === "rare" || st.special === "legendaire") && st.phase === "evenement"; }, etapes: [
       { q: "#m-modale .m-choix", t: "✨ Un événement rare ! Aucune réponse n’est toujours la meilleure : à toi de jouer.", a: "choix" }] },
-    { id: "habitants2", ecran: "jeu", si: function () { return st.phase === "gestion"; }, etapes: [
-      { q: ".mx-hab", t: "👥 Les habitants : plus Paris est peuplé, plus les impôts rapportent. Quand ta popularité baisse ou passe sous 50 %, ou après une mauvaise décision, des Parisiens partent ; quand elle monte, ils arrivent… à condition d’avoir de la place : construis des logements (logements sociaux, résidence étudiante…) pour en accueillir plus. Sinon, la population ne bouge pas.", a: "ok" }] },
+    { id: "habitants3", ecran: "jeu", si: function () { return st.phase === "gestion"; }, etapes: [
+      { q: ".mx-hab", t: "👥 Les habitants : plus Paris est peuplé, plus les impôts rapportent. Ils arrivent quand ta popularité monte… s’il y a des logements libres (construis-en pour en accueillir plus).", a: "ok" },
+      { q: ".mx-chom", t: "💼 Une ville cohérente : plus il y a d’habitants, plus il faut de sécurité, de cadre de vie et d’emplois (les commerces en créent). Sinon, ou si ta popularité baisse, les Parisiens s’en vont.", a: "ok" },
+      { q: ".m-journal", t: "📰 Le Journal de Paris te dit ce que veulent les habitants : lis-le à chaque trimestre !", a: "ok" }] },
     { id: "casino", ecran: "modale", si: function () { return st.phase === "evenement" && !!document.querySelector("#m-modale .m-mj"); }, etapes: [
       { q: "#m-modale .m-mj", t: "🎰 Chaque réponse se joue au casino (blackjack, roulette ou poker) : gagne pour la prendre. La réponse « ne rien faire » reste libre.", a: "ok" }] },
     { id: "xp", ecran: "jeu", si: function () { return st.phase === "gestion" && st.t >= 2 && !st.nivFixe; }, etapes: [
@@ -1676,6 +1684,37 @@
     if (!l.length) d.appendChild(h("small", "m-aide", "Achète ton premier bâtiment : il apparaîtra ici, au cœur de Paris."));
     if (fin) d.appendChild(ajout(h("div", "m-bas"), bouton("🔍 Agrandir", "btn m-sec", pleinEcranVille), l.length ? bouton("📸 Partager ma ville", "btn m-go", partagerVille) : null));
     else if (l.length) d.appendChild(ajout(h("div", "mx-villebas"), h("small", null, "Touche le plan pour l’agrandir"), bouton("📸 Partager", "mx-lien", partagerVille)));
+    if (!fin) d.appendChild(journal());
+    return d;
+  }
+  // ---------- Le Journal de Paris : ce que disent les habitants, pour savoir ce qu'ils attendent ----------
+  var PRENOMS = ["Inès", "Karim", "Léa", "Mamadou", "Chloé", "Yanis", "Sophie", "Lucas", "Fatou", "Hugo", "Camille", "Rayan", "Manon", "Théo", "Aïcha", "Jules", "Sarah", "Nathan", "Jeanne", "Malik"];
+  function journal() {
+    var bes = M.besoin(st), p = st.piliers, ch = M.chomage(st), plein = (st.hab || M.HAB0) >= M.capacite(st), so = M.solde(st), l = [];
+    // Chaque sujet : gravité (plus c'est haut, plus il passe en premier), titre de une, citations possibles
+    function sujet(g, une, cits) { l.push({ g: g, une: une, cits: cits }); }
+    if (p.securite < bes) sujet(bes - p.securite + 10, "Insécurité : les Parisiens inquiets", ["Je ne sors plus le soir, ma rue n’est pas sûre.", "Trois vols de vélo dans mon immeuble ce mois-ci.", "On veut plus de policiers dans le quartier !"]);
+    if (p.cadre < bes) sujet(bes - p.cadre + 10, "Cadre de vie : la ville étouffe", ["Pas un parc à moins de vingt minutes de chez moi…", "Mes enfants jouent sur le parking, faute de mieux.", "Paris manque d’arbres et d’endroits pour respirer."]);
+    if (ch > 10) sujet((ch - 10) * 3 + 10, "Chômage : " + virg(ch) + " % des Parisiens sans emploi", ["Ça fait huit mois que je cherche du travail.", "Il faudrait des commerces et des entreprises dans le quartier.", "Mon fils a fini ses études et ne trouve rien."]);
+    if (plein && st.pop >= 50) sujet(12, "Crise du logement : plus une place libre", ["Impossible de trouver un appartement, il faut construire !", "Douze visites, douze refus. Paris est plein.", "Je vais devoir partir en banlieue, faute de logement."]);
+    if (p.logement < 40) sujet(45 - p.logement, "Loyers : la colère monte", ["1 400 € pour 18 m², c’est une blague ?", "Mon loyer a encore augmenté.", "Les logements sociaux, il y a dix ans d’attente."]);
+    if (p.transports < 40) sujet(45 - p.transports, "Transports : la galère quotidienne", ["Ligne 13 bondée, encore et toujours.", "Une heure pour traverser Paris en bus…", "Le métro est en panne une fois sur deux."]);
+    if (st.dette > M.PLAFOND_DETTE * 0.5) sujet(14, "Finances : la dette inquiète", ["La mairie dépense trop, qui va payer ?", "On paiera les dettes de la ville pendant vingt ans."]);
+    if (so < 0) sujet(8, "Budget dans le rouge", ["Les caisses se vident chaque trimestre.", "Il faudrait des recettes, pas que des dépenses."]);
+    if (st.habDelta < -3000) sujet(9, Math.abs(st.habDelta).toLocaleString("fr-FR") + " Parisiens ont quitté la ville", ["Mes voisins sont partis à Lyon.", "Tout le monde part, ça fait de la peine."]);
+    if (st.habDelta > 3000) sujet(3, "Paris attire : " + st.habDelta.toLocaleString("fr-FR") + " nouveaux habitants", ["On vient d’emménager, on adore le quartier !", "Paris, ça reste Paris."]);
+    if (M.bonheur(st) >= 60) sujet(2, "Les Parisiens heureux", ["Franchement, la ville n’a jamais été aussi agréable.", "Bravo à la mairie pour le quartier."]);
+    if (st.pop >= 55) sujet(1, "Le maire au sommet des sondages", ["Je revoterai pour lui sans hésiter.", "Enfin un maire qui écoute."]);
+    if (!l.length) sujet(0, "Une semaine calme à Paris", ["Rien à signaler, et c’est tant mieux.", "Paris tourne, tranquillement."]);
+    l.sort(function (a, b) { return b.g - a.g; });
+    var d = h("div", "m-journal");
+    ajout(d, ajout(h("div", "m-journal-tete"), h("b", null, "Le Journal de Paris"), h("small", null, "n° " + st.t)), h("p", "m-journal-une", l[0].une));
+    var u = h("ul");
+    l.slice(0, 3).forEach(function (x, k) {
+      var c = x.cits[(st.t + k) % x.cits.length], n = PRENOMS[(st.t * 7 + k * 3) % PRENOMS.length], age = 19 + (st.t * 13 + k * 17) % 60, arr = 1 + (st.t * 5 + k * 11) % 20;
+      u.appendChild(ajout(h("li"), h("q", null, c), h("small", null, n + ", " + age + " ans, " + arr + (arr === 1 ? "er" : "e"))));
+    });
+    d.appendChild(u);
     return d;
   }
   function pleinEcranVille() {

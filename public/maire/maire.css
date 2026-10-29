@@ -843,3 +843,51 @@ body.m-fond-on:has(#site[hidden]) .m-fond,body.m-fond-on:has(#jeux[hidden]) .m-f
 .m-pk-radar::after{content:"♠";position:absolute;inset:0;display:grid;place-items:center;font-size:30px;color:#1b2550}
 @keyframes m-radar{0%{box-shadow:0 0 0 0 rgba(245,178,26,.6)}100%{box-shadow:0 0 0 26px rgba(245,178,26,0)}}
 .m-pk-siege .m-bj-val{max-width:68%;text-align:center;line-height:1.3}
+/* Le Journal de Paris (sous la carte) */
+.m-journal{margin-top:12px;padding:12px 14px;border-radius:14px;background:#f7f2e7;color:#1b2550;box-shadow:inset 0 0 0 1px #d9d1bf}
+.m-journal-tete{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding-bottom:6px;border-bottom:2px solid #1b2550}
+.m-journal-tete b{font:900 18px/1.1 Georgia,serif;letter-spacing:.02em}
+.m-journal-tete small{color:#5b6386;font-size:12px}
+.m-journal-une{margin:8px 0 6px;font:800 16px/1.25 Georgia,serif}
+.m-journal ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.m-journal li{display:grid;gap:1px;padding-left:10px;border-left:3px solid #f5b21a}
+.m-journal q{font-style:italic;font-size:14px}
+.m-journal li small{color:#5b6386;font-size:12px}
+.mx-stat b small{font-size:.62em;font-weight:700;opacity:.75}
+
+/* ===================== Écran de gestion : refonte « premium » ===================== */
+#m-app{gap:14px}
+/* Cartes en verre : même fond, même bord, même ombre partout */
+#m-app>.mx-hud,#m-app>.mx-tableau,#m-app>.mx-objectifs,#m-app>.m-ville,#m-app>.mx-gestion,#m-app>.mx-replie,#m-app>.m-chantiers,#m-app>.mx-notes,#m-app>.mx-boutique{
+  border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.035));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 10px 28px rgba(0,0,0,.22);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#m-app>.mx-boutique{padding:14px 12px 12px}
+#m-app>.mx-hud{padding:14px 16px}
+/* Sondage : gros chiffre, jauge avec la ligne des 50 % */
+#m-app>.mx-tableau{border-left:0;position:relative;overflow:hidden;padding:16px}
+#m-app>.mx-tableau::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:currentColor;opacity:.9}
+.mx-tableau.mx-bien{color:#6fdc95}.mx-tableau.mx-juste{color:#f5b21a}.mx-tableau.mx-mal{color:#ff8a80}
+.mx-tableau .mx-stats,.mx-tableau .mx-sond small{color:var(--ink,#fff)}
+.mx-tableau .mx-sond small{color:var(--mut)}
+.mx-jauge{position:relative;flex-basis:100%;height:8px;margin-top:6px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+.mx-jauge i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:currentColor;transition:width .6s ease}
+.mx-jauge::after{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:2px;background:#fff;opacity:.85}
+/* Chiffres clés : grille régulière de 3 colonnes */
+#m-app .mx-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:row;gap:8px}
+#m-app .mx-stat{justify-items:center;text-align:center;gap:1px;padding:9px 6px 8px;border-radius:14px;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+#m-app .mx-stat span{font-size:16px}
+#m-app .mx-stat b{font-size:16px;white-space:nowrap;color:#fff}
+#m-app .mx-stat small{font-size:11px;line-height:1.25}
+#m-app .mx-stat.mx-alerte{background:rgba(224,82,75,.16);box-shadow:inset 0 0 0 1px rgba(255,138,128,.35)}
+#m-app .mx-stat.mx-alerte b{color:#ff8a80}
+@media (min-width:700px){#m-app .mx-stats{grid-template-columns:repeat(6,minmax(0,1fr))}}
+/* Objectifs, piliers, opposant */
+#m-app>.mx-objectifs{background:linear-gradient(180deg,rgba(245,178,26,.13),rgba(245,178,26,.04));box-shadow:inset 0 0 0 1px rgba(245,178,26,.35),0 10px 28px rgba(0,0,0,.22)}
+.mx-opp{flex-wrap:wrap;border-radius:16px;padding:10px 14px;box-shadow:inset 0 0 0 1px rgba(224,82,75,.3)}
+.mx-opp strong{white-space:nowrap}
+/* Titres de section : petites capitales dorées */
+#m-app h5,.mx-boutique h5{color:#f5b21a;letter-spacing:.08em;font-size:13px}
+.m-ville summary span{font-size:17px}
+/* Barre du bas : toujours à portée de pouce */
+.m-barmois{bottom:12px;padding:10px 0 0}
+.m-barmois .btn{background:linear-gradient(180deg,#ffd76a,#f5b21a);color:#1b2550;font-weight:900;border:0;box-shadow:0 12px 30px rgba(0,0,0,.5),inset 0 -3px 0 rgba(0,0,0,.15)}

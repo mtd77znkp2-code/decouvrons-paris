@@ -99,7 +99,7 @@
   // Bâtiments exclusifs du pass de combat : gagnés une fois, disponibles pour toujours
   Object.keys(C.PASS_BATIMENTS).forEach(function (id) { BATIMENTS[id] = Object.assign({ pass: 1, unique: 1, niv: 1, ali: {} }, C.PASS_BATIMENTS[id]); });
   var RAYONS = [{ id: "logement", nom: "Logement", ico: "🏠" }, { id: "transports", nom: "Transports", ico: "🚇" }, { id: "cadre", nom: "Cadre de vie", ico: "🌳" },
-    { id: "securite", nom: "Sécurité", ico: "🛡️" }, { id: "economie", nom: "Économie", ico: "💶" }, { id: "enchere", nom: "Enchères", ico: "🔨" },
+    { id: "securite", nom: "Sécurité", ico: "🛡️" }, { id: "economie", nom: "Économie", ico: "💶" }, { id: "commerce", nom: "Commerces", ico: "🏪" }, { id: "enchere", nom: "Enchères", ico: "🔨" },
     { id: "projet", nom: "Projets", ico: "🏗️" }, { id: "secret", nom: "Secrets", ico: "🔐" }];
 
   // ---------- XP et niveaux (la courbe est partagée avec progression.js) ----------
@@ -460,7 +460,7 @@
   // Cibles selon la difficulté : facile, moyen, réaliste
   // (réglées sur ce qu'atteint un joueur appliqué au moment du vote : le Réaliste part de plus bas, ses cibles aussi)
   var CIBLES = { pilier: [61, 58, 55], bonheur: [60, 56, 53], pop: [56, 52, 48], dette: [250, 200, 150], tresor: [500, 280, 220], rayon: [4, 4, 4], rayonCrise: [3, 3, 3], diversite: [6, 6, 6], coherence: [56, 50, 45] };
-  var RAYON_NOM = { logement: "de logement", transports: "de transports", cadre: "de cadre de vie", securite: "de sécurité", economie: "d’économie" };
+  var RAYON_NOM = { logement: "de logement", transports: "de transports", cadre: "de cadre de vie", securite: "de sécurité", economie: "d’économie", commerce: "de commerce" };
   function cibleObj(k, st) { return CIBLES[k][{ facile: 0, moyen: 1, difficile: 2 }[palier(st)]]; }
   function creerObjectif(st, o, crise) {
     var x = { k: o.k }; if (o.p) x.p = o.p; if (o.r) x.r = o.r;
@@ -582,12 +582,25 @@
   var LOGE = { logements: 18000, residenceEtudiante: 12000, intergeneration: 18000, cooperative: 24000, renovation: 66000, jo: 60000, quartier: 48000, villageVertical: 66000 };
   function capacite(st) { var c = HAB0; Object.keys(LOGE).forEach(function (id) { c += LOGE[id] * ((st.bat && st.bat[id]) || 0); }); return c; }
   function facteurHab(st) { return Math.max(0.8, Math.min(1.2, (st.hab || HAB0) / HAB0)); }
+  // Une ville cohérente : plus elle est peuplée, plus il faut de sécurité et de cadre de vie (sinon les gens s'en vont)
+  function besoin(st) { return Math.round(40 + ((st.hab || HAB0) / HAB0 - 1) * 100); }
+  // Emplois : la ville en offre 970 000 au départ ; commerces et économie en créent. La moitié des habitants cherche un travail.
+  var EMP0 = 970000;
+  function emplois(st) {
+    var n = EMP0; Object.keys(st.bat || {}).forEach(function (id) { var B = BATIMENTS[id]; if (!B) return; n += (B.emplois || (B.cat === "economie" ? 3000 : 0)) * st.bat[id]; });
+    return n;
+  }
+  function chomage(st) { var actifs = (st.hab || HAB0) * 0.5; return Math.max(2, Math.min(25, Math.round((actifs - emplois(st)) / actifs * 1000) / 10)); }
   function bougerHab(st, pct) { var a = st.hab || HAB0, n = Math.round(a * (1 + pct / 100)); n = Math.max(Math.round(HAB0 * 0.75), Math.min(Math.round(HAB0 * 1.3), n)); st.hab = n; return n - a; }
   function demographie(st, popAvant) {
     var tend = st.pop - popAvant, pct = 0;
     if (st.pop < 50) pct = -(50 - st.pop) * 0.02 + Math.min(0, tend + 0.5) * 0.08;
     else if (tend < -0.8) pct = (tend + 0.8) * 0.12;
     else if (tend > 0.4) pct = tend * 0.15;
+    // Besoins des habitants : sécurité et cadre de vie à la hauteur de la population, et du travail pour tous
+    var bes = besoin(st), manque = Math.max(0, bes - st.piliers.securite) + Math.max(0, bes - st.piliers.cadre), ch = chomage(st);
+    if (manque > 0) pct = Math.min(pct, 0) - manque * 0.03;
+    if (ch > 10) pct = Math.min(pct, 0) - (ch - 10) * 0.04;
     // Les arrivées s'arrêtent quand tous les logements sont occupés
     if (pct > 0) { var cap = capacite(st), a = st.hab || HAB0; pct = a >= cap ? 0 : Math.min(pct, (cap - a) / a * 100); }
     st.habDelta = pct ? bougerHab(st, pct) : 0;
@@ -1650,7 +1663,7 @@
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
-    roulette: roulette, HAB0: HAB0, LOGE: LOGE, capacite: capacite, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, mjPoker: mjPoker, mjPokerLigne: mjPokerLigne, mjPokerResultat: mjPokerResultat, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
+    roulette: roulette, HAB0: HAB0, LOGE: LOGE, capacite: capacite, besoin: besoin, emplois: emplois, chomage: chomage, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, mjPoker: mjPoker, mjPokerLigne: mjPokerLigne, mjPokerResultat: mjPokerResultat, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
     palier: palier, PALIERS: PALIERS, RAYONS: RAYONS, gainAchat: gainAchat, coutBat: coutBat, objectifs: objectifs, objectifsOk: objectifsOk, retraite: retraite, criseEnCours: criseEnCours, bonusMaire: bonusMaire, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
     ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, planVille: planVille, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };

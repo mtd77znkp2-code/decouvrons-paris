@@ -290,7 +290,10 @@ test("progression en direct : XP pendant la partie, un bâtiment par niveau, suc
   assert.deepEqual(dispo, ["parc", "logements"], "on commence avec deux bâtiments");
   assert.equal(M.peutAcheter(st, "velo"), "Se débloque au niveau 2.");
   // Chaque niveau débloque au moins un bâtiment, jusqu'au niveau 12
-  for (let n = 2; n <= 35; n++) assert.equal(Object.values(M.BATIMENTS).filter(B => !B.secret && !B.pass && B.niv === n).length, 2, "2 bâtiments débloqués au niveau " + n);
+  for (let n = 2; n <= 35; n++) assert.equal(Object.values(M.BATIMENTS).filter(B => !B.secret && !B.pass && B.cat !== "commerce" && B.niv === n).length, 2, "2 bâtiments débloqués au niveau " + n);
+  // Les commerces suivent leur propre rythme : un à la fois, étalés dans la progression
+  const com = Object.values(M.BATIMENTS).filter(B => B.cat === "commerce").map(B => B.niv);
+  assert.ok(com.length >= 10 && new Set(com).size === com.length && Math.min(...com) >= 2);
   // Premier achat : succès « Première pierre » réussi et affiché, XP versée au profil
   st = M.acheter(st, "parc");
   let r = G.suivrePartie(st, M, {}); st = r.st;
@@ -658,6 +661,12 @@ test("habitants : la population suit la tendance électorale et fait varier les 
   // Une popularité qui monte au-dessus de 50 % attire des habitants
   let haut = JSON.parse(JSON.stringify(st)); haut.phase = "gestion"; haut.pop = 52; haut.coh = 95; haut.humeur = 30;
   Object.keys(haut.piliers).forEach(k => { haut.piliers[k] = 90; haut.base[k] = 90; });
+  // Une ville incohérente (sécurité ou cadre de vie trop bas pour sa population, ou trop de chômage) perd des habitants
+  assert.equal(M.besoin(st), 40);
+  let inc = JSON.parse(JSON.stringify(st)); inc.phase = "gestion"; inc.pop = 52; inc.piliers.securite = 20; inc.base.securite = 20;
+  inc = M.debutTour(inc, base); assert.ok(inc.hab < M.HAB0, "départs : pas assez de sécurité");
+  const cho = JSON.parse(JSON.stringify(st)); assert.ok(M.chomage(cho) > 5 && M.chomage(cho) < 10);
+  cho.bat = Object.assign({}, cho.bat, { mcdo: 5 }); assert.ok(M.chomage(cho) < M.chomage(st), "les commerces créent des emplois");
   // Sans logements, Paris est plein : personne n'arrive ; avec des logements sociaux, la ville peut grandir
   let plein2 = JSON.parse(JSON.stringify(haut)); plein2 = M.debutTour(plein2, base); assert.ok(plein2.hab <= M.capacite(plein2));
   haut.bat = Object.assign({}, haut.bat, { logements: 3 }); assert.equal(M.capacite(haut), M.HAB0 + 3 * M.LOGE.logements);
