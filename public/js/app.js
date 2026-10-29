@@ -201,11 +201,23 @@ var musique=(function(){
   function bouton(){bt.textContent=muet?"🔇":"🔊";bt.setAttribute("aria-pressed",muet?"true":"false");bt.setAttribute("aria-label",muet?"Remettre la musique":"Couper la musique")}
   bt.onclick=function(e){e.stopPropagation();muet=!muet;try{localStorage.setItem("musique_off",muet?"1":"0")}catch(x){}bouton();maj()};
   bouton();
-  // Les navigateurs bloquent le son tant qu'on n'a pas touché la page : on relance au premier geste
-  function geste(){maj();if(!P.base.a.paused||!P.allumee.a.paused){document.removeEventListener("pointerdown",geste,true);document.removeEventListener("keydown",geste,true)}}
-  document.addEventListener("pointerdown",geste,true);document.addEventListener("keydown",geste,true);
+  // Les navigateurs bloquent le son tant qu'on n'a pas touché la page : on réessaie à chaque geste
+  // (sur téléphone, seul le doigt qu'on relève compte) jusqu'à ce que la lecture ait vraiment démarré
+  var GESTES=["touchend","pointerup","click","keydown"],debloque=false;
+  function geste(e){
+    if(debloque||(e&&e.target&&e.target.closest&&e.target.closest("#jouer")))return;
+    var q=quelle();if(!q)return;
+    var a=P[q].a;try{a.volume=0}catch(e){}
+    var r=a.play();
+    if(r&&r.then)r.then(function(){debloque=true;GESTES.forEach(function(g){document.removeEventListener(g,geste,true)});maj()}).catch(function(){});
+    else{debloque=true;maj()}
+  }
+  GESTES.forEach(function(g){document.addEventListener(g,geste,true)});
   document.addEventListener("visibilitychange",maj);
   window.addEventListener("pagehide",function(){P.base.a.pause();P.allumee.a.pause()});
+  // Paris s'éteint : bruit du groupe électrogène qui s'arrête, toujours depuis le début
+  var coupure=new Audio("audio/accueil-eteint.mp3");coupure.preload="auto";
+  maj.coupure=function(){if(muet)return;try{coupure.currentTime=0}catch(e){}var r=coupure.play();if(r&&r.catch)r.catch(function(){})};
   maj();
   return maj;
 })();
@@ -240,9 +252,9 @@ document.querySelector(".hdecouvre").onclick=function(){goTo("videos")};
 // « Jouer » : l'écran se dérègle façon bug informatique, puis le jeu le remplace
 document.getElementById("jouer").onclick=function(){
   if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return goTo("jeux");
-  // Paris s'éteint une demi-seconde (plus aucun bouton), puis l'écran bugge et le jeu apparaît
+  // Paris s'éteint 0,8 seconde (plus aucun bouton), puis l'écran bugge et le jeu apparaît
   if(document.body.classList.contains("eteint"))return;
-  document.body.classList.add("eteint");musique();
+  document.body.classList.add("eteint");musique();musique.coupure();
   setTimeout(function(){
     var g=document.createElement("div");g.className="glitch";g.setAttribute("aria-hidden","true");
     for(var i=0,b="";i<9;i++)b+='<i class="gl-b" style="top:'+Math.round(Math.random()*95)+'%;height:'+(2+Math.round(Math.random()*9))+'%;--d:'+(Math.random()<.5?"-":"")+(4+Math.round(Math.random()*14))+'%"></i>';
@@ -251,7 +263,7 @@ document.getElementById("jouer").onclick=function(){
     setTimeout(function(){goTo("jeux")},230);
     setTimeout(function(){g.classList.add("gl-fin")},440);
     setTimeout(function(){g.remove();document.body.classList.remove("glitching")},600);
-  },500);
+  },800);
 };
 document.getElementById("back").onclick=menuPrincipal;
 if("scrollRestoration" in history)history.scrollRestoration="manual";
