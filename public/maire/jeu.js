@@ -460,39 +460,83 @@
   }
 
   // Tirage du mandat : l'opposant (s'il est débloqué), puis la crise et les trois objectifs
-  function roulette() {
-    var o = st.meca.opposant && st.opposant ? M.opposant(st) : null, noms = M.OPPOSANTS; box.innerHTML = ""; fermerModale();
-    var r = h("div", "m-roulette");
-    r.appendChild(h("p", "m-sur", st.mandat > 1 ? "Mandat " + st.mandat + " · le tirage" : "Ton premier mandat · le tirage"));
-    var fen = h("div", "m-rfen"), nom = h("strong", "m-rnom"), ico = h("span", "m-rico");
-    if (o) { ajout(fen, ico, nom); r.appendChild(fen); }
-    var fiche = h("div", "m-rfiche"); fiche.hidden = true; r.appendChild(fiche);
-    var mandat = h("div", "mx-tirage"); mandat.hidden = true; r.appendChild(mandat);
-    box.appendChild(r); haut();
-    var calme = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!o) return revelerMandat();
-    var k = Math.floor(Math.random() * noms.length), tours = calme ? 0 : 22 + ((o.i - k - 22) % noms.length + noms.length) % noms.length, n = 0;
-    function montre(i) { ico.textContent = noms[i].ico; nom.textContent = noms[i].nom; }
-    (function tick() { montre((k + n) % noms.length); if (n >= tours) return fin(); n++; setTimeout(tick, 45 + Math.pow(n / tours, 3) * 260); })();
-    function fin() {
-      montre(o.i); fen.classList.add("m-rstop");
-      var barre = h("div", "m-barre"), i = h("i"); i.style.width = o.force + "%"; barre.appendChild(i);
-      ajout(fiche, h("p", null, o.txt), ajout(h("div", "m-jt"), h("span", null, "Influence"), h("b", null, Math.round(o.force) + "/100 · " + M.humeurOpp(o.force))), barre);
-      fiche.hidden = false;
-      setTimeout(revelerMandat, calme ? 0 : 500);
+
+  // ---------- Ouverture du mandat, en trois écrans ----------
+  // 1. les 3 objectifs se retournent un par un (comme un opening de cartes)
+  // 2. une roulette tire la crise, puis, sur le même écran, l'opposant
+  // 3. le résumé, et on entre en fonctions
+  function roulette() { ouvertureObjectifs(); }
+  function calme() { return !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches); }
+  function scene(sur, titre) {
+    box.innerHTML = ""; fermerModale();
+    var d = h("div", "mx-scene"); ajout(d, h("p", "m-sur", sur), h("h4", "mx-scene-t", titre)); box.appendChild(d); haut();
+    return d;
+  }
+  function ouvertureObjectifs() {
+    var ob = M.objectifs(st);
+    if (!ob.length) return ouvertureTirage();
+    var d = scene(st.mandat > 1 ? "Mandat " + st.mandat : "Ton premier mandat", "Tes 3 objectifs pour passer au mandat suivant");
+    var rang = h("div", "mx-cartes"), suite = bouton("Continuer →", "btn m-go mx-cache", ouvertureTirage), aide = h("small", "m-aide", "Touche une carte pour la retourner");
+    var cartes = ob.map(function (o, i) {
+      var c = h("button", "mx-carte"); c.type = "button";
+      var inn = h("div", "mx-carte-in");
+      ajout(inn, ajout(h("div", "mx-face mx-dos"), h("span", null, "🎯"), h("small", null, "Objectif " + (i + 1))),
+        ajout(h("div", "mx-face mx-recto"), h("span", "mx-carte-ico", o.ico), h("strong", null, o.txt)));
+      c.appendChild(inn); c.onclick = function () { retourner(i); };
+      rang.appendChild(c); return c;
+    });
+    ajout(d, rang, aide, suite);
+    var vus = 0;
+    function retourner(i) {
+      var c = cartes[i]; if (c.classList.contains("mx-retournee")) return;
+      c.classList.add("mx-retournee"); vus++;
+      if (vus === cartes.length) { aide.textContent = "Réussis-en au moins 2 sur 3 pour gagner le mandat."; setTimeout(function () { suite.classList.remove("mx-cache"); }, calme() ? 0 : 500); }
     }
-    function revelerMandat() {
-      var cr = M.criseEnCours(st), ob = M.objectifs(st);
-      if (cr) mandat.appendChild(ajout(h("div", "mx-crise"), h("span", null, cr.ico), ajout(h("div"), h("strong", null, "Crise du mandat : " + cr.nom), h("small", null, cr.txt))));
-      mandat.appendChild(h("p", "m-sur", "🎯 Tes objectifs pour gagner ce mandat"));
-      var u = h("ul", "mx-objliste");
-      ob.forEach(function (x, j) { var li = h("li", "mx-obj-in"); li.style.animationDelay = (calme ? 0 : 0.25 + j * 0.35) + "s"; ajout(li, h("span", null, x.ico), h("span", null, x.txt + (x.crise ? " (crise)" : ""))); u.appendChild(li); });
-      ajout(mandat, u, h("small", "m-aide", "Réussis-en au moins 2 sur 3 pour gagner le mandat. Chaque objectif atteint rapporte aussi +" + ((M.bonusMaire(st).objVote) || M.P.objVote) + " % au vote."),
-        bouton(st.t ? "Commencer le mandat " + st.mandat : "Entrer en fonctions", "btn m-go", function () {
-          st = st.phase === "election" ? M.continuer(st, BASE) : M.debutTour(st, BASE); sauver(); jeu(); haut();
-        }));
-      mandat.hidden = false;
+    // Sans toucher, les cartes se retournent d'elles-mêmes, l'une après l'autre
+    cartes.forEach(function (c, i) { setTimeout(function () { if (document.body.contains(c)) retourner(i); }, calme() ? 0 : 900 + i * 1100); });
+  }
+  // Une roulette qui défile puis s'arrête sur le tirage (déjà décidé par le moteur)
+  function rouleau(liste, cible, fini) {
+    var fen = h("div", "m-rfen mx-rouleau"), ico = h("span", "m-rico"), nom = h("strong", "m-rnom"); ajout(fen, ico, nom);
+    var k = Math.floor(Math.random() * liste.length), tours = calme() ? 0 : 20 + ((cible - k - 20) % liste.length + liste.length) % liste.length, n = 0;
+    function montre(i) { ico.textContent = liste[i].ico; nom.textContent = liste[i].nom; }
+    (function tick() { montre((k + n) % liste.length); if (n >= tours) { fen.classList.add("m-rstop"); return fini && fini(); } n++; setTimeout(tick, 45 + Math.pow(n / tours, 3) * 280); })();
+    return fen;
+  }
+  function ouvertureTirage() {
+    var cr = M.criseEnCours(st), o = st.meca.opposant && st.opposant ? M.opposant(st) : null;
+    if (!cr && !o) return ouvertureResume();
+    var d = scene("Le tirage", cr ? "Quelle crise frappe Paris ?" : "Qui sera ton opposant ?");
+    var bas = bouton("Voir le résumé →", "btn m-go mx-cache", ouvertureResume);
+    function opp() {
+      if (!o) return bas.classList.remove("mx-cache");
+      var t = h("p", "m-sur mx-entre", "⚔️ Ton opposant"); d.insertBefore(t, bas);
+      d.insertBefore(rouleau(M.OPPOSANTS, o.i, function () {
+        d.insertBefore(ajout(h("p", "mx-entre mx-fichetxt"), document.createTextNode(o.txt + " Influence " + Math.round(o.force) + "/100.")), bas);
+        setTimeout(function () { bas.classList.remove("mx-cache"); }, calme() ? 0 : 400);
+      }), bas);
     }
+    if (cr) {
+      var ids = Object.keys(M.C.CRISES), liste = ids.map(function (id) { return M.C.CRISES[id]; });
+      d.appendChild(rouleau(liste, ids.indexOf(st.crise.id), function () {
+        d.insertBefore(ajout(h("p", "mx-entre mx-fichetxt mx-crisetxt"), document.createTextNode(cr.txt)), bas);
+        setTimeout(opp, calme() ? 0 : 1100);
+      }));
+    } else opp();
+    d.appendChild(bas);
+  }
+  function ouvertureResume() {
+    var d = scene(st.mandat > 1 ? "Mandat " + st.mandat : "Ton premier mandat", "Le résumé"), cr = M.criseEnCours(st), o = st.meca.opposant && st.opposant ? M.opposant(st) : null;
+    var l = h("div", "mx-resume");
+    if (cr) l.appendChild(ajout(h("div", "mx-crise mx-entre"), h("span", null, cr.ico), ajout(h("div"), h("strong", null, cr.nom), h("small", null, cr.txt))));
+    if (o) l.appendChild(ajout(h("div", "mx-oppres mx-entre"), h("span", null, o.ico), ajout(h("div"), h("strong", null, o.nom), h("small", null, "Influence " + Math.round(o.force) + "/100 · " + M.humeurOpp(o.force)))));
+    var u = h("ul", "mx-objliste");
+    M.objectifs(st).forEach(function (x, j) { var li = h("li", "mx-entre"); li.style.animationDelay = (calme() ? 0 : 0.15 * (j + 2)) + "s"; ajout(li, h("span", null, x.ico), h("span", null, x.txt)); u.appendChild(li); });
+    if (u.children.length) { l.appendChild(h("p", "m-sur", "🎯 Tes objectifs")); l.appendChild(u); }
+    ajout(d, l, h("small", "m-aide", "Réussis au moins 2 objectifs sur 3 pour gagner le mandat. Chaque objectif atteint rapporte aussi +" + ((M.bonusMaire(st).objVote) || M.P.objVote) + " % au vote."),
+      bouton(st.t ? "Commencer le mandat " + st.mandat : "Entrer en fonctions", "btn m-go", function () {
+        st = st.phase === "election" ? M.continuer(st, BASE) : M.debutTour(st, BASE); sauver(); jeu(); haut();
+      }));
   }
 
   // ---------- Écran de jeu : une seule page, de haut en bas ----------
