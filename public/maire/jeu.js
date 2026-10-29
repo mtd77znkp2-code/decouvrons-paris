@@ -67,8 +67,28 @@
   // ---------- Accueil ----------
 
   // Accueil épuré : ton niveau, un gros bouton pour jouer, 4 tuiles ; le reste est replié
+  // ---------- Fond vidéo (rue de Paris en pixel art) derrière le menu du jeu, pas pendant la partie ----------
+  var fondV = null, fondF = "";
+  function vider() { box.innerHTML = ""; fondMenu(false); }
+  function fondMenu(on) {
+    var g = document.getElementById("g-maire"); if (!g) return;
+    g.classList.toggle("m-menu", on);
+    var calme = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (on && !fondV) {
+      fondV = document.createElement("video"); fondV.className = "m-fond"; fondV.muted = true; fondV.loop = true; fondV.playsInline = true;
+      fondV.setAttribute("muted", ""); fondV.setAttribute("playsinline", ""); fondV.setAttribute("aria-hidden", "true"); fondV.tabIndex = -1;
+      g.insertBefore(fondV, g.firstChild);
+      window.addEventListener("resize", function () { clearTimeout(fondMenu.t); fondMenu.t = setTimeout(function () { if (g.classList.contains("m-menu")) fondMenu(true); }, 300); });
+      if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { if (!g.classList.contains("m-menu") || calme) return; if (e[0].isIntersecting) { var p = fondV.play(); if (p && p.catch) p.catch(function () {}); } else fondV.pause(); }).observe(g);
+    }
+    if (!fondV) return;
+    if (!on) { fondV.pause(); return; }
+    var f = window.innerHeight > window.innerWidth ? "portrait" : "paysage";
+    if (f !== fondF) { fondF = f; fondV.poster = "img/maire-menu-" + f + ".webp"; if (!calme) fondV.src = "img/maire-menu-" + f + ".mp4"; }
+    if (!calme) { var p = fondV.play(); if (p && p.catch) p.catch(function () {}); }
+  }
   function accueil() {
-    box.innerHTML = ""; fermerModale();
+    vider(); fondMenu(true); fermerModale();
     var s = lireSauvegarde(), n = nivJ(), P = G.lire(), nv = G.niveau(P.xp);
     choixNiveau(s && s.phase !== "fin" ? s.niveau : lireNiveau());
     var pr = h("div", "mx-profil"), barre = h("div", "mx-xpbarre"), bi = h("i"); bi.style.width = nv.pct + "%"; barre.appendChild(bi);
@@ -100,7 +120,7 @@
     box.appendChild(plus);
   }
   function ecranSerie() {
-    box.innerHTML = ""; box.appendChild(bouton("← Retour", "btn m-sec", accueil));
+    vider(); box.appendChild(bouton("← Retour", "btn m-sec", accueil));
     box.appendChild(h("h5", null, "🔥 Série de jours"));
     box.appendChild(carteSerie());
     var u = h("ol", "m-paliers"), se = G.serie();
@@ -109,14 +129,14 @@
     haut();
   }
   function ecranLigue() {
-    box.innerHTML = ""; box.appendChild(bouton("← Retour", "btn m-sec", accueil));
+    vider(); box.appendChild(bouton("← Retour", "btn m-sec", accueil));
     box.appendChild(h("h5", null, "🏅 Ligue de la semaine"));
     var z = h("div"); box.appendChild(z); carteLigue(z);
     haut();
   }
   // ---------- Bureau des objets trouvés, bâtiments secrets et combos découverts ----------
   function collection() {
-    var P = G.lire(), C = M.C; box.innerHTML = "";
+    var P = G.lire(), C = M.C; vider();
     box.appendChild(bouton("← Retour", "btn m-sec", accueil));
     var no = Object.keys(C.OBJETS).filter(function (k) { return P.objets[k]; }).length;
     box.appendChild(h("h5", null, "🗃️ Bureau des objets trouvés · " + no + " / " + Object.keys(C.OBJETS).length));
@@ -196,7 +216,7 @@
   }
   // ---------- Roue de la fortune (une fois par semaine) ----------
   function ecranRoue() {
-    box.innerHTML = ""; box.appendChild(bouton("← Retour", "btn m-sec", accueil));
+    vider(); box.appendChild(bouton("← Retour", "btn m-sec", accueil));
     box.appendChild(h("h5", null, "🎡 Roue de la fortune"));
     var n = G.ROUE.length, cont = h("div", "m-roue-zone"), roue = h("div", "m-roue2"), fl = h("div", "m-roue-fleche", "▼");
     var cols = ["#f5b21a", "#2b4fb3", "#3fae68", "#e0524b", "#7c4dff", "#1fa2c7", "#f08a30", "#c8352e"], g = [];
@@ -255,7 +275,7 @@
 
   // ---------- Pass de combat ----------
   function ecranPass() {
-    var ps = G.pass(); box.innerHTML = "";
+    var ps = G.pass(); vider();
     box.appendChild(bouton("← Retour", "btn m-sec", accueil));
     box.appendChild(h("h5", null, "🎟️ Pass de combat · saison " + ps.nom));
     box.appendChild(h("p", "m-aide", "Gagne des points avec les succès du jour (+100, +200 si les 5 sont réussis), les quêtes (+100), chaque partie (+50) et chaque élection gagnée (+50). Tous les " + ps.parPalier + " points, un palier et sa récompense. Les points repartent à zéro chaque mois ; les bâtiments exclusifs et les titres restent."));
@@ -336,14 +356,14 @@
   }
   function lancerDefi(d) {
     choixNiveau(d.niveau, true);
-    box.innerHTML = ""; box.appendChild(h("p", "msg", "Préparation du défi…"));
+    vider(); box.appendChild(h("p", "msg", "Préparation du défi…"));
     chargerLots(d.lots).then(function () {
       st = M.nouvellePartie({ ligne: d.ligne, ambitions: d.ambitions, lots: d.lots, niveau: d.niveau, graine: d.graine, nivJoueur: d.nivJoueur, xpJoueur: G.lire().xp, pid: Date.now().toString(36), scenario: d.scenario, secrets: {}, passBats: G.lire().passBats, missions: false });
       st.defi = d.jour; sauver(); demarrerPartie();
     }).catch(function () { alert("Impossible de charger les dossiers. Vérifie ta connexion et réessaie."); accueil(); });
   }
   function succes() {
-    var P = G.lire(); box.innerHTML = "";
+    var P = G.lire(); vider();
     box.appendChild(bouton("← Retour", "btn m-sec", accueil));
     var nb = G.SUCCES.filter(function (x) { return P.succes[x.id]; }).length;
     box.appendChild(h("h5", null, "Succès · " + nb + " / " + G.SUCCES.length));
@@ -365,7 +385,7 @@
     CHOIX = { maire: premier ? premier.id : null, amb: [], sac: [] };
     choixNiveau(lireNiveau());
     var sac = G.lire().sac || {}, sacOk = Object.keys(G.SAC).filter(function (k) { return sac[k] > 0; });
-    box.innerHTML = "";
+    vider();
     box.appendChild(h("p", "m-nivtxt", "La difficulté monte à chaque mandat : le premier est indulgent, les suivants de plus en plus exigeants."));
     // Le personnage remplace la ligne politique : chacun a la sienne, un avantage et un défaut
     box.appendChild(h("p", "m-etape", "Ton personnage"));
@@ -421,7 +441,7 @@
   }
   function demarrer() {
     quetes().catch(function () {});
-    box.innerHTML = ""; box.appendChild(h("p", "msg", "Installation à l’Hôtel de Ville…"));
+    vider(); box.appendChild(h("p", "msg", "Installation à l’Hôtel de Ville…"));
     index().then(function () { var l = choisirLots(); return chargerLots(l).then(function () { return l; }); }).then(function (lots) {
       try { localStorage.setItem("maire_perso", CHOIX.maire); } catch (e) {}
       st = M.nouvellePartie({ maire: CHOIX.maire, ligne: "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, xpJoueur: G.lire().xp, pid: Date.now().toString(36), secrets: G.lire().secrets, sansLimite: sansLimiteAdmin(), missions: false,
@@ -459,7 +479,7 @@
   function roulette() { ouvertureObjectifs(); }
   function calme() { return !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches); }
   function scene(sur, titre) {
-    box.innerHTML = ""; fermerModale();
+    vider(); fermerModale();
     var d = h("div", "mx-scene"); ajout(d, h("p", "m-sur", sur), h("h4", "mx-scene-t", titre)); box.appendChild(d); haut();
     return d;
   }
@@ -538,7 +558,7 @@
     if (st.phase === "election") return resultatElection();
     var y = window.scrollY; box.style.minHeight = box.offsetHeight + "px";
     decouvertes();
-    box.innerHTML = "";
+    vider();
     // Écran épuré : l'essentiel en haut (où j'en suis, est-ce que je gagne), la ville au milieu, la boutique, puis la gestion repliée
     ajout(box, entete(), tableau(), carteObjectifs(), piliers(), carteLeon());
     if (st.opposant) box.appendChild(bandeauOpp());
@@ -1328,7 +1348,7 @@
   }
 
   function resultatElection() {
-    box.innerHTML = ""; fermerModale();
+    vider(); fermerModale();
     var e = st.elections[st.elections.length - 1], ob = e.objectifs || [];
     var verdict = !ob.length ? "Réélu !" : e.parfait ? "🏆 Mandat parfait !" : e.reussi ? "🏆 Mandat réussi !" : "Réélu… mais objectifs manqués";
     var t = h("div", "m-final " + (e.reussi || !ob.length ? "m-gagne" : "m-perdu"));
@@ -1458,7 +1478,7 @@
   // ---------- Fin de partie ----------
   function fin() {
     decouvertes();
-    box.innerHTML = ""; fermerModale();
+    vider(); fermerModale();
     choixNiveau(st.niveau);
     var b = M.bilan(st), an = M.analyse(st), e = st.elections[st.elections.length - 1];
     var type = st.fin.raison.type, t = h("div", "m-final " + (type === "defi" || type === "retraite" ? "m-gagne" : "m-perdu"));
