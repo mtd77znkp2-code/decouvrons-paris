@@ -1,6 +1,6 @@
 // Économie, série 2 (identifiants econ-)
 === econ-026 | economie | Les loyers commerciaux s’envolent
-Les propriétaires de boutiques doublent les loyers au renouvellement des baux. Les commerçants partent.
+Les propriétaires de boutiques de l’arrondissement doublent les loyers au renouvellement des baux. Les commerçants partent.
 A) Racheter des murs commerciaux pour louer à prix modéré :: Foncière publique.
    bud-40 economie+3 | g+3 c+2 d0 e+1
    > Une foncière municipale achète cent boutiques.
@@ -12,7 +12,7 @@ C) Laisser faire le marché :: Liberté.
    > Les loyers continuent de grimper.
 
 === econ-027 | economie | Des boutiques éphémères dans les locaux vides
-Des créateurs veulent occuper les vitrines vides quelques mois pour tester leur activité.
+Des créateurs veulent occuper les vitrines vides de l’arrondissement quelques mois pour tester leur activité.
 A) Créer un programme de boutiques éphémères :: Animer les rues.
    bud-3 economie+2 bon+1 | g+1 c+3 d+2 e+1
    > Des créateurs s’installent pour trois mois.
@@ -60,8 +60,8 @@ C) Ne rien faire :: Le marché.
    > Les librairies continuent de fermer.
 
 === econ-031 | economie | Les marchés de producteurs d’Île-de-France
-Des agriculteurs franciliens veulent vendre directement aux Parisiens.
-A) Créer dix marchés de producteurs :: Circuits courts.
+Des agriculteurs franciliens veulent vendre directement aux habitants de l’arrondissement.
+A) Créer trois marchés de producteurs :: Circuits courts.
    bud-3 economie+1 ecologie+2 achat+1 | g+2 c+2 d+1 e+4
    > Les maraîchers vendent sur les places.
 B) Réserver une part des cantines aux producteurs locaux :: Commande publique.
@@ -69,13 +69,13 @@ B) Réserver une part des cantines aux producteurs locaux :: Commande publique.
    > Les cantines achètent aux fermes d’Île-de-France.
 C) Laisser les marchés actuels :: Statu quo.
    economie-1 | g-1 c0 d+1 e-1
-   > Les producteurs restent loin des Parisiens.
+   > Les producteurs restent loin des habitants.
 
 === econ-032 | economie | Des incubateurs dans les quartiers populaires
-Les incubateurs de start-up sont tous dans les beaux quartiers. Les jeunes entrepreneurs de l’est s’en sentent exclus.
-A) Ouvrir trois incubateurs dans le nord-est :: Égalité des chances.
+Les incubateurs de start-up sont tous dans les beaux quartiers. Les jeunes entrepreneurs de l’arrondissement s’en sentent exclus.
+A) Ouvrir un incubateur dans les quartiers populaires :: Égalité des chances.
    bud-12 economie+2 bon+1 | g+3 c+2 d+1 e+1
-   > Des incubateurs ouvrent à Belleville et à la Chapelle.
+   > Un incubateur ouvre au cœur des quartiers populaires.
 B) Bourses pour entrer dans les incubateurs existants :: Ciblé.
    bud-3 economie+1 | g+2 c+3 d+1 e0
    > Des jeunes des quartiers rejoignent les grands incubateurs.
@@ -108,23 +108,23 @@ C) Ne rien imposer :: Coût des travaux.
    > Les chantiers embauchent comme avant.
 
 === econ-035 | economie | Les boulangers et plombiers manquent
-Les artisans ne trouvent plus d’apprentis. Des boulangeries ferment faute de repreneur.
+Les artisans de l’arrondissement ne trouvent plus d’apprentis. Des boulangeries ferment faute de repreneur.
 A) Créer une école municipale des métiers :: Former.
    bud-20 economie+3 | g+2 c+2 d+2 e+1
    > Une école forme boulangers, plombiers et électriciens.
-B) Prime pour les apprentis parisiens :: Inciter.
+B) Prime pour les apprentis du quartier :: Inciter.
    rec-0.3x60 economie+2 achat+1 | g+1 c+3 d+2 e0
    > Les apprentis reçoivent une prime mensuelle.
 C) Campagne pour valoriser ces métiers :: Communication.
    bud-2 economie+1 | g0 c+2 d+2 e0
    > Des affiches mettent en avant les artisans.
 
-=== econ-036 | economie | Des apprentis dans les services de la Ville
-La Ville emploie peu d’apprentis alors que des milliers de jeunes en cherchent.
-A) Recruter 1 000 apprentis :: Donner leur chance.
+=== econ-036 | economie | Des apprentis dans les services de la mairie
+La mairie d’arrondissement emploie peu d’apprentis alors que des centaines de jeunes en cherchent.
+A) Recruter 200 apprentis :: Donner leur chance.
    rec-0.5x60 economie+2 services+1 | g+3 c+2 d+1 e+1
    > Mille jeunes rejoignent les services municipaux.
-B) Recruter 300 apprentis :: Prudent.
+B) Recruter 50 apprentis :: Prudent.
    rec-0.2x60 economie+1 | g+1 c+3 d+1 e0
    > Trois cents apprentis sont embauchés.
 C) Pas de budget :: Rigueur.
@@ -132,11 +132,11 @@ C) Pas de budget :: Rigueur.
    > Aucun recrutement supplémentaire.
 
 === econ-037 | economie | Le palais des congrès vieillit
-Le palais des congrès perd des grands événements au profit de Barcelone et Milan.
+Le palais des congrès de l’arrondissement perd des grands événements au profit de Barcelone et Milan.
 A) Rénovation complète :: Rester dans la course.
    bud-70 economie+3 | g-1 c+2 d+3 e0
    > Le palais des congrès sera entièrement rénové.
-   +25 rec+0.5x50 > Les grands congrès reviennent à Paris.
+   +25 rec+0.5x50 > Les grands congrès reviennent dans l’arrondissement.
 B) Rénovation légère :: Minimum.
    bud-20 economie+1 | g0 c+3 d+1 e0
    > Les salles sont rafraîchies.
@@ -145,10 +145,10 @@ C) Le transformer en logements et bureaux :: Changer d’usage.
    > Le palais des congrès sera reconverti.
 
 === econ-038 | economie | Des ateliers « fabriqué à Paris »
-Des fabricants de vêtements, de meubles et de chaussures veulent revenir produire dans Paris.
+Des fabricants de vêtements, de meubles et de chaussures veulent revenir produire dans l’arrondissement.
 A) Réserver des locaux d’activité à loyer réduit :: Relocaliser.
    bud-10 rec-0.1x60 economie+2 | g+2 c+2 d+2 e+2
-   > Des ateliers s’installent dans le 11e et le 20e.
+   > Des ateliers s’installent dans les rues de l’arrondissement.
 B) Créer un label « Fabriqué à Paris » :: Visibilité.
    bud-2 economie+1 | g+1 c+3 d+2 e+1
    > Le label est lancé.
@@ -169,7 +169,7 @@ C) Laisser la police enquêter :: Discrétion.
    > L’enquête prendra des années.
 
 === econ-040 | economie | Les kiosques à journaux disparaissent
-Les kiosquiers ferment un à un faute de lecteurs de journaux papier.
+Les kiosquiers de l’arrondissement ferment un à un faute de lecteurs de journaux papier.
 A) Transformer les kiosques en points de services :: Moderniser.
    bud-6 economie+1 services+1 | g+1 c+3 d+2 e+1
    > Les kiosques vendent aussi café, billets et colis.
@@ -181,7 +181,7 @@ C) Laisser fermer :: Évolution.
    > Les kiosques disparaissent.
 
 === econ-041 | economie | Les sièges sociaux partent à la Défense
-Des grandes entreprises quittent le centre de Paris pour des tours plus modernes en banlieue.
+Des grandes entreprises quittent l’arrondissement pour des tours plus modernes en banlieue.
 A) Faciliter la rénovation des immeubles de bureaux :: Retenir.
    bud-5 economie+2 | g-1 c+3 d+3 e0
    > Les permis de rénovation sont accélérés.
@@ -206,10 +206,10 @@ C) Forums d’emploi dans les quartiers :: Rapprocher.
    > Les entreprises viennent recruter dans les quartiers.
 
 === econ-043 | economie | Les écoles de mode manquent d’ateliers
-Les étudiants en mode partent à Londres faute d’ateliers abordables à Paris.
+Les étudiants en mode partent à Londres faute d’ateliers abordables dans l’arrondissement.
 A) Créer un campus de la mode :: Capitale de la mode.
    bud-25 economie+2 | g0 c+2 d+3 e0
-   > Un campus de la mode est créé dans le 13e.
+   > Un campus de la mode est créé dans l’arrondissement.
 B) Ateliers partagés pour jeunes créateurs :: Soutien ciblé.
    bud-5 economie+1 | g+1 c+3 d+1 e+1
    > Des ateliers partagés ouvrent.
@@ -218,7 +218,7 @@ C) Laisser les maisons de luxe s’en charger :: Privé.
    > Les jeunes créateurs partent.
 
 === econ-044 | economie | Les boîtes de nuit ferment
-Les clubs parisiens ferment les uns après les autres. Les jeunes partent faire la fête à Berlin.
+Les clubs de l’arrondissement ferment les uns après les autres. Les jeunes partent faire la fête à Berlin.
 ? distinct
 A) Créer un statut de « lieu culturel de nuit » :: Protéger la nuit.
    economie+2 bon+1 | g+1 c+2 d+1 e+1
@@ -232,7 +232,7 @@ C) Ne rien faire :: Tranquillité.
    > Encore un club ferme.
 
 === econ-045 | economie | Un grand magasin historique en difficulté
-Un grand magasin du boulevard Haussmann annonce des centaines de licenciements.
+Un grand magasin de l’arrondissement annonce des centaines de licenciements.
 A) Aider à la reconversion des salariés :: Accompagner.
    bud-8 economie+1 achat+1 | g+3 c+2 d0 e0
    > Une cellule de reclassement est ouverte.
@@ -270,7 +270,7 @@ C) Pas de nouvelle taxe :: Prudence.
 
 === econ-048 | economie | Un campus pour les entreprises du numérique
 Les jeunes entreprises du numérique demandent un grand lieu à loyers bas.
-A) Transformer une ancienne halle en campus numérique :: Vitrine.
+A) Transformer une ancienne halle du quartier en campus numérique :: Vitrine.
    bud-35 economie+3 | g0 c+2 d+3 e0
    > Une halle accueille mille entrepreneurs.
 B) Prêter des étages de bâtiments municipaux :: Économique.
@@ -317,7 +317,7 @@ C) Laisser faire :: Liberté du commerce.
    > Les agences continuent de s’installer.
 
 === econ-052 | economie | Des emplois pour les seniors
-Des retraités veulent travailler quelques heures par semaine. Des entreprises cherchent des tuteurs.
+Des retraités de l’arrondissement veulent travailler quelques heures par semaine. Des entreprises cherchent des tuteurs.
 A) Créer une plateforme d’emplois seniors :: Lien entre générations.
    bud-2 economie+1 bon+1 | g+1 c+3 d+2 e+1
    > Des seniors deviennent tuteurs dans les entreprises.
@@ -329,7 +329,7 @@ C) Ne pas s’en occuper :: Pas prioritaire.
    > Rien n’est fait.
 
 === econ-053 | economie | Une arène pour le jeu vidéo
-Les organisateurs de compétitions de jeux vidéo veulent une salle permanente à Paris.
+Les organisateurs de compétitions de jeux vidéo veulent une salle permanente dans l’arrondissement.
 A) Construire une arène :: Capitale de l’e-sport.
    bud-40 economie+2 bon+1 | g-1 c+2 d+3 e0
    > Une arène de 5 000 places sera construite.
@@ -353,19 +353,19 @@ C) Réserver une partie aux habitants du quartier :: Contre les professionnels.
    > Les revendeurs professionnels sont écartés.
 
 === econ-055 | economie | Les bistrots parisiens au patrimoine mondial
-Les cafés parisiens sont candidats au patrimoine culturel immatériel. Beaucoup ferment.
+Les cafés parisiens sont candidats au patrimoine culturel immatériel. Dans l’arrondissement, beaucoup ferment.
 A) Aider les bistrots traditionnels :: Préserver un art de vivre.
    rec-0.2x60 economie+1 bon+1 | g+1 c+2 d+2 e0
    > Un fonds aide les bistrots menacés.
 B) Soutenir la candidature et communiquer :: Rayonnement.
    bud-2 economie+1 pop+1 | g0 c+3 d+2 e0
-   > Paris défend la candidature.
+   > L’arrondissement défend la candidature.
 C) Laisser faire :: Le commerce évolue.
    bon-1 | g-1 c0 d+1 e0
    > Les bistrots continuent de fermer.
 
 === econ-056 | economie | Rénover une halle de marché couvert
-Le marché couvert d’un quartier tombe en ruine. Les commerçants veulent rester.
+Le marché couvert de l’arrondissement tombe en ruine. Les commerçants veulent rester.
 ? distinct
 A) Rénover en gardant les commerçants :: Patrimoine vivant.
    bud-25 economie+2 bon+1 | g+2 c+2 d+1 e+1
@@ -378,11 +378,11 @@ C) Fermer la halle :: Économie.
    bud+5 economie-1 bon-1 | g-1 c0 d+1 e0
    > La halle ferme.
 
-=== econ-057 | economie | Des agents intérimaires à la Ville
-Les services municipaux recourent de plus en plus aux intérimaires, plus chers et moins formés.
+=== econ-057 | economie | Des agents intérimaires à la mairie
+Les services de la mairie d’arrondissement recourent de plus en plus aux intérimaires, plus chers et moins formés.
 A) Titulariser les intérimaires de longue date :: Stabiliser.
    rec-0.3x60 services+2 | g+3 c+1 d-1 e+1
-   > Des centaines d’intérimaires deviennent agents.
+   > Des dizaines d’intérimaires deviennent agents.
 B) Réduire l’intérim :: Économie.
    rec+0.2x60 services-1 | g0 c+2 d+2 e0
    > L’intérim baisse, des services ralentissent.
@@ -391,14 +391,14 @@ C) Garder la souplesse de l’intérim :: Flexibilité.
    > Rien ne change.
 
 === econ-058 | economie | Un microcrédit pour les entrepreneurs des quartiers
-Les banques refusent de prêter aux créateurs d’entreprise sans apport.
+Les banques refusent de prêter aux créateurs d’entreprise de l’arrondissement sans apport.
 A) Créer un fonds de microcrédit municipal :: Coup de pouce.
    bud-10 economie+2 achat+1 | g+3 c+2 d+1 e+1
    > Des centaines de petites entreprises démarrent.
    ~20 bud-3 > Quelques prêts ne sont pas remboursés.
 B) Garantir les prêts bancaires :: Partager le risque.
    bud-3 economie+1 | g+1 c+3 d+2 e0
-   > Les banques prêtent avec la garantie de la Ville.
+   > Les banques prêtent avec la garantie de la mairie.
 C) Ne pas intervenir :: Pas de risque.
    economie-1 | g-2 c0 d+2 e0
    > Les créateurs restent sans financement.
@@ -440,20 +440,20 @@ C) Laisser faire :: Commerce légal.
    economie+1 | g-1 c0 d+2 e-1
    > Les boutiques continuent d’ouvrir.
 
-=== econ-062 | economie | Les salariés des sous-traitants de la Ville
+=== econ-062 | economie | Les salariés des sous-traitants de la mairie
 Les agents de nettoyage des sous-traitants sont payés au minimum et changent d’employeur à chaque contrat.
 A) Imposer de bons salaires dans les contrats :: Justice sociale.
    rec-0.4x60 bon+1 | g+4 c+1 d-2 e+1
    > Les sous-traitants doivent mieux payer.
 B) Réintégrer le nettoyage en régie :: Service public.
    rec-0.6x60 services+1 proprete+1 | g+4 c0 d-3 e+1
-   > Les agents deviennent salariés de la Ville.
+   > Les agents deviennent salariés de la mairie d’arrondissement.
 C) Garder les contrats actuels :: Coûts maîtrisés.
    bon-1 | g-3 c+1 d+3 e0
    > Rien ne change.
 
 === econ-063 | economie | Une prime pour les commerces accessibles
-De nombreux commerces sont inaccessibles aux fauteuils roulants à cause d’une marche.
+De nombreux commerces de l’arrondissement sont inaccessibles aux fauteuils roulants à cause d’une marche.
 A) Financer des rampes pour tous les commerces :: Accessibilité.
    bud-10 economie+1 services+1 | g+2 c+3 d+1 e+1
    > Des milliers de rampes sont installées.
@@ -465,13 +465,13 @@ C) Laisser les commerçants se mettre aux normes :: Leur responsabilité.
    > Les commerces restent inaccessibles.
 
 === econ-064 | economie | La fermeture d’une imprimerie historique
-Une imprimerie du 14e, dernière de Paris, va fermer. Les ouvriers proposent de la reprendre en coopérative.
+Une imprimerie de l’arrondissement, l’une des dernières de Paris, va fermer. Les ouvriers proposent de la reprendre en coopérative.
 A) Aider la reprise en coopérative :: Emploi et savoir-faire.
    bud-6 economie+2 | g+4 c+2 d0 e+1
    > Les ouvriers reprennent l’imprimerie.
-B) Commander les impressions de la Ville à l’imprimerie :: Commande publique.
+B) Commander les impressions de la mairie à l’imprimerie :: Commande publique.
    rec-0.1x60 economie+1 | g+2 c+3 d+1 e+1
-   > La Ville devient le premier client.
+   > La mairie d’arrondissement devient le premier client.
 C) Laisser fermer :: Le marché.
    economie-1 bon-1 | g-3 c0 d+2 e0
    > L’imprimerie ferme.

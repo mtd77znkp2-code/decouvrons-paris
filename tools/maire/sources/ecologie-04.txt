@@ -37,7 +37,7 @@ C) Rien :: Coût.
    > Rien ne change.
 
 === ecol-109 | ecologie | Des toilettes qui recyclent l’urine
-Des toilettes séparant l’urine permettraient d’en faire un engrais naturel.
+Des toilettes séparant l’urine permettraient d’en faire un engrais naturel pour les jardins de l’arrondissement.
 A) Équiper un nouveau quartier :: Innovation.
    bud-8 ecologie+2 | g+1 c+2 d0 e+4
    > Un quartier pilote recycle son urine en engrais.
@@ -135,7 +135,7 @@ C) Informer sans agir :: Liberté.
    > Les jardiniers continuent.
 
 === ecol-117 | ecologie | Les égouts débordent dans la Seine
-À chaque gros orage, les égouts débordent et rejettent des eaux sales dans la Seine.
+À chaque gros orage, les égouts de l’arrondissement débordent et rejettent des eaux sales dans la Seine.
 A) Construire de grands bassins de stockage :: Protéger la Seine.
    bud-50 ecologie+3 | g+1 c+2 d+1 e+4
    > Des bassins géants retiennent les eaux.
@@ -158,12 +158,12 @@ C) Rien :: Pas prioritaire.
    ecologie-1 | g0 c0 d+1 e-1
    > Les martinets continuent de disparaître.
 
-=== ecol-119 | ecologie | Une ferme pédagogique dans chaque arrondissement
-Les enfants parisiens n’ont jamais vu une vache ou une poule.
+=== ecol-119 | ecologie | Une ferme pédagogique pour les écoliers
+Les enfants de l’arrondissement n’ont jamais vu une vache ou une poule.
 A) Créer des fermes pédagogiques :: Découverte.
    bud-8 rec-0.1x60 ecologie+1 bon+2 | g+1 c+2 d+2 e+3
    > Les écoles visitent les fermes.
-B) Une grande ferme au bois de Vincennes :: Centralisé.
+B) Une seule grande ferme dans le parc :: Centralisé.
    bud-4 ecologie+1 bon+1 | g+1 c+3 d+1 e+2
    > La ferme accueille les classes.
 C) Rien :: Coût.
@@ -184,7 +184,7 @@ C) Refuser :: Hygiène.
    > Les poules sont interdites.
 
 === ecol-121 | ecologie | Réviser le plan climat
-Les objectifs du plan climat ne seront pas atteints. Il faut le réviser.
+Les objectifs du plan climat de l’arrondissement ne seront pas atteints. Il faut le réviser.
 A) Objectifs plus ambitieux et budget dédié :: Accélérer.
    rec-0.5x60 ecologie+3 | g+1 c+1 d-2 e+5
    > Le plan climat est renforcé.
@@ -208,7 +208,7 @@ C) Rien :: Pas de compensation.
    > Rien n’est fait.
 
 === ecol-123 | ecologie | Un écoquartier sur une friche
-Une grande friche ferroviaire pourrait devenir un écoquartier exemplaire.
+Une grande friche ferroviaire de l’arrondissement pourrait devenir un écoquartier exemplaire.
 A) Écoquartier sans voitures, bois et énergie locale :: Exemplarité.
    bud-40 ecologie+3 logement+2 | g+2 c+2 d0 e+5
    > L’écoquartier sort de terre.
@@ -222,7 +222,7 @@ C) Vendre aux promoteurs :: Recettes.
 
 === ecol-124 | ecologie | Des refuges de calme
 Des urbanistes proposent de créer des « zones de calme » sans bruit de circulation.
-A) Créer vingt refuges de calme :: Santé.
+A) Créer des refuges de calme dans chaque quartier :: Santé.
    bud-4 bon+2 ecologie+1 | g+1 c+2 d+1 e+3
    > Des jardins calmes sont aménagés.
 B) Zones silencieuses dans les parcs existants :: Simple.
@@ -281,7 +281,7 @@ C) Rien :: Négligeable.
    > Les fuites continuent.
 
 === ecol-129 | ecologie | Des panneaux solaires flottants
-Des panneaux solaires flottants pourraient être installés sur les lacs du bois de Vincennes.
+Des panneaux solaires flottants pourraient être installés sur les lacs du parc de l’arrondissement.
 ? distinct
 A) Installer :: Énergie verte.
    bud-12 rec+0.1x80 ecologie+2 bon-1 | g0 c+2 d+1 e+2
@@ -319,7 +319,7 @@ C) Rien :: Liberté.
    > Rien ne change.
 
 === ecol-132 | ecologie | Des barquettes plastique dans les cantines
-Les repas des cantines sont réchauffés dans des barquettes en plastique.
+Les repas des cantines de l’arrondissement sont réchauffés dans des barquettes en plastique.
 A) Passer à l’inox dans toutes les cantines :: Santé.
    bud-15 ecologie+2 services+1 | g+2 c+2 d+1 e+4
    > Les barquettes plastique disparaissent.
@@ -331,8 +331,8 @@ C) Rien :: Normes respectées.
    > Les parents s’inquiètent.
 
 === ecol-133 | ecologie | Des jardins de pluie dans les rues
-Des fossés plantés le long des trottoirs pourraient absorber la pluie.
-A) Créer cinquante jardins de pluie :: Ville éponge.
+Des fossés plantés le long des trottoirs de l’arrondissement pourraient absorber la pluie.
+A) Créer trente jardins de pluie :: Quartier éponge.
    bud-8 ecologie+3 | g+1 c+2 d+1 e+4
    > Des jardins absorbent la pluie.
 B) Dix jardins tests :: Prudence.
@@ -379,7 +379,7 @@ C) Rien :: Les arbres d’abord.
    > Rien ne change.
 
 === ecol-137 | ecologie | Les bois piétinés
-Le piétinement abîme les sols des bois de Boulogne et de Vincennes. Les arbres en souffrent.
+Le piétinement abîme les sols du parc boisé de l’arrondissement. Les arbres en souffrent.
 A) Clôturer des parcelles en régénération :: Protéger.
    bud-3 ecologie+2 bon-1 | g0 c+2 d+1 e+4
    > Des zones sont mises au repos.
@@ -415,8 +415,8 @@ C) Rien :: Sécurité.
    > Rien ne change.
 
 === ecol-140 | ecologie | De l’eau chaude solaire dans les HLM
-Des chauffe-eau solaires sur les toits des HLM réduiraient les factures des locataires.
-A) Équiper cent immeubles :: Pouvoir d’achat et climat.
+Des chauffe-eau solaires sur les toits des HLM de l’arrondissement réduiraient les factures des locataires.
+A) Équiper trente immeubles :: Pouvoir d’achat et climat.
    bud-20 ecologie+2 achat+1 | g+2 c+2 d+1 e+4
    > Les locataires paient moins leur eau chaude.
 B) Dix immeubles pilotes :: Tester.
@@ -426,8 +426,8 @@ C) Rien :: Coût.
    ecologie-1 | g0 c0 d+1 e-2
    > Rien ne change.
 
-=== ecol-141 | ecologie | Un éco-score pour les événements de la Ville
-Les événements municipaux pourraient être notés selon leur impact écologique.
+=== ecol-141 | ecologie | Un éco-score pour les fêtes du quartier
+Les événements de la mairie d’arrondissement pourraient être notés selon leur impact écologique.
 A) Noter tous les événements et supprimer les pires :: Exigence.
    ecologie+2 bon-1 | g+1 c+2 d-1 e+4
    > Les événements polluants sont repensés.
@@ -451,7 +451,7 @@ C) Rien :: Gadget.
    > Rien n’est planté.
 
 === ecol-143 | ecologie | Une ferme municipale pour les cantines
-La Ville possède des terres agricoles en Île-de-France. Elles pourraient nourrir les cantines.
+La Ville possède des terres agricoles en Île-de-France. Une parcelle pourrait nourrir les cantines de l’arrondissement.
 A) Créer une régie agricole bio :: Autonomie alimentaire.
    bud-15 rec-0.2x60 ecologie+3 services+1 | g+3 c+1 d-1 e+5
    > Les cantines servent les légumes de la ferme municipale.
@@ -463,8 +463,8 @@ C) Vendre les terres :: Recettes.
    > Les terres sont vendues.
 
 === ecol-144 | ecologie | Des pergolas végétales dans les rues
-Des pergolas couvertes de plantes grimpantes pourraient ombrager les rues étroites.
-A) Installer dans cinquante rues :: Fraîcheur.
+Des pergolas couvertes de plantes grimpantes pourraient ombrager les rues étroites de l’arrondissement.
+A) Installer dans vingt rues :: Fraîcheur.
    bud-8 ecologie+2 bon+1 | g+1 c+2 d+1 e+3
    > Des rues deviennent des tunnels de verdure.
 B) Quelques rues tests :: Tester.

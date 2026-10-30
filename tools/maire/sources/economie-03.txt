@@ -1,6 +1,6 @@
 // Économie, série 3
 === econ-066 | economie | Une banque alimentaire pour les étudiants
-Des étudiants font la queue aux distributions alimentaires. Les universités demandent de l’aide.
+Des étudiants de l’arrondissement font la queue aux distributions alimentaires. Les universités demandent de l’aide.
 A) Épiceries solidaires sur les campus :: Aide directe.
    bud-4 rec-0.1x60 achat+2 | g+3 c+2 d0 e+1
    > Des épiceries solidaires ouvrent près des facultés.
@@ -24,8 +24,8 @@ C) Refuser :: Pas de camions en plus.
    economie-1 | g0 c+1 d-1 e+1
    > L’entrepôt reste en banlieue.
 
-=== econ-068 | economie | Les artisans du meuble du faubourg Saint-Antoine
-Les derniers ébénistes du faubourg Saint-Antoine sont chassés par la hausse des loyers.
+=== econ-068 | economie | Les derniers ébénistes du quartier
+Les derniers ébénistes de l’arrondissement sont chassés par la hausse des loyers.
 A) Préempter des ateliers pour les artisans :: Savoir-faire.
    bud-15 economie+2 | g+2 c+2 d+1 e+1
    > Des ateliers sont réservés aux ébénistes.
@@ -37,12 +37,12 @@ C) Laisser faire :: Évolution du quartier.
    > Les ateliers deviennent des boutiques.
 
 === econ-069 | economie | La concurrence des plateformes de réservation
-Les restaurateurs paient 25 % de commission aux plateformes de réservation et de livraison.
+Les restaurateurs de l’arrondissement paient 25 % de commission aux plateformes de réservation et de livraison.
 A) Plateforme municipale sans commission :: Alternative publique.
    bud-6 economie+2 | g+3 c+1 d0 e+1
    > Une plateforme publique est lancée.
    ~40 economie-1 > Peu de clients l’utilisent.
-B) Coopérative de restaurateurs soutenue par la Ville :: Accompagner.
+B) Coopérative de restaurateurs soutenue par la mairie :: Accompagner.
    bud-3 economie+1 | g+2 c+3 d+1 e+1
    > Les restaurateurs créent leur propre service.
 C) Rien :: Marché.
@@ -62,11 +62,11 @@ C) Rien :: Les commerçants décident.
    > Les horaires ne changent pas.
 
 === econ-071 | economie | Les jeunes diplômés partent à l’étranger
-Les jeunes diplômés parisiens partent travailler à Londres, Berlin ou Montréal.
+Les jeunes diplômés de l’arrondissement partent travailler à Londres, Berlin ou Montréal.
 A) Logements à prix réduits pour jeunes actifs :: Retenir.
    bud-15 logement+1 economie+1 | g+1 c+3 d+1 e+1
    > Des logements sont réservés aux jeunes actifs.
-B) Campagne « Reviens à Paris » :: Attirer.
+B) Campagne « Reviens dans ton quartier » :: Attirer.
    bud-3 economie+1 | g0 c+2 d+2 e0
    > Une campagne vise les expatriés.
 C) Rien :: Mobilité normale.
@@ -86,10 +86,10 @@ C) Rien :: Concurrence.
    > Les salons continuent.
 
 === econ-073 | economie | Un salon du jeu vidéo
-Un grand salon international du jeu vidéo hésite entre Paris et Cologne.
-A) Offrir le parc des expositions à prix réduit :: Attirer.
+Un grand salon international du jeu vidéo hésite entre l’arrondissement et Cologne.
+A) Offrir la grande halle à prix réduit :: Attirer.
    bud-8 economie+2 bon+1 | g0 c+2 d+3 e0
-   > Le salon choisit Paris.
+   > Le salon choisit l’arrondissement.
 B) Proposer un partenariat avec les écoles :: Formation.
    bud-3 economie+1 | g+1 c+3 d+1 e0
    > Le salon s’associe aux écoles du numérique.
@@ -98,7 +98,7 @@ C) Ne rien offrir :: Pas de subvention.
    > Le salon part à Cologne.
 
 === econ-074 | economie | Les boutiques de téléphonie et de vapotage partout
-Dans certaines rues, la moitié des commerces sont des boutiques de téléphones ou de cigarettes électroniques.
+Dans certaines rues de l’arrondissement, la moitié des commerces sont des boutiques de téléphones ou de cigarettes électroniques.
 A) Plafonner certains types de commerces par rue :: Diversité commerciale.
    economie+1 bon+1 | g+1 c+2 d0 e+1
    > Un plafond est fixé.
@@ -123,10 +123,10 @@ C) Rien :: Travaux nécessaires.
    > Plusieurs fleuristes ferment.
 
 === econ-076 | economie | Des tiers-lieux de travail dans les quartiers
-Des habitants veulent des espaces de travail partagés près de chez eux pour éviter le métro.
-A) Ouvrir des espaces de travail dans les mairies :: Proximité.
+Des habitants de l’arrondissement veulent des espaces de travail partagés près de chez eux pour éviter le métro.
+A) Ouvrir des espaces de travail dans la mairie d’arrondissement :: Proximité.
    bud-5 economie+1 transports+1 | g+1 c+3 d+2 e+2
-   > Des espaces de coworking ouvrent dans les mairies.
+   > Des espaces de coworking ouvrent dans la mairie d’arrondissement.
 B) Soutenir les tiers-lieux associatifs :: Initiative locale.
    bud-3 economie+1 bon+1 | g+2 c+2 d+1 e+2
    > Des associations ouvrent des tiers-lieux.
@@ -146,8 +146,8 @@ C) Rien :: Pas rentable.
    economie-1 | g0 c0 d+1 e0
    > Rien ne change.
 
-=== econ-078 | economie | Les créateurs de bijoux du Marais menacés
-Les créateurs indépendants du Marais sont remplacés par de grandes enseignes.
+=== econ-078 | economie | Les créateurs de bijoux menacés
+Les créateurs indépendants de l’arrondissement sont remplacés par de grandes enseignes.
 A) Réserver des boutiques aux créateurs :: Diversité.
    bud-6 economie+2 | g+2 c+2 d+1 e+1
    > Des boutiques sont réservées aux créateurs.
@@ -159,7 +159,7 @@ C) Rien :: Le marché décide.
    > Les créateurs partent.
 
 === econ-079 | economie | Une enseigne de luxe veut privatiser une rue
-Une marque de luxe veut fermer une rue un jour par semaine pour ses clients VIP.
+Une marque de luxe veut fermer une rue de l’arrondissement un jour par semaine pour ses clients VIP.
 A) Accepter contre une redevance élevée :: Recettes.
    bud+5 pop-2 | g-3 c+1 d+3 e-1
    > La rue est fermée le mardi.
@@ -171,8 +171,8 @@ C) Autoriser seulement pour un événement annuel :: Compromis.
    > Un événement par an est autorisé.
 
 === econ-080 | economie | Des cours de programmation pour les chômeurs
-Les entreprises du numérique manquent de développeurs.
-A) École municipale de programmation gratuite :: Reconversion.
+Les entreprises du numérique manquent de développeurs, et les chômeurs de l’arrondissement cherchent une reconversion.
+A) École de programmation gratuite dans l’arrondissement :: Reconversion.
    bud-10 rec-0.2x60 economie+3 | g+2 c+2 d+2 e+1
    > Des centaines de chômeurs deviennent développeurs.
 B) Bourses pour les écoles existantes :: Financer.
@@ -183,7 +183,7 @@ C) Rien :: Compétence de l’État.
    > Rien ne change.
 
 === econ-081 | economie | Un marché d’intérêt national pour l’artisanat
-Les artisans franciliens veulent un grand marché couvert permanent pour vendre leurs produits.
+Les artisans franciliens veulent un grand marché couvert permanent dans l’arrondissement pour vendre leurs produits.
 A) Créer un grand marché des artisans :: Vitrine.
    bud-25 economie+2 bon+1 | g+1 c+2 d+2 e+1
    > Un marché des artisans ouvre dans une ancienne halle.
@@ -206,8 +206,8 @@ C) Fermer les terrasses l’hiver :: Espace public.
    bon+1 economie-1 | g+1 c+1 d-2 e+1
    > Les terrasses rentrent en novembre.
 
-=== econ-083 | economie | Une zone franche dans le nord-est
-Des entreprises pourraient être exonérées d’impôts locaux si elles s’installent dans le nord-est parisien.
+=== econ-083 | economie | Une zone franche dans les quartiers populaires
+Des entreprises pourraient être exonérées d’impôts locaux si elles s’installent dans les quartiers populaires de l’arrondissement.
 A) Créer la zone franche :: Attirer l’emploi.
    rec-0.4x60 economie+3 | g0 c+2 d+3 e0
    > Des entreprises s’installent à la porte de la Chapelle.
@@ -231,11 +231,11 @@ C) Refuser :: Protéger le sommeil et l’emploi.
    > La demande est rejetée.
 
 === econ-085 | economie | Des commerces solidaires de seconde main
-Des ressourceries proposent d’ouvrir des magasins dans les rues commerçantes.
+Des ressourceries proposent d’ouvrir des magasins dans les rues commerçantes de l’arrondissement.
 A) Loyers réduits pour les ressourceries :: Économie circulaire.
    rec-0.1x60 economie+1 ecologie+2 achat+1 | g+2 c+2 d+1 e+4
    > Des ressourceries s’installent dans les rues commerçantes.
-B) Ouvrir une grande ressourcerie municipale :: Vitrine.
+B) Ouvrir une grande ressourcerie de la mairie :: Vitrine.
    bud-8 ecologie+2 economie+1 | g+2 c+2 d0 e+3
    > Une grande ressourcerie ouvre.
 C) Rien :: Le marché décide.
@@ -279,7 +279,7 @@ C) Refuser :: Pas le rôle de la Ville.
    > Le projet est abandonné.
 
 === econ-089 | economie | Le travail du dimanche dans les zones touristiques
-Les grands magasins veulent ouvrir tous les dimanches dans de nouvelles zones touristiques.
+Les grands magasins veulent ouvrir tous les dimanches et classer l’arrondissement en zone touristique.
 A) Étendre les zones touristiques :: Commerce.
    economie+2 bon-1 | g-3 c+1 d+4 e-1
    > Les magasins ouvrent le dimanche dans dix nouveaux quartiers.
@@ -290,14 +290,14 @@ C) Refuser :: Repos dominical.
    economie-1 bon+1 | g+3 c0 d-3 e+1
    > Les zones restent inchangées.
 
-=== econ-090 | economie | Les chefs étoilés quittent Paris
-Plusieurs chefs étoilés ferment leurs restaurants parisiens à cause des loyers.
-A) Loyers réduits dans des lieux prestigieux de la Ville :: Gastronomie.
+=== econ-090 | economie | Les chefs étoilés quittent l’arrondissement
+Plusieurs chefs étoilés ferment leurs restaurants de l’arrondissement à cause des loyers.
+A) Loyers réduits dans des lieux prestigieux de la mairie :: Gastronomie.
    rec-0.1x60 economie+2 | g-1 c+2 d+3 e0
    > Des chefs s’installent dans des pavillons municipaux.
 B) Concours pour jeunes chefs dans les quartiers :: Nouvelle génération.
    bud-3 economie+1 bon+1 | g+2 c+2 d+1 e+1
-   > De jeunes chefs ouvrent dans l’est parisien.
+   > De jeunes chefs ouvrent dans les quartiers populaires.
 C) Rien :: Le luxe se débrouille.
    economie-1 | g+1 c0 d-1 e0
    > Les chefs partent.
@@ -327,7 +327,7 @@ C) Laisser faire l’inspection du travail :: Compétence de l’État.
    > Rien ne change.
 
 === econ-093 | economie | Un festival du commerce local
-Les commerçants proposent une semaine de promotions dans toute la ville pour attirer les clients.
+Les commerçants proposent une semaine de promotions dans tout l’arrondissement pour attirer les clients.
 A) Financer la communication :: Soutien.
    bud-3 economie+2 | g0 c+3 d+3 e0
    > La semaine du commerce attire des milliers de clients.
@@ -339,8 +339,8 @@ C) Rien :: Aux commerçants d’organiser.
    > Rien n’est fait.
 
 === econ-094 | economie | Les cordonniers et retoucheurs disparaissent
-Les petits métiers de la réparation disparaissent des quartiers.
-A) Bonus réparation financé par la Ville :: Soutenir.
+Les petits métiers de la réparation disparaissent des rues de l’arrondissement.
+A) Bonus réparation financé par la mairie :: Soutenir.
    rec-0.1x60 economie+1 ecologie+1 | g+1 c+3 d+2 e+3
    > Les réparations sont en partie remboursées.
 B) Locaux à prix réduits pour ces métiers :: Garder les savoir-faire.
@@ -387,7 +387,7 @@ C) Autoriser sur les pistes cyclables seulement :: Compromis.
    > Les robots roulent sur les pistes.
 
 === econ-098 | economie | Les marchés de nuit asiatiques
-Des associations veulent organiser des marchés de nuit de street-food asiatique l’été.
+Des associations veulent organiser des marchés de nuit de street-food asiatique l’été dans l’arrondissement.
 A) Autoriser dans plusieurs quartiers :: Animation.
    bud-2 economie+1 bon+2 | g+1 c+2 d+1 e+1
    > Les marchés de nuit attirent les foules.
@@ -437,8 +437,8 @@ C) Emplacements contre motos électriques :: Condition écologique.
    > Seuls les taxis-motos électriques ont accès.
 
 === econ-102 | economie | Un fonds pour les entreprises de la transition écologique
-Des start-up de l’écologie cherchent des financements pour se développer.
-A) Créer un fonds municipal d’investissement :: Soutenir.
+Des start-up de l’écologie de l’arrondissement cherchent des financements pour se développer.
+A) Créer un fonds d’investissement de l’arrondissement :: Soutenir.
    bud-20 economie+2 ecologie+2 | g+1 c+2 d+1 e+4
    > Le fonds investit dans vingt entreprises.
 B) Prix et concours d’innovation :: Visibilité.

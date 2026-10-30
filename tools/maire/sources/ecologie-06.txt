@@ -12,7 +12,7 @@ C) Rien :: L’eau ne manque pas.
    > Les nappes baissent.
 
 === ecol-187 | ecologie | Les lâchers de lanternes célestes
-Des lanternes en papier enflammées s’envolent lors des fêtes et retombent sur les toits.
+Des lanternes en papier enflammées s’envolent lors des fêtes et retombent sur les toits de l’arrondissement.
 A) Interdire les lanternes :: Sécurité.
    ecologie+1 securite+1 bon-1 | g0 c+2 d+2 e+1
    > Le ciel reste sans flammes.

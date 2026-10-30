@@ -368,13 +368,13 @@ C) Rien :: Qualité de l’eau incertaine.
    > Un seul site reste ouvert.
 
 === ecol-096 | ecologie | Des jardins thérapeutiques dans les hôpitaux
-Les patients des hôpitaux n’ont aucun espace vert. Des médecins demandent des jardins.
-A) Financer dix jardins thérapeutiques :: Soigner par la nature.
+Les patients des hôpitaux de l’arrondissement n’ont aucun espace vert. Des médecins demandent des jardins.
+A) Financer des jardins thérapeutiques :: Soigner par la nature.
    bud-6 ecologie+1 services+1 bon+1 | g+2 c+2 d+1 e+3
    > Des jardins ouvrent dans les hôpitaux.
 B) Prêter des jardiniers municipaux :: Aide en nature.
    rec-0.05x60 ecologie+1 | g+1 c+3 d+1 e+2
-   > Les jardiniers de la Ville aident les hôpitaux.
+   > Les jardiniers de l’arrondissement aident les hôpitaux.
 C) Rien :: Compétence de l’AP-HP.
    bon-1 | g0 c+1 d+1 e-1
    > Rien ne change.
@@ -441,7 +441,7 @@ C) Rien :: L’eau potable suffit.
    > Rien ne change.
 
 === ecol-102 | ecologie | Une piscine naturelle
-Une piscine filtrée par des plantes, sans chlore, pourrait être créée dans un parc.
+Une piscine filtrée par des plantes, sans chlore, pourrait être créée dans un parc de l’arrondissement.
 A) Construire la piscine naturelle :: Innovation.
    bud-25 ecologie+2 bon+2 | g+1 c+2 d+1 e+4
    > Une piscine naturelle ouvre.
@@ -478,7 +478,7 @@ C) Rien :: Commerce.
    > Les gobelets jetables restent.
 
 === ecol-105 | ecologie | Des fruits venus par avion dans les cantines
-Des fruits exotiques arrivent par avion pour les cantines, alors que des fruits locaux existent.
+Des fruits exotiques arrivent par avion pour les cantines de l’arrondissement, alors que des fruits locaux existent.
 A) Fruits locaux et de saison uniquement :: Bilan carbone.
    ecologie+2 economie+1 bon-1 | g+1 c+2 d+1 e+4
    > Les cantines servent des pommes et des poires d’Île-de-France.
