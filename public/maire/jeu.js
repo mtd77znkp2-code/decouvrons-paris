@@ -891,6 +891,7 @@
     if (st.chantiers.length) box.appendChild(chantiers());
     box.appendChild(carteVille(false));
     box.appendChild(boutique());
+    if (st.session) box.appendChild(employes());
     box.appendChild(gestion());
     box.appendChild(barreTrimestre());
     box.style.minHeight = ""; window.scrollTo(0, y);
@@ -1129,6 +1130,40 @@
     ajout(l, h("span", null, "🔒 " + B.ico + " " + B.nom), h("small", null, txt));
     return l;
   }
+  // ---------- Employés : autant qu'on veut, chacun plus cher et un peu moins efficace que le précédent ----------
+  function effetCourtEmp(id, v) {
+    var pc = Math.round(v * 100);
+    return { avocat: "−" + pc + " % de points perdus", presse: "+" + pc + " % de dégâts", comptable: "−" + pc + " % de frais", urbaniste: "+" + pc + " % de logements", policier: "+" + virg(Math.round(v * 10) / 10) + " Sécurité", proprete: "+" + Math.round(v) + " espaces entretenus" }[id];
+  }
+  function employes() {
+    var d = h("div", "mx-boutique mx-employes");
+    ajout(d, h("h5", null, "👔 Employés"), h("p", "mx-aide", "Embauche autant que tu veux : chaque nouvel employé coûte plus cher et apporte un peu moins. Ils touchent un salaire chaque trimestre."));
+    var pr = M.proprete(st);
+    if (pr.manque) d.appendChild(h("p", "mx-emp-alerte", "🧹 " + pr.espaces + " espaces de vie, seulement " + pr.couverts + " entretenus : il manque " + pr.manque + " agent" + (pr.manque > 1 ? "s" : "") + " de propreté. Sinon, ils finiront par fermer !"));
+    var g = h("div", "mx-emps");
+    Object.keys(M.EMPLOYES).forEach(function (id) {
+      var E = M.EMPLOYES[id], n = M.nbEmp(st, id), px = M.prixEmploye(st, id), non = M.peutEmbaucher(st, id);
+      var en = M.effetEmp(st, id), plus = M.effetEmp(st, id, 1) - en;
+      var c = h("div", "mx-emp" + (n ? " mx-emp-on" : "") + (id === "proprete" && pr.manque ? " mx-emp-urgent" : ""));
+      ajout(c, ajout(h("div", "mx-emp-tete"), h("span", "mx-emp-ico", E.ico), ajout(h("div"), h("b", null, E.nom), h("small", null, n ? "Salaires : " + argent(E.salaire * n) + "/trim." : "Aucun")), n ? h("em", "mx-emp-n", "×" + n) : null),
+        h("p", "mx-emp-txt", E.txt),
+        n ? h("p", "mx-emp-effet", "✔ " + effetCourtEmp(id, en)) : null,
+        h("p", "mx-emp-plus", "Suivant : " + effetCourtEmp(id, plus) + " · " + argent(E.salaire) + "/trim."));
+      var b = bouton("Embaucher · " + argent(px), "btn m-go mx-emp-go", function () {
+        if (M.peutEmbaucher(st, id)) return toast("💸 " + M.peutEmbaucher(st, id));
+        st = M.embaucher(st, id); sauver(); signal("achat");
+        var y = document.querySelector(".mx-employes"); if (y) y.replaceWith(employes()); haut2();
+        toast(E.ico + " " + E.nom + " embauché !");
+        if (SES.id) window.SessionLigne.signaler(SES.id, M.etatSession(st));
+      });
+      b.disabled = !!non;
+      c.appendChild(b); g.appendChild(c);
+    });
+    d.appendChild(g);
+    return d;
+  }
+  // Met à jour les chiffres du haut (argent, sondage…) sans tout redessiner
+  function haut2() { var a = document.querySelector("#m-app > .mx-tableau"); if (a) a.replaceWith(tableau()); }
   // Boutique rangée par rayons : on ouvre d'abord celui du pilier le plus faible
   var RAYON = null, gestionOuverte = false;
   function rayonDe(id) { return M.BATIMENTS[id].cat; }

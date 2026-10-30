@@ -104,16 +104,20 @@
   function attente(s, k, maintenant) { return Math.max(0, ((s.cd || {})[k] || 0) - maintenant); }
   function noter(s, e) { s.journal = (s.journal || []).concat([e]).slice(-30); }
   // Applique une attaque de la place a vers la place c (alea entre 0 et 1, donné par l'appelant)
+  // Avocats (défense) et attachés de presse (attaque) des joueurs : envoyés avec leur état
+  function emp(s, p, k) { var x = s.places[p]; return (x.type === "joueur" && x.stats && x.stats[k]) || 0; }
+  function ajouter(s, k, pts) { s.malus[k] = Math.min(MALUS_MAX, Math.round(((s.malus[k] || 0) + pts) * 10) / 10); }
   function frapper(s, a, c, type, maintenant, alea) {
     var A = ATTAQUES[type], kc = cle(s.places[c]), ka = cle(s.places[a]), e = { q: maintenant, type: type, de: qui(s, a), vers: qui(s, c), res: "ok", pts: A.pts };
+    var versC = Math.round(A.pts * (1 + emp(s, a, "att")) * (1 - emp(s, c, "def")) * 10) / 10, versA = function (n) { return Math.round(n * (1 + emp(s, c, "att")) * (1 - emp(s, a, "def")) * 10) / 10; };
     s.malus = s.malus || {}; s.boucliers = s.boucliers || {};
     if (s.boucliers[kc]) { delete s.boucliers[kc]; e.res = "bloque"; e.pts = 0; }
     else if (A.duel) {
       var sc = scores(s, maintenant);
-      if (sc[a] >= sc[c]) s.malus[kc] = Math.min(MALUS_MAX, (s.malus[kc] || 0) + A.pts);
-      else { s.malus[ka] = Math.min(MALUS_MAX, (s.malus[ka] || 0) + A.pts); e.res = "perdu"; }
-    } else if (A.risque && alea < A.risque) { s.malus[ka] = Math.min(MALUS_MAX, (s.malus[ka] || 0) + A.retour); e.res = "rate"; e.pts = A.retour; }
-    else s.malus[kc] = Math.min(MALUS_MAX, (s.malus[kc] || 0) + A.pts);
+      if (sc[a] >= sc[c]) { ajouter(s, kc, versC); e.pts = versC; }
+      else { e.pts = versA(A.pts); ajouter(s, ka, e.pts); e.res = "perdu"; }
+    } else if (A.risque && alea < A.risque) { e.pts = Math.round(A.retour * (1 - emp(s, a, "def")) * 10) / 10; ajouter(s, ka, e.pts); e.res = "rate"; }
+    else { ajouter(s, kc, versC); e.pts = versC; }
     noter(s, e); return e;
   }
   // Un joueur attaque une place voisine (cible = p + 1 ou p - 1)

@@ -1050,3 +1050,29 @@ button.mx-ses-qui{cursor:pointer}
 .m-pct-info{margin:0 0 6px;font-size:12.5px;font-weight:700;color:var(--pm,#5b6386)}
 .m-option .m-pct{grid-template-columns:1fr}.m-option .m-pct b{font-size:12.5px;font-weight:700}
 .m-pct.m-pct-top b{color:#b07a00}
+/* ===== Employés ===== */
+#m-app>.mx-employes{padding:14px 12px 12px}
+.mx-emp-alerte{margin:0;padding:10px 12px;border-radius:12px;background:rgba(255,90,79,.14);box-shadow:inset 0 0 0 1px rgba(255,90,79,.45);color:#ffc2bd;font-size:13px;font-weight:700}
+.mx-emps{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:10px}
+.mx-emp{display:grid;gap:6px;align-content:start;padding:12px;border-radius:16px;background:#fff;color:#1b2550;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.mx-emp.mx-emp-on{box-shadow:inset 0 0 0 2px #2f8a52,0 4px 14px rgba(0,0,0,.18)}
+.mx-emp.mx-emp-urgent{box-shadow:inset 0 0 0 2px #ff5a4f,0 4px 14px rgba(0,0,0,.18)}
+.mx-emp-tete{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;position:relative}
+.mx-emp-ico{font-size:30px;line-height:1}
+.mx-emp-tete b{display:block;font-size:14px;line-height:1.2}.mx-emp-tete small{display:block;font-size:11px;color:#5b6386}
+.mx-emp-n{position:absolute;top:-4px;right:-4px;font-style:normal;font-weight:800;font-size:12px;padding:2px 8px;border-radius:99px;background:#2f8a52;color:#fff}
+.mx-emp-txt{margin:0;font-size:12px;line-height:1.35;color:#3d4670}
+.mx-emp-effet{margin:0;font-size:12px;font-weight:800;color:#2f8a52}
+.mx-emp-plus{margin:0;font-size:11.5px;color:#5b6386}
+.mx-emp .mx-emp-go{margin-top:2px;width:100%;min-width:0;padding:9px 8px;font-size:13px}
+/* Employés : deux colonnes compactes sur téléphone */
+.mx-emps{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (min-width:640px){.mx-emps{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.mx-emp{padding:10px;gap:5px}
+.mx-emp-ico{font-size:24px}.mx-emp-tete b{font-size:13px}
+.mx-emp-txt{font-size:11px;line-height:1.3}
+.mx-emp-effet{font-size:11.5px}.mx-emp-plus{font-size:11px}
+.mx-emp .mx-emp-go{padding:8px 4px;font-size:12px}
+.mx-emp{display:flex;flex-direction:column}
+.mx-emp .mx-emp-go{margin-top:auto;background:#1b2550;color:#fff;border-radius:99px}
+.mx-emp .mx-emp-go:disabled{background:#c9cede;color:#5b6386}

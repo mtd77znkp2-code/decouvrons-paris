@@ -581,7 +581,7 @@
   }
   function cible(st) {
     var b = bonusBat(st), c = {};
-    PK.forEach(function (k) { c[k] = borne(st.base[k] + (b[k] || 0) - (k === "logement" ? Math.max(0, st.taux - 1) * 25 : 0)); });
+    PK.forEach(function (k) { c[k] = borne(st.base[k] + (b[k] || 0) + (k === "securite" ? effetEmp(st, "policier") : 0) - (k === "logement" ? Math.max(0, st.taux - 1) * 25 : 0)); });
     return c;
   }
   function prix(st, id) { return Math.round(coutBat(st, id) * Math.pow(P.inflation, st.bat[id] || 0)); }
@@ -595,7 +595,7 @@
   function h0(st) { return (st.session && st.session.hab0) || HAB0; }
   function ech(st) { return h0(st) / HAB0; }
   function logeDe(st, id) { return Math.round((LOGE[id] || 0) * ech(st)); }
-  function capacite(st) { var c = h0(st); Object.keys(LOGE).forEach(function (id) { c += logeDe(st, id) * ((st.bat && st.bat[id]) || 0); }); return c; }
+  function capacite(st) { var c = h0(st); Object.keys(LOGE).forEach(function (id) { c += logeDe(st, id) * ((st.bat && st.bat[id]) || 0); }); return Math.round(c * (1 + Math.min(0.3, effetEmp(st, "urbaniste")))); }
   function facteurHab(st) { return Math.max(0.8, Math.min(1.2, (st.hab || h0(st)) / h0(st))); }
   // Une ville cohérente : plus elle est peuplée, plus il faut de sécurité et de cadre de vie (sinon les gens s'en vont)
   function besoin(st) { return Math.round(40 + ((st.hab || h0(st)) / h0(st) - 1) * 100); }
@@ -684,7 +684,7 @@
     combosActifs(st).forEach(function (id) { t += C.COMBOS[id].ent || 0; });
     return arrondi(t * ((st.mods && st.mods.entretien) || 1) * (1 - Math.min(0.25, atout(st, "entretienPct") / 100)));
   }
-  function depenses(st) { return arrondi(P.fonct + entretien(st)); }
+  function depenses(st) { return arrondi(P.fonct * (1 - Math.min(0.25, effetEmp(st, "comptable"))) + entretien(st) + salaires(st)); }
   function chantierTranches(st) { var t = 0; (st.chantiers || []).forEach(function (c) { if (!c.susp) t += Math.round(c.du / Math.max(1, c.reste)); }); return t; }
   function solde(st) { var r = 0; st.recurrents.forEach(function (x) { r += x.m; }); return arrondi(recettes(st) - depenses(st) + r - interets(st) - chantierTranches(st)); }
   function promessesTenues(st) { return st.ambitions.filter(function (k) { return st.piliers[k] >= P.ambSeuil; }); }
@@ -933,7 +933,8 @@
   // Score envoyé à la session (le sondage : popularité, bonheur, promesses, influence de l'opposant…) et chiffres de la fiche
   function etatSession(st) {
     return { score: arrondi(sondage(st)), pop: Math.round(st.pop), bon: Math.round(bonheur(st)), hab: st.hab || h0(st), tresor: Math.round(st.tresor - st.dette),
-      bats: Object.keys(st.bat).reduce(function (n, id) { return n + st.bat[id]; }, 0), niv: st.nivJ, mandats: st.mandat - 1, maire: st.maire, chomage: chomage(st) };
+      bats: Object.keys(st.bat).reduce(function (n, id) { return n + st.bat[id]; }, 0), niv: st.nivJ, mandats: st.mandat - 1, maire: st.maire, chomage: chomage(st),
+      def: Math.round(Math.min(0.6, effetEmp(st, "avocat")) * 100) / 100, att: Math.round(Math.min(0.6, effetEmp(st, "presse")) * 100) / 100, emp: Object.keys(st.emp || {}).reduce(function (n, id) { return n + st.emp[id]; }, 0) };
   }
   // Résultat d'une élection de session : on monte d'une place, on reste, ou on descend ; un nouveau mandat commence
   function electionSession(st0, r) {
@@ -983,6 +984,7 @@
       }
     });
     finis.forEach(function (ch) { inaugurer(st, ch, notes); });
+    entretienEspaces(st, notes);
     var restants = [];
     st.prevus.forEach(function (p) {
       if (p.t <= st.t) { var d = appliquer(st, p.e, p.l); notes.push({ txt: p.txt, d: d }); } else restants.push(p);
@@ -1654,6 +1656,52 @@
     }
     return st;
   }
+  // ---------- Employés (en session) : on en embauche autant qu'on veut ; chacun coûte plus cher et sert un peu moins que le précédent ----------
+  // effet : ce qu'apporte le 1er ; les suivants apportent ×0,85 à chaque fois (comme les bâtiments). salaire : M€ par trimestre.
+  var EMPLOYES = {
+    avocat: { nom: "Avocat", ico: "⚖️", cout: 40, salaire: 3, effet: 0.06, unite: "pct", txt: "Les attaques de tes adversaires te font perdre moins de points dans les sondages." },
+    proprete: { nom: "Agent de propreté", ico: "🧹", cout: 20, salaire: 2, effet: 3, unite: "espaces", txt: "Entretient tes espaces de vie (parcs, jardins, fontaines…) : un agent pour 3. Sans eux, ils se dégradent et finissent par fermer." },
+    policier: { nom: "Policier municipal", ico: "👮", cout: 35, salaire: 3, effet: 2, unite: "pilier", pilier: "securite", txt: "Patrouille dans tes rues : le pilier Sécurité monte." },
+    presse: { nom: "Attaché de presse", ico: "📣", cout: 45, salaire: 3, effet: 0.08, unite: "pct", txt: "Tes attaques font perdre plus de points à tes adversaires." },
+    comptable: { nom: "Comptable", ico: "🧮", cout: 80, salaire: 4, effet: 0.02, unite: "pct", txt: "Traque le gaspillage : les frais de fonctionnement de la mairie baissent." },
+    urbaniste: { nom: "Urbaniste", ico: "📐", cout: 60, salaire: 3, effet: 0.04, unite: "pct", txt: "Densifie intelligemment : ton arrondissement peut loger plus d’habitants." }
+  };
+  function nbEmp(st, id) { return ((st.emp || {})[id]) || 0; }
+  function cumul(e, n) { return e * (1 - Math.pow(P.rendement, n)) / (1 - P.rendement); }
+  // Effet total des n employés d'un type (pour les agents de propreté : nombre d'espaces entretenus)
+  function effetEmp(st, id, plus) { var E = EMPLOYES[id], n = nbEmp(st, id) + (plus || 0); if (!st.session || !n) return 0; return id === "proprete" ? n * E.effet : cumul(E.effet, n); }
+  function prixEmploye(st, id) { return Math.round(EMPLOYES[id].cout * Math.pow(1.3, nbEmp(st, id)) / 5) * 5; }
+  function salaires(st) { if (!st.session) return 0; var s = 0; Object.keys(st.emp || {}).forEach(function (id) { if (EMPLOYES[id]) s += EMPLOYES[id].salaire * st.emp[id]; }); return s; }
+  // Espaces de vie à entretenir : les bâtiments « cadre de vie »
+  function espaces(st) { var n = 0; Object.keys(st.bat || {}).forEach(function (id) { if (BATIMENTS[id] && BATIMENTS[id].cat === "cadre") n += st.bat[id]; }); return n; }
+  function proprete(st) { var e = espaces(st), ok = effetEmp(st, "proprete"); return { espaces: e, couverts: Math.min(e, ok), manque: Math.max(0, Math.ceil((e - ok) / EMPLOYES.proprete.effet)) }; }
+  function peutEmbaucher(st, id) {
+    if (!EMPLOYES[id] || !st.session || st.phase === "fin") return "Impossible pour l’instant.";
+    if (st.tresor < prixEmploye(st, id)) return "Pas assez d’argent.";
+    return "";
+  }
+  function embaucher(st0, id) {
+    if (peutEmbaucher(st0, id)) return st0;
+    var st = copie(st0), E = EMPLOYES[id], px = prixEmploye(st0, id);
+    st.emp = st.emp || {}; st.emp[id] = (st.emp[id] || 0) + 1;
+    mouvement(st, -px, "Embauche : " + E.nom);
+    return st;
+  }
+  // Chaque trimestre : les espaces de vie mal entretenus se dégradent ; au bout d'un moment, l'un d'eux ferme
+  function entretienEspaces(st, notes) {
+    if (!st.session) return;
+    var pr = proprete(st);
+    if (!pr.manque) { st.usureEsp = 0; return; }
+    st.usureEsp = (st.usureEsp || 0) + pr.manque;
+    if (st.usureEsp >= 4 && rnd(st) < Math.min(0.6, 0.15 * pr.manque)) {
+      var ids = Object.keys(st.bat).filter(function (id) { return BATIMENTS[id] && BATIMENTS[id].cat === "cadre" && st.bat[id] > 0 && !BATIMENTS[id].unique; });
+      if (!ids.length) return;
+      var id = ids[Math.floor(rnd(st) * ids.length)]; st.bat[id]--; if (!st.bat[id]) delete st.bat[id];
+      st.usureEsp = 0;
+      message(st, "🧹", BATIMENTS[id].nom + " a fermé", "Faute d’agents de propreté, l’endroit s’est trop dégradé. Embauche des agents pour entretenir tes espaces de vie.");
+      notes.push({ txt: "🧹 Faute d’entretien, " + BATIMENTS[id].nom.toLowerCase() + " a dû fermer.", d: { pop: 0, bon: 0, coh: 0, bud: 0, pil: {} } });
+    }
+  }
   // ---------- Salle des ventes de la session (arrondissement contre arrondissement) ----------
   function catalogueVentes() { var ids = Object.keys(C.ENCHERES), cout = {}; ids.forEach(function (id) { cout[id] = BATIMENTS[id].cout; }); return { ids: ids, cout: cout }; }
   function gagnerVente(st0, id, prix, cle) {
@@ -1811,7 +1859,7 @@
   var API = { MANDAT: MANDAT, PLAFOND_DETTE: PLAFOND_DETTE, TAUX: TAUX, P: P, NIVEAUX: NIVEAUX, PILIERS: PILIERS, ICO: ICO, DOMAINES: DOMAINES,
     MECANIQUES: MECANIQUES, EXTRAS: EXTRAS, mecaniques: mecaniques, BATIMENTS: BATIMENTS, OPPOSANTS: OPPOSANTS, SEUIL_OPP: SEUIL_OPP, LIGNES: LIGNES, CATS: CATS,
     FAMILLE: FAMILLE, SPECIAUX: SPECIAUX, C: C,
-    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
+    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, EMPLOYES: EMPLOYES, nbEmp: nbEmp, effetEmp: effetEmp, prixEmploye: prixEmploye, salaires: salaires, proprete: proprete, peutEmbaucher: peutEmbaucher, embaucher: embaucher, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
     disponible: disponible, enChantier: enChantier, prix: prix, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, recit: recit,
     valider: valider, indexer: indexer, engagements: engagements, evenementCourant: evenementCourant, stats: stats, opposant: opposant, humeurOpp: humeurOpp, bonheur: bonheur,
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,

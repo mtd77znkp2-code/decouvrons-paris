@@ -796,6 +796,37 @@ test("session : salle des ventes, une vente à la fois toutes les 6 minutes, la 
   const w = S.ventesEnCours(s, cat, t0 + 6 * 60000)[0]; const t1 = t0 + 6 * 60000; const s3 = S.encherir(s, "u1", cat, w.k, w.prix + w.pas, t1); const w3 = S.vente(s3, cat, w.k, t1);
   assert.ok(w3.prix >= w.prix + w.pas);
 });
+test("session : employés (prix qui monte, effet qui baisse, effets réels)", () => {
+  const S = require("../../public/maire/session.js");
+  let st = M.nouvellePartie({ maire: "tribun", graine: 8, nivJoueur: 10 });
+  assert.ok(M.peutEmbaucher(st, "avocat"), "hors session : pas d'employés");
+  st = M.placer(st, { id: "s", place: 4, titre: S.titre(4), hab0: S.habitants(4), puissance: S.puissance(4), rival: { nom: "R", ico: "x" }, opp: { nom: "O", ico: "y" } }); st.phase = "gestion"; st.tresor = 5000;
+  assert.equal(Object.keys(M.EMPLOYES).length, 6);
+  const p0 = M.prixEmploye(st, "avocat"); st = M.embaucher(st, "avocat"); const p1 = M.prixEmploye(st, "avocat"); assert.ok(p1 > p0, "le prix monte");
+  const e1 = M.effetEmp(st, "avocat"); st = M.embaucher(st, "avocat"); const e2 = M.effetEmp(st, "avocat") - e1; assert.ok(e2 < e1 && e2 > 0, "chacun sert un peu moins");
+  // Comptable : moins de dépenses ; urbaniste : plus de logements ; policier : la sécurité vise plus haut ; salaires comptés
+  const d0 = M.depenses(st), c0 = M.capacite(st), s0 = M.cible(st).securite;
+  let a = M.embaucher(st, "comptable"); assert.ok(M.depenses(a) < d0);
+  a = M.embaucher(st, "urbaniste"); assert.ok(M.capacite(a) > c0);
+  a = M.embaucher(st, "policier"); assert.ok(M.cible(a).securite > s0);
+  assert.ok(M.salaires(a) > M.salaires(st));
+  // Avocats et attachés de presse dans les attaques de la session
+  let s = S.rejoindre(S.rejoindre(S.nouvelleSession(5, 0), "u1", "A", "🙂", 0), "u2", "B", "😎", 0);
+  const sansDef = S.attaquer(s, "u1", 1, "manif", 1000, 0.9); const m0 = S.malusDe(sansDef, 1);
+  s = S.signaler(s, "u2", { score: 50, def: 0.3 }, 500); s = S.signaler(s, "u1", { score: 50, att: 0 }, 500);
+  const avecDef = S.attaquer(s, "u1", 1, "manif", 1000, 0.9); assert.ok(S.malusDe(avecDef, 1) < m0, "l'avocat protège");
+  // Agents de propreté : sans eux, les espaces de vie finissent par fermer
+  let v = M.placer(M.nouvellePartie({ maire: "tribun", graine: 12, nivJoueur: 30 }), { id: "s", place: 4, titre: "", hab0: S.habitants(4), puissance: 1, rival: null, opp: null });
+  v.phase = "gestion"; v.tresor = 50000; v.bat = { parc: 3, fontaines: 3, jardinsPartages: 3 };
+  assert.ok(M.proprete(v).manque >= 3);
+  for (let k = 0; k < 30; k++) v = M.avancerSession(v, base);
+  assert.ok((v.bat.parc || 0) + (v.bat.fontaines || 0) + (v.bat.jardinsPartages || 0) < 9, "des espaces ont fermé");
+  let w = M.placer(M.nouvellePartie({ maire: "tribun", graine: 12, nivJoueur: 30 }), { id: "s", place: 4, titre: "", hab0: S.habitants(4), puissance: 1, rival: null, opp: null });
+  w.phase = "gestion"; w.tresor = 50000; w.bat = { parc: 3, fontaines: 3, jardinsPartages: 3 }; for (let k = 0; k < 3; k++) w = M.embaucher(w, "proprete");
+  assert.equal(M.proprete(w).manque, 0);
+  for (let k = 0; k < 30; k++) w = M.avancerSession(w, base);
+  assert.equal((w.bat.parc || 0) + (w.bat.fontaines || 0) + (w.bat.jardinsPartages || 0), 9, "bien entretenus, rien ne ferme");
+});
 test("élections anticipées : à la demande du maire quand ses objectifs sont remplis, 3 trimestres plus tard, sauf si le vote est déjà proche", () => {
   const prep = (t) => { const st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 950, nivJoueur: 40 });
     st.phase = "gestion"; st.t = t; st.objectifs = [{ k: "pop", but: 1, ico: "📣", txt: "a" }, { k: "pop", but: 2, ico: "📣", txt: "b" }, { k: "pop", but: 99, ico: "📣", txt: "c" }]; return st; };
