@@ -881,6 +881,18 @@ test("réglages : modifiables dans l'admin, lus en direct par le moteur et la se
   assert.equal(S.MANDAT_MS, 10 * 60000, "retour aux valeurs d'origine"); assert.ok(st);
 });
 
+test("session : une partie de casino dans un dossier ouvert survit au passage d'une saison", () => {
+  const S = require("../../public/maire/session.js");
+  let st = M.nouvellePartie({ maire: "tribun", graine: 21, niveauPartie: true });
+  st = M.placer(st, { id: "s", place: 0, titre: S.titre(0), hab0: S.habitants(0), puissance: S.puissance(0), rival: null, opp: null });
+  st.phase = "gestion";
+  let essais = 0;
+  while (essais++ < 40) { st = M.avancerSession(st, base); st = M.preparerMiniJeu(M.dossierSession(st, base), base); if (st.phase === "evenement" && st.mj && st.mj.jeux.some(Boolean)) break; if (st.phase === "evenement") st = M.choisir(st, base, st.mj ? st.mj.jeux.findIndex(x => !x) : 0); }
+  const i = st.mj.jeux.findIndex(Boolean); assert.ok(M.jeuDe(st, i), "une réponse se joue au casino");
+  const t0 = st.t; st = M.avancerSession(st, base);
+  assert.ok(st.t > t0, "la saison est passée"); assert.ok(M.jeuDe(st, i), "la partie de casino est toujours là");
+});
+
 console.log(ok + " tests réussis.\n");
 if (!N) { console.log("Simulation d’équilibrage ignorée (0 partie demandée)."); process.exit(0); }
 

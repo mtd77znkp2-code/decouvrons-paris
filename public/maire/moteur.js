@@ -1096,11 +1096,13 @@
     var enAttente = st0.phase === "evenement" || (st0.resultat && !st0.resultatVu), mis = {};
     var s = copie(st0);
     if (enAttente) { GARDE.forEach(function (k) { mis[k] = s[k]; }); s.phase = "gestion"; }
+    var mj = enAttente && s.mj && s.mj.t === s.t ? s.mj : null;   // partie de casino d'un dossier ouvert : elle continue
     s.sansDossier = true;
     var r = debutTour(s, base);
     delete r.sansDossier;
     if (r.phase === "fin") return r;
     if (enAttente) GARDE.forEach(function (k) { r[k] = mis[k]; });
+    if (mj) { r.mj = mj; mj.t = r.t; }
     return r;
   }
   function dossierSession(st0, base) {

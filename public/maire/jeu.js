@@ -770,7 +770,7 @@
     var n = 0;
     while (now >= SES.tick) { if (SES.jetons < RG().v.reserveMax) { SES.jetons++; n++; } SES.tick = prochainDossier(SES.tick); }
     if (n) {
-      garderReserve();
+      garderReserve(); if (window.sfx) window.sfx("dossier");   // son n°11 : un nouveau dossier arrive
       // Nouveau dossier disponible : le bouton fait un petit saut doré
       var b = document.querySelector(".m-barmois .btn.mx-auto");
       if (b) { b.classList.remove("mx-nouveau"); void b.offsetWidth; b.classList.add("mx-nouveau"); }
@@ -1203,8 +1203,11 @@
   }
   // Le téléphone du maire : un vieux téléphone rouge animé
   function imgTel(cls) { var i = h("img", cls); i.src = "maire/img/telephone.gif"; i.alt = ""; i.width = 40; i.height = 40; i.decoding = "async"; return i; }
+  var TEL_AVANT = null;
   function telephone() {
     var nl = st.messages.filter(function (m) { return !m.lu; }).length;
+    // Son n°12 : le téléphone sonne quand un nouveau message ou une offre arrive (pas au premier affichage)
+    var tc = nl + (st.offre ? 1000 : 0); if (TEL_AVANT != null && tc > TEL_AVANT && window.sfx) window.sfx("telephone", 0.7); TEL_AVANT = tc;
     var b = bouton("", "m-tel" + (st.offre ? " m-tel-offre" : nl ? " m-tel-nouv" : ""), ouvrirTelephone);
     ajout(b, imgTel("m-tel-img"), nl ? h("span", "m-tel-nb", String(nl)) : null);
     b.setAttribute("aria-label", "Téléphone du maire" + (nl ? ", " + nl + " message" + (nl > 1 ? "s" : "") + " non lu" + (nl > 1 ? "s" : "") : ""));
@@ -1387,7 +1390,8 @@
     G.marquerGuide("bat-" + id);
     if (B.enchere) { if (!M.peutEncherir(st, id)) enchere(id); return; }
     if (M.peutAcheter(st, id)) return;
-    var avantAchat = st; st = M.acheter(st, id); if (st !== avantAchat && window.sfx) window.sfx("achat");   // son n°8 : « cha-ching »
+    var avantAchat = st; st = M.acheter(st, id);
+    if (st !== avantAchat && window.sfx) { window.sfx("achat"); setTimeout(function () { window.sfx("chantier", 0.7); }, 450); }   // sons n°8 « cha-ching » puis n°9 marteau
     sauver(); signal("achat"); jeu(); toast(B.ico + " " + B.nom + (B.projet ? " : chantier lancé !" : " construit !"));
   }
   // Carte compacte : on touche pour construire ; « i » ouvre la fiche
@@ -2078,6 +2082,7 @@
     });
     function dessin() {
       zone.innerHTML = "";
+      if (!J()) return modale();
       var t = J().pk, m = t.main, montre = m.fini && m.res && m.res.abattage;
       if (t.mains !== mainVue) { cartesVues = {}; mainVue = t.mains; }
       function siege(s) {
@@ -2216,6 +2221,7 @@
       if (!J().bj) { st = M.mjBlackjack(st, i, "donner"); sauver(); }
       cartesVues = {};
       (function dessin() {
+        if (!J()) return modale();   // le dossier a changé entre-temps : on revient au dossier
         zone.innerHTML = "";
         var b = J().bj, cache = !b.fini;
         function main(t, l, val) { var m = h("div", "m-bj-main"); l.forEach(function (c, k) { var e = carteJeu(c, cache && t === "c" && k === 1); posee(e, k); m.appendChild(e); }); return ajout(h("div", "m-bj-ligne"), h("small", "m-bj-val", (t === "j" ? "Toi" : "Croupier") + (val != null ? " · " + val : "")), m); }

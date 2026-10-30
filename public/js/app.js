@@ -502,7 +502,7 @@ var musique=(function(){
   }
   window.sfx=function(nom,vol){chargerClic();if(SFX[nom])jouerBuf(SFX[nom],vol);else chargerSfx(nom,function(x){jouerBuf(x,vol)})};
   // Préchargés pour être prêts au bon moment
-  setTimeout(function(){chargerClic();["carte","retourne","roulette","bille","gagne","perdu","jetons","achat"].forEach(function(n){chargerSfx(n)})},1500);
+  setTimeout(function(){chargerClic();["carte","retourne","roulette","bille","gagne","perdu","jetons","achat","chantier","dossier","telephone"].forEach(function(n){chargerSfx(n)})},1500);
   function clic(e){
     var b=e.target&&e.target.closest&&e.target.closest("button,.btn,[role=button]");
     if(!b||muet||b.disabled||b.id==="jouer"||b.classList.contains("entree"))return;
