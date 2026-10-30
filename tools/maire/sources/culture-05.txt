@@ -36,8 +36,8 @@ C) Laisser faire :: Liberté.
    > Les halls sont saturés.
 
 === cul-149 | culture | Une grande fête de la Seine
-Des associations proposent une journée où le fleuve devient une scène géante.
-A) Financer une fête sur tous les quais :: Célébrer.
+Des associations proposent une journée où le fleuve devient une scène géante au pied de l’arrondissement.
+A) Financer une fête sur tous les quais de l’arrondissement :: Célébrer.
    bud-3 bon+2 economie+1 | g+1 c+2 d+1 e0
    > Des milliers de bateaux décorés défilent.
 B) Une fête modeste sur un seul quai :: Sobriété.
@@ -134,8 +134,8 @@ C) Rien :: Programmes scolaires.
    > Les écoles restent sans artistes.
 
 === cul-157 | culture | Une salle pour les musiques électroniques
-Les collectifs de musique électronique cherchent un lieu légal.
-A) Ouvrir une salle municipale :: Encadrer.
+Les collectifs de musique électronique de l’arrondissement cherchent un lieu légal.
+A) Ouvrir une salle de la mairie d’arrondissement :: Encadrer.
    bud-3 bon+1 economie+1 | g+1 c+2 d+1 e+1
    > Les fêtes se déroulent en sécurité.
 B) Autoriser des friches temporaires :: Souplesse.

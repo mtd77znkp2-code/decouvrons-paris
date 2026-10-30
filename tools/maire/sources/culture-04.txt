@@ -70,19 +70,20 @@ C) Garder le musée en l’état :: Économie.
    bon-1 | g0 c+1 d+1 e0
    > Des écoles attendent un an pour venir.
 
-=== cul-112 | culture | Un planétarium dans l’Est parisien
-Les écoles de l’Est n’ont aucun lieu pour découvrir l’astronomie.
-A) Construire un planétarium à Belleville :: Science pour tous.
+=== cul-112 | culture | Un planétarium pour les écoles
+Les écoles de l’arrondissement n’ont aucun lieu pour découvrir l’astronomie.
+A) Construire un planétarium dans l’arrondissement :: Science pour tous.
    bud-3 bon+1 services+1 | g+2 c+2 d0 e+1
    > Les classes découvrent les étoiles.
 B) Un planétarium mobile qui tourne dans les écoles :: Itinérant.
    bud-1 bon+1 | g+1 c+2 d+1 e+1
    > Une coupole gonflable passe d’école en école.
-C) Refuser :: La Villette suffit.
+C) Refuser :: La cité des sciences suffit.
    bon-1 | g0 c+1 d+1 e0
-   > Les élèves traversent Paris pour la Villette.
+   > Les élèves traversent Paris pour voir les étoiles.
+
 === cul-113 | culture | Un orchestre symphonique des quartiers
-Un chef propose de créer un orchestre avec des enfants des quartiers populaires.
+Un chef propose de créer un orchestre avec des enfants des quartiers populaires de l’arrondissement.
 A) Financer instruments et professeurs :: Égalité.
    bud-2 bon+2 services+1 | g+2 c+2 d0 e+1
    > Cent enfants découvrent le violon.
@@ -94,8 +95,9 @@ C) Refuser :: Priorités.
    bon-1 | g-1 c0 d+1 e0
    > Le chef part monter son projet ailleurs.
 
-=== cul-114 | culture | Le Paris FC cherche un stade
-Le second club de football de la capitale veut un stade moderne et demande l’aide de la Ville.
+=== cul-114 | culture | Le club de foot promu rêve d’une enceinte moderne
+Le club de football de l’arrondissement monte en première division, veut un stade moderne et demande l’aide de la mairie.
+? placeMin=10
 A) Financer un stade neuf :: Sport.
    bud-4 bon+1 economie+1 | g0 c+1 d+2 e0
    ~40 rec+0.02x20 > Le stade génère des recettes.
@@ -105,7 +107,8 @@ B) Lui confier un stade existant :: Mutualiser.
    > Le club s’installe en partageant l’équipement.
 C) Refuser :: Le privé paie.
    bon-1 | g0 c+1 d+1 e0
-   > Le club menace de quitter Paris.
+   > Le club menace de quitter l’arrondissement.
+
 === cul-115 | culture | La Maison de la radio ouvre ses studios
 Radio France propose d’ouvrir ses studios aux Parisiens un dimanche par mois.
 A) Cofinancer des concerts gratuits :: Partenariat.
@@ -169,7 +172,7 @@ C) Geler les permis d’hôtels :: Moratoire.
    > Les investisseurs partent à Londres.
 
 === cul-120 | culture | Une maison de la photographie dans un ancien marché
-Des photographes veulent un grand lieu d’exposition gratuit pour les jeunes talents.
+Des photographes veulent un grand lieu d’exposition gratuit pour les jeunes talents dans l’arrondissement.
 A) Rénover l’ancien marché pour l’accueillir :: Création.
    bud-3 bon+1 economie+1 | g+1 c+2 d+1 e+1
    > Les cimaises accueillent mille tirages.
@@ -179,6 +182,7 @@ B) Exposer sur les grilles des jardins :: Plein air.
 C) Refuser :: Il y a déjà des musées.
    bon-1 | g0 c+1 d+1 e0
    > Les photographes exposent à Arles.
+
 === cul-121 | culture | Des concerts d’orgue gratuits
 Les grandes orgues des églises de la Ville sont rarement entendues.
 A) Une saison de concerts gratuits :: Patrimoine vivant.
@@ -191,14 +195,15 @@ C) Laisser aux paroisses :: Neutralité.
    bon-1 | g0 c+1 d+1 e0
    > Rien ne change.
 
-=== cul-122 | culture | La Philharmonie veut une seconde salle
-La salle est complète des mois à l’avance et demande à la Ville de cofinancer une extension.
+=== cul-122 | culture | La Philharmonie du quartier réclame une extension
+La grande salle de concert de l’arrondissement est complète des mois à l’avance et demande à la mairie de cofinancer une extension.
+? placeMin=12
 A) Cofinancer l’extension :: Rayonnement.
    bud-4 bon+1 economie+1 | g+1 c+2 d+1 e0
-   > Une seconde salle sort de terre à la Villette.
-B) Proposer plutôt un auditorium dans l’Est parisien :: Rééquilibrer.
+   > Une seconde salle sort de terre à côté de la première.
+B) Proposer plutôt un auditorium dans un quartier populaire :: Rééquilibrer.
    bud-3 bon+2 | g+2 c+2 d0 e+1
-   > Un auditorium ouvre à Belleville.
+   > Un auditorium ouvre dans un quartier populaire.
 C) Refuser :: L’État paie.
    bon-1 | g-1 c+1 d+1 e0
    > Le projet est reporté.
@@ -216,8 +221,8 @@ C) Louer les chais à des commerces :: Recettes.
    > Les chais deviennent des boutiques.
 
 === cul-124 | culture | Un festival de bande dessinée
-Les éditeurs de BD veulent un grand festival parisien, comme à Angoulême.
-A) Le financer au Grand Palais :: Ambition.
+Les éditeurs de BD veulent un grand festival dans l’arrondissement, comme à Angoulême.
+A) Le financer dans la grande halle :: Ambition.
    bud-2 bon+2 economie+1 | g+1 c+2 d+1 e0
    > Des dizaines de milliers de lecteurs viennent.
 B) Un festival dans les bibliothèques :: Proximité.
@@ -288,16 +293,16 @@ C) Laisser aux agences :: Privé.
    > Les agences vendent leurs visites.
 
 === cul-130 | culture | Un grand festival manga
-Les fans de culture japonaise réclament un festival dans Paris intra-muros.
-A) L’accueillir au parc des expositions :: Jeunesse.
+Les fans de culture japonaise réclament un festival dans l’arrondissement.
+A) L’accueillir dans la grande halle :: Jeunesse.
    bud-1 bon+2 economie+1 | g+1 c+2 d+1 e0
-   > Des milliers de cosplayeurs envahissent le 15e.
+   > Des milliers de cosplayeurs envahissent l’arrondissement.
 B) Le décliner dans les médiathèques :: Lecture.
    bud-1 bon+1 services+1 | g+1 c+2 d0 e+1
    > Les rayons manga sont pris d’assaut.
 C) Laisser à Villepinte :: Banlieue.
    bon-1 | g0 c+1 d+1 e0
-   > Les jeunes Parisiens prennent le RER.
+   > Les jeunes de l’arrondissement prennent le RER.
 
 === cul-131 | culture | Un concours d’éloquence pour les lycéens
 Des enseignants veulent un concours de plaidoiries entre lycées parisiens.
@@ -432,8 +437,9 @@ C) Laisser l’association se débrouiller :: Autonomie.
    bon-1 | g0 c+1 d+1 e0
    > L’édition est réduite.
 
-=== cul-142 | culture | Le Sacré-Cœur sous les échafaudages
-La basilique doit être restaurée et la Ville en est propriétaire.
+=== cul-142 | culture | La basilique sous les échafaudages
+La grande basilique de l’arrondissement doit être restaurée et la Ville en est propriétaire.
+? placeMin=8
 A) Un grand chantier rapide :: Restaurer.
    bud-4 bon+1 | g0 c+2 d+1 e+1
    > La pierre blanche retrouve son éclat.

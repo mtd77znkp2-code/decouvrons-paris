@@ -13,11 +13,11 @@ C) Laisser faire la nature :: Nouvel écosystème.
    ecologie-1 | g0 c0 d0 e-1
    > Les perruches prospèrent.
 
-=== ecol-067 | ecologie | Le bruit des avions d’Orly
-Les habitants du sud de Paris se plaignent des avions qui passent à basse altitude.
+=== ecol-067 | ecologie | Le bruit des avions au-dessus du quartier
+Les habitants de l’arrondissement se plaignent des avions qui passent à basse altitude.
 A) Exiger un couvre-feu plus strict à Orly :: Calme.
    bon+1 coh+1 economie-1 | g+1 c+1 d-1 e+3
-   > Le maire réclame la fin des vols tardifs.
+   > Le maire d’arrondissement réclame la fin des vols tardifs.
 B) Aider l’isolation phonique des logements :: Protéger.
    bud-10 bon+1 logement+1 | g+1 c+3 d+1 e+1
    > Des fenêtres antibruit sont subventionnées.
@@ -26,11 +26,11 @@ C) Rien :: Compétence de l’État.
    > Les avions continuent de passer.
 
 === ecol-068 | ecologie | Chauffer les piscines au soleil
-Les piscines municipales sont chauffées au gaz. Des panneaux solaires pourraient prendre le relais.
+Les piscines de l’arrondissement sont chauffées au gaz. Des panneaux solaires pourraient prendre le relais.
 A) Équiper toutes les piscines :: Transition.
    bud-30 rec+0.2x80 ecologie+3 | g+1 c+2 d+1 e+4
    > Les piscines se chauffent au soleil.
-B) Équiper trois piscines pilotes :: Tester.
+B) Équiper une piscine pilote :: Tester.
    bud-8 ecologie+1 | g+1 c+3 d+1 e+2
    > Trois piscines sont équipées.
 C) Rien :: Coût.
@@ -50,7 +50,7 @@ C) Rien :: Liberté.
    > Rien ne change.
 
 === ecol-070 | ecologie | Louer des sapins de Noël en pot
-Des millions de sapins coupés finissent à la poubelle. Une entreprise propose de louer des sapins en pot.
+Des milliers de sapins coupés finissent sur les trottoirs de l’arrondissement. Une entreprise propose de louer des sapins en pot.
 A) Partenariat et promotion :: Noël durable.
    bud-1 ecologie+2 | g+1 c+3 d+1 e+3
    > Les sapins en pot sont replantés après les fêtes.
@@ -62,7 +62,7 @@ C) Rien :: Tradition.
    > Rien ne change.
 
 === ecol-071 | ecologie | Réensauvager un quai de Seine
-Un quai bétonné pourrait redevenir une berge naturelle avec des roseaux et des oiseaux.
+Un quai bétonné de l’arrondissement pourrait redevenir une berge naturelle avec des roseaux et des oiseaux.
 A) Transformer le quai :: Nature en ville.
    bud-20 ecologie+3 bon+1 | g+1 c+2 d0 e+5
    > Le quai devient une berge sauvage.
@@ -75,7 +75,7 @@ C) Garder le quai :: Promenade.
    > Le quai reste bétonné.
 
 === ecol-072 | ecologie | Des algues toxiques dans les lacs du bois
-Des cyanobactéries rendent les lacs du bois de Boulogne dangereux pour les chiens et les enfants.
+Des cyanobactéries rendent les lacs du parc de l’arrondissement dangereux pour les chiens et les enfants.
 A) Curer et oxygéner les lacs :: Traiter.
    bud-10 ecologie+2 | g+1 c+2 d+1 e+3
    > Les lacs sont nettoyés.
@@ -87,7 +87,7 @@ C) Planter des plantes épuratrices :: Solution naturelle.
    > Des roseaux filtrent l’eau.
 
 === ecol-073 | ecologie | Un objectif de 50 % d’ombre
-Des climatologues proposent que la moitié des rues soit ombragée d’ici 2040.
+Des climatologues proposent que la moitié des rues de l’arrondissement soit ombragée d’ici 2040.
 A) Adopter l’objectif avec un plan d’arbres :: Ambition.
    bud-30 ecologie+3 bon+1 | g+1 c+2 d0 e+5
    > Un plan de 100 000 arbres est voté.
@@ -118,7 +118,7 @@ A) Équiper les toits municipaux :: Énergie locale.
    ~30 bon-1 > Des voisins se plaignent d’un bourdonnement.
 B) Un toit pilote :: Tester.
    bud-2 ecologie+1 | g+1 c+3 d+1 e+2
-   > Une éolienne est installée sur une mairie.
+   > Une éolienne est installée sur la mairie d’arrondissement.
 C) Refuser :: Paysage.
    ecologie-1 bon+1 | g0 c+1 d+2 e-2
    > Les toits restent sans éoliennes.
@@ -138,7 +138,7 @@ C) Laisser pêcher librement :: Loisir populaire.
 === ecol-077 | ecologie | La géothermie sous les écoles
 Des forages dans les cours d’école pourraient chauffer et rafraîchir les bâtiments.
 ? distinct
-A) Équiper cinquante écoles :: Transition.
+A) Équiper toutes les écoles de l’arrondissement :: Transition.
    bud-40 rec+0.3x80 ecologie+3 services+1 | g+1 c+2 d+1 e+4
    > Les écoles sont chauffées par le sous-sol.
 B) Équiper les écoles neuves seulement :: Progressif.
@@ -149,7 +149,7 @@ C) Rien :: Coût.
    > Les écoles restent au gaz.
 
 === ecol-078 | ecologie | L’air des salles de classe
-Des capteurs révèlent que l’air des classes est très confiné. Les enfants se fatiguent.
+Des capteurs révèlent que l’air des classes de l’arrondissement est très confiné. Les enfants se fatiguent.
 A) Capteurs de CO₂ et purificateurs dans toutes les classes :: Santé.
    bud-12 services+2 ecologie+1 | g+2 c+2 d+1 e+2
    > Chaque classe a son capteur.
@@ -161,7 +161,7 @@ C) Rien :: Pas prioritaire.
    > Rien ne change.
 
 === ecol-079 | ecologie | Le gaspillage dans les cantines
-Un tiers des repas des cantines finit à la poubelle.
+Un tiers des repas des cantines de l’arrondissement finit à la poubelle.
 A) Pesée des déchets et menus revus avec les enfants :: Réduire.
    bud-2 ecologie+2 services+1 | g+1 c+3 d+1 e+3
    > Le gaspillage baisse de moitié.
@@ -174,7 +174,7 @@ C) Rien :: Normal.
 
 === ecol-080 | ecologie | Des micro-forêts dans les quartiers
 Des forêts très denses sur 200 m² poussent dix fois plus vite qu’une plantation classique.
-A) Planter cinquante micro-forêts :: Nature rapide.
+A) Planter quinze micro-forêts :: Nature rapide.
    bud-8 ecologie+3 bon+1 | g+1 c+2 d+1 e+5
    > Des micro-forêts poussent partout.
 B) Cinq micro-forêts pilotes :: Tester.
@@ -185,7 +185,7 @@ C) Rien :: Les parcs suffisent.
    > Rien n’est planté.
 
 === ecol-081 | ecologie | Les chats errants et les oiseaux
-Des colonies de chats errants déciment les oiseaux des parcs.
+Des colonies de chats errants déciment les oiseaux des parcs de l’arrondissement.
 A) Stériliser et adopter :: Réguler humainement.
    bud-3 ecologie+1 bon+1 | g+1 c+3 d+1 e+2
    > Les chats sont stérilisés.
@@ -210,7 +210,7 @@ C) Rien :: Coût.
    > Les parkings restent nus.
 
 === ecol-083 | ecologie | Une plante invasive sur la petite ceinture
-La renouée du Japon étouffe toute la végétation de la petite ceinture.
+La renouée du Japon étouffe toute la végétation de la petite ceinture dans l’arrondissement.
 A) Arrachage massif :: Lutte.
    bud-4 ecologie+2 | g0 c+3 d+1 e+3
    > Des équipes arrachent la renouée.
@@ -222,10 +222,10 @@ C) Laisser faire :: Coût.
    > La renouée gagne du terrain.
 
 === ecol-084 | ecologie | Ouvrir la petite ceinture aux promeneurs
-La petite ceinture, ancienne voie ferrée, pourrait devenir une promenade nature de 30 km.
-A) Ouvrir toute la petite ceinture :: Grande promenade.
+La petite ceinture, ancienne voie ferrée qui traverse l’arrondissement, pourrait devenir une grande promenade nature.
+A) Ouvrir toute la portion de l’arrondissement :: Grande promenade.
    bud-50 ecologie+2 bon+3 | g+2 c+2 d+1 e+3
-   > Une promenade de 30 km traverse Paris.
+   > Une longue promenade traverse l’arrondissement.
    +30 pop+3 > La promenade devient un lieu emblématique.
 B) Ouvrir quelques tronçons :: Progressif.
    bud-12 bon+1 ecologie+1 | g+1 c+3 d+1 e+2
@@ -235,7 +235,7 @@ C) Garder la petite ceinture sauvage :: Biodiversité.
    > La petite ceinture reste fermée.
 
 === ecol-085 | ecologie | Des arbres adaptés au climat de 2050
-Les platanes et marronniers souffrent de la chaleur. Il faut choisir des espèces adaptées au climat futur.
+Les platanes et marronniers de l’arrondissement souffrent de la chaleur. Il faut choisir des espèces adaptées au climat futur.
 A) Planter des essences méditerranéennes :: Anticiper.
    bud-5 ecologie+2 | g+1 c+3 d+1 e+3
    > Chênes verts et micocouliers remplacent les arbres morts.
@@ -259,7 +259,7 @@ C) Rien :: Coût.
    > Rien ne change.
 
 === ecol-087 | ecologie | Les fontaines ornementales pendant la sécheresse
-Les fontaines des places consomment beaucoup d’eau alors que la sécheresse menace.
+Les fontaines des places de l’arrondissement consomment beaucoup d’eau alors que la sécheresse menace.
 A) Les couper l’été :: Sobriété.
    ecologie+1 bon-1 | g0 c+2 d0 e+3
    > Les fontaines s’arrêtent.
@@ -271,8 +271,8 @@ C) Les garder :: Fraîcheur.
    > Les fontaines coulent.
 
 === ecol-088 | ecologie | Végétaliser les ponts
-Les ponts de Paris sont très minéraux. Des jardinières pourraient y apporter fraîcheur et fleurs.
-A) Jardinières sur dix ponts :: Embellir.
+Les ponts qui desservent l’arrondissement sont très minéraux. Des jardinières pourraient y apporter fraîcheur et fleurs.
+A) Jardinières sur tous les ponts :: Embellir.
    bud-5 ecologie+1 bon+1 | g+1 c+2 d+1 e+2
    > Les ponts fleurissent.
 B) Un pont-jardin piéton :: Projet phare.
@@ -283,19 +283,19 @@ C) Rien :: Patrimoine.
    > Les ponts restent minéraux.
 
 === ecol-089 | ecologie | Des moutons dans les parcs
-Des moutons pourraient tondre les pelouses à la place des tondeuses.
-A) Éco-pâturage dans vingt parcs :: Écologique et populaire.
+Des moutons pourraient tondre les pelouses de l’arrondissement à la place des tondeuses.
+A) Éco-pâturage dans tous les parcs :: Écologique et populaire.
    bud-3 ecologie+2 bon+2 | g+1 c+2 d+1 e+4
    > Les moutons font le bonheur des enfants.
 B) Un parc pilote :: Tester.
    bud-1 ecologie+1 bon+1 | g+1 c+3 d+1 e+2
-   > Des moutons tondent le parc de la Villette.
+   > Des moutons tondent le plus grand parc de l’arrondissement.
 C) Rien :: Les tondeuses marchent bien.
    ecologie-1 | g0 c0 d+1 e-1
    > Rien ne change.
 
 === ecol-090 | ecologie | Les barbecues sauvages dans les bois
-L’été, des barbecues sauvages dans les bois de Boulogne et de Vincennes risquent de déclencher des incendies.
+L’été, des barbecues sauvages dans le parc boisé de l’arrondissement risquent de déclencher des incendies.
 A) Interdire et verbaliser :: Prévenir le feu.
    securite+1 ecologie+1 bon-1 | g0 c+2 d+2 e+2
    > Les barbecues sont interdits et contrôlés.
@@ -306,6 +306,7 @@ C) Tolérer :: Loisir populaire.
    ecologie-1 bon+1 | g+1 c0 d0 e-2
    > Les barbecues continuent.
    ~20 ecologie-2 pop-2 > Un départ de feu brûle plusieurs hectares.
+
 === ecol-091 | ecologie | Afficher la qualité de l’air partout
 Les Parisiens ne savent pas quand l’air est pollué.
 A) Panneaux d’affichage en temps réel :: Informer.
@@ -319,7 +320,7 @@ C) Rien :: Les applications existent.
    > Rien ne change.
 
 === ecol-092 | ecologie | Des écoles neuves passives
-Les nouvelles écoles pourraient être construites sans besoin de chauffage.
+Les nouvelles écoles de l’arrondissement pourraient être construites sans besoin de chauffage.
 A) Imposer le standard passif :: Exemplarité.
    rec-0.2x60 ecologie+3 services+1 | g+1 c+2 d0 e+4
    > Les écoles neuves seront passives.
@@ -331,7 +332,7 @@ C) Construire au moindre coût :: Budget.
    > Les normes minimales suffisent.
 
 === ecol-093 | ecologie | Des lampadaires solaires
-Des lampadaires autonomes à panneaux solaires pourraient éclairer les parcs sans câble.
+Des lampadaires autonomes à panneaux solaires pourraient éclairer les parcs de l’arrondissement sans câble.
 A) Équiper tous les parcs :: Autonomie.
    bud-12 ecologie+2 | g+1 c+3 d+1 e+3
    > Les parcs s’éclairent au soleil.
@@ -354,8 +355,8 @@ C) Autoriser sans conditions :: Liberté.
    bon+1 ecologie-1 | g0 c0 d+2 e-2
    > La pêche est libre.
 
-=== ecol-095 | ecologie | Se baigner dans le canal de l’Ourcq
-Le bassin de la Villette accueille la baignade l’été. Les habitants demandent un deuxième site.
+=== ecol-095 | ecologie | Se baigner dans le canal
+Le bassin du canal accueille la baignade l’été dans l’arrondissement. Les habitants demandent un deuxième site.
 A) Ouvrir un second site de baignade :: Fraîcheur.
    bud-6 bon+2 ecologie+1 | g+2 c+2 d+1 e+2
    > Un nouveau bassin de baignade ouvre.

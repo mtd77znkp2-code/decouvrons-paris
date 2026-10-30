@@ -97,14 +97,14 @@ C) Rien :: Coût.
    bon-1 | g-1 c+1 d+1 e0
    > Les jardins restent masculins.
 
-=== cul-194 | culture | Reconstruire un pavillon Baltard
-Des passionnés veulent reconstruire un pavillon des anciennes Halles.
+=== cul-194 | culture | Reconstruire un pavillon de fer et de verre
+Des passionnés veulent reconstruire dans l’arrondissement un pavillon des anciennes Halles.
 A) Le reconstruire comme marché couvert :: Patrimoine.
    bud-5 bon+1 economie+1 | g0 c+2 d+1 e+1
    > Le pavillon de fonte renaît.
 B) Une maquette géante au musée :: Mémoire.
    bud-1 bon+1 | g0 c+2 d+1 e+1
-   > Les visiteurs revivent le ventre de Paris.
+   > Les visiteurs revivent le ventre de Paris dans l’arrondissement.
 C) Refuser :: Nostalgie coûteuse.
    bon-1 | g0 c+1 d+2 e0
    > Le rêve reste un rêve.
@@ -184,7 +184,8 @@ C) Une consultation des Parisiens :: Démocratie.
    > Les Parisiens votent pour leur couleur.
 
 === cul-201 | culture | Une cité de la gastronomie
-Paris n’a pas de grand lieu consacré à sa cuisine.
+Paris n’a pas de grand lieu consacré à sa cuisine. Ton arrondissement pourrait l’accueillir.
+? placeMin=10
 A) Créer une cité de la gastronomie :: Rayonnement.
    bud-4 economie+1 bon+1 | g0 c+2 d+1 e+1
    > Les visiteurs dégustent l’histoire de la cuisine.
@@ -207,8 +208,8 @@ C) Rien :: Coût.
    bon-1 | g0 c+1 d+1 e0
    > Les auteurs vont ailleurs.
 
-=== cul-203 | culture | Une grande bibliothèque dans l’est parisien
-Les grandes bibliothèques sont concentrées à l’ouest et au centre.
+=== cul-203 | culture | Une grande médiathèque pour le quartier
+Les grandes bibliothèques sont loin : l’arrondissement n’en a aucune.
 A) Construire une grande médiathèque :: Égalité.
    bud-5 bon+1 services+1 | g+2 c+2 d0 e+1
    > La médiathèque ouvre sur un ancien entrepôt.

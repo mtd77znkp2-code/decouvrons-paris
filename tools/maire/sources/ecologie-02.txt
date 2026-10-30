@@ -12,7 +12,7 @@ C) Laisser faire les apiculteurs :: Liberté.
    > Les ruches continuent de se multiplier.
 
 === ecol-027 | ecologie | Des corridors pour les hérissons
-Les naturalistes demandent de relier les jardins entre eux pour que la petite faune puisse circuler.
+Les naturalistes demandent de relier les jardins de l’arrondissement entre eux pour que la petite faune puisse circuler.
 A) Créer une trame verte continue :: Biodiversité.
    bud-15 ecologie+3 | g+1 c+2 d0 e+5
    > Des passages relient parcs, jardins et cimetières.
@@ -24,7 +24,7 @@ C) Pas prioritaire :: D’autres urgences.
    > Rien n’est fait.
 
 === ecol-028 | ecologie | Des arbres abattus pour un tramway
-Le chantier d’un tramway prévoit d’abattre 200 arbres adultes.
+Le chantier d’un tramway prévoit d’abattre 200 arbres adultes dans l’arrondissement.
 A) Modifier le tracé pour sauver les arbres :: Préserver.
    bud-30 ecologie+2 transports-1 | g+1 c+1 d0 e+4
    > Le tracé contourne les plus beaux arbres.
@@ -72,9 +72,9 @@ C) Ne rien changer :: Habitudes.
    ecologie-1 | g0 c0 d+1 e-2
    > Les bouteilles restent.
 
-=== ecol-032 | ecologie | Des ateliers de réparation dans chaque arrondissement
+=== ecol-032 | ecologie | Des ateliers de réparation dans chaque quartier
 Des bénévoles proposent d’ouvrir des ateliers où l’on répare gratuitement grille-pains et vélos.
-A) Ouvrir un atelier municipal par arrondissement :: Réparer plutôt que jeter.
+A) Ouvrir un atelier municipal par quartier :: Réparer plutôt que jeter.
    bud-10 rec-0.2x60 ecologie+2 achat+1 | g+2 c+2 d0 e+4
    > Vingt ateliers ouvrent.
 B) Prêter des salles aux bénévoles :: Léger.
@@ -84,9 +84,9 @@ C) Créer un bonus réparation chez les artisans :: Soutenir l’économie.
    rec-0.2x60 ecologie+1 economie+1 | g0 c+3 d+2 e+2
    > Les réparations sont remboursées en partie.
 
-=== ecol-033 | ecologie | Une carte du bruit de Paris
-Des capteurs pourraient mesurer le bruit dans chaque rue et cibler les zones à protéger.
-A) Installer 500 capteurs et publier la carte :: Transparence.
+=== ecol-033 | ecologie | Une carte du bruit du quartier
+Des capteurs pourraient mesurer le bruit dans chaque rue de l’arrondissement et cibler les zones à protéger.
+A) Installer 100 capteurs et publier la carte :: Transparence.
    bud-5 bon+1 ecologie+1 | g+1 c+3 d+1 e+2
    > La carte du bruit est en ligne.
    ~30 pop-1 > Les quartiers les plus bruyants voient la valeur de leurs logements baisser.
@@ -97,9 +97,9 @@ C) Ne pas mesurer :: Éviter les polémiques.
    bon-1 | g-1 c0 d+1 e-1
    > Rien ne change.
 
-=== ecol-034 | ecologie | Des vergers et des vignes dans Paris
+=== ecol-034 | ecologie | Des vergers et des vignes dans l’arrondissement
 Des habitants proposent de planter des arbres fruitiers dans les squares et des vignes sur les talus.
-A) Planter 1 000 arbres fruitiers en libre cueillette :: Ville nourricière.
+A) Planter 300 arbres fruitiers en libre cueillette :: Quartier nourricier.
    bud-6 ecologie+2 bon+2 | g+2 c+2 d+1 e+4
    > Des pommiers et des cerisiers poussent dans les squares.
    ~25 proprete-1 > Les fruits tombés attirent les guêpes et salissent les allées.
@@ -111,7 +111,7 @@ C) Arbres classiques seulement :: Entretien facile.
    > Des platanes sont plantés.
 
 === ecol-035 | ecologie | Protéger les berges sauvages de la Seine
-Quelques berges sont encore naturelles. Un projet veut les bétonner pour en faire des promenades.
+Quelques berges de l’arrondissement sont encore naturelles. Un projet veut les bétonner pour en faire des promenades.
 A) Les classer en réserve naturelle :: Biodiversité.
    ecologie+3 bon-1 | g+1 c+1 d-1 e+5
    > Les berges sauvages sont protégées.
@@ -135,7 +135,7 @@ C) Laisser faire :: Animation nocturne.
    > Les vitrines restent allumées.
 
 === ecol-037 | ecologie | Les péniches-logements rejettent leurs eaux usées
-Des centaines de péniches habitées rejettent leurs eaux usées directement dans la Seine.
+Des dizaines de péniches habitées, amarrées dans l’arrondissement, rejettent leurs eaux usées directement dans la Seine.
 A) Imposer le raccordement aux égouts :: Seine propre.
    bud-12 ecologie+3 | g+1 c+2 d+1 e+4
    > Les péniches sont raccordées.
@@ -147,7 +147,7 @@ C) Laisser faire :: Les péniches font le charme de Paris.
    > Les rejets continuent.
 
 === ecol-038 | ecologie | L’air pollué du métro
-Les mesures montrent que l’air de certaines stations est plus pollué qu’au bord du périphérique.
+Les mesures montrent que l’air de certaines stations de l’arrondissement est plus pollué qu’au bord du périphérique.
 A) Cofinancer des systèmes de filtration :: Santé.
    bud-30 ecologie+2 transports+1 | g+2 c+2 d+1 e+3
    > Des filtres équipent les stations les plus polluées.
@@ -159,7 +159,7 @@ C) Publier les mesures en temps réel :: Transparence.
    > Les taux de particules s’affichent dans les stations.
 
 === ecol-039 | ecologie | La chaleur des serveurs informatiques
-Un centre de données de la banlieue rejette assez de chaleur pour chauffer 5 000 logements.
+Un centre de données de l’arrondissement rejette assez de chaleur pour chauffer 5 000 logements.
 A) Raccorder le centre au réseau de chaleur :: Récupérer.
    bud-25 ecologie+3 achat+1 | g+1 c+3 d+2 e+4
    > La chaleur des serveurs chauffe des logements.
@@ -195,7 +195,7 @@ C) Laisser les organisateurs choisir :: Liberté.
    > Le jetable reste majoritaire.
 
 === ecol-042 | ecologie | Laisser pousser l’herbe dans les parcs
-Les jardiniers proposent de ne plus tondre certaines pelouses pour en faire des prairies fleuries.
+Les jardiniers de l’arrondissement proposent de ne plus tondre certaines pelouses pour en faire des prairies fleuries.
 A) Transformer un tiers des pelouses en prairies :: Biodiversité.
    ecologie+3 rec+0.1x60 bon-1 | g+1 c+1 d-1 e+5
    > Des prairies fleuries apparaissent dans les parcs.
@@ -220,7 +220,7 @@ C) Les laisser tranquilles sans communication :: Discret.
    > Les renards continuent leur vie au cimetière.
 
 === ecol-044 | ecologie | Des arbres en bac sur les places minérales
-Certaines places sont impossibles à planter à cause des réseaux souterrains.
+Certaines places de l’arrondissement sont impossibles à planter à cause des réseaux souterrains.
 A) Installer de grands bacs plantés :: Ombre rapide.
    bud-8 ecologie+1 bon+1 | g+1 c+3 d+1 e+2
    > Des arbres en bac ombragent les places.
@@ -232,11 +232,11 @@ C) Installer des voiles d’ombrage :: Simple.
    > Des toiles tendues protègent du soleil.
 
 === ecol-045 | ecologie | Faire renaître la Bièvre
-La Bièvre, rivière enterrée sous Paris depuis un siècle, pourrait être rouverte sur quelques centaines de mètres.
-A) Rouvrir la rivière dans le 13e :: Projet symbolique.
+La Bièvre, rivière enterrée sous Paris depuis un siècle, pourrait être rouverte sur quelques centaines de mètres dans ton arrondissement.
+A) Rouvrir la rivière dans l’arrondissement :: Projet symbolique.
    bud-60 ecologie+4 bon+2 | g+1 c+2 d0 e+5
    > La Bièvre revoit le jour.
-   +30 pop+3 > Les Parisiens découvrent une rivière en pleine ville.
+   +30 pop+3 > Les habitants découvrent une rivière en pleine ville.
 B) Faire une étude :: Prendre le temps.
    bud-2 ecologie+1 | g0 c+3 d+1 e+2
    > Une étude de faisabilité est lancée.
@@ -245,7 +245,7 @@ C) Abandonner l’idée :: Trop cher.
    > La Bièvre reste sous terre.
 
 === ecol-046 | ecologie | Les engins de chantier diesel
-Les chantiers parisiens utilisent des engins diesel très polluants.
+Les chantiers de l’arrondissement utilisent des engins diesel très polluants.
 A) Imposer des engins électriques dans les chantiers publics :: Air pur.
    rec-0.3x60 ecologie+3 | g+1 c+2 d0 e+4
    > Les grues et pelleteuses électriques arrivent.
@@ -273,7 +273,7 @@ C) Garder les cimetières minéraux :: Tradition.
 Les démolitions produisent des montagnes de déchets alors que portes, parquets et pierres pourraient resservir.
 A) Créer une plateforme de réemploi des matériaux :: Économie circulaire.
    bud-10 ecologie+3 economie+1 | g+1 c+3 d+1 e+4
-   > Une matériauthèque ouvre dans le 18e.
+   > Une matériauthèque ouvre dans l’arrondissement.
 B) Imposer un diagnostic réemploi avant démolition :: Règle.
    ecologie+2 economie-1 | g+1 c+2 d0 e+3
    > Chaque démolition doit trier ses matériaux.
@@ -294,20 +294,20 @@ C) Laisser le marché décider :: Pas d’aide.
    > Les épiceries continuent de fermer.
 
 === ecol-050 | ecologie | Des panneaux solaires sur les toits de zinc
-Les toits de zinc parisiens sont candidats au patrimoine mondial. Les panneaux solaires y sont interdits.
+Les toits de zinc de l’arrondissement sont candidats au patrimoine mondial. Les panneaux solaires y sont interdits.
 A) Autoriser les panneaux sur les toits invisibles depuis la rue :: Compromis.
    ecologie+2 | g+1 c+3 d+1 e+3
    > Les panneaux discrets sont autorisés.
 B) Tout autoriser :: Urgence climatique.
    ecologie+3 bon-1 | g+1 c0 d-2 e+5
    > Les panneaux se multiplient sur les toits.
-   ~35 pop-1 > Des architectes dénoncent l’enlaidissement de Paris.
+   ~35 pop-1 > Des architectes dénoncent l’enlaidissement de l’arrondissement.
 C) Maintenir l’interdiction :: Patrimoine.
    ecologie-1 bon+1 | g-1 c+1 d+3 e-3
    > Les toits restent intacts.
 
 === ecol-051 | ecologie | Les climatiseurs réchauffent la rue
-Les climatiseurs se multiplient et rejettent de l’air chaud dans les rues étroites.
+Les climatiseurs se multiplient et rejettent de l’air chaud dans les rues étroites de l’arrondissement.
 A) Interdire les climatiseurs en façade :: Esthétique et climat.
    ecologie+2 bon-1 | g+1 c+1 d-1 e+3
    > Les blocs extérieurs en façade sont interdits.
@@ -331,7 +331,7 @@ C) Laisser faire :: Prix bas.
    > Les enseignes s’installent.
 
 === ecol-053 | ecologie | Une rue transformée en jardin
-Les habitants d’une rue tranquille proposent de la fermer aux voitures pour en faire un jardin.
+Les habitants d’une rue tranquille de l’arrondissement proposent de la fermer aux voitures pour en faire un jardin.
 A) Accepter et financer :: Ville-jardin.
    bud-10 ecologie+2 bon+2 | g+1 c+2 d-1 e+4
    > La rue devient un jardin.
@@ -344,8 +344,8 @@ C) Refuser :: Stationnement.
    > La rue reste une rue.
 
 === ecol-054 | ecologie | Des mares dans les parcs
-Les grenouilles et les libellules ont presque disparu. Des naturalistes proposent de creuser des mares.
-A) Creuser 50 mares :: Biodiversité.
+Les grenouilles et les libellules ont presque disparu. Des naturalistes proposent de creuser des mares dans les parcs de l’arrondissement.
+A) Creuser 15 mares :: Biodiversité.
    bud-5 ecologie+2 | g+1 c+2 d0 e+4
    > Des mares apparaissent dans les parcs.
    ~30 pop-1 > Des parents s’inquiètent pour la sécurité des enfants.
@@ -369,7 +369,7 @@ C) Aide pour des inserts performants :: Accompagner.
    > Les propriétaires reçoivent une prime.
 
 === ecol-056 | ecologie | Un potager dans chaque école
-Les enseignants veulent que chaque école ait son potager pour apprendre la nature.
+Les enseignants de l’arrondissement veulent que chaque école ait son potager pour apprendre la nature.
 ? distinct
 A) Créer des potagers dans toutes les écoles :: Éducation.
    bud-8 ecologie+2 services+1 | g+2 c+2 d+1 e+4
@@ -382,7 +382,7 @@ C) Pas de place dans les cours :: Réalisme.
    > Les potagers restent rares.
 
 === ecol-057 | ecologie | Les murs végétaux coûtent cher
-Les murs végétalisés installés il y a dix ans dépérissent. Les entretenir coûte une fortune.
+Les murs végétalisés de l’arrondissement, installés il y a dix ans, dépérissent. Les entretenir coûte une fortune.
 A) Les rénover tous :: Garder la nature verticale.
    bud-12 rec-0.1x60 ecologie+1 bon+1 | g+1 c+2 d0 e+3
    > Les murs végétaux reverdissent.
@@ -419,7 +419,7 @@ C) Autoriser :: Tradition.
    ~35 pop-2 > Des militants manifestent chaque soir devant le chapiteau.
 
 === ecol-060 | ecologie | Une friche polluée à dépolluer
-Une ancienne usine a laissé un sol pollué aux métaux lourds sur un terrain promis à une école.
+Une ancienne usine de l’arrondissement a laissé un sol pollué aux métaux lourds sur un terrain promis à une école.
 A) Dépolluer entièrement avant de construire :: Santé d’abord.
    bud-35 ecologie+2 services+1 | g+2 c+2 d+1 e+3
    > Le terrain est dépollué en profondeur.
@@ -436,7 +436,7 @@ L’eau de la Seine peut refroidir les bâtiments via un réseau de froid, sans 
 A) Étendre le réseau de froid aux hôpitaux et écoles :: Fraîcheur durable.
    bud-45 ecologie+3 services+1 | g+1 c+3 d+1 e+4
    > Les hôpitaux sont rafraîchis par la Seine.
-B) Seulement les bâtiments publics du centre :: Ciblé.
+B) Seulement les bâtiments publics les plus proches du fleuve :: Ciblé.
    bud-15 ecologie+1 | g0 c+3 d+1 e+2
    > Quelques bâtiments sont raccordés.
 C) Laisser chacun installer des climatiseurs :: Liberté.
@@ -444,7 +444,7 @@ C) Laisser chacun installer des climatiseurs :: Liberté.
    > Les climatiseurs se multiplient.
 
 === ecol-062 | ecologie | Les souffleurs de feuilles thermiques
-Les souffleurs à essence des jardiniers font un vacarme terrible et soulèvent la poussière.
+Les souffleurs à essence des jardiniers de l’arrondissement font un vacarme terrible et soulèvent la poussière.
 A) Les remplacer tous par des modèles électriques :: Calme et propre.
    bud-4 ecologie+1 bon+1 | g+1 c+3 d+1 e+3
    > Les jardiniers passent à l’électrique.
@@ -454,6 +454,7 @@ B) Revenir au râteau :: Silence total.
 C) Garder les souffleurs :: Efficacité.
    proprete+1 bon-1 | g0 c+1 d+2 e-2
    > Les souffleurs continuent de vrombir.
+
 === ecol-063 | ecologie | Le gaspillage alimentaire des supermarchés
 Les supermarchés jettent encore des tonnes de nourriture consommable.
 A) Plateforme pour donner les invendus aux associations :: Solidarité.
@@ -466,8 +467,8 @@ C) Laisser les enseignes s’organiser :: Volontariat.
    ecologie-1 | g-1 c+1 d+2 e-1
    > Le gaspillage continue.
 
-=== ecol-064 | ecologie | La ménagerie du Jardin des Plantes
-Des pétitions demandent la fermeture de la ménagerie, l’un des plus vieux zoos du monde.
+=== ecol-064 | ecologie | Le vieux zoo du jardin
+Des pétitions demandent la fermeture de la ménagerie de l’arrondissement, l’un des plus vieux zoos du monde.
 A) Transformer en centre de soins pour animaux sauvages :: Évolution.
    bud-10 ecologie+2 bon-1 | g+1 c+2 d0 e+4
    > La ménagerie devient un centre de sauvegarde.
