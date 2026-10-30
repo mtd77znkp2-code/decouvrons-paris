@@ -146,10 +146,10 @@
   }
 
   // ---------- Salle des ventes : arrondissement contre arrondissement ----------
-  // Une vente s'ouvre toutes les 2 minutes et dure 6 minutes : il y en a toujours 3 en même temps.
+  // Une seule vente à la fois : elle dure 6 minutes, la suivante commence juste après (on la voit venir, en gris).
   // cat = { ids: [...], cout: { id: prix moyen } } : les bâtiments de prestige (fournis par le moteur).
   // Chaque vente a un bot enchérisseur (une place de la session) avec un prix maximum secret ; les offres des joueurs sont gardées dans la session.
-  var VENTE_P = 2 * 60000, VENTE_D = 6 * 60000;
+  var VENTE_P = 6 * 60000, VENTE_D = 6 * 60000;
   function pasDe(cout) { return Math.max(5, Math.round(cout * 0.05 / 5) * 5); }
   function idVente(s, cat, k) {
     var n = cat.ids.length, i = Math.floor(hache(s.graine, 5000, k) * n), pris = {};
@@ -179,14 +179,16 @@
   }
   function ventesEnCours(s, cat, maintenant) {
     var k = Math.floor((maintenant - s.debut) / VENTE_P), l = [];
-    for (var j = k - 2; j <= k; j++) { var v = vente(s, cat, j, maintenant); if (v && !v.fini) l.push(v); }
+    for (var j = k - Math.ceil(VENTE_D / VENTE_P) + 1; j <= k; j++) { var v = vente(s, cat, j, maintenant); if (v && !v.fini) l.push(v); }
     return l;
   }
   function venteSuivante(s, maintenant) { var k = Math.floor((maintenant - s.debut) / VENTE_P) + 1; return s.debut + k * VENTE_P; }
+  // La prochaine vente (pas encore ouverte) : le bâtiment et son prix de départ
+  function prochaineVente(s, cat, maintenant) { return vente(s, cat, Math.floor((maintenant - s.debut) / VENTE_P) + 1, maintenant); }
   // Ventes terminées récemment (pour que le gagnant récupère son bâtiment)
   function ventesFinies(s, cat, maintenant) {
     var k = Math.floor((maintenant - s.debut) / VENTE_P), l = [];
-    for (var j = k - 8; j <= k - 3; j++) { var v = vente(s, cat, j, maintenant); if (v && v.fini) l.push(v); }
+    for (var j = k - 6; j <= k; j++) { var v = vente(s, cat, j, maintenant); if (v && v.fini) l.push(v); }
     return l;
   }
   function encherir(s0, uid, cat, k, montant, maintenant) {
@@ -244,7 +246,7 @@
 
   var API = { NB: NB, TRONE: TRONE, MANDAT_MS: MANDAT_MS, ARR: ARR, ORDRE: ORDRE, arr: arr, nomArr: nomArr, titre: titre, court: court, puissance: puissance, habitants: habitants,
     nouvelleSession: nouvelleSession, rejoindre: rejoindre, attaquer: attaquer, proteger: proteger, ripostes: ripostes, ATTAQUES: ATTAQUES, BOUCLIER: BOUCLIER, malusDe: malusDe, attente: attente,
-    ventesEnCours: ventesEnCours, ventesFinies: ventesFinies, venteSuivante: venteSuivante, vente: vente, encherir: encherir, VENTE_P: VENTE_P, VENTE_D: VENTE_D, pleine: pleine, signaler: signaler, nettoyer: nettoyer, voter: voter, votesRequis: votesRequis, nbVotes: nbVotes,
+    ventesEnCours: ventesEnCours, ventesFinies: ventesFinies, venteSuivante: venteSuivante, prochaineVente: prochaineVente, vente: vente, encherir: encherir, VENTE_P: VENTE_P, VENTE_D: VENTE_D, pleine: pleine, signaler: signaler, nettoyer: nettoyer, voter: voter, votesRequis: votesRequis, nbVotes: nbVotes,
     electionDue: electionDue, scores: scores, elire: elire, resultatDe: resultatDe, placeDe: placeDe, joueurs: joueurs, fiche: fiche, statsBot: statsBot, scoreBot: scoreBot };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.MaireSession = API;
 })(this);

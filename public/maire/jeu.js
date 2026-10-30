@@ -662,7 +662,7 @@
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "👑 Tu es au sommet"), h("b", null, "Garde ton trône !")));
     if (st.session.opp) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-opp", function () { ficheSession(p - 1); }), h("small", null, "🛡️ Ton opposant (au-dessous)"), h("b", null, st.session.opp.ico + " " + st.session.opp.nom + (st.session.opp.type === "bot" ? " 🤖" : "")), h("small", null, st.session.opp.court)));
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "🛡️ Personne en dessous"), h("b", null, "Aucun opposant ne t’attaque")));
-    var actions = ajout(h("div", "mx-ses-actions"), bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre), bouton("🔨 Salle des ventes", "mx-ses-act", function () { var v = document.querySelector(".mx-ventes"); if (v) v.scrollIntoView({ behavior: "smooth", block: "center" }); }));
+    var actions = ajout(h("div", "mx-ses-actions"), bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre), bouton("🔨 Enchères", "mx-ses-act", allerEncheres));
     ajout(d, titre, l, duo, actions, h("small", "mx-ses-malus", ""));
     setTimeout(majSession, 0);
     return d;
@@ -749,11 +749,22 @@
   function ventesSession() {
     if (!st.session || !SES.s) return null;
     var d = h("div", "mx-ventes");
-    ajout(d, ajout(h("div", "mx-ventes-tete"), h("h5", null, "🔨 Salle des ventes"), h("small", "mx-ventes-suiv", "")));
+    ajout(d, ajout(h("div", "mx-ventes-tete"), h("h5", null, "🔨 Salle des ventes"), h("small", "mx-ventes-suiv", "Arrondissement contre arrondissement")));
     d.appendChild(h("div", "mx-ventes-liste"));
-    d.appendChild(h("p", "mx-aide", "Une vente s’ouvre toutes les 2 minutes et dure 6 minutes. Tous les arrondissements de la session enchérissent."));
+    d.appendChild(h("p", "mx-aide", "Une vente à la fois, pendant 6 minutes ; la suivante attend en gris. Tous les arrondissements de la session enchérissent."));
     setTimeout(majVentes, 0);
     return d;
+  }
+  function allerEncheres() {
+    RAYON = "enchere"; gestionOuverte = true; jeu();
+    setTimeout(function () { var v = document.querySelector(".mx-ventes") || document.querySelector(".mx-boutique"); if (v) v.scrollIntoView({ behavior: "smooth", block: "center" }); }, 50);
+  }
+  // La prochaine vente, en gris, avec le compte à rebours avant son ouverture
+  function carteAttente(v) {
+    var B = M.BATIMENTS[v.id], c = h("div", "mx-vente mx-vente-attente"); c.dataset.k = v.k;
+    ajout(c, ajout(h("div", "mx-vente-haut"), icone(v.id, "mx-vente-ico"), ajout(h("div", "mx-vente-nom"), h("small", null, "Prochaine vente"), h("b", null, B.nom), h("small", null, "Valeur ≈ " + argent(v.cout) + " · départ " + argent(Math.round(v.cout * 0.5 / 5) * 5))), h("span", "mx-vente-temps", "")));
+    c.querySelector(".mx-vente-nom").onclick = function () { fiche(v.id); };
+    return c;
   }
   function carteVente(v) {
     var B = M.BATIMENTS[v.id], c = h("div", "mx-vente mx-vente-neuve"); c.dataset.k = v.k;
@@ -768,9 +779,9 @@
   function majVentes() {
     var d = document.querySelector(".mx-ventes"); if (!d || !SES.s) return;
     var now = Date.now(), l = SS().ventesEnCours(SES.s, cat(), now), liste = d.querySelector(".mx-ventes-liste"), moi = moiSes(), budget = M.budgetEnchere(st);
-    var s = d.querySelector(".mx-ventes-suiv"); if (s) s.textContent = "Prochaine vente dans " + mmss(SS().venteSuivante(SES.s, now) - now);
-    var cles = l.map(function (v) { return v.k; }).join(",");
-    if (liste.dataset.k !== cles) { liste.textContent = ""; l.forEach(function (v) { liste.appendChild(carteVente(v)); }); liste.dataset.k = cles; }
+    var pro = SS().prochaineVente(SES.s, cat(), now), cles = l.map(function (v) { return v.k; }).join(",") + "|" + pro.k;
+    if (liste.dataset.k !== cles) { liste.textContent = ""; l.forEach(function (v) { liste.appendChild(carteVente(v)); }); liste.appendChild(carteAttente(pro)); liste.dataset.k = cles; }
+    var ca = liste.querySelector(".mx-vente-attente .mx-vente-temps"); if (ca) ca.textContent = "⏳ " + mmss(pro.debut - now);
     l.forEach(function (v) {
       var c = liste.querySelector('[data-k="' + v.k + '"]'); if (!c) return;
       var toi = !v.meneur.bot && v.meneur.uid === moi, deja = !!st.bat[v.id];
@@ -875,7 +886,7 @@
     decouvertes();
     vider();
     // Écran épuré : l'essentiel en haut (où j'en suis, est-ce que je gagne), la ville au milieu, la boutique, puis la gestion repliée
-    ajout(box, entete(), bandeauSession(), ventesSession(), tableau(), carteObjectifs(), piliers(), carteLeon());
+    ajout(box, entete(), bandeauSession(), tableau(), carteObjectifs(), piliers(), carteLeon());
     if (st.opposant) box.appendChild(bandeauOpp());
     if (st.rapport && st.notes && st.notes.length) box.appendChild(notes());
     if (st.chantiers.length) box.appendChild(chantiers());
@@ -1150,8 +1161,7 @@
     var ok = l.filter(function (id) { return M.disponible(st, id); }).sort(tri), bloques = l.filter(function (id) { return !M.disponible(st, id); }).sort(tri);
     if (RAYON === "enchere" && st.session && SES.s) {
       // En session, les bâtiments de prestige se gagnent dans la salle des ventes, contre les autres arrondissements
-      d.appendChild(h("p", "mx-aide", "🔨 En session, les bâtiments de prestige se disputent dans la salle des ventes, contre les autres arrondissements."));
-      d.appendChild(bouton("🔨 Aller à la salle des ventes", "btn m-go", function () { var v = document.querySelector(".mx-ventes"); if (v) v.scrollIntoView({ behavior: "smooth", block: "center" }); }));
+      d.appendChild(ventesSession());
       return d;
     }
     if (RAYON === "enchere") d.appendChild(h("p", "mx-aide", "🔨 30 secondes d’enchères contre un autre arrondissement."));

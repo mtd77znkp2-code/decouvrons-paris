@@ -776,13 +776,13 @@ test("session : attaques entre voisins, bouclier, ripostes des bots", () => {
   for (let k = 0; k < 40; k++) { r = S.ripostes(r, "u1", k * 30000, (k * 0.137) % 1); }
   vu = (r.journal || []).filter(e => e.vers && e.vers.uid === "u1").length; assert.ok(vu >= 2, "ripostes : " + vu);
 });
-test("session : salle des ventes, 3 ventes en même temps, enchères et gagnant", () => {
+test("session : salle des ventes, une vente à la fois toutes les 6 minutes, la suivante annoncée", () => {
   const S = require("../../public/maire/session.js"), cat = M.catalogueVentes();
   assert.equal(cat.ids.length, 35);
   let s = S.nouvelleSession(99, 0); s = S.rejoindre(s, "u1", "Moi", "🙂", 0);
   // Toujours 3 ventes en cours (après les premières minutes), une nouvelle toutes les 2 minutes, chacune dure 6 minutes
-  for (let t = 5 * 60000; t < 60 * 60000; t += 37000) { const l = S.ventesEnCours(s, cat, t); assert.equal(l.length, 3); assert.equal(new Set(l.map(v => v.id)).size, 3, "3 bâtiments différents"); l.forEach(v => assert.ok(v.fin - v.debut === 6 * 60000)); }
-  const t0 = 10 * 60000 + 1000, v = S.ventesEnCours(s, cat, t0)[2];
+  for (let t = 1000; t < 60 * 60000; t += 37000) { const l = S.ventesEnCours(s, cat, t), pro = S.prochaineVente(s, cat, t); assert.equal(l.length, 1); assert.equal(l[0].fin - l[0].debut, 6 * 60000); assert.equal(pro.debut, l[0].fin, "la suivante commence à la fin"); assert.notEqual(pro.id, l[0].id); assert.equal(S.encherir(s, "u1", cat, pro.k, pro.prix + pro.pas * 2, t), s, "pas d'offre avant l'ouverture"); }
+  const t0 = 10 * 60000 + 1000, v = S.ventesEnCours(s, cat, t0)[0];
   assert.equal(S.encherir(s, "u1", cat, v.k, v.prix, t0), s, "il faut surenchérir d'au moins un pas");
   const fort = Math.round(v.cout * 1.4);
   let s2 = S.encherir(s, "u1", cat, v.k, fort, t0); const v2 = S.vente(s2, cat, v.k, t0 + 1);
@@ -793,7 +793,7 @@ test("session : salle des ventes, 3 ventes en même temps, enchères et gagnant"
   let st = M.nouvellePartie({ maire: "tribun", graine: 3, nivJoueur: 1 }); st.phase = "gestion";
   const a = M.gagnerVente(st, fin.id, fin.prix, "s:" + fin.k); assert.equal(a.bat[fin.id], 1); assert.equal(M.gagnerVente(a, fin.id, fin.prix, "s:" + fin.k), a);
   // Une petite offre : le bot surenchérit aussitôt s'il le peut
-  const w = S.ventesEnCours(s, cat, t0)[1]; const s3 = S.encherir(s, "u1", cat, w.k, w.prix + w.pas, t0); const w3 = S.vente(s3, cat, w.k, t0);
+  const w = S.ventesEnCours(s, cat, t0 + 6 * 60000)[0]; const t1 = t0 + 6 * 60000; const s3 = S.encherir(s, "u1", cat, w.k, w.prix + w.pas, t1); const w3 = S.vente(s3, cat, w.k, t1);
   assert.ok(w3.prix >= w.prix + w.pas);
 });
 test("élections anticipées : à la demande du maire quand ses objectifs sont remplis, 3 trimestres plus tard, sauf si le vote est déjà proche", () => {

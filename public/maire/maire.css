@@ -1027,3 +1027,7 @@ button.mx-ses-qui{cursor:pointer}
 @keyframes mxUrgent{50%{box-shadow:inset 0 0 0 2px #ff5a4f,0 0 26px rgba(255,90,79,.55)}}
 @keyframes mxTremble{0%,100%{transform:translateX(0)}25%{transform:translateX(-1.5px) rotate(-2deg)}75%{transform:translateX(1.5px) rotate(2deg)}}
 @media (prefers-reduced-motion:reduce){.mx-vente,.mx-vente::after,.mx-vente *{animation:none!important}}
+/* Vente à venir : en gris, avec le compte à rebours */
+.mx-vente.mx-vente-attente{filter:grayscale(1);opacity:.6;background:rgba(14,23,64,.35);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),inset 0 0 0 9999px rgba(120,120,120,.08)}
+.mx-vente-attente .mx-vente-nom small:first-child{text-transform:uppercase;letter-spacing:.06em;font-weight:800}
+.mx-vente-attente .mx-vente-temps{font-size:15px}
