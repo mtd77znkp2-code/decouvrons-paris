@@ -898,7 +898,6 @@
     if (st.chantiers.length) box.appendChild(chantiers());
     box.appendChild(carteVille(false));
     box.appendChild(boutique());
-    if (st.session) box.appendChild(employes());
     box.appendChild(gestion());
     box.appendChild(barreTrimestre());
     box.style.minHeight = ""; window.scrollTo(0, y);
@@ -1143,8 +1142,8 @@
     return { avocat: "−" + pc + " % de points perdus", presse: "+" + pc + " % de dégâts", comptable: "−" + pc + " % de frais", urbaniste: "+" + pc + " % de logements", policier: "+" + virg(Math.round(v * 10) / 10) + " Sécurité", proprete: "+" + Math.round(v) + " espaces entretenus" }[id];
   }
   function employes() {
-    var d = h("div", "mx-boutique mx-employes");
-    ajout(d, h("h5", null, "👔 Employés"), h("p", "mx-aide", "Embauche autant que tu veux : chaque nouvel employé coûte plus cher et apporte un peu moins. Ils touchent un salaire chaque trimestre."));
+    var d = h("div", "mx-employes");
+    ajout(d, h("p", "mx-aide", "Embauche autant que tu veux : chaque nouvel employé coûte plus cher et apporte un peu moins. Ils touchent un salaire chaque trimestre."));
     var pr = M.proprete(st);
     if (pr.manque) d.appendChild(h("p", "mx-emp-alerte", "🧹 " + pr.espaces + " espaces de vie, seulement " + pr.couverts + " entretenus : il manque " + pr.manque + " agent" + (pr.manque > 1 ? "s" : "") + " de propreté. Sinon, ils finiront par fermer !"));
     var g = h("div", "mx-emps");
@@ -1159,7 +1158,7 @@
       var b = bouton("Embaucher · " + argent(px), "btn m-go mx-emp-go", function () {
         if (M.peutEmbaucher(st, id)) return toast("💸 " + M.peutEmbaucher(st, id));
         st = M.embaucher(st, id); sauver(); signal("achat");
-        var y = document.querySelector(".mx-employes"); if (y) y.replaceWith(employes()); haut2();
+        var y = document.querySelector(".mx-boutique"); if (y) y.replaceWith(boutique()); haut2();
         toast(E.ico + " " + E.nom + " embauché !");
         if (SES.id) window.SessionLigne.signaler(SES.id, M.etatSession(st));
       });
@@ -1181,7 +1180,8 @@
     if (window.ADMIN_UNLOCKED) d.appendChild(bouton(st.sansLimite ? "🛠 Limites désactivées (admin)" : "🛠 Passer les limites pour les bâtiments", "btn m-sec m-adminbat", function () {
       st = M.limites(st, !st.sansLimite); try { localStorage.setItem("maire_sanslimite", st.sansLimite ? "1" : ""); } catch (e) {} sauver(); jeu();
     }));
-    var ids = Object.keys(M.BATIMENTS), visibles = M.RAYONS.filter(function (r) {
+    var rayons = st.session ? M.RAYONS.concat([{ id: "employes", nom: "Employés", ico: "👔" }]) : M.RAYONS;
+    var ids = Object.keys(M.BATIMENTS), visibles = rayons.filter(function (r) {
       if (r.id === "secret") return ids.some(function (id) { return rayonDe(id) === "secret" && M.disponible(st, id); });
       if (r.id === "projet") return st.meca.grandsProjets || st.sansLimite || n >= 4;
       return true;
@@ -1200,6 +1200,7 @@
     var l = ids.filter(function (id) { return rayonDe(id) === RAYON; });
     var tri = function (a, b) { var A = M.BATIMENTS[a], B = M.BATIMENTS[b]; return (A.niv || 1) - (B.niv || 1) || A.cout - B.cout; };
     var ok = l.filter(function (id) { return M.disponible(st, id); }).sort(tri), bloques = l.filter(function (id) { return !M.disponible(st, id); }).sort(tri);
+    if (RAYON === "employes") { d.appendChild(employes()); return d; }
     if (RAYON === "enchere" && st.session && SES.s) {
       // En session, les bâtiments de prestige se gagnent dans la salle des ventes, contre les autres arrondissements
       d.appendChild(ventesSession());
