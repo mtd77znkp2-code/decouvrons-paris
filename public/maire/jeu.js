@@ -17,7 +17,7 @@
   }
   function signe(v, unite) { var r = Math.round(v * 10) / 10; return (r > 0 ? "+" : r < 0 ? "−" : "") + String(Math.abs(r)).replace(".", ",") + (unite || ""); }
   function virg(v) { return String(Math.round(v * 10) / 10).replace(".", ","); }
-  function date(t) { var a = Math.floor((t - 1) / 4) + 1, q = (t - 1) % 4 + 1; return (q === 1 ? "1er" : q + "e") + " trimestre · année " + a; }
+  function date(t) { t = Math.max(1, t); var a = Math.floor((t - 1) / 4) + 1, q = (t - 1) % 4 + 1; return (q === 1 ? "1er" : q + "e") + " trimestre · année " + a; }
   function sauver() { try { localStorage.setItem(CLE, JSON.stringify(st)); } catch (e) {} }
   function lireSauvegarde() { try { var s = JSON.parse(localStorage.getItem(CLE) || "null"); return s && s.v >= 3 && s.v <= 8 ? s : null; } catch (e) { return null; } }
   function effacer() { try { localStorage.removeItem(CLE); } catch (e) {} }
@@ -1560,6 +1560,32 @@
     });
     return p.catch(function () {}).then(function () { return ref.get(); }).then(function (sn) { return sn.exists ? sn.data() : null; }).catch(function () { return null; });
   }
+  // Avant de choisir : la part des maires qui a pris chaque réponse (votes réels + une base estimée tant qu'il y en a peu)
+  var VOTES_LUS = {};
+  function lireVotes(cle) {
+    if (!cle || !window.LB || !LB.db) return Promise.resolve(null);
+    if (VOTES_LUS[cle]) return VOTES_LUS[cle];
+    return (VOTES_LUS[cle] = LB.db.doc("votes/" + cle).get().then(function (sn) { return sn.exists ? sn.data() : null; }).catch(function () { return null; }));
+  }
+  function partsVotes(ev, d) {
+    var v = ev.choix.map(function (c) { return M.valeurChoix(c); }), mx = Math.max.apply(null, v);
+    var mn = Math.min.apply(null, v), tp = 2 + (mx - mn) / 2, w = v.map(function (x) { return Math.exp((x - mx) / tp); }), sw = w.reduce(function (a, x) { return a + x; }, 0);
+    var c = ev.choix.map(function (_, k) { return ((d && d["c" + k]) || 0) + 12 * w[k] / sw; }), tot = c.reduce(function (a, x) { return a + x; }, 0);
+    var p = c.map(function (x) { return Math.round(x / tot * 100); }), ecart = 100 - p.reduce(function (a, x) { return a + x; }, 0);
+    p[p.indexOf(Math.max.apply(null, p))] += ecart;
+    return p;
+  }
+  function remplirParts(ch, ev, cle) {
+    var maj = function (d) {
+      var p = partsVotes(ev, d), max = Math.max.apply(null, p);
+      ch.querySelectorAll(".m-pct").forEach(function (e, k) {
+        e.textContent = ""; var b = h("i"); b.style.width = p[k] + "%";
+        ajout(e, ajout(h("span", "m-pct-barre"), b), h("b", null, p[k] + " %"), h("em", null, p[k] === max ? "des maires · le plus choisi" : "des maires"));
+        e.classList.toggle("m-pct-top", p[k] === max);
+      });
+    };
+    maj(null); lireVotes(cle).then(function (d) { if (d && document.body.contains(ch)) maj(d); });
+  }
   function afficherVote(carte, nb) {
     var v = VOTE; if (!v || v.t !== st.t) return;
     var zone = h("div", "m-vote"); zone.appendChild(h("small", null, "📊 Ce qu’ont choisi les autres maires…")); carte.appendChild(zone);
@@ -1622,9 +1648,11 @@
           : mj.etat === "gagne" ? "✅ Gagné au casino : à toi de le prendre" : "❌ Perdu au casino : ce choix t’échappe"));
         if (best && mj && mj.etat === "a_jouer") b.classList.add("m-mj-best");
         if (mj && mj.etat === "perdu") b.disabled = true;
+        if (!st.evPerso || st.evPerso.src) b.appendChild(h("small", "m-pct", ""));
         ch.appendChild(b);
       });
       carte.appendChild(ch);
+      if (ch.querySelector(".m-pct")) remplirParts(ch, ev, cleVote());
     } else {
       var r = st.resultat, x = ev.choix[r.i];
       ajout(carte, h("p", "m-pris", "Ta décision : " + T(x.t)), h("p", "m-res", T(r.txt || x.r)));
@@ -1633,7 +1661,7 @@
       (r.extra || []).forEach(function (t) { carte.appendChild(h("p", "m-extra", T(t))); });
       if (r.dif) carte.appendChild(h("p", "m-extra", "⏳ Cette décision aura encore des conséquences plus tard."));
       afficherVote(carte, ev.choix.length);
-      carte.appendChild(bouton("Retour à l’Hôtel de Ville", "btn m-go", function () { st.resultatVu = true; sauver(); fermerModale(); signal("fermer"); if (st.phase === "fin") jeu(); else guide("jeu"); }));
+      carte.appendChild(bouton("Retour à ma mairie", "btn m-go", function () { st.resultatVu = true; sauver(); fermerModale(); signal("fermer"); if (st.phase === "fin") jeu(); else guide("jeu"); }));
     }
     cadre.appendChild(carte); pop.appendChild(cadre); (document.getElementById("g-maire") || document.body).appendChild(pop);
     document.body.classList.add("m-modal");

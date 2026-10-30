@@ -1031,3 +1031,10 @@ button.mx-ses-qui{cursor:pointer}
 .mx-vente.mx-vente-attente{filter:grayscale(1);opacity:.6;background:rgba(14,23,64,.35);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),inset 0 0 0 9999px rgba(120,120,120,.08)}
 .mx-vente-attente .mx-vente-nom small:first-child{text-transform:uppercase;letter-spacing:.06em;font-weight:800}
 .mx-vente-attente .mx-vente-temps{font-size:15px}
+/* Part des maires qui a choisi chaque réponse, avant de choisir */
+.m-option .m-pct{grid-column:2;display:grid;grid-template-columns:auto 1fr;gap:3px 8px;align-items:center;margin-top:6px;font-size:11.5px;color:var(--pm,#5b6386)}
+.m-option .m-pct:empty{display:none}
+.m-pct-barre{grid-column:1/-1;height:5px;border-radius:99px;background:rgba(27,37,80,.1);overflow:hidden}
+.m-pct-barre i{display:block;height:100%;border-radius:inherit;background:#8a94b8;transition:width .6s ease}
+.m-pct b{font-size:13px;color:var(--pi,#1b2550)}.m-pct em{font-style:normal;text-align:right}
+.m-pct.m-pct-top .m-pct-barre i{background:#f5b21a}.m-pct.m-pct-top em{color:#b07a00;font-weight:700}
