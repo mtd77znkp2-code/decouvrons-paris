@@ -809,6 +809,7 @@
     if (!f) {
       cacherBulle();
       f = h("div", "m-pop"); f.id = "m-attente"; f.setAttribute("role", "alertdialog");
+      if (window.sfx) window.sfx("ronfle", 0.7);   // son n°31
       var p = st && st.session ? st.session.place : -1;
       var c = ajout(h("div", "m-pop-in m-afk"), h("span", "m-afk-ico", "💤"), h("h4", null, "Tu es toujours là ?"),
         h("p", null, "Tu n’as rien fait depuis " + RG().v.afkMin + " minutes. Sans action de ta part, tu quitteras la session dans :"),
@@ -842,6 +843,7 @@
       if (!r && v) { toast("🚪 Impossible d’entrer dans cette session (élection imminente ou complète)."); return brancherSession(); }
       if (!r) return;
       SES.id = r.id; lireReserve(); SES.temps = Date.now() + trimMs();
+      if (window.sfx) window.sfx("brouhaha", 0.6);   // son n°30 : brouhaha de la salle du conseil
       SES.stop = window.SessionLigne.ecouter(r.id, recuSession);
       if (!SES.timer) SES.timer = setInterval(horloge, 1000);
     });
@@ -884,6 +886,7 @@
     var now = Date.now();
     if (now - ACTIF > SS().SORTIE_MS) { fermerAttente(); return sortieAFK(false); }
     if (now - ACTIF > SS().AFK_MS) attenteAFK(now); else fermerAttente();
+    var avantVote = SES.s.prochaine - now; if (visible && avantVote > 2000 && avantVote <= 3000) sonUnique("tambour:" + SES.id + ":" + SES.s.election, "tambour");   // son n°13
     if (visible && SS().electionDue(SES.s, now) && now - SES.elire > 5000) { SES.elire = now; window.SessionLigne.elire(SES.id); }
     var libre = visible && (st.phase === "gestion" || st.phase === "pret") && !document.getElementById("m-modale") && !document.getElementById("m-telmod") && !document.body.classList.contains("m-casino") && !(st.enchere && !st.enchere.fini) && !(st.bj && !st.bj.fini);
     rechargerReserve(now);
@@ -1004,6 +1007,7 @@
       if (e.res === "ok") { var sx = M.stats(st); sx.attaquesOk = (sx.attaquesOk || 0) + 1; M.points(st, 5); }
       sauver();
       SES.journalVu = Math.max(SES.journalVu || 0, e.q);
+      if (e.res === "bloque" && window.sfx) window.sfx("clang");   // son n°29 : bouclier qui bloque
       flash(e.res === "ok" ? A.ico + " Touché ! −" + e.pts + " pts" : e.res === "bloque" ? "🛡️ Attaque bloquée" : "😬 Ça se retourne contre toi", e.res === "ok" ? "mx-flash-ok" : "mx-flash-ko");
       jeu();
     });
@@ -1014,6 +1018,7 @@
     if (SES.journalVu == null) { SES.journalVu = j.length ? j[j.length - 1].q : 0; return; }
     j.forEach(function (e) {
       if (e.q <= SES.journalVu) return;
+      if (e.vers && e.vers.uid === moi && e.de.uid !== moi && window.sfx) window.sfx(e.res === "bloque" ? "clang" : "alarme", 0.7);   // sons n°28 / n°29
       if (e.vers && e.vers.uid === moi && e.de.uid !== moi) toast((e.res === "bloque" ? "🛡️ " : "⚔️ ") + e.de.nom + " (" + e.de.court + ") t’attaque : " + (SS().ATTAQUES[e.type] || {}).nom + (e.res === "bloque" ? " — bloquée !" : e.res === "ok" ? " (−" + e.pts + ")" : " — raté !"));
     });
     if (j.length) SES.journalVu = Math.max(SES.journalVu, j[j.length - 1].q);
@@ -1062,6 +1067,7 @@
       var c = liste.querySelector('[data-k="' + v.k + '"]'); if (!c) return;
       var toi = !v.meneur.bot && v.meneur.uid === moi, deja = !!st.bat[v.id];
       c.classList.toggle("mx-affaire", v.affaire); c.classList.toggle("mx-bientot", v.bientot); c.classList.toggle("mx-toi", toi);
+      if (v.bientot) sonUnique("tictac:" + SES.id + ":" + v.k, "tictac", 0.6);   // son n°34
       c.querySelector(".mx-vente-temps").textContent = "⏱️ " + mmss(v.fin - now);
       var badges = []; if (v.affaire) badges.push("🔥 Sous-évaluée"); if (v.bientot) badges.push("⏰ Finit bientôt"); if (toi) badges.push("🙋 Tu mènes");
       var bd = c.querySelector(".mx-vente-badges"), txt = badges.join(" · "); if (bd.dataset.t !== txt) { bd.dataset.t = txt; bd.textContent = ""; badges.forEach(function (x) { bd.appendChild(h("span", "mx-badge", x)); }); }
@@ -1074,6 +1080,7 @@
       b1.disabled = deja || toi || m1 > budget; b3.disabled = deja || toi || m3 > budget;
       // Dépassé : on prévient
       var avant = (SES.menees || {})[v.k];
+      if (avant && !toi && window.sfx) window.sfx("ding", 0.7);   // son n°33 : on te passe devant
       if (avant && !toi) toast("😤 " + v.meneur.nom + " (" + v.meneur.court + ") te passe devant : " + M.BATIMENTS[v.id].nom);
       (SES.menees = SES.menees || {})[v.k] = toi;
     });
@@ -1086,7 +1093,7 @@
       if (!s) return toast("📵 Offre refusée : quelqu’un a été plus rapide.");
       var w = SS().vente(s, cat(), k, Date.now());
       if (w && !w.meneur.bot && w.meneur.uid === moiSes()) toast("🙋 Tu mènes : " + argent(w.prix));
-      else if (w) toast("🤖 " + w.meneur.nom + " (" + w.meneur.court + ") surenchérit aussitôt : " + argent(w.prix));
+      else if (w) { if (window.sfx) window.sfx("ding", 0.7); toast("🤖 " + w.meneur.nom + " (" + w.meneur.court + ") surenchérit aussitôt : " + argent(w.prix)); }
       SES.s = s; majVentes();
     });
   }
@@ -1098,6 +1105,7 @@
       var k = SES.id + ":" + v.k;
       if (v.meneur.bot || v.meneur.uid !== moi || (st.ventesPrises || {})[k]) return;
       st = M.gagnerVente(st, v.id, v.prix, k); gagne = true;
+      if (window.sfx) window.sfx("adjuge");   // son n°32
       flash("🔨 Adjugé ! " + M.BATIMENTS[v.id].ico + " " + M.BATIMENTS[v.id].nom, "mx-flash-ok");
     });
     if (gagne) { sauver(); return true; }
@@ -1150,7 +1158,9 @@
   }
   // Résultat d'une élection de session : grand écran animé
   function annonceElection(r, s) {
-    var monte = r.apres > r.avant, descend = r.apres < r.avant, d = h("div", "m-flash m-flash-elec" + (monte ? " m-monte" : descend ? " m-descend" : ""));
+    var monte = r.apres > r.avant, descend = r.apres < r.avant;
+    if (window.sfx) window.sfx(descend ? "hue" : "bravo");   // sons n°14 (victoire) / n°15 (défaite)
+    var d = h("div", "m-flash m-flash-elec" + (monte ? " m-monte" : descend ? " m-descend" : ""));
     ajout(d, ajout(h("div", "m-flash-in"), h("span", "m-flash-ico", monte ? "🎉" : descend ? "📉" : "🗳️"), h("strong", null, monte ? "Élu plus haut !" : descend ? "Tu recules d’une place" : "Tu gardes ta place"),
       h("p", null, (monte ? "Te voilà " : "Tu es ") + SS().titre(r.apres) + "."), h("small", null, r.duel ? "Ton score " + virg(r.duel.bas === r.avant ? r.duel.sBas : r.duel.sHaut) + " contre " + virg(r.duel.bas === r.avant ? r.duel.sHaut : r.duel.sBas) : "")));
     document.body.appendChild(d); if (monte) confettis();
@@ -1612,6 +1622,7 @@
     } else {
       var r = e.res, ecart = r.prix - e.moyen;
       c.classList.add(r.gagne ? "m-ench-gagne" : "m-ench-perdu");
+      sonUnique("ench:" + st.pid + ":" + e.id + ":" + st.t, "adjuge");   // son n°32 : coup de marteau
       ajout(c, h("p", "m-ench-res", r.gagne ? "🔨 Adjugé ! Ton arrondissement l’emporte." : "❌ Le " + e.ville + " l’emporte."),
         h("p", null, r.gagne ? B.nom + " est à toi pour " + argent(r.prix) + " (" + (ecart <= 0 ? "une bonne affaire : " + argent(-ecart) + " sous le prix moyen" : argent(ecart) + " au-dessus du prix moyen") + ")."
           : B.nom + " part au " + e.ville + " pour " + argent(r.prix) + ". Il reviendra aux enchères dans 4 trimestres."),
@@ -2001,7 +2012,8 @@
     fermerModale();
     var ev = M.evenementCourant(st, BASE);
     if (!ev || !(st.phase === "evenement" || (st.resultat && !st.resultatVu))) return;
-    if (st.special === "legendaire" && st.phase === "evenement" && legendeVue !== st.t) { legendeVue = st.t; flash("🌟 ÉVÉNEMENT LÉGENDAIRE 🌟", "m-flash-legende"); }
+    if (st.special === "catastrophe" && st.phase === "evenement") sonUnique("cata:" + st.pid + ":" + st.t + ":" + st.evenement, "sirene", 0.7);   // son n°16
+    if (st.special === "legendaire" && st.phase === "evenement" && legendeVue !== st.t) { legendeVue = st.t; flash("🌟 ÉVÉNEMENT LÉGENDAIRE 🌟", "m-flash-legende"); if (window.sfx) window.sfx("magie"); /* son n°17 */ }
     var sp = st.special || "dossier", pop = h("div", "m-pop m-pop-" + sp); pop.id = "m-modale";
     pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "true");
     var cadre = h("div", "m-pop-in");
@@ -2342,6 +2354,8 @@
     };
   }
   // Victoire : pluie de confettis bleu, blanc, rouge et or
+  // Un son joué une seule fois pour un événement donné (l'écran peut se redessiner plusieurs fois)
+  function sonUnique(cle, nom, vol) { if (SONS_FIN[cle] || !window.sfx) return; SONS_FIN[cle] = 1; window.sfx(nom, vol); }
   // Son de fin d'une partie de casino, joué une seule fois par résultat (l'écran peut se redessiner plusieurs fois)
   var SONS_FIN = {};
   function sonFin(cle, gain) {
@@ -2483,7 +2497,7 @@
   }
 
   function resultatElection() {
-    vider(); fermerModale();
+    vider(); fermerModale(); sonUnique("elec:" + st.pid + ":" + st.mandat, "bravo");   // son n°14 : réélu
     var e = st.elections[st.elections.length - 1], ob = e.objectifs || [];
     var verdict = !ob.length ? "Réélu !" : e.parfait ? "🏆 Mandat parfait !" : e.reussi ? "🏆 Mandat réussi !" : "Réélu… mais objectifs manqués";
     var t = h("div", "m-final " + (e.reussi || !ob.length ? "m-gagne" : "m-perdu"));
@@ -2729,6 +2743,7 @@
     vider(); fermerModale();
     choixNiveau(st.niveau);
     var b = M.bilan(st), an = M.analyse(st), e = st.elections[st.elections.length - 1];
+    if (st.fin.raison.type === "election") sonUnique("fin:" + st.pid, "hue");   // son n°15 : battu
     var type = st.fin.raison.type, t = h("div", "m-final " + (type === "defi" || type === "retraite" ? "m-gagne" : "m-perdu"));
     ajout(t, h("p", "m-sur", (st.defi != null ? "Défi du jour · " : "") + ({ election: "Battu aux élections", faillite: "Faillite", demission: "Démission", defi: "Défi terminé", retraite: "Victoire" })[type]),
       h("h4", null, b.mandats ? "Fin de règne après " + M.duree(b.t) + " et " + b.mandats + " réélection" + (b.mandats > 1 ? "s" : "") : "Ton aventure s’arrête au bout de " + M.duree(b.t)),

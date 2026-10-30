@@ -230,7 +230,7 @@ function reglagesMaire(){
 }
 function loadMaire(){
   if(!LOADED.mcss){LOADED.mcss=1;var l=document.createElement("link");l.rel="stylesheet";l.href="maire/maire.css";document.head.appendChild(l)}
-  return loadScript("maire/reglages.js").then(reglagesMaire).then(function(){return loadScript("maire/contenu.js")}).then(function(){return loadScript("maire/poker.js")}).then(function(){return loadScript("maire/session.js")}).then(function(){return loadScript("maire/moteur.js")}).then(function(){return loadScript("maire/progression.js")}).then(function(){return loadScript("maire/jeu.js")}).then(function(){maireInit()})
+  return loadScript("maire/reglages.js").then(reglagesMaire).then(function(){return loadScript("maire/contenu.js")}).then(function(){return loadScript("maire/poker.js")}).then(function(){return loadScript("maire/session.js")}).then(function(){return loadScript("maire/moteur.js")}).then(function(){return loadScript("maire/progression.js")}).then(function(){return loadScript("maire/jeu.js")}).then(function(){maireInit();if(window.prechargerSons)setTimeout(prechargerSons,800)})
     .catch(function(){$("m-app").textContent="Le jeu n’a pas pu se charger. Vérifie ta connexion."});
 }
 function loadAdmin(){
@@ -502,7 +502,9 @@ var musique=(function(){
   }
   window.sfx=function(nom,vol){chargerClic();if(SFX[nom])jouerBuf(SFX[nom],vol);else chargerSfx(nom,function(x){jouerBuf(x,vol)})};
   // Préchargés pour être prêts au bon moment
-  setTimeout(function(){chargerClic();["carte","retourne","roulette","bille","gagne","perdu","jetons","achat","chantier","dossier","telephone","tampon","epee","bouclier","attaque"].forEach(function(n){chargerSfx(n)})},1500);
+  setTimeout(function(){chargerClic()},1500);
+  // Les bruitages du Maire ne sont téléchargés qu'à l'ouverture du jeu (pas pour les visiteurs du site)
+  window.prechargerSons=function(){["carte","retourne","roulette","bille","gagne","perdu","jetons","achat","chantier","dossier","telephone","tampon","epee","bouclier","attaque","alarme","clang","brouhaha","ronfle","adjuge","ding","tictac","tambour","bravo","hue","sirene","magie"].forEach(function(n){chargerSfx(n)})};
   function clic(e){
     var b=e.target&&e.target.closest&&e.target.closest("button,.btn,[role=button]");
     if(!b||muet||b.disabled||b.id==="jouer"||b.classList.contains("entree"))return;
