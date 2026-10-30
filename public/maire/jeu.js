@@ -1137,14 +1137,14 @@
     bas = SAISONS[st.t % 4][0] + " · " + SES.jetons + "/" + RESERVE + (SES.jetons < RESERVE ? " · +1 dans " + r + " s" : " · réserve pleine");
     b.textContent = ""; b.appendChild(h("span", null, haut)); b.appendChild(h("small", "mx-reserve", bas));
     b.classList.toggle("mx-vide", SES.jetons < 1);
-    b.classList.toggle("mx-pret", SES.jetons > 0 && (st.phase === "gestion" || st.phase === "pret"));
+    b.classList.toggle("mx-pret", st.phase === "evenement" || (SES.jetons > 0 && (st.phase === "gestion" || st.phase === "pret")));
     b.style.setProperty("--p", SES.jetons >= RESERVE ? 1 : Math.max(0, Math.min(1, 1 - r / (TRIM_MS / 1000))));
   }
   function barreTrimestre() {
     var b = h("div", "m-barmois");
     var cartes = (st.bj && !st.bj.fini) || (st.enchere && !st.enchere.fini);
     var auto = !!(st.session && SES.id);
-    b.appendChild(bouton(st.phase === "evenement" ? "📂 Un dossier t’attend" : cartes ? "🃏 Une partie de cartes est en cours" : auto ? "" : "📂 Dossier suivant →", "btn m-go" + (auto ? " mx-auto" : ""), function () {
+    b.appendChild(bouton(st.phase === "evenement" ? "📂 Un dossier t’attend" : cartes ? "🃏 Une partie de cartes est en cours" : auto ? "" : "📂 Dossier suivant →", "btn m-go mx-dossier" + (auto ? " mx-auto" : ""), function () {
       if (st.phase === "evenement" || (st.resultat && !st.resultatVu)) return modale();
       if (st.bj && !st.bj.fini) return ouvrirTelephone();
       if (auto) return jouerTrimestre();
@@ -1153,6 +1153,12 @@
       if (st.t > avant.t) animTrimestre(avant);
     }));
     if (auto) remplirTrim(b.lastChild);
+    if (st.phase === "evenement") b.lastChild.classList.add("mx-pret");
+    else if (st.phase !== "evenement" && !cartes) {
+      // Partie hors session : même bouton doré, toujours prêt, avec la saison en petit
+      var go = b.lastChild; go.textContent = ""; go.classList.add("mx-pret");
+      go.appendChild(h("span", null, "📂 Dossier suivant →")); go.appendChild(h("small", "mx-reserve", SAISONS[st.t % 4][0] + " · " + SAISONS[st.t % 4][1]));
+    }
     if (auto) b.appendChild(bouton(autoTrim() ? "⏩ Auto : oui" : "⏩ Auto : non", "btn m-sec mx-trimauto" + (autoTrim() ? " mx-on" : ""), function () {
       try { localStorage.setItem("maire_trim_auto", autoTrim() ? "0" : "1"); } catch (e) {}
       toast(autoTrim() ? "⏩ Les dossiers arrivent tout seuls dès qu’ils sont prêts." : "✋ Tu appelles toi-même le dossier suivant.");

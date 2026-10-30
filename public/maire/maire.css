@@ -953,17 +953,17 @@ button.mx-ses-qui{cursor:pointer}
 .m-barmois{flex-wrap:wrap;gap:8px;align-items:center}
 .m-barmois .btn.mx-trimauto{min-width:0;flex:0 0 auto;font-size:13px;padding:10px 14px}
 .m-barmois .btn.mx-trimauto.mx-on{background:#1f6f43;color:#fff}
-.m-barmois .btn.mx-auto{display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1.15}
-.m-barmois .btn.mx-auto .mx-reserve{font-size:12px;font-weight:600;opacity:.75}
+.m-barmois .btn.mx-dossier{-webkit-appearance:none;appearance:none;display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1.15}
+.m-barmois .btn.mx-dossier .mx-reserve{font-size:12px;font-weight:600;opacity:.75}
 .m-barmois .btn.mx-trimauto{background:rgba(15,23,60,.85);color:#fff;border:1px solid rgba(255,255,255,.25);box-shadow:none}
 /* Bouton « Dossier suivant » : gris doré, s'illumine quand un dossier est prêt */
-.m-barmois .btn.mx-auto{position:relative;overflow:hidden;color:#2a2416;border:1px solid #e8d08a;background:linear-gradient(90deg,#d9bc68 calc(var(--p,0)*100%),#a9a493 calc(var(--p,0)*100%));text-shadow:0 1px 0 rgba(255,255,255,.35)}
-.m-barmois .btn.mx-auto .mx-reserve{font-size:11px;letter-spacing:.02em}
-.m-barmois .btn.mx-auto.mx-vide{background:linear-gradient(90deg,#b9a76d calc(var(--p,0)*100%),#7d7a72 calc(var(--p,0)*100%));color:#26241e;border-color:#9b9070}
-.m-barmois .btn.mx-auto.mx-pret{background:linear-gradient(135deg,#f6e3a1,#d4af45 45%,#b8bdc4);animation:mxBrille 2.2s ease-in-out infinite}
-.m-barmois .btn.mx-auto.mx-pret::after{content:"";position:absolute;top:0;bottom:0;left:-40%;width:30%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-18deg);animation:mxReflet 2.6s ease-in-out infinite}
-.m-barmois .btn.mx-auto.mx-nouveau{animation:mxSaut .7s cubic-bezier(.3,1.6,.5,1)}
+.m-barmois .btn.mx-dossier{position:relative;overflow:hidden;color:#2a2416;border:1px solid #e8d08a;background:linear-gradient(90deg,#d9bc68 calc(var(--p,0)*100%),#a9a493 calc(var(--p,0)*100%));text-shadow:0 1px 0 rgba(255,255,255,.35)}
+.m-barmois .btn.mx-dossier .mx-reserve{font-size:11px;letter-spacing:.02em}
+.m-barmois .btn.mx-dossier.mx-vide{background:linear-gradient(90deg,#b9a76d calc(var(--p,0)*100%),#7d7a72 calc(var(--p,0)*100%));color:#26241e;border-color:#9b9070}
+.m-barmois .btn.mx-dossier.mx-pret{background:linear-gradient(135deg,#f6e3a1,#d4af45 45%,#b8bdc4);animation:mxBrille 2.2s ease-in-out infinite}
+.m-barmois .btn.mx-dossier.mx-pret::after{content:"";position:absolute;top:0;bottom:0;left:-40%;width:30%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-18deg);animation:mxReflet 2.6s ease-in-out infinite}
+.m-barmois .btn.mx-dossier.mx-nouveau{animation:mxSaut .7s cubic-bezier(.3,1.6,.5,1)}
 @keyframes mxBrille{0%,100%{box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 0 0 rgba(240,200,90,.0)}50%{box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 22px 4px rgba(240,200,90,.55)}}
 @keyframes mxReflet{0%{left:-40%}60%,100%{left:130%}}
 @keyframes mxSaut{0%{transform:scale(1)}35%{transform:scale(1.08)}100%{transform:scale(1)}}
-@media (prefers-reduced-motion:reduce){.m-barmois .btn.mx-auto.mx-pret,.m-barmois .btn.mx-auto.mx-pret::after,.m-barmois .btn.mx-auto.mx-nouveau{animation:none}}
+@media (prefers-reduced-motion:reduce){.m-barmois .btn.mx-dossier.mx-pret,.m-barmois .btn.mx-dossier.mx-pret::after,.m-barmois .btn.mx-dossier.mx-nouveau{animation:none}}
