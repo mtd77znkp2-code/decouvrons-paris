@@ -627,18 +627,19 @@
 
   // ===================== Session : 21 places, du 1er arrondissement au trône de Maire de Paris =====================
   var SES = { id: null, s: null, stop: null, enCours: false, tick: 0, temps: 0, jetons: 0, elire: 0, timer: null, place: -1, vue: null };
-  var TRIM_MS = 25000;   // un trimestre se recharge toutes les 25 s : 24 trimestres = 10 minutes = un mandat
+  var TRIM_MS = 25000;   // les saisons avancent toutes les 25 s : 24 trimestres = 10 minutes = un mandat
+  var DOSSIER_MS = 135000;   // un nouveau dossier arrive toutes les 2 min 15 (le jeu ne se résume pas aux dossiers)
   var RESERVE = 4;       // trimestres qu'on peut garder en réserve avant de les jouer
   // Réserve de trimestres : on les joue quand on veut, mais pas plus vite que le temps réel
   function lireReserve() {
     try { var r = JSON.parse(localStorage.getItem("maire_reserve") || "null"); if (r && r.id === SES.id) { SES.jetons = r.jetons; SES.tick = r.tick; return; } } catch (e) {}
-    SES.jetons = 1; SES.tick = Date.now() + TRIM_MS;
+    SES.jetons = 0; SES.tick = Date.now() + DOSSIER_MS; garderReserve();   // on arrive dans une session avec 0 dossier en attente
   }
   function garderReserve() { try { localStorage.setItem("maire_reserve", JSON.stringify({ id: SES.id, jetons: SES.jetons, tick: SES.tick })); } catch (e) {} }
   function rechargerReserve(now) {
-    if (SES.jetons >= RESERVE) { SES.tick = now + TRIM_MS; return; }
-    var n = 0; while (now >= SES.tick && SES.jetons < RESERVE) { SES.jetons++; SES.tick += TRIM_MS; n++; }
-    if (SES.jetons >= RESERVE) SES.tick = now + TRIM_MS;
+    if (SES.jetons >= RESERVE) { SES.tick = now + DOSSIER_MS; return; }
+    var n = 0; while (now >= SES.tick && SES.jetons < RESERVE) { SES.jetons++; SES.tick += DOSSIER_MS; n++; }
+    if (SES.jetons >= RESERVE) SES.tick = now + DOSSIER_MS;
     if (n) {
       garderReserve();
       // Nouveau dossier disponible : le bouton fait un petit saut doré
@@ -648,8 +649,8 @@
   }
   function autoTrim() { try { return localStorage.getItem("maire_trim_auto") === "1"; } catch (e) { return false; } }
   function jouerTrimestre() {
-    if (SES.jetons < 1) return toast("⏳ Prochain dossier dans " + Math.max(1, Math.ceil((SES.tick - Date.now()) / 1000)) + " s.");
-    if (SES.jetons >= RESERVE) SES.tick = Date.now() + TRIM_MS;
+    if (SES.jetons < 1) return toast("⏳ Prochain dossier dans " + mmss(Math.max(1000, SES.tick - Date.now())) + ".");
+    if (SES.jetons >= RESERVE) SES.tick = Date.now() + DOSSIER_MS;
     var s2 = M.dossierSession(st, BASE); if (s2 === st) return;
     SES.jetons--; garderReserve(); st = s2; sauver(); jeu();
   }
@@ -1491,16 +1492,16 @@
   }
   // Bouton de trimestre en session : texte principal + réserve, et jauge de recharge en fond
   function remplirTrim(b) {
-    var r = Math.max(0, Math.ceil((SES.tick - Date.now()) / 1000)), haut, bas;
+    var r = Math.max(0, Math.ceil((SES.tick - Date.now()) / 1000)), rt = mmss(r * 1000), haut, bas;
     if (st.phase === "evenement") haut = "📂 Un dossier t’attend";
     else if ((st.bj && !st.bj.fini) || (st.enchere && !st.enchere.fini)) haut = "🃏 Une partie de cartes est en cours";
-    else haut = SES.jetons < 1 ? "⏳ Prochain dossier dans " + r + " s" : "📂 Dossier suivant →";
+    else haut = SES.jetons < 1 ? "⏳ Prochain dossier dans " + rt : "📂 Dossier suivant →";
     // La saison du prochain dossier, en tout petit
-    bas = SAISONS[Math.max(0, st.t - 1) % 4][0] + " · " + SES.jetons + "/" + RESERVE + (SES.jetons < RESERVE ? " · +1 dans " + r + " s" : " · réserve pleine");
+    bas = SAISONS[Math.max(0, st.t - 1) % 4][0] + " · " + SES.jetons + "/" + RESERVE + (SES.jetons < RESERVE ? " · +1 dans " + rt : " · réserve pleine");
     b.textContent = ""; b.appendChild(h("span", null, haut)); b.appendChild(h("small", "mx-reserve", bas));
     b.classList.toggle("mx-vide", SES.jetons < 1);
     b.classList.toggle("mx-pret", st.phase === "evenement" || (SES.jetons > 0 && (st.phase === "gestion" || st.phase === "pret")));
-    b.style.setProperty("--p", SES.jetons >= RESERVE ? 1 : Math.max(0, Math.min(1, 1 - r / (TRIM_MS / 1000))));
+    b.style.setProperty("--p", SES.jetons >= RESERVE ? 1 : Math.max(0, Math.min(1, 1 - r / (DOSSIER_MS / 1000))));
   }
   function barreTrimestre() {
     var b = h("div", "m-barmois");
@@ -1647,7 +1648,7 @@
       { q: "#m-modale .m-choix", t: "✨ Un événement rare ! Aucune réponse n’est toujours la meilleure : à toi de jouer.", a: "choix" }] },
     { id: "session", ecran: "jeu", si: function () { return !!document.querySelector(".mx-session"); }, etapes: [
       { q: ".mx-session", t: "🏛️ Tu commences maire du plus petit arrondissement. Toutes les 10 minutes, élection : bats ton rival (juste au-dessus) pour prendre sa place, jusqu’au trône de Maire de Paris. Ton opposant (juste en dessous) veut la tienne.", a: "ok" },
-      { q: ".m-barmois", t: "📂 C’est toi qui appelles le dossier suivant. Un nouveau arrive toutes les 25 secondes (le bouton s’illumine) et tu peux en garder 4 en réserve. Les saisons, elles, passent toutes seules : recettes et dépenses tombent sans que tu aies à cliquer. Le petit emoji montre la saison. Ne traîne pas trop : les autres maires avancent pendant ce temps !", a: "ok" },
+      { q: ".m-barmois", t: "📂 C’est toi qui appelles le dossier suivant. Un nouveau arrive toutes les 2 min 15 (le bouton s’illumine) et tu peux en garder 4 en réserve. Les saisons, elles, passent toutes seules : recettes et dépenses tombent sans que tu aies à cliquer. Le petit emoji montre la saison. Ne traîne pas trop : les autres maires avancent pendant ce temps !", a: "ok" },
       { q: ".mx-ses-attaque", t: "⚔️ Attaque ton rival ou ton opposant pour faire baisser son sondage avant l’élection. Le bouclier 🛡️ te protège de la prochaine attaque.", a: "ok" },
       { q: ".mx-ses-btn", t: "🏆 Le classement de ta session : de vrais joueurs et des maires robots. Touche un maire pour comparer vos villes.", a: "ok" }] },
     { id: "habitants3", ecran: "jeu", si: function () { return st.phase === "gestion"; }, etapes: [

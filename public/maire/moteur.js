@@ -109,7 +109,7 @@
 
   // ---------- XP et niveaux (la courbe est partagée avec progression.js) ----------
   var NIV_MAX = 50;
-  var DOSSIER_SESSION = 0.55;   // en session, part des montants des dossiers (un dossier toutes les 25 s au lieu d'un tous les 2 ou 3 trimestres)
+  var DOSSIER_SESSION = 1;   // en session, part des montants des dossiers (un dossier toutes les 2 min 15, soit environ tous les 5 trimestres : montants pleins)
   function xpPour(n) { return n <= 1 ? 0 : Math.round(100 * Math.pow(n - 1, 1.75)); }
   function niveauXP(xp) { var n = 1; while (n < NIV_MAX && xp >= xpPour(n + 1)) n++; return n; }
   // Niveaux de partie (1 à 50) : chaque partie repart au niveau 1 ; les points de partie viennent de tout ce qu'on fait (sans plafond)
@@ -1028,7 +1028,7 @@
     st.notes = notes;
     if (!ok) { faillite(st); return st; }
     gagnerXP(st, "Trimestres à l’Hôtel de Ville", XP.trimestre, XP.trimestreMax);
-    points(st, 6);
+    points(st, st.session ? 9 : 6);
     annoncer(st);
     // Objectifs remplis (2 sur 3) : le maire peut demander des élections anticipées (bouton dans « Objectifs du mandat »)
     if (!st.session && anticipeePossible(st) && !st.anticipeeDite) { st.anticipeeDite = st.mandat; message(st, "🗳️", "Objectifs remplis", "Tu peux demander des élections anticipées : elles auront lieu 3 trimestres plus tard."); }
@@ -1520,7 +1520,7 @@
         l: lib + " (retombées)", txt: (sens > 0 ? "Bonne surprise : ta décision « " : "Retour de bâton : ta décision « ") + c.t + " » fait encore parler d’elle." });
       stats(st).retombees++;
     }
-    var x = stats(st); x.cats[ev.cat] = (x.cats[ev.cat] || 0) + 1; x.dossiers++; points(st, 8);
+    var x = stats(st); x.cats[ev.cat] = (x.cats[ev.cat] || 0) + 1; x.dossiers++; points(st, st.session ? 30 : 8);   // en session les dossiers sont rares (2 min 15) : ils rapportent plus
     if (ev.cat === "catastrophe" || ev.cat === "crise") x.crisesOk++;
     if (e && e.bud < 0) x.depenses += -e.bud;
     var neg = (d.pop || 0) + (d.bon || 0) < 0; x.negSerie = neg ? x.negSerie + 1 : 0; x.negSerieMax = Math.max(x.negSerieMax, x.negSerie);
