@@ -44,15 +44,34 @@
   function bot(graine, i) {
     var a = hache(graine, 999, i), b = hache(graine, 998, i), c = hache(graine, 997, i);
     return { type: "bot", id: "bot" + i, nom: PRENOMS[Math.floor(a * PRENOMS.length)] + " " + NOMS[Math.floor(b * NOMS.length)], ico: ICOS[Math.floor(c * ICOS.length)],
-      talent: Math.round((0.25 + hache(graine, 996, i) * 0.6) * 100) / 100 };
+      talent: Math.round((0.25 + hache(graine, 996, i) * 0.6) * 100) / 100,
+      forme: Math.round((hache(graine, 995, i) - 0.5) * 120) / 100, xp: 0 };   // forme : -0,6 (en déclin) à +0,6 (en croissance)
+  }
+  // Les bots vivent : en croissance, leur sondage monte pendant le mandat ; en déclin, il baisse.
+  // Leur forme change à chaque élection (victoire = élan, défaite = coup dur) et ils gagnent de l'expérience.
+  function avance(s, maintenant) { var t = maintenant == null ? Date.now() : maintenant; return Math.max(0, Math.min(1, (t - (s.prochaine - MANDAT_MS)) / MANDAT_MS)); }
+  function tendance(pl) { var f = pl.forme || 0; return f > 0.15 ? "croissance" : f < -0.15 ? "declin" : "stable"; }
+  function evoluerBots(s, duels) {
+    s.places.forEach(function (x, p) {
+      if (x.type !== "bot") return;
+      var n = parseInt(String(x.id).replace(/\D/g, ""), 10) || 0, d = duels.filter(function (y) { return y.bas === p || y.haut === p; })[0];
+      var choc = d ? (d.monte ? (d.haut === p ? 0.3 : -0.3) : (d.haut === p ? 0.1 : -0.1)) : 0;   // monté = élan, descendu = coup dur (après l'élection, d.haut est la place du gagnant)
+      var f = (x.forme || 0) * 0.6 + (hache(s.graine, s.election * 13 + 5, n) - 0.5) * 1.1 + choc;
+      x.forme = Math.round(Math.max(-1, Math.min(1, f)) * 100) / 100;
+      x.xp = Math.min(6, Math.round(((x.xp || 0) + 0.6) * 10) / 10);
+    });
   }
   // Score électoral d'un bot : son talent, la puissance de sa place, un aléa différent à chaque élection (comme un sondage, 0-100)
-  function scoreBot(s, pl, p) { return Math.round((40 - ((s.malus || {})[pl.id] || 0) + pl.talent * 22 + p * 0.55 + (hache(s.graine, s.election, p * 31 + (parseInt(String(pl.id).replace(/\D/g, ""), 10) || 0)) - 0.5) * 12) * 10) / 10; }
+  function scoreBot(s, pl, p, maintenant) {
+    var elan = (pl.forme || 0) * 10 * (0.3 + 0.7 * avance(s, maintenant));
+    return Math.round((41 - ((s.malus || {})[pl.id] || 0) + pl.talent * 22 + p * 0.55 + (pl.xp || 0) + elan + (hache(s.graine, s.election, p * 31 + (parseInt(String(pl.id).replace(/\D/g, ""), 10) || 0)) - 0.5) * 10) * 10) / 10;
+  }
   // Ce qu'on voit du profil d'un bot : popularité, bonheur, habitants, bâtiments… (stable pendant un mandat)
-  function statsBot(s, pl, p) {
-    var sc = scoreBot(s, pl, p), h = function (k) { return hache(s.graine, s.election * 7 + k, p); };
-    return { score: sc, pop: Math.round(sc + (h(1) - 0.5) * 8), bon: Math.round(sc - 4 + (h(2) - 0.5) * 10), hab: Math.round(habitants(p) * (0.95 + h(3) * 0.1)),
-      bats: Math.round(4 + p * 2.5 + pl.talent * 12 + h(4) * 4), niv: Math.max(1, Math.round(3 + p * 1.6 + pl.talent * 10)), mandats: s.election };
+  function statsBot(s, pl, p, maintenant) {
+    var sc = scoreBot(s, pl, p, maintenant), f = pl.forme || 0, av = avance(s, maintenant), h = function (k) { return hache(s.graine, s.election * 7 + k, p); };
+    return { score: sc, pop: Math.round(sc + (h(1) - 0.5) * 8), bon: Math.round(sc - 4 + (h(2) - 0.5) * 10), hab: Math.round(habitants(p) * (0.95 + h(3) * 0.1) * (1 + f * 0.06 * av)),
+      bats: Math.round(4 + p * 2.5 + pl.talent * 12 + h(4) * 4 + (pl.xp || 0) * 2 + Math.max(0, f) * 6 * av), niv: Math.min(50, Math.max(1, Math.round(3 + p * 1.6 + pl.talent * 10 + (pl.xp || 0) * 1.5))),
+      mandats: s.election, tendance: tendance(pl), forme: f };
   }
 
   // ---------- Session ----------
@@ -73,7 +92,7 @@
   // Résumé pour la liste des sessions : joueurs présents (inactifs retirés), niveau moyen, élection
   function resume(s, maintenant) {
     var n = nettoyer(s, maintenant), js = joueurs(n), nivs = js.map(function (x) { return x.stats && x.stats.niv; }).filter(function (v) { return v > 0; });
-    return { nom: s.nom || AUTEURS[0], joueurs: js.length, uids: js.map(function (x) { return x.uid; }), pleine: pleine(n),
+    return { nom: s.nom || AUTEURS[0], joueurs: js.length, bots: NB - js.length, uids: js.map(function (x) { return x.uid; }), pleine: pleine(n),
       niv: nivs.length ? Math.round(nivs.reduce(function (a, v) { return a + v; }, 0) / nivs.length) : 0, prochaine: s.prochaine, ouvre: !js.length || peutEntrer(s, maintenant) };
   }
   function joueurs(s) { return s.places.filter(function (x) { return x.type === "joueur"; }); }
@@ -242,7 +261,7 @@
   // On remonte l'échelle par le bas : qui bat son rival prend sa place (une seule place gagnée par élection).
   function scores(s, maintenant) {
     return s.places.map(function (x, p) {
-      if (x.type === "bot") return scoreBot(s, x, p);
+      if (x.type === "bot") return scoreBot(s, x, p, maintenant);
       return (x.score || 40) - ((s.malus || {})[x.uid] || 0) - (maintenant - (x.vu || 0) > ABSENT_MS ? 10 : 0);
     });
   }
@@ -256,6 +275,7 @@
       if (gagne) { var t = s.places[p]; s.places[p] = s.places[p + 1]; s.places[p + 1] = t; var u = sc[p]; sc[p] = sc[p + 1]; sc[p + 1] = u; p += 2; }
       else p += 1;
     }
+    evoluerBots(s, duels);
     // Ce que chaque joueur doit savoir : d'où il part, où il arrive, contre qui il a gagné ou perdu
     s.resultats = [];
     avant.forEach(function (x, pAvant) {
@@ -274,7 +294,7 @@
     return { p: p, titre: titre(p), court: court(p), arr: arr(p), type: x.type, nom: x.nom, ico: x.ico, uid: x.uid || null, stats: st, puissance: puissance(p), hab: st.hab || habitants(p) };
   }
 
-  var API = { AUTEURS: AUTEURS, BASE_ID: BASE_ID, nomLibre: nomLibre, resume: resume, NB: NB, TRONE: TRONE, MANDAT_MS: MANDAT_MS, ENTREE_MIN: ENTREE_MIN, AFK_MS: AFK_MS, peutEntrer: peutEntrer, quitter: quitter, inactif: inactif, ARR: ARR, ORDRE: ORDRE, arr: arr, nomArr: nomArr, titre: titre, court: court, puissance: puissance, habitants: habitants,
+  var API = { AUTEURS: AUTEURS, BASE_ID: BASE_ID, nomLibre: nomLibre, resume: resume, tendance: tendance, NB: NB, TRONE: TRONE, MANDAT_MS: MANDAT_MS, ENTREE_MIN: ENTREE_MIN, AFK_MS: AFK_MS, peutEntrer: peutEntrer, quitter: quitter, inactif: inactif, ARR: ARR, ORDRE: ORDRE, arr: arr, nomArr: nomArr, titre: titre, court: court, puissance: puissance, habitants: habitants,
     nouvelleSession: nouvelleSession, rejoindre: rejoindre, attaquer: attaquer, proteger: proteger, ripostes: ripostes, ATTAQUES: ATTAQUES, BOUCLIER: BOUCLIER, prixAction: prixAction, malusDe: malusDe, attente: attente,
     ventesEnCours: ventesEnCours, ventesFinies: ventesFinies, venteSuivante: venteSuivante, prochaineVente: prochaineVente, vente: vente, encherir: encherir, VENTE_P: VENTE_P, VENTE_D: VENTE_D, pleine: pleine, signaler: signaler, nettoyer: nettoyer, voter: voter, votesRequis: votesRequis, nbVotes: nbVotes,
     electionDue: electionDue, scores: scores, elire: elire, resultatDe: resultatDe, placeDe: placeDe, joueurs: joueurs, fiche: fiche, statsBot: statsBot, scoreBot: scoreBot };

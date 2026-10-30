@@ -1115,3 +1115,5 @@ button.mx-ses-qui{cursor:pointer}
 .mx-sescarte .mx-sesoff{background:#e6e8f0;color:#7b82a0;border:none;font-size:12.5px;white-space:normal;max-width:120px;line-height:1.2}
 .mx-sescarte .mx-sesici-b{background:#2f8f4e;color:#fff;border:none;font-weight:800}
 .mx-sesbadge{font-style:normal;font-size:11.5px;font-weight:800;color:#b07a00}
+.m-ses-tend{margin:8px 0 0;padding:8px 12px;border-radius:12px;font-weight:700;font-size:13.5px;background:#eef0f7;color:#1b2550}
+.m-ses-tend.m-tend-croissance{background:#e6f6ec;color:#1f7a3f}.m-ses-tend.m-tend-declin{background:#fdeceb;color:#b3261e}

@@ -239,7 +239,7 @@ window.SessionLigne=(function(){
         if(vus[d.id])return;vus[d.id]=1;var s=lire(d);if(!s)return;
         var x=S().resume(s,t);x.id=d.id;if(x.joueurs>0||d.id===S().BASE_ID)l.push(x);
       });
-      if(!vus[S().BASE_ID])l.push({id:S().BASE_ID,nom:S().AUTEURS[0],joueurs:0,uids:[],niv:0,pleine:false,ouvre:true,prochaine:0});
+      if(!vus[S().BASE_ID])l.push({id:S().BASE_ID,nom:S().AUTEURS[0],joueurs:0,bots:S().NB,uids:[],niv:0,pleine:false,ouvre:true,prochaine:0});
       return l.sort(function(a,b){return (b.id===S().BASE_ID)-(a.id===S().BASE_ID)||b.joueurs-a.joueurs});
     }).catch(function(){return null});
   }

@@ -302,7 +302,7 @@
         var ici = x.id === SES.id || x.uids.indexOf(moi) >= 0, reste = x.joueurs ? Math.max(0, x.prochaine - now) : 0;
         var c = h("div", "mx-sescarte" + (x.id === SS().BASE_ID ? " mx-sesbase" : "") + (ici ? " mx-sesici" : ""));
         var info = ajout(h("div"), h("strong", null, "📚 " + x.nom), x.id === SS().BASE_ID ? h("em", "mx-sesbadge", "⭐ Session de base") : null,
-          h("small", null, "👥 " + x.joueurs + " joueur" + (x.joueurs > 1 ? "s" : "") + " · ⭐ niveau moyen " + (x.niv || "—") + (x.joueurs ? " · 🗳️ élection dans " + Math.ceil(reste / 60000) + " min" : "")));
+          h("small", null, "👥 " + x.joueurs + " joueur" + (x.joueurs > 1 ? "s" : "") + " · 🤖 " + x.bots + " bot" + (x.bots > 1 ? "s" : "") + " · ⭐ niveau moyen " + (x.niv || "—") + (x.joueurs ? " · 🗳️ élection dans " + Math.ceil(reste / 60000) + " min" : "")));
         var b;
         if (ici) b = bouton("✔ Tu y es", "btn mx-sesici-b", depuisJeu || !partie ? retour : reprise);
         else if (x.pleine) { b = bouton("Complète", "btn m-sec mx-sesoff"); b.disabled = true; }
@@ -895,6 +895,7 @@
     if (gagne) { sauver(); return true; }
   }
   // Classement de la session : les 21 places, du trône au 1er arrondissement
+  var FLECHE = { croissance: " 📈", declin: " 📉", stable: "" };
   function classementSession() {
     if (!SES.s) return;
     var s = SES.s, moiP = SS().placeDe(s, moiSes()), sc = SS().scores(s, Date.now());
@@ -906,7 +907,7 @@
     for (var p = SS().NB - 1; p >= 0; p--) (function (p) {
       var f = SS().fiche(s, p), cls = "m-ses-l" + (p === moiP ? " m-moi" : p === moiP + 1 ? " m-rival" : p === moiP - 1 ? " m-opp" : "") + (p >= SS().TRONE ? " m-trone" : "");
       var b = bouton("", cls, function () { ficheSession(p); });
-      ajout(b, h("span", "m-ses-rang", p >= SS().TRONE ? "👑" : String(SS().NB - p)), h("span", "m-ses-arr", f.court), ajout(h("span", "m-ses-nom"), document.createTextNode(f.ico + " " + f.nom), f.type === "bot" ? h("i", null, " 🤖") : null),
+      ajout(b, h("span", "m-ses-rang", p >= SS().TRONE ? "👑" : String(SS().NB - p)), h("span", "m-ses-arr", f.court), ajout(h("span", "m-ses-nom"), document.createTextNode(f.ico + " " + f.nom), f.type === "bot" ? h("i", null, " 🤖" + FLECHE[f.stats.tendance]) : null),
         h("b", "m-ses-sc", virg(Math.round(sc[p] * 10) / 10)));
       l.appendChild(ajout(h("li"), b));
     })(p);
@@ -931,7 +932,8 @@
       t.appendChild(ligne(x[0], n(x[1]), n(x[2]), p === moiP || x[2] == null ? null : x[1] >= x[2]));
     });
     a.appendChild(t);
-    a.appendChild(h("small", "m-aide", f.type === "bot" ? "Les places libres sont tenues par des maires robots (🤖) : les vrais joueurs les remplacent en arrivant." : "Un vrai joueur de ta session."));
+    if (f.type === "bot") a.appendChild(h("p", "m-ses-tend m-tend-" + o.tendance, o.tendance === "croissance" ? "📈 En pleine croissance : son sondage grimpe pendant le mandat." : o.tendance === "declin" ? "📉 En déclin : son sondage baisse pendant le mandat. C’est le moment de l’attaquer !" : "➡️ Stable pour l’instant."));
+    a.appendChild(h("small", "m-aide", f.type === "bot" ? "Les places libres sont tenues par des maires robots (🤖) : ils progressent ou déclinent d’une élection à l’autre, et les vrais joueurs les remplacent en arrivant." : "Un vrai joueur de ta session."));
     c.appendChild(a); pop.appendChild(c); (document.getElementById("g-maire") || document.body).appendChild(pop);
     document.body.classList.add("m-modal"); pop.onclick = function (e) { if (e.target === pop) fermerTel(); };
   }
