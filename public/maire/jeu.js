@@ -973,6 +973,9 @@
     box.appendChild(gestion());
     box.appendChild(barreTrimestre());
     box.style.minHeight = ""; window.scrollTo(0, y);
+    // Une enchère restée en mémoire ne doit jamais bloquer le dossier : fenêtre disparue = on oublie l'affichage ; enchère finie + dossier = on la range
+    if (ENCH && !document.getElementById("m-enchmod")) { if (ENCH.minuteur) clearInterval(ENCH.minuteur); ENCH = null; }
+    if (st.enchere && st.enchere.fini && st.phase === "evenement") { st = M.fermerEnchere(st); sauver(); }
     if (st.enchere) return reprendreEnchere();
     if (MASQUE !== cleMasque()) modale();
     guide(document.getElementById("m-modale") ? "modale" : "jeu");
@@ -1697,6 +1700,22 @@
   window.addEventListener("scroll", function () { if (BULLE) placer(); }, { passive: true });
   window.addEventListener("resize", function () { if (BULLE) placer(); });
 
+  // Filet iPhone : un toucher sur une réponse du dossier déclenche toujours la réponse,
+  // même si iOS ne génère pas le « clic » (ou qu'un élément invisible se trouve au-dessus)
+  var TOUCHE = null;
+  document.addEventListener("touchstart", function (e) { var t = e.touches[0]; TOUCHE = t && e.touches.length === 1 ? { x: t.clientX, y: t.clientY, at: Date.now() } : null; }, { capture: true, passive: true });
+  document.addEventListener("touchend", function (e) {
+    var d = TOUCHE; TOUCHE = null;
+    var m = document.getElementById("m-modale"), t = e.changedTouches && e.changedTouches[0];
+    if (!d || !m || !t || e.touches.length || Math.abs(t.clientX - d.x) > 12 || Math.abs(t.clientY - d.y) > 12 || Date.now() - d.at > 800) return;
+    if (e.target && e.target.closest && e.target.closest(".m-bulle, .m-pop-fermer, a, input")) return;
+    var opts = m.querySelectorAll(".m-option");
+    for (var k = 0; k < opts.length; k++) {
+      var b = opts[k], r = b.getBoundingClientRect();
+      if (b._choix && !b.disabled && t.clientX >= r.left && t.clientX <= r.right && t.clientY >= r.top && t.clientY <= r.bottom) { e.preventDefault(); b._choix(); return; }
+    }
+  }, { capture: true, passive: false });
+
   // ---------- Dossier du trimestre : fenêtre au premier plan ----------
   var legendeVue = null, MASQUE = null;
   function cleMasque() { return st.t + ":" + (st.evenement || "") + ":" + (st.phase === "evenement" ? "e" : "r"); }
@@ -1798,13 +1817,23 @@
       var ch = h("div", "m-choix"), cleV0 = cleVote();
       ev.choix.forEach(function (x, i) {
         var mj = M.jeuDe(st, i), b = bouton("", "m-option" + (mj ? " m-mj m-mj-" + mj.etat : ""), function () {
-          // Dossier périmé (le temps a tourné pendant qu'il était ouvert) : on redessine au lieu de ne rien faire
-          if (st.phase !== "evenement" || cleVote() !== cleV0) { MASQUE = null; return jeu(); }
-          if (mj && mj.etat === "a_jouer") return miniJeu(carte, ev, i);
-          if (mj && mj.etat === "perdu") return;
-          var cle = cleVote(), t = st.t, p = voter(cle, i); VOTE = p ? { t: t, i: i, p: p } : null;
-          st = M.choisir(st, BASE, i); sauver(); signal("choix"); jeu();
+          var pop0 = document.getElementById("m-modale");
+          try {
+            // Dossier périmé (le temps a tourné pendant qu'il était ouvert) : on redessine au lieu de ne rien faire
+            if (st.phase !== "evenement" || cleVote() !== cleV0) { MASQUE = null; jeu(); }
+            else {
+              if (mj && mj.etat === "a_jouer") return miniJeu(carte, ev, i);
+              if (mj && mj.etat === "perdu") return;
+              var cle = cleVote(), t = st.t, p = null;
+              try { p = voter(cle, i); } catch (e) { p = null; }   // le vote des autres maires ne doit jamais bloquer le choix
+              VOTE = p ? { t: t, i: i, p: p } : null;
+              st = M.choisir(st, BASE, i); sauver(); signal("choix"); jeu();
+            }
+          } catch (e) { toast("⚠️ " + (e && e.message || e)); }
+          // Si rien n'a bougé à l'écran, on remet le dossier à jour de force
+          if (document.getElementById("m-modale") === pop0 && document.body.contains(pop0)) { MASQUE = null; modale(); }
         });
+        b.dataset.choix = i; b._choix = b.onclick;
         ajout(b, h("span", "m-lettre", mj && mj.etat === "perdu" ? "🔒" : "ABCD"[i]), h("strong", null, T(x.t)));
         var best = st.mj && st.mj.best === i ? "⭐ Meilleur choix · " : "";
         if (mj) b.appendChild(h("small", "m-mj-tag", mj.etat === "a_jouer" ? best + "se joue " + ({ bj: "au 🃏 blackjack", roulette: "à la 🎡 roulette", poker: "au ♠️ poker" })[mj.jeu]
