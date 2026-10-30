@@ -1128,3 +1128,10 @@ button.mx-ses-qui{cursor:pointer}
 .m-ses-l .m-note{font-size:10.5px;letter-spacing:0}
 .m-erreur-detail{font-size:11px;opacity:.55;word-break:break-word;max-width:300px}
 #m-erreur{z-index:1700}
+/* En-tête : tout tient sur la ligne, le téléphone ne sort jamais de l'écran */
+.mx-hud .mx-ligne{flex-wrap:nowrap}
+.mx-hud .mx-quand{flex:1 1 auto;min-width:0;overflow:hidden}
+.mx-hud .mx-droite{flex:0 0 auto;gap:6px}
+.mx-hud .mx-chip{padding:6px 9px;font-size:13.5px}
+.mx-notebtn .m-note.m-note-g{font-size:15px;letter-spacing:1px}
+@media (max-width:360px){.mx-notebtn .m-note.m-note-g{font-size:13px}.mx-hud .m-tel-img{width:30px;height:30px}}

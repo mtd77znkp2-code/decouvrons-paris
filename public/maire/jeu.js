@@ -745,7 +745,7 @@
   // Met à jour les comptes à rebours sans tout redessiner
   function majSession() {
     if (!SES.s) return;
-    var e = document.querySelector(".mx-ses-elec"); if (e) e.textContent = "🗳️ Vote dans " + mmss(SES.s.prochaine - Date.now());
+    var e = document.querySelector(".mx-ses-elec"); if (e) e.textContent = "🗳️ " + mmss(SES.s.prochaine - Date.now());
     var v = document.querySelector(".mx-ses-votes"); if (v) v.textContent = SS().nbVotes(SES.s) + "/" + SS().votesRequis(SES.s) + " vote" + (SS().votesRequis(SES.s) > 1 ? "s" : "");
     var b = document.querySelector(".m-barmois .btn.mx-auto");
     if (b) remplirTrim(b);
@@ -1510,9 +1510,11 @@
       if (st.phase === "evenement" || (st.resultat && !st.resultatVu)) return modale();
       if (st.bj && !st.bj.fini) return ouvrirTelephone();
       if (auto) return jouerTrimestre();
-      var avant = { t: st.t, net: st.tresor - st.dette };
+      // Partie de session pas encore reconnectée (retour en jeu) : on attend la session au lieu de sauter un trimestre
+      if (st.session && !SES.afk) { brancherSession(); return toast("⏳ Connexion à ta session…"); }
+      var t0 = st.t;
       st = M.debutTour(st, BASE); sauver(); signal("trimestre"); jeu();
-      if (st.t > avant.t) animTrimestre(avant);
+      if (st.t > t0) messageSaison();   // petit message en haut, jamais de grande fenêtre
     }));
     if (auto) remplirTrim(b.lastChild);
     if (st.phase === "evenement") b.lastChild.classList.add("mx-pret");
@@ -1530,18 +1532,7 @@
   }
   // Passage au trimestre suivant : la date tourne comme une page de calendrier, avec la saison et ce que la ville a gagné ou perdu
   var SAISONS = [["❄️", "Hiver"], ["🌸", "Printemps"], ["☀️", "Été"], ["🍂", "Automne"]];
-  function animTrimestre(avant) {
-    if (calme() || st.phase === "fin" || st.phase === "election") return;
-    var a = Math.floor((st.t - 1) / 4) + 1, q = (st.t - 1) % 4, sa = SAISONS[q], net = Math.round((st.tresor - st.dette) - avant.net);
-    var f = h("div", "mx-trim"); f.setAttribute("aria-hidden", "true");
-    var c = h("div", "mx-trim-carte");
-    ajout(c, h("span", "mx-trim-ico", sa[0]), h("strong", null, sa[1] + " · année " + a), h("small", null, "Trimestre " + st.t),
-      h("b", "mx-trim-net " + (net >= 0 ? "mx-plus" : "mx-moins"), (net >= 0 ? "+" : "−") + argent(Math.abs(net))));
-    if (st.anticipee && st.anticipee - st.t <= 3) c.appendChild(h("small", "mx-trim-vote", "🗳️ Vote dans " + (st.anticipee - st.t) + " trim."));
-    f.appendChild(c); f.onclick = function () { f.remove(); };
-    (document.getElementById("g-maire") || document.body).appendChild(f);
-    setTimeout(function () { f.classList.add("mx-trim-out"); }, 900); setTimeout(function () { f.remove(); }, 1300);
-  }
+
   function variations(d, parent) {
     var l = h("ul", "m-delta");
     function puce(v, txt) { if (!v) return; l.appendChild(h("li", v > 0 ? "m-up" : "m-down", txt)); }
