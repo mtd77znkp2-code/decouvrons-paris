@@ -886,7 +886,9 @@
     var now = Date.now();
     if (now - ACTIF > SS().SORTIE_MS) { fermerAttente(); return sortieAFK(false); }
     if (now - ACTIF > SS().AFK_MS) attenteAFK(now); else fermerAttente();
-    var avantVote = SES.s.prochaine - now; if (visible && avantVote > 2000 && avantVote <= 3000) sonUnique("tambour:" + SES.id + ":" + SES.s.election, "tambour");   // son n°13
+    var avantVote = SES.s.prochaine - now;
+    if (visible && avantVote > 28500 && avantVote <= 30000) sonUnique("cloche:" + SES.id + ":" + SES.s.election, "cloche", 0.8);   // son n°35 : élection dans 30 s
+    if (visible && avantVote > 2000 && avantVote <= 3000) sonUnique("tambour:" + SES.id + ":" + SES.s.election, "tambour");   // son n°13
     if (visible && SS().electionDue(SES.s, now) && now - SES.elire > 5000) { SES.elire = now; window.SessionLigne.elire(SES.id); }
     var libre = visible && (st.phase === "gestion" || st.phase === "pret") && !document.getElementById("m-modale") && !document.getElementById("m-telmod") && !document.body.classList.contains("m-casino") && !(st.enchere && !st.enchere.fini) && !(st.bj && !st.bj.fini);
     rechargerReserve(now);
@@ -1159,7 +1161,7 @@
   // Résultat d'une élection de session : grand écran animé
   function annonceElection(r, s) {
     var monte = r.apres > r.avant, descend = r.apres < r.avant;
-    if (window.sfx) window.sfx(descend ? "hue" : "bravo");   // sons n°14 (victoire) / n°15 (défaite)
+    if (window.sfx) window.sfx(descend ? "hue" : monte && r.apres >= SS().TRONE ? "fanfare" : "bravo");   // n°15 battu, n°36 couronné Maire de Paris, n°14 victoire
     var d = h("div", "m-flash m-flash-elec" + (monte ? " m-monte" : descend ? " m-descend" : ""));
     ajout(d, ajout(h("div", "m-flash-in"), h("span", "m-flash-ico", monte ? "🎉" : descend ? "📉" : "🗳️"), h("strong", null, monte ? "Élu plus haut !" : descend ? "Tu recules d’une place" : "Tu gardes ta place"),
       h("p", null, (monte ? "Te voilà " : "Tu es ") + SS().titre(r.apres) + "."), h("small", null, r.duel ? "Ton score " + virg(r.duel.bas === r.avant ? r.duel.sBas : r.duel.sHaut) + " contre " + virg(r.duel.bas === r.avant ? r.duel.sHaut : r.duel.sBas) : "")));
@@ -1784,6 +1786,7 @@
       setTimeout(function () { notifActive = null; suivante(); }, 800); return;
     }
     var el, duree;
+    if (window.sfx) { if (n.type === "niveau" && n.m && n.m.n) window.sfx("niveau"); else if (n.type === "fait" && /^🏆/.test(n.txt || "")) window.sfx("succes"); }   // sons n°18 et n°19
     if (n.type === "niveau") {
       // Nouveau niveau (ou objectif rempli) : une carte courte, ce qui arrive en boutique sur une ligne
       var m = n.m, quoi = m.bats.map(function (id) { return M.BATIMENTS[id].ico + " " + M.BATIMENTS[id].nom; }).concat(m.meca.map(function (t) { return "✨ " + t; }));
@@ -2716,7 +2719,7 @@
     var ico = h("span", "m-coffre-ico", c.vu ? (c.type === "jackpot" ? "🎰" : "✨") : "🎁"), txt = h("strong", null, c.vu ? c.txt : "Le coffre de la victoire t’attend");
     ajout(d, ico, txt);
     if (!c.vu) d.appendChild(bouton("Ouvrir le coffre", "btn m-go", function (ev) {
-      ev.currentTarget.remove(); d.classList.add("m-coffre-secoue");
+      ev.currentTarget.remove(); d.classList.add("m-coffre-secoue"); if (window.sfx) window.sfx("coffre");   /* son n°20 */
       setTimeout(function () {
         st = M.voirCoffre(st); sauver();
         d.classList.remove("m-coffre-secoue"); d.classList.add("m-coffre-ouvert");
