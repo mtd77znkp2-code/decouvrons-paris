@@ -963,7 +963,7 @@
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "👑 Tu es au sommet"), h("b", null, "Garde ton trône !")));
     if (st.session.opp) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-opp", function () { ficheSession(p - 1); }), h("small", null, "🛡️ Opposant · au-dessous"), h("b", null, st.session.opp.ico + " " + st.session.opp.nom + (st.session.opp.type === "bot" ? " 🤖" : "")), h("small", null, st.session.opp.court)));
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "🛡️ Personne en dessous"), h("b", null, "Pas d’opposant")));
-    var actions = ajout(h("div", "mx-ses-actions"), verrouMeca("attaques", bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre)), verrouMeca("encheres", bouton("🔨 Enchères", "mx-ses-act", allerEncheres)), bouton("🏆 Classement", "mx-ses-act mx-ses-btn", classementSession));
+    var actions = ajout(h("div", "mx-ses-actions"), verrouMeca("attaques", bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre)), bouton("🏆 Classement", "mx-ses-act mx-ses-btn", classementSession));
     ajout(d, titre, duo, actions, h("small", "mx-ses-malus", ""));
     setTimeout(majSession, 0);
     return d;
@@ -1912,7 +1912,7 @@
       { q: "#m-modale .m-choix", t: "✨ Un événement rare ! Aucune réponse n’est toujours la meilleure : à toi de jouer.", a: "choix" }] },
     { id: "session", ecran: "jeu", si: function () { return !!document.querySelector(".mx-session"); }, etapes: [
       { q: ".mx-session", t: "🏛️ Tu commences maire du plus petit arrondissement. Toutes les 10 minutes, élection : tous les maires sont classés selon leur score. Meilleur que 10 maires devant toi ? Tu gagnes 10 places d’un coup, jusqu’au trône de Maire de Paris. Ton opposant (juste en dessous) veut la tienne.", a: "ok" },
-      { q: ".m-barmois", t: "📂 C’est toi qui appelles le dossier suivant. Un nouveau arrive toutes les 2 min 15 (le bouton s’illumine) et tu peux en garder 4 en réserve. Les saisons, elles, passent toutes seules : recettes et dépenses tombent sans que tu aies à cliquer. Le petit emoji montre la saison. Ne traîne pas trop : les autres maires avancent pendant ce temps !", a: "ok" },
+      { q: ".m-barmois", t: "📂 C’est toi qui appelles le dossier suivant. Un nouveau arrive toutes les " + mmss(dossierMs()) + " (le bouton s’illumine) et tu peux en garder 4 en réserve. Les saisons, elles, passent toutes seules : recettes et dépenses tombent sans que tu aies à cliquer. Le petit emoji montre la saison. Ne traîne pas trop : les autres maires avancent pendant ce temps !", a: "ok" },
       { q: ".mx-ses-attaque", t: "⚔️ Attaque ton rival ou ton opposant pour faire baisser son sondage avant l’élection. Le bouclier 🛡️ te protège de la prochaine attaque.", a: "ok" },
       { q: ".mx-ses-btn", t: "🏆 Le classement de ta session : de vrais joueurs et des maires robots. Touche un maire pour comparer vos villes.", a: "ok" }] },
     { id: "habitants3", ecran: "jeu", si: function () { return st.phase === "gestion"; }, etapes: [

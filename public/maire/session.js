@@ -90,7 +90,9 @@
     if (!x) return 0;
     var fin = x.tresor == null ? 50 + (x.forme || 0) * 20 : Math.max(0, Math.min(100, 50 + x.tresor / 10));
     var v = (x.score || 0) * 0.35 + (x.bon == null ? x.score || 0 : x.bon) * 0.35 + (x.pop == null ? x.score || 0 : x.pop) * 0.15 + fin * 0.15;
-    return Math.max(0.1, Math.min(5, Math.round((v / 100 * 5 * 1.15 - 0.4) * 10) / 10));
+    // Courbe exigeante : une ville moyenne (50) n'a qu'une étoile, il faut ~80 partout pour 3 étoiles et la perfection pour 5
+    var r = Math.max(0, (v - 20) / 80);
+    return Math.max(0.1, Math.min(5, Math.round(5 * Math.pow(r, 1.6) * 10) / 10));
   }
   // ---------- Session ----------
   function copie(o) { return JSON.parse(JSON.stringify(o)); }

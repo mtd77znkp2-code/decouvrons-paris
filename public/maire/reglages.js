@@ -10,8 +10,8 @@
     // ---- Rythme de la session ----
     { k: "saisonSec", g: "Rythme de la session", nom: "Durée d’une saison", unite: "s", def: 25, min: 5, max: 120, pas: 1,
       desc: "Toutes les X secondes, une saison passe : recettes et dépenses tombent, la date avance. 24 saisons = un mandat." },
-    { k: "dossierSec", g: "Rythme de la session", nom: "Arrivée d’un dossier", unite: "s", def: 135, min: 10, max: 900, pas: 5,
-      desc: "Un nouveau dossier arrive dans la réserve toutes les X secondes (135 s = 2 min 15)." },
+    { k: "dossierSec", g: "Rythme de la session", nom: "Arrivée d’un dossier", unite: "s", def: 90, min: 10, max: 900, pas: 5,
+      desc: "Un nouveau dossier arrive dans la réserve toutes les X secondes (90 s = 1 min 30)." },
     { k: "reserveMax", g: "Rythme de la session", nom: "Dossiers en réserve (max)", unite: "", def: 4, min: 1, max: 10, pas: 1,
       desc: "Nombre de dossiers qu’un joueur peut garder en attente." },
     { k: "mandatMin", g: "Rythme de la session", nom: "Durée d’un mandat (entre deux élections)", unite: "min", def: 10, min: 2, max: 60, pas: 1,
@@ -34,7 +34,7 @@
     // ---- Niveaux de la partie (1 à 50) ----
     { k: "ptsSaison", g: "Niveaux de la partie", nom: "Points par saison (session)", unite: "pts", def: 9, min: 0, max: 100, pas: 1,
       desc: "Points de niveau gagnés à chaque saison qui passe." },
-    { k: "ptsDossier", g: "Niveaux de la partie", nom: "Points par dossier tranché (session)", unite: "pts", def: 30, min: 0, max: 300, pas: 1,
+    { k: "ptsDossier", g: "Niveaux de la partie", nom: "Points par dossier tranché (session)", unite: "pts", def: 20, min: 0, max: 300, pas: 1,
       desc: "Points de niveau gagnés à chaque réponse à un dossier." },
     { k: "nivCourbe", g: "Niveaux de la partie", nom: "Difficulté des niveaux", unite: "pts", def: 30, min: 5, max: 200, pas: 1,
       desc: "Points demandés pour monter : X × (niveau − 1)^1,6. Plus haut = niveaux plus lents." },

@@ -730,7 +730,7 @@ test("sessions : 21 places, on commence en bas, on défie son rival, une place g
     assert.ok(deb.some((v, i) => fin[i] > v) && deb.some((v, i) => fin[i] < v), "des bots montent, d'autres baissent pendant le mandat");
     b = S.elire(b, S.MANDAT_MS); assert.ok(b.places.some((x, i) => x.forme !== f0[i])); assert.ok(b.places.every(x => x.type !== "bot" || x.xp > 0));
     assert.equal(S.resume(b, S.MANDAT_MS).bots, 21); }
-  assert.equal(S.note({ score: 50, bon: 50, pop: 50, tresor: 0 }), 2.5); assert.equal(S.note({ score: 57, bon: 57, pop: 57, tresor: 0 }), 2.8); assert.equal(S.note({ score: 100, bon: 100, pop: 100, tresor: 900 }), 5);
+  assert.equal(S.note({ score: 50, bon: 50, pop: 50, tresor: 0 }), 1, "une ville moyenne n’a qu’une étoile"); assert.ok(S.note({ score: 80, bon: 80, pop: 80, tresor: 300 }) < 3.5, "4 étoiles se méritent"); assert.equal(S.note({ score: 100, bon: 100, pop: 100, tresor: 900 }), 5);
   assert.equal(S.note({ score: 0, bon: 0, pop: 0, tresor: -900 }), 0.1); assert.ok(S.note({ score: 70, bon: 70, pop: 70, tresor: 0 }) > S.note({ score: 40, bon: 40, pop: 40, tresor: 0 }));
   assert.equal(S.AUTEURS.length, 20); assert.equal(S.AUTEURS[0], "Victor Hugo");
   assert.equal(S.nomLibre(["Émile Zola"]), "Molière"); assert.ok(!/Victor Hugo/.test(S.nomLibre([])), "Victor Hugo reste la session de base");
