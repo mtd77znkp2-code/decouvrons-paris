@@ -26,9 +26,9 @@ service cloud.firestore {
       allow update: if request.auth != null && request.resource.data.n == resource.data.n + 1 && request.resource.data.keys().hasOnly(["n"]);
     }
 
-    // Statistiques du Maire de Paris : une fiche par partie de joueur, écrite par ce joueur, lue seulement par l'admin
+    // Statistiques du Maire de Paris : une fiche par partie de joueur, écrite par ce joueur, lue par lui et par l'admin
     match /stats_parties/{id} {
-      allow read: if isAdmin();
+      allow read: if isAdmin() || (request.auth != null && resource.data.uid == request.auth.uid);
       allow create, update: if request.auth != null && request.resource.data.uid == request.auth.uid
         && id.size() <= 60 && request.resource.data.size() <= 60
         && (resource == null || resource.data.uid == request.auth.uid);

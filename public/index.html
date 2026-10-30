@@ -24,14 +24,22 @@
   <div class="hbg" id="homeFond" aria-hidden="true"><picture><source srcset="img/accueil-neige.webp" type="image/webp"><img class="hb hb-base" src="img/accueil-neige.jpg" alt=""></picture><picture><source srcset="img/accueil-neige-allumee.webp" type="image/webp"><img class="hb hb-allumee" src="img/accueil-neige-allumee.jpg" alt=""></picture><picture><source srcset="img/accueil-neige-eteinte.webp" type="image/webp"><img class="hb hb-eteinte" src="img/accueil-neige-eteinte.jpg" alt=""></picture><i class="hb-flocons"></i></div>
   <button class="btn" id="loginBtn">👤 Connexion</button>
   <button class="hson" type="button" id="hson" aria-label="Couper la musique" aria-pressed="false">🔊</button>
-  <div id="loginBox" hidden>
-    <form id="loginForm">
-      <label for="pseudo">Ton pseudo</label>
-      <input id="pseudo" maxlength="20" autocomplete="nickname" placeholder="ex : Parisien75">
-      <button class="btn" type="submit">Se connecter</button>
-      <p>Ton pseudo reste sur cet appareil. Il sert à garder ton record au jeu.</p>
-    </form>
-    <div id="loggedBox" hidden><p id="welcome"></p><button class="btn" id="logout">Se déconnecter</button></div>
+  <div id="loginBox" hidden role="dialog" aria-modal="true" aria-labelledby="lbTitre">
+    <div class="lb-carte">
+      <button type="button" class="lb-x" id="loginClose" aria-label="Fermer">✕</button>
+      <span class="lb-ico" aria-hidden="true">🏛️</span>
+      <h2 id="lbTitre">Connexion</h2>
+      <p class="lb-txt" id="lbTxt">Connecte-toi avec Google pour retrouver ton pseudo, ton numéro de maire et tes statistiques sur tous tes appareils. C’est facultatif.</p>
+      <button type="button" class="lb-google" id="lbGoogle"><b aria-hidden="true">G</b><span>Se connecter avec Google</span></button>
+      <div id="loggedBox" hidden><p id="welcome"></p></div>
+      <form id="loginForm">
+        <label for="pseudo">Ton pseudo (facultatif)</label>
+        <div class="lb-ligne"><input id="pseudo" maxlength="20" autocomplete="nickname" placeholder="ex : Parisien75"><button class="btn" type="submit">OK</button></div>
+        <p class="lb-aide" id="lbNom"></p>
+      </form>
+      <p class="lb-etat" id="lbEtat" role="status"></p>
+      <button class="btn lb-sortir" type="button" id="logout" hidden>Se déconnecter de Google</button>
+    </div>
   </div>
   <div class="hcentre">
     <h1 class="sr">Découvrons Paris</h1>

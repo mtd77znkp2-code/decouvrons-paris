@@ -146,7 +146,7 @@ function lbSubmit(key,score){
     });
     auth.onAuthStateChanged(function(u){
       if(!u){LB.uid=null;window.ADMIN_OK=false;auth.signInAnonymously().catch(function(){});return}
-      LB.uid=u.uid;window.ADMIN_OK=!u.isAnonymous;lbRender();profilJoueur();
+      LB.uid=u.uid;window.ADMIN_OK=!u.isAnonymous;lbRender();profilJoueur();if(window.paintUser)paintUser();
       if(!u.isAnonymous&&u.email===ADMIN_EMAIL&&window.adminMode){adminMode(true);if(location.hash==="#admin")loadAdmin().then(function(){apOpen()})}
     });
   }catch(e){LB.db=null}
@@ -168,23 +168,37 @@ Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){b.onc
 // Connexion (pseudo, gardé sur cet appareil)
 window.user="";
 try{window.user=localStorage.getItem("user")||""}catch(e){}
+// Fenêtre « Connexion » du menu principal : la même connexion Google que dans le jeu, plus le pseudo
 function paintUser(){
-  var u=window.user,btn=document.getElementById("loginBtn");
-  btn.textContent=u?"👤 "+u:"👤 Connexion";
-  document.getElementById("loginForm").hidden=!!u;
-  document.getElementById("loggedBox").hidden=!u;
-  document.getElementById("welcome").textContent=u?"Salut "+u+" !":"";
-  document.querySelector(".hello").textContent=u?"Salut "+u+", que veux-tu découvrir ?":"Que veux-tu découvrir ?";
+  var u=window.user,g=window.compteGoogle?compteGoogle():null;
+  $("loginBtn").textContent=g||u?"👤 "+nomJoueur():"👤 Connexion";
+  $("lbGoogle").hidden=!!g;$("logout").hidden=!g;$("loggedBox").hidden=!g;
+  $("welcome").textContent=g?"✅ Connecté avec Google"+(g.nom?" · "+g.nom:""):"";
+  $("lbTitre").textContent=g?"Ton compte":"Connexion";$("lbTxt").hidden=!!g;
+  $("pseudo").value=u||"";
+  $("lbNom").textContent="Tu joues sous le nom « "+nomJoueur()+" »"+(u?".":" (choisis un pseudo pour le changer).");
+  var hello=document.querySelector(".hello");if(hello)hello.textContent=u?"Salut "+u+", que veux-tu découvrir ?":"Que veux-tu découvrir ?";
 }
-document.getElementById("loginBtn").onclick=function(){var b=document.getElementById("loginBox");b.hidden=!b.hidden;if(!b.hidden&&!window.user)document.getElementById("pseudo").focus()};
-document.getElementById("loginForm").onsubmit=function(e){
-  e.preventDefault();var v=document.getElementById("pseudo").value.trim();if(!v)return;
-  window.user=v.slice(0,20);try{localStorage.setItem("user",window.user)}catch(x){}
-  document.getElementById("loginBox").hidden=true;paintUser();garderPseudo();
+window.paintUser=paintUser;
+function fermerLogin(){$("loginBox").hidden=true;document.body.classList.remove("lb-ouvert")}
+$("loginBtn").onclick=function(){paintUser();$("lbEtat").textContent="";$("loginBox").hidden=false;document.body.classList.add("lb-ouvert")};
+$("loginClose").onclick=fermerLogin;
+$("loginBox").onclick=function(e){if(e.target===$("loginBox"))fermerLogin()};
+$("lbGoogle").onclick=function(){
+  var b=$("lbGoogle");b.disabled=true;$("lbEtat").textContent="Connexion…";
+  window.connexionGoogle().then(function(){try{localStorage.setItem("maire_invite","1")}catch(x){}$("lbEtat").textContent="✅ Connecté !";setTimeout(paintUser,600)})
+    .catch(function(e){$("lbEtat").textContent=e&&e.code==="auth/popup-closed-by-user"?"Connexion annulée.":"Connexion impossible pour l’instant."}).then(function(){b.disabled=false});
 };
-document.getElementById("logout").onclick=function(){
-  window.user="";try{localStorage.removeItem("user")}catch(x){}garderPseudo();
-  document.getElementById("pseudo").value="";document.getElementById("loginBox").hidden=true;paintUser();
+$("loginForm").onsubmit=function(e){
+  e.preventDefault();var v=$("pseudo").value.trim().slice(0,20);
+  window.user=v;try{if(v)localStorage.setItem("user",v);else localStorage.removeItem("user")}catch(x){}
+  garderPseudo();paintUser();$("lbEtat").textContent=v?"✅ Pseudo enregistré.":"Pseudo retiré : tu joues sous ton numéro de maire.";
+};
+$("logout").onclick=function(){
+  if(!LB.auth)return;
+  // On repart en invité : nouveau numéro de maire, pseudo effacé de cet appareil
+  window.user="";window.MAIRE_NUM=null;try{localStorage.removeItem("user");localStorage.removeItem("maire_numero")}catch(x){}
+  LB.auth.signOut().then(function(){$("lbEtat").textContent="Déconnecté : tu joues maintenant en invité.";setTimeout(paintUser,800)});
 };
 paintUser();
 

@@ -204,6 +204,10 @@
       tuile("🎡", "Roue", roue ? "tour gratuit !" : "revient lundi", roue ? ecranRoue : function () { toast("🎡 Prochain tour gratuit lundi."); }, roue),
       tuile("🏅", "Ligue", "de la semaine", ecranLigue));
     box.appendChild(t);
+    // Mes statistiques : seulement avec un compte Google (sinon, on propose de se connecter)
+    var cg = window.compteGoogle && compteGoogle(), bst = bouton("", "mx-messtats" + (cg ? "" : " mx-verrou-stats"), cg ? ecranMesStats : ecranConnexion);
+    ajout(bst, h("span", null, cg ? "📊" : "🔒"), ajout(h("div"), h("strong", null, "Mes statistiques"), h("small", null, cg ? "tes parties, tes compétences, tes records" : "connecte-toi avec Google pour les voir")));
+    box.appendChild(bst);
     var auj = h("details", "mx-replie"); auj.appendChild(h("summary", null, "📅 Aujourd’hui : défi, quêtes et succès du jour"));
     var zone = h("div", "m-auj"); auj.appendChild(zone); box.appendChild(auj);
     Promise.all([index(), quetes()]).then(function () { panneauJour(zone, s); }).catch(function () { zone.textContent = "Indisponible pour le moment."; });
@@ -211,6 +215,67 @@
     ajout(plus, carteChapitre(n), carteProfil(), carteDeblocages(n));
     box.appendChild(plus);
     box.appendChild(ligneCompte());
+  }
+  // ---------- Mes statistiques (joueur connecté avec Google) : ses fiches de parties, lues dans stats_parties ----------
+  var CATS_NOMS = { finances: "💶 Finances", economie: "📈 Économie", securite: "🛡️ Sécurité", logement: "🏠 Logement", transports: "🚇 Transports", proprete: "🧹 Propreté",
+    ecologie: "🌱 Écologie", services: "🏥 Services publics", culture: "🎭 Culture", quotidien: "☕ Vie quotidienne", institutions: "🏛️ Institutions", crise: "🚨 Crises",
+    catastrophe: "🌋 Catastrophes", chance: "🍀 Coups de chance", opposition: "⚔️ Opposition" };
+  function ecranMesStats() {
+    vider(true); fondMenu(true);
+    box.appendChild(bouton("← Retour", "btn m-sec", accueil));
+    box.appendChild(h("h5", null, "📊 Mes statistiques · " + nomJoueur()));
+    var z = h("div", "m-messtats"); z.appendChild(h("p", "m-aide", "Chargement…")); box.appendChild(z); haut();
+    if (!window.LB || !LB.db || !LB.uid) { z.innerHTML = ""; z.appendChild(h("p", "m-aide", "📡 Connexion Internet nécessaire.")); return; }
+    LB.db.collection("stats_parties").where("uid", "==", LB.uid).get().then(function (q) {
+      var P = q.docs.map(function (d) { return d.data(); }).sort(function (a, b) { return (b.maj || 0) - (a.maj || 0); });
+      z.innerHTML = "";
+      if (!P.length) { z.appendChild(h("p", "m-aide", "Pas encore de partie enregistrée : joue une partie (elle est comptée au bout de quelques minutes).")); return; }
+      function somme(f) { return P.reduce(function (a, x) { return a + (f(x) || 0); }, 0); }
+      function moy(f) { var l = P.map(f).filter(function (v) { return typeof v === "number"; }); return l.length ? l.reduce(function (a, v) { return a + v; }, 0) / l.length : 0; }
+      function carte(ico, lib, val) { return ajout(h("div", "m-ms-k"), h("span", null, ico), h("b", null, val), h("small", null, lib)); }
+      var ses = P.filter(function (x) { return x.session; }), meilleure = ses.reduce(function (m, x) { return Math.max(m, x.placeMax || 0); }, 0);
+      var g = somme(function (x) { return x.elecG; }), pe = somme(function (x) { return x.elecP; }), tps = somme(function (x) { return Math.max(0, (x.maj || 0) - (x.debut || x.maj || 0)); });
+      ajout(z, ajout(h("div", "m-ms-grille"),
+        carte("🎮", "parties", String(P.length)), carte("👑", "meilleur poste", ses.length ? SS().court(meilleure) + (meilleure >= SS().TRONE ? "" : " arr.") : "—"),
+        carte("⭐", "meilleure note", virg(Math.max.apply(null, P.map(function (x) { return x.note || 0; }))) + "/5"), carte("🌟", "note moyenne", virg(Math.round(moy(function (x) { return x.note; }) * 10) / 10) + "/5"),
+        carte("🗳️", "élections gagnées", g + pe ? Math.round(g / (g + pe) * 100) + " %" : "—"), carte("📂", "dossiers tranchés", String(somme(function (x) { return x.dossiers; }))),
+        carte("⬆️", "niveau max.", String(Math.max.apply(null, P.map(function (x) { return x.niv || 1; })))), carte("⏱️", "temps de jeu", Math.round(tps / 60000) >= 60 ? Math.floor(tps / 3600000) + " h " + Math.round(tps % 3600000 / 60000) + " min" : Math.round(tps / 60000) + " min")));
+      // Compétences jouées
+      var comp = {}; P.forEach(function (x) { var c = comp[x.competence || ""] || (comp[x.competence || ""] = { n: 0, g: 0, p: 0, note: 0 }); c.n++; c.g += x.elecG || 0; c.p += x.elecP || 0; c.note += x.note || 0; });
+      var lc = h("div", "m-ms-liste"); lc.appendChild(h("p", "m-etape", "🎭 Tes compétences"));
+      Object.keys(comp).sort(function (a, b) { return comp[b].n - comp[a].n; }).forEach(function (k) {
+        var c = comp[k], m = M.C.MAIRES[k];
+        lc.appendChild(ajout(h("div", "m-ms-l"), h("span", null, m ? m.ico + " " + m.nom : "—"), h("small", null, c.n + " partie" + (c.n > 1 ? "s" : "") + " · " + (c.g + c.p ? Math.round(c.g / (c.g + c.p) * 100) + " % d’élections gagnées" : "pas d’élection") + " · ⭐ " + virg(Math.round(c.note / c.n * 10) / 10))));
+      });
+      z.appendChild(lc);
+      // Catégories : où tu brilles, où tu souffres
+      var cats = {}; P.forEach(function (x) { Object.keys(x.catD || {}).forEach(function (k) { var c = cats[k] || (cats[k] = { n: 0, pop: 0 }); c.n += x.catD[k].n || 0; c.pop += x.catD[k].pop || 0; }); });
+      var ck = Object.keys(cats).filter(function (k) { return cats[k].n; }).sort(function (a, b) { return cats[b].pop / cats[b].n - cats[a].pop / cats[a].n; });
+      if (ck.length) {
+        var lk = h("div", "m-ms-liste"); lk.appendChild(h("p", "m-etape", "📂 Tes dossiers, du meilleur au pire (popularité par dossier)"));
+        ck.forEach(function (k) { var v = cats[k].pop / cats[k].n; lk.appendChild(ajout(h("div", "m-ms-l"), h("span", null, CATS_NOMS[k] || k), h("b", v >= 0 ? "m-plus" : "m-moins", (v >= 0 ? "+" : "") + virg(Math.round(v * 10) / 10)), h("small", null, cats[k].n + " dossier" + (cats[k].n > 1 ? "s" : "")))); });
+        z.appendChild(lk);
+      }
+      // Casino et duels
+      var cas = {}, du = { bot: { g: 0, p: 0 }, joueur: { g: 0, p: 0 } };
+      P.forEach(function (x) {
+        Object.keys(x.casino || {}).forEach(function (k) { var c = cas[k] || (cas[k] = { j: 0, g: 0 }); c.j += x.casino[k].j || 0; c.g += x.casino[k].g || 0; });
+        Object.keys(x.duels || {}).forEach(function (k) { var d = du[k === "bot" ? "bot" : "joueur"]; d.g += x.duels[k].g || 0; d.p += x.duels[k].p || 0; });
+      });
+      var lj = h("div", "m-ms-liste"); lj.appendChild(h("p", "m-etape", "🎰 Casino et ⚔️ duels d’élection"));
+      [["poker", "♠️ Poker"], ["bj", "🃏 Blackjack"], ["roulette", "🎡 Roulette"]].forEach(function (j) { var c = cas[j[0]] || { j: 0, g: 0 }; lj.appendChild(ajout(h("div", "m-ms-l"), h("span", null, j[1]), h("small", null, c.j ? c.g + " gagnée" + (c.g > 1 ? "s" : "") + " sur " + c.j + " (" + Math.round(c.g / c.j * 100) + " %)" : "jamais joué"))); });
+      [["bot", "🤖 Contre les bots"], ["joueur", "👥 Contre les joueurs"]].forEach(function (j) { var d = du[j[0]]; lj.appendChild(ajout(h("div", "m-ms-l"), h("span", null, j[1]), h("small", null, d.g + d.p ? d.g + " victoire" + (d.g > 1 ? "s" : "") + ", " + d.p + " défaite" + (d.p > 1 ? "s" : "") : "aucun duel"))); });
+      z.appendChild(lj);
+      // Dernières parties
+      var RAIS = { election: "battu aux élections", faillite: "faillite", demission: "démission", retraite: "retraite" };
+      var ld = h("div", "m-ms-liste"); ld.appendChild(h("p", "m-etape", "🕘 Tes dernières parties"));
+      P.slice(0, 10).forEach(function (x) {
+        var m = M.C.MAIRES[x.competence];
+        ld.appendChild(ajout(h("div", "m-ms-l"), h("span", null, new Date(x.debut || x.maj).toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) + " · " + (m ? m.ico + " " + m.nom : "—")),
+          h("small", null, (x.session ? "meilleur poste : " + SS().court(x.placeMax || 0) + ((x.placeMax || 0) >= SS().TRONE ? "" : " arr.") : "solo") + " · ⭐ " + virg(x.note || 0) + " · niv. " + (x.niv || 1) + " · " + (x.fin ? RAIS[x.raison] || "terminée" : "en cours"))));
+      });
+      z.appendChild(ld);
+    }).catch(function () { z.innerHTML = ""; z.appendChild(h("p", "m-aide", "Impossible de lire tes statistiques pour l’instant.")); });
   }
   function ecranSerie() {
     vider(true); box.appendChild(bouton("← Retour", "btn m-sec", accueil));
@@ -560,6 +625,7 @@
       try { localStorage.setItem("maire_perso", CHOIX.maire); } catch (e) {}
       st = M.nouvellePartie({ maire: CHOIX.maire, ligne: "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, xpJoueur: G.lire().xp, niveauPartie: true, pid: Date.now().toString(36), secrets: G.lire().secrets, sansLimite: sansLimiteAdmin(), missions: false,
         passBats: G.batsExclusifs(), bonus: G.utiliserSac(CHOIX.sac) });
+      SES.jetons = 0; garderReserve();   // nouvelle partie : toujours 0 dossier en réserve
       sauver(); demarrerPartie();
     }).catch(function (e) { if (e && e.reseau) erreurReseau(succes, e); else { toast("⚠️ " + (e && e.message || e)); accueil(); } });
   }
@@ -685,15 +751,24 @@
   function trimMs() { return RG().v.saisonSec * 1000 / RG().vitesse(); }      // une saison passe toutes les X s
   function dossierMs() { return RG().v.dossierSec * 1000 / RG().vitesse(); }  // un nouveau dossier arrive toutes les X s
   // Réserve de trimestres : on les joue quand on veut, mais pas plus vite que le temps réel
-  function lireReserve() {
-    try { var r = JSON.parse(localStorage.getItem("maire_reserve") || "null"); if (r && r.id === SES.id) { SES.jetons = r.jetons; SES.tick = r.tick; return; } } catch (e) {}
-    SES.jetons = 0; SES.tick = Date.now() + dossierMs(); garderReserve();   // on arrive dans une session avec 0 dossier en attente
+  // Réserve de dossiers : les dossiers tombent pour TOUTE la session en même temps (toutes les X s depuis le début
+  // de la session), pas selon l'heure d'arrivée du joueur. Une nouvelle partie commence toujours avec 0 dossier,
+  // et pendant qu'on est absent la réserve ne se remplit pas.
+  function prochainDossier(now) {
+    var D = dossierMs(), d0 = SES.s && SES.s.debut ? SES.s.debut : now;
+    return d0 + (Math.floor((now - d0) / D) + 1) * D;
   }
-  function garderReserve() { try { localStorage.setItem("maire_reserve", JSON.stringify({ id: SES.id, jetons: SES.jetons, tick: SES.tick })); } catch (e) {} }
+  function lireReserve() {
+    SES.jetons = 0; SES.tick = null;
+    try { var r = JSON.parse(localStorage.getItem("maire_reserve") || "null"); if (r && r.id === SES.id && r.pid === (st && st.pid)) SES.jetons = Math.min(r.jetons || 0, RG().v.reserveMax); } catch (e) {}
+    garderReserve();
+  }
+  function garderReserve() { try { localStorage.setItem("maire_reserve", JSON.stringify({ id: SES.id, pid: st && st.pid, jetons: SES.jetons })); } catch (e) {} }
   function rechargerReserve(now) {
-    if (SES.jetons >= RG().v.reserveMax) { SES.tick = now + dossierMs(); return; }
-    var n = 0; while (now >= SES.tick && SES.jetons < RG().v.reserveMax) { SES.jetons++; SES.tick += dossierMs(); n++; }
-    if (SES.jetons >= RG().v.reserveMax) SES.tick = now + dossierMs();
+    if (!SES.s) return;                                   // l'horaire de la session n'est pas encore connu
+    if (SES.tick == null) SES.tick = prochainDossier(now);
+    var n = 0;
+    while (now >= SES.tick) { if (SES.jetons < RG().v.reserveMax) { SES.jetons++; n++; } SES.tick = prochainDossier(SES.tick); }
     if (n) {
       garderReserve();
       // Nouveau dossier disponible : le bouton fait un petit saut doré
@@ -703,8 +778,7 @@
   }
   function autoTrim() { try { return localStorage.getItem("maire_trim_auto") === "1"; } catch (e) { return false; } }
   function jouerTrimestre() {
-    if (SES.jetons < 1) return toast("⏳ Prochain dossier dans " + mmss(Math.max(1000, SES.tick - Date.now())) + ".");
-    if (SES.jetons >= RG().v.reserveMax) SES.tick = Date.now() + dossierMs();
+    if (SES.jetons < 1) return toast("⏳ Prochain dossier dans " + mmss(Math.max(1000, (SES.tick || prochainDossier(Date.now())) - Date.now())) + ".");
     var s2 = M.dossierSession(st, BASE); if (s2 === st) return;
     SES.jetons--; garderReserve(); st = s2; sauver(); jeu();
   }
@@ -1560,7 +1634,7 @@
   }
   // Bouton de trimestre en session : texte principal + réserve, et jauge de recharge en fond
   function remplirTrim(b) {
-    var r = Math.max(0, Math.ceil((SES.tick - Date.now()) / 1000)), rt = mmss(r * 1000), haut, bas;
+    var r = Math.max(0, Math.ceil(((SES.tick || prochainDossier(Date.now())) - Date.now()) / 1000)), rt = mmss(r * 1000), haut, bas;
     if (st.phase === "evenement") haut = "📂 Un dossier t’attend";
     else if ((st.bj && !st.bj.fini) || (st.enchere && !st.enchere.fini)) haut = "🃏 Une partie de cartes est en cours";
     else haut = SES.jetons < 1 ? "⏳ Prochain dossier dans " + rt : "📂 Dossier suivant →";

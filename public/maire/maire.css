@@ -1146,3 +1146,18 @@ button.mx-ses-qui{cursor:pointer}
 .mx-connexion .mx-jouer2{margin-top:0}
 .mx-compte{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:center;margin:14px 0 4px;color:rgba(255,255,255,.75);text-align:center}
 .mx-compte .mx-lien{margin:0}
+/* Mes statistiques */
+.mx-messtats{display:flex;align-items:center;gap:12px;width:100%;margin:10px 0 4px;padding:12px 14px;border:1px solid rgba(245,178,26,.5);border-radius:16px;background:rgba(14,23,64,.75);color:#fff;font:inherit;text-align:left;cursor:pointer}
+.mx-messtats>span{font-size:28px}.mx-messtats div{display:grid;gap:2px}.mx-messtats strong{font-size:16px}.mx-messtats small{font-size:12.5px;opacity:.75}
+.mx-messtats.mx-verrou-stats{border-color:rgba(255,255,255,.2);opacity:.85}
+.m-messtats{display:grid;gap:14px}
+.m-ms-grille{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (min-width:560px){.m-ms-grille{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.m-ms-k{display:grid;justify-items:center;gap:2px;padding:12px 8px;border-radius:14px;background:rgba(14,23,64,.75);color:#fff;text-align:center}
+.m-ms-k span{font-size:22px}.m-ms-k b{font-size:19px}.m-ms-k small{font-size:12px;opacity:.75}
+.m-ms-liste{display:grid;gap:6px;padding:12px;border-radius:14px;background:rgba(14,23,64,.75);color:#fff}
+.m-ms-liste .m-etape{margin:0 0 4px}
+.m-ms-l{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.m-ms-l:last-child{border-bottom:0}
+.m-ms-l small{grid-column:1/-1;font-size:12.5px;opacity:.75}
+.m-ms-l b.m-plus{color:#8ee6ad}.m-ms-l b.m-moins{color:#ff9d94}
