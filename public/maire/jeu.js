@@ -18,7 +18,32 @@
   function signe(v, unite) { var r = Math.round(v * 10) / 10; return (r > 0 ? "+" : r < 0 ? "−" : "") + String(Math.abs(r)).replace(".", ",") + (unite || ""); }
   function virg(v) { return String(Math.round(v * 10) / 10).replace(".", ","); }
   function date(t) { t = Math.max(1, t); var a = Math.floor((t - 1) / 4) + 1, q = (t - 1) % 4 + 1; return (q === 1 ? "1er" : q + "e") + " trimestre · année " + a; }
-  function sauver() { try { localStorage.setItem(CLE, JSON.stringify(st)); } catch (e) {} }
+  function sauver() { try { localStorage.setItem(CLE, JSON.stringify(st)); } catch (e) {} statsPartie(false); }
+  // ---------- Statistiques pour l'administration : une fiche par partie de JOUEUR (les bots n'en ont pas) ----------
+  // Envoyée au plus toutes les 90 s pendant la partie, et tout de suite à la fin. Lisible seulement par l'admin.
+  var STATS_ENVOI = 0, STATS_FIN = null;
+  function statsPartie(force) {
+    if (!st || st.scenario || !st.pid || !window.LB || !LB.db || !LB.uid) return;
+    var now = Date.now(); if (!force && now - STATS_ENVOI < 90000) return;
+    if (st.phase === "fin" && STATS_FIN === st.pid) return;
+    STATS_ENVOI = now; if (st.phase === "fin") STATS_FIN = st.pid;
+    try {
+      var x = st.stats || {}, els = st.elections || [], e = M.etatSession(st), u = LB.auth && LB.auth.currentUser;
+      if (st.session) st.placeMax = Math.max(st.placeMax || 0, st.session.place || 0);
+      var doc = {
+        uid: LB.uid, nom: window.nomJoueur ? nomJoueur() : "", google: !!(u && !u.isAnonymous), maj: now, debut: st.debutReel || (st.debutReel = now),
+        fin: st.phase === "fin", raison: st.fin && st.fin.raison ? st.fin.raison.type || "" : "",
+        session: !!st.session, sessionNom: SES.s && SES.s.nom || "", place: st.session ? st.session.place : -1, placeMax: st.placeMax || 0,
+        competence: st.maire || "", ligne: st.ligne || "", niv: st.nivJ || 1, nivJoueur: nivJ(), t: st.t, mandats: st.mandat,
+        elecG: els.filter(function (y) { return y.gagne; }).length, elecP: els.filter(function (y) { return !y.gagne; }).length, montees: els.filter(function (y) { return y.monte; }).length,
+        note: SS() ? SS().note(e) : 0, score: e.score, pop: e.pop, bon: e.bon, tresor: e.tresor, hab: e.hab, bats: e.bats, emp: e.emp,
+        dossiers: x.dossiers || 0, catD: x.catD || {}, casino: x.casino || {}, duels: st.duels || {},
+        achats: x.achats || 0, attaquesOk: x.attaquesOk || 0, encheres: x.encheres || 0, encheresPerdues: x.encheresPerdues || 0,
+        catastrophes: x.catastrophes || 0, faillites: st.fin && st.fin.raison && st.fin.raison.type === "faillite" ? 1 : 0
+      };
+      LB.db.collection("stats_parties").doc(String(st.pid)).set(doc).catch(function () {});
+    } catch (er) {}
+  }
   function lireSauvegarde() { try { var s = JSON.parse(localStorage.getItem(CLE) || "null"); return s && s.v >= 3 && s.v <= 8 ? s : null; } catch (e) { return null; } }
   function effacer() { try { localStorage.removeItem(CLE); } catch (e) {} }
   function haut() { var g = document.getElementById("g-maire"); if (g && g.getBoundingClientRect().top < 0) g.scrollIntoView({ behavior: "smooth" }); }
@@ -627,19 +652,20 @@
 
   // ===================== Session : 21 places, du 1er arrondissement au trône de Maire de Paris =====================
   var SES = { id: null, s: null, stop: null, enCours: false, tick: 0, temps: 0, jetons: 0, elire: 0, timer: null, place: -1, vue: null };
-  var TRIM_MS = 25000;   // les saisons avancent toutes les 25 s : 24 trimestres = 10 minutes = un mandat
-  var DOSSIER_MS = 135000;   // un nouveau dossier arrive toutes les 2 min 15 (le jeu ne se résume pas aux dossiers)
-  var RESERVE = 4;       // trimestres qu'on peut garder en réserve avant de les jouer
+  // Rythme réglable dans l'administration (reglages.js) ; la « vitesse de test » n'accélère que l'appareil de l'admin
+  function RG() { return window.MaireReglages; }
+  function trimMs() { return RG().v.saisonSec * 1000 / RG().vitesse(); }      // une saison passe toutes les X s
+  function dossierMs() { return RG().v.dossierSec * 1000 / RG().vitesse(); }  // un nouveau dossier arrive toutes les X s
   // Réserve de trimestres : on les joue quand on veut, mais pas plus vite que le temps réel
   function lireReserve() {
     try { var r = JSON.parse(localStorage.getItem("maire_reserve") || "null"); if (r && r.id === SES.id) { SES.jetons = r.jetons; SES.tick = r.tick; return; } } catch (e) {}
-    SES.jetons = 0; SES.tick = Date.now() + DOSSIER_MS; garderReserve();   // on arrive dans une session avec 0 dossier en attente
+    SES.jetons = 0; SES.tick = Date.now() + dossierMs(); garderReserve();   // on arrive dans une session avec 0 dossier en attente
   }
   function garderReserve() { try { localStorage.setItem("maire_reserve", JSON.stringify({ id: SES.id, jetons: SES.jetons, tick: SES.tick })); } catch (e) {} }
   function rechargerReserve(now) {
-    if (SES.jetons >= RESERVE) { SES.tick = now + DOSSIER_MS; return; }
-    var n = 0; while (now >= SES.tick && SES.jetons < RESERVE) { SES.jetons++; SES.tick += DOSSIER_MS; n++; }
-    if (SES.jetons >= RESERVE) SES.tick = now + DOSSIER_MS;
+    if (SES.jetons >= RG().v.reserveMax) { SES.tick = now + dossierMs(); return; }
+    var n = 0; while (now >= SES.tick && SES.jetons < RG().v.reserveMax) { SES.jetons++; SES.tick += dossierMs(); n++; }
+    if (SES.jetons >= RG().v.reserveMax) SES.tick = now + dossierMs();
     if (n) {
       garderReserve();
       // Nouveau dossier disponible : le bouton fait un petit saut doré
@@ -650,10 +676,18 @@
   function autoTrim() { try { return localStorage.getItem("maire_trim_auto") === "1"; } catch (e) { return false; } }
   function jouerTrimestre() {
     if (SES.jetons < 1) return toast("⏳ Prochain dossier dans " + mmss(Math.max(1000, SES.tick - Date.now())) + ".");
-    if (SES.jetons >= RESERVE) SES.tick = Date.now() + DOSSIER_MS;
+    if (SES.jetons >= RG().v.reserveMax) SES.tick = Date.now() + dossierMs();
     var s2 = M.dossierSession(st, BASE); if (s2 === st) return;
     SES.jetons--; garderReserve(); st = s2; sauver(); jeu();
   }
+  // ---------- Outils de test (boutons de l'admin, onglet « Réglages du jeu ») : agissent sur la partie ouverte ----------
+  window.MaireTest = {
+    pret: function () { return !!st && st.phase !== "fin"; },
+    argent: function (n) { if (!st) return; st.tresor += n; sauver(); jeu(); },
+    niveaux: function (n) { if (!st || !st.np) return; M.points(st, Math.max(1, M.ptsPour(Math.min(50, st.nivJ + n)) - (st.pxp || 0))); sauver(); jeu(); },
+    reserve: function () { if (!SES.id) return; SES.jetons = RG().v.reserveMax; garderReserve(); jeu(); },
+    election: function () { if (SES.id) window.SessionLigne.modifier(SES.id, function (s) { s = JSON.parse(JSON.stringify(s)); s.prochaine = Date.now(); return s; }); }
+  };
   function SS() { return window.MaireSession; }
   function moiSes() { return window.SessionLigne ? window.SessionLigne.moi() : "local"; }
   function infoSession(s) {
@@ -684,7 +718,7 @@
       SES.enCours = false;
       if (!r && v) { toast("🚪 Impossible d’entrer dans cette session (élection imminente ou complète)."); return brancherSession(); }
       if (!r) return;
-      SES.id = r.id; lireReserve(); SES.temps = Date.now() + TRIM_MS;
+      SES.id = r.id; lireReserve(); SES.temps = Date.now() + trimMs();
       SES.stop = window.SessionLigne.ecouter(r.id, recuSession);
       if (!SES.timer) SES.timer = setInterval(horloge, 1000);
     });
@@ -701,6 +735,12 @@
     if (r && st.session && s.election > (st.session.election || 0) && st.session.dernElec !== s.election) {
       st = M.electionSession(st, { election: s.election, avant: r.avant, apres: r.apres, titre: SS().titre(r.apres), rival: r.duel ? SS().fiche(s, r.duel.bas === r.avant ? r.duel.haut : r.duel.bas).nom : "" });
       elu = r;
+      // Statistiques : contre qui on a gagné ou perdu (un bot, ou un joueur et sa compétence)
+      if (r.duel) {
+        var advP = r.apres === r.duel.bas ? r.duel.haut : r.duel.bas, adv = SS().fiche(s, advP), etaitBas = r.avant === r.duel.bas;
+        var gagne = etaitBas ? r.duel.monte : !r.duel.monte, cle = adv.type === "bot" ? "bot" : (adv.stats && adv.stats.maire) || "sans";
+        st.duels = st.duels || {}; var dd = st.duels[cle] || (st.duels[cle] = { g: 0, p: 0 }); if (gagne) dd.g++; else dd.p++;
+      }
     }
     var info = infoSession(s), change = !st.session || st.session.place !== info.place || st.session.election !== info.election || !st.session.rival || (info.rival && st.session.rival.nom !== info.rival.nom);
     st = M.placer(st, info); sauver();
@@ -720,7 +760,7 @@
     if (recupererVentes() && libre) return jeu();
     // Le temps passe tout seul (saisons, recettes, dépenses), même pendant un dossier ; seulement quand le jeu est à l'écran
     if (!visible) SES.temps = Math.max(SES.temps, now + 2000);
-    else if (now >= SES.temps) { SES.temps = now + TRIM_MS; return trimestreSuivant(libre); }
+    else if (now >= SES.temps) { SES.temps = now + trimMs(); return trimestreSuivant(libre); }
     if (libre && autoTrim() && SES.jetons > 0) return jouerTrimestre();
     majSession();
   }
@@ -1497,11 +1537,11 @@
     else if ((st.bj && !st.bj.fini) || (st.enchere && !st.enchere.fini)) haut = "🃏 Une partie de cartes est en cours";
     else haut = SES.jetons < 1 ? "⏳ Prochain dossier dans " + rt : "📂 Dossier suivant →";
     // La saison du prochain dossier, en tout petit
-    bas = SAISONS[Math.max(0, st.t - 1) % 4][0] + " · " + SES.jetons + "/" + RESERVE + (SES.jetons < RESERVE ? " · +1 dans " + rt : " · réserve pleine");
+    bas = SAISONS[Math.max(0, st.t - 1) % 4][0] + " · " + SES.jetons + "/" + RG().v.reserveMax + (SES.jetons < RG().v.reserveMax ? " · +1 dans " + rt : " · réserve pleine");
     b.textContent = ""; b.appendChild(h("span", null, haut)); b.appendChild(h("small", "mx-reserve", bas));
     b.classList.toggle("mx-vide", SES.jetons < 1);
     b.classList.toggle("mx-pret", st.phase === "evenement" || (SES.jetons > 0 && (st.phase === "gestion" || st.phase === "pret")));
-    b.style.setProperty("--p", SES.jetons >= RESERVE ? 1 : Math.max(0, Math.min(1, 1 - r / (DOSSIER_MS / 1000))));
+    b.style.setProperty("--p", SES.jetons >= RG().v.reserveMax ? 1 : Math.max(0, Math.min(1, 1 - r / (dossierMs() / 1000))));
   }
   function barreTrimestre() {
     var b = h("div", "m-barmois");
@@ -2512,7 +2552,7 @@
 
   // ---------- Fin de partie ----------
   function fin() {
-    decouvertes();
+    decouvertes(); statsPartie(true);
     vider(); fermerModale();
     choixNiveau(st.niveau);
     var b = M.bilan(st), an = M.analyse(st), e = st.elections[st.elections.length - 1];

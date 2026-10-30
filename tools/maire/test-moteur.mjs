@@ -869,6 +869,17 @@ test("élections anticipées : à la demande du maire quand ses objectifs sont r
 });
 
 
+test("réglages : modifiables dans l'admin, lus en direct par le moteur et la session, bornés", () => {
+  const R = require("../../public/maire/reglages.js"), S = require("../../public/maire/session.js");
+  assert.ok(R.LISTE.every(x => x.def >= x.min && x.def <= x.max && x.nom && x.desc), "chaque réglage a un nom, une explication et une valeur par défaut dans ses bornes");
+  R.appliquer({ mandatMin: 5, casinoPoker: 100, casinoBj: 0, inconnu: 3, afkMin: 99999 });
+  assert.equal(S.MANDAT_MS, 5 * 60000); assert.equal(R.v.afkMin, 120, "borné au maximum"); assert.equal(R.v.inconnu, undefined);
+  const st = M.nouvellePartie({ ligne: "centre", ambitions: [], nivJoueur: 1, graine: 3 });
+  assert.equal(S.nouvelleSession(1, 0).prochaine, 5 * 60000);
+  R.appliquer({});
+  assert.equal(S.MANDAT_MS, 10 * 60000, "retour aux valeurs d'origine"); assert.ok(st);
+});
+
 console.log(ok + " tests réussis.\n");
 if (!N) { console.log("Simulation d’équilibrage ignorée (0 partie demandée)."); process.exit(0); }
 

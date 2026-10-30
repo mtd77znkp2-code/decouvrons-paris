@@ -147,14 +147,24 @@ function loadScript(src){
   return LOADED[src]||(LOADED[src]=new Promise(function(ok,ko){var s=document.createElement("script");s.src=src;s.onload=ok;s.onerror=function(){delete LOADED[src];ko()};document.head.appendChild(s)}));
 }
 // Maire de Paris : moteur, interface et style chargés seulement quand on ouvre le jeu
+// Réglages du jeu modifiés dans l'administration (config/maire) : appliqués au chargement, puis en direct
+function reglagesMaire(){
+  if(!LB.db||!window.MaireReglages)return;
+  var pret=false;
+  return new Promise(function(ok){
+    setTimeout(ok,2500);   // hors ligne ou lent : on joue avec les valeurs par défaut
+    LB.db.doc("config/maire").onSnapshot(function(d){MaireReglages.appliquer(d.exists?d.data():{});if(!pret){pret=true;ok()}},function(){ok()});
+  });
+}
 function loadMaire(){
   if(!LOADED.mcss){LOADED.mcss=1;var l=document.createElement("link");l.rel="stylesheet";l.href="maire/maire.css";document.head.appendChild(l)}
-  return loadScript("maire/contenu.js").then(function(){return loadScript("maire/poker.js")}).then(function(){return loadScript("maire/session.js")}).then(function(){return loadScript("maire/moteur.js")}).then(function(){return loadScript("maire/progression.js")}).then(function(){return loadScript("maire/jeu.js")}).then(function(){maireInit()})
+  return loadScript("maire/reglages.js").then(reglagesMaire).then(function(){return loadScript("maire/contenu.js")}).then(function(){return loadScript("maire/poker.js")}).then(function(){return loadScript("maire/session.js")}).then(function(){return loadScript("maire/moteur.js")}).then(function(){return loadScript("maire/progression.js")}).then(function(){return loadScript("maire/jeu.js")}).then(function(){maireInit()})
     .catch(function(){$("m-app").textContent="Le jeu n’a pas pu se charger. Vérifie ta connexion."});
 }
 function loadAdmin(){
   if(!LOADED.css){LOADED.css=1;var l=document.createElement("link");l.rel="stylesheet";l.href="css/admin.css";document.head.appendChild(l)}
-  return loadScript("js/donnees.js").then(function(){return loadScript("js/admin.js")});
+  if(!LOADED.amcss){LOADED.amcss=1;var m=document.createElement("link");m.rel="stylesheet";m.href="css/admin-maire.css";document.head.appendChild(m)}
+  return loadScript("js/donnees.js").then(function(){return loadScript("maire/reglages.js")}).then(function(){return loadScript("maire/contenu.js")}).then(function(){return loadScript("js/admin-maire.js")}).then(function(){return loadScript("js/admin.js")});
 }
 
 // Connexion administrateur (Google, discrète, en bas du site)

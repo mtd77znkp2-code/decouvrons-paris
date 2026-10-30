@@ -170,7 +170,7 @@
       return Object.assign({},v,{n:n,spots:sp});
     });
   }
-  function rows(t){if(t==="reels")return reels();if(t==="maire")return maireRows();if(t==="spots")return window.SPDB||[];return (t==="quiz"?window.QDB:t==="prix"?window.PDB:t==="lieux"?window.LDB:t==="videos"?window.VDB:LB.docs)||[]}
+  function rows(t){if(t==="mreglages"||t==="mstats")return [];if(t==="reels")return reels();if(t==="maire")return maireRows();if(t==="spots")return window.SPDB||[];return (t==="quiz"?window.QDB:t==="prix"?window.PDB:t==="lieux"?window.LDB:t==="videos"?window.VDB:LB.docs)||[]}
   // ---------- Lieux de la carte « Découvre ! » ----------
   function cats(){return (window.SCDB||[]).slice().sort(function(a,b){return (a.n||0)-(b.n||0)})}
   function catName(id){var c=cats().filter(function(c){return c.id===id})[0];return c?c.emoji+" "+c.nom:"—"}
@@ -303,8 +303,12 @@
     apSeed();
     if($("adminPage").hidden)return;
     Array.prototype.forEach.call($("apTabs").children,function(b){
-      var on=b.dataset.t===st.t;b.setAttribute("aria-selected",String(on));b.querySelector(".n").textContent=rows(b.dataset.t).length;
+      var on=b.dataset.t===st.t;b.setAttribute("aria-selected",String(on));b.querySelector(".n").textContent=(b.dataset.t==="mreglages"||b.dataset.t==="mstats")?"":rows(b.dataset.t).length;
     });
+    // Onglets Réglages / Statistiques du Maire : un panneau à part (js/admin-maire.js) à la place du tableau
+    var panel=st.t==="mreglages"||st.t==="mstats";
+    $("apPanel").hidden=!panel;document.querySelector(".ap-tools").hidden=panel;$("apCount").hidden=panel;document.querySelector(".ap-wrap").hidden=panel;
+    if(panel){$("apMaint").hidden=true;if(window.apMaire)apMaire(st.t,$("apPanel"));return}
     var d=T[st.t];
     $("apLvl").hidden=!d.lv;$("apZone").hidden=st.t!=="lieux";$("apOk").hidden=st.t!=="lieux";
     $("apCat").hidden=$("apCatsBtn").hidden=st.t!=="spots";$("apIgBtn").hidden=st.t!=="reels";
@@ -569,7 +573,7 @@
     $("adminPage").hidden=true;document.body.classList.remove("apage");
     if(location.hash==="#admin")try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}
   };
-  Array.prototype.forEach.call($("apTabs").children,function(b){b.onclick=function(){if(st.t===b.dataset.t)return;st.t=b.dataset.t;st.sk=null;st.sd=1;st.q="";$("apSearch").value="";apRender()}});
+  Array.prototype.forEach.call($("apTabs").children,function(b){b.onclick=function(){if(st.t===b.dataset.t)return;$("apPanel").dataset.k="";st.t=b.dataset.t;st.sk=null;st.sd=1;st.q="";$("apSearch").value="";apRender()}});
   $("apSearch").oninput=function(){st.q=this.value;apRender()};
   [["apLvl","lvl"],["apVis","vis"],["apZone","zone"],["apOk","ok"]].forEach(function(g){
     Array.prototype.forEach.call($(g[0]).children,function(b){b.onclick=function(){st[g[1]]=b.dataset.v;Array.prototype.forEach.call($(g[0]).children,function(x){x.classList.toggle("on",x===b)});apRender()}});

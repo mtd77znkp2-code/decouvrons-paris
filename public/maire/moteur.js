@@ -10,6 +10,8 @@
   "use strict";
   // Contenu fait main (personnages, objets, secrets, combos, projets, événements rares…) : voir contenu.js
   var C = (typeof module !== "undefined" && module.exports) ? require("./contenu.js") : root.MaireContenu;
+  // Chiffres d'équilibrage réglables dans l'administration (voir reglages.js) : toujours lus en direct, R.v.cle
+  var R = (typeof module !== "undefined" && module.exports) ? require("./reglages.js") : root.MaireReglages;
   var POKER = null;   // poker (poker.js), chargé à la demande
   function poker() { return POKER || (POKER = (typeof module !== "undefined" && module.exports) ? require("./poker.js") : root.Poker); }
 
@@ -109,11 +111,10 @@
 
   // ---------- XP et niveaux (la courbe est partagée avec progression.js) ----------
   var NIV_MAX = 50;
-  var DOSSIER_SESSION = 1;   // en session, part des montants des dossiers (un dossier toutes les 2 min 15, soit environ tous les 5 trimestres : montants pleins)
   function xpPour(n) { return n <= 1 ? 0 : Math.round(100 * Math.pow(n - 1, 1.75)); }
   function niveauXP(xp) { var n = 1; while (n < NIV_MAX && xp >= xpPour(n + 1)) n++; return n; }
   // Niveaux de partie (1 à 50) : chaque partie repart au niveau 1 ; les points de partie viennent de tout ce qu'on fait (sans plafond)
-  function ptsPour(n) { return n <= 1 ? 0 : Math.round(30 * Math.pow(n - 1, 1.6)); }
+  function ptsPour(n) { return n <= 1 ? 0 : Math.round(R.v.nivCourbe * Math.pow(n - 1, 1.6)); }
   function niveauPartie(pts) { var n = 1; while (n < NIV_MAX && pts >= ptsPour(n + 1)) n++; return n; }
   function points(st, n) { if (!st.np || !n) return; st.pxp = (st.pxp || 0) + n; monterNiveau(st); }
   // Ce que rapporte la partie elle-même (les succès, quêtes et chapitres s'y ajoutent : voir progression.js)
@@ -699,7 +700,7 @@
     return arrondi(t * ((st.mods && st.mods.entretien) || 1) * (1 - Math.min(0.25, atout(st, "entretienPct") / 100)));
   }
   // En session, une mairie d'arrondissement coûte un peu moins à faire tourner (×0,85)
-  function depenses(st) { return arrondi(P.fonct * (st.session ? 0.85 : 1) * (1 - effetEmp(st, "comptable")) + entretien(st) + salaires(st)); }
+  function depenses(st) { return arrondi(P.fonct * (st.session ? R.v.fraisSession : 1) * (1 - effetEmp(st, "comptable")) + entretien(st) + salaires(st)); }
   function chantierTranches(st) { var t = 0; (st.chantiers || []).forEach(function (c) { if (!c.susp) t += Math.round(c.du / Math.max(1, c.reste)); }); return t; }
   function solde(st) { var r = 0; st.recurrents.forEach(function (x) { r += x.m; }); return arrondi(recettes(st) - depenses(st) + r - interets(st) - chantierTranches(st)); }
   function promessesTenues(st) { return st.ambitions.filter(function (k) { return st.piliers[k] >= P.ambSeuil; }); }
@@ -743,7 +744,7 @@
     if (e.coh && st.meca.ligne) { var c0 = st.coh; st.coh = borne(st.coh + e.coh); d.coh = arrondi(d.coh + st.coh - c0); }
     if (e.bon) { var h0 = st.humeur; st.humeur = Math.max(-20, Math.min(20, arrondi(st.humeur + e.bon))); d.bon = arrondi(d.bon + st.humeur - h0); }
     // En session, les dossiers arrivent bien plus souvent : leurs montants sont réduits d'autant
-    if (e.bud) { var bu = arrondi(e.bud * (st.session ? DOSSIER_SESSION : 1)); mouvement(st, bu, libelle); d.bud = arrondi(d.bud + bu); }
+    if (e.bud) { var bu = arrondi(e.bud * (st.session ? R.v.dossierSession : 1)); mouvement(st, bu, libelle); d.bud = arrondi(d.bud + bu); }
     if (e.dom) Object.keys(e.dom).forEach(function (k) {
       var p = VERS[k]; if (!p) return;
       if (p === "eco") { st.eco = borne(st.eco + e.dom[k]); return; }
@@ -760,7 +761,7 @@
     if (e.pil) Object.keys(e.pil).forEach(function (k) { var a = st.piliers[k]; st.piliers[k] = borne(a + e.pil[k]); d.pil[k] = arrondi((d.pil[k] || 0) + st.piliers[k] - a); });
     if (e.base) Object.keys(e.base).forEach(function (k) { var a = st.piliers[k]; st.base[k] = borne(st.base[k] + e.base[k]); st.piliers[k] = borne(a + e.base[k]); d.pil[k] = arrondi((d.pil[k] || 0) + st.piliers[k] - a); });
     if (e.eco) st.eco = borne(st.eco + e.eco);
-    if (e.rec) { var rm = arrondi(e.rec.m * (st.session ? DOSSIER_SESSION : 1)); st.recurrents.push({ id: st.nid++, m: rm, n: e.rec.n, l: lib }); d.rec = (d.rec || []).concat([{ m: rm, n: e.rec.n }]); }
+    if (e.rec) { var rm = arrondi(e.rec.m * (st.session ? R.v.dossierSession : 1)); st.recurrents.push({ id: st.nid++, m: rm, n: e.rec.n, l: lib }); d.rec = (d.rec || []).concat([{ m: rm, n: e.rec.n }]); }
     if (e.chaos) st.chaos = Math.max(0, Math.min(100, st.chaos + e.chaos));
     if (e.flag) st.flags[e.flag] = st.t;
     if (e.perso) Object.keys(e.perso).forEach(function (k) { st.persos[k] = (st.persos[k] || 0) + e.perso[k]; });
@@ -1028,7 +1029,7 @@
     st.notes = notes;
     if (!ok) { faillite(st); return st; }
     gagnerXP(st, "Trimestres à l’Hôtel de Ville", XP.trimestre, XP.trimestreMax);
-    points(st, st.session ? 9 : 6);
+    points(st, st.session ? R.v.ptsSaison : 6);
     annoncer(st);
     // Objectifs remplis (2 sur 3) : le maire peut demander des élections anticipées (bouton dans « Objectifs du mandat »)
     if (!st.session && anticipeePossible(st) && !st.anticipeeDite) { st.anticipeeDite = st.mandat; message(st, "🗳️", "Objectifs remplis", "Tu peux demander des élections anticipées : elles auront lieu 3 trimestres plus tard."); }
@@ -1401,7 +1402,7 @@
     st.mj = { t: st.t, ev: st.evenement, best: meilleurChoix(st0, base), jeux: ev.choix.map(function (c, i) {
       if (libres.indexOf(i) >= 0) return null;
       var r = rnd(st);
-      return { jeu: r < 0.2 ? "poker" : r < 0.6 ? "bj" : "roulette", etat: "a_jouer", bj: null, roue: null, pk: null };
+      return { jeu: r < R.v.casinoPoker / 100 ? "poker" : r < (R.v.casinoPoker + R.v.casinoBj) / 100 ? "bj" : "roulette", etat: "a_jouer", bj: null, roue: null, pk: null };
     }) };
     return st;
   }
@@ -1409,6 +1410,7 @@
   function finMiniJeu(st, j, gagne) {
     j.etat = gagne ? "gagne" : "perdu";
     var x = stats(st); x.miniJeux = (x.miniJeux || 0) + 1; if (gagne) x.miniJeuxOk = (x.miniJeuxOk || 0) + 1;
+    if (!x.casino) x.casino = {}; var cj = x.casino[j.jeu] || (x.casino[j.jeu] = { j: 0, g: 0 }); cj.j++; if (gagne) cj.g++;
     if (gagne) j.xp = gagnerXP(st, "Mini-jeux des dossiers", XP.miniJeu, XP.miniJeuMax);
   }
   // Blackjack sans mise : battre le croupier (qui tire jusqu'à 17). Égalité : on redistribue.
@@ -1520,7 +1522,10 @@
         l: lib + " (retombées)", txt: (sens > 0 ? "Bonne surprise : ta décision « " : "Retour de bâton : ta décision « ") + c.t + " » fait encore parler d’elle." });
       stats(st).retombees++;
     }
-    var x = stats(st); x.cats[ev.cat] = (x.cats[ev.cat] || 0) + 1; x.dossiers++; points(st, st.session ? 30 : 8);   // en session les dossiers sont rares (2 min 15) : ils rapportent plus
+    var x = stats(st); x.cats[ev.cat] = (x.cats[ev.cat] || 0) + 1; x.dossiers++;
+    // Statistiques (admin) : ce que chaque catégorie de dossier a coûté ou rapporté (popularité, bonheur, argent)
+    if (!x.catD) x.catD = {}; var cd = x.catD[ev.cat] || (x.catD[ev.cat] = { n: 0, pop: 0, bon: 0, bud: 0 });
+    cd.n++; cd.pop = arrondi(cd.pop + (d.pop || 0)); cd.bon = arrondi(cd.bon + (d.bon || 0)); cd.bud = arrondi(cd.bud + (d.bud || 0)); points(st, st.session ? R.v.ptsDossier : 8);   // en session les dossiers sont rares (2 min 15) : ils rapportent plus
     if (ev.cat === "catastrophe" || ev.cat === "crise") x.crisesOk++;
     if (e && e.bud < 0) x.depenses += -e.bud;
     var neg = (d.pop || 0) + (d.bon || 0) < 0; x.negSerie = neg ? x.negSerie + 1 : 0; x.negSerieMax = Math.max(x.negSerieMax, x.negSerie);
@@ -1682,11 +1687,10 @@
     urbaniste: { nom: "Urbaniste", ico: "📐", cout: 40, salaire: 2, effet: 0.02, max: 0.15, unite: "pct", txt: "Densifie intelligemment : ton arrondissement peut loger plus d’habitants." }
   };
   function nbEmp(st, id) { return ((st.emp || {})[id]) || 0; }
-  var REND_EMP = 0.75;
-  function cumul(e, n) { return e * (1 - Math.pow(REND_EMP, n)) / (1 - REND_EMP); }
+  function cumul(e, n) { var r = Math.min(0.99, R.v.empRendement); return e * (1 - Math.pow(r, n)) / (1 - r); }
   // Effet total des n employés d'un type (pour les agents de propreté : nombre d'espaces entretenus)
   function effetEmp(st, id, plus) { var E = EMPLOYES[id], n = nbEmp(st, id) + (plus || 0); if (!st.session || !n) return 0; return id === "proprete" ? n * E.effet : Math.min(E.max || Infinity, cumul(E.effet, n)); }
-  function prixEmploye(st, id) { return Math.round(EMPLOYES[id].cout * Math.pow(1.35, nbEmp(st, id)) / 5) * 5; }
+  function prixEmploye(st, id) { return Math.round(EMPLOYES[id].cout * Math.pow(R.v.empHausse, nbEmp(st, id)) / 5) * 5; }
   function salaires(st) { if (!st.session) return 0; var s = 0; Object.keys(st.emp || {}).forEach(function (id) { if (EMPLOYES[id]) s += EMPLOYES[id].salaire * st.emp[id]; }); return s; }
   // Espaces de vie à entretenir : les bâtiments « cadre de vie »
   function espaces(st) { var n = 0; Object.keys(st.bat || {}).forEach(function (id) { if (BATIMENTS[id] && BATIMENTS[id].cat === "cadre") n += st.bat[id]; }); return n; }

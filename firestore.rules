@@ -10,8 +10,17 @@ service cloud.firestore {
     // Tout le contenu du site (questions, prix, lieux…) : lecture publique, écriture admin.
     // Sauf « prive » (jeton Instagram) : personne ne peut le lire depuis le site.
     match /{collection}/{id} {
-      allow read: if collection != "prive" && collection != "poker_tables";
+      allow read: if collection != "prive" && collection != "poker_tables" && collection != "stats_parties";
       allow write: if isAdmin();
+    }
+
+    // Statistiques du Maire de Paris : une fiche par partie de joueur, écrite par ce joueur, lue seulement par l'admin
+    match /stats_parties/{id} {
+      allow read: if isAdmin();
+      allow create, update: if request.auth != null && request.resource.data.uid == request.auth.uid
+        && id.size() <= 60 && request.resource.data.size() <= 60
+        && (resource == null || resource.data.uid == request.auth.uid);
+      allow delete: if isAdmin();
     }
 
     // Vote de la communauté (Maire de Paris) : un compteur par dossier et par réponse (c0 à c3).
