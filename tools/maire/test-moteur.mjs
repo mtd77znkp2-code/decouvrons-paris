@@ -720,8 +720,8 @@ test("sessions : 21 places, on commence en bas, on défie son rival, une place g
   s = S.rejoindre(s, "u2", "Bruno", "🙂", 0); assert.equal(S.placeDe(s, "u2"), 1);
   assert.deepEqual(S.rejoindre(s, "u1", "Alice", "🙂", 0), s, "pas deux fois");
   // On n'entre plus à moins de 3 minutes de l'élection ; 15 minutes sans rien faire = remplacé par un bot
-  assert.equal(S.placeDe(S.rejoindre(s, "u3", "Tard", "🙂", 7.5 * 60000), "u3"), -1, "trop près de l'élection");
-  assert.equal(S.placeDe(S.rejoindre(s, "u3", "Tôt", "🙂", 6.5 * 60000), "u3"), 2);
+  assert.equal(S.placeDe(S.rejoindre(s, "u3", "Tard", "🙂", 4 * 60000), "u3"), -1, "trop près de l'élection");
+  assert.equal(S.placeDe(S.rejoindre(s, "u3", "Tôt", "🙂", 3 * 60000), "u3"), 2);
   const afk = S.signaler(s, "u2", { score: 50, actif: 10 * 60000 }, 10 * 60000);
   assert.equal(S.placeDe(S.nettoyer(afk, 20 * 60000), "u1"), 0, "après 15 min : écran d’attente, la place est gardée");
   const net = S.nettoyer(afk, 26 * 60000); assert.equal(S.placeDe(net, "u1"), -1, "Alice inactive depuis 26 min (15 + 10 d’attente)"); assert.equal(S.placeDe(net, "u2"), 1, "Bruno actif il y a 16 min : encore dans l’attente");
@@ -885,7 +885,7 @@ test("réglages : modifiables dans l'admin, lus en direct par le moteur et la se
   const st = M.nouvellePartie({ ligne: "centre", ambitions: [], nivJoueur: 1, graine: 3 });
   assert.equal(S.nouvelleSession(1, 0).prochaine, 5 * 60000);
   R.appliquer({});
-  assert.equal(S.MANDAT_MS, 10 * 60000, "retour aux valeurs d'origine"); assert.ok(st);
+  assert.equal(S.MANDAT_MS, 6.5 * 60000, "retour aux valeurs d’origine (une élection toutes les 6 min 30)"); assert.ok(st);
 });
 
 test("session : une partie de casino dans un dossier ouvert survit au passage d'une saison", () => {

@@ -658,7 +658,12 @@
   function demarrerPartie() {
     choixNiveau(st.niveau, true);
     if (st.t === 0 && (st.objectifs.length || (st.meca.opposant && st.opposant))) return roulette();
-    st = M.debutTour(st, BASE); sauver(); jeu(); haut();
+    st = tourSansDossier(st); sauver(); jeu(); haut();
+  }
+  // Partie de session : le premier trimestre commence sans dossier (ils arrivent ensuite, pour toute la session)
+  function tourSansDossier(s0) {
+    if (s0.scenario || !window.SessionLigne) return M.debutTour(s0, BASE);
+    var s1 = JSON.parse(JSON.stringify(s0)); s1.sansDossier = true; var r = M.debutTour(s1, BASE); delete r.sansDossier; return r;
   }
   function reprise() {
     var s = lireSauvegarde(); if (!s) return accueil();
@@ -765,7 +770,7 @@
     if (u.children.length) { l.appendChild(h("p", "m-sur", "🎯 Tes objectifs")); l.appendChild(u); }
     ajout(d, l, h("small", "m-aide", "Réussis au moins 2 objectifs sur 3 pour gagner le mandat. Chaque objectif atteint rapporte aussi +" + ((M.bonusMaire(st).objVote) || M.P.objVote) + " % au vote."),
       bouton(st.t ? "Commencer le mandat " + st.mandat : "Entrer en fonctions", "btn m-go", function () {
-        st = st.phase === "election" ? M.continuer(st, BASE) : M.debutTour(st, BASE); sauver(); jeu(); haut();
+        st = st.phase === "election" ? M.continuer(st, BASE) : tourSansDossier(st); sauver(); jeu(); haut();
       }));
   }
 
@@ -869,7 +874,7 @@
       SES.enCours = false;
       if (!r && v) { toast("🚪 Impossible d’entrer dans cette session (élection imminente ou complète)."); return brancherSession(); }
       if (!r) return;
-      SES.id = r.id; lireReserve(); SES.temps = Date.now() + trimMs();
+      SES.id = r.id; SES.premier = true; lireReserve(); SES.temps = Date.now() + trimMs();
       if (window.sfx) window.sfx("brouhaha", 0.6);   // son n°30 : brouhaha de la salle du conseil
       SES.stop = window.SessionLigne.ecouter(r.id, recuSession);
       if (!SES.timer) SES.timer = setInterval(horloge, 1000);
@@ -898,8 +903,8 @@
       if (info.rival && st.session.rival && info.rival.nom !== st.session.rival.nom) window.sfx("epee");
       else if (info.opp && (!st.session.opp || info.opp.nom !== st.session.opp.nom)) window.sfx("bouclier");
     }
-    var change = !st.session || st.session.place !== info.place || st.session.election !== info.election || !st.session.rival || (info.rival && st.session.rival.nom !== info.rival.nom);
-    st = M.placer(st, info); sauver();
+    var change = SES.premier || !st.session || st.session.place !== info.place || st.session.election !== info.election || !st.session.rival || (info.rival && st.session.rival.nom !== info.rival.nom);
+    st = M.placer(st, info); sauver(); SES.premier = false;
     if (elu) {
       SES.derniere = { r: elu, s: s };
       // Téléphone en veille ou appli en arrière-plan : la cérémonie attend qu'on revienne
@@ -1340,7 +1345,7 @@
     ajout(noteB, etoilesNote(nv, true), h("b", null, virg(nv) + "/5")); noteB.title = "Note de ta ville (touche pour le détail)";
     gauche.appendChild(noteB);
     var vote = h("span", "mx-chip" + (st.anticipee ? " mx-anticipee" : ""), st.scenario ? "🎯 " + (st.scenario.fin - st.t) + " trim." : st.session ? (SES.s ? "🗳️ " + mmss(SES.s.prochaine - Date.now()) : "🗳️ …") : "🗳️ " + Math.max(0, reste) + " trim.");
-    if (st.session && SES.s) vote.classList.add("mx-ses-elec");
+    if (st.session) vote.classList.add("mx-ses-elec");
     vote.title = st.scenario ? "Fin du défi" : st.anticipee ? "Élections anticipées" : "Prochaine élection";
     ajout(d, ajout(h("div", "mx-ligne"), gauche, ajout(h("div", "mx-droite"), vote, telephone())));
     var p = h("div", "mx-prog"), pi = h("i"); pi.style.width = (M.trimMandat(st) / M.MANDAT * 100) + "%"; p.appendChild(pi); d.appendChild(p);
@@ -1411,9 +1416,10 @@
         window.SessionLigne.voter(SES.id).then(function () { toast("🗳️ Vote enregistré !"); });
       });
       bv.setAttribute("aria-disabled", peut ? "false" : "true");
-      ajout(d, ajout(h("div", "mx-ligne"), bv, h("b", "mx-ses-votes", "")), h("small", "mx-criseinfo mx-gris", "Si la moitié des joueurs de la session votent, l’élection a lieu tout de suite (sinon toutes les 10 minutes)."));
+      ajout(d, ajout(h("div", "mx-ligne"), bv, h("b", "mx-ses-votes", "")), h("small", "mx-criseinfo mx-gris", "Si la moitié des joueurs de la session votent, l’élection a lieu tout de suite (sinon toutes les " + mmss(SS().MANDAT_MS) + ")."));
     }
-    else if (st.anticipee) d.appendChild(h("p", "mx-antic", "🗳️ Élections anticipées dans " + (st.anticipee - st.t) + " trimestre" + (st.anticipee - st.t > 1 ? "s" : "") + " : tiens bon !"));
+    else if (st.session) d.appendChild(h("small", "mx-criseinfo mx-gris", "🗳️ Connexion à ta session…"));
+    else if (st.anticipee && st.anticipee > st.t) d.appendChild(h("p", "mx-antic", "🗳️ Élections anticipées dans " + (st.anticipee - st.t) + " trimestre" + (st.anticipee - st.t > 1 ? "s" : "") + " : tiens bon !"));
     else if (!st.scenario) {
       var ok = M.anticipeePossible(st), b = bouton("🗳️ Demander des élections anticipées", "mx-antic-btn" + (ok ? " mx-pret" : ""), function () {
         if (!M.anticipeePossible(st)) return toast(n < 2 ? "🎯 Remplis 2 objectifs sur 3 pour pouvoir le demander." : "🗳️ Le vote prévu est déjà trop proche.");
@@ -1963,7 +1969,7 @@
     { id: "rare", ecran: "modale", si: function () { return (st.special === "rare" || st.special === "legendaire") && st.phase === "evenement"; }, etapes: [
       { q: "#m-modale .m-choix", t: "✨ Un événement rare ! Aucune réponse n’est toujours la meilleure : à toi de jouer.", a: "choix" }] },
     { id: "session", ecran: "jeu", si: function () { return !!document.querySelector(".mx-session"); }, etapes: [
-      { q: ".mx-session", t: "🏛️ Tu commences maire du plus petit arrondissement. Toutes les 10 minutes, élection : tous les maires sont classés selon leur score. Meilleur que 10 maires devant toi ? Tu gagnes 10 places d’un coup, jusqu’au trône de Maire de Paris. Ton opposant (juste en dessous) veut la tienne.", a: "ok" },
+      { q: ".mx-session", t: "🏛️ Tu commences maire du plus petit arrondissement. Toutes les " + mmss(SS() ? SS().MANDAT_MS : 390000) + ", élection : tous les maires sont classés selon leur score. Meilleur que 10 maires devant toi ? Tu gagnes 10 places d’un coup, jusqu’au trône de Maire de Paris. Ton opposant (juste en dessous) veut la tienne.", a: "ok" },
       { q: ".m-barmois", t: "📂 C’est toi qui appelles le dossier suivant. Un nouveau arrive toutes les " + mmss(dossierMs()) + " (le bouton s’illumine) et tu peux en garder 4 en réserve. Les saisons, elles, passent toutes seules : recettes et dépenses tombent sans que tu aies à cliquer. Le petit emoji montre la saison. Ne traîne pas trop : les autres maires avancent pendant ce temps !", a: "ok" },
       { q: ".mx-ses-attaque", t: "⚔️ Attaque ton rival ou ton opposant pour faire baisser son sondage avant l’élection. Le bouclier 🛡️ te protège de la prochaine attaque.", a: "ok" },
       { q: ".mx-ses-btn", t: "🏆 Le classement de ta session : de vrais joueurs et des maires robots. Touche un maire pour comparer vos villes.", a: "ok" }] },
