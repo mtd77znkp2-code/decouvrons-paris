@@ -48,7 +48,7 @@ test("un événement invalide est rejeté", () => {
 test("mécaniques débloquées selon le niveau du joueur", () => {
   const debutant = M.nouvellePartie({ ligne: "gauche", ambitions: [], niveau: "difficile", nivJoueur: 1, graine: 1 });
   assert.equal(M.palier(debutant), "facile");                      // la difficulté ne dépend plus d'un choix : elle suit le mandat
-  assert.equal(debutant.ligne, "centre"); assert.deepEqual(debutant.ambitions, []); assert.equal(debutant.opposant, null);
+  assert.equal(debutant.ligne, "centre"); assert.deepEqual(debutant.ambitions, []); assert.ok(debutant.opposant);                                    // l’opposant est là dès le départ
   assert.ok(M.peutAcheter(debutant, "tram")); assert.equal(M.peutAcheter(debutant, "parc"), "");
   assert.deepEqual(M.regler(debutant, { taux: 1.2 }), debutant);   // impôts pas encore débloqués
   assert.throws(() => M.nouvellePartie({ ligne: "gauche", ambitions: ["logement"], nivJoueur: 40 }));

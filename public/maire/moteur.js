@@ -39,7 +39,7 @@
   var MECANIQUES = [
     { id: "base", niv: 1, nom: "Dossiers, boutique et élections" },
     { id: "budget", niv: 2, nom: "Le budget : régler les impôts" },
-    { id: "opposant", niv: 3, nom: "L’opposition" },
+    { id: "opposant", niv: 1, nom: "L’opposition" },
     { id: "boutique2", niv: 4, nom: "Des bâtiments plus ambitieux" },
     { id: "cata", niv: 5, nom: "Catastrophes et coups de chance" },
     { id: "promesses", niv: 6, nom: "Les promesses de campagne" },
