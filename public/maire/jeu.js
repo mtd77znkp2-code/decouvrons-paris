@@ -31,7 +31,7 @@
   function choixNiveau() { niveau = "progressif"; var lv = document.getElementById("m-lvls"); if (lv) lv.style.display = "none"; }
   // Étoiles de difficulté du mandat en cours
   function cleClassement() { return "maire"; }
-  // Note globale en étoiles (demi-étoiles comprises) : 5 étoiles grises, remplies en or selon la note
+  // Note globale en étoiles (au dixième près) : 5 étoiles grises, remplies en or selon la note
   function etoilesNote(n, grand) {
     var e = h("span", "m-note" + (grand ? " m-note-g" : "")), fond = h("span", "m-note-fond", "★★★★★"), plein = h("span", "m-note-plein", "★★★★★");
     plein.style.width = (n / 5 * 100) + "%"; e.title = virg(n) + " / 5"; ajout(e, fond, plein); return e;
