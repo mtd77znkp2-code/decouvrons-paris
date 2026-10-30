@@ -1233,3 +1233,13 @@ body.m-casino .m-pop,#m-telmod{place-items:start center}
 .mx-ses-attaque.mx-att-off{opacity:.55;filter:grayscale(1);cursor:not-allowed}
 .mx-att-t{font-size:10.5px;font-weight:700;opacity:.85;line-height:1.1}
 .mx-att-t:empty{display:none}
+/* ⚖️ Équilibre logement / emploi / commerces */
+.mx-equilibre{display:grid;gap:8px;padding:12px;border-radius:16px;background:rgba(255,255,255,.05)}
+.mx-equilibre>b{font-size:14.5px}
+.mx-eq-l{display:grid;gap:4px}
+.mx-eq-t{display:flex;justify-content:space-between;gap:8px;font-size:13.5px}
+.mx-eq-t b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.mx-eq-barre{height:6px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+.mx-eq-barre i{display:block;height:100%;border-radius:inherit;background:#f5b21a}
+.mx-eq-bien .mx-eq-barre i{background:#6fdc95}.mx-eq-mal .mx-eq-barre i{background:#ff8a80}
+.mx-eq-l small{font-size:12px;opacity:.75;line-height:1.35}

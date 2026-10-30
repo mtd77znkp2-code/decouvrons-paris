@@ -31,6 +31,14 @@
     { k: "fraisSession", g: "Argent", nom: "Frais de fonctionnement en session", unite: "×", def: 0.85, min: 0.3, max: 2, pas: 0.05,
       desc: "Multiplie les frais de fonctionnement de la ville à chaque saison (plus bas = plus facile)." },
 
+    // ---- Ville : bâtiments et équilibre logement / emploi / commerces (en session) ----
+    { k: "effetBat", g: "Ville et équilibre", nom: "Effet des bâtiments sur les piliers", unite: "×", def: 0.55, min: 0.1, max: 2, pas: 0.05,
+      desc: "Multiplie ce que chaque bâtiment apporte aux piliers (sécurité, logement…). Plus bas = une bonne note se mérite davantage." },
+    { k: "penaliteChomage", g: "Ville et équilibre", nom: "Poids du chômage sur le bonheur", unite: "pts/%", def: 0.6, min: 0, max: 3, pas: 0.1,
+      desc: "Chaque point de chômage au-dessus de 8 % retire X points de bonheur (et donc de note)." },
+    { k: "penaliteSurpeuple", g: "Ville et équilibre", nom: "Poids d’un arrondissement plein", unite: "pts", def: 8, min: 0, max: 30, pas: 1,
+      desc: "Pilier logement en moins quand tous les logements sont occupés (les loyers flambent)." },
+
     // ---- Niveaux de la partie (1 à 50) ----
     { k: "ptsSaison", g: "Niveaux de la partie", nom: "Points par saison (session)", unite: "pts", def: 9, min: 0, max: 100, pas: 1,
       desc: "Points de niveau gagnés à chaque saison qui passe." },

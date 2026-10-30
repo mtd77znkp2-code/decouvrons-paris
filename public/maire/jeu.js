@@ -1270,7 +1270,7 @@
     decouvertes();
     vider();
     // Écran épuré : l'essentiel en haut (où j'en suis, est-ce que je gagne), la ville au milieu, la boutique, puis la gestion repliée
-    ajout(box, entete(), bandeauSession(), tableau(), carteObjectifs(), piliers(), carteLeon());
+    ajout(box, entete(), bandeauSession(), tableau(), carteObjectifs(), piliers(), carteEquilibre(), carteLeon());
     if (st.opposant) box.appendChild(bandeauOpp());
     if (st.rapport && st.notes && st.notes.length) box.appendChild(notes());
     if (st.chantiers.length) box.appendChild(chantiers());
@@ -1339,7 +1339,7 @@
     });
     ajout(noteB, etoilesNote(nv, true), h("b", null, virg(nv) + "/5")); noteB.title = "Note de ta ville (touche pour le détail)";
     gauche.appendChild(noteB);
-    var vote = h("span", "mx-chip" + (st.anticipee ? " mx-anticipee" : ""), st.scenario ? "🎯 " + (st.scenario.fin - st.t) + " trim." : st.session && SES.s ? "🗳️ " + mmss(SES.s.prochaine - Date.now()) : "🗳️ " + reste + " trim.");
+    var vote = h("span", "mx-chip" + (st.anticipee ? " mx-anticipee" : ""), st.scenario ? "🎯 " + (st.scenario.fin - st.t) + " trim." : st.session ? (SES.s ? "🗳️ " + mmss(SES.s.prochaine - Date.now()) : "🗳️ …") : "🗳️ " + Math.max(0, reste) + " trim.");
     if (st.session && SES.s) vote.classList.add("mx-ses-elec");
     vote.title = st.scenario ? "Fin du défi" : st.anticipee ? "Élections anticipées" : "Prochaine élection";
     ajout(d, ajout(h("div", "mx-ligne"), gauche, ajout(h("div", "mx-droite"), vote, telephone())));
@@ -1460,6 +1460,28 @@
     return d;
   }
 
+  // ⚖️ Équilibre de l'arrondissement (session) : logements, emplois et commerces se répondent
+  function carteEquilibre() {
+    if (!st.session) return null;
+    var eq = M.equilibre(st), hab = st.hab || M.HAB0, cap = M.capacite(st), ch = M.chomage(st), emp = M.emplois(st), actifs = Math.round(hab * 0.5);
+    var d = h("div", "mx-equilibre"); d.appendChild(h("b", null, "⚖️ Équilibre de ton arrondissement"));
+    function ligne(ico, titre, val, pct, etat, txt) {
+      var bar = h("i"); bar.style.width = Math.max(4, Math.min(100, pct)) + "%";
+      return ajout(h("div", "mx-eq-l mx-eq-" + etat), ajout(h("div", "mx-eq-t"), h("span", null, ico + " " + titre), h("b", null, val)), ajout(h("div", "mx-eq-barre"), bar), h("small", null, txt));
+    }
+    var occ = Math.round(eq.occ * 100);
+    d.appendChild(ligne("🏠", "Logements", hab.toLocaleString("fr-FR") + " / " + cap.toLocaleString("fr-FR"), occ, occ >= 97 ? "mal" : occ < 85 ? "bien" : "moyen",
+      occ >= 97 ? "Plein : les loyers flambent (logement −" + RG().v.penaliteSurpeuple + ") et plus personne ne peut s’installer. Construis des logements."
+        : occ < 85 ? "Beaucoup de logements libres : le pilier logement en profite et la ville peut grandir." : "Il reste quelques logements libres : pense à construire avant d’être plein."));
+    d.appendChild(ligne("💼", "Emploi", "chômage " + virg(ch) + " %", Math.max(0, 100 - ch * 4), ch > 10 ? "mal" : ch > 7 ? "moyen" : "bien",
+      (emp > actifs * 1.15 ? "Trop d’emplois pour tes habitants : des milliers de gens viennent d’ailleurs, bouchons (transports −" + Math.abs(eq.pil.transports || 0) + "). Construis des logements. "
+        : ch > 8 ? "Chaque point au-dessus de 8 % fait baisser le bonheur. Commerces et entreprises créent des emplois. " : "Assez de travail pour tout le monde. ") +
+      emp.toLocaleString("fr-FR") + " emplois pour " + actifs.toLocaleString("fr-FR") + " actifs."));
+    var cl = Math.round(eq.clients * 100);
+    d.appendChild(ligne("🏪", "Commerces", "rapportent " + cl + " %", Math.min(100, cl / 1.25), cl < 90 ? "mal" : cl < 100 ? "moyen" : "bien",
+      "Les commerces vivent de leurs clients : plus d’habitants et moins de chômage = plus de recettes."));
+    return d;
+  }
   function bandeauOpp() {
     var o = M.opposant(st), tm = M.trimMandat(st), proch = (Math.floor(tm / 4) + 1) * 4 - tm;
     var b = h("div", "mx-opp" + (o.actif ? "" : " mx-opp-fini"));
@@ -1804,7 +1826,8 @@
       if (st.bj && !st.bj.fini) return ouvrirTelephone();
       if (auto) return jouerTrimestre();
       // Partie de session pas encore reconnectée (retour en jeu) : on attend la session au lieu de sauter un trimestre
-      if (st.session && !SES.afk) { brancherSession(); return toast("⏳ Connexion à ta session…"); }
+      // Partie de session pas (encore) connectée : on (re)joint la session, le temps n'avance jamais hors session
+      if (st.session) { SES.afk = false; var v = document.getElementById("m-afk"); if (v) v.remove(); brancherSession(); return toast("⏳ Connexion à ta session…"); }
       var t0 = st.t;
       st = M.debutTour(st, BASE); sauver(); signal("trimestre"); jeu();
       if (st.t > t0) messageSaison();   // petit message en haut, jamais de grande fenêtre

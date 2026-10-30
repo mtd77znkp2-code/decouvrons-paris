@@ -453,7 +453,11 @@
   function lireMessages(st0) { var st = copie(st0); st.messages.forEach(function (m) { m.lu = true; }); return st; }
 
   // ---------- Calculs ----------
-  function bonheur(st) { var t = 0; PK.forEach(function (k) { t += st.piliers[k]; }); return borne(t / PK.length + st.humeur); }
+  function bonheur(st) {
+    var t = 0; PK.forEach(function (k) { t += st.piliers[k]; });
+    var chom = st.session ? Math.max(0, chomage(st) - 8) * R.v.penaliteChomage : 0;   // pas de travail, pas de bonheur
+    return borne(t / PK.length + st.humeur - chom);
+  }
   function trimMandat(st) { return st.t - st.debutMandat; }
   // Élection prévue : fin du mandat, ou plus tôt si des élections anticipées ont été annoncées
   function prochaineElection(st) { return st.anticipee || st.debutMandat + MANDAT; }
@@ -584,7 +588,8 @@
         if (B.e[k] > 0) { pos[k] = (pos[k] || 0) + B.e[k] * m; nb[k] = (nb[k] || 0) + n; } else neg[k] = (neg[k] || 0) + B.e[k] * m;
       });
     });
-    PK.forEach(function (k) { if (pos[k] || neg[k]) b[k] = ((pos[k] || 0) * foule(nb[k] || 0) + (neg[k] || 0)) * P.gain; });
+    var eff = st.session ? R.v.effetBat : 1;   // en session, une bonne note se mérite : chaque bâtiment pèse moins
+    PK.forEach(function (k) { if (pos[k] || neg[k]) b[k] = ((pos[k] || 0) * foule(nb[k] || 0) + (neg[k] || 0)) * P.gain * eff; });
     combosActifs(st).forEach(function (id) { var e = C.COMBOS[id].e; Object.keys(e).forEach(function (k) { b[k] = (b[k] || 0) + e[k] * P.gain; }); });
     return b;
   }
@@ -595,9 +600,24 @@
     return g;
   }
   function cible(st) {
-    var b = bonusBat(st), c = {};
-    PK.forEach(function (k) { c[k] = borne(st.base[k] + (b[k] || 0) + (k === "securite" ? effetEmp(st, "policier") : 0) - (k === "logement" ? Math.max(0, st.taux - 1) * 25 : 0)); });
+    var b = bonusBat(st), c = {}, eq = equilibre(st);
+    PK.forEach(function (k) { c[k] = borne(st.base[k] + (b[k] || 0) + (eq.pil[k] || 0) + (k === "securite" ? effetEmp(st, "policier") : 0) - (k === "logement" ? Math.max(0, st.taux - 1) * 25 : 0)); });
     return c;
+  }
+  // Équilibre de l'arrondissement (en session) : logements, emplois et commerces se répondent.
+  // - Plus de logements libres → le logement va bien ; arrondissement plein → loyers qui flambent (logement en baisse).
+  // - Bien plus d'emplois que d'habitants actifs → des milliers de travailleurs viennent d'ailleurs : bouchons (transports en baisse).
+  // - Chômage élevé → les habitants sont moins heureux (voir bonheur).
+  // - Les commerces vivent de leurs clients : peu d'habitants ou beaucoup de chômage → ils rapportent moins.
+  function equilibre(st) {
+    var r = { pil: {}, occ: 0, emp: 0, clients: 1, ch: 0 };
+    if (!st.session) return r;
+    var hab = st.hab || h0(st), cap = capacite(st), actifs = hab * 0.5, emp = emplois(st), ch = chomage(st);
+    r.occ = hab / cap; r.emp = emp / actifs; r.ch = ch;
+    if (r.occ >= 0.97) r.pil.logement = -R.v.penaliteSurpeuple; else if (r.occ < 0.85) r.pil.logement = Math.round((0.85 - r.occ) * 20);
+    if (r.emp > 1.15) r.pil.transports = -Math.min(10, Math.round((r.emp - 1.15) * 40));
+    r.clients = Math.max(0.6, Math.min(1.25, (hab / h0(st)) * (1 - Math.max(0, ch - 5) / 40)));
+    return r;
   }
   function prix(st, id) { return Math.round(coutBat(st, id) * Math.pow(P.inflation, st.bat[id] || 0)); }
   // ---------- Habitants : plus Paris est peuplé, plus les impôts rapportent ----------
@@ -610,7 +630,7 @@
   function h0(st) { return (st.session && st.session.hab0) || HAB0; }
   function ech(st) { return h0(st) / HAB0; }
   function logeDe(st, id) { return Math.round((LOGE[id] || 0) * ech(st)); }
-  function capacite(st) { var c = h0(st); Object.keys(LOGE).forEach(function (id) { c += logeDe(st, id) * ((st.bat && st.bat[id]) || 0); }); return Math.round(c * (1 + effetEmp(st, "urbaniste"))); }
+  function capacite(st) { var c = h0(st) * (st.session ? 1.04 : 1); /* en session, quelques logements libres au départ */ Object.keys(LOGE).forEach(function (id) { c += logeDe(st, id) * ((st.bat && st.bat[id]) || 0); }); return Math.round(c * (1 + effetEmp(st, "urbaniste"))); }
   function facteurHab(st) { return Math.max(0.8, Math.min(1.2, (st.hab || h0(st)) / h0(st))); }
   // Une ville cohérente : plus elle est peuplée, plus il faut de sécurité et de cadre de vie (sinon les gens s'en vont)
   function besoin(st) { return Math.round(40 + ((st.hab || h0(st)) / h0(st) - 1) * 100); }
@@ -689,7 +709,8 @@
   function recettes(st) {
     var cr = criseEnCours(st), r = P.impot * st.taux * (0.8 + st.eco / P.ecoRecettes) * niv(st).recettes * (bonusMaire(st).recettes || 1) * ((cr && cr.recettes) || 1) * facteurHab(st) * ((st.session && st.session.puissance) || 1);
     // Un même commerce rapporte un peu moins à chaque exemplaire (la clientèle se partage)
-    Object.keys(st.bat).forEach(function (id) { var R = BATIMENTS[id].rev || 0; if (R) r += R * ((1 - Math.pow(P.rendement, st.bat[id])) / (1 - P.rendement)) * ((st.ampleur && st.ampleur[id]) || 1); });
+    var cl = st.session ? equilibre(st).clients : 1;   // en session, les commerces vivent de leurs clients
+    Object.keys(st.bat).forEach(function (id) { var R = BATIMENTS[id].rev || 0; if (R) r += R * cl * ((1 - Math.pow(P.rendement, st.bat[id])) / (1 - P.rendement)) * ((st.ampleur && st.ampleur[id]) || 1); });
     combosActifs(st).forEach(function (id) { r += C.COMBOS[id].rev || 0; });
     return arrondi(r + ((st.mods && st.mods.recettes) || 0));
   }
@@ -1884,7 +1905,7 @@
     MECANIQUES: MECANIQUES, EXTRAS: EXTRAS, mecaniques: mecaniques, BATIMENTS: BATIMENTS, OPPOSANTS: OPPOSANTS, SEUIL_OPP: SEUIL_OPP, LIGNES: LIGNES, CATS: CATS,
     FAMILLE: FAMILLE, SPECIAUX: SPECIAUX, C: C,
     nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, EMPLOYES: EMPLOYES, nbEmp: nbEmp, effetEmp: effetEmp, prixEmploye: prixEmploye, salaires: salaires, proprete: proprete, peutEmbaucher: peutEmbaucher, embaucher: embaucher, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
-    disponible: disponible, enChantier: enChantier, prix: prix, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, recit: recit,
+    disponible: disponible, enChantier: enChantier, prix: prix, equilibre: equilibre, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, recit: recit,
     valider: valider, indexer: indexer, engagements: engagements, evenementCourant: evenementCourant, stats: stats, opposant: opposant, humeurOpp: humeurOpp, bonheur: bonheur,
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
