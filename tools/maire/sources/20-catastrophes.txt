@@ -384,7 +384,7 @@ C) Laisser les assureurs gérer :: Économie, colère.
    > Les sinistrés attendent leurs indemnités.
 
 === cat-030 | catastrophe | Des tours de logements sociaux menacées
-Des experts découvrent que des tours HLM du 13e ont un béton dégradé. 3 000 habitants vivent dans un danger potentiel.
+Des experts découvrent que des tours HLM de l’arrondissement ont un béton dégradé. 3 000 habitants vivent dans un danger potentiel.
 A) Évacuer et reloger tout le monde :: Sécurité, défi colossal.
    bud-120 rec-1.5x30 logement-6 bon-4 | g+3 c+2 d+1 e+1
    > Trois mille personnes sont relogées dans toute l’Île-de-France.

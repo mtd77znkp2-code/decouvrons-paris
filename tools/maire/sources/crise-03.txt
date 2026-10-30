@@ -12,7 +12,7 @@ C) Laisser les systèmes redémarrer seuls :: Attendre.
    > Les embouteillages durent toute la journée.
 
 === cri-067 | crise | L’eau d’une piscine contaminée
-Des nageurs tombent malades après une contamination de l’eau d’une piscine municipale.
+Des nageurs tombent malades après une contamination de l’eau de la piscine de l’arrondissement.
 A) Fermer toutes les piscines pour contrôle :: Prudence.
    services-2 securite+1 | g0 c+2 d+1 e+1
    > Les piscines ferment trois jours.
@@ -25,7 +25,7 @@ C) Minimiser l’incident :: Éviter la panique.
    ~40 pop-3 > De nouveaux cas apparaissent.
 
 === cri-068 | crise | La bronchiolite sature les hôpitaux pour enfants
-Une épidémie de bronchiolite sature les services pédiatriques. Des bébés sont transférés en province.
+Une épidémie de bronchiolite sature les services pédiatriques proches de l’arrondissement. Des bébés sont transférés en province.
 A) Ouvrir des centres de consultation pédiatrique le week-end :: Désengorger.
    bud-5 services+2 | g+2 c+2 d+1 e+1
    > Des pédiatres reçoivent le week-end.
@@ -34,10 +34,10 @@ B) Campagne de prévention dans les crèches :: Prévenir.
    > Les gestes barrières sont rappelés.
 C) Interpeller l’État :: Compétence de l’ARS.
    bon-1 coh+1 | g0 c+1 d+1 e0
-   > Le maire écrit au ministre.
+   > Le maire d’arrondissement écrit au ministre.
 
 === cri-069 | crise | Un incendie dans un hôpital
-Un incendie se déclare dans un hôpital parisien. Des patients doivent être évacués.
+Un incendie se déclare dans l’hôpital de l’arrondissement. Des patients doivent être évacués.
 A) Mobiliser gymnases et hôtels pour accueillir les patients :: Solidarité.
    bud-6 services+1 pop+1 | g+2 c+2 d+1 e+1
    > Les patients sont accueillis en urgence.
@@ -49,7 +49,7 @@ C) Cofinancer la reconstruction rapide :: Rebâtir.
    > Le service détruit sera reconstruit en un an.
 
 === cri-070 | crise | Une tribune s’effondre lors d’un match
-Une tribune provisoire s’effondre lors d’un match amateur. Il y a des blessés.
+Une tribune provisoire s’effondre lors d’un match amateur dans l’arrondissement. Il y a des blessés.
 A) Contrôler toutes les tribunes provisoires :: Sécurité.
    bud-3 securite+2 | g0 c+3 d+2 e0
    > Toutes les installations sont vérifiées.
@@ -73,7 +73,7 @@ C) Soutenir les victimes et commerçants :: Solidarité.
    > Les victimes reçoivent de l’aide.
 
 === cri-072 | crise | Un nouveau virus respiratoire
-Un nouveau virus se propage. Les autorités sanitaires recommandent le masque dans les transports.
+Un nouveau virus se propage. Les autorités sanitaires recommandent le masque dans les transports de l’arrondissement.
 A) Distribuer des masques dans le métro :: Prévenir.
    bud-4 services+1 securite+1 | g+1 c+3 d+1 e+1
    > Des masques sont distribués.
@@ -134,7 +134,7 @@ C) Soutenir les victimes :: Solidarité.
    > Une cellule d’aide est ouverte.
 
 === cri-077 | crise | Une fuite de gaz dans une école
-Une odeur de gaz oblige à évacuer une école élémentaire en pleine matinée.
+Une odeur de gaz oblige à évacuer une école élémentaire de l’arrondissement en pleine matinée.
 A) Contrôler les installations de toutes les écoles :: Prévenir.
    bud-6 securite+2 services+1 | g+1 c+3 d+1 e+1
    > Toutes les écoles sont vérifiées.
@@ -145,8 +145,8 @@ C) Réparer la fuite :: Simple.
    securite+1 bud-1 | g0 c+1 d+1 e0
    > La fuite est réparée.
 
-=== cri-078 | crise | Des touristes bloqués dans les ascenseurs de la tour Eiffel
-Une panne bloque des dizaines de touristes plusieurs heures dans les ascenseurs de la tour Eiffel.
+=== cri-078 | crise | Des touristes bloqués dans les ascenseurs du belvédère
+Une panne bloque des dizaines de touristes plusieurs heures dans les ascenseurs du monument phare de l’arrondissement.
 A) Exiger une modernisation des ascenseurs :: Sécurité.
    bud-10 securite+1 economie+1 | g0 c+3 d+2 e0
    > Les ascenseurs seront remplacés.
@@ -158,7 +158,7 @@ C) Rien de particulier :: Incident isolé.
    > L’incident fait le tour du monde.
 
 === cri-079 | crise | Une averse de grêle brise les verrières
-Une averse de grêle d’une rare violence brise des verrières, des vitres et des voitures.
+Une averse de grêle d’une rare violence brise des verrières, des vitres et des voitures dans l’arrondissement.
 A) Fonds d’urgence pour les sinistrés :: Solidarité.
    bud-10 bon+1 | g+2 c+2 d+1 e+1
    > Les sinistrés reçoivent une aide.
@@ -182,7 +182,7 @@ C) Suspendre les inscriptions :: Règle.
    > Les familles attendent.
 
 === cri-081 | crise | Une batterie prend feu dans un parking souterrain
-Une voiture électrique prend feu dans un parking souterrain. L’incendie est difficile à éteindre.
+Une voiture électrique prend feu dans un parking souterrain de l’arrondissement. L’incendie est difficile à éteindre.
 ? distinct
 A) Interdire la recharge dans les parkings souterrains :: Sécurité.
    securite+2 ecologie-1 | g0 c+2 d+2 e-2
@@ -219,7 +219,7 @@ C) Laisser les associations trouver des solutions :: Pas de dépense.
    > Des familles dorment dehors.
 
 === cri-084 | crise | Une nappe de fioul sur la Seine
-Une péniche accidentée déverse du fioul dans la Seine.
+Une péniche accidentée déverse du fioul dans la Seine, au pied de l’arrondissement.
 A) Barrages flottants et pompage d’urgence :: Limiter les dégâts.
    bud-8 ecologie+2 | g+1 c+2 d+1 e+3
    > La pollution est contenue.
@@ -256,7 +256,7 @@ C) Fermer les passerelles anciennes :: Prudence.
    > Les vieilles passerelles sont fermées.
 
 === cri-087 | crise | Des polluants éternels dans l’eau
-Des analyses révèlent des traces de polluants éternels dans l’eau de certains quartiers.
+Des analyses révèlent des traces de polluants éternels dans l’eau de certaines rues de l’arrondissement.
 A) Installer des filtres au charbon actif :: Protéger la santé.
    bud-20 ecologie+2 services+1 | g+1 c+2 d+1 e+4
    > Les usines de traitement sont équipées.
@@ -293,9 +293,9 @@ C) Attendre le rétablissement :: Patience.
 
 === cri-090 | crise | Des coupures d’électricité tournantes
 Le gestionnaire du réseau annonce des coupures tournantes de deux heures pendant la vague de froid.
-A) Plan de sobriété massif de la Ville :: Montrer l’exemple.
+A) Plan de sobriété massif de la mairie :: Montrer l’exemple.
    ecologie+2 bon-1 | g+1 c+2 d+1 e+3
-   > Les bâtiments publics réduisent leur consommation.
+   > Les bâtiments publics de l’arrondissement réduisent leur consommation.
 B) Protéger les hôpitaux et personnes fragiles :: Priorités.
    bud-3 services+1 | g+2 c+2 d+1 e+1
    > Les publics fragiles sont protégés.
@@ -376,7 +376,7 @@ C) Rester calme et attendre les analyses :: Calme.
    > Les services continuent de fonctionner.
 
 === cri-097 | crise | Un nuage de sable du Sahara
-Un nuage de sable du Sahara rend l’air irrespirable et couvre la ville de poussière orange.
+Un nuage de sable du Sahara rend l’air irrespirable et couvre l’arrondissement de poussière orange.
 A) Alerte santé et activités en intérieur :: Protéger.
    services+1 bon-1 | g+1 c+3 d+1 e+1
    > Les écoles gardent les enfants à l’intérieur.
@@ -412,7 +412,7 @@ C) Poursuivre les entreprises en faute :: Sanction.
    > Les entreprises sont poursuivies.
 
 === cri-100 | crise | Le prix de la baguette flambe
-Une mauvaise récolte fait flamber le prix de la farine. La baguette dépasse 1,80 €.
+Une mauvaise récolte fait flamber le prix de la farine. Dans les boulangeries de l’arrondissement, la baguette dépasse 1,80 €.
 A) Aider les boulangers modestes :: Soutien.
    bud-5 achat+1 economie+1 | g+1 c+2 d+2 e0
    > Les boulangers reçoivent une aide.
@@ -449,7 +449,7 @@ C) Rouvrir rapidement :: Continuité.
    > La station rouvre.
 
 === cri-103 | crise | Un marché couvert prend feu
-Un incendie détruit une partie d’un marché couvert historique.
+Un incendie détruit une partie du marché couvert historique de l’arrondissement.
 A) Reconstruire à l’identique :: Patrimoine.
    bud-25 economie+1 bon+1 | g+1 c+2 d+2 e0
    > Le marché sera reconstruit.
@@ -461,7 +461,7 @@ C) Laisser les assurances :: Économie.
    > Les commerçants attendent.
 
 === cri-104 | crise | Les urgences d’un hôpital ferment la nuit
-Faute de médecins, les urgences d’un hôpital de l’est parisien ferment la nuit.
+Faute de médecins, les urgences de l’hôpital de l’arrondissement ferment la nuit.
 A) Centre médical de nuit municipal :: Pallier.
    bud-6 rec-0.2x60 services+2 | g+3 c+2 d+1 e+1
    > Un centre de soins ouvre la nuit.

@@ -1,55 +1,55 @@
 // Coups de chance : une chance sur deux d'en avoir un par partie, en pop-up. Trois façons d'en profiter.
-=== cha-001 | chance | Un milliardaire lègue sa fortune à Paris
-Un collectionneur sans héritier lègue 200 millions d’euros à la Ville de Paris, « pour le bonheur des Parisiens ».
+=== cha-001 | chance | Un milliardaire lègue sa fortune à l’arrondissement
+Un collectionneur sans héritier lègue une fortune à la mairie d’arrondissement, « pour le bonheur des habitants ».
 A) Tout investir dans le logement abordable :: Utile et durable.
    bud+80 logement+6 pop+3 | g+4 c+2 d0 e+1
-   > Mille logements abordables seront construits grâce au legs.
+   > Des centaines de logements abordables seront construits grâce au legs.
 B) Rembourser la dette :: Sérieux, invisible.
    bud+200 pop+1 | g-1 c+3 d+4 e0
-   > Les comptes de la Ville sont assainis.
-C) Créer des parcs et des fêtes dans chaque arrondissement :: Populaire.
+   > Les comptes de l’arrondissement sont assainis.
+C) Créer des parcs et des fêtes dans chaque quartier :: Populaire.
    bud+90 bon+5 ecologie+3 pop+3 | g+2 c+1 d0 e+3
-   > Vingt nouveaux jardins et des fêtes de quartier voient le jour.
+   > De nouveaux jardins et des fêtes de quartier voient le jour.
 
-=== cha-002 | chance | Paris élue ville la plus agréable du monde
-Un classement international très suivi place Paris en tête des villes où il fait bon vivre. Les médias du monde entier en parlent.
+=== cha-002 | chance | L’arrondissement élu le plus agréable de la capitale
+Un classement très suivi place ton arrondissement en tête des quartiers où il fait bon vivre. Les médias du monde entier en parlent.
 A) Lancer une grande campagne d’attractivité :: Tourisme et investisseurs.
    bud-10 economie+5 pop+3 | g-1 c+2 d+3 e0
    > Les réservations et les investissements affluent.
-B) Fêter le titre avec les Parisiens :: Fierté collective.
+B) Fêter le titre avec les habitants :: Fierté collective.
    bud-5 bon+6 pop+4 | g+2 c+2 d+1 e+1
-   > Une grande fête gratuite réunit un million de personnes.
+   > Une grande fête gratuite réunit des dizaines de milliers de personnes.
 C) Rester humble et continuer le travail :: Sobriété.
    coh+3 pop+2 | g+1 c+2 d+1 e+2
-   > Le maire remercie les agents de la Ville.
+   > Le maire remercie les agents de la mairie d’arrondissement.
 
 === cha-003 | chance | L’État rembourse un trop-perçu
-Après dix ans de contentieux, le Conseil d’État condamne l’État à rembourser 150 millions d’euros à la Ville.
+Après dix ans de contentieux, le Conseil d’État condamne l’État à rembourser une grosse somme, dont une part revient à l’arrondissement.
 A) Baisser les impôts locaux :: Pouvoir d’achat.
    rec-1.5x60 bud+150 achat+5 pop+4 | g-2 c+2 d+4 e0
-   > La taxe foncière baisse de 5 %.
+   > Les taxes locales baissent de 5 %.
 B) Investir dans les écoles :: Avenir.
    bud+80 services+6 bon+2 | g+4 c+2 d+1 e+2
-   > Cent écoles sont rénovées et végétalisées.
+   > Toutes les écoles de l’arrondissement sont rénovées et végétalisées.
 C) Mettre de côté pour les coups durs :: Prudence.
    bud+150 coh+2 | g0 c+3 d+3 e0
    > Une réserve de précaution est créée.
 
 === cha-004 | chance | Un club parisien gagne la Ligue des champions
-Le club de la capitale remporte la finale. Des centaines de milliers de supporters veulent faire la fête.
-A) Organiser une parade géante sur les Champs-Élysées :: Joie, gros dispositif.
+Le club de la capitale remporte la finale. Des milliers de supporters de l’arrondissement veulent faire la fête.
+A) Organiser une parade géante dans l’arrondissement :: Joie, gros dispositif.
    bud-15 bon+6 pop+4 securite-1 | g+1 c+2 d+2 e0
-   > Le bus des joueurs descend les Champs devant 800 000 personnes.
+   > Le bus des joueurs traverse l’arrondissement devant une foule immense.
    ~25 securite-3 > Des débordements éclatent en fin de soirée.
 B) Profiter de l’élan pour rénover les terrains de quartier :: Héritage sportif.
    bud-30 bon+3 services+3 pop+2 | g+3 c+2 d+1 e+1
-   > Cent terrains de foot de quartier sont rénovés.
+   > Tous les terrains de foot de l’arrondissement sont rénovés.
 C) Négocier avec le club un financement pour la jeunesse :: Malin.
    bud+20 bon+2 services+2 | g+1 c+3 d+2 e0
    > Le club finance des écoles de foot gratuites.
 
 === cha-005 | chance | Une découverte archéologique exceptionnelle
-Des travaux révèlent une ville gallo-romaine intacte sous le jardin du Luxembourg. Les archéologues du monde entier accourent.
+Des travaux révèlent une ville gallo-romaine intacte sous le grand jardin de l’arrondissement. Les archéologues du monde entier accourent.
 A) Créer un musée souterrain :: Investissement, tourisme assuré.
    bud-40 rec+1.5x60 economie+4 bon+2 | g+1 c+2 d+2 e+1
    > Le musée de Lutèce sera creusé sous le jardin.
@@ -60,11 +60,11 @@ C) Vendre les droits de documentaire :: Recettes.
    bud+40 economie+2 pop+1 | g-1 c+2 d+2 e0
    > Une plateforme de streaming achète les droits.
 
-=== cha-006 | chance | Une grande entreprise installe son siège à Paris
-Un géant mondial de la technologie choisit Paris pour son siège européen : 8 000 emplois.
+=== cha-006 | chance | Une grande entreprise installe son siège dans l’arrondissement
+Un géant mondial de la technologie choisit ton arrondissement pour son siège européen : des milliers d’emplois.
 A) Exiger des emplois pour les jeunes des quartiers :: Retombées sociales.
    economie+5 achat+3 pop+3 | g+3 c+2 d+1 e0
-   > Un quart des embauches iront aux jeunes Parisiens.
+   > Un quart des embauches iront aux jeunes de l’arrondissement.
 B) Tout faire pour accélérer son installation :: Économie avant tout.
    rec+1x60 economie+7 pop+2 | g-2 c+2 d+4 e-1
    > Le siège ouvre en un temps record.
@@ -73,7 +73,7 @@ C) Exiger un bâtiment exemplaire écologiquement :: Ville durable.
    > Le siège sera la tour la plus verte d’Europe.
 
 === cha-007 | chance | Une baisse historique des taux d’intérêt
-La Banque centrale baisse ses taux. La Ville peut emprunter presque gratuitement pendant un an.
+La Banque centrale baisse ses taux. La mairie d’arrondissement peut emprunter presque gratuitement pendant un an.
 A) Emprunter pour lancer de grands travaux :: Investir maintenant.
    bud+250 rec-1x60 transports+3 logement+3 | g+2 c+2 d+1 e+1
    > Un grand plan d’investissement est lancé.
@@ -82,35 +82,35 @@ B) Renégocier la dette existante :: Économies.
    > Les intérêts de la dette fondent.
 C) Ne rien changer :: Prudence.
    coh+1 bud+20 | g0 c+1 d+2 e0
-   > La Ville garde son cap budgétaire.
+   > L’arrondissement garde son cap budgétaire.
 
-=== cha-008 | chance | Un film à succès tourné dans Paris
-Un film hollywoodien tourné à Montmartre bat des records au box-office. Les fans veulent visiter les lieux du tournage.
+=== cha-008 | chance | Un film à succès tourné dans l’arrondissement
+Un film hollywoodien tourné dans tes rues bat des records au box-office. Les fans veulent visiter les lieux du tournage.
 A) Créer un parcours touristique du film :: Recettes.
    bud-5 rec+1x50 economie+4 | g-1 c+2 d+2 e0
    > Un circuit balisé guide les fans.
-   ~30 bon-2 > Les habitants de Montmartre saturent de la foule.
+   ~30 bon-2 > Les habitants saturent de la foule.
 B) Taxer les tournages et financer le cinéma local :: Redistribution.
    rec+0.8x60 bon+2 | g+3 c+2 d-1 e+1
    > Les tournages financent les cinémas de quartier.
 C) Profiter de la vitrine pour vanter les quartiers méconnus :: Équilibre.
    bud-5 economie+3 bon+2 pop+2 | g+1 c+3 d+1 e+1
-   > Une campagne montre le Paris de l’Est et du Nord.
+   > Une campagne montre les rues oubliées de l’arrondissement.
 
-=== cha-009 | chance | Une prix Nobel parisienne
-Une chercheuse formée dans un lycée public parisien reçoit le prix Nobel de médecine.
+=== cha-009 | chance | Une prix Nobel née dans l’arrondissement
+Une chercheuse formée dans un lycée public de l’arrondissement reçoit le prix Nobel de médecine.
 A) Créer des bourses pour les lycéens à son nom :: Inspirant.
    bud-10 services+3 pop+3 bon+2 | g+3 c+2 d+1 e+1
-   > Mille bourses sont créées pour les élèves méritants.
-B) Construire un centre de recherche municipal :: Ambition.
+   > Des centaines de bourses sont créées pour les élèves méritants.
+B) Construire un centre de recherche :: Ambition.
    bud-60 economie+5 pop+2 | g+1 c+2 d+2 e+1
-   > Un centre de recherche sera bâti dans le 13e.
+   > Un centre de recherche sera bâti dans l’arrondissement.
 C) Organiser une grande fête de la science :: Populaire.
    bud-5 bon+4 pop+2 | g+1 c+2 d+1 e+1
-   > La fête de la science attire 300 000 visiteurs.
+   > La fête de la science attire des dizaines de milliers de visiteurs.
 
 === cha-010 | chance | Un mécène offre la rénovation de toutes les fontaines
-Une fondation propose de rénover gratuitement les 200 fontaines historiques de Paris.
+Une fondation propose de rénover gratuitement toutes les fontaines historiques de l’arrondissement.
 A) Accepter avec une plaque discrète :: Patrimoine gratuit.
    bud+30 bon+3 proprete+2 pop+2 | g0 c+3 d+2 e+1
    > Les fontaines retrouvent leur éclat.
@@ -122,91 +122,91 @@ C) Demander plutôt l’argent pour les écoles :: Priorités.
    > La fondation accepte de financer des cours d’école.
 
 === cha-011 | chance | Une saison touristique record
-Une saison touristique record remplit les caisses des hôtels et de la taxe de séjour.
+Une saison touristique record remplit les hôtels de l’arrondissement et les caisses de la taxe de séjour.
 A) Investir les recettes dans la propreté :: Visible.
    bud+40 proprete+5 bon+2 | g+1 c+2 d+2 e+1
    > Des équipes de nettoyage supplémentaires sont recrutées.
-B) Baisser les tarifs des musées pour les Parisiens :: Partage.
+B) Baisser les tarifs des musées pour les habitants :: Partage.
    bud+50 bon+3 achat+2 pop+2 | g+3 c+2 d0 e+1
    > Les musées municipaux deviennent gratuits pour les habitants.
 C) Tout mettre en réserve :: Prudence.
    bud+90 | g0 c+2 d+3 e0
    > Les recettes sont mises de côté.
 
-=== cha-012 | chance | Un champion olympique devient ambassadeur de la Ville
-Un double médaillé olympique parisien propose de s’engager bénévolement pour la jeunesse.
+=== cha-012 | chance | Un champion olympique devient ambassadeur de l’arrondissement
+Un double médaillé olympique qui a grandi dans le quartier propose de s’engager bénévolement pour la jeunesse.
 A) Lui confier un grand plan sport dans les quartiers :: Élan.
    bud-15 bon+3 services+2 securite+2 pop+2 | g+3 c+2 d+1 e+1
-   > Des stages sportifs gratuits ouvrent dans 50 quartiers.
-B) En faire le visage de la candidature de Paris aux grands événements :: Rayonnement.
+   > Des stages sportifs gratuits ouvrent dans tous les quartiers.
+B) En faire le visage de l’arrondissement aux grands événements :: Rayonnement.
    economie+3 pop+3 | g0 c+2 d+3 e0
-   > Le champion porte les couleurs de Paris à l’étranger.
+   > Le champion porte les couleurs de l’arrondissement à l’étranger.
 C) Lancer avec lui un programme contre le harcèlement :: Engagé.
    bud-5 bon+3 services+2 pop+2 | g+2 c+3 d+1 e+1
    > Le champion visite les collèges pour parler du harcèlement.
 
 === cha-013 | chance | La Seine devient l’une des rivières les plus propres d’Europe
-Les analyses confirment une eau d’une qualité exceptionnelle. On peut se baigner presque partout.
-A) Ouvrir dix plages dans Paris :: Fête permanente.
+Les analyses confirment une eau d’une qualité exceptionnelle. On peut se baigner presque partout le long des quais.
+A) Ouvrir des plages dans l’arrondissement :: Fête permanente.
    bud-20 bon+6 ecologie+2 pop+3 | g+2 c+2 d+1 e+3
-   > Dix plages ouvrent le long de la Seine.
+   > Des plages ouvrent sur les quais de l’arrondissement.
 B) Créer un label et attirer les touristes :: Économie.
    bud-5 economie+4 pop+2 | g0 c+2 d+3 e+1
-   > Paris promeut sa « Seine propre » dans le monde entier.
+   > L’arrondissement promeut sa « Seine propre » dans le monde entier.
 C) Protéger la biodiversité revenue :: Écologie.
    ecologie+5 bon+2 pop+1 | g+1 c+1 d0 e+5
    > Des réserves naturelles sont créées sur les berges.
 
-=== cha-014 | chance | Une start-up parisienne devient géante
-Une entreprise née dans un incubateur municipal est valorisée 10 milliards. Ses fondateurs veulent rendre la pareille.
-A) Leur proposer de financer un incubateur dans le 19e :: Effet boule de neige.
+=== cha-014 | chance | Une start-up du quartier devient géante
+Une entreprise née dans l’incubateur de l’arrondissement est valorisée 10 milliards. Ses fondateurs veulent rendre la pareille.
+A) Leur proposer de financer un nouvel incubateur :: Effet boule de neige.
    bud+10 economie+5 pop+2 | g+1 c+3 d+3 e0
-   > Un nouvel incubateur ouvre porte de la Villette.
+   > Un nouvel incubateur ouvre dans l’arrondissement.
 B) Leur demander de financer des logements étudiants :: Social.
    logement+4 bon+2 pop+2 | g+3 c+2 d+1 e+1
-   > Cinq cents logements étudiants sont financés.
+   > Des centaines de logements étudiants sont financés.
 C) Les inviter à verdir leurs bureaux et ceux de leurs voisins :: Écologie.
    ecologie+3 economie+2 pop+1 | g+1 c+2 d+1 e+4
    > Des toits végétalisés fleurissent dans le quartier.
 
 === cha-015 | chance | Un hiver doux fait baisser les factures
-L’hiver le plus doux depuis un siècle fait chuter les dépenses de chauffage des bâtiments municipaux.
+L’hiver le plus doux depuis un siècle fait chuter les dépenses de chauffage des bâtiments de l’arrondissement.
 A) Reverser les économies aux associations :: Solidarité.
    bud+20 bon+3 services+2 | g+3 c+2 d0 e+1
    > Les associations reçoivent une aide exceptionnelle.
 B) Isoler les écoles avec cet argent :: Investissement malin.
    bud+10 ecologie+4 services+2 | g+1 c+2 d+1 e+4
-   > Cinquante écoles sont isolées.
+   > Les écoles de l’arrondissement sont isolées.
 C) Garder l’argent en caisse :: Prudence.
    bud+50 | g0 c+2 d+3 e0
    > Les économies restent dans les comptes.
 
-=== cha-016 | chance | Un concours européen récompense la Ville
-Paris remporte le prix européen de la capitale verte, avec 30 millions d’euros à la clé.
+=== cha-016 | chance | Un concours européen récompense l’arrondissement
+Ton arrondissement remporte un prix européen du quartier vert, avec une belle somme à la clé.
 A) Planter une forêt urbaine :: Symbole.
    bud+5 ecologie+6 bon+2 pop+2 | g+1 c+2 d0 e+5
-   > Une forêt de 20 000 arbres est plantée.
+   > Une forêt de milliers d’arbres est plantée.
 B) Financer des vélos pour les familles modestes :: Mobilité et pouvoir d’achat.
    bud+5 transports+3 achat+2 pop+2 | g+3 c+2 d0 e+3
-   > Dix mille vélos sont offerts.
+   > Des milliers de vélos sont offerts.
 C) Compléter les panneaux solaires sur les écoles :: Énergie.
    bud+10 ecologie+3 services+1 | g+1 c+2 d+1 e+4
    > Les toits des écoles produisent de l’électricité.
 
-=== cha-017 | chance | Un grand concert gratuit est offert à Paris
-Une star internationale propose un concert gratuit devant la tour Eiffel, entièrement financé par sa tournée.
+=== cha-017 | chance | Un grand concert gratuit est offert aux habitants
+Une star internationale propose un concert gratuit dans l’arrondissement, entièrement financé par sa tournée.
 A) Accepter avec une très grande sécurité :: Fête mémorable.
    bud-10 bon+6 pop+4 | g+1 c+2 d+2 e0
-   > Un million de personnes chantent au Champ-de-Mars.
+   > Une foule immense chante sur la grande place.
 B) Le déplacer dans un quartier populaire :: Partage.
    bud-8 bon+5 pop+3 | g+4 c+2 d0 e+1
-   > Le concert a lieu au parc de la Villette.
+   > Le concert a lieu au cœur de la cité.
 C) Demander un concert de soutien pour les sans-abri :: Solidarité.
    bud+15 bon+3 services+2 pop+2 | g+3 c+2 d+1 e+1
-   > Le concert collecte 15 millions d’euros pour les sans-abri.
+   > Le concert collecte des millions d’euros pour les sans-abri.
 
-=== cha-018 | chance | Un gisement de géothermie sous Paris
-Des forages révèlent une eau chaude abondante sous l’est parisien. Elle pourrait chauffer 200 000 logements.
+=== cha-018 | chance | Un gisement de géothermie sous l’arrondissement
+Des forages révèlent une eau chaude abondante sous tes rues. Elle pourrait chauffer des milliers de logements.
 A) Lancer un réseau de chaleur public :: Énergie bon marché.
    bud-80 rec+1.5x60 ecologie+5 achat+3 | g+3 c+2 d+1 e+5
    > Les premiers immeubles sont raccordés.
@@ -218,20 +218,20 @@ C) Chauffer d’abord les piscines et les écoles :: Services publics.
    > Les piscines deviennent chauffées gratuitement.
 
 === cha-019 | chance | Un journal révèle ton action généreuse
-Une enquête raconte comment tu as aidé discrètement une famille sinistrée. L’histoire émeut tout le pays.
+Une enquête raconte comment tu as aidé discrètement une famille sinistrée de l’arrondissement. L’histoire émeut tout le pays.
 A) Rester discret :: Humilité.
    pop+5 coh+2 | g+1 c+2 d+1 e+1
    > Le maire refuse de commenter. Sa popularité grimpe.
 B) Lancer un fonds de solidarité à ton nom :: Transformer l’élan.
    bud-10 bon+3 pop+4 | g+3 c+2 d0 e+1
-   > Des milliers de Parisiens donnent au fonds.
+   > Des milliers d’habitants donnent au fonds.
 C) Faire une grande interview :: Exposition.
    pop+3 | g0 c+1 d+1 e0
    > Le maire raconte son engagement à la télévision.
    ~30 pop-2 > Certains trouvent l’exercice un peu trop calculé.
 
 === cha-020 | chance | Un accord surprise avec la Région
-La Région accepte de financer 50 % d’une nouvelle ligne de tramway que tu réclamais.
+La Région accepte de financer 50 % de la ligne de tramway que tu réclamais pour l’arrondissement.
 A) Lancer immédiatement la ligne :: Saisir l’occasion.
    bud-60 transports+6 ecologie+2 pop+2 | g+2 c+2 d+1 e+4
    > Le chantier du tramway démarre.
@@ -244,46 +244,46 @@ C) Négocier encore plus :: Pari.
    > Les discussions continuent.
    ~40 pop-2 > La Région retire finalement son offre.
 
-=== cha-021 | chance | Un concours de cuisine mondial s’installe à Paris
-Le plus grand concours culinaire du monde choisit Paris pour dix ans. Les restaurateurs sont ravis.
+=== cha-021 | chance | Un concours de cuisine mondial s’installe dans l’arrondissement
+Le plus grand concours culinaire du monde choisit ton arrondissement pour dix ans. Les restaurateurs sont ravis.
 A) Mettre en avant les marchés et les petits producteurs :: Local.
    economie+3 bon+3 pop+2 | g+2 c+2 d+1 e+2
-   > Les marchés parisiens deviennent la vitrine du concours.
+   > Les marchés du quartier deviennent la vitrine du concours.
 B) Construire une halle gastronomique :: Investissement.
    bud-40 rec+1x60 economie+5 | g0 c+2 d+3 e0
-   > Une halle de la gastronomie ouvrira aux Halles.
+   > Une halle de la gastronomie ouvrira dans l’arrondissement.
 C) Créer des cantines étoilées dans les écoles :: Pour les enfants.
    bud-15 services+3 bon+3 pop+2 | g+3 c+2 d+1 e+2
    > Des chefs étoilés cuisinent dans les cantines une fois par mois.
 
-=== cha-022 | chance | Une loterie nationale pour le patrimoine parisien
-Le gouvernement crée un loto du patrimoine dont une grande part revient aux monuments de Paris.
+=== cha-022 | chance | Une loterie nationale pour le patrimoine
+Le gouvernement crée un loto du patrimoine dont une part revient aux monuments de ton arrondissement.
 A) Restaurer les églises et monuments :: Patrimoine.
    bud+60 bon+3 economie+2 | g0 c+2 d+3 e0
-   > Vingt églises et monuments sont restaurés.
+   > Les églises et monuments de l’arrondissement sont restaurés.
 B) Rénover les monuments des quartiers populaires :: Équité.
    bud+50 bon+3 pop+3 | g+3 c+2 d0 e+1
-   > Les monuments de l’Est parisien retrouvent leur éclat.
+   > Les monuments oubliés des quartiers populaires retrouvent leur éclat.
 C) Ouvrir les monuments gratuitement aux familles :: Accès.
    bud+40 bon+4 achat+1 | g+2 c+2 d+1 e+1
    > Les monuments deviennent gratuits pour les moins de 26 ans.
 
 === cha-023 | chance | Les loyers baissent enfin
-Pour la première fois depuis vingt ans, les loyers parisiens reculent nettement.
+Pour la première fois depuis vingt ans, les loyers de l’arrondissement reculent nettement.
 A) Racheter des immeubles tant que les prix sont bas :: Opportunité.
    bud-80 logement+6 pop+2 | g+4 c+2 d0 e+1
-   > La Ville achète 40 immeubles.
+   > La mairie d’arrondissement achète une dizaine d’immeubles.
 B) S’en attribuer le mérite :: Communication.
    pop+4 coh-1 | g0 c+1 d+1 e0
    > Le maire salue « le résultat de sa politique ».
    ~35 pop-3 > Les économistes rappellent que la baisse est nationale.
 C) Aider les jeunes à acheter leur premier logement :: Accession.
    bud-30 logement+3 achat+3 pop+2 | g-1 c+3 d+3 e0
-   > Un prêt municipal à taux zéro est créé.
+   > Un prêt à taux zéro est créé pour les habitants.
 
 === cha-024 | chance | Des milliers de bénévoles se proposent
-Après un appel à l’engagement, 30 000 Parisiens s’inscrivent comme bénévoles pour leur ville.
-A) Les mobiliser pour la propreté et les parcs :: Ville plus belle.
+Après un appel à l’engagement, des milliers d’habitants s’inscrivent comme bénévoles pour leur arrondissement.
+A) Les mobiliser pour la propreté et les parcs :: Quartier plus beau.
    bud-3 proprete+4 ecologie+2 bon+2 | g+1 c+2 d+2 e+3
    > Des équipes de bénévoles entretiennent squares et rues.
 B) Les mobiliser pour les personnes âgées isolées :: Lien social.
@@ -291,13 +291,13 @@ B) Les mobiliser pour les personnes âgées isolées :: Lien social.
    > Chaque senior isolé reçoit une visite par semaine.
 C) Les mobiliser pour l’aide aux devoirs :: Avenir.
    bud-3 services+4 bon+2 pop+1 | g+3 c+2 d+1 e+1
-   > Des milliers d’élèves sont accompagnés chaque soir.
+   > Des centaines d’élèves sont accompagnés chaque soir.
 
 === cha-025 | chance | Une bonne surprise dans les comptes
-Les recettes des droits de mutation dépassent largement les prévisions grâce à un marché immobilier dynamique.
+Les recettes des droits de mutation dépassent largement les prévisions grâce à un marché immobilier dynamique dans l’arrondissement.
 A) Augmenter les budgets des quartiers :: Proximité.
    bud+60 bon+3 pop+2 | g+2 c+2 d+1 e+1
-   > Chaque arrondissement reçoit une enveloppe supplémentaire.
+   > Chaque conseil de quartier reçoit une enveloppe supplémentaire.
 B) Baisser les tarifs des cantines et crèches :: Pouvoir d’achat.
    bud+50 rec-0.4x60 achat+4 pop+2 | g+3 c+2 d0 e+1
    > Les tarifs baissent pour toutes les familles.
@@ -305,24 +305,24 @@ C) Rembourser la dette :: Sérieux.
    bud+130 coh+1 | g-1 c+3 d+4 e0
    > La dette recule nettement.
 
-=== cha-026 | chance | Un grand festival choisit Paris
-Un festival mondial d’arts de la rue choisit Paris pour dix ans, financé par ses sponsors.
-A) Installer le festival dans tous les arrondissements :: Partout.
+=== cha-026 | chance | Un grand festival choisit l’arrondissement
+Un festival mondial d’arts de la rue choisit ton arrondissement pour dix ans, financé par ses sponsors.
+A) Installer le festival dans tous les quartiers :: Partout.
    bud-10 bon+5 economie+2 | g+2 c+2 d+1 e+1
    > Des spectacles envahissent les places de chaque quartier.
 B) Le concentrer dans le centre historique :: Prestige.
    economie+4 bon+2 pop+1 | g-1 c+2 d+3 e0
-   > Le festival se déroule autour de l’Hôtel de Ville.
+   > Le festival se déroule autour de la mairie d’arrondissement.
 C) Exiger un festival zéro déchet :: Exemplaire.
    bon+3 ecologie+3 pop+1 | g+1 c+2 d0 e+4
    > Le festival devient une référence écologique.
 
 === cha-027 | chance | Un ancien ministère libère un immense bâtiment
-L’État quitte un vaste bâtiment du 7e et propose de le céder à la Ville pour un euro symbolique.
+L’État quitte un vaste bâtiment de l’arrondissement et propose de le céder pour un euro symbolique.
 A) En faire des logements sociaux :: Mixité.
    bud-50 logement+5 pop+2 | g+4 c+1 d-1 e+1
-   > Trois cents logements sociaux naîtront dans le 7e.
-   ~30 pop-2 > Des riverains du 7e lancent une pétition.
+   > Trois cents logements sociaux naîtront dans le bâtiment.
+   ~30 pop-2 > Des riverains lancent une pétition.
 B) Le transformer en lieu culturel et étudiant :: Vie de quartier.
    bud-40 bon+4 services+2 | g+2 c+2 d+1 e+1
    > Une maison des étudiants et des artistes ouvre.
@@ -331,7 +331,7 @@ C) Le revendre au prix du marché :: Recettes énormes.
    > Un fonds d’investissement rachète le bâtiment.
 
 === cha-028 | chance | Le taux de chômage au plus bas
-Le chômage parisien atteint son plus bas niveau depuis 40 ans. Les recettes fiscales augmentent.
+Le chômage dans l’arrondissement atteint son plus bas niveau depuis 40 ans. Les recettes fiscales augmentent.
 A) Investir dans la formation des derniers chômeurs :: Ne laisser personne.
    bud-15 economie+3 achat+2 pop+2 | g+3 c+2 d+1 e+1
    > Un plan « zéro chômeur » cible les quartiers.
@@ -343,24 +343,24 @@ C) Mettre de côté les recettes supplémentaires :: Prudence.
    > Les recettes en plus sont épargnées.
 
 === cha-029 | chance | Un philanthrope finance des transports gratuits pour les jeunes
-Une fondation propose de financer pendant deux ans la gratuité des transports pour les moins de 18 ans.
+Une fondation propose de financer pendant deux ans la gratuité des transports pour les moins de 18 ans de l’arrondissement.
 ? distinct
-A) Accepter tout de suite :: Gratuit pour la Ville.
+A) Accepter tout de suite :: Gratuit pour la mairie.
    transports+3 achat+3 pop+3 | g+3 c+2 d+1 e+3
    > Les jeunes voyagent gratuitement.
-   +30 rec-0.5x30 > À la fin du financement, la Ville décide de prolonger la gratuité à ses frais.
+   +30 rec-0.5x30 > À la fin du financement, l’arrondissement décide de prolonger la gratuité à ses frais.
 B) Demander plutôt la gratuité pour les seniors modestes :: Solidarité.
    transports+2 achat+3 bon+2 | g+3 c+2 d0 e+1
    > Les seniors modestes voyagent gratuitement.
 C) Demander l’argent pour rénover les stations :: Durable.
    bud+30 transports+3 | g0 c+3 d+2 e+1
-   > Vingt stations sont modernisées.
+   > Les stations de l’arrondissement sont modernisées.
 
 === cha-030 | chance | Une nuit des étoiles inoubliable
-Une pluie d’étoiles filantes exceptionnelle est annoncée. Les Parisiens demandent d’éteindre la ville.
-A) Éteindre toutes les lumières de Paris une nuit :: Magique.
+Une pluie d’étoiles filantes exceptionnelle est annoncée. Les habitants demandent d’éteindre le quartier.
+A) Éteindre toutes les lumières de l’arrondissement une nuit :: Magique.
    bon+5 ecologie+2 pop+3 securite-1 | g+1 c+2 d0 e+4
-   > Paris s’éteint et des millions de gens regardent le ciel.
+   > L’arrondissement s’éteint et des milliers de gens regardent le ciel.
 B) Organiser des observations dans les parcs :: Encadré.
    bud-3 bon+4 pop+2 | g+1 c+3 d+1 e+2
    > Des astronomes accueillent le public dans les parcs.

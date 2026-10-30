@@ -1,6 +1,6 @@
 // Crises exceptionnelles, série 4
 === cri-106 | crise | Plus de chauffage dans une cité en plein hiver
-La chaudière collective d’une grande résidence tombe en panne par moins cinq degrés.
+La chaudière collective d’une grande résidence de l’arrondissement tombe en panne par moins cinq degrés.
 ? distinct
 A) Reloger les familles fragiles à l’hôtel :: Protéger.
    bud-2 bon+1 logement+1 | g+1 c+2 d+1 e+1
@@ -60,7 +60,7 @@ C) Pomper en continu :: Provisoire.
    rec-0.02x60 | g0 c+1 d+1 e0
    > Les pompes tournent jour et nuit.
 === cri-111 | crise | Une révolte dans un centre de rétention
-Des détenus mettent le feu à un centre de rétention administrative à Paris.
+Des détenus mettent le feu au centre de rétention administrative de l’arrondissement.
 A) Demander à l’État de fermer le centre :: Humanité.
    pop+1 securite-1 | g+2 c+2 d0 e+1
    > L’État refuse mais promet des travaux.
@@ -72,7 +72,7 @@ C) Se taire :: Compétence de l’État.
    > Les associations te reprochent ton silence.
 
 === cri-112 | crise | Un bouchon de graisse géant dans les égouts
-Un bloc de graisse et de lingettes de plusieurs tonnes bouche un collecteur.
+Un bloc de graisse et de lingettes de plusieurs tonnes bouche un collecteur sous l’arrondissement.
 A) Une intervention lourde en urgence :: Déboucher.
    bud-2 proprete+1 | g0 c+2 d+2 e0
    > Le collecteur est libéré en trois jours.
@@ -82,6 +82,7 @@ B) Une campagne contre les lingettes et huiles :: Prévenir.
 C) Attendre que ça passe :: Patience.
    proprete-2 | g0 c+1 d+1 e0
    > Les caves du quartier sont inondées d’eaux usées.
+
 === cri-113 | crise | Une rumeur d’enlèvements d’enfants
 Une fausse rumeur sur les réseaux provoque des agressions contre des innocents.
 A) Démentir massivement et porter plainte :: Vérité.
@@ -119,16 +120,17 @@ C) Rouvrir partiellement :: Rapidité.
    > Des usagers glissent sur des quais trempés.
 
 === cri-116 | crise | Un incendie dans un centre de données
-Le serveur qui héberge les services en ligne de la Ville part en fumée.
+Le serveur qui héberge les services en ligne de la mairie d’arrondissement part en fumée.
 A) Basculer sur un site de secours payé en urgence :: Rétablir.
    bud-2 services+1 | g0 c+2 d+2 e0
    > Les démarches en ligne reviennent en trois jours.
 B) Rouvrir les guichets physiques :: Contact humain.
    bud-1 bon+1 | g+1 c+2 d+1 e+1
-   > Les mairies accueillent la foule.
+   > La mairie d’arrondissement accueille la foule.
 C) Attendre la reconstruction :: Patience.
    services-2 | g-1 c+1 d+1 e0
    > Plus aucune démarche possible pendant des semaines.
+
 === cri-117 | crise | Une pénurie de lait infantile
 Les rayons de lait pour bébés sont vides dans toute la ville.
 A) Constituer un stock municipal :: Anticiper.
@@ -142,7 +144,7 @@ C) Laisser le marché s’ajuster :: Libéralisme.
    > Des parents paniqués traversent la ville.
 
 === cri-118 | crise | Des règlements de comptes entre trafiquants
-Trois fusillades en une semaine dans le nord de Paris.
+Trois fusillades en une semaine dans l’arrondissement.
 A) Demander un renfort massif de police :: Ordre.
    securite+2 bon-1 | g-1 c+2 d+2 e0
    > Des CRS quadrillent le quartier.
@@ -179,13 +181,13 @@ C) Attendre le rétablissement :: Patience.
    > Les plaintes explosent.
 
 === cri-121 | crise | Un incendie dans un squat
-Un incendie ravage un immeuble occupé illégalement, plusieurs blessés.
+Un incendie ravage un immeuble occupé illégalement dans l’arrondissement, plusieurs blessés.
 A) Reloger tous les occupants :: Humanité.
    bud-2 bon+1 logement-1 | g+2 c+2 d0 e+1
    > Les occupants sont mis à l’abri.
 B) Fermer tous les squats dangereux :: Sécurité.
    securite+1 bon-1 | g-1 c+2 d+2 e0
-   > Des évacuations ont lieu dans toute la ville.
+   > Des évacuations ont lieu dans tout l’arrondissement.
 C) Laisser l’État gérer :: Compétence.
    bon-1 | g0 c+1 d+1 e0
    > Les associations dénoncent ton silence.
@@ -227,7 +229,7 @@ C) Laisser la SNCF communiquer :: Distance.
    > Les familles te reprochent ton absence.
 
 === cri-125 | crise | Une source radioactive perdue
-Une source radioactive disparaît d’un hôpital parisien.
+Une source radioactive disparaît de l’hôpital de l’arrondissement.
 A) Alerter la population immédiatement :: Transparence.
    bon-1 securite+1 | g+1 c+2 d+1 e+1
    > La source est retrouvée dans une benne.
@@ -263,7 +265,7 @@ C) Attendre l’État :: Compétence.
    securite-1 | g0 c+1 d+1 e0
    > Personne ne serait prévenu en cas de danger.
 === cri-128 | crise | Un mouvement de panique dans le métro
-Une fausse alerte provoque une bousculade dans une station bondée.
+Une fausse alerte provoque une bousculade dans une station bondée de l’arrondissement.
 A) Revoir les plans d’évacuation des stations :: Prévention.
    bud-1 securite+1 transports+1 | g0 c+2 d+1 e+1
    > Les stations sont mieux équipées.
@@ -275,7 +277,7 @@ C) Rien :: Accident isolé.
    > Les usagers restent inquiets.
 
 === cri-129 | crise | Le prestataire des cantines fait faillite
-Du jour au lendemain, des centaines d’écoles n’ont plus de repas.
+Du jour au lendemain, les écoles de l’arrondissement n’ont plus de repas.
 A) Reprendre la restauration en régie :: Service public.
    bud-3 services+1 | g+2 c+2 d0 e+1
    > Les cuisines rouvrent sous gestion municipale.
@@ -384,7 +386,7 @@ C) Laisser la nature faire :: Économie.
    > Les poissons morts s’accumulent.
 
 === cri-138 | crise | Un concert géant annulé au dernier moment
-Cent mille personnes attendent devant un concert annulé.
+Des dizaines de milliers de personnes attendent devant un concert annulé dans l’arrondissement.
 A) Organiser un concert de remplacement :: Apaiser.
    bud-2 bon+1 | g+1 c+2 d0 e+1
    > Un DJ local sauve la soirée.
@@ -396,7 +398,7 @@ C) Laisser l’organisateur gérer :: Distance.
    > Des bousculades éclatent.
 
 === cri-139 | crise | Des canalisations gelées dans les écoles
-Après une nuit à moins douze, l’eau ne coule plus dans quarante écoles.
+Après une nuit à moins douze, l’eau ne coule plus dans les écoles de l’arrondissement.
 A) Fermer les écoles touchées :: Prudence.
    services-1 bon-1 | g0 c+2 d+1 e0
    > Les parents gardent leurs enfants.
@@ -406,6 +408,7 @@ B) Envoyer des plombiers d’astreinte et des citernes :: Réagir.
 C) Laisser chaque école se débrouiller :: Autonomie.
    bon-2 | g-1 c+1 d+1 e0
    > Des enfants passent la journée sans toilettes.
+
 === cri-140 | crise | Un dépôt de bus électriques prend feu
 Une batterie s’embrase et l’incendie détruit quarante bus.
 A) Remplacer les bus au plus vite :: Continuité.

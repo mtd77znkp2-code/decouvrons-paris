@@ -1,6 +1,6 @@
 // Crises exceptionnelles, série 2
 === cri-026 | crise | Une fuite d’ammoniac dans une patinoire
-Une fuite de gaz toxique dans une patinoire municipale intoxique une vingtaine de patineurs.
+Une fuite de gaz toxique dans la patinoire de l’arrondissement intoxique une vingtaine de patineurs.
 A) Fermer toutes les patinoires pour contrôle :: Précaution.
    bud-3 securite+2 bon-1 | g+1 c+2 d+1 e+1
    > Les patinoires ferment une semaine.
@@ -13,16 +13,16 @@ C) Remplacer les systèmes par des installations sans ammoniac :: Durable.
    > Les patinoires changent de technologie.
 
 === cri-027 | crise | De la fumée dans un tunnel du métro
-Un câble prend feu dans un tunnel. Des centaines de voyageurs évacuent à pied dans la fumée.
+Un câble prend feu dans un tunnel sous l’arrondissement. Des centaines de voyageurs évacuent à pied dans la fumée.
 A) Prendre en charge tous les voyageurs choqués :: Soutien.
    bud-3 bon+1 pop+1 | g+2 c+2 d+1 e+1
-   > Une cellule psychologique accueille les voyageurs.
+   > Une cellule psychologique accueille les voyageurs à la mairie d’arrondissement.
 B) Exiger un audit de sécurité de tous les tunnels :: Prévenir.
    bud-5 securite+2 transports-1 | g+1 c+3 d+2 e+1
    > Des inspections ralentissent le trafic pendant un mois.
 C) Laisser la RATP gérer :: Pas notre compétence.
    pop-2 | g-1 c+1 d+1 e0
-   > La mairie reste en retrait.
+   > La mairie d’arrondissement reste en retrait.
 
 === cri-028 | crise | Une grue s’effondre sur un chantier
 Une grue tombe sur un immeuble voisin d’un chantier. Par miracle, il n’y a que des blessés légers.
@@ -37,7 +37,7 @@ C) Contrôles aléatoires renforcés :: Proportionné.
    > Des inspecteurs visitent les chantiers.
 
 === cri-029 | crise | Les chenilles processionnaires envahissent les parcs
-Des chenilles urticantes infestent les pins des parcs. Des enfants et des chiens sont touchés.
+Des chenilles urticantes infestent les pins des squares de l’arrondissement. Des enfants et des chiens sont touchés.
 A) Fermer les parcs touchés et traiter :: Prudence.
    bud-4 bon-1 securite+1 | g0 c+2 d+2 e0
    > Les parcs sont fermés une semaine.
@@ -50,7 +50,7 @@ C) Abattre les pins infestés :: Radical.
    > Les pins sont abattus.
 
 === cri-030 | crise | Le numéro des pompiers en panne
-Une panne informatique rend le 18 injoignable pendant deux heures. Des appels urgents sont perdus.
+Une panne informatique rend le 18 injoignable pendant deux heures dans l’arrondissement. Des appels urgents sont perdus.
 A) Financer un système de secours :: Redondance.
    bud-10 securite+2 | g0 c+3 d+2 e0
    > Un second centre d’appels est créé.
@@ -59,11 +59,11 @@ B) Exiger une enquête publique :: Transparence.
    > Une enquête est ouverte.
 C) Communiquer pour rassurer :: Calmer.
    pop-1 | g0 c+1 d+1 e0
-   > La mairie publie un communiqué.
+   > La mairie d’arrondissement publie un communiqué.
 
 === cri-031 | crise | Une pénurie de médicaments
-Les pharmacies manquent d’antibiotiques pour enfants en plein hiver.
-A) Préparations en pharmacie hospitalière avec la Ville :: Agir.
+Les pharmacies de l’arrondissement manquent d’antibiotiques pour enfants en plein hiver.
+A) Préparations en pharmacie hospitalière avec la mairie :: Agir.
    bud-5 services+2 | g+2 c+2 d+1 e+1
    > Des pharmacies fabriquent les médicaments manquants.
 B) Plateforme pour localiser les stocks :: Organiser.
@@ -71,13 +71,13 @@ B) Plateforme pour localiser les stocks :: Organiser.
    > Une carte des stocks est publiée.
 C) Interpeller l’État :: Compétence nationale.
    bon-1 coh+1 | g0 c+1 d+1 e0
-   > Le maire écrit au ministre.
+   > Le maire d’arrondissement écrit au ministre.
 
 === cri-032 | crise | Les lycéens bloquent leurs lycées
-Des lycéens bloquent une dizaine de lycées. Des affrontements éclatent avec la police.
+Des lycéens bloquent les lycées de l’arrondissement. Des affrontements éclatent avec la police.
 A) Appeler au dialogue et recevoir les lycéens :: Apaiser.
    pop+1 securite-1 | g+3 c+2 d-2 e+2
-   > Le maire reçoit les représentants des lycéens.
+   > Le maire d’arrondissement reçoit les représentants des lycéens.
 B) Soutenir l’intervention de la police :: Ordre.
    securite+2 pop-1 | g-4 c+1 d+4 e-2
    > Les blocages sont levés.
@@ -87,28 +87,28 @@ C) Rester en retrait :: Lycées gérés par la Région.
    > Le maire ne s’exprime pas.
 
 === cri-033 | crise | Un parking souterrain inondé
-Un orage inonde un parking souterrain. Des dizaines de voitures sont détruites.
+Un orage inonde le parking souterrain de l’arrondissement. Des dizaines de voitures sont détruites.
 A) Indemniser rapidement les propriétaires :: Solidarité.
    bud-6 bon+1 | g+1 c+2 d+2 e0
    > Les propriétaires reçoivent une aide.
 B) Installer des barrières anti-inondation dans tous les parkings :: Prévenir.
    bud-12 securite+1 | g0 c+3 d+2 e+1
-   > Les parkings publics sont équipés.
+   > Les parkings publics de l’arrondissement sont équipés.
 C) Renvoyer vers les assurances :: Pas d’argent public.
    pop-1 | g-1 c+1 d+2 e0
    > Les propriétaires attendent leur assurance.
 
-=== cri-034 | crise | Les agriculteurs bloquent les portes de Paris
-Des centaines de tracteurs bloquent le périphérique. Rungis risque d’être coupé.
+=== cri-034 | crise | Les agriculteurs bloquent les boulevards
+Des centaines de tracteurs bloquent les grands axes de l’arrondissement. Les marchés risquent de ne plus être livrés.
 A) Recevoir les agriculteurs et soutenir leurs demandes :: Solidarité.
    pop+1 transports-1 | g+1 c+2 d+2 e+1
-   > Le maire reçoit une délégation.
+   > Le maire d’arrondissement reçoit une délégation.
 B) Demander la levée du blocus :: Fermeté.
    transports+1 pop-1 | g-1 c+1 d+2 e-1
    > Le préfet fait dégager les routes.
 C) Proposer plus de produits locaux dans les cantines :: Geste concret.
    rec-0.2x60 economie+1 ecologie+1 | g+1 c+2 d+1 e+3
-   > Les cantines achèteront aux agriculteurs franciliens.
+   > Les cantines de l’arrondissement achèteront aux agriculteurs franciliens.
 
 === cri-035 | crise | Les taxis bloquent les aéroports
 Les taxis en colère bloquent les accès à Roissy et Orly.
@@ -123,14 +123,14 @@ C) Rester neutre :: Conflit national.
    > Les voyageurs ratent leurs avions.
 
 === cri-036 | crise | Une épidémie de légionellose
-Des cas de légionellose apparaissent autour d’une tour de refroidissement mal entretenue.
+Des cas de légionellose apparaissent autour d’une tour de refroidissement mal entretenue de l’arrondissement.
 A) Contrôler toutes les tours de refroidissement :: Santé publique.
    bud-4 securite+2 services+1 | g+1 c+2 d+2 e+2
    > Toutes les installations sont inspectées.
 B) Fermer l’immeuble en cause et soigner :: Réagir.
    bud-2 services+1 | g+1 c+2 d+1 e+1
    > Le foyer est éteint.
-   ~35 pop-2 > De nouveaux cas apparaissent dans un autre quartier.
+   ~35 pop-2 > De nouveaux cas apparaissent dans une autre rue.
 C) Informer la population :: Prévenir.
    pop-1 bud-1 | g0 c+2 d+1 e0
    > Les habitants sont informés.
@@ -148,7 +148,7 @@ C) Campagne d’information :: Minimum.
    > Des affiches rappellent les dangers.
 
 === cri-038 | crise | Un mouvement de foule lors d’un concert gratuit
-Un mouvement de foule lors d’un concert gratuit fait plusieurs blessés graves.
+Un mouvement de foule lors d’un concert gratuit organisé par la mairie d’arrondissement fait plusieurs blessés graves.
 ? distinct
 A) Revoir toutes les règles de sécurité des événements :: Prévenir.
    bud-3 securite+2 bon-1 | g0 c+3 d+2 e0
@@ -161,7 +161,7 @@ C) Ouvrir une enquête et soutenir les victimes :: Responsabilité.
    > Les victimes sont accompagnées.
 
 === cri-039 | crise | Un bateau percute un pont
-Un bateau de croisière percute une pile de pont. Le pont est fermé et la navigation suspendue.
+Un bateau de croisière percute une pile du pont de l’arrondissement. Le pont est fermé et la navigation suspendue.
 A) Réparer en urgence et interdire les grands bateaux :: Sécurité.
    bud-15 securite+1 economie-1 | g+1 c+2 d+1 e+2
    > Les grands bateaux sont interdits sous les ponts anciens.
@@ -210,7 +210,7 @@ C) Prioriser les écoles et hôpitaux :: Cibler.
    > Seuls les abords prioritaires sont salés.
 
 === cri-043 | crise | Une berge du canal cède
-Un mur de quai du canal Saint-Martin s’effondre. L’eau menace les caves voisines.
+Un mur de quai du canal qui traverse l’arrondissement s’effondre. L’eau menace les caves voisines.
 A) Vider le canal et réparer :: Sécurité.
    bud-15 securite+2 bon-1 | g0 c+2 d+2 e0
    > Le canal est vidé pour les travaux.
@@ -218,7 +218,7 @@ A) Vider le canal et réparer :: Sécurité.
 B) Consolider en urgence :: Rapide.
    bud-8 securite+1 | g0 c+3 d+1 e0
    > Des palplanches renforcent le quai.
-C) Inspecter tous les quais de la ville :: Prévenir.
+C) Inspecter tous les quais de l’arrondissement :: Prévenir.
    bud-12 securite+2 | g+1 c+2 d+1 e+1
    > Tous les quais sont auscultés.
 
@@ -247,14 +247,14 @@ C) Fournir eau et sanitaires sur place :: Urgence.
    bud-2 services+1 | g+2 c+1 d-2 e+1
    > Des sanitaires sont installés.
 
-=== cri-046 | crise | Une évasion de la prison de la Santé
-Un détenu dangereux s’évade de la prison de la Santé. Les habitants du 14e sont inquiets.
+=== cri-046 | crise | Une évasion spectaculaire
+Un détenu dangereux s’évade lors d’un transfert dans l’arrondissement. Les habitants sont inquiets.
 A) Renforcer la présence policière dans le quartier :: Rassurer.
    rec-0.1x20 securite+2 | g0 c+2 d+3 e0
-   > Des patrouilles sillonnent le 14e.
+   > Des patrouilles sillonnent l’arrondissement.
 B) Informer en continu :: Transparence.
    bud-1 pop+1 | g+1 c+2 d+1 e+1
-   > La mairie publie des informations régulières.
+   > La mairie d’arrondissement publie des informations régulières.
 C) Laisser faire la police :: Calme.
    bon-1 | g0 c+1 d+1 e0
    > L’enquête suit son cours.
@@ -285,10 +285,10 @@ C) Déminer la nuit :: Discrétion.
    > Le déminage a lieu à 3 h du matin.
 
 === cri-049 | crise | Un plafond s’effondre dans une école
-Le faux plafond d’une classe tombe pendant la récréation. Par chance, la salle était vide.
+Le faux plafond d’une classe de l’arrondissement tombe pendant la récréation. Par chance, la salle était vide.
 A) Inspection de toutes les écoles :: Rassurer les parents.
    bud-10 services+1 securite+2 | g+2 c+2 d+1 e+1
-   > Toutes les écoles sont inspectées en un mois.
+   > Toutes les écoles de l’arrondissement sont inspectées en un mois.
 B) Fermer l’école et reloger les élèves :: Prudence.
    bud-4 services-1 | g+1 c+2 d+1 e0
    > Les élèves sont accueillis dans une école voisine.
@@ -298,7 +298,7 @@ C) Réparer la classe et rouvrir :: Rapide.
    ~30 pop-4 > Un second plafond tombe dans une autre école.
 
 === cri-050 | crise | Une coupure d’eau géante
-Une rupture de canalisation principale prive 300 000 Parisiens d’eau pendant deux jours.
+Une rupture de canalisation principale prive des dizaines de milliers d’habitants de l’arrondissement d’eau pendant deux jours.
 A) Distribuer de l’eau et ouvrir les piscines pour les douches :: Solidarité.
    bud-6 bon+1 services+1 | g+2 c+2 d+1 e+1
    > Des points d’eau sont installés dans les rues.
@@ -323,11 +323,11 @@ C) Remplacer toutes les conduites anciennes :: Prévenir.
    > Un programme de remplacement est lancé.
 
 === cri-052 | crise | Un accident de car scolaire
-Un car transportant des écoliers parisiens a un accident sur l’autoroute. Plusieurs enfants sont blessés.
+Un car transportant des écoliers de l’arrondissement a un accident sur l’autoroute. Plusieurs enfants sont blessés.
 A) Cellule de crise et soutien aux familles :: Présence.
    bud-2 pop+1 bon+1 | g+2 c+2 d+1 e+1
-   > Le maire se rend à l’hôpital.
-B) Contrôler tous les transporteurs de la Ville :: Sécurité.
+   > Le maire d’arrondissement se rend à l’hôpital.
+B) Contrôler tous les transporteurs de la mairie :: Sécurité.
    bud-3 securite+2 | g0 c+3 d+2 e0
    > Les contrats de transport sont revus.
 C) Suspendre les sorties scolaires en car :: Prudence.
@@ -372,10 +372,10 @@ C) Créer une régie municipale d’énergie :: Indépendance.
    > Paris crée sa propre société d’énergie.
 
 === cri-056 | crise | L’opérateur des vélos en libre-service en faillite
-L’opérateur des vélos en libre-service fait faillite. Les vélos ne sont plus entretenus.
+L’opérateur des vélos en libre-service fait faillite. Les stations de l’arrondissement ne sont plus entretenues.
 A) Reprendre le service en régie :: Continuité.
    bud-30 rec-0.3x60 transports+2 | g+3 c+1 d-2 e+3
-   > La Ville reprend les vélos.
+   > La mairie d’arrondissement reprend les vélos.
 B) Lancer un appel d’offres d’urgence :: Remplacer.
    bud-5 transports-1 | g-1 c+3 d+3 e+1
    > Un nouvel opérateur reprend dans trois mois.
@@ -383,21 +383,21 @@ C) Arrêter le service :: Économie.
    transports-3 ecologie-2 pop-2 | g-2 c0 d+2 e-4
    > Les stations sont démontées.
 
-=== cri-057 | crise | Une fuite de données des Parisiens
-Des pirates publient les données personnelles de 500 000 usagers des services de la Ville.
+=== cri-057 | crise | Une fuite de données des habitants
+Des pirates publient les données personnelles de milliers d’usagers des services de la mairie d’arrondissement.
 A) Prévenir chaque personne et renforcer la sécurité :: Transparence.
    bud-8 services+1 coh+1 | g+1 c+3 d+2 e+1
    > Chaque personne concernée est informée.
 B) Porter plainte et minimiser :: Discrétion.
    pop-2 | g-1 c0 d+1 e-1
-   > La Ville parle d’un « incident limité ».
+   > La mairie parle d’un « incident limité ».
    ~40 pop-3 > Des escroqueries ciblent les victimes de la fuite.
 C) Audit complet de tous les systèmes :: Long terme.
    bud-15 services+1 securite+1 | g0 c+3 d+2 e0
    > Tous les systèmes sont audités.
 
 === cri-058 | crise | Une épidémie de gale dans un foyer
-Une épidémie de gale touche un foyer de travailleurs migrants de 300 résidents.
+Une épidémie de gale touche un foyer de travailleurs migrants de l’arrondissement.
 A) Traiter tout le foyer et désinfecter :: Santé.
    bud-4 services+1 | g+2 c+2 d+1 e+1
    > Tous les résidents sont soignés.
@@ -470,7 +470,7 @@ C) Laisser le rectorat gérer :: Compétence.
    > Rien n’est fait.
 
 === cri-064 | crise | Le toit d’un gymnase s’effondre sous la neige
-Le toit d’un gymnase s’effondre sous le poids de la neige, heureusement la nuit.
+Le toit d’un gymnase de l’arrondissement s’effondre sous le poids de la neige, heureusement la nuit.
 A) Inspecter tous les toits de gymnases :: Prévenir.
    bud-6 securite+2 services-1 | g0 c+2 d+2 e0
    > Les gymnases ferment pour inspection.
@@ -482,7 +482,7 @@ C) Fermer le gymnase définitivement :: Économie.
    > Le gymnase ne rouvrira pas.
 
 === cri-065 | crise | Une explosion dans une boulangerie
-Une explosion de gaz dans une boulangerie souffle les vitrines de toute une rue.
+Une explosion de gaz dans une boulangerie souffle les vitrines de toute une rue de l’arrondissement.
 A) Aide immédiate aux commerçants et habitants :: Solidarité.
    bud-5 bon+1 economie+1 | g+2 c+2 d+1 e+1
    > Une aide d’urgence est versée.
