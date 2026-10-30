@@ -738,6 +738,22 @@ test("mode session : arrondissement à son échelle, pas d'élection interne, r�
   assert.deepEqual(M.electionSession(st, { election: 1, avant: 0, apres: 1 }), st, "pas deux fois");
   st = M.placer(st, info(1)); assert.equal(st.opposant.nom, "Sylvie Roux"); assert.ok(st.opposant.actif); assert.equal(Math.round(st.hab / h * 100), Math.round(S.habitants(1) / S.habitants(0) * 100));
 });
+test("session : le temps passe tout seul, les dossiers arrivent à la demande", () => {
+  const S = require("../../public/maire/session.js");
+  let st = M.nouvellePartie({ maire: "tribun", graine: 21, nivJoueur: 1 });
+  st = M.placer(st, { id: "s1", place: 3, titre: S.titre(3), hab0: S.habitants(3), puissance: S.puissance(3), rival: { nom: "R", ico: "🎩" }, opp: { nom: "O", ico: "👩" } });
+  // Le temps avance sans tirer de dossier
+  for (let k = 0; k < 6 && st.phase !== "fin"; k++) { const t0 = st.t; st = M.avancerSession(st, base); assert.equal(st.t, t0 + 1); assert.equal(st.phase, "gestion"); assert.equal(st.evenement, null); }
+  // Un dossier à la demande
+  st = M.dossierSession(st, base); assert.equal(st.phase, "evenement"); const ev = st.evenement, sp = st.special, t1 = st.t, net = st.tresor - st.dette;
+  // Le temps continue pendant le dossier, qui reste en attente
+  st = M.avancerSession(st, base); assert.equal(st.t, t1 + 1); assert.equal(st.phase, "evenement"); assert.equal(st.evenement, ev); assert.equal(st.special, sp);
+  assert.notEqual(st.tresor - st.dette, net, "recettes et dépenses tombent");
+  assert.ok(M.evenementCourant(st, base), "le dossier en attente est toujours là");
+  st = M.choisir(st, base, M.choixLibre(M.evenementCourant(st, base))[0] || 0); assert.notEqual(st.phase, "evenement");
+  // Résultat pas encore lu : il reste affiché après le passage du temps
+  if (st.resultat && !st.resultatVu) { const r = st.resultat; st = M.avancerSession(st, base); assert.deepEqual(st.resultat, r); }
+});
 test("élections anticipées : à la demande du maire quand ses objectifs sont remplis, 3 trimestres plus tard, sauf si le vote est déjà proche", () => {
   const prep = (t) => { const st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 950, nivJoueur: 40 });
     st.phase = "gestion"; st.t = t; st.objectifs = [{ k: "pop", but: 1, ico: "📣", txt: "a" }, { k: "pop", but: 2, ico: "📣", txt: "b" }, { k: "pop", but: 99, ico: "📣", txt: "c" }]; return st; };

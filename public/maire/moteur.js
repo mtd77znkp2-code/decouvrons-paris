@@ -1064,6 +1064,32 @@
     }
     if (st.scenario && st.t >= st.scenario.fin) { finDefi(st); return st; }
     if (prochaineElection(st) - st.t === 2) leon(st, "election");
+    if (st.sansDossier) { delete st.sansDossier; st.phase = "gestion"; st.evenement = null; return st; }
+    return tirerDossier(st, base);
+  }
+  // En session, le temps avance tout seul : recettes, dépenses, chantiers, saisons… même si un dossier attend une réponse.
+  // Les dossiers, eux, arrivent quand le joueur appuie sur « Dossier suivant » (dossierSession).
+  var GARDE = ["phase", "evenement", "evPerso", "special", "resultat", "resultatVu", "pariRes"];
+  function avancerSession(st0, base) {
+    if (st0.phase === "fin" || st0.phase === "election") return st0;
+    if ((st0.bj && !st0.bj.fini) || (st0.enchere && !st0.enchere.fini)) return st0;
+    var enAttente = st0.phase === "evenement" || (st0.resultat && !st0.resultatVu), mis = {};
+    var s = copie(st0);
+    if (enAttente) { GARDE.forEach(function (k) { mis[k] = s[k]; }); s.phase = "gestion"; }
+    s.sansDossier = true;
+    var r = debutTour(s, base);
+    delete r.sansDossier;
+    if (r.phase === "fin") return r;
+    if (enAttente) GARDE.forEach(function (k) { r[k] = mis[k]; });
+    return r;
+  }
+  function dossierSession(st0, base) {
+    if (st0.phase !== "pret" && st0.phase !== "gestion") return st0;
+    if ((st0.bj && !st0.bj.fini) || (st0.enchere && !st0.enchere.fini)) return st0;
+    var st = copie(st0);
+    if (st.phase === "pret") { st.phase = "gestion"; }
+    st.resultat = null; st.evPerso = null; st.special = null; st.evenement = null; st.pariRes = null;
+    st.prochainDossier = 0;
     return tirerDossier(st, base);
   }
   function continuer(st0, base) { if (st0.phase !== "election") return st0; return tirerDossier(copie(st0), base); }
@@ -1767,7 +1793,7 @@
   var API = { MANDAT: MANDAT, PLAFOND_DETTE: PLAFOND_DETTE, TAUX: TAUX, P: P, NIVEAUX: NIVEAUX, PILIERS: PILIERS, ICO: ICO, DOMAINES: DOMAINES,
     MECANIQUES: MECANIQUES, EXTRAS: EXTRAS, mecaniques: mecaniques, BATIMENTS: BATIMENTS, OPPOSANTS: OPPOSANTS, SEUIL_OPP: SEUIL_OPP, LIGNES: LIGNES, CATS: CATS,
     FAMILLE: FAMILLE, SPECIAUX: SPECIAUX, C: C,
-    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
+    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
     disponible: disponible, enChantier: enChantier, prix: prix, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, recit: recit,
     valider: valider, indexer: indexer, engagements: engagements, evenementCourant: evenementCourant, stats: stats, opposant: opposant, humeurOpp: humeurOpp, bonheur: bonheur,
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
