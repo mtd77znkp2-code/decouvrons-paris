@@ -44,20 +44,30 @@ def decouper(chemin, ids, apercu=None):
     lab, nb = ndimage.label(plein)
     tailles = ndimage.sum(plein, lab, range(1, nb + 1))
     centres = ndimage.center_of_mass(plein, lab, range(1, nb + 1))
-    cases = {}
+    # Case de chaque pixel dessiné : celle du centre de son morceau ; un morceau plus grand qu'une case
+    # (deux bâtiments qui se touchent) est coupé le long des lignes de la grille
+    cw, ch = w / cols, h / rangs
+    yy, xx = np.mgrid[0:h, 0:w]
+    case_pixel = (np.minimum(rangs - 1, (yy / ch).astype(int)) * cols + np.minimum(cols - 1, (xx / cw).astype(int)))
+    carte = np.full((h, w), -1, dtype=int)
+    boites = ndimage.find_objects(lab)
     for k, (t, (cy, cx)) in enumerate(zip(tailles, centres), start=1):
         if t < 150:                                       # poussières
             continue
-        c = min(cols - 1, int(cx / (w / cols))); r = min(rangs - 1, int(cy / (h / rangs)))
-        cases.setdefault(r * cols + c, []).append(k)
+        sl = boites[k - 1]; mk = lab == k
+        haut, large = sl[0].stop - sl[0].start, sl[1].stop - sl[1].start
+        if haut > ch * 1.2 or large > cw * 1.2:
+            carte[mk] = case_pixel[mk]
+        else:
+            c = min(cols - 1, int(cx / cw)); r = min(rangs - 1, int(cy / ch))
+            carte[mk] = r * cols + c
     os.makedirs(SORTIE, exist_ok=True)
     vignettes = []
     for i, ident in enumerate(ids):
-        morceaux = cases.get(i, [])
-        if not morceaux:
+        m = carte == i
+        if m.sum() < 500:
             print("⚠️  case", i + 1, "vide :", ident)
             continue
-        m = np.isin(lab, morceaux)
         ys, xs = np.where(m)
         y0, y1, x0, x1 = ys.min(), ys.max() + 1, xs.min(), xs.max() + 1
         bloc = rgba[y0:y1, x0:x1].copy()
