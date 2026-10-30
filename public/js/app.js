@@ -568,6 +568,7 @@ function enHaut(){var h=document.documentElement;h.style.scrollBehavior="auto";w
 function ecran(s){
   var home=document.getElementById("home"),st=document.getElementById("site");
   home.hidden=!!s;st.hidden=!s;
+  document.body.classList.toggle("hors-accueil",!!s);   // sur téléphone, le badge « Admin mode » ne reste que sur l'accueil
   if(s)tab(s);
   document.body.classList.remove("eteint");
   // Retour à l'accueil : on recrée la neige animée (sur iPhone un GIF caché peut rester figé ou vide)
