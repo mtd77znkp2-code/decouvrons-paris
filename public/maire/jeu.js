@@ -2313,6 +2313,7 @@
         }
         if (calme || !roue.animate) return montrer();
         var D = 4200; if (window.sfx) window.sfx("roulette");   // son n°3 : la roue tourne (4 s environ)
+        setTimeout(function () { if (window.sfx) window.sfx("bille"); }, D - 2400);   // son n°4 : la bille rebondit et se pose quand la roue s'arrête
         roue.animate([{ transform: "rotate(0deg)" }, { transform: "rotate(" + fin + "deg)" }], { duration: D, easing: "cubic-bezier(.15,.6,.25,1)", fill: "forwards" });
         orbite.animate([{ transform: "rotate(0deg)" }, { transform: "rotate(-1440deg)" }], { duration: D, easing: "cubic-bezier(.2,.65,.3,1)", fill: "forwards" });
         // La bille roule sur le bord (rayon 131 sur 300) puis descend dans les cases (rayon 90) : positions en % pour suivre la taille de la roue
