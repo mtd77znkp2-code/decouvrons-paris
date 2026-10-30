@@ -1096,3 +1096,7 @@ button.mx-ses-qui{cursor:pointer}
 .mx-verrou{margin:10px 0 0;padding:14px;border-radius:14px;background:rgba(255,255,255,.06);color:var(--mut);font-size:13.5px;text-align:center}
 .m-paliers .m-pal{display:grid;gap:2px}.m-paliers .m-pal b{font-size:14px}.m-paliers .m-pal small{font-size:12px;opacity:.8}
 .m-pct .m-pct-vide{text-align:left;font-style:italic;color:var(--pm,#5b6386);opacity:.8}
+/* Les messages passagers ne bloquent jamais un toucher ; les réponses réagissent tout de suite sur iPhone */
+.m-toast{pointer-events:none}
+.m-option{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.m-option .m-pct{min-height:1.4em}

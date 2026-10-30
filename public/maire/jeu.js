@@ -1715,10 +1715,11 @@
       casino(false);
       if (!st.evPerso) { var avant = st.mj; st = M.preparerMiniJeu(st, BASE); if (st.mj !== avant) sauver(); }
       carte.appendChild(h("p", "m-desc", T(ev.desc)));
-      var ch = h("div", "m-choix");
+      var ch = h("div", "m-choix"), cleV0 = cleVote();
       ev.choix.forEach(function (x, i) {
         var mj = M.jeuDe(st, i), b = bouton("", "m-option" + (mj ? " m-mj m-mj-" + mj.etat : ""), function () {
-          if (st.phase !== "evenement") return;
+          // Dossier périmé (le temps a tourné pendant qu'il était ouvert) : on redessine au lieu de ne rien faire
+          if (st.phase !== "evenement" || cleVote() !== cleV0) { MASQUE = null; return jeu(); }
           if (mj && mj.etat === "a_jouer") return miniJeu(carte, ev, i);
           if (mj && mj.etat === "perdu") return;
           var cle = cleVote(), t = st.t, p = voter(cle, i); VOTE = p ? { t: t, i: i, p: p } : null;
@@ -1730,7 +1731,7 @@
           : mj.etat === "gagne" ? "✅ Gagné au casino : à toi de le prendre" : "❌ Perdu au casino : ce choix t’échappe"));
         if (best && mj && mj.etat === "a_jouer") b.classList.add("m-mj-best");
         if (mj && mj.etat === "perdu") b.disabled = true;
-        if (!st.evPerso || st.evPerso.src) b.appendChild(h("small", "m-pct", ""));
+        if (!st.evPerso || st.evPerso.src) b.appendChild(h("small", "m-pct", "📊 …"));
         ch.appendChild(b);
       });
       carte.appendChild(ch);
