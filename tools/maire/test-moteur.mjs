@@ -702,6 +702,42 @@ test("le rival reste le même tant qu'on ne l'a pas battu (renoncement ou victoi
   }
   assert.ok(gardes > 0, "au moins un rival qui revient");
 });
+test("sessions : 21 places, on commence en bas, on défie son rival, une place gagnée ou perdue par élection", () => {
+  const S = require("../../public/maire/session.js");
+  assert.equal(S.ORDRE.length, 20); assert.equal(new Set(S.ORDRE).size, 20);
+  for (let p = 1; p < 20; p++) assert.ok(S.habitants(p) >= S.habitants(p - 1), "du moins au plus peuplé");
+  assert.equal(S.titre(20), "Maire de Paris"); assert.equal(S.titre(0), "Maire du 1er arrondissement");
+  assert.ok(S.puissance(0) < S.puissance(10) && S.puissance(10) < S.puissance(20));
+  let s = S.nouvelleSession(42, 0); assert.equal(s.places.length, 21); assert.ok(s.places.every(x => x.type === "bot"));
+  s = S.rejoindre(s, "u1", "Alice", "🙂", 0); assert.equal(S.placeDe(s, "u1"), 0, "on commence en bas");
+  s = S.rejoindre(s, "u2", "Bruno", "🙂", 0); assert.equal(S.placeDe(s, "u2"), 1);
+  assert.deepEqual(S.rejoindre(s, "u1", "Alice", "🙂", 0), s, "pas deux fois");
+  // Pas d'élection avant 10 minutes, sauf si la moitié des joueurs vote pour des anticipées
+  assert.deepEqual(S.elire(s, 60000), s);
+  let v = S.voter(s, "u1"); assert.equal(S.nbVotes(v), 1); assert.equal(S.votesRequis(v), 1); assert.ok(S.electionDue(v, 60000));
+  // Un joueur excellent monte d'une seule place par élection et finit sur le trône ; un joueur médiocre ne monte pas
+  let t = s; for (let k = 0; k < 25; k++) { t = S.signaler(t, "u1", { score: 95 }, k * S.MANDAT_MS); t = S.signaler(t, "u2", { score: 20 }, k * S.MANDAT_MS); const avant = S.placeDe(t, "u1");
+    t = S.elire(t, (k + 1) * S.MANDAT_MS + 1); const r = S.resultatDe(t, "u1"); assert.equal(r.avant, avant); assert.ok(r.apres - r.avant <= 1); }
+  assert.equal(S.placeDe(t, "u1"), 20, "Maire de Paris"); assert.ok(S.placeDe(t, "u2") <= 1);
+  assert.equal(t.places.filter(x => x.type === "joueur").length, 2, "personne ne disparaît");
+  // Fiches comparables pour les bots comme pour les joueurs
+  const f = S.fiche(t, 5); assert.ok(f.nom && f.stats && f.titre && f.hab > 0);
+});
+test("mode session : arrondissement à son échelle, pas d'élection interne, résultat de la session appliqué", () => {
+  const S = require("../../public/maire/session.js");
+  let st = M.nouvellePartie({ maire: "tribun", graine: 5, nivJoueur: 1 });
+  const info = p => ({ id: "s1", place: p, titre: S.titre(p), hab0: S.habitants(p), puissance: S.puissance(p), rival: { nom: "Bernard Morel", ico: "🎩" }, opp: p ? { nom: "Sylvie Roux", ico: "👩" } : null });
+  st = M.placer(st, info(0)); assert.equal(st.hab, S.habitants(0)); assert.ok(!st.opposant || !st.opposant.actif, "à la dernière place, personne n'attaque");
+  assert.ok(M.capacite(st) < 30000, "logements à l'échelle de l'arrondissement");
+  // 60 trimestres sans élection interne
+  for (let k = 0; k < 60 && st.phase !== "fin"; k++) st = st.phase === "evenement" ? M.choisir(st, base, M.choixLibre(M.evenementCourant(st, base))[0] || 0) : M.debutTour(st, base);
+  assert.equal(st.elections.length, 0); assert.equal(st.mandat, 1);
+  const e = M.etatSession(st); assert.ok(e.score > 0 && e.hab > 0);
+  // Victoire contre le rival : on monte, la population suit le nouvel arrondissement, l'opposant prend un nom
+  const h = st.hab; st = M.electionSession(st, { election: 1, avant: 0, apres: 1, titre: S.titre(1) }); assert.equal(st.mandat, 2); assert.ok(st.elections[0].monte);
+  assert.deepEqual(M.electionSession(st, { election: 1, avant: 0, apres: 1 }), st, "pas deux fois");
+  st = M.placer(st, info(1)); assert.equal(st.opposant.nom, "Sylvie Roux"); assert.ok(st.opposant.actif); assert.equal(Math.round(st.hab / h * 100), Math.round(S.habitants(1) / S.habitants(0) * 100));
+});
 test("élections anticipées : à la demande du maire quand ses objectifs sont remplis, 3 trimestres plus tard, sauf si le vote est déjà proche", () => {
   const prep = (t) => { const st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 950, nivJoueur: 40 });
     st.phase = "gestion"; st.t = t; st.objectifs = [{ k: "pop", but: 1, ico: "📣", txt: "a" }, { k: "pop", but: 2, ico: "📣", txt: "b" }, { k: "pop", but: 99, ico: "📣", txt: "c" }]; return st; };

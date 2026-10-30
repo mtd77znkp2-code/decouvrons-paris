@@ -23,7 +23,8 @@ C) ...
 
 - **Identifiant** : 2 à 6 lettres, un tiret, 3 à 5 chiffres (`fin-001`). Unique.
 - **Catégories** : finances, securite, proprete, logement, transports, ecologie, economie, services, culture, quotidien, institutions, crise.
-- **Conditions** (ligne `?`, facultative) : `popMin`, `popMax`, `bonMin`, `bonMax`, `cohMin`, `cohMax`, `tresorMin`, `tresorMax`, `detteMin`, `apres` / `avant` (numéro de tour), `ligne=…`, `amb=<domaine>`, `flag`, `sansFlag`, `poids` (fréquence), `suite` (n'apparaît que comme suite d'une décision).
+- **Conditions** (ligne `?`, facultative) : `popMin`, `popMax`, `bonMin`, `bonMax`, `cohMin`, `cohMax`, `tresorMin`, `tresorMax`, `detteMin`, `apres` / `avant` (numéro de tour), `ligne=…`, `amb=<domaine>`, `flag`, `sansFlag`, `poids` (fréquence), `suite` (n'apparaît que comme suite d'une décision),
+  `placeMin` (place minimale dans le classement de la session, de 0 = 1er arrondissement à 20 = Maire de Paris : pour les dossiers de grande ampleur).
 - **Effets** (première ligne sous le choix, avant le `|`) :
   - `pop`, `bon`, `coh` : popularité, bonheur, cohérence, en points (−20 à +20) ;
   - `bud` : argent immédiat en millions d'euros (négatif = dépense) ;

@@ -149,7 +149,7 @@ function loadScript(src){
 // Maire de Paris : moteur, interface et style chargés seulement quand on ouvre le jeu
 function loadMaire(){
   if(!LOADED.mcss){LOADED.mcss=1;var l=document.createElement("link");l.rel="stylesheet";l.href="maire/maire.css";document.head.appendChild(l)}
-  return loadScript("maire/contenu.js").then(function(){return loadScript("maire/poker.js")}).then(function(){return loadScript("maire/moteur.js")}).then(function(){return loadScript("maire/progression.js")}).then(function(){return loadScript("maire/jeu.js")}).then(function(){maireInit()})
+  return loadScript("maire/contenu.js").then(function(){return loadScript("maire/poker.js")}).then(function(){return loadScript("maire/session.js")}).then(function(){return loadScript("maire/moteur.js")}).then(function(){return loadScript("maire/progression.js")}).then(function(){return loadScript("maire/jeu.js")}).then(function(){maireInit()})
     .catch(function(){$("m-app").textContent="Le jeu n’a pas pu se charger. Vérifie ta connexion."});
 }
 function loadAdmin(){
@@ -173,6 +173,70 @@ $("adminLogin").onsubmit=function(e){
   LB.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()).catch(function(){adminFail("Connexion impossible. Réessaie.")});
 };
 $("adminLogout").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut();window.scrollTo(0,0)};
+
+// Sessions du Maire de Paris : 21 places partagées en ligne (sessions/{id}, état gardé en texte JSON).
+// Sans connexion à la base, une session locale (bots seulement) permet quand même de jouer.
+window.SessionLigne=(function(){
+  var LOCAL="maire_session_locale";
+  function S(){return window.MaireSession}
+  function enLigne(){return !!(LB.db&&LB.uid)}
+  function moi(){return LB.uid||"local"}
+  function nom(){return (window.user||("Maire n°"+moi().slice(-4).toUpperCase())).slice(0,20)}
+  function lire(d){var x=d.data()||{};try{return JSON.parse(x.etat)}catch(e){return null}}
+  function champs(s){return {etat:JSON.stringify(s),ouverte:!S().pleine(s),joueurs:S().joueurs(s).map(function(x){return x.uid}),maj:Date.now()}}
+  // ---- Session locale ----
+  var ecouteurs=[];
+  function lireLocal(){try{return JSON.parse(localStorage.getItem(LOCAL)||"null")}catch(e){return null}}
+  function ecrireLocal(s){try{localStorage.setItem(LOCAL,JSON.stringify(s))}catch(e){}ecouteurs.forEach(function(f){setTimeout(function(){f(s)},0)})}
+  // ---- Rejoindre ----
+  function rejoindre(){
+    var ico="🙂";
+    if(!enLigne()){
+      var s=lireLocal();if(!s)s=S().nouvelleSession(Math.floor(Math.random()*2147483647),Date.now());
+      s=S().rejoindre(s,"local",nom(),ico,Date.now());ecrireLocal(s);return Promise.resolve({id:"local",place:S().placeDe(s,"local"),local:true});
+    }
+    var db=LB.db,uid=moi(),dejaId=null;try{dejaId=localStorage.getItem("maire_session")}catch(e){}
+    function entrer(ref){
+      return db.runTransaction(function(tx){return tx.get(ref).then(function(d){
+        var s=d.exists?lire(d):null;if(!s)return null;
+        s=S().nettoyer(s,Date.now());
+        if(S().placeDe(s,uid)<0){var n=S().rejoindre(s,uid,nom(),ico,Date.now());if(n===s)return null;s=n}
+        tx.set(ref,champs(s));return {id:ref.id,place:S().placeDe(s,uid)};
+      })}).catch(function(){return null});
+    }
+    function chercher(){
+      return db.collection("sessions").where("ouverte","==",true).get().then(function(q){
+        var l=q.docs.filter(function(d){return (d.data().maj||0)>Date.now()-30*60*1000}).sort(function(a,b){return (b.data().joueurs||[]).length-(a.data().joueurs||[]).length});
+        function essai(k){if(k>=l.length)return creer();return entrer(l[k].ref).then(function(r){return r||essai(k+1)})}
+        return essai(0);
+      });
+    }
+    function creer(){
+      var ref=db.collection("sessions").doc(),s=S().nouvelleSession(Math.floor(Math.random()*2147483647),Date.now());
+      s=S().rejoindre(s,uid,nom(),ico,Date.now());
+      return ref.set(champs(s)).then(function(){return {id:ref.id,place:S().placeDe(s,uid)}});
+    }
+    var p=dejaId?entrer(db.collection("sessions").doc(dejaId)).then(function(r){return r||chercher()}):chercher();
+    return p.then(function(r){if(r)try{localStorage.setItem("maire_session",r.id)}catch(e){}return r}).catch(function(){return null});
+  }
+  function ecouter(id,cb){
+    if(id==="local"){ecouteurs.push(cb);var s=lireLocal();if(s)setTimeout(function(){cb(s)},0);return function(){var i=ecouteurs.indexOf(cb);if(i>=0)ecouteurs.splice(i,1)}}
+    if(!enLigne())return function(){};
+    return LB.db.collection("sessions").doc(id).onSnapshot(function(d){if(d.exists){var s=lire(d);if(s)cb(s)}},function(){});
+  }
+  // Modifie la session avec une fonction pure (signaler, voter, attaquer, élire…)
+  function modifier(id,f){
+    if(id==="local"){var s=lireLocal();if(!s)return Promise.resolve(null);var n=f(s);if(n!==s)ecrireLocal(n);return Promise.resolve(n)}
+    if(!enLigne())return Promise.resolve(null);
+    var ref=LB.db.collection("sessions").doc(id);
+    return LB.db.runTransaction(function(tx){return tx.get(ref).then(function(d){var s=d.exists?lire(d):null;if(!s)return null;var n=f(s);if(n!==s)tx.set(ref,champs(n));return n})}).catch(function(){return null});
+  }
+  return {rejoindre:rejoindre,ecouter:ecouter,modifier:modifier,moi:moi,
+    signaler:function(id,stats){return modifier(id,function(s){return S().signaler(s,moi(),stats,Date.now())})},
+    voter:function(id){return modifier(id,function(s){return S().voter(s,moi())})},
+    attaquer:function(id){return modifier(id,function(s){return S().attaquer(s,moi())})},
+    elire:function(id){return modifier(id,function(s){return S().elire(S().nettoyer(s,Date.now()),Date.now())})}};
+})();
 
 // Poker entre joueurs : un maire qui lance une partie de poker attend 5 secondes qu'un autre se présente, sinon il joue contre le bot.
 // File d'attente : poker_attente/{uid} ; table : poker_tables/{id} (l'état de la table est gardé en texte JSON).

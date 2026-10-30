@@ -904,3 +904,48 @@ body.m-fond-on:has(#site[hidden]) .m-fond,body.m-fond-on:has(#jeux[hidden]) .m-f
 .m-rival>span{font-size:24px}
 .m-rival small{display:block;font-size:11.5px;color:#5b6386;font-weight:700}
 .m-rival q{font-style:italic;font-size:14px}
+
+/* ===================== Session : bandeau, classement, fiches, carte des arrondissements ===================== */
+.mx-session{display:grid;gap:10px;padding:14px 16px;border-radius:20px;background:linear-gradient(135deg,rgba(43,79,179,.35),rgba(122,63,209,.22));box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 10px 28px rgba(0,0,0,.22)}
+.mx-session.mx-trone{background:linear-gradient(135deg,rgba(245,178,26,.4),rgba(200,53,46,.2))}
+.mx-ses-titre{display:flex;gap:10px;align-items:center}.mx-ses-titre>span{font-size:30px}
+.mx-ses-titre strong{display:block;font-size:17px;line-height:1.2}.mx-ses-titre small{color:var(--mut);font-size:12.5px}
+.mx-ses-ligne{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mx-ses-elec{font-size:15px;font-variant-numeric:tabular-nums}
+.mx-ses-btn{border:0;border-radius:99px;padding:7px 12px;font:inherit;font-weight:800;font-size:13px;color:#1b2550;background:#f5b21a;cursor:pointer}
+.mx-ses-duo{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mx-ses-qui{display:grid;gap:1px;text-align:left;padding:8px 10px;border-radius:12px;border:0;font:inherit;color:inherit;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+button.mx-ses-qui{cursor:pointer}
+.mx-ses-qui small{font-size:11px;color:var(--mut)}.mx-ses-qui b{font-size:13.5px;line-height:1.25}
+.mx-ses-rival{box-shadow:inset 0 0 0 1.5px rgba(255,138,128,.5)}.mx-ses-opp{box-shadow:inset 0 0 0 1.5px rgba(111,220,149,.4)}
+.mx-ses-votes{font-size:13px;color:var(--mut)}
+.m-ses-carte{max-height:82vh;overflow:auto}
+.m-ses-liste{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:5px}
+.m-ses-l{width:100%;display:grid;grid-template-columns:30px 40px 1fr auto;gap:8px;align-items:center;padding:8px 10px;border-radius:10px;border:0;font:inherit;color:var(--pi);background:#fff;box-shadow:inset 0 0 0 1px #e3dccb;cursor:pointer;text-align:left}
+.m-ses-l.m-moi{background:#fff4d6;box-shadow:inset 0 0 0 2px #f5b21a}.m-ses-l.m-rival{box-shadow:inset 0 0 0 2px #e0524b}.m-ses-l.m-opp{box-shadow:inset 0 0 0 2px #2f8a52}
+.m-ses-l.m-trone{background:linear-gradient(90deg,#ffe8a3,#fff)}
+.m-ses-rang{font-weight:900;text-align:center}.m-ses-arr{font-weight:800;color:var(--bl)}.m-ses-nom{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m-ses-sc{font-variant-numeric:tabular-nums}
+.m-ses-sous{margin:4px 0 0;color:var(--pm);font-weight:700}.m-ses-rel{margin:4px 0 10px;font-weight:800}
+.m-cmp-table{display:grid;gap:4px}
+.m-cmp{display:grid;grid-template-columns:1fr 90px 90px;gap:8px;align-items:center;padding:6px 10px;border-radius:9px;background:rgba(27,37,80,.05)}
+.m-cmp b{text-align:right;font-variant-numeric:tabular-nums}.m-cmp-tete{background:none;font-size:13px;color:var(--pm)}
+.m-cmp-mieux b:nth-child(2){color:#2f8a52}.m-cmp-moins b:nth-child(2){color:#c8352e}
+/* Carte : zones des arrondissements */
+.m-zone{position:absolute;transform:translate(-50%,-50%);aspect-ratio:1;border-radius:50%;border:0;padding:0;display:grid;place-content:center;gap:0;cursor:pointer;z-index:2000;
+  background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.55);color:#fff;font:inherit;text-shadow:0 1px 3px rgba(0,0,0,.9);transition:transform .15s}
+.m-zone:hover{transform:translate(-50%,-50%) scale(1.08)}
+.m-zone b{font-size:clamp(8px,1.6vw,12px);line-height:1}.m-zone span{font-size:clamp(9px,1.8vw,14px);line-height:1.1}
+.m-zone.m-z-haut{background:rgba(15,18,40,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);filter:grayscale(1)}
+.m-zone.m-z-moi{background:rgba(245,178,26,.18);box-shadow:inset 0 0 0 3px #f5b21a,0 0 18px rgba(245,178,26,.8);z-index:1990;animation:m-z-pulse 2s ease-in-out infinite}
+.m-zone.m-z-moi b,.m-zone.m-z-moi span{opacity:.0}
+.m-zone.m-z-rival{box-shadow:inset 0 0 0 2px #ff8a80}
+.m-zone.m-z-joueur::after{content:"👤";position:absolute;top:-6px;right:-4px;font-size:12px}
+@keyframes m-z-pulse{50%{box-shadow:inset 0 0 0 3px #f5b21a,0 0 30px rgba(245,178,26,1)}}
+.m-trone-pl{position:absolute;left:50%;top:2%;transform:translateX(-50%);z-index:2100;display:flex;gap:6px;align-items:center;padding:4px 10px;border-radius:99px;border:0;font:inherit;font-size:12px;color:#1b2550;background:linear-gradient(180deg,#ffd76a,#f5b21a);box-shadow:0 4px 12px rgba(0,0,0,.4);cursor:pointer;white-space:nowrap}
+/* Résultat d'élection de session */
+.m-flash-elec .m-flash-in{display:grid;gap:6px;justify-items:center;text-align:center;padding:26px 30px;border-radius:24px;background:#1b2550;color:#fff;box-shadow:0 0 0 3px #f5b21a,0 30px 80px rgba(0,0,0,.6)}
+.m-flash-elec .m-flash-ico{font-size:60px}.m-flash-elec strong{font-size:26px}
+.m-flash-elec.m-descend .m-flash-in{box-shadow:0 0 0 3px #c8352e,0 30px 80px rgba(0,0,0,.6)}
+/* Trimestre automatique : le bouton se remplit */
+.m-barmois .btn.mx-auto{background:linear-gradient(90deg,#f5b21a calc(var(--p,0)*100%),#ffe3a0 calc(var(--p,0)*100%));transition:background .9s linear}

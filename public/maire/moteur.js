@@ -591,15 +591,19 @@
   var HAB0 = 2100000;
   // Pour accueillir plus de monde, il faut des logements : chaque bâtiment d'habitation ouvre de la place
   var LOGE = { logements: 18000, residenceEtudiante: 12000, intergeneration: 18000, cooperative: 24000, renovation: 66000, jo: 60000, quartier: 48000, villageVertical: 66000 };
-  function capacite(st) { var c = HAB0; Object.keys(LOGE).forEach(function (id) { c += LOGE[id] * ((st.bat && st.bat[id]) || 0); }); return c; }
-  function facteurHab(st) { return Math.max(0.8, Math.min(1.2, (st.hab || HAB0) / HAB0)); }
+  // En session, on gouverne un arrondissement : population de départ et grandeurs (logements, emplois, besoins) à son échelle
+  function h0(st) { return (st.session && st.session.hab0) || HAB0; }
+  function ech(st) { return h0(st) / HAB0; }
+  function logeDe(st, id) { return Math.round((LOGE[id] || 0) * ech(st)); }
+  function capacite(st) { var c = h0(st); Object.keys(LOGE).forEach(function (id) { c += logeDe(st, id) * ((st.bat && st.bat[id]) || 0); }); return c; }
+  function facteurHab(st) { return Math.max(0.8, Math.min(1.2, (st.hab || h0(st)) / h0(st))); }
   // Une ville cohérente : plus elle est peuplée, plus il faut de sécurité et de cadre de vie (sinon les gens s'en vont)
-  function besoin(st) { return Math.round(40 + ((st.hab || HAB0) / HAB0 - 1) * 100); }
+  function besoin(st) { return Math.round(40 + ((st.hab || h0(st)) / h0(st) - 1) * 100); }
   // Emplois : la ville en offre 970 000 au départ ; commerces et économie en créent. La moitié des habitants cherche un travail.
   var EMP0 = 970000;
   function emplois(st) {
     var n = EMP0 + (bonusMaire(st).emplois || 0); Object.keys(st.bat || {}).forEach(function (id) { var B = BATIMENTS[id]; if (!B) return; n += (B.emplois || (B.cat === "economie" ? 3000 : 0)) * st.bat[id]; });
-    return n;
+    return Math.round(n * ech(st));
   }
   // ---------- Besoins des habitants : écoles, médecins, pompiers, commerces de bouche… ----------
   // Un besoin apparaît dès que le joueur peut construire de quoi y répondre (lien avec sa progression).
@@ -620,7 +624,7 @@
   function etatBesoins(st) {
     return BESOINS.filter(function (b) { return b.bats.some(function (id) { return BATIMENTS[id] && (BATIMENTS[id].niv || 1) <= (st.nivJ || 99); }); }).map(function (b) {
       var a = 0; b.bats.forEach(function (id) { a += (st.bat && st.bat[id]) || 0; });
-      var requis = 1 + Math.floor(Math.max(0, (st.hab || HAB0) - HAB0) / b.par), x = (st.besoins || {})[b.id];
+      var requis = 1 + Math.floor(Math.max(0, (st.hab || h0(st)) - h0(st)) / (b.par * ech(st))), x = (st.besoins || {})[b.id];
       return { id: b.id, nom: b.nom, ico: b.ico, a: a, requis: requis, ok: a >= requis, dit: !!x && a < requis, age: a >= requis || !x ? 0 : st.t - x.depuis };
     });
   }
@@ -646,13 +650,13 @@
       if (cand.length && rnd(st) < 0.2) {
         var c = cand[Math.floor(rnd(st) * cand.length)];
         st.depeche = { id: c.id, t: st.t, opp: st.opposant.i };
-        message(st, "⚡", "Dépêche de " + OPPOSANTS[st.opposant.i].nom, "Ton rival dénonce le manque " + (/^[aeiouyhéèêàâ]/i.test(c.nom) ? "d’" : "de ") + c.nom + " à Paris. Tant que ce n’est pas réglé, des Parisiens partent.");
+        message(st, "⚡", "Dépêche de " + opposant(st).nom, "Ton rival dénonce le manque " + (/^[aeiouyhéèêàâ]/i.test(c.nom) ? "d’" : "de ") + c.nom + " à Paris. Tant que ce n’est pas réglé, des Parisiens partent.");
       }
     }
     return pct;
   }
-  function chomage(st) { var actifs = (st.hab || HAB0) * 0.5; return Math.max(2, Math.min(25, Math.round((actifs - emplois(st)) / actifs * 1000) / 10)); }
-  function bougerHab(st, pct) { var a = st.hab || HAB0, n = Math.round(a * (1 + pct / 100)); n = Math.max(Math.round(HAB0 * 0.75), Math.min(Math.round(HAB0 * 1.3), n)); st.hab = n; return n - a; }
+  function chomage(st) { var actifs = (st.hab || h0(st)) * 0.5; return Math.max(2, Math.min(25, Math.round((actifs - emplois(st)) / actifs * 1000) / 10)); }
+  function bougerHab(st, pct) { var a = st.hab || h0(st), n = Math.round(a * (1 + pct / 100)); n = Math.max(Math.round(h0(st) * 0.75), Math.min(Math.round(h0(st) * 1.3), n)); st.hab = n; return n - a; }
   function demographie(st, popAvant) {
     var tend = st.pop - popAvant, pct = 0;
     if (st.pop < 50) pct = -(50 - st.pop) * 0.02 + Math.min(0, tend + 0.5) * 0.08;
@@ -664,11 +668,11 @@
     if (manque > 0) pct = Math.min(pct, 0) - manque * 0.03;
     if (ch > 10) pct = Math.min(pct, 0) - (ch - 10) * 0.04;
     // Les arrivées s'arrêtent quand tous les logements sont occupés
-    if (pct > 0) { var cap = capacite(st), a = st.hab || HAB0; pct = a >= cap ? 0 : Math.min(pct, (cap - a) / a * 100); }
+    if (pct > 0) { var cap = capacite(st), a = st.hab || h0(st); pct = a >= cap ? 0 : Math.min(pct, (cap - a) / a * 100); }
     st.habDelta = pct ? bougerHab(st, pct) : 0;
   }
   function recettes(st) {
-    var cr = criseEnCours(st), r = P.impot * st.taux * (0.8 + st.eco / P.ecoRecettes) * niv(st).recettes * (bonusMaire(st).recettes || 1) * ((cr && cr.recettes) || 1) * facteurHab(st);
+    var cr = criseEnCours(st), r = P.impot * st.taux * (0.8 + st.eco / P.ecoRecettes) * niv(st).recettes * (bonusMaire(st).recettes || 1) * ((cr && cr.recettes) || 1) * facteurHab(st) * ((st.session && st.session.puissance) || 1);
     // Un même commerce rapporte un peu moins à chaque exemplaire (la clientèle se partage)
     Object.keys(st.bat).forEach(function (id) { var R = BATIMENTS[id].rev || 0; if (R) r += R * ((1 - Math.pow(P.rendement, st.bat[id])) / (1 - P.rendement)) * ((st.ampleur && st.ampleur[id]) || 1); });
     combosActifs(st).forEach(function (id) { r += C.COMBOS[id].rev || 0; });
@@ -789,6 +793,8 @@
   function possible(st, ev) {
     var c = ev.cond; if (!c) return true;
     var t = trimMandat(st) * 100 / MANDAT;   // les conditions de date sont écrites sur 100 semaines
+    // Dossiers de grande ampleur : réservés aux arrondissements les plus puissants (et au Maire de Paris)
+    if (c.placeMin != null && st.session && st.session.place < c.placeMin) return false;
     if (c.popMin != null && st.pop < c.popMin) return false;
     if (c.popMax != null && st.pop > c.popMax) return false;
     if (c.bonMin != null && bonheur(st) < c.bonMin) return false;
@@ -898,7 +904,7 @@
     var pct = Math.max(10, Math.min(90, arrondi(sondage(st) + (rnd(st) - 0.5) * 6)));
     var piliers = {}; PK.forEach(function (k) { piliers[k] = st.piliers[k]; });
     var ob = objectifs(st), nok = ob.filter(function (o) { return o.ok; }).length;
-    return { mandat: st.mandat, t: st.t, pct: pct, gagne: pct > 50, opposant: st.opposant ? OPPOSANTS[st.opposant.i].nom : "l’opposition",
+    return { mandat: st.mandat, t: st.t, pct: pct, gagne: pct > 50, opposant: st.opposant ? opposant(st).nom : "l’opposition",
       objectifs: ob, nok: nok, reussi: ob.length > 0 && nok >= 2, parfait: ob.length > 0 && nok === ob.length, crise: st.crise ? st.crise.id : null,
       popu: st.pop, bon: bonheur(st), coh: st.coh, taux: st.taux, amb: promessesTenues(st), piliers: piliers, tresor: st.tresor, dette: st.dette };
   }
@@ -910,6 +916,41 @@
   function finDefi(st) {
     st.fin = { gagne: true, raison: { type: "defi", txt: "Fin du défi du jour : " + st.scenario.fin + " trimestres se sont écoulés." }, t: st.t };
     st.phase = "fin";
+  }
+
+  // ---------- Mode session (maire d'arrondissement, classement de 21 places) ----------
+  // info : { id, place, titre, hab0, puissance, election, rival: {nom, ico}, opp: {nom, ico} | null }
+  function placer(st0, info) {
+    var st = copie(st0), avant = st.session, h = info.hab0 || HAB0;
+    st.session = { id: info.id, place: info.place, titre: info.titre, hab0: h, puissance: info.puissance || 1, election: info.election || 0, rival: info.rival || null, opp: info.opp || null };
+    // Nouvel arrondissement : la population suit (même proportion qu'avant)
+    if (!avant || avant.hab0 !== h) st.hab = Math.round((st.hab || (avant ? avant.hab0 : HAB0)) / ((avant && avant.hab0) || HAB0) * h);
+    // L'opposant (la place au-dessous) prend le nom du maire qui l'occupe ; à la dernière place, personne n'attaque
+    if (info.opp) { if (!st.opposant) tirerOpposant(st); st.meca.opposant = true; st.opposant.nom = info.opp.nom; st.opposant.ico = info.opp.ico; st.opposant.actif = true; }
+    else if (st.opposant) st.opposant.actif = false;
+    return st;
+  }
+  // Score envoyé à la session (le sondage : popularité, bonheur, promesses, influence de l'opposant…) et chiffres de la fiche
+  function etatSession(st) {
+    return { score: arrondi(sondage(st)), pop: Math.round(st.pop), bon: Math.round(bonheur(st)), hab: st.hab || h0(st), tresor: Math.round(st.tresor - st.dette),
+      bats: Object.keys(st.bat).reduce(function (n, id) { return n + st.bat[id]; }, 0), niv: st.nivJ, mandats: st.mandat - 1, maire: st.maire, chomage: chomage(st) };
+  }
+  // Résultat d'une élection de session : on monte d'une place, on reste, ou on descend ; un nouveau mandat commence
+  function electionSession(st0, r) {
+    if (!st0.session || !r || st0.session.dernElec === r.election) return st0;
+    var st = copie(st0), monte = r.apres > r.avant, descend = r.apres < r.avant;
+    st.session.dernElec = r.election;
+    var el = { mandat: st.mandat, t: st.t, pct: arrondi(sondage(st)), gagne: !descend, monte: monte, descend: descend, avant: r.avant, apres: r.apres, session: true,
+      opposant: r.rival || "ton rival", popu: st.pop, bon: bonheur(st) };
+    st.elections.push(el);
+    if (monte) gagnerXP(st, "Élections gagnées", XP.election[palier(st)]);
+    st.mandat++; st.debutMandat = st.t; st.pariMandat = 0;
+    if (st.meca.opposant && st.opposant) { st.opposant.force = Math.max(20, st.opposant.force - 10); }
+    if (!st.scenario) tirerMandat(st);
+    st.prochainDossier = 0;
+    message(st, monte ? "🎉" : descend ? "📉" : "🗳️", monte ? "Élu plus haut !" : descend ? "Tu recules d’une place" : "Tu gardes ta place",
+      monte ? "Tu as battu ton rival : te voilà " + (r.titre || "plus haut") + "." : descend ? "Ton opposant t’a dépassé." : "Ton rival a tenu bon, mais personne ne t’a délogé.");
+    return st;
   }
 
   // ---------- Trimestre suivant ----------
@@ -971,7 +1012,7 @@
     gagnerXP(st, "Trimestres à l’Hôtel de Ville", XP.trimestre, XP.trimestreMax);
     annoncer(st);
     // Objectifs remplis (2 sur 3) : le maire peut demander des élections anticipées (bouton dans « Objectifs du mandat »)
-    if (anticipeePossible(st) && !st.anticipeeDite) { st.anticipeeDite = st.mandat; message(st, "🗳️", "Objectifs remplis", "Tu peux demander des élections anticipées : elles auront lieu 3 trimestres plus tard."); }
+    if (!st.session && anticipeePossible(st) && !st.anticipeeDite) { st.anticipeeDite = st.mandat; message(st, "🗳️", "Objectifs remplis", "Tu peux demander des élections anticipées : elles auront lieu 3 trimestres plus tard."); }
     // Léon prévient quand la dette devient dangereuse
     if (st.dette > 1000 && dette0 <= 1000) leon(st, "detteHaute");
     // Dernier pari : une proposition risquée quand la ville est au bord du gouffre
@@ -988,8 +1029,8 @@
     // Missions surprises
     suivreMission(st);
     if (st.meca.missions && !st.sansMissions && !st.mission && st.t >= 4 && st.t >= st.missionCd && rnd(st) < 0.2) lancerMission(st);
-    // Élection
-    if (st.t >= prochaineElection(st)) {
+    // Élection (en session, ce sont les élections de la session, toutes les 10 minutes, qui comptent)
+    if (!st.session && st.t >= prochaineElection(st)) {
       st.conditions.forEach(function (cd) {
         if (st.piliers[cd.k] < cd.v) { st.pop = borne(st.pop - cd.pen); notes.push({ txt: "📜 Le contrat de Gaspard Mallet n’est pas respecté (" + PILIERS[cd.k] + " sous " + cd.v + ") : scandale juste avant le vote !", d: { pop: -cd.pen, bon: 0, coh: 0, bud: 0, pil: {} } }); }
       });
@@ -1012,7 +1053,7 @@
         if (st.opposant && st.opposant.actif && el.pct < 60) {
           var fo = FORCE_OPP[palier(st)], o = st.opposant;
           o.force = Math.min(100, Math.max(o.force, fo[0] + (st.mandat - 1) * 4) + 5); o.depart = o.force; o.revanche = (o.revanche || 0) + 1;
-          message(st, OPPOSANTS[o.i].ico, OPPOSANTS[o.i].nom + " ne lâche rien", "Battu mais pas abattu, ton rival revient pour le mandat suivant, encore plus déterminé.");
+          message(st, opposant(st).ico, opposant(st).nom + " ne lâche rien", "Battu mais pas abattu, ton rival revient pour le mandat suivant, encore plus déterminé.");
         } else tirerOpposant(st);
       }
       if (!st.scenario) tirerMandat(st);
@@ -1243,7 +1284,7 @@
   }
   function choisirOpposition(st, i) {
     var ev = st.evPerso, c = ev.choix[i], o = st.opposant, x = stats(st), lib = ev.titre + " : " + c.t;
-    var d = { pop: 0, bon: 0, coh: 0, bud: 0, pil: {} }, txt = c.r, extra = [], nom = OPPOSANTS[o.i].nom;
+    var d = { pop: 0, bon: 0, coh: 0, bud: 0, pil: {} }, txt = c.r, extra = [], nom = opposant(st).nom;
     if (c.k === "contre") { d = appliquer(st, { bud: -c.prix }, lib, d); o.force = Math.max(0, o.force - 6); o.contres++; x.contre++; }
     else if (c.k === "mobilise") { d = appliquer(st, { coh: -c.coh }, lib, d); o.force = Math.max(0, o.force - 6); o.contres++; x.mobilise++; }
     else if (c.k === "nuire") {
@@ -1732,7 +1773,7 @@
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
     pariMise: pariMise, refuserPari: refuserPari, bjCommencer: bjCommencer, bjTirer: bjTirer, bjRester: bjRester, bjDoubler: bjDoubler, valeurMain: valeurMain,
-    roulette: roulette, anticipeePossible: anticipeePossible, demanderAnticipee: demanderAnticipee, HAB0: HAB0, LOGE: LOGE, capacite: capacite, besoin: besoin, emplois: emplois, chomage: chomage, BESOINS: BESOINS, etatBesoins: etatBesoins, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, mjPoker: mjPoker, mjPokerLigne: mjPokerLigne, mjPokerResultat: mjPokerResultat, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
+    roulette: roulette, placer: placer, etatSession: etatSession, electionSession: electionSession, anticipeePossible: anticipeePossible, demanderAnticipee: demanderAnticipee, HAB0: HAB0, LOGE: LOGE, logeDe: logeDe, h0: h0, capacite: capacite, besoin: besoin, emplois: emplois, chomage: chomage, BESOINS: BESOINS, etatBesoins: etatBesoins, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, mjPoker: mjPoker, mjPokerLigne: mjPokerLigne, mjPokerResultat: mjPokerResultat, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
     palier: palier, PALIERS: PALIERS, RAYONS: RAYONS, gainAchat: gainAchat, coutBat: coutBat, objectifs: objectifs, objectifsOk: objectifsOk, retraite: retraite, criseEnCours: criseEnCours, bonusMaire: bonusMaire, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
     ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, planVille: planVille, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
     NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };

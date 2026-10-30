@@ -473,6 +473,7 @@
     return d;
   }
   function ouvertureObjectifs() {
+    brancherSession();
     var ob = M.objectifs(st);
     if (!ob.length) return ouvertureTirage();
     var d = scene(st.mandat > 1 ? "Mandat " + st.mandat : "Ton premier mandat", "Tes 3 objectifs pour passer au mandat suivant");
@@ -503,12 +504,23 @@
     (function tick() { montre((k + n) % liste.length); if (n >= tours) { fen.classList.add("m-rstop"); return fini && fini(); } n++; setTimeout(tick, 45 + Math.pow(n / tours, 3) * 280); })();
     return fen;
   }
-  function ouvertureTirage() {
-    var cr = M.criseEnCours(st), o = st.meca.opposant && st.opposant ? M.opposant(st) : null;
-    if (!cr && !o) return ouvertureResume();
-    var d = scene("Le tirage", cr ? "Quelle crise frappe Paris ?" : "Qui sera ton opposant ?");
+  function ouvertureTirage(attente) {
+    // En session, on attend (au plus 4 s) de connaître sa place pour présenter son vrai rival et son vrai opposant
+    if (window.SessionLigne && !st.scenario && !SES.s && (attente || 0) < 8) return setTimeout(function () { ouvertureTirage((attente || 0) + 1); }, 500);
+    var ses = !!(st.session && SES.s);
+    var cr = M.criseEnCours(st), o = !ses && st.meca.opposant && st.opposant ? M.opposant(st) : null;
+    if (!cr && !o && !ses) return ouvertureResume();
+    var d = scene("Le tirage", cr ? "Quelle crise frappe " + (ses ? "ton arrondissement" : "Paris") + " ?" : ses ? "Ta place dans Paris" : "Qui sera ton opposant ?");
     var bas = bouton("Voir le résumé →", "btn m-go mx-cache", ouvertureResume);
     function opp() {
+      if (ses) {
+        var se = st.session;
+        d.insertBefore(ajout(h("div", "mx-resume mx-entre"),
+          ajout(h("div", "mx-oppres"), h("span", null, "🏛️"), ajout(h("div"), h("strong", null, "Tu es " + se.titre), h("small", null, "Place " + (SS().NB - se.place) + " sur " + SS().NB + " : gagne tes élections pour monter jusqu’au trône de Maire de Paris."))),
+          se.rival ? ajout(h("div", "mx-oppres"), h("span", null, se.rival.ico), ajout(h("div"), h("strong", null, "⚔️ Ton rival : " + se.rival.nom + (se.rival.type === "bot" ? " 🤖" : "")), h("small", null, se.rival.titre + " · bats-le à l’élection pour prendre sa place"))) : null,
+          se.opp ? ajout(h("div", "mx-oppres"), h("span", null, se.opp.ico), ajout(h("div"), h("strong", null, "🛡️ Ton opposant : " + se.opp.nom + (se.opp.type === "bot" ? " 🤖" : "")), h("small", null, se.opp.titre + " · il t’attaquera pour prendre ta place"))) : h("small", "m-aide", "Personne en dessous de toi : aucun opposant ne t’attaque pour l’instant.")), bas);
+        return setTimeout(function () { bas.classList.remove("mx-cache"); }, calme() ? 0 : 600);
+      }
       if (!o) return bas.classList.remove("mx-cache");
       var t = h("p", "m-sur mx-entre", "⚔️ Ton opposant"); d.insertBefore(t, bas);
       d.insertBefore(rouleau(M.OPPOSANTS, o.i, function () {
@@ -541,8 +553,137 @@
 
   // ---------- Écran de jeu : une seule page, de haut en bas ----------
 
+  // ===================== Session : 21 places, du 1er arrondissement au trône de Maire de Paris =====================
+  var SES = { id: null, s: null, stop: null, enCours: false, tick: 0, elire: 0, timer: null, place: -1, vue: null };
+  var TRIM_MS = 25000;   // un trimestre toutes les 25 s : 24 trimestres = 10 minutes = un mandat
+  function SS() { return window.MaireSession; }
+  function moiSes() { return window.SessionLigne ? window.SessionLigne.moi() : "local"; }
+  function infoSession(s) {
+    var p = SS().placeDe(s, moiSes()), f = function (q) { var x = SS().fiche(s, q); return { nom: x.nom, ico: x.ico, type: x.type, titre: x.titre, court: x.court }; };
+    return { id: SES.id, place: p, titre: SS().titre(p), hab0: SS().habitants(p), puissance: SS().puissance(p), election: s.election, rival: p < SS().TRONE ? f(p + 1) : null, opp: p > 0 ? f(p - 1) : null };
+  }
+  function brancherSession() {
+    if (SES.id || SES.enCours || !window.SessionLigne || !SS() || !st || st.phase === "fin" || st.scenario) return;
+    SES.enCours = true;
+    window.SessionLigne.rejoindre().then(function (r) {
+      SES.enCours = false; if (!r) return;
+      SES.id = r.id; SES.tick = Date.now() + TRIM_MS;
+      SES.stop = window.SessionLigne.ecouter(r.id, recuSession);
+      if (!SES.timer) SES.timer = setInterval(horloge, 1000);
+    });
+  }
+  // Nouvelle version de la session : élection passée ? nouvelle place ? noms du rival et de l'opposant
+  function recuSession(s) {
+    SES.s = s; if (!st || st.phase === "fin" || SS().placeDe(s, moiSes()) < 0) return;
+    var r = SS().resultatDe(s, moiSes()), avant = st.session ? st.session.place : -1, elu = null;
+    if (r && st.session && s.election > (st.session.election || 0) && st.session.dernElec !== s.election) {
+      st = M.electionSession(st, { election: s.election, avant: r.avant, apres: r.apres, titre: SS().titre(r.apres), rival: r.duel ? SS().fiche(s, r.duel.bas === r.avant ? r.duel.haut : r.duel.bas).nom : "" });
+      elu = r;
+    }
+    var info = infoSession(s), change = !st.session || st.session.place !== info.place || st.session.election !== info.election || !st.session.rival || (info.rival && st.session.rival.nom !== info.rival.nom);
+    st = M.placer(st, info); sauver();
+    if (elu) annonceElection(elu, s);
+    if (change && document.getElementById("m-app") && st.phase !== "fin") { if (!document.getElementById("m-modale")) jeu(); }
+    else majSession();
+  }
+  // Chaque seconde : comptes à rebours, trimestre automatique, élection quand l'heure est venue
+  function horloge() {
+    if (!st || !SES.id || !SES.s || st.phase === "fin") return;
+    var visible = document.getElementById("m-app") && !document.hidden && !document.getElementById("site").hidden && !document.getElementById("jeux").hidden;
+    var now = Date.now();
+    if (visible && SS().electionDue(SES.s, now) && now - SES.elire > 5000) { SES.elire = now; window.SessionLigne.elire(SES.id); }
+    var libre = visible && (st.phase === "gestion" || st.phase === "pret") && !document.getElementById("m-modale") && !document.getElementById("m-telmod") && !document.body.classList.contains("m-casino") && !(st.enchere && !st.enchere.fini) && !(st.bj && !st.bj.fini);
+    if (!libre) { SES.tick = Math.max(SES.tick, now + 3000); majSession(); return; }
+    if (now >= SES.tick) { SES.tick = now + TRIM_MS; trimestreSuivant(); return; }
+    majSession();
+  }
+  function trimestreSuivant() {
+    var avant = { t: st.t, net: st.tresor - st.dette };
+    st = M.debutTour(st, BASE); sauver(); signal("trimestre"); jeu();
+    if (st.t > avant.t) animTrimestre(avant);
+    if (SES.id) {
+      window.SessionLigne.signaler(SES.id, M.etatSession(st));
+      // Une fois par an, tes équipes attaquent automatiquement ton rival (la place au-dessus)
+      if (st.t % 4 === 2 && st.session && st.session.rival) { window.SessionLigne.attaquer(SES.id); setTimeout(function () { toast("⚔️ Tes équipes attaquent " + st.session.rival.nom + " (" + st.session.rival.court + ")"); }, 1800); }
+    }
+  }
+  function mmss(ms) { ms = Math.max(0, ms); var m = Math.floor(ms / 60000), sec = Math.floor(ms % 60000 / 1000); return m + ":" + (sec < 10 ? "0" : "") + sec; }
+  // Met à jour les comptes à rebours sans tout redessiner
+  function majSession() {
+    if (!SES.s) return;
+    var e = document.querySelector(".mx-ses-elec"); if (e) e.textContent = "🗳️ Élection dans " + mmss(SES.s.prochaine - Date.now());
+    var v = document.querySelector(".mx-ses-votes"); if (v) v.textContent = SS().nbVotes(SES.s) + "/" + SS().votesRequis(SES.s) + " vote" + (SS().votesRequis(SES.s) > 1 ? "s" : "");
+    var b = document.querySelector(".m-barmois .btn.mx-auto");
+    if (b) { var r = Math.max(0, Math.ceil((SES.tick - Date.now()) / 1000)); b.textContent = st.phase === "evenement" ? "📂 Un dossier t’attend" : "⏱️ Trimestre suivant dans " + r + " s"; b.style.setProperty("--p", Math.max(0, Math.min(1, 1 - r / (TRIM_MS / 1000)))); }
+  }
+  // Bandeau de session : ton titre, ta place, le compte à rebours, ton rival et ton opposant
+  function bandeauSession() {
+    if (!st.session || !SES.s) return null;
+    var p = st.session.place, d = h("div", "mx-session" + (p >= SS().TRONE ? " mx-trone" : ""));
+    var titre = ajout(h("div", "mx-ses-titre"), h("span", null, p >= SS().TRONE ? "👑" : "🏛️"), ajout(h("div"), h("strong", null, st.session.titre), h("small", null, "Place " + (SS().NB - p) + " sur " + SS().NB + " · puissance ×" + virg(st.session.puissance))));
+    var l = ajout(h("div", "mx-ses-ligne"), h("b", "mx-ses-elec", ""), bouton("🏆 Classement", "mx-ses-btn", classementSession));
+    var duo = h("div", "mx-ses-duo");
+    if (st.session.rival) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-rival", function () { ficheSession(p + 1); }), h("small", null, "⚔️ Ton rival (au-dessus)"), h("b", null, st.session.rival.ico + " " + st.session.rival.nom + (st.session.rival.type === "bot" ? " 🤖" : "")), h("small", null, st.session.rival.court)));
+    else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "👑 Tu es au sommet"), h("b", null, "Garde ton trône !")));
+    if (st.session.opp) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-opp", function () { ficheSession(p - 1); }), h("small", null, "🛡️ Ton opposant (au-dessous)"), h("b", null, st.session.opp.ico + " " + st.session.opp.nom + (st.session.opp.type === "bot" ? " 🤖" : "")), h("small", null, st.session.opp.court)));
+    else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "🛡️ Personne en dessous"), h("b", null, "Aucun opposant ne t’attaque")));
+    ajout(d, titre, l, duo);
+    setTimeout(majSession, 0);
+    return d;
+  }
+  // Classement de la session : les 21 places, du trône au 1er arrondissement
+  function classementSession() {
+    if (!SES.s) return;
+    var s = SES.s, moiP = SS().placeDe(s, moiSes()), sc = SS().scores(s, Date.now());
+    var pop = h("div", "m-pop m-pop-ses"); pop.id = "m-telmod"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "true");
+    var c = h("div", "m-pop-in"), a = h("article", "m-dossier m-ses-carte");
+    ajout(a, ajout(h("div", "m-tel-tete"), h("strong", "m-tel-titre", "🏆 Classement de la session"), bouton("✕", "m-leonx", fermerTel)),
+      h("p", "m-aide", "Chacun défie le maire juste au-dessus à chaque élection. Touche un maire pour comparer."));
+    var l = h("ol", "m-ses-liste");
+    for (var p = SS().NB - 1; p >= 0; p--) (function (p) {
+      var f = SS().fiche(s, p), cls = "m-ses-l" + (p === moiP ? " m-moi" : p === moiP + 1 ? " m-rival" : p === moiP - 1 ? " m-opp" : "") + (p >= SS().TRONE ? " m-trone" : "");
+      var b = bouton("", cls, function () { ficheSession(p); });
+      ajout(b, h("span", "m-ses-rang", p >= SS().TRONE ? "👑" : String(SS().NB - p)), h("span", "m-ses-arr", f.court), ajout(h("span", "m-ses-nom"), document.createTextNode(f.ico + " " + f.nom), f.type === "bot" ? h("i", null, " 🤖") : null),
+        h("b", "m-ses-sc", virg(Math.round(sc[p] * 10) / 10)));
+      l.appendChild(ajout(h("li"), b));
+    })(p);
+    a.appendChild(l); c.appendChild(a); pop.appendChild(c); (document.getElementById("g-maire") || document.body).appendChild(pop);
+    document.body.classList.add("m-modal"); pop.onclick = function (e) { if (e.target === pop) fermerTel(); };
+  }
+  // Fiche d'un maire : sa ville comparée à la tienne
+  function ficheSession(p) {
+    if (!SES.s) return;
+    fermerTel();
+    var s = SES.s, f = SS().fiche(s, p), moiP = SS().placeDe(s, moiSes()), m = M.etatSession(st), o = f.stats || {};
+    var pop = h("div", "m-pop m-pop-ses"); pop.id = "m-telmod"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "true");
+    var c = h("div", "m-pop-in"), a = h("article", "m-dossier m-ses-carte");
+    var rel = p === moiP ? "C’est toi" : p === moiP + 1 ? "⚔️ Ton rival : bats-le à l’élection pour prendre sa place" : p === moiP - 1 ? "🛡️ Ton opposant : il veut ta place" : p > moiP ? "Plus haut que toi (" + (p - moiP) + " place" + (p - moiP > 1 ? "s" : "") + ")" : "Plus bas que toi (" + (moiP - p) + " place" + (moiP - p > 1 ? "s" : "") + ")";
+    ajout(a, ajout(h("div", "m-tel-tete"), h("strong", "m-tel-titre", f.ico + " " + f.nom + (f.type === "bot" ? " 🤖" : "")), bouton("✕", "m-leonx", fermerTel)),
+      h("p", "m-ses-sous", f.titre + " · place " + (SS().NB - p) + "/" + SS().NB), h("p", "m-ses-rel", rel));
+    function ligne(lib, a1, b1, mieux) { var r = h("div", "m-cmp" + (mieux == null ? "" : mieux ? " m-cmp-mieux" : " m-cmp-moins")); ajout(r, h("span", null, lib), h("b", null, a1), h("b", null, b1)); return r; }
+    var t = h("div", "m-cmp-table");
+    ajout(t, ajout(h("div", "m-cmp m-cmp-tete"), h("span"), h("b", null, "Toi"), h("b", null, p === moiP ? "—" : f.nom.split(" ")[0])));
+    function n(x) { return x == null ? "?" : typeof x === "number" ? x.toLocaleString("fr-FR") : x; }
+    [["🗳️ Score électoral", m.score, o.score], ["📣 Popularité", m.pop, o.pop], ["😊 Bonheur", m.bon, o.bon], ["👥 Habitants", m.hab, o.hab], ["🏗️ Bâtiments", m.bats, o.bats], ["⭐ Niveau", m.niv, o.niv]].forEach(function (x) {
+      t.appendChild(ligne(x[0], n(x[1]), n(x[2]), p === moiP || x[2] == null ? null : x[1] >= x[2]));
+    });
+    a.appendChild(t);
+    a.appendChild(h("small", "m-aide", f.type === "bot" ? "Les places libres sont tenues par des maires robots (🤖) : les vrais joueurs les remplacent en arrivant." : "Un vrai joueur de ta session."));
+    c.appendChild(a); pop.appendChild(c); (document.getElementById("g-maire") || document.body).appendChild(pop);
+    document.body.classList.add("m-modal"); pop.onclick = function (e) { if (e.target === pop) fermerTel(); };
+  }
+  // Résultat d'une élection de session : grand écran animé
+  function annonceElection(r, s) {
+    var monte = r.apres > r.avant, descend = r.apres < r.avant, d = h("div", "m-flash m-flash-elec" + (monte ? " m-monte" : descend ? " m-descend" : ""));
+    ajout(d, ajout(h("div", "m-flash-in"), h("span", "m-flash-ico", monte ? "🎉" : descend ? "📉" : "🗳️"), h("strong", null, monte ? "Élu plus haut !" : descend ? "Tu recules d’une place" : "Tu gardes ta place"),
+      h("p", null, (monte ? "Te voilà " : "Tu es ") + SS().titre(r.apres) + "."), h("small", null, r.duel ? "Ton score " + virg(r.duel.bas === r.avant ? r.duel.sBas : r.duel.sHaut) + " contre " + virg(r.duel.bas === r.avant ? r.duel.sHaut : r.duel.sBas) : "")));
+    document.body.appendChild(d); if (monte) confettis();
+    d.onclick = function () { d.remove(); }; setTimeout(function () { d.classList.add("m-flash-fin"); setTimeout(function () { d.remove(); }, 600); }, 3800);
+  }
+
   function jeu() {
     envoyerClassement();
+    brancherSession();
     progresser();
     if (st.phase === "fin") return fin();
     if (st.phase === "election") return resultatElection();
@@ -550,7 +691,7 @@
     decouvertes();
     vider();
     // Écran épuré : l'essentiel en haut (où j'en suis, est-ce que je gagne), la ville au milieu, la boutique, puis la gestion repliée
-    ajout(box, entete(), tableau(), carteObjectifs(), piliers(), carteLeon());
+    ajout(box, entete(), bandeauSession(), tableau(), carteObjectifs(), piliers(), carteLeon());
     if (st.opposant) box.appendChild(bandeauOpp());
     if (st.rapport && st.notes && st.notes.length) box.appendChild(notes());
     if (st.chantiers.length) box.appendChild(chantiers());
@@ -603,7 +744,8 @@
   function entete() {
     var d = h("div", "mx-hud"), reste = M.prochaineElection(st) - st.t, a = Math.floor((Math.max(1, st.t) - 1) / 4) + 1, q = (Math.max(1, st.t) - 1) % 4 + 1;
     var gauche = ajout(h("div", "mx-quand"), h("strong", null, "Année " + a + " · T" + q), h("small", null, "Mandat " + st.mandat + (st.scenario ? " · défi du jour" : " · " + etoiles(st))));
-    var vote = h("span", "mx-chip" + (st.anticipee ? " mx-anticipee" : ""), st.scenario ? "🎯 " + (st.scenario.fin - st.t) + " trim." : "🗳️ " + reste + " trim.");
+    var vote = h("span", "mx-chip" + (st.anticipee ? " mx-anticipee" : ""), st.scenario ? "🎯 " + (st.scenario.fin - st.t) + " trim." : st.session && SES.s ? "🗳️ " + mmss(SES.s.prochaine - Date.now()) : "🗳️ " + reste + " trim.");
+    if (st.session && SES.s) vote.classList.add("mx-ses-elec");
     vote.title = st.scenario ? "Fin du défi" : st.anticipee ? "Élections anticipées" : "Prochaine élection";
     ajout(d, ajout(h("div", "mx-ligne"), gauche, ajout(h("div", "mx-droite"), vote, telephone())));
     var p = h("div", "mx-prog"), pi = h("i"); pi.style.width = (M.trimMandat(st) / M.MANDAT * 100) + "%"; p.appendChild(pi); d.appendChild(p);
@@ -638,7 +780,17 @@
       d.appendChild(l);
     });
     // Élections anticipées : à la demande, quand 2 objectifs sur 3 sont remplis (bouton gris tant que ce n'est pas possible)
-    if (st.anticipee) d.appendChild(h("p", "mx-antic", "🗳️ Élections anticipées dans " + (st.anticipee - st.t) + " trimestre" + (st.anticipee - st.t > 1 ? "s" : "") + " : tiens bon !"));
+    if (st.session && SES.s) {
+      var dejaVote = !!(SES.s.votes || {})[moiSes()], peut = n >= 2 && !dejaVote;
+      var bv = bouton(dejaVote ? "🗳️ Tu as voté pour des élections anticipées" : "🗳️ Voter pour des élections anticipées", "mx-antic-btn" + (peut ? " mx-pret" : ""), function () {
+        if (dejaVote) return toast("🗳️ Ton vote est déjà compté.");
+        if (n < 2) return toast("🎯 Remplis 2 objectifs sur 3 pour pouvoir voter.");
+        window.SessionLigne.voter(SES.id).then(function () { toast("🗳️ Vote enregistré !"); });
+      });
+      bv.setAttribute("aria-disabled", peut ? "false" : "true");
+      ajout(d, ajout(h("div", "mx-ligne"), bv, h("b", "mx-ses-votes", "")), h("small", "mx-criseinfo mx-gris", "Si la moitié des joueurs de la session votent, l’élection a lieu tout de suite (sinon toutes les 10 minutes)."));
+    }
+    else if (st.anticipee) d.appendChild(h("p", "mx-antic", "🗳️ Élections anticipées dans " + (st.anticipee - st.t) + " trimestre" + (st.anticipee - st.t > 1 ? "s" : "") + " : tiens bon !"));
     else if (!st.scenario) {
       var ok = M.anticipeePossible(st), b = bouton("🗳️ Demander des élections anticipées", "mx-antic-btn" + (ok ? " mx-pret" : ""), function () {
         if (!M.anticipeePossible(st)) return toast(n < 2 ? "🎯 Remplis 2 objectifs sur 3 pour pouvoir le demander." : "🗳️ Le vote prévu est déjà trop proche.");
@@ -954,9 +1106,11 @@
   function barreTrimestre() {
     var b = h("div", "m-barmois");
     var cartes = (st.bj && !st.bj.fini) || (st.enchere && !st.enchere.fini);
-    b.appendChild(bouton(st.phase === "evenement" ? "📂 Un dossier t’attend" : cartes ? "🃏 Une partie de cartes est en cours" : "Trimestre suivant →", "btn m-go", function () {
+    var auto = !!(st.session && SES.id);
+    b.appendChild(bouton(st.phase === "evenement" ? "📂 Un dossier t’attend" : cartes ? "🃏 Une partie de cartes est en cours" : auto ? "⏱️ Trimestre suivant…" : "Trimestre suivant →", "btn m-go" + (auto ? " mx-auto" : ""), function () {
       if (st.phase === "evenement" || (st.resultat && !st.resultatVu)) return modale();
       if (st.bj && !st.bj.fini) return ouvrirTelephone();
+      if (auto) return toast("⏱️ Le temps passe tout seul : un trimestre toutes les 25 secondes, pour tous les maires de la session.");
       var avant = { t: st.t, net: st.tresor - st.dette };
       st = M.debutTour(st, BASE); sauver(); signal("trimestre"); jeu();
       if (st.t > avant.t) animTrimestre(avant);
@@ -1089,6 +1243,9 @@
       { q: ".m-chantiers", t: "🏗️ Ton chantier avance chaque trimestre et se paie par tranches. Gare aux imprévus !", a: "ok" }] },
     { id: "rare", ecran: "modale", si: function () { return (st.special === "rare" || st.special === "legendaire") && st.phase === "evenement"; }, etapes: [
       { q: "#m-modale .m-choix", t: "✨ Un événement rare ! Aucune réponse n’est toujours la meilleure : à toi de jouer.", a: "choix" }] },
+    { id: "session", ecran: "jeu", si: function () { return !!document.querySelector(".mx-session"); }, etapes: [
+      { q: ".mx-session", t: "🏛️ Tu commences maire du plus petit arrondissement. Toutes les 10 minutes, élection : bats ton rival (juste au-dessus) pour prendre sa place, jusqu’au trône de Maire de Paris. Ton opposant (juste en dessous) veut la tienne.", a: "ok" },
+      { q: ".mx-ses-btn", t: "🏆 Le classement de ta session : de vrais joueurs et des maires robots. Touche un maire pour comparer vos villes.", a: "ok" }] },
     { id: "habitants3", ecran: "jeu", si: function () { return st.phase === "gestion"; }, etapes: [
       { q: ".mx-hab", t: "👥 Les habitants : plus Paris est peuplé, plus les impôts rapportent. Ils arrivent quand ta popularité monte… s’il y a des logements libres (construis-en pour en accueillir plus).", a: "ok" },
       { q: ".mx-chom", t: "💼 Une ville cohérente : plus il y a d’habitants, plus il faut de sécurité, de cadre de vie et d’emplois (les commerces en créent). Sinon, ou si ta popularité baisse, les Parisiens s’en vont.", a: "ok" },
@@ -1661,7 +1818,12 @@
     var cadre = h("div", "m-plan" + (grand ? " m-plan-grand" : "")), img = h("img");
     img.src = grand ? "maire/img/plan-paris.webp" : "maire/img/plan-paris-petit.webp"; img.alt = "Plan de Paris"; img.width = 1536; img.height = 1024; img.decoding = "async";
     cadre.appendChild(img);
+    // En session : tes bâtiments se regroupent dans ton arrondissement, et chaque arrondissement est une zone cliquable
+    var ses = st.session && SES.s && SS() ? SES.s : null, moiP = ses ? SS().placeDe(ses, moiSes()) : -1, centre = null;
+    if (ses && moiP >= 0 && moiP < SS().TRONE) { var A = SS().ARR[SS().arr(moiP)]; centre = { x: A.x, y: A.y, k: A.r * 1.4 / 45 }; }
+    if (ses) zones(cadre, ses, moiP);
     M.planVille(st).forEach(function (b) {
+      if (centre) b = Object.assign({}, b, { x: centre.x + (b.x - 50) * centre.k, y: centre.y + (b.y - 49) * centre.k * 1.5 });
       var dessin = !!DESSINS[b.id], e = dessin ? h("img", "m-v m-v-img") : h("span", "m-v" + (b.gros ? " m-v-gros" : ""), b.ico);
       if (dessin) { e.src = srcBat(b.id); e.alt = ""; e.decoding = "async"; }
       if (nouveaux && nouveaux[b.id + ":" + b.k]) e.classList.add("m-v-neuf");
@@ -1669,13 +1831,29 @@
     });
     return cadre;
   }
+  // Les 20 arrondissements sur le plan : le tien en or, ceux que tu n'as pas encore atteints grisés, tous cliquables pour comparer
+  function zones(cadre, ses, moiP) {
+    for (var p = 0; p < SS().TRONE; p++) (function (p) {
+      var A = SS().ARR[SS().arr(p)], f = SS().fiche(ses, p), rel = p === moiP ? " m-z-moi" : p > moiP ? " m-z-haut" : " m-z-bas";
+      var z = h("button", "m-zone" + rel + (p === moiP + 1 ? " m-z-rival" : "") + (f.type === "joueur" && p !== moiP ? " m-z-joueur" : ""));
+      z.type = "button"; z.style.left = A.x + "%"; z.style.top = A.y + "%"; z.style.width = A.r * 2 + "%";
+      z.title = f.court + " · " + f.nom + (f.type === "bot" ? " (robot)" : "");
+      z.setAttribute("aria-label", z.title);
+      ajout(z, h("b", null, f.court), h("span", null, p === moiP ? "Toi" : p > moiP ? "🔒" : f.ico));
+      z.onclick = function (e) { e.stopPropagation(); ficheSession(p); };
+      cadre.appendChild(z);
+    })(p);
+    var tr = SS().fiche(ses, SS().TRONE), t = h("button", "m-trone-pl" + (moiP >= SS().TRONE ? " m-z-moi" : ""));
+    t.type = "button"; ajout(t, h("span", null, "👑"), h("b", null, moiP >= SS().TRONE ? "Tu es Maire de Paris" : "Maire de Paris : " + tr.nom));
+    t.onclick = function (e) { e.stopPropagation(); ficheSession(SS().TRONE); }; cadre.appendChild(t);
+  }
   function carteVille(fin) {
     var l = M.planVille(st), nouveaux = {};
     // Ce qui vient d'être construit depuis le dernier affichage apparaît avec une petite animation
     if (villeVue && villeVue.pid === st.pid) l.forEach(function (b) { if (!villeVue.l[b.id + ":" + b.k]) nouveaux[b.id + ":" + b.k] = 1; });
     villeVue = { pid: st.pid, l: {} }; l.forEach(function (b) { villeVue.l[b.id + ":" + b.k] = 1; });
     var d = h("details", "m-ville"); d.open = fin || villeOuverte; d.ontoggle = function () { if (!fin) villeOuverte = d.open; };
-    d.appendChild(ajout(h("summary"), h("span", null, "🗺️ " + (fin ? "Le Paris que tu laisses" : "Ton Paris")), h("small", null, l.length + " bâtiment" + (l.length > 1 ? "s" : "") + " sur le plan")));
+    d.appendChild(ajout(h("summary"), h("span", null, "🗺️ " + (fin ? "Le Paris que tu laisses" : st.session ? (st.session.place >= 20 ? "Ton Paris" : "Ton " + (SS() ? SS().court(st.session.place) : "") + " arrondissement") : "Ton Paris")), h("small", null, l.length + " bâtiment" + (l.length > 1 ? "s" : "") + " sur le plan")));
     var p = plan(false, nouveaux); p.onclick = function () { pleinEcranVille(); }; d.appendChild(p);
     if (!l.length) d.appendChild(h("small", "m-aide", "Achète ton premier bâtiment : il apparaîtra ici, au cœur de Paris."));
     if (fin) d.appendChild(ajout(h("div", "m-bas"), bouton("🔍 Agrandir", "btn m-sec", pleinEcranVille), l.length ? bouton("📸 Partager ma ville", "btn m-go", partagerVille) : null));
