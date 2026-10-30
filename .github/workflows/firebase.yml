@@ -30,6 +30,7 @@ jobs:
       - name: Allègement du code mis en ligne (JavaScript et CSS compressés)
         # Seule la copie mise en ligne est compressée : les fichiers du dépôt restent lisibles
         run: |
+          sed -i "s/__VER__/${GITHUB_SHA::8}/" public/js/app.js
           for f in public/maire/*.js public/js/*.js public/maire/*.css public/css/*.css; do
             npx --yes esbuild@0.24.0 "$f" --minify --target=es2017 --charset=utf8 --log-level=warning --allow-overwrite --outfile="$f"
           done

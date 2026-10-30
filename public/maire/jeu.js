@@ -1520,8 +1520,12 @@
   // Illustration du bâtiment si elle existe, sinon son emoji
   var DESSINS = {}; (M.C.ILLUSTRES || []).forEach(function (id) { DESSINS[id] = 1; });
   // Icônes dessinées de l'interface (maire/img/ui) : une image dans un span, à la place d'un émoji
+  var TAILLE_UI = { "mx-pico": 34, "mx-mico": 58, "mx-att-ico": 36, "mx-emp-ico": 36, "mx-prom-ico": 28 };
   function icoUI(nom, cls) {
-    var e = h("span", (cls || "") + " mx-ui"), i = h("img"); i.src = "maire/img/ui/" + nom + ".webp"; i.alt = ""; i.decoding = "async"; i.draggable = false; e.appendChild(i); return e;
+    var e = h("span", (cls || "") + " mx-ui"), i = h("img"); i.src = "maire/img/ui/" + nom + ".webp"; i.alt = ""; i.decoding = "async"; i.draggable = false;
+    /* Taille écrite sur l'image elle-même : jamais d'icône géante, même si le style n'est pas (encore) chargé */
+    var px = TAILLE_UI[(cls || "").split(" ")[0]] || 22; i.width = px; i.height = px; i.style.maxWidth = i.style.maxHeight = "64px";
+    e.appendChild(i); return e;
   }
   function srcBat(id) { return "maire/img/bat/" + id + ".webp"; }
   function icone(id, cls) {

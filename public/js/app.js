@@ -215,6 +215,8 @@ function applyMaint(){
 
 // Chargement à la demande : le code de l'admin et les données de départ ne sont téléchargés que si besoin
 var LOADED={};
+// Version des fichiers du jeu (remplacée à chaque mise en ligne) : le téléphone recharge toujours le style et le code à jour
+var MVER="__VER__";
 function loadScript(src){
   return LOADED[src]||(LOADED[src]=new Promise(function(ok,ko){var s=document.createElement("script");s.src=src;s.onload=ok;s.onerror=function(){delete LOADED[src];ko()};document.head.appendChild(s)}));
 }
@@ -229,14 +231,14 @@ function reglagesMaire(){
   });
 }
 function loadMaire(){
-  if(!LOADED.mcss){LOADED.mcss=1;var l=document.createElement("link");l.rel="stylesheet";l.href="maire/maire.css";document.head.appendChild(l)}
-  return loadScript("maire/reglages.js").then(reglagesMaire).then(function(){return loadScript("maire/contenu.js")}).then(function(){return loadScript("maire/poker.js")}).then(function(){return loadScript("maire/session.js")}).then(function(){return loadScript("maire/moteur.js")}).then(function(){return loadScript("maire/progression.js")}).then(function(){return loadScript("maire/jeu.js")}).then(function(){maireInit();if(window.prechargerSons)setTimeout(prechargerSons,800)})
+  if(!LOADED.mcss){LOADED.mcss=1;var l=document.createElement("link");l.rel="stylesheet";l.href="maire/maire.css?v="+MVER;document.head.appendChild(l)}
+  return loadScript("maire/reglages.js?v="+MVER).then(reglagesMaire).then(function(){return loadScript("maire/contenu.js?v="+MVER)}).then(function(){return loadScript("maire/poker.js?v="+MVER)}).then(function(){return loadScript("maire/session.js?v="+MVER)}).then(function(){return loadScript("maire/moteur.js?v="+MVER)}).then(function(){return loadScript("maire/progression.js?v="+MVER)}).then(function(){return loadScript("maire/jeu.js?v="+MVER)}).then(function(){maireInit();if(window.prechargerSons)setTimeout(prechargerSons,800)})
     .catch(function(){$("m-app").textContent="Le jeu n’a pas pu se charger. Vérifie ta connexion."});
 }
 function loadAdmin(){
   if(!LOADED.css){LOADED.css=1;var l=document.createElement("link");l.rel="stylesheet";l.href="css/admin.css";document.head.appendChild(l)}
   if(!LOADED.amcss){LOADED.amcss=1;var m=document.createElement("link");m.rel="stylesheet";m.href="css/admin-maire.css";document.head.appendChild(m)}
-  return loadScript("js/donnees.js").then(function(){return loadScript("maire/reglages.js")}).then(function(){return loadScript("maire/contenu.js")}).then(function(){return loadScript("js/admin-maire.js")}).then(function(){return loadScript("js/admin.js")});
+  return loadScript("js/donnees.js").then(function(){return loadScript("maire/reglages.js?v="+MVER)}).then(function(){return loadScript("maire/contenu.js?v="+MVER)}).then(function(){return loadScript("js/admin-maire.js")}).then(function(){return loadScript("js/admin.js")});
 }
 
 // Connexion administrateur (Google, discrète, en bas du site)
