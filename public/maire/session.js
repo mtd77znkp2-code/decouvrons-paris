@@ -61,11 +61,11 @@
   // Leur forme change à chaque élection (victoire = élan, défaite = coup dur) et ils gagnent de l'expérience.
   function avance(s, maintenant) { var t = maintenant == null ? Date.now() : maintenant; return Math.max(0, Math.min(1, (t - (s.prochaine - mandatMs())) / mandatMs())); }
   function tendance(pl) { var f = pl.forme || 0; return f > 0.15 ? "croissance" : f < -0.15 ? "declin" : "stable"; }
-  function evoluerBots(s, duels) {
-    s.places.forEach(function (x, p) {
-      if (x.type !== "bot") return;
-      var n = parseInt(String(x.id).replace(/\D/g, ""), 10) || 0, d = duels.filter(function (y) { return y.bas === p || y.haut === p; })[0];
-      var choc = d ? (d.monte ? (d.haut === p ? 0.3 : -0.3) : (d.haut === p ? 0.1 : -0.1)) : 0;   // monté = élan, descendu = coup dur (après l'élection, d.haut est la place du gagnant)
+  function evoluerBots(s, ordre) {
+    ordre.forEach(function (o) {
+      var x = o.x; if (x.type !== "bot") return;
+      var n = parseInt(String(x.id).replace(/\D/g, ""), 10) || 0;
+      var choc = o.apres > o.p ? 0.3 : o.apres < o.p ? -0.3 : 0.05;   // monté = élan, descendu = coup dur
       var f = (x.forme || 0) * 0.6 + (hache(s.graine, s.election * 13 + 5, n) - 0.5) * 1.1 + choc;
       x.forme = Math.round(Math.max(-1, Math.min(1, f)) * 100) / 100;
       x.xp = Math.min(R.v.botXpMax, Math.round(((x.xp || 0) + R.v.botXpGain) * 10) / 10);
@@ -281,23 +281,31 @@
       return (x.score || 40) - ((s.malus || {})[x.uid] || 0) - (maintenant - (x.vu || 0) > ABSENT_MS ? 10 : 0);
     });
   }
+  // Élection : un vrai classement. Chaque maire est classé selon son score (sondage, attaques subies…) parmi les 21 :
+  // on peut gagner (ou perdre) plusieurs places d'un coup. À égalité, le mieux placé garde l'avantage.
   function elire(s0, maintenant) {
     if (!electionDue(s0, maintenant)) return s0;
-    var s = copie(s0), sc = scores(s0, maintenant), avant = s.places.map(function (x) { return x; }), duels = [];
-    var p = 0;
-    while (p < NB - 1) {
-      var gagne = sc[p] > sc[p + 1];
-      duels.push({ bas: p, haut: p + 1, sBas: sc[p], sHaut: sc[p + 1], monte: gagne });
-      if (gagne) { var t = s.places[p]; s.places[p] = s.places[p + 1]; s.places[p + 1] = t; var u = sc[p]; sc[p] = sc[p + 1]; sc[p + 1] = u; p += 2; }
-      else p += 1;
-    }
-    evoluerBots(s, duels);
-    // Ce que chaque joueur doit savoir : d'où il part, où il arrive, contre qui il a gagné ou perdu
+    var s = copie(s0), sc = scores(s0, maintenant);
+    var ordre = s.places.map(function (x, p) { return { x: x, p: p, sc: sc[p] }; });
+    ordre.sort(function (a, b) { return b.sc - a.sc || b.p - a.p; });
+    ordre.forEach(function (o, rang) { o.apres = NB - 1 - rang; s.places[o.apres] = o.x; });
+    evoluerBots(s, ordre);
+    // Le tableau complet, pour l'animation des résultats (du premier au dernier)
+    s.classement = ordre.map(function (o) {
+      return { nom: o.x.nom, ico: o.x.ico, bot: o.x.type === "bot", uid: o.x.uid || null, maire: (o.x.stats && o.x.stats.maire) || "", score: Math.round(o.sc * 10) / 10, avant: o.p, apres: o.apres };
+    });
+    // Ce que chaque joueur doit savoir : d'où il part, où il arrive, qui il a dépassé et qui l'a dépassé
     s.resultats = [];
-    avant.forEach(function (x, pAvant) {
-      if (x.type !== "joueur") return;
-      var pApres = placeDe(s, x.uid), d = duels.filter(function (y) { return y.bas === pAvant || y.haut === pAvant; });
-      s.resultats.push({ uid: x.uid, avant: pAvant, apres: pApres, duel: d.length ? d[0] : null });
+    ordre.forEach(function (o) {
+      if (o.x.type !== "joueur") return;
+      var vs = [];
+      ordre.forEach(function (a) {
+        if (a === o) return;
+        var k = a.x.type === "bot" ? "bot" : (a.x.stats && a.x.stats.maire) || "sans";
+        if (a.p > o.p && a.apres < o.apres) vs.push({ k: k, g: 1 });        // il était devant, il est derrière
+        else if (a.p < o.p && a.apres > o.apres) vs.push({ k: k, g: 0 });   // il était derrière, il est devant
+      });
+      s.resultats.push({ uid: o.x.uid, avant: o.p, apres: o.apres, score: Math.round(o.sc * 10) / 10, vs: vs });
     });
     s.election++; s.prochaine = maintenant + mandatMs(); s.votes = {}; s.derniere = maintenant; s.malus = {}; s.boucliers = {};
     return s;

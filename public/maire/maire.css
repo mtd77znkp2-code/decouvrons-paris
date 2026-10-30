@@ -1197,3 +1197,24 @@ body.m-casino .m-pop,#m-telmod{place-items:start center}
 .m-reg-t b{color:#ffd970;font-variant-numeric:tabular-nums}
 .m-reg-l input[type=range]{width:100%;accent-color:#f5b21a;height:28px}
 .m-reg-l small{font-size:12.5px;opacity:.75}
+/* Cérémonie des résultats d'élection */
+.m-election{z-index:1450;place-items:start center}
+.m-elec-carte{width:min(520px,100%);padding:16px 14px;border-radius:20px;background:#0f1a46;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,.6);gap:10px}
+.m-elec-carte h4{margin:0;font-size:22px}
+.m-elec-liste{position:relative;overflow:hidden}
+.m-elec-l{position:absolute;left:0;right:0;height:26px;display:grid;grid-template-columns:28px minmax(0,1fr) 70px 38px 30px;gap:6px;align-items:center;padding:0 6px;border-radius:8px;font-size:12.5px;background:rgba(255,255,255,.04);transition:top 1s cubic-bezier(.3,1,.4,1)}
+.m-elec-rang{text-align:right;color:rgba(255,255,255,.6);font-variant-numeric:tabular-nums}
+.m-elec-nom{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-elec-jauge{height:6px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
+.m-elec-barre{display:block;width:0;height:100%;border-radius:inherit;background:#8a94b8;transition:width .7s ease-out}
+.m-elec-sc{text-align:right;font-variant-numeric:tabular-nums}
+.m-elec-fl{font-style:normal;font-weight:800;font-size:11.5px;text-align:center;color:rgba(255,255,255,.5)}
+.m-elec-fl.m-plus{color:#8ee6ad}.m-elec-fl.m-moins{color:#ff9d94}
+.m-elec-joueur{background:rgba(111,160,255,.12)}
+.m-elec-moi{z-index:2;background:rgba(245,178,26,.28);box-shadow:inset 0 0 0 2px #f5b21a;font-weight:800}
+.m-elec-moi .m-elec-barre{background:#f5b21a}
+.m-elec-bilan{display:grid;gap:6px;justify-items:center;text-align:center;padding:12px;border-radius:14px;background:rgba(245,178,26,.12)}
+.m-elec-bilan strong{font-size:20px}.m-elec-bilan p{margin:0}.m-elec-bilan small{opacity:.8}
+.m-elec-bilan .btn{width:100%}
+.m-elec-bilan.mx-cache{visibility:hidden}
+@media (prefers-reduced-motion:reduce){.m-elec-l,.m-elec-barre{transition:none}}

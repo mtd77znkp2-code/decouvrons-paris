@@ -735,7 +735,7 @@
         if (window.sfx) { if (se.rival) window.sfx("epee"); if (se.opp) setTimeout(function () { window.sfx("bouclier"); }, se.rival ? 700 : 0); }
         d.insertBefore(ajout(h("div", "mx-resume mx-entre"),
           ajout(h("div", "mx-oppres"), h("span", null, "🏛️"), ajout(h("div"), h("strong", null, "Tu es " + se.titre), h("small", null, "Place " + (SS().NB - se.place) + " sur " + SS().NB + " : gagne tes élections pour monter jusqu’au trône de Maire de Paris."))),
-          se.rival ? ajout(h("div", "mx-oppres"), h("span", null, se.rival.ico), ajout(h("div"), h("strong", null, "⚔️ Ton rival : " + se.rival.nom + (se.rival.type === "bot" ? " 🤖" : "")), h("small", null, se.rival.titre + " · bats-le à l’élection pour prendre sa place"))) : null,
+          se.rival ? ajout(h("div", "mx-oppres"), h("span", null, se.rival.ico), ajout(h("div"), h("strong", null, "⚔️ Ton rival : " + se.rival.nom + (se.rival.type === "bot" ? " 🤖" : "")), h("small", null, se.rival.titre + " · le maire juste devant toi : fais un meilleur score que lui pour passer devant"))) : null,
           se.opp ? ajout(h("div", "mx-oppres"), h("span", null, se.opp.ico), ajout(h("div"), h("strong", null, "🛡️ Ton opposant : " + se.opp.nom + (se.opp.type === "bot" ? " 🤖" : "")), h("small", null, se.opp.titre + " · il t’attaquera pour prendre ta place"))) : h("small", "m-aide", "Personne en dessous de toi : aucun opposant ne t’attaque pour l’instant.")), bas);
         return setTimeout(function () { bas.classList.remove("mx-cache"); }, calme() ? 0 : 600);
       }
@@ -883,14 +883,12 @@
     surveillerAttaques(s);
     var r = SS().resultatDe(s, moiSes()), avant = st.session ? st.session.place : -1, elu = null;
     if (r && st.session && s.election > (st.session.election || 0) && st.session.dernElec !== s.election) {
-      st = M.electionSession(st, { election: s.election, avant: r.avant, apres: r.apres, titre: SS().titre(r.apres), rival: r.duel ? SS().fiche(s, r.duel.bas === r.avant ? r.duel.haut : r.duel.bas).nom : "" });
+      var devant = (s.classement || []).filter(function (c) { return c.avant === r.avant + 1; })[0];
+      st = M.electionSession(st, { election: s.election, avant: r.avant, apres: r.apres, titre: SS().titre(r.apres), rival: devant ? devant.nom : "" });
       elu = r;
-      // Statistiques : contre qui on a gagné ou perdu (un bot, ou un joueur et sa compétence)
-      if (r.duel) {
-        var advP = r.apres === r.duel.bas ? r.duel.haut : r.duel.bas, adv = SS().fiche(s, advP), etaitBas = r.avant === r.duel.bas;
-        var gagne = etaitBas ? r.duel.monte : !r.duel.monte, cle = adv.type === "bot" ? "bot" : (adv.stats && adv.stats.maire) || "sans";
-        st.duels = st.duels || {}; var dd = st.duels[cle] || (st.duels[cle] = { g: 0, p: 0 }); if (gagne) dd.g++; else dd.p++;
-      }
+      // Statistiques : qui on a dépassé (gagné) et qui nous a dépassé (perdu) : un bot, ou un joueur et sa compétence
+      st.duels = st.duels || {};
+      (r.vs || []).forEach(function (v) { var dd = st.duels[v.k] || (st.duels[v.k] = { g: 0, p: 0 }); if (v.g) dd.g++; else dd.p++; });
     }
     var info = infoSession(s);
     // Nouveau rival ou nouvel opposant en cours de partie (après une élection, un départ…) : épée / bouclier
@@ -1145,7 +1143,7 @@
     var pop = h("div", "m-pop m-pop-ses"); pop.id = "m-telmod"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "true");
     var c = h("div", "m-pop-in"), a = h("article", "m-dossier m-ses-carte");
     ajout(a, ajout(h("div", "m-tel-tete"), h("strong", "m-tel-titre", "🏆 Classement de la session"), bouton("✕", "m-leonx", fermerTel)),
-      h("p", "m-aide", "Chacun défie le maire juste au-dessus à chaque élection. Touche un maire pour comparer."));
+      h("p", "m-aide", "À chaque élection, tout le monde est classé selon son score : on peut gagner ou perdre plusieurs places d’un coup. Touche un maire pour comparer."));
     var l = h("ol", "m-ses-liste");
     for (var p = SS().NB - 1; p >= 0; p--) (function (p) {
       var f = SS().fiche(s, p), cls = "m-ses-l" + (p === moiP ? " m-moi" : p === moiP + 1 ? " m-rival" : p === moiP - 1 ? " m-opp" : "") + (p >= SS().TRONE ? " m-trone" : "");
@@ -1164,7 +1162,7 @@
     var s = SES.s, f = SS().fiche(s, p), moiP = SS().placeDe(s, moiSes()), m = M.etatSession(st), o = f.stats || {};
     var pop = h("div", "m-pop m-pop-ses"); pop.id = "m-telmod"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "true");
     var c = h("div", "m-pop-in"), a = h("article", "m-dossier m-ses-carte");
-    var rel = p === moiP ? "C’est toi" : p === moiP + 1 ? "⚔️ Ton rival : bats-le à l’élection pour prendre sa place" : p === moiP - 1 ? "🛡️ Ton opposant : il veut ta place" : p > moiP ? "Plus haut que toi (" + (p - moiP) + " place" + (p - moiP > 1 ? "s" : "") + ")" : "Plus bas que toi (" + (moiP - p) + " place" + (moiP - p > 1 ? "s" : "") + ")";
+    var rel = p === moiP ? "C’est toi" : p === moiP + 1 ? "⚔️ Ton rival : juste devant toi, fais un meilleur score pour passer devant" : p === moiP - 1 ? "🛡️ Ton opposant : il veut ta place" : p > moiP ? "Plus haut que toi (" + (p - moiP) + " place" + (p - moiP > 1 ? "s" : "") + ")" : "Plus bas que toi (" + (moiP - p) + " place" + (moiP - p > 1 ? "s" : "") + ")";
     ajout(a, ajout(h("div", "m-tel-tete"), h("strong", "m-tel-titre", f.ico + " " + f.nom + (f.type === "bot" ? " 🤖" : "")), bouton("✕", "m-leonx", fermerTel)),
       h("p", "m-ses-sous", f.titre + " · place " + (SS().NB - p) + "/" + SS().NB), h("p", "m-ses-rel", rel));
     function ligne(lib, a1, b1, mieux) { var r = h("div", "m-cmp" + (mieux == null ? "" : mieux ? " m-cmp-mieux" : " m-cmp-moins")); ajout(r, h("span", null, lib), h("b", null, a1), h("b", null, b1)); return r; }
@@ -1184,14 +1182,53 @@
     document.body.classList.add("m-modal"); pop.onclick = function (e) { if (e.target === pop) fermerTel(); };
   }
   // Résultat d'une élection de session : grand écran animé
+  // ---------- Cérémonie des résultats : tous les maires, leur score qui monte, puis le nouveau classement ----------
   function annonceElection(r, s) {
-    var monte = r.apres > r.avant, descend = r.apres < r.avant;
-    if (window.sfx) window.sfx(descend ? "hue" : monte && r.apres >= SS().TRONE ? "fanfare" : "bravo");   // n°15 battu, n°36 couronné Maire de Paris, n°14 victoire
-    var d = h("div", "m-flash m-flash-elec" + (monte ? " m-monte" : descend ? " m-descend" : ""));
-    ajout(d, ajout(h("div", "m-flash-in"), h("span", "m-flash-ico", monte ? "🎉" : descend ? "📉" : "🗳️"), h("strong", null, monte ? "Élu plus haut !" : descend ? "Tu recules d’une place" : "Tu gardes ta place"),
-      h("p", null, (monte ? "Te voilà " : "Tu es ") + SS().titre(r.apres) + "."), h("small", null, r.duel ? "Ton score " + virg(r.duel.bas === r.avant ? r.duel.sBas : r.duel.sHaut) + " contre " + virg(r.duel.bas === r.avant ? r.duel.sHaut : r.duel.sBas) : "")));
-    document.body.appendChild(d); if (monte) confettis();
-    d.onclick = function () { d.remove(); }; setTimeout(function () { d.classList.add("m-flash-fin"); setTimeout(function () { d.remove(); }, 600); }, 3800);
+    var monte = r.apres > r.avant, descend = r.apres < r.avant, cl = s.classement || [], moi = moiSes();
+    var ecart = Math.abs(r.apres - r.avant), places = ecart + " place" + (ecart > 1 ? "s" : "");
+    var titre = r.apres >= SS().TRONE && monte ? "👑 Maire de Paris !" : monte ? "🎉 Tu gagnes " + places + " !" : descend ? "📉 Tu perds " + places : "🗳️ Tu gardes ta place";
+    var v = document.getElementById("m-election"); if (v) v.remove(); cacherBulle();
+    var f = h("div", "m-pop m-election"); f.id = "m-election"; f.setAttribute("role", "dialog");
+    var c = h("div", "m-pop-in m-elec-carte"), H = 30;
+    ajout(c, h("p", "m-sur", "🗳️ Élection n° " + s.election + (s.nom ? " · session " + s.nom : "")), h("h4", null, "Les résultats"));
+    var liste = h("div", "m-elec-liste"); liste.style.height = (cl.length * H) + "px";
+    // Rangée de chaque maire, d'abord à son ancienne place (1 = trône en haut)
+    var lignes = cl.map(function (x) {
+      var toi = x.uid === moi, l = h("div", "m-elec-l" + (toi ? " m-elec-moi" : "") + (x.bot ? "" : " m-elec-joueur"));
+      var rang = h("b", "m-elec-rang", String(SS().NB - x.avant)), barre = h("i", "m-elec-barre"), sc = h("b", "m-elec-sc", "0"), fl = h("em", "m-elec-fl", "");
+      var m = !x.bot && x.maire && M.C.MAIRES[x.maire];
+      ajout(l, rang, h("span", "m-elec-nom", (toi ? "⭐ Toi" : x.ico + " " + x.nom) + (x.bot ? " 🤖" : m ? " · " + m.ico : "")), ajout(h("span", "m-elec-jauge"), barre), sc, fl);
+      l.style.top = ((SS().NB - 1 - x.avant) * H) + "px";
+      liste.appendChild(l);
+      return { x: x, l: l, rang: rang, barre: barre, sc: sc, fl: fl };
+    });
+    c.appendChild(liste);
+    var bilan = h("div", "m-elec-bilan mx-cache");
+    ajout(bilan, h("strong", null, titre), h("p", null, "De la " + (SS().NB - r.avant) + "ᵉ à la " + (SS().NB - r.apres) + "ᵉ place · te voilà " + SS().titre(r.apres) + "."),
+      h("small", null, "Ton score : " + virg(r.score || 0) + " · tu as dépassé " + (r.vs || []).filter(function (x) { return x.g; }).length + " maire(s), " + (r.vs || []).filter(function (x) { return !x.g; }).length + " t’ont dépassé."),
+      bouton("Continuer", "btn m-go", function () { f.remove(); }));
+    c.appendChild(bilan); f.appendChild(c); document.body.appendChild(f);
+    var calmeA = calme();
+    // 1. Les scores se remplissent, du haut vers le bas
+    lignes.forEach(function (o, k) {
+      setTimeout(function () {
+        o.barre.style.width = Math.max(4, Math.min(100, o.x.score)) + "%";
+        var t0 = Date.now(), fin = o.x.score;
+        (function compte() { var p = Math.min(1, (Date.now() - t0) / 700); o.sc.textContent = virg(Math.round(fin * p * 10) / 10); if (p < 1) requestAnimationFrame(compte); })();
+      }, calmeA ? 0 : 300 + k * 60);
+    });
+    // 2. Tout le monde glisse vers sa nouvelle place
+    setTimeout(function () {
+      lignes.forEach(function (o) {
+        o.l.style.top = ((SS().NB - 1 - o.x.apres) * H) + "px"; o.rang.textContent = String(SS().NB - o.x.apres);
+        var d = o.x.apres - o.x.avant; o.fl.textContent = d > 0 ? "▲" + d : d < 0 ? "▼" + (-d) : "="; o.fl.className = "m-elec-fl " + (d > 0 ? "m-plus" : d < 0 ? "m-moins" : "");
+      });
+      if (window.sfx) window.sfx(descend ? "hue" : monte && r.apres >= SS().TRONE ? "fanfare" : "bravo");   // n°15 battu, n°36 couronné, n°14 victoire
+      if (monte) confettis();
+      // On ramène sa propre ligne à l'écran
+      var moiL = lignes.filter(function (o) { return o.x.uid === moi; })[0];
+      setTimeout(function () { if (moiL) moiL.l.scrollIntoView({ block: "center", behavior: "smooth" }); bilan.classList.remove("mx-cache"); }, calmeA ? 0 : 1000);
+    }, calmeA ? 50 : 300 + lignes.length * 60 + 900);
   }
 
   function jeu() {
@@ -1874,7 +1911,7 @@
     { id: "rare", ecran: "modale", si: function () { return (st.special === "rare" || st.special === "legendaire") && st.phase === "evenement"; }, etapes: [
       { q: "#m-modale .m-choix", t: "✨ Un événement rare ! Aucune réponse n’est toujours la meilleure : à toi de jouer.", a: "choix" }] },
     { id: "session", ecran: "jeu", si: function () { return !!document.querySelector(".mx-session"); }, etapes: [
-      { q: ".mx-session", t: "🏛️ Tu commences maire du plus petit arrondissement. Toutes les 10 minutes, élection : bats ton rival (juste au-dessus) pour prendre sa place, jusqu’au trône de Maire de Paris. Ton opposant (juste en dessous) veut la tienne.", a: "ok" },
+      { q: ".mx-session", t: "🏛️ Tu commences maire du plus petit arrondissement. Toutes les 10 minutes, élection : tous les maires sont classés selon leur score. Meilleur que 10 maires devant toi ? Tu gagnes 10 places d’un coup, jusqu’au trône de Maire de Paris. Ton opposant (juste en dessous) veut la tienne.", a: "ok" },
       { q: ".m-barmois", t: "📂 C’est toi qui appelles le dossier suivant. Un nouveau arrive toutes les 2 min 15 (le bouton s’illumine) et tu peux en garder 4 en réserve. Les saisons, elles, passent toutes seules : recettes et dépenses tombent sans que tu aies à cliquer. Le petit emoji montre la saison. Ne traîne pas trop : les autres maires avancent pendant ce temps !", a: "ok" },
       { q: ".mx-ses-attaque", t: "⚔️ Attaque ton rival ou ton opposant pour faire baisser son sondage avant l’élection. Le bouclier 🛡️ te protège de la prochaine attaque.", a: "ok" },
       { q: ".mx-ses-btn", t: "🏆 Le classement de ta session : de vrais joueurs et des maires robots. Touche un maire pour comparer vos villes.", a: "ok" }] },

@@ -739,10 +739,17 @@ test("sessions : 21 places, on commence en bas, on défie son rival, une place g
   // Pas d'élection avant 10 minutes, sauf si la moitié des joueurs vote pour des anticipées
   assert.deepEqual(S.elire(s, 60000), s);
   let v = S.voter(s, "u1"); assert.equal(S.nbVotes(v), 1); assert.equal(S.votesRequis(v), 1); assert.ok(S.electionDue(v, 60000));
-  // Un joueur excellent monte d'une seule place par élection et finit sur le trône ; un joueur médiocre ne monte pas
-  let t = s; for (let k = 0; k < 25; k++) { t = S.signaler(t, "u1", { score: 95 }, k * S.MANDAT_MS); t = S.signaler(t, "u2", { score: 20 }, k * S.MANDAT_MS); const avant = S.placeDe(t, "u1");
-    t = S.elire(t, (k + 1) * S.MANDAT_MS + 1); const r = S.resultatDe(t, "u1"); assert.equal(r.avant, avant); assert.ok(r.apres - r.avant <= 1); }
-  assert.equal(S.placeDe(t, "u1"), 20, "Maire de Paris"); assert.ok(S.placeDe(t, "u2") <= 1);
+  // Un vrai classement : un joueur excellent passe devant tous ceux qu'il bat, d'un coup (jusqu'au trône) ; un joueur médiocre reste en bas
+  let t = S.signaler(S.signaler(s, "u1", { score: 95 }, S.MANDAT_MS), "u2", { score: 20 }, S.MANDAT_MS);
+  t = S.elire(t, S.MANDAT_MS + 1); const r1 = S.resultatDe(t, "u1");
+  assert.equal(r1.avant, 0); assert.equal(r1.apres, 20, "du dernier rang au trône en une élection"); assert.equal(r1.vs.filter(v => v.g).length, 20, "il a dépassé tout le monde");
+  assert.ok(S.placeDe(t, "u2") <= 1); assert.equal(t.classement.length, 21);
+  assert.ok(t.classement.every((c, k) => k === 0 || c.score <= t.classement[k - 1].score), "classé du meilleur score au moins bon");
+  // Un joueur moyen se place selon son score parmi les bots
+  let m = S.signaler(S.rejoindre(S.nouvelleSession(8, 0), "u3", "Moyen", "🙂", 0), "u3", { score: 58 }, S.MANDAT_MS); m = S.elire(m, S.MANDAT_MS + 1);
+  const r3 = S.resultatDe(m, "u3"), plusForts = m.classement.filter(c => c.score > r3.score).length; assert.equal(r3.apres, 20 - plusForts);
+  for (let k = 1; k < 4; k++) { t = S.signaler(S.signaler(t, "u1", { score: 95 }, (k + 1) * S.MANDAT_MS), "u2", { score: 20 }, (k + 1) * S.MANDAT_MS); t = S.elire(t, (k + 1) * S.MANDAT_MS + 2); }
+  assert.equal(S.placeDe(t, "u1"), 20, "Maire de Paris");
   assert.equal(t.places.filter(x => x.type === "joueur").length, 2, "personne ne disparaît");
   // Fiches comparables pour les bots comme pour les joueurs
   const f = S.fiche(t, 5); assert.ok(f.nom && f.stats && f.titre && f.hab > 0);
