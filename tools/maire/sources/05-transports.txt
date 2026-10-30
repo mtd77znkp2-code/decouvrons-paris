@@ -13,7 +13,7 @@ C) Rendre la rue aux voitures :: Retour en arrière spectaculaire.
    > Les voitures reviennent sur Rivoli.
    +3 bon-3 > Des milliers de cyclistes manifestent sur les quais.
 
-=== tra-002 | transports | Le périphérique à 50 km/h le long de l’arrondissement
+=== tra-002 | transports | Ralentir à 50 km/h aux portes de l’arrondissement
 La vitesse sur le tronçon de périphérique qui longe l’arrondissement pourrait passer à 50 km/h pour réduire le bruit et la pollution. La banlieue voisine est vent debout.
 A) Demander les 50 km/h :: Moins de bruit, colère des banlieusards.
    ecologie+3 securite+1 pop-2 | g+1 c0 d-4 e+5
@@ -93,7 +93,7 @@ C) Rester en retrait :: Ce n’est pas ta compétence.
    pop-2 | g0 c0 d0 e0
    > Les usagers regrettent ton silence.
 
-=== tra-008 | transports | Le stationnement des motos devient payant
+=== tra-008 | transports | Les deux-roues motorisés passeront-ils à la caisse ?
 Les deux-roues motorisés stationnaient gratuitement dans l’arrondissement. Faire payer rapporterait de l’argent et libérerait les trottoirs.
 A) Rendre le stationnement payant :: Recettes, colère des motards.
    rec+0.6x40 proprete+1 ecologie+1 pop-2 | g+1 c+1 d-2 e+4

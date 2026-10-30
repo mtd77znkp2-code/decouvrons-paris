@@ -109,7 +109,7 @@ C) Refuser et financer sur fonds publics :: Patrimoine préservé, budget alourd
    bud-45 pop+1 | g+2 c-1 d-2 e+1
    > L’arrondissement paie seul. Le monument est rénové sans publicité.
 
-=== fin-009 | finances | Les impayés de loyers explosent dans les HLM du quartier
+=== fin-009 | finances | Les locataires du parc social au bord du gouffre
 Avec l’inflation, de nombreux locataires du parc social de l’arrondissement n’arrivent plus à payer. Les bailleurs demandent de l’aide.
 A) Créer un fonds d’urgence pour les ménages :: Solidarité, coût élevé.
    bud-35 achat+5 logement+2 bon+3 | g+4 c+1 d-2 e+1
@@ -214,7 +214,7 @@ C) Augmenter la taxe de séjour des hôtels de luxe :: Recettes sûres, hôtelie
    rec+1x50 economie-1 | g+2 c0 d-2 e+1
    > Les hôtels chics du quartier paient davantage. Ils protestent.
 
-=== fin-017 | finances | Rendre payant le musée de l’arrondissement ?
+=== fin-017 | finances | Une entrée à 5 € pour le musée du quartier ?
 Le petit musée municipal du quartier est gratuit. Un adjoint propose une entrée à 5 €.
 A) Rendre l’entrée payante pour tous :: Recettes nouvelles, fréquentation en baisse.
    rec+0.8x50 bon-2 pop-2 | g-3 c+1 d+2 e-1
@@ -331,7 +331,7 @@ C) Baisser un impôt local pendant un an :: Populaire, temporaire.
    > Les habitants voient leur facture baisser. L’effet ne durera qu’un an.
    +30 pop-2 > L’impôt remonte : beaucoup ont oublié la baisse, mais remarquent la hausse.
 
-=== fin-026 | finances | Le contentieux avec l’ancien prestataire
+=== fin-026 | finances | Un vieux procès contre l’arrondissement
 Un ancien prestataire de la mairie d’arrondissement réclame des indemnités après la rupture de son contrat. L’affaire traîne depuis des années.
 ? apres=6
 A) Aller jusqu’au bout du procès :: Risqué, mais peut rapporter gros.

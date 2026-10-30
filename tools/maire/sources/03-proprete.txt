@@ -133,7 +133,7 @@ C) Créer un service de nettoyage des chantiers payé par les entreprises :: Eff
    bud-3 rec+0.2x40 proprete+3 | g+2 c+2 d0 e+1
    > Une équipe dédiée nettoie autour des chantiers.
 
-=== pro-011 | proprete | Le marché du quartier laisse des tonnes de déchets
+=== pro-011 | proprete | Cagettes et emballages après chaque marché
 Après chaque marché de l’arrondissement, des cagettes, fruits abîmés et emballages restent sur la chaussée.
 A) Imposer le tri aux commerçants du marché :: Responsabilise.
    bud-2 proprete+2 ecologie+2 | g+1 c+2 d+1 e+3

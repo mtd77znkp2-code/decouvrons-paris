@@ -180,7 +180,7 @@ C) Refuser :: Pas de bureaucratie supplémentaire.
    coh+0.5 | g-1 c0 d+3 e-4
    > Tu refuses une « usine à gaz ».
 
-=== eco-015 | ecologie | Plus de menus végétariens à la cantine
+=== eco-015 | ecologie | Deux repas végétariens par semaine ?
 Les cantines scolaires de l’arrondissement pourraient proposer un menu végétarien un jour de plus par semaine.
 A) Deux jours végétariens par semaine :: Écologique, débat avec des parents.
    ecologie+2 achat+1 pop-1 | g+1 c+1 d-2 e+5

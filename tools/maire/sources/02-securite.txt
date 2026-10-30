@@ -96,7 +96,7 @@ C) Laisser faire la police nationale :: Pas de coût pour l’arrondissement.
    > Le problème reste entre les mains de la préfecture.
    +6 pop-2 > Les commerçants du quartier ferment leurs rideaux en signe de protestation.
 
-=== sec-008 | securite | Les agressions à la station de métro du quartier
+=== sec-008 | securite | Des voyageurs agressés sous terre
 Plusieurs agressions violentes à la station de métro de l’arrondissement choquent les habitants. La RATP dépend de la Région, mais tout le monde se tourne vers toi.
 A) Financer des agents de sécurité supplémentaires :: L’arrondissement paie pour un réseau qu’il ne gère pas.
    rec-1x30 securite+4 transports+1 | g0 c+1 d+3 e0
