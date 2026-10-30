@@ -84,7 +84,7 @@ C) Rien :: État.
    > L’exploitation continue.
 
 === econ-233 | economie | Les torréfacteurs de quartier
-Les torréfacteurs artisanaux sont accusés d’enfumer les rues.
+Les torréfacteurs artisanaux de l’arrondissement sont accusés d’enfumer les rues.
 A) Aider à installer des filtres :: Concilier.
    bud-1 economie+1 ecologie+1 | g+1 c+2 d+1 e+1
    > L’odeur de café reste, la fumée disparaît.

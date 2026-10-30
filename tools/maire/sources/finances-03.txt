@@ -37,7 +37,7 @@ C) Continuer à plaider :: Défendre la Ville.
    > Les procès continuent.
 
 === fin-050 | finances | Faire payer les chantiers privés qui occupent la rue
-Les échafaudages et palissades des chantiers privés occupent les trottoirs pendant des mois pour presque rien.
+Les échafaudages et palissades des chantiers privés occupent les trottoirs de l’arrondissement pendant des mois pour presque rien.
 A) Multiplier la redevance par trois :: Recettes et chantiers plus courts.
    rec+0.6x60 logement-1 | g+2 c+2 d-1 e+1
    > Les chantiers se dépêchent.
@@ -49,14 +49,14 @@ C) Ne rien changer :: Ne pas freiner le bâtiment.
    > Les palissades restent.
 
 === fin-051 | finances | Un fonds de réserve pour les catastrophes
-Les experts conseillent de mettre de côté de l’argent pour faire face aux catastrophes.
-A) Mettre 100 M€ en réserve :: Prudence.
+Les experts conseillent à la mairie d’arrondissement de mettre de côté de l’argent pour faire face aux catastrophes.
+A) Mettre une grosse somme en réserve :: Prudence.
    bud-100 coh+1 | g0 c+3 d+3 e+1
    > Une réserve est bloquée pour les coups durs.
    +5 bud+100 > La réserve reste disponible en cas de crise.
 B) Souscrire une assurance catastrophe :: Mutualiser.
    rec-0.4x60 | g0 c+3 d+2 e0
-   > La Ville est assurée contre les grandes catastrophes.
+   > L’arrondissement est assuré contre les grandes catastrophes.
 C) Ne rien mettre de côté :: Investir maintenant.
    coh-1 | g+1 c-1 d-2 e0
    > L’argent est dépensé pour les projets du mandat.
@@ -86,7 +86,7 @@ C) Refuser :: Le service public se finance par l’impôt.
    > La proposition est rejetée.
 
 === fin-054 | finances | Les concessions des restaurants dans les parcs
-Les restaurants installés dans les parcs municipaux paient des loyers très faibles.
+Les restaurants installés dans les parcs de l’arrondissement paient des loyers très faibles.
 A) Relancer les concessions avec mise en concurrence :: Recettes.
    rec+0.5x60 economie-1 | g+1 c+2 d+1 e0
    > Les nouveaux loyers sont bien plus élevés.
@@ -99,7 +99,7 @@ C) Ne rien changer :: Stabilité.
    > Les contrats sont renouvelés.
 
 === fin-055 | finances | Le tarif des crèches selon les revenus
-Les familles aisées paient la crèche presque aussi peu que les familles modestes.
+Dans l’arrondissement, les familles aisées paient la crèche presque aussi peu que les familles modestes.
 ? distinct
 A) Tarifs plus progressifs :: Justice.
    rec+0.3x60 pop-1 | g+3 c+1 d-3 e+1
@@ -112,7 +112,7 @@ C) Garder les tarifs :: Stabilité.
    > Rien ne change.
 
 === fin-056 | finances | Les heures supplémentaires explosent
-Les heures supplémentaires des agents ont doublé en trois ans, notamment pour les événements.
+Les heures supplémentaires des agents de l’arrondissement ont doublé en trois ans, notamment pour les événements.
 A) Recruter plutôt que payer des heures sup :: Organisation.
    rec+0.2x60 services+1 | g+2 c+2 d0 e0
    > Des agents sont recrutés.
@@ -125,7 +125,7 @@ C) Laisser faire :: Souplesse.
    > Les dépenses continuent d’augmenter.
 
 === fin-057 | finances | Les voitures de fonction des élus
-Les adjoints disposent de voitures avec chauffeur. L’opposition dénonce un privilège.
+Les adjoints de la mairie d’arrondissement disposent de voitures avec chauffeur. L’opposition dénonce un privilège.
 A) Supprimer les voitures de fonction :: Exemplarité.
    rec+0.1x60 pop+2 | g+2 c+2 d+1 e+2
    > Les élus prennent le métro et le vélo.
@@ -175,7 +175,7 @@ C) Ne rien placer :: Prudence totale.
    > L’argent reste sur les comptes.
 
 === fin-061 | finances | La taxe sur les ordures ménagères augmente
-Le coût de la collecte des déchets augmente. La taxe pourrait suivre.
+Le coût de la collecte des déchets de l’arrondissement augmente. La taxe pourrait suivre.
 A) Augmenter la taxe :: Équilibre.
    rec+0.6x60 pop-2 achat-1 | g0 c+1 d0 e+1
    > La taxe augmente de 6 %.
@@ -199,7 +199,7 @@ C) Continuer à louer :: Souplesse.
    > Les locations continuent.
 
 === fin-063 | finances | Le coût des illuminations de Noël
-Les commerçants demandent à la Ville de financer entièrement les illuminations des rues commerçantes.
+Les commerçants demandent à la mairie de financer entièrement les illuminations des rues commerçantes.
 A) Financer toutes les illuminations :: Magie de Noël.
    bud-8 bon+2 economie+1 | g0 c+2 d+2 e-1
    > Toutes les rues s’illuminent.
@@ -210,8 +210,8 @@ C) Laisser les commerçants payer :: Économie.
    bon-1 | g0 c+1 d+1 e+1
    > Certaines rues restent dans le noir.
 
-=== fin-064 | finances | Une erreur de paie pour 10 000 agents
-Un bug du logiciel de paie verse des salaires faux à 10 000 agents.
+=== fin-064 | finances | Une erreur de paie pour les agents
+Un bug du logiciel de paie verse des salaires faux à tous les agents de l’arrondissement.
 A) Rembourser immédiatement les agents lésés :: Réparer.
    bud-6 services+1 | g+2 c+2 d+1 e0
    > Les agents sont remboursés en une semaine.
@@ -224,7 +224,7 @@ C) Changer de logiciel :: Éviter que ça recommence.
    > Un nouveau logiciel est commandé.
 
 === fin-065 | finances | Les gratuités accordées aux grands événements
-La Ville prête gratuitement des lieux et du personnel à des événements commerciaux rentables.
+La mairie d’arrondissement prête gratuitement des lieux et du personnel à des événements commerciaux rentables.
 A) Facturer au prix réel :: Fin des cadeaux.
    rec+0.3x60 economie-1 | g+2 c+2 d-1 e+1
    > Les organisateurs paient le vrai coût.

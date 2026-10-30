@@ -1,6 +1,6 @@
 // Finances, série 2
 === fin-027 | finances | La taxe de séjour sur les hôtels de luxe
-Les palaces parisiens facturent des nuits à 3 000 €, mais la taxe de séjour plafonne à quelques euros.
+Les palaces de l’arrondissement facturent des nuits à 3 000 €, mais la taxe de séjour plafonne à quelques euros.
 A) Tripler la taxe sur les palaces :: Recettes, colère des hôteliers.
    rec+1.2x60 economie-1 | g+4 c+1 d-3 e+1
    > Les clients des palaces paient désormais 15 € par nuit.
@@ -24,7 +24,7 @@ C) Continuer à soutenir le sport :: Image sportive.
    bon+1 economie+1 | g0 c+1 d+2 e0
    > Rien ne change pour les coureurs.
 === fin-029 | finances | Les amendes de stationnement rapportent moins
-Depuis la privatisation du contrôle, les recettes des amendes baissent et les erreurs se multiplient.
+Depuis la privatisation du contrôle, les recettes des amendes de l’arrondissement baissent et les erreurs se multiplient.
 A) Reprendre le contrôle en régie :: Maîtrise, embauches.
    bud-10 rec+0.5x60 | g+3 c+1 d-1 e+1
    > Des agents municipaux reprennent les contrôles.
@@ -37,18 +37,19 @@ C) Augmenter le prix des amendes :: Rendement.
    ~35 pop-1 > Une association d’automobilistes lance une pétition très partagée.
 
 === fin-030 | finances | Le nouveau contrat des panneaux publicitaires
-Le contrat du mobilier publicitaire arrive à échéance. Les candidats proposent des redevances très différentes.
+Le contrat du mobilier publicitaire de l’arrondissement arrive à échéance. Les candidats proposent des redevances très différentes.
 A) Choisir l’offre la plus rémunératrice, écrans numériques compris :: Recettes.
    rec+1x60 ecologie-2 pop-1 | g-2 c+1 d+3 e-4
    > Des écrans lumineux remplacent les affiches.
-B) Réduire de moitié les panneaux :: Ville plus belle.
+B) Réduire de moitié les panneaux :: Quartier plus beau.
    rec+0.3x60 ecologie+1 bon+1 | g+2 c+1 d-1 e+3
    > Les rues respirent, la redevance baisse.
 C) Réserver un tiers des panneaux à la culture et aux associations :: Équilibre.
    rec+0.5x60 bon+1 | g+2 c+3 d0 e+1
    > Les affiches des théâtres et associations deviennent gratuites.
-=== fin-031 | finances | La Ville paie trop cher son électricité
-Le contrat d’électricité des bâtiments municipaux a été signé au plus haut des prix.
+
+=== fin-031 | finances | La mairie paie trop cher son électricité
+Le contrat d’électricité des bâtiments de l’arrondissement a été signé au plus haut des prix.
 A) Casser le contrat et payer la pénalité :: Économies à terme.
    bud-20 rec+0.6x60 | g0 c+3 d+2 e0
    > Un nouveau contrat bien moins cher est signé.
@@ -61,7 +62,7 @@ C) Réduire le chauffage d’un degré partout :: Sobriété immédiate.
    ~30 pop-1 > Des parents se plaignent d’écoles trop froides.
 
 === fin-032 | finances | Les subventions aux associations explosent
-Le nombre d’associations subventionnées a doublé en dix ans. Certaines n’ont plus d’activité réelle.
+Le nombre d’associations subventionnées par l’arrondissement a doublé en dix ans. Certaines n’ont plus d’activité réelle.
 A) Contrôler toutes les associations aidées :: Rigueur.
    bud-2 rec+0.4x60 coh+1 | g-1 c+3 d+3 e0
    > Un audit vérifie l’usage de chaque euro.
@@ -74,7 +75,7 @@ C) Créer un guichet unique et des contrats sur trois ans :: Visibilité.
    > Les associations sérieuses gagnent en stabilité.
 
 === fin-033 | finances | Le Crédit municipal a besoin d’argent
-Le Crédit municipal de Paris, qui prête sur gage aux familles modestes, demande une recapitalisation.
+L’agence du Crédit municipal de l’arrondissement, qui prête sur gage aux familles modestes, demande une aide pour rester ouverte.
 A) Recapitaliser pleinement :: Protéger un outil social.
    bud-40 achat+2 | g+4 c+1 d-1 e+1
    > Le Crédit municipal est sauvé.
@@ -85,8 +86,9 @@ C) Ouvrir son capital à une banque privée :: Désengagement.
    bud+15 achat-1 | g-4 c+1 d+4 e-1
    > Une banque entre au capital.
    ~30 pop-2 > Les taux des prêts sur gage augmentent.
+
 === fin-034 | finances | Les fonctionnaires réclament le télétravail
-Les agents de la Ville demandent deux jours de télétravail. Cela libérerait des bureaux.
+Les agents de la mairie d’arrondissement demandent deux jours de télétravail. Cela libérerait des bureaux.
 A) Accepter et vendre des bureaux libérés :: Économies immobilières.
    bud+40 services-1 bon+1 | g+1 c+3 d+2 e+2
    > Un immeuble de bureaux est mis en vente.
@@ -99,30 +101,30 @@ C) Refuser :: Service sur place.
    ~30 services-1 > Des ingénieurs démissionnent pour le privé.
 
 === fin-035 | finances | La facture des cantines privées
-Le prestataire des cantines augmente ses prix de 12 % en invoquant l’inflation.
+Le prestataire des cantines de l’arrondissement augmente ses prix de 12 % en invoquant l’inflation.
 A) Accepter la hausse :: Pas de rupture.
    rec-0.6x50 | g0 c+1 d+1 e0
    > La facture augmente.
-B) Créer une cuisine centrale municipale :: Investissement, contrôle.
+B) Créer une cuisine centrale pour l’arrondissement :: Investissement, contrôle.
    bud-35 rec+0.3x60 services+2 | g+4 c+1 d-2 e+2
-   > Une cuisine centrale sera construite dans le 13e.
+   > Une cuisine centrale sera construite dans l’arrondissement.
    +15 services+1 > La cuisine centrale sert ses premiers repas.
 C) Lancer un appel d’offres :: Concurrence.
    bud-1 rec-0.2x50 | g-1 c+3 d+3 e0
    > Un nouveau prestataire moins cher est retenu.
    ~30 bon-1 > Les enfants trouvent les nouveaux repas moins bons.
 
-=== fin-036 | finances | La Ville peut vendre ses parts dans un aéroport
-Paris détient des parts dans une société de gestion aéroportuaire. Un fonds propose de les racheter.
+=== fin-036 | finances | La mairie peut vendre ses parts du grand parking
+L’arrondissement détient des parts dans la société qui gère son grand parking souterrain. Un fonds propose de les racheter.
 A) Vendre toutes les parts :: Rentrée exceptionnelle.
    bud+180 rec-0.5x60 | g-3 c+2 d+3 e+1
    > Les parts sont vendues au fonds.
 B) Vendre la moitié :: Équilibre.
    bud+90 rec-0.2x60 | g-1 c+3 d+2 e0
-   > La Ville garde une partie de ses parts.
+   > La mairie garde une partie de ses parts.
 C) Garder les parts :: Revenus réguliers.
    coh+1 | g+2 c0 d-1 e-1
-   > Paris reste actionnaire.
+   > L’arrondissement reste actionnaire.
 
 === fin-037 | finances | Une taxe sur les bureaux vides
 Des milliers de mètres carrés de bureaux restent vides pendant des années pour spéculer.
@@ -136,7 +138,7 @@ C) Ne pas taxer pour ne pas effrayer les investisseurs :: Prudence.
    economie+1 | g-3 c+1 d+3 e-1
    > Rien ne change.
 === fin-038 | finances | Un mécène pour la cathédrale... et des contreparties
-Un grand groupe propose 40 M€ pour restaurer une église, en échange de son nom sur la façade pendant dix ans.
+Un grand groupe propose 40 M€ pour restaurer l’église de l’arrondissement, en échange de son nom sur la façade pendant dix ans.
 A) Accepter le nom sur la façade :: Argent, image commerciale.
    bud+40 pop-2 | g-3 c+1 d+3 e-1
    > Le logo du groupe s’affiche sur l’échafaudage.
@@ -145,12 +147,12 @@ B) Accepter avec une plaque discrète, pour 20 M€ :: Compromis.
    > Le groupe accepte une simple plaque.
 C) Refuser et financer seul :: Indépendance.
    bud-40 pop+1 | g+2 c0 d0 e+1
-   > La Ville paie la restauration.
+   > La mairie d’arrondissement paie la restauration.
 
 === fin-039 | finances | Le budget participatif détourné
-Des projets du budget participatif ont été votés massivement par des groupes organisés, au détriment des quartiers.
+Des projets du budget participatif ont été votés massivement par des groupes organisés, au détriment des quartiers les plus modestes de l’arrondissement.
 ? distinct
-A) Réformer le vote avec un quota par arrondissement :: Équité.
+A) Réformer le vote avec un quota par quartier :: Équité.
    bud-1 coh+1 bon+1 | g+2 c+3 d+1 e+2
    > Chaque quartier aura au moins un projet.
 B) Réduire le budget participatif de moitié :: Économie.
@@ -160,8 +162,8 @@ C) Garder les règles :: Respect du vote.
    pop-1 | g+1 c0 d0 e+1
    > Les projets votés sont réalisés.
 
-=== fin-040 | finances | La Ville rembourse trop tard ses fournisseurs
-Les petites entreprises attendent en moyenne 90 jours pour être payées par la Ville. Certaines font faillite.
+=== fin-040 | finances | La mairie rembourse trop tard ses fournisseurs
+Les petites entreprises attendent en moyenne 90 jours pour être payées par la mairie d’arrondissement. Certaines font faillite.
 A) Payer à 30 jours quoi qu’il en coûte :: Exemplaire.
    bud-30 economie+3 | g+1 c+3 d+3 e0
    > Les factures sont réglées en un mois.
@@ -174,7 +176,7 @@ C) Ne rien changer :: La trésorerie d’abord.
    ~30 pop-2 > Un artisan en faillite témoigne au journal télévisé.
 
 === fin-041 | finances | La redevance des terrasses
-Les terrasses agrandies occupent l’espace public presque gratuitement.
+Les terrasses agrandies de l’arrondissement occupent l’espace public presque gratuitement.
 A) Faire payer les terrasses au mètre carré :: Recettes justes.
    rec+0.6x60 economie-1 | g+2 c+2 d-2 e+1
    > Chaque mètre carré de terrasse est facturé.
@@ -197,17 +199,18 @@ C) Remplacer les affiches par des réunions de quartier :: Proximité.
    rec+0.1x60 bon+1 | g+2 c+2 d0 e+2
    > Des réunions publiques remplacent une partie des affiches.
 
-=== fin-043 | finances | Les réceptions de l’Hôtel de Ville
-Un journal révèle le coût des réceptions officielles : champagne, traiteurs et soirées de gala.
+=== fin-043 | finances | Les réceptions de la mairie
+Un journal révèle le coût des réceptions officielles de la mairie d’arrondissement : champagne, traiteurs et soirées de gala.
 A) Supprimer les réceptions de prestige :: Exemplarité.
    rec+0.1x60 pop+2 economie-1 | g+2 c+2 d+1 e+1
    > Les galas sont remplacés par des repas simples.
-B) Ouvrir les réceptions aux Parisiens tirés au sort :: Partage.
+B) Ouvrir les réceptions aux habitants tirés au sort :: Partage.
    bon+1 pop+1 | g+3 c+2 d0 e+1
    > Des habitants dînent avec des chefs d’État.
-C) Défendre le rang de Paris :: Diplomatie.
+C) Défendre le rang de l’arrondissement :: Diplomatie.
    pop-2 economie+1 | g-1 c+1 d+2 e0
-   > Le maire assume ces dépenses de représentation.
+   > Le maire d’arrondissement assume ces dépenses de représentation.
+
 === fin-044 | finances | La Ville surpayée par un promoteur
 Un promoteur a versé par erreur 15 M€ de trop pour un terrain. Il demande à être remboursé.
 A) Rembourser immédiatement :: Honnêteté.

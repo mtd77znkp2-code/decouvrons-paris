@@ -145,7 +145,7 @@ C) Rien :: Commerce.
    > Le projet s’essouffle.
 
 === econ-158 | economie | Des paniers de légumes en direct des fermes
-Des associations distribuent des paniers de légumes de producteurs franciliens.
+Des associations distribuent dans l’arrondissement des paniers de légumes de producteurs franciliens.
 A) Des points de distribution dans les écoles :: Local.
    bud-1 economie+1 ecologie+1 | g+1 c+2 d+1 e+1
    > Les parents récupèrent leur panier à la sortie de l’école.

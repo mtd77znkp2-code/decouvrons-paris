@@ -449,7 +449,7 @@ C) Rien :: Les banques sont là pour ça.
    > Rien ne change.
 
 === econ-103 | economie | Les grandes chaînes de café remplacent les bistrots
-Des chaînes internationales de café s’installent à chaque coin de rue.
+Des chaînes internationales de café s’installent à chaque coin de rue de l’arrondissement.
 A) Limiter les chaînes dans certains quartiers :: Préserver le caractère.
    economie-1 bon+1 | g+2 c+1 d-2 e+1
    > Les chaînes sont limitées dans le centre historique.
@@ -473,8 +473,8 @@ C) Appliquer la hausse :: Recettes.
    > Des commerçants quittent le marché.
 
 === econ-105 | economie | Des contrats de travail pour les artistes de rue
-Les artistes de rue gagnent peu et sans protection sociale.
-A) Programme municipal rémunéré d’artistes de rue :: Culture et emploi.
+Les artistes de rue de l’arrondissement gagnent peu et sans protection sociale.
+A) Programme rémunéré d’artistes de rue par la mairie :: Culture et emploi.
    rec-0.2x60 bon+2 economie+1 | g+3 c+1 d0 e+1
    > Des artistes sont payés pour animer les places.
 B) Autorisations et emplacements gratuits :: Encadrer.

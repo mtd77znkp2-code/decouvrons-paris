@@ -12,9 +12,9 @@ C) Rien :: Le secteur s’organise seul.
    > L’événement va à Amsterdam.
 
 === econ-107 | economie | Un campus des entreprises de santé
-Des entreprises de biotechnologie cherchent des laboratoires près des hôpitaux.
+Des entreprises de biotechnologie cherchent des laboratoires près de l’hôpital de l’arrondissement.
 ? distinct
-A) Créer un campus près de l’hôpital Cochin :: Innovation médicale.
+A) Créer un campus près de l’hôpital :: Innovation médicale.
    bud-25 economie+3 services+1 | g0 c+3 d+3 e0
    > Des laboratoires s’installent.
 B) Faciliter l’accès aux locaux existants :: Économique.
@@ -37,7 +37,7 @@ C) Rien :: Égalité de traitement.
    > Rien ne change.
 
 === econ-109 | economie | Des commerces ouverts le soir
-Les actifs voudraient faire leurs courses après 20 h. Les petits commerces ferment à 19 h.
+Les actifs voudraient faire leurs courses après 20 h. Les petits commerces de l’arrondissement ferment à 19 h.
 A) Aide aux commerces qui ouvrent le soir :: Inciter.
    rec-0.1x60 economie+2 bon+1 | g0 c+3 d+2 e0
    > Des commerces ouvrent jusqu’à 21 h.
@@ -49,10 +49,10 @@ C) Rien :: Liberté des commerçants.
    > Les horaires restent.
 
 === econ-110 | economie | Les chômeurs de plus de 50 ans
-Les seniors au chômage ne retrouvent pas d’emploi.
-A) Programme de formation et d’embauche à la Ville :: Exemplarité.
+Les seniors au chômage de l’arrondissement ne retrouvent pas d’emploi.
+A) Programme de formation et d’embauche à la mairie :: Exemplarité.
    rec-0.2x60 economie+2 achat+1 | g+3 c+2 d+1 e0
-   > La Ville embauche des seniors.
+   > La mairie d’arrondissement embauche des seniors.
 B) Prime aux entreprises qui embauchent des seniors :: Inciter.
    rec-0.1x60 economie+1 | g0 c+3 d+3 e0
    > Des entreprises recrutent.
@@ -61,7 +61,7 @@ C) Rien :: Compétence de l’État.
    > Rien ne change.
 
 === econ-111 | economie | Embaucher les habitants des quartiers prioritaires
-Les entreprises qui embauchent des habitants des quartiers prioritaires pourraient recevoir une aide.
+Les entreprises qui embauchent des habitants des quartiers prioritaires de l’arrondissement pourraient recevoir une aide.
 A) Prime municipale à l’embauche :: Emploi local.
    rec-0.3x60 economie+2 bon+1 | g+3 c+2 d+1 e+1
    > Des centaines d’habitants trouvent un emploi.
@@ -73,7 +73,7 @@ C) Rien :: Le marché du travail.
    > Rien ne change.
 
 === econ-112 | economie | Des studios de jeux vidéo cherchent des locaux
-Les studios de jeux vidéo emploient des milliers de jeunes mais ne trouvent pas de bureaux abordables.
+Les studios de jeux vidéo emploient des centaines de jeunes mais ne trouvent pas de bureaux abordables dans l’arrondissement.
 A) Réserver un immeuble aux studios :: Filière d’avenir.
    bud-10 economie+2 | g0 c+3 d+2 e0
    > Un immeuble accueille vingt studios.
@@ -85,7 +85,7 @@ C) Rien :: Marché.
    > Les studios partent à Montréal.
 
 === econ-113 | economie | Des ateliers sous le viaduc
-Les arches d’un viaduc ferroviaire pourraient accueillir des ateliers d’artisans.
+Les arches d’un viaduc ferroviaire de l’arrondissement pourraient accueillir des ateliers d’artisans.
 A) Aménager les arches en ateliers :: Artisanat.
    bud-12 economie+2 bon+1 | g+1 c+2 d+2 e+1
    > Des artisans s’installent sous les arches.
@@ -122,9 +122,9 @@ C) Rien :: Organisation des entreprises.
 
 === econ-116 | economie | Des livraisons à vélo par des entreprises d’insertion
 Des entreprises d’insertion livrent à vélo-cargo et emploient des personnes éloignées de l’emploi.
-A) Leur confier les livraisons de la Ville :: Commande publique.
+A) Leur confier les livraisons de la mairie :: Commande publique.
    rec-0.05x60 economie+1 ecologie+1 bon+1 | g+3 c+2 d+1 e+3
-   > Les colis de la Ville sont livrés à vélo.
+   > Les colis de la mairie d’arrondissement sont livrés à vélo.
 B) Aide au démarrage :: Coup de pouce.
    bud-2 economie+1 | g+2 c+3 d+1 e+2
    > Plusieurs entreprises se lancent.
@@ -145,8 +145,8 @@ C) Refuser :: Protéger le commerce de proximité.
    achat-1 economie+1 | g+2 c0 d-2 e+1
    > Le projet est rejeté.
 
-=== econ-118 | economie | La mode de la Goutte d’Or
-Des créateurs de la Goutte d’Or veulent faire de leur quartier un lieu de la mode.
+=== econ-118 | economie | Les créateurs d’un quartier populaire
+Des créateurs d’un quartier populaire de l’arrondissement veulent faire de leur quartier un lieu de la mode.
 A) Créer un pôle mode dans le quartier :: Valoriser le quartier.
    bud-6 economie+2 bon+1 | g+3 c+2 d+1 e+1
    > Des ateliers et boutiques ouvrent.
@@ -182,7 +182,7 @@ C) Rien :: Propriété privée.
    > Les vitrines restent vides.
 
 === econ-121 | economie | Les boulangers étranglés par l’énergie
-La facture d’électricité des boulangers a triplé. Plusieurs ferment.
+La facture d’électricité des boulangers de l’arrondissement a triplé. Plusieurs ferment.
 A) Aide d’urgence à l’énergie :: Sauver les boulangeries.
    bud-6 economie+1 bon+1 | g+1 c+2 d+2 e0
    > Les boulangers reçoivent une aide.
@@ -206,25 +206,25 @@ C) Rien :: Gadget.
    > Rien n’est créé.
 
 === econ-123 | economie | Une rue commerçante qui meurt
-Une rue commerçante voit fermer un magasin par mois. Les habitants s’inquiètent.
+Une rue commerçante de l’arrondissement voit fermer un magasin par mois. Les habitants s’inquiètent.
 A) Manager de rue et plan de relance :: Accompagner.
    bud-4 rec-0.05x60 economie+2 | g+1 c+3 d+2 e+1
    > Un manager attire de nouveaux commerces.
 B) Racheter des boutiques :: Agir directement.
    bud-15 economie+2 | g+2 c+2 d0 e+1
-   > La Ville rachète cinq boutiques.
+   > La mairie d’arrondissement rachète cinq boutiques.
 C) Rien :: Évolution.
    economie-1 | g-1 c0 d+2 e0
    > La rue continue de mourir.
 
 === econ-124 | economie | Le financement participatif des commerces
 Des habitants veulent investir dans le commerce de leur rue pour l’aider à ouvrir.
-A) Plateforme municipale de financement participatif :: Engagement citoyen.
+A) Plateforme de financement participatif de la mairie :: Engagement citoyen.
    bud-2 economie+2 | g+1 c+3 d+2 e+1
    > Des commerces ouvrent grâce aux habitants.
 B) Abonder les collectes :: Effet levier.
    bud-4 economie+2 | g+1 c+2 d+2 e+1
-   > La Ville ajoute un euro par euro collecté.
+   > La mairie ajoute un euro par euro collecté.
 C) Rien :: Les plateformes privées existent.
    economie-1 | g0 c0 d+1 e0
    > Rien ne change.
@@ -241,9 +241,9 @@ C) Rien :: Marché.
    economie-1 | g-2 c0 d+2 e0
    > Les entreprises ferment.
 
-=== econ-126 | economie | Des studios de tournage dans Paris
+=== econ-126 | economie | Des studios de tournage dans l’arrondissement
 Les productions de cinéma partent tourner en studio en Europe de l’Est.
-A) Créer des studios sur une friche :: Filière cinéma.
+A) Créer des studios sur une friche de l’arrondissement :: Filière cinéma.
    bud-30 economie+3 | g0 c+2 d+3 e0
    > Des studios de cinéma ouvrent.
 B) Aider l’agrandissement des studios existants :: Économique.
@@ -254,8 +254,8 @@ C) Rien :: Le cinéma s’en charge.
    > Les tournages partent.
 
 === econ-127 | economie | Les aides à domicile manquent
-Les services d’aide à domicile pour les personnes âgées ne trouvent plus de personnel.
-A) Revaloriser les salaires financés par la Ville :: Attirer.
+Les services d’aide à domicile pour les personnes âgées de l’arrondissement ne trouvent plus de personnel.
+A) Revaloriser les salaires financés par la mairie :: Attirer.
    rec-0.4x60 services+2 economie+1 | g+3 c+2 d0 e+1
    > Les recrutements repartent.
 B) Formation gratuite et logements :: Accompagner.
@@ -351,11 +351,11 @@ C) Refuser :: Encombrement des trottoirs.
    > Les distributeurs sont interdits.
 
 === econ-135 | economie | Les micro-brasseries cherchent des locaux
-Des dizaines de petites brasseries artisanales veulent produire dans Paris.
+Des petites brasseries artisanales veulent produire dans l’arrondissement.
 A) Réserver des locaux d’activité :: Artisanat.
    bud-4 economie+2 | g+1 c+3 d+2 e+1
-   > Des brasseries s’installent dans le 11e.
-B) Festival de la bière parisienne :: Promouvoir.
+   > Des brasseries s’installent dans l’arrondissement.
+B) Festival de la bière du quartier :: Promouvoir.
    bud-2 economie+1 bon+1 | g0 c+2 d+2 e0
    > Un festival attire les amateurs.
 C) Rien :: Le marché.
@@ -363,7 +363,7 @@ C) Rien :: Le marché.
    > Les brasseries s’installent en banlieue.
 
 === econ-136 | economie | Un marché du vintage
-Les friperies et vendeurs de vêtements anciens veulent un grand marché régulier.
+Les friperies et vendeurs de vêtements anciens veulent un grand marché régulier dans l’arrondissement.
 A) Marché mensuel du vintage :: Mode durable.
    bud-1 economie+1 ecologie+1 bon+1 | g+1 c+3 d+1 e+3
    > Le marché attire les jeunes.
@@ -375,7 +375,7 @@ C) Rien :: Les vide-greniers suffisent.
    > Rien ne change.
 
 === econ-137 | economie | Des emplois dans le recyclage des vêtements
-Un centre de tri des vêtements usagés pourrait employer des centaines de personnes en insertion.
+Un centre de tri des vêtements usagés pourrait employer des dizaines d’habitants de l’arrondissement en insertion.
 A) Financer un centre de tri :: Emploi et écologie.
    bud-10 economie+2 ecologie+2 | g+3 c+2 d+1 e+3
    > Le centre emploie 200 personnes.
@@ -387,7 +387,7 @@ C) Rien :: Le privé s’en charge.
    > Les vêtements partent à l’étranger.
 
 === econ-138 | economie | Les magasins de jouets indépendants
-Les magasins de jouets de quartier ferment face aux grandes plateformes.
+Les magasins de jouets de l’arrondissement ferment face aux grandes plateformes.
 A) Bons d’achat de Noël à dépenser dans les commerces locaux :: Soutien.
    bud-5 economie+2 achat+1 | g+1 c+3 d+2 e+1
    > Les familles achètent dans les boutiques de quartier.

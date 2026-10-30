@@ -300,8 +300,8 @@ C) Rien :: Repos des commerçants.
    economie-1 | g0 c+1 d+1 e0
    > Les rues restent mortes le lundi.
 
-=== econ-211 | economie | Un fonds municipal pour les jeunes entreprises
-Des créateurs d’entreprise ne trouvent pas de financement.
+=== econ-211 | economie | Un fonds de quartier pour les jeunes entreprises
+Des créateurs d’entreprise de l’arrondissement ne trouvent pas de financement.
 ? distinct
 A) Créer un fonds d’investissement :: Soutenir.
    bud-5 economie+2 | g0 c+2 d+2 e0
@@ -340,10 +340,10 @@ C) Rien :: Commerce.
    > Les boutiques prospèrent.
 
 === econ-214 | economie | Le concours de la meilleure baguette
-Le concours désigne le boulanger qui fournit l’Élysée, mais il manque de moyens.
+Le concours désigne le boulanger qui fournit l’Élysée. Cette année, il se tient dans l’arrondissement, mais il manque de moyens.
 A) En faire une grande fête populaire :: Fierté.
    bud-1 economie+1 bon+1 | g0 c+2 d+1 e+1
-   > Des milliers de Parisiens goûtent les baguettes.
+   > Des milliers d’habitants goûtent les baguettes.
 B) Ajouter une catégorie bio :: Moderniser.
    bud-1 economie+1 ecologie+1 | g+1 c+2 d+1 e+1
    > Les boulangers bio concourent.

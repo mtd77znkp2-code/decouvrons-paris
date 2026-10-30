@@ -1,6 +1,6 @@
 // Finances, série 4
-=== fin-066 | finances | Le préfet menace de mettre la Ville sous tutelle
-La dette s’approche du maximum. Le préfet menace de prendre le contrôle du budget si rien n’est fait.
+=== fin-066 | finances | L’Hôtel de Ville menace de mettre l’arrondissement sous tutelle
+La dette s’approche du maximum. L’Hôtel de Ville et le préfet menacent de prendre le contrôle de ton budget si rien n’est fait.
 ? detteMin=600
 A) Plan d’urgence : gel des investissements :: Éviter la tutelle.
    rec+2x40 transports-2 logement-2 bon-2 | g-3 c+2 d+4 e-1
@@ -10,13 +10,13 @@ B) Vendre des actifs importants :: Argent rapide.
    > Des immeubles et des parts de sociétés sont vendus.
 C) Défier le préfet :: Bras de fer.
    pop+1 coh+1 | g+2 c-2 d-2 e+1
-   > Le maire dénonce un chantage.
+   > Le maire d’arrondissement dénonce un chantage.
    ~50 pop-5 rec+1x30 > Le préfet impose des économies drastiques.
 
 === fin-067 | finances | Un excédent inattendu
 La trésorerie est bien plus haute que prévu. Les élus se disputent sur son utilisation.
 ? tresorMin=1100
-A) Baisser les impôts locaux :: Rendre aux Parisiens.
+A) Baisser les impôts locaux :: Rendre aux habitants.
    rec-1x60 pop+3 achat+2 | g-2 c+2 d+4 e0
    > La taxe foncière baisse de 3 %.
 B) Lancer de nouveaux équipements :: Investir.
@@ -40,8 +40,8 @@ C) Tenir les promesses non réalisées :: Cohérence.
    bud-40 coh+3 | g+2 c+1 d+1 e+2
    > Les engagements restants sont financés.
 
-=== fin-069 | finances | Vendre un immeuble prestigieux de la Ville
-Un investisseur propose 150 M€ pour un immeuble municipal sur un quai de Seine.
+=== fin-069 | finances | Vendre un immeuble prestigieux de la mairie
+Un investisseur propose 150 M€ pour un immeuble de l’arrondissement sur un quai de Seine.
 A) Vendre :: Recette exceptionnelle.
    bud+150 pop-2 | g-3 c+2 d+4 e-1
    > L’immeuble devient un hôtel de luxe.
@@ -65,7 +65,7 @@ C) Laisser le contrat aller à son terme :: Stabilité.
    > Rien ne change.
 
 === fin-071 | finances | Les impayés de cantine
-Des milliers de familles ont des dettes de cantine. Certaines écoles menacent de priver les enfants de repas.
+Des centaines de familles de l’arrondissement ont des dettes de cantine. Certaines écoles menacent de priver les enfants de repas.
 A) Effacer les dettes des familles modestes :: Aucun enfant sans repas.
    bud-4 achat+1 bon+1 | g+4 c+1 d-2 e+1
    > Les dettes des familles modestes sont effacées.
@@ -77,7 +77,7 @@ C) Recouvrement par huissier :: Fermeté.
    > Les huissiers sont envoyés.
 
 === fin-072 | finances | La sécurité des marchés de Noël coûte cher
-Barrières anti-bélier, vigiles, caméras : la sécurité des marchés de Noël a triplé de prix.
+Barrières anti-bélier, vigiles, caméras : la sécurité des marchés de Noël de l’arrondissement a triplé de prix.
 ? distinct
 A) Payer la sécurité :: Maintenir les marchés.
    bud-8 securite+2 bon+1 | g0 c+2 d+2 e0
@@ -90,7 +90,7 @@ C) Faire payer les exposants :: Partager.
    > Les exposants paient plus cher leur chalet.
 
 === fin-073 | finances | Les recettes des fourrières
-Les fourrières rapportent beaucoup mais les automobilistes dénoncent un racket.
+Les fourrières de l’arrondissement rapportent beaucoup mais les automobilistes dénoncent un racket.
 A) Baisser les tarifs de fourrière :: Apaiser.
    rec-0.2x60 pop+1 | g+1 c+1 d+2 e-2
    > Les tarifs baissent.
@@ -142,7 +142,7 @@ C) Garder la répartition :: Paix politique.
    > Rien ne change.
 
 === fin-077 | finances | Les tickets-restaurant des agents
-Les agents réclament des tickets-restaurant, comme dans le privé.
+Les agents de la mairie d’arrondissement réclament des tickets-restaurant, comme dans le privé.
 A) Les accorder :: Pouvoir d’achat.
    rec-0.5x60 achat+2 services+1 | g+3 c+2 d0 e0
    > Les agents reçoivent des tickets-restaurant.
@@ -154,7 +154,7 @@ C) Refuser :: Budget contraint.
    > Les agents sont déçus.
 
 === fin-078 | finances | La mutuelle des agents
-La Ville participe très peu à la complémentaire santé de ses agents.
+La mairie d’arrondissement participe très peu à la complémentaire santé de ses agents.
 A) Augmenter fortement la participation :: Santé des agents.
    rec-0.4x60 services+1 bon+1 | g+3 c+2 d0 e+1
    > La participation double.
@@ -180,7 +180,7 @@ C) Absorber la perte discrètement :: Éviter le scandale.
    ~40 pop-2 > Un journal révèle l’erreur.
 
 === fin-080 | finances | Un legs d’œuvres d’art avec des frais
-Un collectionneur lègue 300 tableaux à la Ville, mais leur conservation coûtera cher chaque année.
+Un collectionneur lègue 300 tableaux à l’arrondissement, mais leur conservation coûtera cher chaque année.
 A) Accepter et créer un musée :: Patrimoine.
    bud-20 rec-0.3x60 bon+1 economie+1 | g+1 c+2 d+2 e0
    > Un nouveau musée ouvre.
@@ -189,10 +189,10 @@ B) Accepter et prêter les œuvres aux musées existants :: Économique.
    > Les tableaux sont exposés dans plusieurs musées.
 C) Refuser le legs :: Pas de charges.
    pop-1 | g0 c+1 d+1 e0
-   > Les œuvres partent dans une autre ville.
+   > Les œuvres partent dans un autre arrondissement.
 
 === fin-081 | finances | Choisir entre trois grands projets
-Le budget d’investissement ne permet qu’un grand projet : une piscine olympique, une médiathèque géante ou un parc.
+Le budget d’investissement de l’arrondissement ne permet qu’un grand projet : une piscine olympique, une médiathèque géante ou un parc.
 A) La piscine olympique :: Sport.
    bud-90 services+3 bon+1 | g+1 c+2 d+2 e0
    > La piscine est lancée.
@@ -278,7 +278,7 @@ C) Garder la gratification légale :: Économie.
    > Rien ne change.
 
 === fin-088 | finances | Un partenariat avec une banque pour rénover les écoles
-Une banque propose de rénover 100 écoles tout de suite, la Ville payant un loyer pendant 25 ans.
+Une banque propose de rénover toutes les écoles de l’arrondissement tout de suite, la mairie payant un loyer pendant 25 ans.
 A) Accepter le partenariat :: Rapide.
    rec-1.5x80 services+4 | g-3 c+2 d+3 e+1
    > Cent écoles sont rénovées en deux ans.
@@ -286,7 +286,7 @@ A) Accepter le partenariat :: Rapide.
 B) Emprunter et rénover nous-mêmes :: Moins cher à terme.
    bud-120 services+3 | g+2 c+2 d0 e+1
    > Les rénovations sont lancées progressivement.
-C) Rénover dix écoles par an :: Prudence.
+C) Rénover trois écoles par an :: Prudence.
    bud-30 services+1 | g0 c+3 d+2 e0
    > Les rénovations avancent lentement.
 
@@ -303,7 +303,7 @@ C) Refuser :: Service public.
    > Le site reste sans publicité.
 
 === fin-090 | finances | Le vrai coût de la police municipale
-Un rapport montre que la police municipale coûte deux fois plus que prévu.
+Un rapport montre que la police municipale de l’arrondissement coûte deux fois plus que prévu.
 ? distinct
 A) Réduire les effectifs prévus :: Équilibre.
    rec+0.4x60 securite-2 | g+1 c+2 d-3 e+1
