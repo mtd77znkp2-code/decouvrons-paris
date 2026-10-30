@@ -715,7 +715,7 @@ test("sessions : 21 places, on commence en bas, on défie son rival, une place g
   for (let p = 1; p < 20; p++) assert.ok(S.habitants(p) >= S.habitants(p - 1), "du moins au plus peuplé");
   assert.equal(S.titre(20), "Maire de Paris"); assert.equal(S.titre(0), "Maire du 1er arrondissement");
   assert.ok(S.puissance(0) < S.puissance(10) && S.puissance(10) < S.puissance(20));
-  let s = S.nouvelleSession(42, 0); assert.equal(s.places.length, 21); assert.ok(s.places.every(x => x.type === "bot"));
+  let s = S.nouvelleSession(42, 0); assert.equal(s.places.length, 21); assert.ok(s.places.every(x => x.type === "bot" && x.ico && x.nom && x.talent > 0), "chaque bot a un nom, une icône et un talent");
   s = S.rejoindre(s, "u1", "Alice", "🙂", 0); assert.equal(S.placeDe(s, "u1"), 0, "on commence en bas");
   s = S.rejoindre(s, "u2", "Bruno", "🙂", 0); assert.equal(S.placeDe(s, "u2"), 1);
   assert.deepEqual(S.rejoindre(s, "u1", "Alice", "🙂", 0), s, "pas deux fois");

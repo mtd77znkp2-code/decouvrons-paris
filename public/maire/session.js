@@ -52,7 +52,7 @@
   var ICOS = ["🎩", "👩‍💼", "🧔", "👩‍🦳", "👨‍💼", "👩", "🧑‍🦱", "👨‍🦳", "👩‍🦰", "🧓", "🧑", "👱‍♀️"];
   function bot(graine, i) {
     var c = hache(graine, 997, i);
-    return { type: "bot", id: "bot" + i, nom: NOMS_BOTS[(Math.floor(hache(graine, 994, 0) * NOMS_BOTS.length) + i * 7) % NOMS_BOTS.length],   // pas de 7 : 48 noms tous différents ico: ICOS[Math.floor(c * ICOS.length)],
+    return { type: "bot", id: "bot" + i, nom: NOMS_BOTS[(Math.floor(hache(graine, 994, 0) * NOMS_BOTS.length) + i * 7) % NOMS_BOTS.length], /* pas de 7 : 48 noms tous différents */ ico: ICOS[Math.floor(c * ICOS.length)],
       talent: Math.round((0.25 + hache(graine, 996, i) * 0.6) * 100) / 100,
       forme: Math.round((hache(graine, 995, i) - 0.5) * 120) / 100, xp: 0 };   // forme : -0,6 (en déclin) à +0,6 (en croissance)
   }

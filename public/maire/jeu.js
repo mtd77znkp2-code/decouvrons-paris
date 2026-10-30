@@ -1314,7 +1314,8 @@
       var p = h("div", "mx-pilier" + (prom ? " mx-prom" : ""));
       var barre = h("div", "mx-barre"), r = h("i"); r.style.width = v + "%"; r.style.background = couleur(v); barre.appendChild(r);
       if (prom) { var cible = h("em"); cible.style.left = M.P.ambSeuil + "%"; barre.appendChild(cible); }
-      ajout(p, h("span", "mx-pico", M.ICO[k]), ajout(h("div"), ajout(h("div", "mx-pt"), h("span", null, M.PILIERS[k] + (prom ? " 🎯" : "")), h("b", null, Math.round(v) + (fl ? " " + fl : ""))), barre));
+      ajout(p, h("span", "mx-pico", M.ICO[k]), ajout(h("div"), ajout(h("div", "mx-pt"), h("span", null, M.PILIERS[k]), h("b", null, Math.round(v) + (fl ? " " + fl : ""))), barre),
+        prom ? h("i", "mx-prom-ico", "🎯") : null);   // promesse : cadre doré + petit badge dans le coin
       d.appendChild(p);
     });
     return d;
@@ -2461,7 +2462,7 @@
   function zones(cadre, ses, moiP) {
     for (var p = 0; p < SS().TRONE; p++) (function (p) {
       var A = SS().ARR[SS().arr(p)], f = SS().fiche(ses, p), rel = p === moiP ? " m-z-moi" : p > moiP ? " m-z-haut" : " m-z-bas";
-      var z = h("button", "m-zone" + rel + (p === moiP + 1 ? " m-z-rival" : "") + (f.type === "joueur" && p !== moiP ? " m-z-joueur" : ""));
+      var z = h("button", "m-zone" + rel + (p === moiP + 1 ? " m-z-rival" : p === moiP - 1 ? " m-z-opp" : "") + (f.type === "joueur" && p !== moiP ? " m-z-joueur" : ""));
       z.type = "button"; z.style.left = A.x + "%"; z.style.top = A.y + "%"; z.style.width = A.r * 2 + "%";
       z.title = f.court + " · " + f.nom + (f.type === "bot" ? " (robot)" : "");
       z.setAttribute("aria-label", z.title);

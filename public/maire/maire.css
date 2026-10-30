@@ -1164,3 +1164,21 @@ button.mx-ses-qui{cursor:pointer}
 /* Jeux de cartes : la table ne « saute » pas quand elle se redessine (sinon un appui tombait sur les règles) */
 body.m-casino .m-pop,#m-telmod{place-items:start center}
 .m-mj-zone{min-height:360px;display:grid;align-content:start;gap:10px}
+/* Piliers sur téléphone : le nom se raccourcit au lieu de pousser le chiffre hors du cadre (cadre doré des promesses entier) */
+.mx-pilier{grid-template-columns:auto minmax(0,1fr)}
+.mx-pilier>div{min-width:0;grid-template-columns:minmax(0,1fr)}
+.mx-pt{min-width:0}
+.mx-pt b{flex:none}
+/* Ton rival (au-dessus, rouge) et ton opposant (au-dessous, vert) clignotent doucement : sur la carte et dans le bandeau */
+.m-zone.m-z-opp{box-shadow:inset 0 0 0 2px #6fdc95}
+.m-zone.m-z-rival::before,.m-zone.m-z-opp::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;animation:m-z-pulse 2.4s ease-in-out infinite}
+.m-zone.m-z-rival::before{box-shadow:0 0 22px rgba(255,110,100,.95),inset 0 0 0 2px #ff8a80}
+.m-zone.m-z-opp::before{box-shadow:0 0 22px rgba(80,220,140,.95),inset 0 0 0 2px #6fdc95;animation-delay:1.2s}
+.mx-ses-rival,.mx-ses-opp{position:relative}
+.mx-ses-rival::after,.mx-ses-opp::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;animation:mx-duel 2.4s ease-in-out infinite}
+.mx-ses-rival::after{box-shadow:0 0 0 2px rgba(255,138,128,.9),0 0 16px rgba(255,110,100,.55)}
+.mx-ses-opp::after{box-shadow:0 0 0 2px rgba(111,220,149,.9),0 0 16px rgba(80,220,140,.5);animation-delay:1.2s}
+@keyframes mx-duel{0%,100%{opacity:0}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.m-zone.m-z-rival::before,.m-zone.m-z-opp::before,.mx-ses-rival::after,.mx-ses-opp::after{animation:none;opacity:.6}}
+.mx-pilier{position:relative}.mx-prom-ico{position:absolute;top:-7px;right:-5px;font-size:15px;font-style:normal;line-height:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
+.mx-piliers{padding-top:6px}
