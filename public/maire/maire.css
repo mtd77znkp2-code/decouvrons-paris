@@ -1047,3 +1047,6 @@ button.mx-ses-qui{cursor:pointer}
 .mx-ses-act{padding:10px 4px;font-size:13px}
 .mx-ses-act.mx-ses-btn{background:#f5b21a;color:#1b2550;box-shadow:none;border-radius:12px}
 .mx-ses-actions .mx-ses-act{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12.5px;padding:10px 6px;font-weight:800}
+.m-pct-info{margin:0 0 6px;font-size:12.5px;font-weight:700;color:var(--pm,#5b6386)}
+.m-option .m-pct{grid-template-columns:1fr}.m-option .m-pct b{font-size:12.5px;font-weight:700}
+.m-pct.m-pct-top b{color:#b07a00}

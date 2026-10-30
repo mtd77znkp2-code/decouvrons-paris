@@ -1566,24 +1566,28 @@
     if (VOTES_LUS[cle]) return VOTES_LUS[cle];
     return (VOTES_LUS[cle] = LB.db.doc("votes/" + cle).get().then(function (sn) { return sn.exists ? sn.data() : null; }).catch(function () { return null; }));
   }
+  // Uniquement les vrais choix des joueurs (aucune estimation)
   function partsVotes(ev, d) {
-    var v = ev.choix.map(function (c) { return M.valeurChoix(c); }), mx = Math.max.apply(null, v);
-    var mn = Math.min.apply(null, v), tp = 2 + (mx - mn) / 2, w = v.map(function (x) { return Math.exp((x - mx) / tp); }), sw = w.reduce(function (a, x) { return a + x; }, 0);
-    var c = ev.choix.map(function (_, k) { return ((d && d["c" + k]) || 0) + 12 * w[k] / sw; }), tot = c.reduce(function (a, x) { return a + x; }, 0);
+    var c = ev.choix.map(function (_, k) { return (d && d["c" + k]) || 0; }), tot = c.reduce(function (a, x) { return a + x; }, 0);
+    if (!tot) return null;
     var p = c.map(function (x) { return Math.round(x / tot * 100); }), ecart = 100 - p.reduce(function (a, x) { return a + x; }, 0);
     p[p.indexOf(Math.max.apply(null, p))] += ecart;
-    return p;
+    return { p: p, tot: tot };
   }
   function remplirParts(ch, ev, cle) {
-    var maj = function (d) {
-      var p = partsVotes(ev, d), max = Math.max.apply(null, p);
+    var info = h("p", "m-pct-info", "📊 Ce qu’ont choisi les autres maires…"); ch.parentNode.insertBefore(info, ch);
+    lireVotes(cle).then(function (d) {
+      if (!document.body.contains(ch)) return;
+      var r = partsVotes(ev, d);
+      if (!r) { info.textContent = "📊 Aucun maire n’a encore tranché ce dossier : tu seras le premier !"; return; }
+      info.textContent = "📊 " + r.tot + " maire" + (r.tot > 1 ? "s ont" : " a") + " déjà tranché ce dossier";
+      var max = Math.max.apply(null, r.p);
       ch.querySelectorAll(".m-pct").forEach(function (e, k) {
-        e.textContent = ""; var b = h("i"); b.style.width = p[k] + "%";
-        ajout(e, ajout(h("span", "m-pct-barre"), b), h("b", null, p[k] + " %"), h("em", null, p[k] === max ? "des maires · le plus choisi" : "des maires"));
-        e.classList.toggle("m-pct-top", p[k] === max);
+        e.textContent = ""; var b = h("i"); b.style.width = r.p[k] + "%";
+        ajout(e, ajout(h("span", "m-pct-barre"), b), h("b", null, r.p[k] + " % des maires ont fait ce choix"));
+        e.classList.toggle("m-pct-top", r.p[k] === max && r.tot > 1);
       });
-    };
-    maj(null); lireVotes(cle).then(function (d) { if (d && document.body.contains(ch)) maj(d); });
+    });
   }
   function afficherVote(carte, nb) {
     var v = VOTE; if (!v || v.t !== st.t) return;
