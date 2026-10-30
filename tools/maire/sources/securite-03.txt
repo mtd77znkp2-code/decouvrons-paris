@@ -13,7 +13,7 @@ C) Conseils de prévention aux habitants :: Peu coûteux.
    ~40 pop-1 > Les cambriolages continuent.
 
 === sec-067 | securite | Les braquages de supérettes de nuit
-Les supérettes ouvertes la nuit sont braquées à répétition. Les caissiers ont peur.
+Les supérettes de l’arrondissement ouvertes la nuit sont braquées à répétition. Les caissiers ont peur.
 A) Boutons d’alerte reliés à la police municipale :: Réactivité.
    bud-3 securite+2 | g0 c+3 d+2 e0
    > Les commerces de nuit sont équipés.
@@ -25,7 +25,7 @@ C) Patrouilles ciblées :: Dissuasion.
    > Les patrouilles passent devant les supérettes.
 
 === sec-068 | securite | Les vols dans les vestiaires des piscines
-Les vols se multiplient dans les vestiaires des piscines municipales.
+Les vols se multiplient dans les vestiaires de la piscine de l’arrondissement.
 A) Casiers sécurisés à code :: Équiper.
    bud-5 securite+1 services+1 | g0 c+3 d+2 e0
    > Des casiers modernes sont installés.
@@ -37,7 +37,7 @@ C) Afficher des conseils :: Responsabiliser.
    > Les usagers sont invités à ne rien apporter de valeur.
 
 === sec-069 | securite | Les batteries de trottinettes qui prennent feu
-Des batteries de vélos et trottinettes électriques provoquent des incendies dans les appartements.
+Des batteries de vélos et trottinettes électriques provoquent des incendies dans les appartements de l’arrondissement.
 ? distinct
 A) Campagne d’information et points de recharge sécurisés :: Prévenir.
    bud-6 securite+2 | g+1 c+3 d+1 e+1
@@ -47,22 +47,22 @@ B) Interdire les recharges dans les parties communes :: Règle.
    > Les recharges dans les halls sont interdites.
 C) Reprendre gratuitement les vieilles batteries :: Retirer le danger.
    bud-3 securite+1 ecologie+1 | g+1 c+2 d+1 e+2
-   > Des milliers de batteries sont collectées.
+   > Des centaines de batteries sont collectées.
 
-=== sec-070 | securite | Des agressions homophobes dans le Marais
-Plusieurs couples homosexuels ont été agressés dans le Marais en quelques semaines.
+=== sec-070 | securite | Des agressions homophobes dans le quartier
+Plusieurs couples homosexuels ont été agressés dans l’arrondissement en quelques semaines.
 A) Renforcer les patrouilles et les caméras :: Protéger.
    rec-0.2x40 securite+2 | g0 c+2 d+3 e0
    > Le quartier est surveillé de près.
 B) Campagne de sensibilisation et soutien aux victimes :: Prévenir.
    bud-2 bon+1 | g+3 c+2 d0 e+2
-   > Une campagne s’affiche dans toute la ville.
+   > Une campagne s’affiche dans tout l’arrondissement.
 C) Les deux :: Complet.
    bud-3 rec-0.1x40 securite+1 bon+1 | g+2 c+3 d+1 e+1
    > Police et associations agissent ensemble.
 
 === sec-071 | securite | Le racket devant les collèges
-Des collégiens se font racketter leurs téléphones et baskets à la sortie des cours.
+Des collégiens de l’arrondissement se font racketter leurs téléphones et baskets à la sortie des cours.
 A) Agents municipaux aux sorties des collèges :: Présence.
    rec-0.3x60 securite+2 | g0 c+2 d+3 e0
    > Des agents sont postés aux sorties.
@@ -98,10 +98,10 @@ C) Campagne de prévention :: Doux.
    > Des affiches choc sont placardées.
 
 === sec-074 | securite | Les cyclistes invisibles la nuit
-Beaucoup de cyclistes roulent la nuit sans lumière. Les accidents se multiplient.
+Dans l’arrondissement, beaucoup de cyclistes roulent la nuit sans lumière. Les accidents se multiplient.
 A) Distribuer des lumières gratuites :: Équiper.
    bud-2 securite+2 | g+1 c+3 d+1 e+2
-   > Des milliers de kits d’éclairage sont offerts.
+   > Des centaines de kits d’éclairage sont offerts.
 B) Verbaliser :: Responsabiliser.
    securite+1 pop-1 | g-1 c+2 d+3 e-1
    > Les cyclistes sans lumière sont verbalisés.
@@ -123,7 +123,7 @@ C) Exiger des videurs formés :: Responsabiliser les patrons.
    > Les établissements doivent former leurs videurs.
 
 === sec-076 | securite | Les gardiens d’immeuble agressés
-Des gardiens d’immeubles sociaux se font agresser par des dealers installés dans les halls.
+Des gardiens d’immeubles sociaux de l’arrondissement se font agresser par des dealers installés dans les halls.
 A) Protection renforcée et caméras dans les halls :: Sécurité.
    bud-6 securite+2 logement+1 | g0 c+2 d+3 e0
    > Les halls sont équipés de caméras.
@@ -136,7 +136,7 @@ C) Retirer les gardiens des immeubles dangereux :: Prudence.
    ~40 pop-2 > Les locataires se sentent abandonnés.
 
 === sec-077 | securite | Surveiller les logements pendant les vacances
-Les cambriolages explosent en août. Des habitants demandent que la police surveille leur logement.
+Les cambriolages explosent en août dans l’arrondissement. Des habitants demandent que la police surveille leur logement.
 ? distinct
 A) Opération tranquillité vacances municipale :: Service.
    rec-0.1x20 securite+2 | g0 c+3 d+3 e0
@@ -161,7 +161,7 @@ C) Rien :: Affaire de police nationale.
    > Les vols continuent.
 
 === sec-079 | securite | Plus d’agents aux sorties d’école
-Il manque des agents pour faire traverser les enfants à la sortie des écoles.
+Il manque des agents pour faire traverser les enfants à la sortie des écoles de l’arrondissement.
 A) Recruter des agents de sortie d’école :: Sécurité des enfants.
    rec-0.3x60 securite+2 services+1 | g+2 c+2 d+2 e+1
    > Chaque école a son agent.
@@ -173,14 +173,14 @@ C) Ralentisseurs devant les écoles :: Aménagement.
    > Des ralentisseurs sont installés.
 
 === sec-080 | securite | Des tags antisémites sur des façades
-Des tags antisémites apparaissent sur des immeubles et des commerces d’un quartier.
+Des tags antisémites apparaissent sur des immeubles et des commerces de l’arrondissement.
 ? distinct
 A) Effacement immédiat et plainte systématique :: Fermeté.
    bud-1 securite+1 pop+1 | g+2 c+2 d+2 e+1
    > Les tags sont effacés en quelques heures.
 B) Rassemblement républicain :: Symbole.
    bud-1 bon+1 pop+1 | g+2 c+2 d+1 e+2
-   > Des milliers de Parisiens se rassemblent.
+   > Des milliers d’habitants se rassemblent.
 C) Caméras dans le quartier :: Identifier les auteurs.
    bud-4 securite+2 | g-1 c+2 d+3 e0
    > Les caméras permettent d’identifier les auteurs.
@@ -222,31 +222,31 @@ C) Refuser :: Liberté.
    > Rien ne change.
 
 === sec-084 | securite | Des sortants de prison sans solution
-Des détenus libérés se retrouvent à la rue sans accompagnement et récidivent.
+Des détenus libérés se retrouvent dans les rues de l’arrondissement sans accompagnement et récidivent.
 A) Logements et accompagnement à la sortie :: Réinsertion.
    bud-4 rec-0.2x60 securite+1 services+1 | g+3 c+2 d-1 e+1
    > Un dispositif de sortie accompagne les libérés.
 B) Emplois dans les chantiers d’insertion :: Travail.
    rec-0.2x60 securite+1 economie+1 | g+2 c+3 d+1 e+1
-   > D’anciens détenus travaillent pour la Ville.
+   > D’anciens détenus travaillent pour la mairie.
 C) Pas notre rôle :: Compétence de la justice.
    securite-1 | g-3 c+1 d+3 e0
    > Rien n’est fait.
 
-=== sec-085 | securite | Une justice de proximité dans les mairies
-Les petites incivilités ne sont jamais jugées. On propose des médiateurs de justice dans les mairies.
+=== sec-085 | securite | Une justice de proximité à la mairie
+Les petites incivilités ne sont jamais jugées. On propose des médiateurs de justice à la mairie d’arrondissement.
 A) Créer des maisons de la justice et du droit :: Réponse rapide.
    bud-3 rec-0.1x60 securite+1 services+1 | g+1 c+3 d+2 e+1
    > Les conflits de voisinage sont réglés en quelques semaines.
 B) Travaux d’intérêt général dans les services municipaux :: Réparer.
    rec-0.1x60 securite+1 proprete+1 | g0 c+2 d+3 e+1
-   > Des condamnés effectuent des travaux pour la Ville.
+   > Des condamnés effectuent des travaux pour la mairie.
 C) Laisser faire la justice :: Compétence de l’État.
    securite-1 | g0 c+1 d+1 e0
    > Rien ne change.
 
 === sec-086 | securite | Des enfants guetteurs pour les dealers
-Des enfants de 12 ans sont payés par les dealers pour faire le guet.
+Dans l’arrondissement, des enfants de 12 ans sont payés par les dealers pour faire le guet.
 A) Programme de prévention avec les familles :: Arracher les enfants.
    rec-0.3x60 securite+1 services+2 | g+3 c+2 d0 e+1
    > Des éducateurs accompagnent les familles.
@@ -257,8 +257,8 @@ C) Activités gratuites tous les soirs :: Occuper.
    rec-0.2x60 bon+1 services+1 | g+2 c+2 d+1 e+1
    > Le centre d’animation reste ouvert le soir.
 
-=== sec-087 | securite | La sécurité du réveillon sur les Champs-Élysées
-Un million de personnes sont attendues sur les Champs-Élysées pour le Nouvel An.
+=== sec-087 | securite | La sécurité du réveillon sur la grande avenue
+Des centaines de milliers de personnes sont attendues sur la grande avenue de l’arrondissement pour le Nouvel An.
 A) Grand dispositif avec fouilles et zones fermées :: Sécurité maximale.
    bud-6 securite+2 bon-1 | g-1 c+2 d+3 e0
    > Des portiques filtrent la foule.
@@ -283,7 +283,7 @@ C) Laisser faire les banques :: Pas notre rôle.
    > Les fraudes continuent.
 
 === sec-089 | securite | Des vols sur les tombes
-Des voleurs dérobent plaques de bronze et ornements sur les tombes du Père-Lachaise.
+Des voleurs dérobent plaques de bronze et ornements sur les tombes du cimetière de l’arrondissement.
 A) Gardiens de nuit dans les cimetières :: Surveiller.
    rec-0.2x60 securite+2 | g0 c+2 d+2 e0
    > Des gardiens patrouillent la nuit.
@@ -295,7 +295,7 @@ C) Fermer plus tôt :: Simple.
    > Les cimetières ferment à 17 h.
 
 === sec-090 | securite | La police montée dans les bois
-La police à cheval patrouille dans les bois de Boulogne et de Vincennes. Elle coûte cher.
+La police à cheval patrouille dans le parc boisé de l’arrondissement. Elle coûte cher.
 A) Renforcer la brigade équestre :: Présence dans les bois.
    rec-0.2x60 securite+2 bon+1 | g0 c+2 d+3 e+1
    > La brigade équestre est agrandie.

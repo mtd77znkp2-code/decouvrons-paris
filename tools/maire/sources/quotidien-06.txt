@@ -25,7 +25,7 @@ C) Rien :: Privé.
    > Les animaux attendent le matin.
 
 === quo-188 | quotidien | Des détecteurs de fumée pour les seniors
-Beaucoup de seniors n’ont pas de détecteur ou ne savent pas changer la pile.
+Beaucoup de seniors de l’arrondissement n’ont pas de détecteur ou ne savent pas changer la pile.
 A) Installation gratuite par des agents :: Protéger.
    bud-1 securite+1 bon+1 | g+1 c+2 d+1 e+1
    > Des milliers de détecteurs sont posés.
@@ -134,10 +134,10 @@ C) Déconseiller :: Sécurité.
    > Les serruriers prospèrent.
 
 === quo-197 | quotidien | Des fontaines à eau pétillante
-Des fontaines d’eau gazeuse gratuite remplaceraient les bouteilles.
-A) En installer dans chaque arrondissement :: Plaisir.
+Des fontaines d’eau gazeuse gratuite dans l’arrondissement remplaceraient les bouteilles.
+A) En installer dans chaque quartier :: Plaisir.
    bud-2 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
-   > Les Parisiens remplissent leurs gourdes de bulles.
+   > Les habitants remplissent leurs gourdes de bulles.
 B) Quelques-unes dans les parcs :: Tester.
    bud-1 bon+1 | g0 c+2 d+1 e+1
    > Les fontaines pétillantes sont prises d’assaut.
@@ -400,7 +400,7 @@ C) Rien :: Liberté.
    bon-1 | g0 c+1 d+1 e0
    > Les trajets restent bruyants.
 === quo-219 | quotidien | Une bourse aux vélos d’enfants
-Les enfants grandissent vite et les vélos deviennent trop petits.
+Les enfants grandissent vite et les vélos deviennent trop petits. Les familles de l’arrondissement demandent une solution.
 A) Des bourses d’échange chaque printemps :: Partager.
    bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
    > Les petits vélos changent de propriétaire.

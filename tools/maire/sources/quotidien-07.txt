@@ -96,7 +96,7 @@ C) Rien :: Propriétaires.
    > Les passants changent de trottoir.
 
 === quo-234 | quotidien | Les vélos attachés aux arbres
-Faute d’arceaux, les cyclistes attachent leur vélo aux arbres et les abîment.
+Faute d’arceaux, les cyclistes de l’arrondissement attachent leur vélo aux arbres et les abîment.
 A) Plus d’arceaux près des arbres :: Équiper.
    bud-1 transports+1 ecologie+1 | g+1 c+2 d+1 e+1
    > Les arbres sont libérés.
@@ -281,7 +281,7 @@ C) Rien :: Hygiène.
    > Les fruits pourrissent.
 
 === quo-249 | quotidien | Le retour des gardiens de square
-Les squares n’ont plus de gardiens, les incivilités se multiplient.
+Les squares de l’arrondissement n’ont plus de gardiens, les incivilités se multiplient.
 A) Un gardien dans chaque grand square :: Présence.
    rec-0.03x60 securite+1 bon+1 | g0 c+2 d+2 e+1
    > Les squares retrouvent leur gardien.

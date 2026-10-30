@@ -190,8 +190,8 @@ C) Rien :: Prudence de chacun.
    securite-1 | g0 c+1 d+1 e0
    > Un piéton est renversé devant un parking.
 === quo-122 | quotidien | Appeler les seniors isolés pendant les fêtes
-À Noël, des milliers de personnes âgées passent les fêtes seules.
-A) Un réseau de bénévoles appelé par la Ville :: Solidarité.
+À Noël, des centaines de personnes âgées de l’arrondissement passent les fêtes seules.
+A) Un réseau de bénévoles appelé par la mairie :: Solidarité.
    bud-1 bon+2 | g+2 c+2 d0 e+1
    > Des milliers de coups de fil réchauffent les fêtes.
 B) Des repas de réveillon gratuits en mairie :: Partage.
@@ -214,7 +214,7 @@ C) Laisser ouvertes :: Commerce.
    > Les nuits restent bruyantes.
 
 === quo-124 | quotidien | Le marché du dimanche bloque la rue
-Le marché découvert bloque l’accès aux garages des riverains jusqu’à 15 heures.
+Le marché découvert de l’arrondissement bloque l’accès aux garages des riverains jusqu’à 15 heures.
 A) Avancer le remballage à 13 heures :: Riverains.
    economie-1 bon+1 | g0 c+2 d+1 e0
    > Les commerçants grognent mais s’adaptent.
@@ -283,8 +283,8 @@ C) Rien :: Copropriétés.
    bon-1 | g0 c+1 d+1 e0
    > Les avis de passage s’empilent.
 
-=== quo-130 | quotidien | Ouvrir les mairies d’arrondissement le samedi
-Les actifs ne peuvent pas faire leurs démarches en semaine.
+=== quo-130 | quotidien | Ouvrir la mairie le samedi
+Les actifs ne peuvent pas faire leurs démarches en semaine à la mairie d’arrondissement.
 ? distinct
 A) Ouverture tous les samedis matin :: Accessibilité.
    rec-0.02x20 bon+2 services+1 | g+1 c+2 d+1 e+1
@@ -370,7 +370,7 @@ C) Rien :: Dissuasion.
    > Les files continuent.
 
 === quo-137 | quotidien | Les vestiaires des gymnases vétustes
-Douches froides et casiers cassés découragent les sportifs amateurs.
+Douches froides et casiers cassés découragent les sportifs amateurs de l’arrondissement.
 A) Un plan de rénovation des vestiaires :: Sport.
    bud-3 bon+1 services+1 | g+1 c+2 d+1 e+1
    > Les douches chaudes reviennent.
@@ -382,13 +382,13 @@ C) Rien :: Économie.
    > Les clubs se plaignent.
 
 === quo-138 | quotidien | Les toilettes des cafés réservées aux clients
-Des passants pressés ne trouvent aucune toilette accessible.
+Des passants pressés ne trouvent aucune toilette accessible dans l’arrondissement.
 A) Payer les cafés pour ouvrir leurs toilettes :: Réseau.
    rec-0.01x20 bon+1 | g+1 c+2 d+1 e+1
    > Un autocollant signale les cafés accueillants.
 B) Plus de sanisettes :: Équipement.
    bud-2 bon+1 proprete+1 | g+1 c+2 d+1 e+1
-   > Cinquante sanisettes supplémentaires sont posées.
+   > Quinze sanisettes supplémentaires sont posées.
 C) Rien :: Coût.
    bon-1 proprete-1 | g0 c+1 d+1 e0
    > Les recoins des rues en pâtissent.

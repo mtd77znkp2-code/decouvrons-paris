@@ -1,6 +1,6 @@
 // Sécurité, série 2
-=== sec-026 | securite | Les vols à l’arraché au Trocadéro
-Des bandes organisées arrachent téléphones et sacs aux touristes sur le parvis du Trocadéro.
+=== sec-026 | securite | Les vols à l’arraché sur l’esplanade
+Des bandes organisées arrachent téléphones et sacs aux touristes sur la grande esplanade de l’arrondissement.
 A) Poster des policiers municipaux en permanence :: Présence visible.
    rec-0.4x50 securite+3 economie+1 | g-1 c+2 d+4 e0
    > Des patrouilles occupent le parvis du matin au soir.
@@ -12,8 +12,8 @@ C) Prévenir les touristes par affiches en dix langues :: Peu coûteux.
    > Des panneaux préviennent des vols.
    ~40 pop-1 > Une touriste blessée lors d’un vol fait la une à l’étranger.
 
-=== sec-027 | securite | Les pickpockets de la ligne 1
-La ligne 1 du métro est devenue le terrain de chasse favori des pickpockets.
+=== sec-027 | securite | Les pickpockets du métro
+La ligne de métro qui traverse l’arrondissement est devenue le terrain de chasse favori des pickpockets.
 A) Financer des agents en civil avec la RATP :: Efficace, coût partagé.
    rec-0.3x50 securite+2 transports+1 | g0 c+3 d+3 e0
    > Des agents en civil arrêtent plusieurs réseaux.
@@ -22,14 +22,14 @@ B) Diffuser des annonces sonores et des alertes :: Prévention.
    > Les annonces se multiplient dans les rames.
 C) Laisser faire la police nationale :: Pas ta compétence.
    securite-1 | g0 c+1 d-1 e0
-   > Rien ne change sur la ligne 1.
+   > Rien ne change sur la ligne.
 
 === sec-028 | securite | Les femmes victimes de violences manquent d’hébergement
-Les associations alertent : des femmes battues retournent chez leur agresseur faute de place d’hébergement.
-A) Ouvrir 300 places d’urgence :: Protéger.
+Les associations alertent : des femmes battues de l’arrondissement retournent chez leur agresseur faute de place d’hébergement.
+A) Ouvrir 60 places d’urgence :: Protéger.
    bud-15 rec-0.6x50 securite+2 services+2 | g+4 c+2 d+1 e+2
-   > Trois cents places sont ouvertes en un mois.
-B) Réquisitionner des logements vacants de la Ville :: Rapide.
+   > Soixante places sont ouvertes en un mois.
+B) Réquisitionner des logements vacants de la mairie :: Rapide.
    bud-5 logement-1 securite+1 | g+3 c+2 d0 e+1
    > Des appartements municipaux deviennent des refuges.
 C) Financer les associations existantes :: Les laisser agir.
@@ -37,7 +37,7 @@ C) Financer les associations existantes :: Les laisser agir.
    > Les associations reçoivent une aide renforcée.
 
 === sec-029 | securite | Les parcs mal éclairés inquiètent les femmes
-Une enquête révèle que les femmes évitent de traverser les parcs après la tombée de la nuit.
+Une enquête révèle que les femmes évitent de traverser les parcs de l’arrondissement après la tombée de la nuit.
 A) Éclairer toutes les allées principales :: Rassurer.
    bud-12 securite+2 ecologie-1 | g+2 c+2 d+1 e-1
    > Les allées principales sont éclairées toute la nuit.
@@ -49,7 +49,7 @@ C) Fermer les parcs à la tombée de la nuit :: Simple.
    > Les grilles ferment au coucher du soleil.
 
 === sec-030 | securite | Les chauffeurs de bus agressés
-Plusieurs chauffeurs de bus ont été agressés ce mois-ci. Leur syndicat menace d’arrêter les lignes de nuit.
+Plusieurs chauffeurs de bus ont été agressés ce mois-ci dans l’arrondissement. Leur syndicat menace d’arrêter les lignes de nuit.
 A) Financer des agents à bord des bus de nuit :: Rassurer.
    rec-0.4x50 securite+2 transports+1 | g+1 c+2 d+3 e0
    > Des agents accompagnent les bus de nuit.
@@ -73,8 +73,8 @@ C) Interdire le stationnement des touristes :: Moins de voitures.
    securite+1 ecologie+1 economie-1 | g+1 c+1 d-1 e+3
    > Le quartier devient réservé aux riverains.
 
-=== sec-032 | securite | La colline du crack réapparaît
-Un campement de consommateurs de crack s’installe près d’un échangeur du nord parisien. Les riverains sont excédés.
+=== sec-032 | securite | Un campement de crack s’installe
+Un campement de consommateurs de crack s’installe près d’un échangeur de l’arrondissement. Les riverains sont excédés.
 A) Démanteler le campement :: Soulagement immédiat.
    securite+2 bon-1 | g-3 c+1 d+4 e-1
    > Le campement est évacué par la police.
@@ -124,7 +124,7 @@ C) Organiser des fêtes de quartier ce soir-là :: Occuper l’espace.
    > Des bals gratuits sont organisés dans dix quartiers.
 
 === sec-036 | securite | Des mineurs isolés vivent dans la rue
-Une centaine de mineurs étrangers isolés dorment dans un square et commettent des vols pour survivre.
+Une cinquantaine de mineurs étrangers isolés dorment dans un square de l’arrondissement et commettent des vols pour survivre.
 A) Ouvrir un centre d’accueil spécialisé :: Protéger et encadrer.
    bud-10 rec-0.4x50 securite+1 services+1 | g+4 c+2 d-2 e+2
    > Un centre éducatif accueille les jeunes.
@@ -133,7 +133,7 @@ B) Renforcer la police dans le square :: Ordre.
    > Le square est surveillé jour et nuit.
 C) Demander à l’État de prendre en charge :: Compétence de l’État.
    coh+1 | g0 c+1 d+2 e0
-   > Le maire interpelle le gouvernement.
+   > Le maire d’arrondissement interpelle le gouvernement.
    ~45 securite-1 pop-1 > La situation s’aggrave pendant que l’État tarde.
 
 === sec-037 | securite | Les cyclistes qui grillent les feux rouges
@@ -175,7 +175,7 @@ C) Aider les commerçants à s’équiper :: Partenariat.
    > Une aide finance rideaux et alarmes.
 
 === sec-040 | securite | Les faux agents qui volent les personnes âgées
-De faux agents des eaux ou de la mairie s’introduisent chez des personnes âgées pour les dépouiller.
+De faux agents des eaux ou de la mairie s’introduisent chez des personnes âgées de l’arrondissement pour les dépouiller.
 ? distinct
 A) Campagne d’information porte-à-porte :: Prévenir.
    bud-2 securite+1 services+1 | g+2 c+2 d+1 e+1
@@ -189,7 +189,7 @@ C) Laisser la police enquêter :: Classique.
    ~40 pop-1 > Un réseau dépouille une dizaine de retraités du même immeuble.
 
 === sec-041 | securite | Les attaques au couteau inquiètent
-Plusieurs agressions au couteau en quelques semaines inquiètent les habitants d’un quartier.
+Plusieurs agressions au couteau en quelques semaines inquiètent les habitants d’un quartier de l’arrondissement.
 A) Demander une zone d’interdiction de port d’armes blanches :: Ferme.
    securite+2 | g-2 c+2 d+4 e0
    > Le préfet autorise des fouilles dans le quartier.
@@ -214,7 +214,7 @@ C) Proposer des cours d’éducation canine gratuits :: Prévention.
    > Des éducateurs canins conseillent les propriétaires.
 
 === sec-043 | securite | La vidéo-verbalisation des automobilistes
-Les caméras pourraient verbaliser automatiquement le stationnement en double file et les feux grillés.
+Les caméras de l’arrondissement pourraient verbaliser automatiquement le stationnement en double file et les feux grillés.
 A) Généraliser la vidéo-verbalisation :: Efficace.
    rec+0.3x60 securite+1 transports+1 pop-2 | g0 c+1 d+2 e+2
    > Les infractions sont relevées par caméra.
@@ -225,8 +225,8 @@ C) Refuser la surveillance automatique :: Libertés.
    pop+1 | g+1 c0 d0 e-1
    > Les caméras ne verbalisent pas.
 
-=== sec-044 | securite | La gare du Nord inquiète les voyageurs
-Agressions, vols et trafics se multiplient autour de la gare du Nord.
+=== sec-044 | securite | La gare du quartier inquiète les voyageurs
+Agressions, vols et trafics se multiplient autour de la gare de l’arrondissement.
 A) Créer un poste de police municipale dans la gare :: Présence forte.
    bud-5 rec-0.3x50 securite+3 | g-1 c+2 d+4 e0
    > Un poste ouvre dans le hall de la gare.
@@ -251,16 +251,16 @@ C) Simple campagne de prévention :: Peu coûteux.
    > Des conseils sont publiés en ligne.
 
 === sec-046 | securite | Les violences contre les agents d’accueil des hôpitaux
-Les agents d’accueil des urgences de l’AP-HP sont régulièrement agressés.
+Les agents d’accueil des urgences de l’hôpital de l’arrondissement sont régulièrement agressés.
 A) Financer des agents de sécurité aux urgences :: Protection.
    rec-0.3x50 securite+2 services+1 | g+1 c+2 d+3 e0
    > Des vigiles sont postés dans les halls d’urgences.
 B) Financer des médiateurs pour apaiser l’attente :: Prévention.
    rec-0.2x50 services+1 bon+1 | g+3 c+2 d0 e+1
    > Des médiateurs informent les familles qui attendent.
-C) Ce n’est pas à la Ville de payer :: Compétence de l’État.
+C) Ce n’est pas à la mairie de payer :: Compétence de l’État.
    coh+1 | g-1 c+1 d+2 e0
-   > Le maire renvoie vers l’État.
+   > Le maire d’arrondissement renvoie vers l’État.
 
 === sec-047 | securite | La protection des lieux de culte
 Après des actes de vandalisme, des responsables religieux demandent une protection renforcée.
@@ -286,8 +286,8 @@ C) Cours de sécurité routière dans les collèges :: Éducation.
    rec-0.1x50 securite+1 | g+2 c+2 d+1 e+1
    > Des policiers forment les élèves.
 
-=== sec-049 | securite | Des drones survolent Paris
-Des drones illégaux sont repérés au-dessus de monuments et d’écoles.
+=== sec-049 | securite | Des drones survolent l’arrondissement
+Des drones illégaux sont repérés au-dessus de monuments et d’écoles de l’arrondissement.
 A) Équiper la police municipale de brouilleurs :: Technologie.
    bud-8 securite+2 | g-1 c+2 d+4 e0
    > Des brouilleurs neutralisent les drones.
@@ -299,7 +299,7 @@ C) Laisser l’armée gérer l’espace aérien :: Compétence nationale.
    > La mairie ne s’en mêle pas.
 
 === sec-050 | securite | Des vigiles privés dans les parcs ?
-Une société propose de surveiller les parcs avec des vigiles privés, moins chers que des policiers.
+Une société propose de surveiller les parcs de l’arrondissement avec des vigiles privés, moins chers que des policiers.
 A) Accepter pour les grands parcs :: Économique.
    rec-0.3x50 securite+2 | g-3 c+2 d+3 e0
    > Des vigiles patrouillent dans les grands parcs.
@@ -312,10 +312,10 @@ C) Refuser toute surveillance supplémentaire :: Liberté.
    > Les parcs restent sans surveillance.
 
 === sec-051 | securite | Des policiers retraités veulent aider
-Des policiers retraités proposent de reprendre du service bénévolement dans une réserve municipale.
+Des policiers retraités de l’arrondissement proposent de reprendre du service bénévolement dans une réserve municipale.
 A) Créer une réserve municipale :: Renfort peu coûteux.
    rec-0.1x50 securite+2 | g-1 c+3 d+3 e0
-   > Deux cents retraités rejoignent la réserve.
+   > Quarante retraités rejoignent la réserve.
 B) Les affecter à la prévention dans les écoles :: Transmission.
    rec-0.1x50 securite+1 services+1 | g+1 c+3 d+2 e+1
    > Les anciens policiers interviennent dans les classes.
@@ -349,7 +349,7 @@ C) Laisser la police judiciaire enquêter :: Discrétion.
    > L’enquête suit son cours.
 
 === sec-054 | securite | Les points de deal se déplacent
-Après une grande opération, les trafiquants se sont installés trois rues plus loin.
+Après une grande opération dans l’arrondissement, les trafiquants se sont installés trois rues plus loin.
 A) Occuper durablement le terrain :: Présence constante.
    rec-0.5x50 securite+3 | g-2 c+1 d+4 e0
    > La police municipale reste en poste jour et nuit.
@@ -387,7 +387,7 @@ C) Installer des barrières entre terrasse et chaussée :: Protection.
    > Des jardinières séparent les terrasses de la rue.
 
 === sec-057 | securite | L’arrêt à la demande dans les bus de nuit
-Des associations féministes demandent que les bus de nuit puissent déposer les femmes entre deux arrêts.
+Des associations féministes demandent que les bus de nuit de l’arrondissement puissent déposer les femmes entre deux arrêts.
 A) Généraliser l’arrêt à la demande :: Sécurité des femmes.
    bud-2 securite+2 transports+1 | g+3 c+2 d+1 e+2
    > Les bus de nuit s’arrêtent à la demande.
@@ -399,7 +399,7 @@ C) Refuser : trop compliqué pour les chauffeurs :: Statu quo.
    > La proposition est rejetée.
 
 === sec-058 | securite | Les contrôles d’identité au faciès
-Un rapport montre que les jeunes de certains quartiers sont contrôlés vingt fois plus que les autres.
+Un rapport montre que les jeunes de certains quartiers de l’arrondissement sont contrôlés vingt fois plus que les autres.
 A) Exiger un récépissé pour chaque contrôle par la police municipale :: Transparence.
    bud-2 coh+1 bon+1 | g+4 c+1 d-4 e+2
    > Chaque contrôle donnera lieu à un reçu.
@@ -409,7 +409,7 @@ B) Former les agents contre les discriminations :: Pédagogie.
    > Tous les agents suivent une formation.
 C) Défendre le travail des agents :: Soutien à la police.
    securite+1 bon-1 | g-4 c0 d+4 e-2
-   > Le maire refuse de « stigmatiser » les policiers.
+   > Le maire d’arrondissement refuse de « stigmatiser » les policiers.
 
 === sec-059 | securite | Les courses de voitures sur les quais la nuit
 Des voitures de sport font la course sur les voies sur berges entre 2 h et 5 h du matin.
@@ -425,7 +425,7 @@ C) Contrôles de police ponctuels :: Classique.
    ~40 pop-2 > Un accident grave relance la polémique.
 
 === sec-060 | securite | Une noyade dans une piscine municipale
-Un enfant s’est noyé dans une piscine municipale. Les maîtres-nageurs étaient en sous-effectif.
+Un enfant s’est noyé dans la piscine de l’arrondissement. Les maîtres-nageurs étaient en sous-effectif.
 A) Recruter des maîtres-nageurs, quitte à fermer des bassins :: Sécurité d’abord.
    rec-0.4x50 securite+2 services-1 | g+2 c+2 d+1 e0
    > Aucun bassin n’ouvre sans surveillance complète.
@@ -437,11 +437,11 @@ C) Former les agents d’accueil aux premiers secours :: Rapide.
    > Tout le personnel est formé aux gestes de secours.
 
 === sec-061 | securite | Les personnes âgées qui chutent seules chez elles
-Des personnes âgées restent des heures au sol après une chute, faute d’alerte.
+Des personnes âgées de l’arrondissement restent des heures au sol après une chute, faute d’alerte.
 ? distinct
 A) Offrir un bracelet d’alerte aux plus de 80 ans :: Protéger.
    bud-8 rec-0.2x50 services+2 bon+1 | g+3 c+2 d+1 e+1
-   > Des milliers de bracelets sont distribués.
+   > Des centaines de bracelets sont distribués.
 B) Des visites régulières par des voisins volontaires :: Solidarité.
    bud-1 bon+1 | g+2 c+2 d+1 e+1
    > Un réseau de voisins veille sur les seniors.
@@ -450,7 +450,7 @@ C) Le proposer à prix réduit :: Compromis.
    > Le bracelet est vendu à moitié prix.
 
 === sec-062 | securite | La police municipale peine à recruter
-La moitié des postes ouverts dans la police municipale restent vacants faute de candidats.
+La moitié des postes ouverts dans la police municipale de l’arrondissement restent vacants faute de candidats.
 ? distinct
 A) Augmenter les salaires de 15 % :: Attractivité.
    rec-0.6x60 securite+2 | g0 c+2 d+3 e0
@@ -458,12 +458,12 @@ A) Augmenter les salaires de 15 % :: Attractivité.
 B) Proposer des logements de fonction :: Avantage concret.
    bud-10 logement-1 securite+2 | g+1 c+2 d+2 e0
    > Les jeunes recrues sont logées près de leur poste.
-C) Recruter des jeunes de banlieue formés par la Ville :: Diversité.
+C) Recruter des jeunes du quartier formés par la mairie :: Diversité.
    rec-0.2x60 securite+1 bon+1 | g+3 c+2 d0 e+1
    > Une école municipale forme les futurs agents.
 
 === sec-063 | securite | Les fêtes sauvages sur les quais du canal
-Chaque soir d’été, des milliers de jeunes boivent sur les quais du canal Saint-Martin jusqu’à l’aube.
+Chaque soir d’été, des milliers de jeunes boivent sur les quais du canal de l’arrondissement jusqu’à l’aube.
 A) Interdire l’alcool sur les quais après 21 h :: Calme.
    securite+1 bon-1 | g-1 c+2 d+3 e0
    > L’alcool est interdit le soir sur les quais.
@@ -471,12 +471,12 @@ A) Interdire l’alcool sur les quais après 21 h :: Calme.
 B) Installer toilettes, poubelles et médiateurs :: Accompagner.
    bud-6 rec-0.2x30 proprete+1 bon+1 | g+2 c+2 d0 e+1
    > Les quais sont équipés pour la soirée.
-C) Laisser faire : c’est la vie parisienne :: Liberté.
+C) Laisser faire : c’est la vie du quartier :: Liberté.
    bon+1 proprete-1 | g+1 c0 d-2 e0
    > Les soirées continuent.
 
 === sec-064 | securite | Une série d’incendies criminels de voitures
-Un pyromane met le feu à des voitures garées dans le 12e arrondissement depuis trois semaines.
+Un pyromane met le feu à des voitures garées dans l’arrondissement depuis trois semaines.
 A) Patrouilles de nuit et appel à témoins :: Mobilisation.
    rec-0.2x30 securite+2 | g0 c+2 d+3 e0
    > Les habitants sont invités à signaler tout comportement suspect.

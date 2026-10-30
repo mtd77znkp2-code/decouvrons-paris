@@ -1,7 +1,7 @@
 // Vie quotidienne, série 5
 === quo-146 | quotidien | Le montage bruyant des marchés à l’aube
-Les barres métalliques des stands claquent dès 5 heures sous les fenêtres.
-A) Des structures silencieuses fournies par la Ville :: Équiper.
+Les barres métalliques des stands claquent dès 5 heures sous les fenêtres de l’arrondissement.
+A) Des structures silencieuses fournies par la mairie :: Équiper.
    bud-2 bon+1 | g+1 c+2 d+1 e+1
    > Le montage se fait en douceur.
 B) Retarder le montage à 6 h 30 :: Règle.
@@ -24,7 +24,7 @@ C) Rien :: Bailleurs.
    > Les habitants descendent ouvrir à chaque visite.
 
 === quo-148 | quotidien | Les minuteries d’escalier trop courtes
-La lumière s’éteint entre deux étages, les seniors montent dans le noir.
+Dans les HLM de l’arrondissement, la lumière s’éteint entre deux étages, les seniors montent dans le noir.
 A) Des détecteurs de présence dans les immeubles sociaux :: Sécurité.
    bud-1 securite+1 | g0 c+2 d+1 e+1
    > La lumière suit les habitants.
@@ -109,7 +109,7 @@ C) Rien :: SNCF.
    > Les riverains dorment mal.
 
 === quo-155 | quotidien | Les arbres trop proches des fenêtres
-Des platanes plongent des appartements dans l’ombre toute l’année.
+Des platanes plongent des appartements de l’arrondissement dans l’ombre toute l’année.
 A) Élaguer régulièrement :: Lumière.
    bud-1 bon+1 ecologie-1 | g0 c+2 d+1 e0
    > La lumière revient dans les salons.
@@ -121,7 +121,7 @@ C) Rien :: Arbres.
    > Les habitants allument la lumière à midi.
 
 === quo-156 | quotidien | Les parcs fermés les jours de vent
-Au moindre coup de vent, les parcs ferment et les familles restent dehors.
+Au moindre coup de vent, les parcs de l’arrondissement ferment et les familles restent dehors.
 ? distinct
 A) Des capteurs pour fermer seulement les zones dangereuses :: Précision.
    bud-2 bon+1 | g+1 c+2 d+1 e+1
@@ -195,7 +195,7 @@ C) Rien :: Propriété.
    > Les rues restent silencieuses.
 
 === quo-162 | quotidien | Une brigade de nuit contre le bruit
-Les habitants ne savent pas qui appeler pour une fête trop bruyante à 2 heures.
+Les habitants de l’arrondissement ne savent pas qui appeler pour une fête trop bruyante à 2 heures.
 A) Une brigade municipale de nuit :: Intervenir.
    rec-0.02x60 bon+1 securite+1 | g0 c+2 d+2 e0
    > Les fêtes bruyantes sont calmées.
@@ -280,7 +280,7 @@ C) Rien :: RATP.
    > Les usagers attendent sous la pluie.
 
 === quo-169 | quotidien | Les vestiaires collectifs des piscines
-Des usagers, notamment des adolescentes, n’osent plus se changer en vestiaire commun.
+Des usagers, notamment des adolescentes, n’osent plus se changer en vestiaire commun à la piscine de l’arrondissement.
 ? distinct
 A) Des cabines individuelles partout :: Intimité.
    bud-2 services+1 bon+1 | g+1 c+2 d+1 e+1
@@ -293,11 +293,11 @@ C) Rien :: Coût.
    > Des élèves sèchent la natation.
 
 === quo-170 | quotidien | Les piscines ouvertes tôt le matin
-Les actifs voudraient nager avant le travail.
+Les actifs de l’arrondissement voudraient nager avant le travail.
 A) Ouvrir à 7 heures en semaine :: Actifs.
    rec-0.02x60 services+1 bon+1 | g0 c+2 d+1 e+1
    > Les lignes d’eau se remplissent à l’aube.
-B) Dans une piscine par arrondissement :: Cibler.
+B) Dans une seule piscine :: Cibler.
    rec-0.01x60 services+1 | g0 c+2 d+1 e+1
    > Les lève-tôt ont leur piscine.
 C) Rien :: Personnel.
@@ -330,7 +330,7 @@ C) Rien :: Commerce.
    > Le vacarme continue.
 
 === quo-173 | quotidien | Attendre trop longtemps au feu piéton
-Les piétons attendent deux minutes au feu et finissent par traverser au rouge.
+Dans l’arrondissement, les piétons attendent deux minutes au feu et finissent par traverser au rouge.
 A) Raccourcir l’attente des piétons :: Priorité aux piétons.
    bon+1 transports-1 | g+1 c+2 d+1 e+1
    > Les piétons traversent plus souvent.
@@ -354,7 +354,7 @@ C) Rien :: Vols.
    > Les habitants apportent leur serviette.
 
 === quo-175 | quotidien | Les jardinières interdites par les copropriétés
-Des syndics interdisent les plantes aux fenêtres.
+Des syndics de l’arrondissement interdisent les plantes aux fenêtres.
 A) Une campagne pour les balcons fleuris :: Encourager.
    bud-1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
    > Les façades fleurissent.
@@ -413,7 +413,7 @@ C) Rien :: Ça ne dure qu’un quart d’heure.
    securite-1 | g0 c+1 d+1 e0
    > Une poussette frôle un scooter.
 === quo-180 | quotidien | Des rampes dans les escaliers de rue
-Les longs escaliers de Belleville n’ont pas de rampe.
+Les longs escaliers de rue de l’arrondissement n’ont pas de rampe.
 A) Installer des rampes partout :: Accessibilité.
    bud-1 securite+1 bon+1 | g+1 c+2 d+1 e+1
    > Les seniors montent en sécurité.

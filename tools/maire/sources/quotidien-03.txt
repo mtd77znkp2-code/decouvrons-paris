@@ -182,7 +182,7 @@ C) Rien :: Téléphones portables.
    > Rien ne change.
 
 === quo-081 | quotidien | Changer son bébé en ville
-Les parents ne trouvent pas de table à langer dans les lieux publics.
+Les parents ne trouvent pas de table à langer dans les lieux publics de l’arrondissement.
 A) Tables à langer dans tous les bâtiments publics :: Accueil des familles.
    bud-2 bon+1 services+1 | g+2 c+2 d+1 e+1
    > Les bâtiments publics sont équipés.
@@ -206,7 +206,7 @@ C) Rien :: Tri existant.
    > Les capsules finissent incinérées.
 
 === quo-083 | quotidien | Les seniors déjeunent à la cantine
-Les seniors isolés pourraient déjeuner dans les cantines scolaires avec les enfants.
+Les seniors isolés de l’arrondissement pourraient déjeuner dans les cantines scolaires avec les enfants.
 A) Ouvrir les cantines aux seniors :: Lien entre générations.
    rec-0.1x60 bon+2 services+1 | g+2 c+2 d+1 e+1
    > Des seniors déjeunent avec les écoliers.
@@ -218,7 +218,7 @@ C) Rien :: Sécurité des écoles.
    > Rien ne change.
 
 === quo-084 | quotidien | Des cafés pour les jeunes parents
-Les jeunes parents isolés cherchent des lieux où venir avec leur bébé.
+Les jeunes parents isolés de l’arrondissement cherchent des lieux où venir avec leur bébé.
 A) Ouvrir des cafés-poussettes dans les centres sociaux :: Rompre l’isolement.
    bud-3 bon+1 services+1 | g+2 c+2 d+1 e+1
    > Des cafés-poussettes ouvrent.
@@ -242,7 +242,7 @@ C) Rien :: Sécurité.
    > Rien ne change.
 
 === quo-086 | quotidien | Des plans en relief pour les aveugles
-Les personnes aveugles ne peuvent pas se repérer dans les gares et les places.
+Les personnes aveugles ne peuvent pas se repérer dans les gares et les places de l’arrondissement.
 A) Plans tactiles et bandes de guidage :: Accessibilité.
    bud-5 services+1 bon+1 | g+2 c+3 d+1 e+1
    > Des plans en relief sont installés.
@@ -292,11 +292,11 @@ C) Garder l’interdiction :: Esthétique.
    > Rien ne change.
 
 === quo-090 | quotidien | Des cafés suspendus
-Des cafés proposent aux clients de payer un café pour une personne dans le besoin.
+Des cafés de l’arrondissement proposent aux clients de payer un café pour une personne dans le besoin.
 A) Label et promotion des cafés suspendus :: Solidarité.
    bud-1 bon+1 achat+1 | g+2 c+2 d+1 e+1
    > Des centaines de cafés participent.
-B) La Ville finance aussi des repas suspendus :: Aller plus loin.
+B) La mairie finance aussi des repas suspendus :: Aller plus loin.
    rec-0.1x60 achat+1 bon+1 | g+3 c+2 d0 e+1
    > Des repas sont offerts aux personnes démunies.
 C) Rien :: Initiative privée.
@@ -304,7 +304,7 @@ C) Rien :: Initiative privée.
    > Rien ne change.
 
 === quo-091 | quotidien | Des écrans géants pour la Coupe du monde
-Les fans de football demandent des écrans géants dans les parcs pour les matchs.
+Les fans de football demandent des écrans géants dans les parcs de l’arrondissement pour les matchs.
 A) Fan zones dans plusieurs parcs :: Fête populaire.
    bud-5 bon+2 securite-1 | g+1 c+2 d+1 e0
    > Des milliers de supporters regardent les matchs ensemble.
@@ -340,7 +340,7 @@ C) Rien :: Repère utile.
    > Rien ne change.
 
 === quo-094 | quotidien | L’eau du robinet a mauvaise réputation
-Beaucoup de Parisiens achètent de l’eau en bouteille en pensant que l’eau du robinet est mauvaise.
+Beaucoup d’habitants achètent de l’eau en bouteille en pensant que l’eau du robinet est mauvaise.
 A) Campagne et carafes offertes :: Changer les habitudes.
    bud-2 ecologie+2 achat+1 | g+1 c+3 d+1 e+3
    > Des milliers de carafes sont distribuées.
@@ -352,7 +352,7 @@ C) Rien :: Choix individuel.
    > Rien ne change.
 
 === quo-095 | quotidien | Des nids de frelons asiatiques
-Des nids de frelons asiatiques apparaissent dans les arbres des squares.
+Des nids de frelons asiatiques apparaissent dans les arbres des squares de l’arrondissement.
 A) Service gratuit de destruction des nids :: Protéger.
    bud-2 securite+1 ecologie+1 | g+1 c+3 d+1 e+2
    > Les nids sont détruits.
@@ -400,7 +400,7 @@ C) Rien :: Pas prioritaire.
    > Rien ne change.
 
 === quo-099 | quotidien | Des abris de pique-nique dans les parcs
-Quand il pleut, les familles n’ont aucun abri dans les parcs.
+Quand il pleut, les familles n’ont aucun abri dans les parcs de l’arrondissement.
 A) Kiosques couverts avec tables :: Convivialité.
    bud-6 bon+2 | g+1 c+2 d+1 e+1
    > Des abris accueillent les pique-niques.
@@ -437,7 +437,7 @@ C) Rien :: Compétence du distributeur.
    > Rien ne change.
 
 === quo-102 | quotidien | Des pique-niques géants organisés en ligne
-Des pique-niques sauvages de plusieurs milliers de personnes sont organisés sur les réseaux sociaux.
+Des pique-niques sauvages de plusieurs milliers de personnes sont organisés sur les réseaux sociaux, dans le parc de l’arrondissement.
 A) Les encadrer avec sécurité et poubelles :: Accompagner.
    bud-3 bon+1 proprete+1 | g+1 c+3 d+1 e+1
    > Les rassemblements se déroulent bien.
@@ -473,7 +473,7 @@ C) Garder l’interdiction :: Propreté et enfants.
    > Rien ne change.
 
 === quo-105 | quotidien | La fin des téléphones fixes classiques
-Le réseau téléphonique en cuivre s’arrête. Des seniors risquent de perdre leur ligne fixe et leur téléalarme.
+Le réseau téléphonique en cuivre s’arrête. Des seniors de l’arrondissement risquent de perdre leur ligne fixe et leur téléalarme.
 A) Accompagner chaque senior dans le changement :: Aider.
    rec-0.1x30 services+2 bon+1 | g+2 c+3 d+1 e+1
    > Des agents installent les nouveaux équipements.
