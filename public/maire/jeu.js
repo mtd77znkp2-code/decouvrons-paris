@@ -2328,7 +2328,8 @@
   var SONS_FIN = {};
   function sonFin(cle, gain) {
     if (SONS_FIN[cle] || !window.sfx) return; SONS_FIN[cle] = 1;
-    if (gain > 0) window.sfx("gagne");   // son n°5 : victoire au casino
+    if (gain > 0) window.sfx("gagne");        // son n°5 : victoire au casino
+    else if (gain < 0) window.sfx("perdu");   // son n°6 : défaite au casino
   }
   function confettis() {
     if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
