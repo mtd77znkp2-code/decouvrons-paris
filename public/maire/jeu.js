@@ -567,11 +567,16 @@
     if (SES.jetons >= RESERVE) { SES.tick = now + TRIM_MS; return; }
     var n = 0; while (now >= SES.tick && SES.jetons < RESERVE) { SES.jetons++; SES.tick += TRIM_MS; n++; }
     if (SES.jetons >= RESERVE) SES.tick = now + TRIM_MS;
-    if (n) garderReserve();
+    if (n) {
+      garderReserve();
+      // Nouveau dossier disponible : le bouton fait un petit saut doré
+      var b = document.querySelector(".m-barmois .btn.mx-auto");
+      if (b) { b.classList.remove("mx-nouveau"); void b.offsetWidth; b.classList.add("mx-nouveau"); }
+    }
   }
   function autoTrim() { try { return localStorage.getItem("maire_trim_auto") === "1"; } catch (e) { return false; } }
   function jouerTrimestre() {
-    if (SES.jetons < 1) return toast("⏳ Prochain trimestre dans " + Math.max(1, Math.ceil((SES.tick - Date.now()) / 1000)) + " s.");
+    if (SES.jetons < 1) return toast("⏳ Prochain dossier dans " + Math.max(1, Math.ceil((SES.tick - Date.now()) / 1000)) + " s.");
     if (SES.jetons >= RESERVE) SES.tick = Date.now() + TRIM_MS;
     SES.jetons--; garderReserve(); trimestreSuivant();
   }
@@ -1127,17 +1132,19 @@
     var r = Math.max(0, Math.ceil((SES.tick - Date.now()) / 1000)), haut, bas;
     if (st.phase === "evenement") haut = "📂 Un dossier t’attend";
     else if ((st.bj && !st.bj.fini) || (st.enchere && !st.enchere.fini)) haut = "🃏 Une partie de cartes est en cours";
-    else haut = SES.jetons < 1 ? "⏳ Prochain trimestre dans " + r + " s" : "Trimestre suivant →";
-    bas = "▶ " + SES.jetons + "/" + RESERVE + " en réserve" + (SES.jetons < RESERVE ? " · +1 dans " + r + " s" : " · réserve pleine");
+    else haut = SES.jetons < 1 ? "⏳ Prochain dossier dans " + r + " s" : "📂 Dossier suivant →";
+    // La saison du prochain dossier, en tout petit
+    bas = SAISONS[st.t % 4][0] + " · " + SES.jetons + "/" + RESERVE + (SES.jetons < RESERVE ? " · +1 dans " + r + " s" : " · réserve pleine");
     b.textContent = ""; b.appendChild(h("span", null, haut)); b.appendChild(h("small", "mx-reserve", bas));
     b.classList.toggle("mx-vide", SES.jetons < 1);
+    b.classList.toggle("mx-pret", SES.jetons > 0 && (st.phase === "gestion" || st.phase === "pret"));
     b.style.setProperty("--p", SES.jetons >= RESERVE ? 1 : Math.max(0, Math.min(1, 1 - r / (TRIM_MS / 1000))));
   }
   function barreTrimestre() {
     var b = h("div", "m-barmois");
     var cartes = (st.bj && !st.bj.fini) || (st.enchere && !st.enchere.fini);
     var auto = !!(st.session && SES.id);
-    b.appendChild(bouton(st.phase === "evenement" ? "📂 Un dossier t’attend" : cartes ? "🃏 Une partie de cartes est en cours" : auto ? "" : "Trimestre suivant →", "btn m-go" + (auto ? " mx-auto" : ""), function () {
+    b.appendChild(bouton(st.phase === "evenement" ? "📂 Un dossier t’attend" : cartes ? "🃏 Une partie de cartes est en cours" : auto ? "" : "📂 Dossier suivant →", "btn m-go" + (auto ? " mx-auto" : ""), function () {
       if (st.phase === "evenement" || (st.resultat && !st.resultatVu)) return modale();
       if (st.bj && !st.bj.fini) return ouvrirTelephone();
       if (auto) return jouerTrimestre();
@@ -1148,7 +1155,7 @@
     if (auto) remplirTrim(b.lastChild);
     if (auto) b.appendChild(bouton(autoTrim() ? "⏩ Auto : oui" : "⏩ Auto : non", "btn m-sec mx-trimauto" + (autoTrim() ? " mx-on" : ""), function () {
       try { localStorage.setItem("maire_trim_auto", autoTrim() ? "0" : "1"); } catch (e) {}
-      toast(autoTrim() ? "⏩ Les trimestres passent tout seuls dès qu’ils sont prêts." : "✋ Tu passes les trimestres toi-même.");
+      toast(autoTrim() ? "⏩ Les dossiers arrivent tout seuls dès qu’ils sont prêts." : "✋ Tu appelles toi-même le dossier suivant.");
       jeu();
     }));
     return b;
@@ -1281,7 +1288,7 @@
       { q: "#m-modale .m-choix", t: "✨ Un événement rare ! Aucune réponse n’est toujours la meilleure : à toi de jouer.", a: "choix" }] },
     { id: "session", ecran: "jeu", si: function () { return !!document.querySelector(".mx-session"); }, etapes: [
       { q: ".mx-session", t: "🏛️ Tu commences maire du plus petit arrondissement. Toutes les 10 minutes, élection : bats ton rival (juste au-dessus) pour prendre sa place, jusqu’au trône de Maire de Paris. Ton opposant (juste en dessous) veut la tienne.", a: "ok" },
-      { q: ".m-barmois", t: "⏱️ C’est toi qui passes les trimestres. Un nouveau se recharge toutes les 25 secondes et tu peux en garder 4 en réserve. Ne traîne pas trop : les autres maires avancent pendant ce temps !", a: "ok" },
+      { q: ".m-barmois", t: "📂 C’est toi qui appelles le dossier suivant. Un nouveau arrive toutes les 25 secondes (le bouton s’illumine) et tu peux en garder 4 en réserve. Le petit emoji montre la saison. Ne traîne pas trop : les autres maires avancent pendant ce temps !", a: "ok" },
       { q: ".mx-ses-btn", t: "🏆 Le classement de ta session : de vrais joueurs et des maires robots. Touche un maire pour comparer vos villes.", a: "ok" }] },
     { id: "habitants3", ecran: "jeu", si: function () { return st.phase === "gestion"; }, etapes: [
       { q: ".mx-hab", t: "👥 Les habitants : plus Paris est peuplé, plus les impôts rapportent. Ils arrivent quand ta popularité monte… s’il y a des logements libres (construis-en pour en accueillir plus).", a: "ok" },
