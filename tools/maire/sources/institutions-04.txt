@@ -237,17 +237,18 @@ C) Retirer le règlement :: Recul.
    pop-1 coh-1 | g-1 c0 d+1 e0
    > Les panneaux reviennent.
 
-=== ins-126 | institutions | Une multinationale attaque la Ville en justice
-Une plateforme de location de voitures réclame des millions après l’interdiction de ses véhicules.
+=== ins-126 | institutions | Une multinationale attaque la mairie en justice
+Une plateforme de location de voitures réclame des millions à l’arrondissement après l’interdiction de ses véhicules.
 A) Aller au procès :: Principe.
    bud-1 coh+1 | g+1 c+2 d+1 e+1
-   > La Ville gagne en première instance.
+   > La mairie d’arrondissement gagne en première instance.
 B) Transiger discrètement :: Prudence.
    bud-2 | g0 c+1 d+2 e0
    > L’affaire se règle hors tribunal.
 C) Lever l’interdiction :: Céder.
    pop-1 coh-1 | g-1 c0 d+2 e0
    > Les voitures reviennent sur les trottoirs.
+
 === ins-127 | institutions | Le recensement sous-estime la population
 L’INSEE annonce moins d’habitants, ce qui fait baisser les dotations de l’État.
 A) Contester le recensement :: Défendre Paris.
@@ -357,34 +358,34 @@ C) Céder la gestion :: Économie.
    bud+2 pop-2 | g-1 c+1 d+1 e0
    > Les Parisiens se sentent dépossédés.
 
-=== ins-136 | institutions | Un prix international pour la Ville
-Paris est finaliste d’un grand prix mondial de la ville durable.
+=== ins-136 | institutions | Un prix international pour l’arrondissement
+Ton arrondissement est finaliste d’un grand prix mondial du quartier durable.
 A) Mobiliser toute l’équipe pour gagner :: Ambition.
    bud-1 pop+1 | g+1 c+2 d+1 e+1
-   ~15 pop+2 > Paris remporte le prix.
+   ~15 pop+2 > L’arrondissement remporte le prix.
    > Le dossier est déposé.
 B) Candidater sans effort particulier :: Sobriété.
    coh+1 | g0 c+1 d+1 e0
-   > Paris termine deuxième.
+   > L’arrondissement termine deuxième.
 C) Se retirer :: Pas de vitrine.
    pop-1 | g0 c+1 d+1 e0
    > Copenhague l’emporte.
 
 === ins-137 | institutions | Un budget participatif détourné
-Des projets votés ont été financés à des associations proches d’élus.
+Des projets votés dans l’arrondissement ont été financés à des associations proches d’élus.
 ? distinct
 A) Une enquête indépendante :: Transparence.
    bud-1 pop+1 coh+1 | g+1 c+3 d+1 e+1
    > Les irrégularités sont corrigées.
 B) Suspendre le budget participatif un an :: Assainir.
    pop-1 | g-1 c+2 d+2 e0
-   > Les Parisiens perdent leur vote.
+   > Les habitants perdent leur vote.
 C) Minimiser :: Étouffer.
    pop-2 coh-1 | g0 c0 d+1 e-1
    > La presse révèle d’autres cas.
 
-=== ins-138 | institutions | La Ville condamnée pour discrimination
-Un tribunal condamne la Ville pour discrimination à l’embauche d’agents.
+=== ins-138 | institutions | La mairie condamnée pour discrimination
+Un tribunal condamne la mairie d’arrondissement pour discrimination à l’embauche d’agents.
 A) Un plan contre les discriminations :: Corriger.
    bud-1 pop+1 coh+1 | g+2 c+2 d0 e+1
    > Les recrutements deviennent anonymes.
@@ -420,7 +421,7 @@ C) Refuser à tous :: Bâtiments neutres.
    > Les partis protestent.
 
 === ins-141 | institutions | Partager les données avec l’État
-L’État demande l’accès aux données des capteurs et caméras de la Ville.
+L’État demande l’accès aux données des capteurs et caméras de l’arrondissement.
 A) Accepter avec un encadrement strict :: Coopération.
    securite+1 coh+1 | g0 c+2 d+2 e+1
    > Une convention protège la vie privée.
@@ -443,8 +444,8 @@ C) Refuser :: Consensus.
    pop+1 coh-1 | g0 c+1 d+2 e0
    > Ton aile gauche grogne.
 
-=== ins-143 | institutions | Les Jeux d’hiver 2030 sollicitent Paris
-Les organisateurs des Jeux d’hiver dans les Alpes veulent une cérémonie à Paris.
+=== ins-143 | institutions | Les Jeux d’hiver 2030 sollicitent l’arrondissement
+Les organisateurs des Jeux d’hiver dans les Alpes veulent une cérémonie dans l’arrondissement.
 A) Accueillir la cérémonie :: Prestige.
    bud-2 pop+1 economie+1 | g0 c+2 d+1 e0
    > La cérémonie illumine le Trocadéro.
@@ -454,8 +455,9 @@ B) Accepter si l’État paie :: Conditions.
 C) Refuser :: Sobriété.
    pop-1 | g+1 c+1 d0 e0
    > La cérémonie part à Lyon.
+
 === ins-144 | institutions | Un rapport sur le harcèlement dans les services
-Une enquête interne révèle un climat de harcèlement dans plusieurs directions.
+Une enquête interne révèle un climat de harcèlement dans plusieurs services de la mairie d’arrondissement.
 A) Un plan d’action et des sanctions :: Protéger.
    bud-1 pop+1 coh+1 | g+1 c+3 d+1 e+1
    > Des chefs de service sont écartés.

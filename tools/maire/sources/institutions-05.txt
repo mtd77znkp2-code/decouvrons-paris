@@ -24,32 +24,32 @@ C) Le défendre publiquement :: Solidarité.
    pop-2 | g0 c0 d+1 e-1
    > Le scandale te rattrape.
 
-=== ins-148 | institutions | L’État veut transférer des policiers à la Ville
-Le gouvernement propose de confier des missions de police nationale à la Ville.
+=== ins-148 | institutions | L’État veut transférer des policiers à la mairie
+Le gouvernement propose de confier des missions de police nationale à la mairie d’arrondissement.
 A) Accepter avec les moyens financiers :: Pouvoir.
    securite+1 coh+1 | g0 c+2 d+2 e0
    > La police municipale grandit.
 B) Accepter sans compensation :: Ambition.
    bud-4 securite+2 | g-1 c+1 d+2 e0
-   > La Ville paie la facture.
+   > La mairie d’arrondissement paie la facture.
 C) Refuser :: Compétence de l’État.
    securite-1 | g+1 c+2 d0 e+1
    > L’État garde la main.
 
 === ins-149 | institutions | Le corps diplomatique se plaint
-Les ambassadeurs écrivent pour dénoncer la saleté et l’insécurité de leur quartier.
+Les ambassadeurs écrivent pour dénoncer la saleté et l’insécurité de leur quartier, dans ton arrondissement.
 A) Un plan spécial pour le quartier des ambassades :: Image.
    bud-2 proprete+1 securite+1 | g-1 c+2 d+2 e0
    > Les ambassades sont satisfaites.
 B) Répondre que tous les quartiers sont traités pareil :: Égalité.
    pop+1 | g+1 c+2 d0 e+1
-   > Les Parisiens apprécient.
+   > Les habitants apprécient.
 C) Ignorer :: Priorités.
    pop-1 | g0 c+1 d+1 e0
    > L’affaire fait la une de la presse étrangère.
 
 === ins-150 | institutions | Un jumelage proposé par une capitale autoritaire
-Un régime autoritaire propose un jumelage avec de gros investissements.
+Un régime autoritaire propose un jumelage avec l’arrondissement et de gros investissements.
 A) Refuser :: Principes.
    pop+1 economie-1 | g+2 c+2 d0 e+1
    > Les défenseurs des droits humains saluent ta décision.
@@ -58,10 +58,10 @@ B) Accepter en parlant des droits humains :: Dialogue.
    > Le jumelage est signé sous les critiques.
 C) Accepter pour les investissements :: Pragmatisme.
    economie+2 pop-2 | g-2 c0 d+2 e-1
-   > Les manifestants défilent devant l’Hôtel de Ville.
+   > Les manifestants défilent devant la mairie d’arrondissement.
 
 === ins-151 | institutions | L’État impose un couvre-feu sanitaire
-Face à une épidémie, l’État décide un couvre-feu à 21 heures.
+Face à une épidémie, l’État décide un couvre-feu à 21 heures. Les commerces de l’arrondissement s’inquiètent.
 A) Le soutenir publiquement :: Responsabilité.
    coh+1 economie-1 | g0 c+2 d+2 e+1
    > Les rues se vident le soir.
@@ -73,7 +73,7 @@ C) Le critiquer :: Libertés.
    > L’État te reproche ton manque de solidarité.
 
 === ins-152 | institutions | Une consultation en ligne truquée
-Des milliers de votes d’une consultation viennent de robots.
+Des milliers de votes d’une consultation de l’arrondissement viennent de robots.
 A) Annuler et recommencer :: Intégrité.
    bud-1 pop+1 | g+1 c+3 d+1 e+1
    > La nouvelle consultation est sécurisée.
@@ -194,8 +194,8 @@ C) Ne parrainer personne :: Neutralité.
    > On te reproche de te cacher.
 
 === ins-162 | institutions | Le défilé du 14-Juillet déplacé
-L’État veut déplacer le défilé militaire dans l’Est parisien.
-A) Accepter :: Ouvrir à l’Est.
+L’État veut déplacer le défilé militaire dans ton arrondissement.
+A) Accepter :: Mettre le quartier à l’honneur.
    bon+1 transports-1 | g0 c+2 d+1 e+1
    > Le défilé passe sur le cours de Vincennes.
 B) Négocier le partage des frais :: Conditions.
@@ -206,16 +206,16 @@ C) Refuser :: Tradition.
    > Le défilé reste sur les Champs.
 
 === ins-163 | institutions | Une rivalité avec Lyon
-Lyon veut attirer un grand événement international convoité par Paris.
+Lyon veut attirer un grand événement international convoité par ton arrondissement.
 A) Se battre pour l’obtenir :: Ambition.
    bud-2 pop+1 economie+1 | g0 c+2 d+1 e0
-   > Paris l’emporte de justesse.
+   > L’arrondissement l’emporte de justesse.
 B) Proposer de le partager :: Coopération.
    coh+1 | g+1 c+2 d+1 e+1
-   > Les deux villes se répartissent les épreuves.
+   > Lyon et l’arrondissement se répartissent les épreuves.
 C) Laisser Lyon l’accueillir :: Décentralisation.
    pop-1 | g+1 c+1 d0 e+1
-   > Lyon remercie Paris.
+   > Lyon remercie l’arrondissement.
 
 === ins-164 | institutions | Bruxelles menace de sanctions pour la pollution de l’air
 L’Union européenne menace la France d’amendes à cause de l’air parisien.
@@ -266,7 +266,7 @@ C) Laisser le diocèse décider :: Apaiser.
    > Le parvis devient plus solennel.
 
 === ins-168 | institutions | Un rapporteur de l’ONU critique le mal-logement
-Un rapport international pointe la situation des sans-abri à Paris.
+Un rapport international pointe la situation des sans-abri dans ton arrondissement.
 A) Un plan d’urgence :: Répondre.
    bud-3 logement+1 bon+1 | g+2 c+2 d0 e+1
    > Des places d’hébergement sont créées.
@@ -471,7 +471,7 @@ C) Interdire :: Prudence.
    > Les agents reviennent aux méthodes anciennes.
 
 === ins-185 | institutions | La justice suspend un grand permis de construire
-Le tribunal suspend le permis d’un grand projet urbain contesté.
+Le tribunal suspend le permis d’un grand projet urbain contesté de l’arrondissement.
 ? distinct
 A) Faire appel :: Défendre.
    bud-1 coh+1 | g0 c+2 d+2 e0

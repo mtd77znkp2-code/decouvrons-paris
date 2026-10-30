@@ -1,9 +1,9 @@
 // Relations institutionnelles, série 7
-=== ins-226 | institutions | Une ONG internationale veut installer son siège à Paris
-Une grande organisation humanitaire hésite entre Paris et Genève.
+=== ins-226 | institutions | Une ONG internationale veut installer son siège dans l’arrondissement
+Une grande organisation humanitaire hésite entre ton arrondissement et Genève.
 A) Offrir des locaux :: Rayonnement.
    bud-2 pop+1 economie+1 | g+1 c+2 d+1 e+1
-   > L’ONG s’installe à Paris.
+   > L’ONG s’installe dans l’arrondissement.
 B) Faciliter les démarches sans aide financière :: Accueillir.
    coh+1 | g0 c+2 d+1 e+1
    > L’ONG hésite encore.
@@ -36,7 +36,7 @@ C) Assumer :: Sécurité.
    > Les syndicats de journalistes protestent.
 
 === ins-229 | institutions | Les séances du Conseil en langue des signes
-Les personnes sourdes ne peuvent pas suivre les débats.
+Les personnes sourdes ne peuvent pas suivre les débats du conseil d’arrondissement.
 ? distinct
 A) Une interprétation à chaque séance :: Accessibilité.
    rec-0.01x60 pop+1 | g+1 c+2 d+1 e+1
@@ -145,8 +145,8 @@ C) Refuser :: Autonomie.
    pop-1 coh-1 | g0 c+1 d+1 e0
    > La presse parle de mépris.
 
-=== ins-238 | institutions | Honorer un champion olympique parisien
-Une jeune athlète du 19e devient championne olympique.
+=== ins-238 | institutions | Honorer une championne olympique du quartier
+Une jeune athlète de l’arrondissement devient championne olympique.
 ? distinct
 A) Une grande fête sur le parvis :: Fierté.
    bud-1 pop+1 bon+1 | g0 c+2 d+1 e+1
@@ -280,11 +280,11 @@ C) Rien :: Agenda chargé.
    coh-1 | g0 c+1 d+1 e0
    > Les adjoints travaillent chacun de leur côté.
 
-=== ins-249 | institutions | La Ville se porte partie civile dans un procès
-Un procès concerne des marchands de sommeil qui exploitaient des familles.
+=== ins-249 | institutions | La mairie se porte partie civile dans un procès
+Un procès concerne des marchands de sommeil qui exploitaient des familles de l’arrondissement.
 A) Se porter partie civile :: Défendre.
    bud-1 pop+1 logement+1 | g+1 c+2 d+1 e+1
-   > La Ville obtient des dommages et intérêts.
+   > La mairie d’arrondissement obtient des dommages et intérêts.
 B) Soutenir les victimes sans être partie :: Accompagner.
    bon+1 | g+1 c+2 d+1 e+1
    > Les familles sont accompagnées.

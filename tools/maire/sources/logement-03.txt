@@ -13,7 +13,7 @@ C) Avertissement et amende :: Seconde chance.
    > Les fraudeurs reçoivent une amende.
 
 === log-067 | logement | Le surloyer des locataires aisés en HLM
-Des locataires de logements sociaux gagnent aujourd’hui très bien leur vie mais paient un petit loyer.
+Des locataires de logements sociaux de l’arrondissement gagnent aujourd’hui très bien leur vie mais paient un petit loyer.
 A) Appliquer un fort surloyer :: Équité.
    rec+0.3x60 logement+1 | g0 c+2 d+3 e0
    > Les locataires aisés paient plus.
@@ -27,7 +27,7 @@ C) Laisser faire : la mixité est utile :: Mixité sociale.
 
 === log-068 | logement | Des logements à loyer intermédiaire
 Les infirmiers, policiers et enseignants gagnent trop pour un HLM mais pas assez pour le privé.
-A) Lancer 3 000 logements intermédiaires :: Classes moyennes.
+A) Lancer 600 logements intermédiaires :: Classes moyennes.
    bud-60 logement+3 | g0 c+3 d+3 e+1
    > Des logements à loyer modéré sont construits.
 B) Convertir des logements sociaux en intermédiaires :: Rapide.
@@ -38,7 +38,7 @@ C) Priorité au logement social classique :: Les plus modestes d’abord.
    > Les logements sociaux restent la priorité.
 
 === log-069 | logement | Interdire la location des passoires thermiques
-La loi interdit progressivement de louer les logements mal isolés. Des milliers de logements parisiens sont concernés.
+La loi interdit progressivement de louer les logements mal isolés. Des milliers de logements de l’arrondissement sont concernés.
 A) Aider massivement les propriétaires à rénover :: Accompagner.
    bud-35 logement+2 ecologie+2 | g+1 c+3 d+2 e+3
    > Des milliers de logements sont isolés.
@@ -51,7 +51,7 @@ C) Demander un report :: Éviter la pénurie.
    > Le maire demande un délai au gouvernement.
 
 === log-070 | logement | Végétaliser les cours d’immeubles
-Des copropriétés veulent arracher le bitume de leur cour pour planter des arbres.
+Des copropriétés de l’arrondissement veulent arracher le bitume de leur cour pour planter des arbres.
 A) Subventionner la végétalisation des cours :: Fraîcheur.
    bud-6 ecologie+2 bon+1 | g+1 c+2 d+1 e+4
    > Des centaines de cours deviennent des jardins.

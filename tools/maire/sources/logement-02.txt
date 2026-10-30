@@ -1,6 +1,6 @@
 // Logement, série 2
 === log-026 | logement | Les « compléments de loyer » abusifs
-Des propriétaires contournent l’encadrement des loyers en ajoutant un « complément » pour une vue ou un balcon.
+Des propriétaires de l’arrondissement contournent l’encadrement des loyers en ajoutant un « complément » pour une vue ou un balcon.
 A) Contrôler systématiquement les annonces :: Faire respecter la règle.
    rec-0.2x50 logement+2 achat+1 | g+4 c+1 d-3 e+1
    > Une cellule épluche les annonces en ligne.
@@ -12,11 +12,11 @@ C) Tolérer les compléments justifiés :: Souplesse.
    > Les compléments restent possibles.
 
 === log-027 | logement | La colocation des jeunes actifs
-Les jeunes actifs se tournent vers la colocation, mais les propriétaires préfèrent les couples.
-A) Garantie municipale pour les colocataires :: Rassurer les bailleurs.
+Les jeunes actifs de l’arrondissement se tournent vers la colocation, mais les propriétaires préfèrent les couples.
+A) Garantie de la mairie pour les colocataires :: Rassurer les bailleurs.
    bud-3 logement+2 | g+2 c+3 d+1 e+1
-   > La Ville se porte garante des colocations.
-   ~20 bud-4 > Quelques colocations laissent des impayés à la charge de la Ville.
+   > La mairie d’arrondissement se porte garante des colocations.
+   ~20 bud-4 > Quelques colocations laissent des impayés à la charge de la mairie.
 B) Créer des colocations dans le parc social :: Offre publique.
    bud-6 logement+2 bon+1 | g+3 c+2 d0 e+1
    > Des grands appartements sociaux deviennent des colocations.
@@ -25,20 +25,20 @@ C) Laisser le marché s’organiser :: Pas d’intervention.
    > Les jeunes se débrouillent seuls.
 
 === log-028 | logement | Des caves louées comme logements
-Des familles vivent dans des caves et des sous-sols sans fenêtre loués 600 € par mois.
+Des familles de l’arrondissement vivent dans des caves et des sous-sols sans fenêtre loués 600 € par mois.
 A) Opérations coup de poing et relogement :: Protéger.
    bud-8 logement+1 securite+1 | g+3 c+2 d+1 e+1
    > Des dizaines de familles sont relogées.
 B) Poursuivre les propriétaires jusqu’au bout :: Sanctionner.
    bud-2 logement+1 | g+3 c+2 d+1 e0
    > Les propriétaires sont traînés en justice.
-   +12 bud+5 > Les amendes rapportent à la Ville.
+   +12 bud+5 > Les amendes rapportent à la mairie.
 C) Signaler à la préfecture :: Procédure classique.
    logement-1 | g-1 c+1 d+1 e0
    > Le dossier suit son cours lentement.
 
 === log-029 | logement | Une tour de bureaux à transformer en logements
-Une tour de bureaux vide du 15e pourrait accueillir 400 logements, mais la transformation coûte cher.
+Une tour de bureaux vide de l’arrondissement pourrait accueillir 400 logements, mais la transformation coûte cher.
 ? distinct
 A) Racheter la tour et la transformer :: Logements rapidement.
    bud-90 logement+4 | g+3 c+2 d0 e+2
@@ -52,29 +52,29 @@ C) Laisser la tour vide :: Pas d’argent public.
    > La tour reste vide.
 
 === log-030 | logement | Acheter son logement sans payer le terrain
-Le bail réel solidaire permet d’acheter les murs à moitié prix pendant que la Ville garde le terrain.
-A) Lancer 2 000 logements en bail solidaire :: Accession abordable.
+Le bail réel solidaire permet d’acheter les murs à moitié prix pendant que la mairie garde le terrain.
+A) Lancer 500 logements en bail solidaire :: Accession abordable.
    bud-30 logement+3 achat+2 | g+2 c+3 d+2 e+1
    > Des familles deviennent propriétaires à prix réduit.
-B) Tester sur 200 logements :: Prudence.
+B) Tester sur 50 logements :: Prudence.
    bud-5 logement+1 | g+1 c+3 d+1 e+1
-   > Une expérimentation démarre dans le 19e.
+   > Une expérimentation démarre dans un quartier de l’arrondissement.
 C) Préférer le logement social classique :: Location.
    bud-20 logement+2 | g+3 c0 d-2 e+1
-   > La Ville construit des logements à louer.
+   > La mairie d’arrondissement construit des logements à louer.
 
 === log-031 | logement | Des petites maisons sur les toits
-Des architectes proposent d’installer des habitations légères sur les toits plats des immeubles.
+Des architectes proposent d’installer des habitations légères sur les toits plats des immeubles de l’arrondissement.
 A) Autoriser et encourager :: Densifier sans bétonner.
    logement+2 economie+1 | g+1 c+3 d+2 e+2
    > Des petites maisons poussent sur les toits.
-   ~30 pop-1 > Des voisins dénoncent la perte de vue sur les toits de Paris.
+   ~30 pop-1 > Des voisins dénoncent la perte de vue sur les toits du quartier.
 B) Réserver aux logements étudiants :: Ciblé.
    bud-8 logement+2 | g+2 c+2 d+1 e+2
    > Des studios étudiants s’installent sur les toits municipaux.
 C) Interdire pour protéger le paysage :: Patrimoine.
    bon+1 logement-1 | g-1 c+1 d+2 e0
-   > Les toits de Paris restent intacts.
+   > Les toits du quartier restent intacts.
 
 === log-032 | logement | Des sans-abri dorment dans les halls d’immeubles sociaux
 Les locataires d’une cité retrouvent chaque matin des personnes endormies dans leur hall.
@@ -89,8 +89,8 @@ C) Envoyer des maraudes chaque soir :: Accompagner.
    > Des équipes proposent un hébergement chaque soir.
 
 === log-033 | logement | Les logements adaptés au handicap manquent
-Des personnes en fauteuil attendent des années un logement accessible.
-A) Adapter 1 000 logements sociaux :: Grand plan.
+Des personnes en fauteuil de l’arrondissement attendent des années un logement accessible.
+A) Adapter 200 logements sociaux :: Grand plan.
    bud-40 logement+2 services+1 | g+3 c+2 d+1 e+1
    > Mille logements sont rendus accessibles.
 B) Imposer 10 % de logements accessibles dans le neuf :: Règle.
@@ -101,7 +101,7 @@ C) Aider les propriétaires privés à adapter :: Incitation.
    > Une prime finance les travaux d’accessibilité.
 
 === log-034 | logement | Les commerces vides au pied des HLM
-Les locaux commerciaux en rez-de-chaussée des logements sociaux restent vides depuis des années.
+Les locaux commerciaux en rez-de-chaussée des logements sociaux de l’arrondissement restent vides depuis des années.
 A) Loyers très bas pour les commerces de proximité :: Animer le quartier.
    rec-0.2x60 economie+2 bon+1 | g+2 c+3 d+1 e+1
    > Une boulangerie et une librairie s’installent.
@@ -113,8 +113,8 @@ C) Les vendre :: Recettes.
    > Les locaux sont vendus à des investisseurs.
 
 === log-035 | logement | Le permis de louer dans les quartiers dégradés
-Dans certaines rues, les logements loués sont souvent indignes. La Ville peut exiger une autorisation avant toute location.
-A) Imposer le permis de louer dans dix quartiers :: Contrôle.
+Dans certaines rues de l’arrondissement, les logements loués sont souvent indignes. La mairie peut exiger une autorisation avant toute location.
+A) Imposer le permis de louer dans tous les quartiers dégradés :: Contrôle.
    rec-0.2x50 logement+2 | g+3 c+2 d-2 e+1
    > Chaque logement est visité avant d’être loué.
    ~30 logement-1 > Des propriétaires retirent leurs biens du marché.
@@ -139,23 +139,23 @@ C) Refuser toute vente :: Protéger le parc social.
    > Les logements restent sociaux.
 
 === log-037 | logement | Les logements de fonction des enseignants
-Les jeunes enseignants refusent les postes à Paris faute de pouvoir s’y loger.
-A) Réserver 500 logements aux enseignants :: Attirer.
+Les jeunes enseignants refusent les postes dans l’arrondissement faute de pouvoir s’y loger.
+A) Réserver 100 logements aux enseignants :: Attirer.
    bud-15 logement+1 services+2 | g+2 c+2 d+1 e+1
    > Des logements sont réservés aux enseignants débutants.
 B) Prime de logement pour les enseignants :: Aide directe.
    rec-0.3x60 services+1 | g+1 c+2 d+1 e0
    > Une prime mensuelle est versée.
-C) Ce n’est pas le rôle de la Ville :: Compétence de l’État.
+C) Ce n’est pas le rôle de la mairie :: Compétence de l’État.
    services-1 | g-1 c+1 d+2 e0
    > Les postes restent vacants.
 
 === log-038 | logement | Des logements sociaux dans les beaux quartiers
-Le 7e, le 8e et le 16e comptent très peu de logements sociaux. La loi impose 25 %.
+Les beaux quartiers de l’arrondissement comptent très peu de logements sociaux. La loi impose 25 %.
 A) Racheter des immeubles haussmanniens pour les transformer :: Mixité.
    bud-80 logement+3 | g+5 c0 d-4 e+1
    > Des familles modestes s’installent avenue Foch.
-   ~40 pop-2 > Les riverains du 16e lancent un recours.
+   ~40 pop-2 > Les riverains des beaux quartiers lancent un recours.
 B) Construire sur les rares terrains disponibles :: Plus lent.
    bud-40 logement+2 | g+3 c+2 d-1 e0
    > Trois petits programmes sont lancés.
@@ -176,8 +176,8 @@ C) Tolérer et équiper en eau :: Pragmatique.
    > Un point d’eau est installé.
 
 === log-040 | logement | Des résidences pour seniors autonomes
-Des seniors veulent des résidences avec services, entre chez soi et maison de retraite.
-A) Construire cinq résidences municipales :: Offre publique.
+Des seniors de l’arrondissement veulent des résidences avec services, entre chez soi et maison de retraite.
+A) Construire deux résidences municipales :: Offre publique.
    bud-60 logement+2 services+2 | g+3 c+2 d+1 e+1
    > Cinq résidences seniors sont lancées.
    +25 bon+2 > Les premières résidences ouvrent et affichent complet.
@@ -201,7 +201,7 @@ C) Priorité aux bailleurs sociaux classiques :: Efficacité.
    > Les terrains vont aux bailleurs.
 
 === log-042 | logement | Occuper les bâtiments en attente de travaux
-Des bâtiments municipaux restent vides des années avant leur chantier. Des associations proposent d’y loger des personnes temporairement.
+Des bâtiments de l’arrondissement restent vides des années avant leur chantier. Des associations proposent d’y loger des personnes temporairement.
 A) Généraliser l’occupation temporaire :: Utile et peu coûteux.
    bud-3 logement+2 bon+1 | g+3 c+2 d0 e+2
    > Cinq cents personnes sont hébergées dans des bâtiments vides.
@@ -213,8 +213,8 @@ C) Garder les bâtiments fermés :: Pas de risque.
    > Les bâtiments restent vides.
 
 === log-043 | logement | Les charges de chauffage collectif explosent
-Dans les immeubles chauffés au gaz, les charges ont doublé. Des locataires ne peuvent plus payer.
-A) Chèque énergie municipal :: Aide immédiate.
+Dans les immeubles de l’arrondissement chauffés au gaz, les charges ont doublé. Des locataires ne peuvent plus payer.
+A) Chèque énergie de la mairie :: Aide immédiate.
    bud-15 achat+3 | g+3 c+2 d0 e0
    > Les ménages modestes reçoivent une aide.
 B) Raccorder les immeubles au chauffage urbain :: Long terme.
@@ -225,7 +225,7 @@ C) Négocier avec les fournisseurs :: Discussion.
    > Un accord réduit légèrement les prix.
 
 === log-044 | logement | Des logements étudiants dans des conteneurs
-Une entreprise propose des studios dans des conteneurs maritimes empilés, posés en six mois.
+Une entreprise propose des studios dans des conteneurs maritimes empilés, posés en six mois dans l’arrondissement.
 A) Accepter sur un terrain provisoire :: Rapide.
    bud-12 logement+2 | g0 c+3 d+2 e+1
    > Trois cents studios sont installés.
@@ -238,7 +238,7 @@ C) Refuser : pas de logement au rabais :: Dignité.
    > Le projet est rejeté.
 
 === log-045 | logement | Une cité en réhabilitation depuis sept ans
-Les habitants d’une cité vivent dans les travaux depuis sept ans. Le chantier n’en finit pas.
+Les habitants d’une cité de l’arrondissement vivent dans les travaux depuis sept ans. Le chantier n’en finit pas.
 A) Payer des équipes supplémentaires pour finir :: Accélérer.
    bud-25 logement+2 bon+1 | g+2 c+2 d+1 e0
    > Le chantier se termine en un an.
@@ -251,7 +251,7 @@ C) Changer d’entreprise :: Reprendre le contrôle.
    ~40 bon-1 > Le changement provoque six mois de retard supplémentaires.
 
 === log-046 | logement | Les parkings vides des immeubles sociaux
-Les parkings souterrains des HLM sont vides à 60 %. Ils servent parfois aux trafics.
+Les parkings souterrains des HLM de l’arrondissement sont vides à 60 %. Ils servent parfois aux trafics.
 A) Les transformer en locaux vélos et ateliers :: Reconversion.
    bud-12 transports+1 economie+1 securite+1 | g+2 c+2 d+1 e+3
    > Des ateliers d’artisans et des garages à vélos s’installent.
@@ -263,7 +263,7 @@ C) Les murer :: Sécurité.
    > Les parkings sont fermés.
 
 === log-047 | logement | Des familles logées à l’hôtel depuis des années
-Des milliers de familles vivent dans des chambres d’hôtel, payées par l’aide d’urgence, sans cuisine.
+Des centaines de familles de l’arrondissement vivent dans des chambres d’hôtel, payées par l’aide d’urgence, sans cuisine.
 A) Construire des logements passerelles :: Sortir de l’hôtel.
    bud-50 logement+3 services+1 | g+4 c+2 d0 e+1
    > Des logements temporaires dignes remplacent les hôtels.
@@ -275,10 +275,10 @@ C) Continuer avec les hôtels :: Statu quo.
    > Les familles restent à l’hôtel.
 
 === log-048 | logement | Le droit de préemption sur un immeuble vendu
-Un immeuble de 40 logements du 11e est vendu à un fonds. La Ville peut le racheter en priorité.
+Un immeuble de 40 logements de l’arrondissement est vendu à un fonds. La mairie peut le racheter en priorité.
 A) Préempter et en faire du logement social :: Protéger les locataires.
    bud-60 logement+3 | g+4 c+1 d-3 e+1
-   > La Ville rachète l’immeuble.
+   > La mairie d’arrondissement rachète l’immeuble.
 B) Préempter puis revendre une partie :: Équilibre financier.
    bud-25 logement+1 | g+1 c+3 d+1 e0
    > La moitié des logements deviennent sociaux.
@@ -288,7 +288,7 @@ C) Laisser la vente se faire :: Marché libre.
    ~40 pop-1 > Les locataires reçoivent des congés pour vente.
 
 === log-049 | logement | Les riverains bloquent un projet de logements sociaux
-Des riverains attaquent en justice un projet de 80 logements sociaux qui remplacerait un parking.
+Des riverains attaquent en justice un projet de 80 logements sociaux de l’arrondissement qui remplacerait un parking.
 A) Maintenir le projet :: Fermeté.
    logement+2 pop-1 | g+3 c+1 d-2 e+1
    > Le projet est maintenu.
@@ -325,7 +325,7 @@ C) Ne rien imposer :: Respect des locataires.
    > Les situations restent bloquées.
 
 === log-052 | logement | Démolir une barre d’immeubles ?
-Une barre de 300 logements est jugée irrécupérable. Les habitants sont partagés.
+Une barre de 300 logements de l’arrondissement est jugée irrécupérable. Les habitants sont partagés.
 A) Démolir et reconstruire de petits immeubles :: Renouveau.
    bud-80 logement+2 bon-1 | g+1 c+2 d+2 e0
    > La démolition est programmée.
@@ -361,12 +361,12 @@ C) Médiation entre voisins :: Simple.
    bud-1 bon+1 | g+1 c+2 d+1 e0
    > Des médiateurs interviennent.
 
-=== log-055 | logement | La Ville garante des étudiants étrangers
-Les étudiants étrangers ne trouvent pas de logement sans garant français.
-A) Créer une garantie municipale :: Attractivité.
+=== log-055 | logement | La mairie garante des étudiants étrangers
+Les étudiants étrangers de l’arrondissement ne trouvent pas de logement sans garant français.
+A) Créer une garantie de la mairie :: Attractivité.
    bud-4 logement+1 economie+1 | g+2 c+3 d+1 e+1
-   > La Ville se porte garante.
-   ~20 bud-3 > Quelques impayés sont à la charge de la Ville.
+   > La mairie d’arrondissement se porte garante.
+   ~20 bud-3 > Quelques impayés sont à la charge de la mairie.
 B) Réserver des chambres dans les résidences :: Offre ciblée.
    bud-6 logement+1 | g+1 c+2 d+1 e0
    > Des chambres sont réservées aux étudiants internationaux.
@@ -375,7 +375,7 @@ C) Laisser les universités gérer :: Pas notre rôle.
    > Les étudiants se débrouillent.
 
 === log-056 | logement | Du plomb dans les vieilles peintures
-Des enfants sont intoxiqués au plomb dans des immeubles anciens dégradés.
+Des enfants sont intoxiqués au plomb dans des immeubles anciens dégradés de l’arrondissement.
 A) Dépistage massif et travaux d’urgence :: Santé.
    bud-15 logement+2 services+1 | g+3 c+2 d+1 e+2
    > Des centaines d’enfants sont dépistés et des logements traités.
@@ -388,10 +388,10 @@ C) Informer les familles :: Minimum.
    > Des brochures sont distribuées.
 
 === log-057 | logement | Des ateliers-logements pour les artistes
-Les artistes quittent Paris faute d’ateliers abordables.
-A) Créer 200 ateliers-logements municipaux :: Garder les artistes.
+Les artistes quittent l’arrondissement faute d’ateliers abordables.
+A) Créer 50 ateliers-logements municipaux :: Garder les artistes.
    bud-30 logement+1 bon+1 economie+1 | g+2 c+2 d0 e+1
-   > Des ateliers ouvrent à Belleville et à la Villette.
+   > Des ateliers ouvrent dans les quartiers populaires de l’arrondissement.
 B) Aider les artistes à louer des ateliers :: Aide ciblée.
    rec-0.2x60 bon+1 | g+2 c+2 d0 e+1
    > Une aide au loyer est créée.
@@ -413,7 +413,7 @@ C) Les vendre à des particuliers :: Recettes.
    > Les terrains sont vendus.
 
 === log-059 | logement | La fin des chaudières au fioul
-Des centaines d’immeubles se chauffent encore au fioul, très polluant.
+Des dizaines d’immeubles de l’arrondissement se chauffent encore au fioul, très polluant.
 A) Aider massivement à changer de chauffage :: Transition.
    bud-30 ecologie+3 logement+1 | g+2 c+2 d+1 e+4
    > Des centaines de chaudières sont remplacées.
@@ -425,14 +425,14 @@ C) Laisser faire le temps :: Pas de contrainte.
    > Les chaudières au fioul continuent de fumer.
 
 === log-060 | logement | Les jeunes couples veulent acheter
-Les jeunes couples parisiens ne peuvent plus acheter même un deux-pièces.
-A) Prêt municipal à taux zéro :: Aide à l’achat.
+Les jeunes couples de l’arrondissement ne peuvent plus acheter même un deux-pièces.
+A) Prêt à taux zéro de la mairie :: Aide à l’achat.
    bud-20 achat+2 logement+1 | g-1 c+3 d+3 e0
    > Un prêt aidé est proposé aux primo-accédants.
 B) Construire des logements à prix maîtrisés :: Offre.
    bud-35 logement+2 | g+2 c+3 d+1 e+1
    > Des appartements sont vendus 30 % sous le prix du marché.
-C) Ce n’est pas le rôle de la Ville :: Marché.
+C) Ce n’est pas le rôle de la mairie :: Marché.
    achat-1 | g-2 c0 d+2 e0
    > Les jeunes couples partent en banlieue.
 
@@ -461,7 +461,7 @@ C) Poursuivre le loueur :: Sanction.
    > Le loueur est poursuivi.
 
 === log-063 | logement | Des immeubles qui se fissurent à cause d’un chantier
-Les travaux d’une gare du Grand Paris fissurent des immeubles voisins.
+Les travaux d’une gare du Grand Paris fissurent des immeubles de l’arrondissement.
 A) Reloger les habitants et exiger des indemnités :: Protéger.
    bud-10 logement-1 bon+1 | g+2 c+2 d+1 e+1
    > Les habitants sont relogés pendant les travaux.

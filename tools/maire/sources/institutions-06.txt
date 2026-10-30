@@ -53,15 +53,15 @@ Ton équipe propose de parler aux jeunes avec des vidéos courtes.
 A) Lancer le compte :: Modernité.
    bud-1 pop+1 | g0 c+2 d+1 e+1
    > Une vidéo sur les pistes cyclables devient virale.
-B) Un compte de la Ville plutôt que personnel :: Institutionnel.
+B) Un compte de la mairie plutôt que personnel :: Institutionnel.
    bud-1 pop+1 | g0 c+2 d+1 e+1
    > Les services publient des vidéos pratiques.
 C) Refuser :: Sérieux.
    pop-1 | g0 c+1 d+1 e0
    > Les jeunes ne te connaissent pas.
 
-=== ins-191 | institutions | Le préfet refuse de sécuriser un événement de la Ville
-Faute d’effectifs, la préfecture refuse un grand concert gratuit.
+=== ins-191 | institutions | Le préfet refuse de sécuriser un événement de la mairie
+Faute d’effectifs, la préfecture refuse un grand concert gratuit dans l’arrondissement.
 A) Payer une sécurité privée :: Maintenir.
    bud-2 bon+1 | g0 c+2 d+1 e0
    > Le concert a lieu sous surveillance privée.
@@ -73,7 +73,7 @@ C) Annuler :: Prudence.
    > Les fans sont déçus.
 
 === ins-192 | institutions | La justice annule le plan d’urbanisme
-Le tribunal annule une partie du plan local d’urbanisme pour vice de procédure.
+Le tribunal annule la partie du plan local d’urbanisme qui concerne l’arrondissement, pour vice de procédure.
 A) Faire appel :: Défendre.
    bud-1 coh+1 | g0 c+2 d+1 e+1
    > L’appel est en cours.
@@ -132,7 +132,7 @@ C) S’y opposer :: Statu quo.
    pop-1 coh+1 | g0 c+1 d+2 e0
    > On t’accuse de craindre les électeurs.
 
-=== ins-197 | institutions | Une séance du Conseil de Paris sur une place publique
+=== ins-197 | institutions | Une séance du conseil d’arrondissement sur une place publique
 Pour rapprocher les élus des habitants, une séance pourrait se tenir en plein air.
 A) Organiser la séance :: Proximité.
    bud-1 pop+1 | g+1 c+2 d+1 e+1
@@ -156,29 +156,29 @@ C) Rien :: Légal.
    pop-1 | g0 c+1 d+1 e0
    > La presse s’en empare.
 
-=== ins-199 | institutions | La visite du pape à Paris
-Le pape célébrera une messe en plein air, la Ville doit organiser l’accueil.
+=== ins-199 | institutions | La visite du pape dans l’arrondissement
+Le pape célébrera une messe en plein air dans l’arrondissement, la mairie doit organiser l’accueil.
 A) Un accueil complet avec moyens municipaux :: Accueillir.
    bud-2 securite+1 bon+1 coh-1 | g-1 c+2 d+2 e0
    > Des centaines de milliers de fidèles affluent.
 B) Laisser l’État et le diocèse organiser :: Laïcité.
    coh+1 | g+1 c+2 d+1 e+1
-   > La Ville assure le minimum.
+   > La mairie d’arrondissement assure le minimum.
 C) Facturer les frais :: Neutralité.
    bud+1 pop-1 | g0 c+1 d+1 e0
    > Le diocèse proteste.
 
 === ins-200 | institutions | Candidater à de nouveaux Jeux
-Le comité olympique sonde Paris pour de futurs Jeux d’été.
+Le comité olympique sonde Paris pour de futurs Jeux d’été, avec des épreuves dans ton arrondissement.
 A) Candidater :: Ambition.
    bud-3 pop+1 economie+1 | g-1 c+1 d+2 e0
    > La candidature est lancée.
 B) Proposer des Jeux sobres et partagés avec d’autres villes :: Innover.
    bud-1 pop+1 | g+1 c+2 d+1 e+1
    > Le projet séduit le comité.
-C) Refuser :: Les Parisiens ont donné.
+C) Refuser :: Les habitants ont donné.
    pop+1 | g+1 c+2 d0 e+1
-   > Les Parisiens approuvent.
+   > Les habitants approuvent.
 
 === ins-201 | institutions | Le congé parental des élus
 Une adjointe enceinte ne peut pas se faire remplacer pendant son congé.
@@ -472,11 +472,11 @@ C) Refuser :: Dépense inutile.
    coh-1 | g0 c+1 d+2 e0
    > Les agents sont vexés.
 
-=== ins-225 | institutions | Paris recule dans un classement international
-Un classement des villes où il fait bon vivre fait chuter Paris.
+=== ins-225 | institutions | L’arrondissement recule dans un classement
+Un classement des quartiers où il fait bon vivre fait chuter ton arrondissement.
 A) Un plan d’action sur les points faibles :: Réagir.
    bud-2 pop+1 | g0 c+2 d+1 e+1
-   > Paris remonte l’année suivante.
+   > L’arrondissement remonte l’année suivante.
 B) Contester la méthode :: Défense.
    pop-1 | g0 c+1 d+1 e0
    > Personne n’est convaincu.
