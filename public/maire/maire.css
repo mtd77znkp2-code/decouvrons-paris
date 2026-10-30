@@ -1117,3 +1117,12 @@ button.mx-ses-qui{cursor:pointer}
 .mx-sesbadge{font-style:normal;font-size:11.5px;font-weight:800;color:#b07a00}
 .m-ses-tend{margin:8px 0 0;padding:8px 12px;border-radius:12px;font-weight:700;font-size:13.5px;background:#eef0f7;color:#1b2550}
 .m-ses-tend.m-tend-croissance{background:#e6f6ec;color:#1f7a3f}.m-ses-tend.m-tend-declin{background:#fdeceb;color:#b3261e}
+/* Note globale du maire : 5 étoiles (demi-étoiles comprises) */
+.m-note{position:relative;display:inline-block;font-size:13px;line-height:1;letter-spacing:1px;white-space:nowrap;vertical-align:middle}
+.m-note-fond{color:rgba(140,148,184,.45)}
+.m-note-plein{position:absolute;left:0;top:0;overflow:hidden;color:#f5b21a;text-shadow:0 0 6px rgba(245,178,26,.45)}
+.m-note.m-note-g{font-size:18px;letter-spacing:2px}
+.mx-notebtn{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;white-space:nowrap;margin-top:4px;padding:0;border:0;background:none;font:inherit;color:inherit;cursor:pointer;text-align:left}
+.mx-notebtn b{font-size:14px;color:#ffd970}.mx-notebtn small{font-size:11.5px;opacity:.75}
+.m-ses-l{grid-template-columns:30px 40px 1fr auto auto}
+.m-ses-l .m-note{font-size:10.5px;letter-spacing:0}

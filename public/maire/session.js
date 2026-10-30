@@ -74,6 +74,14 @@
       mandats: s.election, tendance: tendance(pl), forme: f };
   }
 
+  // Note globale du maire et de sa ville, de 0,5 à 5 étoiles (par demi-étoile) :
+  // sondage 35 %, bonheur 35 %, popularité 15 %, finances 15 %
+  function note(x) {
+    if (!x) return 0;
+    var fin = x.tresor == null ? 50 + (x.forme || 0) * 20 : Math.max(0, Math.min(100, 50 + x.tresor / 10));
+    var v = (x.score || 0) * 0.35 + (x.bon == null ? x.score || 0 : x.bon) * 0.35 + (x.pop == null ? x.score || 0 : x.pop) * 0.15 + fin * 0.15;
+    return Math.max(0.5, Math.min(5, Math.round(v / 100 * 5 * 2 * 1.15 - 0.8) / 2));
+  }
   // ---------- Session ----------
   function copie(o) { return JSON.parse(JSON.stringify(o)); }
   function nouvelleSession(graine, maintenant) {
@@ -294,7 +302,7 @@
     return { p: p, titre: titre(p), court: court(p), arr: arr(p), type: x.type, nom: x.nom, ico: x.ico, uid: x.uid || null, stats: st, puissance: puissance(p), hab: st.hab || habitants(p) };
   }
 
-  var API = { AUTEURS: AUTEURS, BASE_ID: BASE_ID, nomLibre: nomLibre, resume: resume, tendance: tendance, NB: NB, TRONE: TRONE, MANDAT_MS: MANDAT_MS, ENTREE_MIN: ENTREE_MIN, AFK_MS: AFK_MS, peutEntrer: peutEntrer, quitter: quitter, inactif: inactif, ARR: ARR, ORDRE: ORDRE, arr: arr, nomArr: nomArr, titre: titre, court: court, puissance: puissance, habitants: habitants,
+  var API = { AUTEURS: AUTEURS, BASE_ID: BASE_ID, nomLibre: nomLibre, resume: resume, tendance: tendance, note: note, NB: NB, TRONE: TRONE, MANDAT_MS: MANDAT_MS, ENTREE_MIN: ENTREE_MIN, AFK_MS: AFK_MS, peutEntrer: peutEntrer, quitter: quitter, inactif: inactif, ARR: ARR, ORDRE: ORDRE, arr: arr, nomArr: nomArr, titre: titre, court: court, puissance: puissance, habitants: habitants,
     nouvelleSession: nouvelleSession, rejoindre: rejoindre, attaquer: attaquer, proteger: proteger, ripostes: ripostes, ATTAQUES: ATTAQUES, BOUCLIER: BOUCLIER, prixAction: prixAction, malusDe: malusDe, attente: attente,
     ventesEnCours: ventesEnCours, ventesFinies: ventesFinies, venteSuivante: venteSuivante, prochaineVente: prochaineVente, vente: vente, encherir: encherir, VENTE_P: VENTE_P, VENTE_D: VENTE_D, pleine: pleine, signaler: signaler, nettoyer: nettoyer, voter: voter, votesRequis: votesRequis, nbVotes: nbVotes,
     electionDue: electionDue, scores: scores, elire: elire, resultatDe: resultatDe, placeDe: placeDe, joueurs: joueurs, fiche: fiche, statsBot: statsBot, scoreBot: scoreBot };

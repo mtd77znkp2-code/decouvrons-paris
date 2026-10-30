@@ -30,8 +30,13 @@
   function lireNiveau() { return "progressif"; }
   function choixNiveau() { niveau = "progressif"; var lv = document.getElementById("m-lvls"); if (lv) lv.style.display = "none"; }
   // Étoiles de difficulté du mandat en cours
-  function etoiles(s0) { var k = { facile: 1, moyen: 2, difficile: 3 }[M.palier(s0)]; return "★★★".slice(0, k) + "☆☆☆".slice(0, 3 - k); }
   function cleClassement() { return "maire"; }
+  // Note globale en étoiles (demi-étoiles comprises) : 5 étoiles grises, remplies en or selon la note
+  function etoilesNote(n, grand) {
+    var e = h("span", "m-note" + (grand ? " m-note-g" : "")), fond = h("span", "m-note-fond", "★★★★★"), plein = h("span", "m-note-plein", "★★★★★");
+    plein.style.width = (n / 5 * 100) + "%"; e.title = virg(n) + " / 5"; ajout(e, fond, plein); return e;
+  }
+  function noteVille() { return SS() ? SS().note(M.etatSession(st)) : 0; }
 
   // ---------- Données ----------
   function index() {
@@ -626,7 +631,7 @@
   // Anti-AFK : le dernier geste du joueur (toucher, clic, touche) ; 15 minutes sans rien faire et on quitte la session
   var ACTIF = Date.now();
   ["pointerdown", "keydown"].forEach(function (t) { document.addEventListener(t, function () { ACTIF = Date.now(); }, true); });
-  function etatSes() { var e = M.etatSession(st); e.actif = ACTIF; return e; }
+  function etatSes() { var e = M.etatSession(st); e.actif = ACTIF; e.note = SS().note(e); return e; }
   function sortieAFK(parServeur) {
     if (!SES.id) return;
     if (!parServeur) window.SessionLigne.quitter(SES.id);
@@ -908,7 +913,7 @@
       var f = SS().fiche(s, p), cls = "m-ses-l" + (p === moiP ? " m-moi" : p === moiP + 1 ? " m-rival" : p === moiP - 1 ? " m-opp" : "") + (p >= SS().TRONE ? " m-trone" : "");
       var b = bouton("", cls, function () { ficheSession(p); });
       ajout(b, h("span", "m-ses-rang", p >= SS().TRONE ? "👑" : String(SS().NB - p)), h("span", "m-ses-arr", f.court), ajout(h("span", "m-ses-nom"), document.createTextNode(f.ico + " " + f.nom), f.type === "bot" ? h("i", null, " 🤖" + FLECHE[f.stats.tendance]) : null),
-        h("b", "m-ses-sc", virg(Math.round(sc[p] * 10) / 10)));
+        etoilesNote(p === moiP ? noteVille() : SS().note(f.stats)), h("b", "m-ses-sc", virg(Math.round(sc[p] * 10) / 10)));
       l.appendChild(ajout(h("li"), b));
     })(p);
     a.appendChild(l); c.appendChild(a); pop.appendChild(c); (document.getElementById("g-maire") || document.body).appendChild(pop);
@@ -928,6 +933,9 @@
     var t = h("div", "m-cmp-table");
     ajout(t, ajout(h("div", "m-cmp m-cmp-tete"), h("span"), h("b", null, "Toi"), h("b", null, p === moiP ? "—" : f.nom.split(" ")[0])));
     function n(x) { return x == null ? "?" : typeof x === "number" ? x.toLocaleString("fr-FR") : x; }
+    var nMoi = SS().note(m), nLui = SS().note(o), ln = ligne("⭐ Note", "", "", p === moiP ? null : nMoi >= nLui);
+    ln.children[1].appendChild(etoilesNote(nMoi)); if (p !== moiP) ln.children[2].appendChild(etoilesNote(nLui)); else ln.children[2].textContent = "—";
+    t.appendChild(ln);
     [["🗳️ Score électoral", m.score, o.score], ["📣 Popularité", m.pop, o.pop], ["😊 Bonheur", m.bon, o.bon], ["👥 Habitants", m.hab, o.hab], ["🏗️ Bâtiments", m.bats, o.bats], ["⭐ Niveau", m.niv, o.niv]].forEach(function (x) {
       t.appendChild(ligne(x[0], n(x[1]), n(x[2]), p === moiP || x[2] == null ? null : x[1] >= x[2]));
     });
@@ -1008,7 +1016,13 @@
 
   function entete() {
     var d = h("div", "mx-hud"), reste = M.prochaineElection(st) - st.t, a = Math.floor((Math.max(1, st.t) - 1) / 4) + 1, q = (Math.max(1, st.t) - 1) % 4 + 1;
-    var gauche = ajout(h("div", "mx-quand"), h("strong", null, "Année " + a + " · T" + q), h("small", null, "Mandat " + st.mandat + (st.scenario ? " · défi du jour" : " · " + etoiles(st))));
+    var gauche = ajout(h("div", "mx-quand"), h("strong", null, "Année " + a + " · T" + q), h("small", null, "Mandat " + st.mandat + (st.scenario ? " · défi du jour" : "")));
+    var nv = noteVille(), noteB = bouton("", "mx-notebtn", function () {
+      var e = M.etatSession(st);
+      toast("⭐ " + virg(nv) + "/5 · sondage " + Math.round(e.score) + " · bonheur " + e.bon + " · popularité " + e.pop + " · finances " + (e.tresor >= 0 ? "+" : "") + e.tresor);
+    });
+    ajout(noteB, etoilesNote(nv, true), h("b", null, virg(nv) + "/5")); noteB.title = "Note de ta ville (touche pour le détail)";
+    gauche.appendChild(noteB);
     var vote = h("span", "mx-chip" + (st.anticipee ? " mx-anticipee" : ""), st.scenario ? "🎯 " + (st.scenario.fin - st.t) + " trim." : st.session && SES.s ? "🗳️ " + mmss(SES.s.prochaine - Date.now()) : "🗳️ " + reste + " trim.");
     if (st.session && SES.s) vote.classList.add("mx-ses-elec");
     vote.title = st.scenario ? "Fin du défi" : st.anticipee ? "Élections anticipées" : "Prochaine élection";
