@@ -633,10 +633,17 @@
     st = s2; sauver(); signal("trimestre");
     // Pas de grande fenêtre : on redessine seulement si rien n'est ouvert (dossier, casino, téléphone)
     if (libre || st.phase === "fin") jeu(); else majSession();
-    if (st.t > t0 && st.phase !== "fin") { var sa = SAISONS[(st.t - 1) % 4]; toast(sa[0] + " " + sa[1] + " · an " + (Math.floor((st.t - 1) / 4) + 1)); }
+    if (st.t > t0 && st.phase !== "fin") messageSaison(t0);
     if (SES.id) {
       window.SessionLigne.signaler(SES.id, M.etatSession(st));
     }
+  }
+  // Petit message en haut de l'écran à chaque saison : la saison et ce que l'arrondissement a gagné ou perdu
+  function messageSaison() {
+    var sa = SAISONS[(st.t - 1) % 4], r = st.rapport, net = r ? r.solde : 0, v = document.querySelector(".m-saison-msg"); if (v) v.remove();
+    var m = ajout(h("div", "m-saison-msg"), h("span", null, sa[0]), h("b", null, sa[1] + " · an " + (Math.floor((st.t - 1) / 4) + 1)), r ? h("em", net >= 0 ? "m-plus" : "m-moins", (net >= 0 ? "+" : "−") + argent(Math.abs(net))) : null);
+    (document.getElementById("g-maire") || document.body).appendChild(m);
+    setTimeout(function () { m.classList.add("m-saison-out"); }, 2600); setTimeout(function () { m.remove(); }, 3200);
   }
   function mmss(ms) { ms = Math.max(0, ms); var m = Math.floor(ms / 60000), sec = Math.floor(ms % 60000 / 1000); return m + ":" + (sec < 10 ? "0" : "") + sec; }
   // Met à jour les comptes à rebours sans tout redessiner
@@ -896,7 +903,7 @@
     box.appendChild(barreTrimestre());
     box.style.minHeight = ""; window.scrollTo(0, y);
     if (st.enchere) return reprendreEnchere();
-    modale();
+    if (MASQUE !== cleMasque()) modale();
     guide(document.getElementById("m-modale") ? "modale" : "jeu");
   }
   // Les découvertes de la partie (objets, secrets, combos) rejoignent le profil dès qu'elles arrivent
@@ -1239,6 +1246,7 @@
     if (!m) { m = h("div", "m-pop m-pop-enchere"); m.id = "m-enchmod"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true"); (document.getElementById("g-maire") || document.body).appendChild(m); document.body.classList.add("m-modal"); }
     m.innerHTML = "";
     var c = h("div", "m-pop-in m-ench");
+    c.appendChild(bouton("✕ Fermer", "m-pop-fermer", function () { if (st.enchere && !st.enchere.fini && !confirm("Quitter l’enchère ? Tu l’abandonnes.")) return; if (ENCH) clearInterval(ENCH.minuteur); if (st.enchere && !st.enchere.fini) st = M.finirEnchere(st); st = M.fermerEnchere(st); sauver(); fermerEnchUI(); jeu(); }));
     ajout(c, h("p", "m-sur", "🔨 Enchère face au " + e.ville), h("h4", null, B.ico + " " + B.nom));
     if (!e.fini) {
       var vVu = ENCH && ENCH.attente ? ENCH.vu : e.v, toiTete = e.j > vVu;
@@ -1580,7 +1588,8 @@
   window.addEventListener("resize", function () { if (BULLE) placer(); });
 
   // ---------- Dossier du trimestre : fenêtre au premier plan ----------
-  var legendeVue = null;
+  var legendeVue = null, MASQUE = null;
+  function cleMasque() { return st.t + ":" + (st.evenement || "") + ":" + (st.phase === "evenement" ? "e" : "r"); }
   // ---------- Vote de la communauté : ce qu'ont choisi les autres maires sur le même dossier ----------
   var VOTE = null;
   function cleVote() { return st.evPerso ? st.evPerso.src || null : st.evenement; }
@@ -1659,6 +1668,9 @@
     var sp = st.special || "dossier", pop = h("div", "m-pop m-pop-" + sp); pop.id = "m-modale";
     pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "true");
     var cadre = h("div", "m-pop-in");
+    MASQUE = null;
+    // Toujours un moyen de sortir : le dossier reste en attente, le bouton « Un dossier t’attend » le rouvre
+    cadre.appendChild(bouton("✕ Fermer", "m-pop-fermer", function () { MASQUE = cleMasque(); casino(false); fermerModale(); }));
     var TITRES_POP = { catastrophe: "Alerte : une catastrophe frappe Paris", opposition: "Ton opposant passe à l’attaque", chance: "Bonne nouvelle pour Paris !",
       rare: "✨ Quelque chose d’inhabituel se produit…", legendaire: "🌟 Un événement légendaire !", historique: "📜 Une décision historique", suite: "🔁 Une vieille décision revient", chantier: "🏗️ Des nouvelles du chantier" };
     if (TITRES_POP[st.special]) cadre.appendChild(h("p", "m-pop-titre", TITRES_POP[st.special]));

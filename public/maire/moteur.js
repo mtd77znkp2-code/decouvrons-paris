@@ -1380,13 +1380,11 @@
     var ev = st0.phase === "evenement" && !st0.evPerso ? base.parId[st0.evenement] : null;
     if (!ev || !ev.choix || ev.choix.length < 2) return st0.mj ? Object.assign(copie(st0), { mj: null }) : st0;
     var st = copie(st0), libres = choixLibre(ev);
-    // Les trois jeux à parts égales : ordre tiré au sort, puis distribués à tour de rôle (deux réponses n'ont jamais le même jeu)
-    var ordre = ["bj", "roulette", "poker"];
-    for (var a = 2; a > 0; a--) { var b = Math.floor(rnd(st) * (a + 1)), x = ordre[a]; ordre[a] = ordre[b]; ordre[b] = x; }
-    var n = 0;
+    // Chaque réponse jouée tire son jeu : poker 20 %, blackjack 40 %, roulette 40 %
     st.mj = { t: st.t, ev: st.evenement, best: meilleurChoix(st0, base), jeux: ev.choix.map(function (c, i) {
       if (libres.indexOf(i) >= 0) return null;
-      return { jeu: ordre[n++ % 3], etat: "a_jouer", bj: null, roue: null, pk: null };
+      var r = rnd(st);
+      return { jeu: r < 0.2 ? "poker" : r < 0.6 ? "bj" : "roulette", etat: "a_jouer", bj: null, roue: null, pk: null };
     }) };
     return st;
   }

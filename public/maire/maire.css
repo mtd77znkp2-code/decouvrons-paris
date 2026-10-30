@@ -1076,3 +1076,16 @@ button.mx-ses-qui{cursor:pointer}
 .mx-emp{display:flex;flex-direction:column}
 .mx-emp .mx-emp-go{margin-top:auto;background:#1b2550;color:#fff;border-radius:99px}
 .mx-emp .mx-emp-go:disabled{background:#c9cede;color:#5b6386}
+/* Bouton fermer en haut des fenêtres */
+.m-pop-in{position:relative}
+.m-pop-fermer{position:sticky;top:0;z-index:5;justify-self:end;margin:0 0 6px auto;display:block;font:inherit;font-weight:800;font-size:13px;padding:7px 12px;border:0;border-radius:99px;background:rgba(14,23,64,.85);color:#fff;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+/* Message de saison : petit, en haut, discret */
+.m-saison-msg{position:fixed;left:50%;top:calc(76px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:1200;display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:99px;background:rgba(14,23,64,.92);color:#fff;font-size:13.5px;box-shadow:0 8px 24px rgba(0,0,0,.35);animation:mSaisonIn .45s cubic-bezier(.2,1.4,.4,1);transition:opacity .5s,transform .5s;pointer-events:none;white-space:nowrap}
+.m-saison-msg span{font-size:18px}.m-saison-msg em{font-style:normal;font-weight:800}
+.m-saison-msg .m-plus{color:#8ee6ad}.m-saison-msg .m-moins{color:#ff9d94}
+.m-saison-msg.m-saison-out{opacity:0;transform:translate(-50%,-10px)}
+@keyframes mSaisonIn{0%{opacity:0;transform:translate(-50%,-14px) scale(.9)}100%{opacity:1;transform:translateX(-50%)}}
+/* Carte : les zones restent DANS le plan (elles passaient par-dessus les fenêtres ouvertes) */
+.m-plan{isolation:isolate}
+/* Le bandeau du Maire de Paris en bas du plan, pour ne plus cacher le 17e, le 18e et le 19e */
+.m-trone-pl{top:auto;bottom:2.5%}
