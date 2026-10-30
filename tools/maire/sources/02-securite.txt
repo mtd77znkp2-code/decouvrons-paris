@@ -1,33 +1,33 @@
 // Sécurité : police municipale, prévention, trafics, espaces publics
-=== sec-001 | securite | Vague de cambriolages dans l’Ouest parisien
-Les cambriolages ont doublé en un mois dans les 15e et 16e arrondissements. Les habitants réclament des mesures fortes.
+=== sec-001 | securite | Vague de cambriolages dans l’arrondissement
+Les cambriolages ont doublé en un mois dans plusieurs rues résidentielles de l’arrondissement. Les habitants réclament des mesures fortes.
 A) Renforcer les patrouilles de police municipale :: Visible et rassurant, coûteux.
    rec-1x30 securite+5 pop+2 | g0 c+2 d+4 e0
-   > Les patrouilles sont doublées la nuit dans les quartiers touchés.
+   > Les patrouilles sont doublées la nuit dans les rues touchées.
 B) Lancer un dispositif « voisins vigilants » :: Peu cher, efficacité discutée.
    bud-2 securite+2 | g-1 c+1 d+2 e0
    > Des réseaux de voisins se créent pour signaler les comportements suspects.
-   ~30 pop-2 > Un voisin trop zélé interpelle par erreur un livreur : la polémique enfle.
+   ~30 pop-2 > Un voisin trop zélé interpelle par erreur un livreur : la polémique enfle dans le quartier.
 C) Financer des serrures et alarmes pour les ménages modestes :: Prévention ciblée.
    bud-8 securite+3 achat+1 | g+2 c+2 d+1 e0
-   > Des milliers de foyers s’équipent avec l’aide de la ville.
+   > Des centaines de foyers s’équipent avec l’aide de la mairie d’arrondissement.
 
 === sec-002 | securite | Faut-il armer la police municipale ?
-Les syndicats de policiers municipaux demandent des armes à feu après une agression. Le sujet divise profondément le Conseil de Paris.
+Les agents de police municipale de l’arrondissement demandent des armes à feu après une agression. Le sujet divise profondément le conseil d’arrondissement.
 A) Armer les agents volontaires :: Réponse ferme, débat explosif.
    bud-12 securite+4 pop+1 | g-5 c-1 d+5 e-4
    > Les premiers agents armés patrouillent après une formation.
-   ~25 pop-4 bon-2 > Un tir lors d’une interpellation provoque une vive émotion.
+   ~25 pop-4 bon-2 > Un tir lors d’une interpellation provoque une vive émotion dans le quartier.
 B) Équiper de pistolets à impulsion électrique :: Compromis.
    bud-5 securite+2 | g-2 c+3 d+2 e-1
    > Les agents reçoivent des pistolets à impulsion électrique et des gilets renforcés.
 C) Refuser et miser sur la médiation :: Fidèle à une police de proximité.
    rec-0.5x30 securite+1 bon+1 | g+4 c0 d-4 e+3
-   > Des médiateurs de rue sont recrutés dans chaque arrondissement.
-   +4 pop-2 > Les syndicats de policiers manifestent devant l’Hôtel de Ville.
+   > Des médiateurs de rue sont recrutés dans chaque quartier de l’arrondissement.
+   +4 pop-2 > Les syndicats de policiers manifestent devant la mairie d’arrondissement.
 
 === sec-003 | securite | Trafic de drogue installé près d’une école
-Des parents d’élèves alertent : un point de deal s’est installé à quelques mètres d’une école élémentaire du 19e.
+Des parents d’élèves alertent : un point de deal s’est installé à quelques mètres d’une école élémentaire de l’arrondissement.
 A) Installer des caméras et une présence policière permanente :: Le point de deal se déplace.
    bud-6 rec-0.5x20 securite+4 pop+2 | g-1 c+2 d+4 e0
    > Les dealers quittent le trottoir de l’école… pour la rue d’à côté.
@@ -36,9 +36,9 @@ B) Réaménager la rue et ouvrir un local associatif :: Prévention durable, plu
    bud-10 securite+2 services+2 bon+1 | g+3 c+2 d0 e+2
    > La rue est rendue piétonne et un local accueille les jeunes du quartier.
    +8 securite+3 > Le point de deal disparaît : le lieu est désormais trop fréquenté.
-C) Demander à l’État d’intervenir :: Pas de coût, délai incertain.
+C) Demander à l’Hôtel de Ville et à la préfecture d’intervenir :: Pas de coût, délai incertain.
    pop-1 | g0 c+1 d+1 e0
-   > Le préfet promet une opération.
+   > La préfecture promet une opération.
    ~50 securite+4 > Une opération de police démantèle le réseau.
 
 === sec-004 | securite | Les rodéos urbains reviennent
@@ -55,35 +55,35 @@ C) Ouvrir un circuit de motocross encadré en banlieue :: Original, pas sûr que
    ~40 securite+3 > Une partie des jeunes motards adopte le circuit.
 
 === sec-005 | securite | Les caméras à reconnaissance faciale
-Une entreprise propose de tester la reconnaissance faciale sur les caméras de la ville pendant les grands événements.
+Une entreprise propose de tester la reconnaissance faciale sur les caméras de l’arrondissement pendant les grands événements.
 A) Accepter l’expérimentation :: Sécurité accrue, libertés en question.
    securite+4 pop-1 | g-5 c-1 d+4 e-3
-   > Le test démarre lors d’un match au Parc des Princes.
+   > Le test démarre lors du grand marché de Noël du quartier.
    ~40 pop-3 > La CNIL et des associations attaquent le dispositif.
 B) Refuser par principe :: Libertés publiques avant tout.
    pop+1 coh+1 | g+3 c+1 d-3 e+3
-   > Tu refuses toute surveillance biométrique dans l’espace public.
+   > Tu refuses toute surveillance biométrique dans les rues de l’arrondissement.
 C) Organiser une consultation citoyenne :: Prend du temps, mais apaise.
    bud-3 bon+1 | g+1 c+3 d0 e+1
-   > Une convention citoyenne de 100 Parisiens tirés au sort se penche sur la question.
+   > Un jury de cinquante habitants tirés au sort se penche sur la question.
 
 === sec-006 | securite | Une rixe entre bandes fait un blessé grave
-Une bagarre entre jeunes de deux quartiers a mal tourné. Les familles et les élus locaux réclament des réponses rapides.
+Une bagarre entre jeunes de deux quartiers de l’arrondissement a mal tourné. Les familles réclament des réponses rapides.
 A) Couvre-feu pour les mineurs dans les quartiers concernés :: Mesure choc.
    securite+3 pop+1 bon-2 | g-4 c-1 d+4 e-2
    > Les mineurs non accompagnés ne peuvent plus sortir après 22 h.
    ~30 pop-2 > Le couvre-feu est suspendu par le tribunal administratif.
 B) Recruter des éducateurs de rue :: Prévention, résultats lents.
    rec-0.8x40 securite+2 services+2 | g+4 c+2 d-1 e+2
-   > Trente éducateurs sont recrutés dans les quartiers concernés.
+   > Une dizaine d’éducateurs sont recrutés dans les quartiers concernés.
    +10 securite+3 > Les tensions entre quartiers baissent nettement.
 C) Organiser une médiation entre les familles :: Peu coûteux.
    bud-1 bon+1 | g+2 c+3 d0 e+1
    > Une rencontre est organisée à la mairie d’arrondissement.
    ~35 securite-2 > Une nouvelle bagarre éclate deux semaines plus tard.
 
-=== sec-007 | securite | Les marchés à la sauvette envahissent Barbès
-Vente de cigarettes, de vêtements et de nourriture à même le trottoir : les commerçants et les riverains se plaignent.
+=== sec-007 | securite | Les marchés à la sauvette envahissent les trottoirs
+Vente de cigarettes, de vêtements et de nourriture à même le trottoir près du métro : les commerçants et les riverains se plaignent.
 A) Opérations quotidiennes d’évacuation :: Visible, mais recommence chaque jour.
    rec-0.5x20 securite+2 proprete+2 | g-2 c+1 d+3 e0
    > Les trottoirs sont dégagés chaque matin… et réoccupés chaque soir.
@@ -91,70 +91,70 @@ B) Ouvrir un marché solidaire encadré :: Intégration, risque d’appel d’ai
    bud-4 achat+1 bon+1 | g+3 c+2 d-3 e+1
    > Un marché solidaire ouvre sous le métro aérien.
    ~30 securite-2 > Le marché attire encore plus de vendeurs non autorisés.
-C) Laisser faire la police nationale :: Pas de coût pour la ville.
+C) Laisser faire la police nationale :: Pas de coût pour l’arrondissement.
    securite-1 | g0 c0 d0 e0
-   > Le problème reste entre les mains de l’État.
-   +6 pop-2 > Les commerçants de Barbès ferment leurs rideaux en signe de protestation.
+   > Le problème reste entre les mains de la préfecture.
+   +6 pop-2 > Les commerçants du quartier ferment leurs rideaux en signe de protestation.
 
-=== sec-008 | securite | Les agressions dans le métro
-Plusieurs agressions violentes dans le métro choquent l’opinion. La RATP dépend de la Région, mais tout le monde se tourne vers toi.
-A) Financer des agents de sécurité supplémentaires :: La ville paie pour un réseau qu’elle ne gère pas.
+=== sec-008 | securite | Les agressions à la station de métro du quartier
+Plusieurs agressions violentes à la station de métro de l’arrondissement choquent les habitants. La RATP dépend de la Région, mais tout le monde se tourne vers toi.
+A) Financer des agents de sécurité supplémentaires :: L’arrondissement paie pour un réseau qu’il ne gère pas.
    rec-1x30 securite+4 transports+1 | g0 c+1 d+3 e0
-   > Des agents financés par la ville patrouillent dans les stations les plus sensibles.
-B) Exiger un plan de l’État et de la Région :: Politique, effet incertain.
+   > Des agents financés par l’arrondissement patrouillent dans les stations du quartier.
+B) Exiger un plan de l’Hôtel de Ville et de la Région :: Politique, effet incertain.
    pop+1 | g+1 c+1 d+1 e+1
-   > Tu publies une lettre ouverte au ministre.
-   ~40 securite+3 > Un plan national renforce la présence policière dans le métro.
+   > Tu publies une lettre ouverte dans la presse.
+   ~40 securite+3 > Un plan régional renforce la présence policière dans le métro.
 C) Lancer une application d’alerte pour les voyageurs :: Moderne et peu chère.
    bud-3 securite+2 | g+1 c+2 d+1 e+1
    > L’application permet de signaler une agression en un clic.
 
 === sec-009 | securite | Accident grave à un carrefour dangereux
-Un enfant a été renversé à un carrefour signalé comme dangereux depuis des années. Les parents sont en colère.
-A) Réaménager tous les carrefours dangereux de la ville :: Grand plan, cher.
+Un enfant a été renversé à un carrefour de l’arrondissement signalé comme dangereux depuis des années. Les parents sont en colère.
+A) Réaménager tous les carrefours dangereux de l’arrondissement :: Grand plan, cher.
    bud-35 securite+5 transports+2 bon+2 | g+2 c+2 d+1 e+3
-   > Deux cents carrefours sont sécurisés en un an.
+   > Une trentaine de carrefours sont sécurisés en un an.
 B) Abaisser la vitesse à 20 km/h près des écoles :: Rapide et peu coûteux.
    bud-2 securite+3 | g+2 c+1 d-2 e+4
-   > La vitesse est limitée à 20 km/h aux abords de toutes les écoles.
-   ~25 pop-2 > Les taxis et livreurs protestent contre « Paris à 20 ».
+   > La vitesse est limitée à 20 km/h aux abords de toutes les écoles de l’arrondissement.
+   ~25 pop-2 > Les taxis et livreurs protestent contre « l’arrondissement à 20 ».
 C) Traiter seulement ce carrefour :: Réponse ciblée.
    bud-1 securite+1 | g0 c+1 d+1 e0
    > Le carrefour est réaménagé en urgence.
    +6 pop-2 > Un autre accident a lieu à un carrefour tout aussi dangereux.
 
 === sec-010 | securite | Une salle de consommation pour les toxicomanes
-Les consommateurs de crack se regroupent dans le nord-est parisien. Des associations proposent une nouvelle salle de consommation encadrée.
+Des consommateurs de crack se regroupent près d’une gare de l’arrondissement. Des associations proposent d’ouvrir une salle de consommation encadrée.
 A) Ouvrir la salle :: Santé publique, riverains inquiets.
    bud-6 rec-0.4x40 services+2 securite+1 pop-2 | g+4 c+1 d-4 e+2
-   > La salle ouvre dans le 10e. Les consommations de rue diminuent dans le quartier.
+   > La salle ouvre près de la gare. Les consommations de rue diminuent dans le quartier.
    ~35 bon-2 > Les riverains de la salle manifestent chaque semaine.
 B) Disperser les regroupements :: Effet immédiat, problème déplacé.
    securite+2 pop+1 | g-3 c0 d+4 e-2
    > Les regroupements sont dispersés… et se reforment plus loin.
-   +5 securite-2 > Un nouveau campement de consommateurs apparaît porte de la Villette.
-C) Créer un centre de soins hors de Paris avec la Région :: Long à négocier.
+   +5 securite-2 > Un nouveau campement de consommateurs apparaît sous le pont voisin.
+C) Créer un centre de soins avec l’Hôtel de Ville :: Long à négocier.
    bud-10 services+1 | g+1 c+3 d+1 e+1
-   > Un centre de soins et d’hébergement ouvre en Seine-Saint-Denis.
-   ~30 pop-1 > Les élus de Seine-Saint-Denis accusent Paris de « déplacer ses problèmes ».
+   > Un centre de soins et d’hébergement ouvre dans un arrondissement voisin.
+   ~30 pop-1 > Le maire de l’arrondissement voisin t’accuse de « déplacer tes problèmes ».
 
-=== sec-011 | securite | Les feux d’artifice du 14-Juillet
-La préfecture alerte sur des risques d’incidents lors des festivités. Elle suggère de réduire les rassemblements.
+=== sec-011 | securite | Le bal du 14-Juillet de l’arrondissement
+La préfecture alerte sur des risques d’incidents lors des festivités. Elle suggère de réduire les rassemblements dans le quartier.
 ? apres=10
-A) Maintenir la fête dans toute la ville :: Ambiance, risques.
+A) Maintenir la fête dans tout l’arrondissement :: Ambiance, risques.
    bud-8 bon+3 | g+1 c+1 d0 e0
-   > Les bals populaires et le feu d’artifice attirent des centaines de milliers de personnes.
-   ~25 securite-3 pop-2 > Des incidents éclatent en fin de soirée près de la tour Eiffel.
-B) Concentrer la fête au Champ-de-Mars avec contrôles :: Sécurisé, moins festif.
+   > Le bal des pompiers et la fête de quartier attirent des milliers de personnes.
+   ~25 securite-3 pop-2 > Des incidents éclatent en fin de soirée sur la place principale.
+B) Concentrer la fête sur une seule place avec contrôles :: Sécurisé, moins festif.
    bud-12 securite+2 bon+1 | g-1 c+2 d+3 e0
-   > Un grand périmètre filtré accueille le feu d’artifice.
-C) Remplacer le feu d’artifice par un spectacle de drones :: Moderne, moins de rassemblements.
+   > Un périmètre filtré accueille le bal et le concert.
+C) Remplacer les pétards par un spectacle de drones :: Moderne, moins de rassemblements.
    bud-6 ecologie+2 bon+1 | g0 c+2 d0 e+3
-   > Cinq cents drones dessinent la tour Eiffel dans le ciel.
+   > Cent drones dessinent le blason de l’arrondissement dans le ciel.
    ~30 pop-1 > Une partie du public regrette les vrais feux d’artifice.
 
 === sec-012 | securite | Les squats de bâtiments vides
-Des immeubles municipaux vides sont occupés par des familles sans logement et des collectifs militants.
+Des immeubles vides appartenant à l’arrondissement sont occupés par des familles sans logement et des collectifs militants.
 A) Faire évacuer rapidement :: Fermeté, images difficiles.
    bud-2 securite+2 bon-2 | g-4 c0 d+4 e-2
    > Les bâtiments sont évacués à l’aube.
@@ -167,31 +167,31 @@ C) Transformer les bâtiments en hébergements d’urgence :: Coûteux, utile.
    > Les bâtiments sont rénovés et accueillent des familles accompagnées.
 
 === sec-013 | securite | Les livreurs à vélo roulent sur les trottoirs
-Les piétons se plaignent des livreurs pressés qui roulent vite sur les trottoirs et grillent les feux.
+Les piétons de l’arrondissement se plaignent des livreurs pressés qui roulent vite sur les trottoirs et grillent les feux.
 A) Verbaliser systématiquement :: Ordre rétabli, livreurs précaires sanctionnés.
    rec+0.2x30 securite+2 | g-2 c+1 d+3 e0
    > Les amendes pleuvent sur les livreurs.
    ~30 pop-1 > Les livreurs, souvent sans papiers, manifestent contre le harcèlement.
 B) Imposer des règles aux plateformes de livraison :: Responsabilise les entreprises.
    securite+2 | g+3 c+2 d0 e+1
-   > Les plateformes doivent former leurs livreurs et limiter les délais.
+   > Les plateformes doivent former leurs livreurs et limiter les délais dans l’arrondissement.
 C) Créer des zones de pause et des pistes dédiées :: Infrastructure, coût.
    bud-8 securite+2 transports+2 | g+1 c+2 d0 e+3
-   > Des stations de pause et des pistes dédiées apparaissent dans les quartiers de livraison.
+   > Des stations de pause et des pistes dédiées apparaissent près des restaurants du quartier.
 
-=== sec-014 | securite | La police nationale manque d’effectifs à Paris
-Le préfet annonce que des policiers vont être redéployés en province. Paris perdra plusieurs centaines d’agents.
-A) Recruter 200 policiers municipaux de plus :: La ville compense, à ses frais.
+=== sec-014 | securite | Le commissariat de l’arrondissement manque d’effectifs
+Le préfet annonce que des policiers vont être redéployés ailleurs. Le commissariat de l’arrondissement perdra plusieurs dizaines d’agents.
+A) Recruter 30 policiers municipaux de plus :: L’arrondissement compense, à ses frais.
    rec-2x50 securite+5 pop+2 | g-1 c+1 d+4 e-1
-   > La police municipale grossit fortement.
-B) Faire pression sur le gouvernement :: Politique, sans dépense.
+   > La police municipale de l’arrondissement grossit fortement.
+B) Faire pression sur le préfet :: Politique, sans dépense.
    pop+2 | g+1 c+1 d+1 e+1
-   > Tu mobilises les élus parisiens de tous bords.
-   ~45 securite+2 > Le gouvernement réduit le nombre de policiers redéployés.
-   +6 securite-2 > Les effectifs baissent dans les commissariats d’arrondissement.
+   > Tu mobilises les élus de l’arrondissement de tous bords.
+   ~45 securite+2 > Le préfet réduit le nombre de policiers redéployés.
+   +6 securite-2 > Les effectifs baissent au commissariat du quartier.
 C) Miser sur la vidéoprotection :: Moins cher que des agents.
    bud-15 securite+3 | g-3 c+1 d+3 e-1
-   > Cinq cents caméras supplémentaires sont installées.
+   > Cinquante caméras supplémentaires sont installées dans l’arrondissement.
 
 === sec-015 | securite | Les harcèlements de rue
 Une enquête montre que la majorité des Parisiennes ont été harcelées dans la rue ou les transports au cours de l’année.
@@ -206,25 +206,25 @@ C) Renforcer l’éclairage public la nuit :: Utile, mais contraire aux économi
    bud-10 securite+3 ecologie-2 | g+1 c+1 d+2 e-3
    > Les rues mal éclairées sont rééquipées.
 
-=== sec-016 | securite | Un marché noir de billets pour les grands concerts
-Des revendeurs harcèlent les spectateurs devant les salles de concert de la ville.
+=== sec-016 | securite | Un marché noir de billets devant la salle de concert
+Des revendeurs harcèlent les spectateurs devant la grande salle de concert de l’arrondissement.
 A) Créer une zone interdite aux revendeurs :: Ciblé et rapide à mettre en place.
    bud-1 securite+2 | g0 c+2 d+2 e0
-   > Un périmètre de sécurité est établi autour des salles.
+   > Un périmètre de sécurité est établi autour de la salle.
 B) Lancer une bourse officielle de revente :: Malin, demande un partenaire.
    bud-2 economie+1 bon+1 | g+1 c+3 d+1 e+1
-   > Une plateforme municipale de revente au prix coûtant voit le jour.
+   > Une plateforme de revente au prix coûtant voit le jour.
 C) Ne rien faire :: Ce n’est pas la priorité.
    securite-1 | g0 c0 d-1 e0
    > Le marché noir continue.
 
-=== sec-017 | securite | Un cyberattaque paralyse les services de la ville
-Des pirates ont chiffré les serveurs de la mairie et réclament une rançon. L’état civil, les inscriptions en crèche et la paie sont bloqués.
+=== sec-017 | securite | Une cyberattaque paralyse la mairie d’arrondissement
+Des pirates ont chiffré les serveurs de la mairie d’arrondissement et réclament une rançon. L’état civil, les inscriptions en crèche et la paie sont bloqués.
 ? apres=12
 A) Payer la rançon :: Rapide, mais finance le crime.
    bud-20 services+2 pop-3 | g-2 c-1 d-2 e-1
    > Les fichiers sont restitués… en partie.
-   ~40 pop-2 > La presse révèle que la ville a payé des pirates.
+   ~40 pop-2 > La presse révèle que l’arrondissement a payé des pirates.
 B) Tout reconstruire avec des experts :: Long et coûteux, mais propre.
    bud-30 services-3 | g+1 c+2 d+2 e+1
    > Les experts reconstruisent les systèmes en trois semaines.
@@ -247,23 +247,23 @@ C) Proposer un lieu officiel pour les prochaines éditions :: Encadrement, criti
    > Les organisateurs acceptent un terrain encadré pour l’an prochain.
 
 === sec-019 | securite | Des commerçants demandent une police de nuit
-Les bars et restaurants d’Oberkampf constatent de plus en plus de vols et de bagarres la nuit.
+Les bars et restaurants de la rue la plus festive de l’arrondissement constatent de plus en plus de vols et de bagarres la nuit.
 A) Créer une brigade municipale de nuit :: Coûteux, attendu.
    rec-1x40 securite+4 economie+1 | g0 c+2 d+4 e0
    > La brigade de nuit patrouille de 22 h à 6 h.
 B) Imposer une fermeture plus tôt des bars :: Moins de troubles, colère des patrons.
    securite+3 economie-3 bon-1 | g0 c+1 d+2 e+1
-   > Les bars doivent fermer à 1 h du matin.
+   > Les bars de la rue doivent fermer à 1 h du matin.
    +5 pop-2 > Les patrons de bars organisent une « nuit morte » de protestation.
 C) Financer des « chuteurs » et médiateurs de nuit :: Doux, efficace pour le bruit.
    rec-0.3x40 securite+1 bon+1 | g+2 c+2 d0 e+2
    > Des médiateurs calment les terrasses et accompagnent les fêtards.
 
 === sec-020 | securite | Un incendie dans un immeuble insalubre
-Un incendie ravage un immeuble vétuste du 20e. Plusieurs familles sont sans logement, et l’immeuble avait été signalé.
+Un incendie ravage un immeuble vétuste de l’arrondissement. Plusieurs familles sont sans logement, et l’immeuble avait été signalé.
 A) Lancer un plan d’urgence contre l’habitat indigne :: Fort, coûteux.
    bud-40 logement+5 securite+3 pop+2 | g+4 c+2 d+1 e+1
-   > Des centaines d’immeubles dangereux sont expertisés et rénovés.
+   > Des dizaines d’immeubles dangereux de l’arrondissement sont expertisés et rénovés.
 B) Reloger les familles et poursuivre le propriétaire :: Réponse ciblée.
    bud-6 logement+1 pop+1 | g+1 c+2 d+2 e0
    > Les familles sont relogées, le propriétaire est assigné en justice.
@@ -297,8 +297,8 @@ C) Former les équipes à évacuer plus vite :: Limite les perturbations.
    bud-3 services+1 | g+1 c+2 d+1 e+1
    > Les évacuations se font désormais en quelques minutes.
 
-=== sec-023 | securite | Un quartier demande la vidéoprotection
-Un comité de quartier du 13e a recueilli 3 000 signatures pour installer des caméras dans les rues commerçantes.
+=== sec-023 | securite | Une rue commerçante demande la vidéoprotection
+Un comité de quartier a recueilli 3 000 signatures pour installer des caméras dans la rue commerçante de l’arrondissement.
 A) Installer les caméras demandées :: Répond à la demande.
    bud-6 securite+3 pop+1 | g-2 c+1 d+3 e-1
    > Vingt caméras sont installées.
@@ -311,26 +311,26 @@ C) Préférer un meilleur éclairage et des commerces ouverts tard :: Approche u
    > Les rues sont mieux éclairées et des commerces restent ouverts plus tard.
 
 === sec-024 | securite | Les supporters de football dans les rues
-Un grand match européen attire des milliers de supporters étrangers. Certains groupes sont réputés violents.
-A) Interdire les rassemblements dans le centre :: La prudence avant tout.
+Un grand match européen attire des milliers de supporters étrangers dans les bars de l’arrondissement. Certains groupes sont réputés violents.
+A) Interdire les rassemblements dans le quartier :: La prudence avant tout.
    securite+2 economie-2 | g-1 c+1 d+3 e0
-   > Le centre est bouclé. Les bars perdent une grosse soirée.
+   > Le quartier est bouclé. Les bars perdent une grosse soirée.
 B) Créer une fan zone encadrée :: Fête maîtrisée, coût d’organisation.
    bud-6 economie+2 bon+1 | g+1 c+3 d+1 e0
-   > Une grande fan zone accueille les supporters.
+   > Une fan zone accueille les supporters sur la place principale.
    ~25 securite-2 > Des heurts éclatent malgré tout à la sortie.
 C) Laisser faire et mobiliser la police :: Pas de dépense.
    securite-1 | g0 c0 d0 e0
    > La soirée se passe sous haute surveillance policière.
-   ~40 proprete-3 pop-2 > Des vitrines sont brisées sur les Champs-Élysées.
+   ~40 proprete-3 pop-2 > Des vitrines sont brisées dans la rue commerçante.
 
 === sec-025 | securite | La police municipale manque de locaux
-Les agents travaillent dans des locaux vétustes et dispersés. Ils réclament un vrai siège.
+Les agents de l’arrondissement travaillent dans des locaux vétustes et dispersés. Ils réclament un vrai poste.
 ? distinct
-A) Construire un siège moderne :: Investissement lourd.
+A) Construire un poste moderne :: Investissement lourd.
    bud-45 securite+3 | g-1 c+1 d+3 e-1
-   > Un siège moderne ouvre dans le 12e.
-B) Réaménager des bureaux municipaux vides :: Économique.
+   > Un poste moderne ouvre au cœur de l’arrondissement.
+B) Réaménager des bureaux vides de la mairie d’arrondissement :: Économique.
    bud-10 securite+2 | g+1 c+3 d+1 e+1
    > La police municipale s’installe dans d’anciens bureaux rénovés.
 C) Reporter le projet :: Économie, agents frustrés.

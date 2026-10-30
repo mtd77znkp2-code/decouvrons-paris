@@ -1351,6 +1351,15 @@
     });
   }
   function fermerModale() { var m = document.getElementById("m-modale"); if (m) m.remove(); document.body.classList.remove("m-modal"); cacherBulle(); if (document.body.classList.contains("m-casino")) casino(false); }
+  // Les dossiers sont écrits pour un maire d'arrondissement ; sur le trône de Maire de Paris, on passe à l'échelle de la ville
+  var TRONE_TXT = [[/l’Hôtel de Ville/g, "l’\u0001"], [/L’Hôtel de Ville/g, "L’\u0001"], [/la mairie d’arrondissement/g, "l’Hôtel de Ville"], [/La mairie d’arrondissement/g, "L’Hôtel de Ville"],
+    [/le conseil d’arrondissement/g, "le Conseil de Paris"], [/Le conseil d’arrondissement/g, "Le Conseil de Paris"], [/au conseil d’arrondissement/g, "au Conseil de Paris"], [/du conseil d’arrondissement/g, "du Conseil de Paris"],
+    [/ton arrondissement/g, "Paris"], [/Ton arrondissement/g, "Paris"], [/de l’arrondissement/g, "de la ville"], [/à l’arrondissement/g, "à la ville"], [/l’arrondissement/g, "la ville"], [/L’arrondissement/g, "La ville"],
+    [/les habitants/g, "les Parisiens"], [/Les habitants/g, "Les Parisiens"], [/maires d’arrondissement/g, "maires de France"], [/l’\u0001/g, "l’État"], [/L’\u0001/g, "L’État"]];
+  function T(x) {
+    if (!x || !st || !st.session || st.session.place < 20) return x;
+    TRONE_TXT.forEach(function (r) { x = x.replace(r[0], r[1]); }); return x;
+  }
   function modale() {
     fermerModale();
     var ev = M.evenementCourant(st, BASE);
@@ -1364,13 +1373,13 @@
     if (TITRES_POP[st.special]) cadre.appendChild(h("p", "m-pop-titre", TITRES_POP[st.special]));
     var carte = h("article", "m-dossier m-c-" + ev.cat);
     var LIB = { rare: "✨ Événement rare", legendaire: "🌟 Légendaire", politique: "🎭 Coup de théâtre", chantier: "🏗️ Chantier", historique: "📜 Décision historique", suite: "🔁 Le retour" };
-    ajout(carte, h("p", "m-cat", (LIB[st.special] || M.FAMILLE[st.special || ev.cat] || "📂 Dossier") + " · " + date(st.t)), h("h4", null, ev.titre));
+    ajout(carte, h("p", "m-cat", (LIB[st.special] || M.FAMILLE[st.special || ev.cat] || "📂 Dossier") + " · " + date(st.t)), h("h4", null, T(ev.titre)));
     if (ev.perso && M.C.PERSONNAGES[ev.perso]) { var pe = M.C.PERSONNAGES[ev.perso]; carte.appendChild(ajout(h("div", "m-perso"), h("span", null, pe.ico), h("small", null, pe.nom + " · " + pe.txt))); }
     if (st.phase === "evenement") {
       // Chaque réponse se joue au casino (blackjack ou roulette), sauf la réponse « rien »
       casino(false);
       if (!st.evPerso) { var avant = st.mj; st = M.preparerMiniJeu(st, BASE); if (st.mj !== avant) sauver(); }
-      carte.appendChild(h("p", "m-desc", ev.desc));
+      carte.appendChild(h("p", "m-desc", T(ev.desc)));
       var ch = h("div", "m-choix");
       ev.choix.forEach(function (x, i) {
         var mj = M.jeuDe(st, i), b = bouton("", "m-option" + (mj ? " m-mj m-mj-" + mj.etat : ""), function () {
@@ -1380,7 +1389,7 @@
           var cle = cleVote(), t = st.t, p = voter(cle, i); VOTE = p ? { t: t, i: i, p: p } : null;
           st = M.choisir(st, BASE, i); sauver(); signal("choix"); jeu();
         });
-        ajout(b, h("span", "m-lettre", mj && mj.etat === "perdu" ? "🔒" : "ABCD"[i]), h("strong", null, x.t));
+        ajout(b, h("span", "m-lettre", mj && mj.etat === "perdu" ? "🔒" : "ABCD"[i]), h("strong", null, T(x.t)));
         var best = st.mj && st.mj.best === i ? "⭐ Meilleur choix · " : "";
         if (mj) b.appendChild(h("small", "m-mj-tag", mj.etat === "a_jouer" ? best + "se joue " + ({ bj: "au 🃏 blackjack", roulette: "à la 🎡 roulette", poker: "au ♠️ poker" })[mj.jeu]
           : mj.etat === "gagne" ? "✅ Gagné au casino : à toi de le prendre" : "❌ Perdu au casino : ce choix t’échappe"));
@@ -1391,10 +1400,10 @@
       carte.appendChild(ch);
     } else {
       var r = st.resultat, x = ev.choix[r.i];
-      ajout(carte, h("p", "m-pris", "Ta décision : " + x.t), h("p", "m-res", r.txt || x.r));
+      ajout(carte, h("p", "m-pris", "Ta décision : " + T(x.t)), h("p", "m-res", T(r.txt || x.r)));
       variations(r.d, carte);
-      if (r.surprise) carte.appendChild(h("p", "m-surprise", "⚡ Imprévu : " + r.surprise));
-      (r.extra || []).forEach(function (t) { carte.appendChild(h("p", "m-extra", t)); });
+      if (r.surprise) carte.appendChild(h("p", "m-surprise", "⚡ Imprévu : " + T(r.surprise)));
+      (r.extra || []).forEach(function (t) { carte.appendChild(h("p", "m-extra", T(t))); });
       if (r.dif) carte.appendChild(h("p", "m-extra", "⏳ Cette décision aura encore des conséquences plus tard."));
       afficherVote(carte, ev.choix.length);
       carte.appendChild(bouton("Retour à l’Hôtel de Ville", "btn m-go", function () { st.resultatVu = true; sauver(); fermerModale(); signal("fermer"); if (st.phase === "fin") jeu(); else guide("jeu"); }));

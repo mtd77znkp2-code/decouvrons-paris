@@ -158,7 +158,7 @@
     institutions: "🏛️ Politique", crise: "🚨 Crise", catastrophe: "🚨 Catastrophe", chance: "🍀 Coup de chance", opposition: "⚔️ Opposition" };
   var CAT_PILIER = { securite: "securite", logement: "logement", transports: "transports", proprete: "cadre", ecologie: "cadre", services: "cadre", culture: "cadre", quotidien: "cadre" };
   var SPECIAUX = { catastrophe: "Catastrophe", chance: "Coup de chance" };
-  var COND = ["popMin", "popMax", "bonMin", "bonMax", "cohMin", "cohMax", "tresorMin", "tresorMax", "detteMin",
+  var COND = ["placeMin", "popMin", "popMax", "bonMin", "bonMax", "cohMin", "cohMax", "tresorMin", "tresorMax", "detteMin",
     "apres", "avant", "ligne", "amb", "flag", "sansFlag"];
 
   // ---------- Difficulté : elle monte de mandat en mandat (1er mandat « facile », 2e « moyen », puis « difficile ») ----------

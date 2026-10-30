@@ -1,88 +1,88 @@
 // Écologie : canicules, végétalisation, énergie, pollution, Seine
 === eco-001 | ecologie | Une canicule historique s’annonce
-Météo-France annonce plusieurs jours au-dessus de 40 °C. Les personnes âgées et les sans-abri sont en danger.
+Météo-France annonce plusieurs jours au-dessus de 40 °C. Les personnes âgées et les sans-abri de l’arrondissement sont en danger.
 ? apres=8
 A) Ouvrir des salles rafraîchies et appeler les personnes isolées :: Coûteux, protège les plus fragiles.
    bud-12 services+3 bon+2 pop+2 | g+3 c+2 d+1 e+2
-   > Des centaines d’agents appellent chaque jour les personnes âgées isolées.
-B) Ouvrir les parcs la nuit et brumiser les rues :: Visible et apprécié.
+   > Les agents de la mairie d’arrondissement appellent chaque jour les personnes âgées isolées.
+B) Ouvrir les squares la nuit et brumiser les rues :: Visible et apprécié.
    bud-6 bon+3 ecologie-1 | g+1 c+2 d+1 e0
-   > Les parcs restent ouverts la nuit et des brumisateurs rafraîchissent les places.
+   > Les squares restent ouverts la nuit et des brumisateurs rafraîchissent les places.
 C) Diffuser des consignes et laisser faire :: Pas de dépense, risque élevé.
    bon-2 | g-2 c0 d+1 e-1
    > Des consignes sont affichées partout.
    ~45 pop-5 bon-3 > Des décès de personnes isolées font scandale.
 
 === eco-002 | ecologie | Débitumer les cours d’école
-Transformer les cours d’école en îlots de fraîcheur, avec de la terre, des arbres et des fontaines, coûte cher.
+Transformer les cours d’école de l’arrondissement en îlots de fraîcheur, avec de la terre, des arbres et des fontaines, coûte cher.
 A) Toutes les cours en cinq ans :: Grand plan visible.
    bud-45 ecologie+5 services+2 bon+2 | g+2 c+2 d0 e+5
-   > Des centaines de cours d’école deviennent des oasis.
-B) Les cours des quartiers les plus chauds d’abord :: Ciblé et juste.
+   > Toutes les cours d’école de l’arrondissement deviennent des oasis.
+B) Les cours des rues les plus chaudes d’abord :: Ciblé et juste.
    bud-18 ecologie+3 bon+1 | g+3 c+2 d0 e+4
-   > Les écoles des quartiers denses et chauds passent en priorité.
+   > Les écoles des rues denses et chaudes passent en priorité.
 C) Reporter, faute de budget :: Économique.
    ecologie-1 | g-1 c+1 d+2 e-3
    > Le projet attendra.
 
-=== eco-003 | ecologie | Planter une forêt urbaine sur une place emblématique
-Un projet propose de planter une vraie forêt sur la place de l’Hôtel de Ville.
+=== eco-003 | ecologie | Planter une forêt urbaine devant la mairie d’arrondissement
+Un projet propose de planter une vraie forêt sur la place de la mairie d’arrondissement.
 A) Planter la forêt :: Symbole fort, coûteux.
    bud-20 ecologie+4 bon+2 | g+1 c0 d-2 e+5
-   > Des centaines d’arbres sont plantés devant l’Hôtel de Ville.
+   > Des centaines d’arbres sont plantés devant la mairie d’arrondissement.
    ~30 bud-8 > Des arbres meurent faute de terre suffisante : il faut replanter.
 B) Planter des arbres dans les rues plutôt :: Moins spectaculaire, plus utile.
    bud-15 ecologie+4 bon+1 | g+1 c+3 d+1 e+4
-   > Dix mille arbres sont plantés dans les rues.
+   > Mille arbres sont plantés dans les rues de l’arrondissement.
 C) Garder la place minérale pour les événements :: Pas de dépense.
    economie+1 | g0 c+1 d+2 e-3
-   > La place reste dédiée aux grands événements.
+   > La place reste dédiée aux fêtes de quartier.
 
-=== eco-004 | ecologie | Se baigner dans la Seine
-Après des années de travaux, la Seine pourrait accueillir des baignades publiques.
+=== eco-004 | ecologie | Se baigner dans la Seine au pied de l’arrondissement
+Après des années de travaux, la Seine pourrait accueillir des baignades publiques le long des quais de l’arrondissement.
 A) Ouvrir trois sites de baignade :: Rêve parisien, risque sanitaire.
    bud-15 bon+4 ecologie+2 pop+2 | g+1 c+1 d0 e+4
-   > Les Parisiens se baignent dans la Seine.
+   > Les habitants se baignent dans la Seine.
    ~30 pop-3 > Des baignades sont fermées après des orages : l’eau est polluée.
 B) Ouvrir un seul site test :: Prudent, avant de généraliser.
    bud-5 bon+2 ecologie+1 | g+1 c+3 d+1 e+3
-   > Un site test ouvre près de Bercy.
+   > Un site test ouvre sur le quai le plus proche.
 C) Attendre que l’eau soit parfaite :: Sans risque.
    ecologie-1 | g0 c+1 d+1 e-2
    > Les baignades attendront.
 
-=== eco-005 | ecologie | La facture d’énergie des bâtiments municipaux explose
-Écoles, piscines, gymnases : la facture d’énergie de la ville a doublé.
+=== eco-005 | ecologie | La facture d’énergie des bâtiments de l’arrondissement explose
+École, piscine, gymnase, mairie : la facture d’énergie de l’arrondissement a doublé.
 A) Baisser le chauffage à 19 °C partout :: Économies rapides.
    rec+1x30 ecologie+2 bon-1 | g0 c+2 d+2 e+3
-   > Les bâtiments municipaux sont chauffés à 19 °C.
+   > Les bâtiments de l’arrondissement sont chauffés à 19 °C.
    ~30 pop-1 > Les parents se plaignent d’écoles trop froides.
 B) Installer des panneaux solaires sur les toits :: Investissement rentable à terme.
    bud-35 ecologie+4 | g+1 c+2 d+1 e+5
-   > Des panneaux solaires couvrent les toits des gymnases et des écoles.
+   > Des panneaux solaires couvrent les toits du gymnase et des écoles.
    +12 rec+1x40 > La production solaire allège la facture.
-C) Fermer certaines piscines l’hiver :: Économie, mécontentement.
+C) Fermer la piscine l’hiver :: Économie, mécontentement.
    rec+0.8x20 services-3 bon-2 | g-3 c+1 d+2 e+1
-   > Cinq piscines ferment pour l’hiver.
+   > La piscine du quartier ferme pour l’hiver.
 
 === eco-006 | ecologie | Le pic de pollution aux particules
-Un pic de pollution dure depuis une semaine. Les hôpitaux constatent plus de crises d’asthme.
-A) Circulation alternée et transports gratuits :: Efficace, coûteux.
+Un pic de pollution dure depuis une semaine. Le centre de santé de l’arrondissement constate plus de crises d’asthme.
+A) Circulation alternée et navettes gratuites :: Efficace, coûteux.
    bud-6 ecologie+3 bon+1 transports-1 | g+2 c+1 d-2 e+4
-   > Seules les plaques paires roulent aujourd’hui.
+   > Seules les plaques paires roulent aujourd’hui dans l’arrondissement.
 B) Abaisser la vitesse et recommander le télétravail :: Mesures douces.
    ecologie+1 | g+1 c+2 d+1 e+2
-   > La vitesse est abaissée partout.
+   > La vitesse est abaissée dans tout l’arrondissement.
 C) Ne rien faire, l’épisode va passer :: Pas de contraintes.
    bon-2 ecologie-2 | g-1 c0 d+1 e-4
    > L’épisode se prolonge.
-   ~35 pop-2 > Des médecins publient une tribune accusant la mairie d’inaction.
+   ~35 pop-2 > Des médecins du quartier publient une tribune accusant la mairie d’arrondissement d’inaction.
 
 === eco-007 | ecologie | Les jardins partagés manquent de place
-Des centaines de Parisiens attendent une parcelle dans un jardin partagé.
-A) Ouvrir des jardins sur les toits municipaux :: Original et apprécié.
+Des dizaines d’habitants de l’arrondissement attendent une parcelle dans un jardin partagé.
+A) Ouvrir des jardins sur les toits publics :: Original et apprécié.
    bud-8 ecologie+3 bon+2 | g+2 c+2 d0 e+4
-   > Des potagers s’installent sur les toits des écoles et gymnases.
+   > Des potagers s’installent sur les toits des écoles et du gymnase.
 B) Transformer des parkings en jardins :: Moins de places pour les voitures.
    bud-6 ecologie+3 transports-1 | g+1 c+1 d-2 e+5
    > D’anciennes places de stationnement deviennent des potagers.
@@ -103,25 +103,25 @@ C) Les autoriser :: Soutien aux cafés.
    economie+1 ecologie-2 | g-1 c+1 d+3 e-5
    > Les terrasses restent chauffées.
 
-=== eco-009 | ecologie | Un grand parc menacé par un projet immobilier
-Un promoteur veut construire des bureaux sur une partie d’un jardin public de l’Est parisien.
+=== eco-009 | ecologie | Le grand parc de l’arrondissement menacé par un projet immobilier
+Un promoteur veut construire des bureaux sur une partie du jardin public de l’arrondissement.
 A) Refuser et classer le jardin :: Protection définitive.
    ecologie+3 bon+2 | g+2 c0 d-2 e+5
    > Le jardin est protégé pour toujours.
 B) Accepter contre la création d’un parc ailleurs :: Échange de terrains.
    bud+30 ecologie+1 economie+2 | g-1 c+3 d+3 e-1
-   > Le jardin est réduit, mais un nouveau parc ouvre dans le 12e.
+   > Le jardin est réduit, mais un nouveau parc ouvre à l’autre bout de l’arrondissement.
    ~30 pop-2 > Des militants occupent le jardin pour empêcher les travaux.
 C) Accepter sans contrepartie :: Recettes immédiates.
    bud+60 ecologie-4 bon-2 | g-4 c-1 d+3 e-5
    > Les bulldozers arrivent.
 
 === eco-010 | ecologie | Un réseau de chaleur avec les eaux usées
-Des ingénieurs proposent de chauffer des quartiers avec la chaleur des égouts.
+Des ingénieurs proposent de chauffer des immeubles de l’arrondissement avec la chaleur des égouts.
 A) Lancer le projet :: Innovant, investissement lourd.
    bud-40 ecologie+4 achat+1 | g+1 c+2 d+1 e+5
-   > Les premiers immeubles sont chauffés grâce aux eaux usées.
-   +15 rec+0.5x40 achat+2 > Les factures de chauffage baissent dans les quartiers raccordés.
+   > Les premiers immeubles du quartier sont chauffés grâce aux eaux usées.
+   +15 rec+0.5x40 achat+2 > Les factures de chauffage baissent dans les immeubles raccordés.
 B) Étude de faisabilité d’abord :: Prudent, mais rien ne bouge pendant deux ans.
    bud-2 ecologie+1 | g0 c+3 d+2 e+2
    > Une étude de deux ans est lancée.
@@ -141,20 +141,20 @@ C) Garder 50 km/h :: La fluidité avant tout.
    transports+1 | g-1 c0 d+3 e-3
    > Rien ne change.
 
-=== eco-012 | ecologie | La ville doit-elle sortir de la publicité lumineuse ?
-Les écrans publicitaires consomment beaucoup d’électricité. Les supprimer coûterait des recettes.
+=== eco-012 | ecologie | Faut-il éteindre la publicité lumineuse ?
+Les écrans publicitaires de l’arrondissement consomment beaucoup d’électricité. Les supprimer coûterait des recettes.
 A) Supprimer tous les écrans publicitaires :: Écologique, perte de recettes.
    rec-0.6x50 ecologie+3 bon+1 | g+2 c0 d-3 e+5
-   > Les écrans disparaissent des rues.
+   > Les écrans disparaissent des rues de l’arrondissement.
 B) Les éteindre la nuit :: Compromis.
    rec-0.1x50 ecologie+1 | g+1 c+3 d+1 e+2
    > Les écrans s’éteignent de 23 h à 7 h.
 C) En installer davantage :: Recettes nouvelles.
    rec+0.8x50 ecologie-3 bon-1 | g-3 c0 d+3 e-5
-   > De nouveaux écrans apparaissent aux carrefours.
+   > De nouveaux écrans apparaissent aux carrefours du quartier.
 
 === eco-013 | ecologie | Les arbres centenaires d’une avenue malades
-Des platanes centenaires sont atteints d’un champignon. Il faudrait abattre la moitié de l’alignement.
+Des platanes centenaires d’une avenue de l’arrondissement sont atteints d’un champignon. Il faudrait abattre la moitié de l’alignement.
 A) Abattre et replanter des essences variées :: Triste, mais nécessaire.
    bud-6 ecologie+1 bon-2 | g0 c+2 d+1 e+1
    > Les arbres malades sont remplacés par des essences plus résistantes.
@@ -180,8 +180,8 @@ C) Refuser :: Pas de bureaucratie supplémentaire.
    coh+0.5 | g-1 c0 d+3 e-4
    > Tu refuses une « usine à gaz ».
 
-=== eco-015 | ecologie | Une cantine végétarienne obligatoire un jour par semaine
-Les cantines scolaires pourraient proposer un menu végétarien un jour de plus par semaine.
+=== eco-015 | ecologie | Plus de menus végétariens à la cantine
+Les cantines scolaires de l’arrondissement pourraient proposer un menu végétarien un jour de plus par semaine.
 A) Deux jours végétariens par semaine :: Écologique, débat avec des parents.
    ecologie+2 achat+1 pop-1 | g+1 c+1 d-2 e+5
    > Deux repas par semaine deviennent végétariens.
@@ -193,26 +193,26 @@ C) Garder un seul jour :: Statu quo.
    pop+0.5 | g0 c+1 d+2 e-2
    > Rien ne change.
 
-=== eco-016 | ecologie | Une ferme urbaine géante
-Une entreprise propose une ferme urbaine sur le toit du parc des expositions.
+=== eco-016 | ecologie | Une ferme urbaine géante sur un toit
+Une entreprise propose une ferme urbaine sur le toit du plus grand bâtiment de l’arrondissement.
 A) Soutenir le projet :: Vitrine écologique.
    bud-8 ecologie+3 economie+1 | g+1 c+2 d+1 e+4
-   > La plus grande ferme urbaine d’Europe ouvre.
-B) Réserver les toits à des jardins partagés :: Plus citoyen.
+   > La plus grande ferme urbaine de Paris ouvre dans l’arrondissement.
+B) Réserver le toit à des jardins partagés :: Plus citoyen.
    bud-4 ecologie+2 bon+1 | g+3 c+1 d0 e+4
    > Les habitants cultivent eux-mêmes.
-C) Refuser :: Ce n’est pas le rôle de la ville.
+C) Refuser :: Ce n’est pas le rôle de la mairie d’arrondissement.
    coh+0.5 | g0 c0 d+2 e-3
    > Le toit reste vide.
 
 === eco-017 | ecologie | Les sécheresses menacent les arbres
-L’été est sec : les jeunes arbres plantés ces dernières années meurent faute d’eau.
+L’été est sec : les jeunes arbres plantés ces dernières années dans l’arrondissement meurent faute d’eau.
 A) Arrosage d’urgence avec des camions-citernes :: Coûteux, sauve les arbres.
    bud-8 ecologie+2 | g+1 c+2 d+1 e+3
    > Les arbres sont arrosés chaque semaine.
 B) Appel aux habitants à adopter un arbre :: Participatif, gratuit.
    bud-1 ecologie+1 bon+1 | g+2 c+2 d+1 e+3
-   > Des milliers d’habitants arrosent l’arbre de leur rue.
+   > Des centaines d’habitants arrosent l’arbre de leur rue.
 C) Laisser faire la nature :: Pas de dépense.
    ecologie-3 | g-1 c0 d+1 e-4
    > Un tiers des jeunes arbres meurt.
@@ -229,15 +229,15 @@ C) Protéger les toits en zinc, patrimoine parisien :: Patrimoine.
    bon+1 | g0 c+1 d+2 e-2
    > Les toits de zinc sont candidats au patrimoine mondial.
 
-=== eco-019 | ecologie | Une marée de plastique après les fêtes
-Les sapins de Noël abandonnés et les emballages s’accumulent en janvier.
+=== eco-019 | ecologie | Les lendemains de fêtes encombrent les trottoirs
+Les sapins de Noël abandonnés et les emballages s’accumulent en janvier sur les trottoirs de l’arrondissement.
 ? apres=20
 A) Collecte et broyage des sapins :: Efficace et peu coûteux.
    bud-2 proprete+2 ecologie+2 | g+1 c+2 d+1 e+3
-   > Les sapins sont transformés en paillage pour les jardins.
+   > Les sapins sont transformés en paillage pour les jardins du quartier.
 B) Location de sapins en pot :: Original, écologique.
    bud-3 ecologie+3 | g+1 c+1 d0 e+4
-   > Les Parisiens louent des sapins en pot qui sont replantés.
+   > Les habitants louent des sapins en pot qui sont replantés.
 C) Ramassage habituel :: Pas d’effort particulier.
    proprete-1 | g0 c0 d+1 e-1
    > Les sapins restent plusieurs semaines sur les trottoirs.
@@ -255,7 +255,7 @@ C) Ne pas s’en mêler :: Pas ta compétence.
    > Tu restes silencieux.
 
 === eco-021 | ecologie | L’éclairage public la nuit
-Éteindre une partie de l’éclairage public après 1 h du matin ferait des économies.
+Éteindre une partie de l’éclairage public de l’arrondissement après 1 h du matin ferait des économies.
 A) Éteindre les rues résidentielles la nuit :: Économies et ciel étoilé.
    rec+0.5x50 ecologie+2 securite-2 | g0 c+1 d-2 e+4
    > Les rues résidentielles s’éteignent après 1 h.
@@ -268,14 +268,14 @@ C) Garder l’éclairage :: La sécurité avant les économies.
    securite+1 | g0 c0 d+2 e-2
    > Rien ne change.
 
-=== eco-022 | ecologie | Les îlots de chaleur dans les quartiers denses
-Les cartes thermiques montrent des écarts de 8 °C entre les quartiers.
-A) Plan de rafraîchissement des quartiers chauds :: Ciblé et juste.
+=== eco-022 | ecologie | Les îlots de chaleur dans les rues denses
+Les cartes thermiques montrent des écarts de 8 °C entre les rues de l’arrondissement.
+A) Plan de rafraîchissement des rues chaudes :: Ciblé et juste.
    bud-25 ecologie+4 bon+2 | g+3 c+2 d0 e+4
-   > Fontaines, arbres et toiles d’ombrage arrivent dans les quartiers chauds.
+   > Fontaines, arbres et toiles d’ombrage arrivent dans les rues les plus chaudes.
 B) Peindre les toits en blanc :: Peu cher, efficace.
    bud-6 ecologie+2 | g+1 c+2 d+1 e+3
-   > Les toits des bâtiments publics sont peints en blanc.
+   > Les toits des bâtiments publics de l’arrondissement sont peints en blanc.
 C) Distribuer des ventilateurs aux ménages modestes :: Rapide, énergivore.
    bud-4 achat+1 bon+1 ecologie-1 | g+2 c+1 d0 e-2
    > Les ménages modestes reçoivent des ventilateurs.
@@ -293,22 +293,22 @@ C) Refuser :: Les jardins sont aux Parisiens.
    > Le défilé ira ailleurs.
 
 === eco-024 | ecologie | Les fontaines à boire
-Avec les canicules, les Parisiens réclament plus de fontaines d’eau potable.
-A) Installer 500 fontaines :: Utile et visible.
+Avec les canicules, les habitants de l’arrondissement réclament plus de fontaines d’eau potable.
+A) Installer 60 fontaines :: Utile et visible.
    bud-10 bon+2 ecologie+1 | g+2 c+2 d+1 e+2
    > Des fontaines apparaissent à chaque coin de rue.
 B) Distribuer des gourdes aux écoliers :: Symbolique.
    bud-2 ecologie+1 | g+1 c+1 d0 e+2
-   > Chaque écolier reçoit une gourde.
+   > Chaque écolier de l’arrondissement reçoit une gourde.
 C) Ne rien faire :: Pas de dépense.
    bon-1 | g0 c0 d+1 e-1
    > Rien ne change.
 
-=== eco-025 | ecologie | Interdire les SUV dans Paris ?
-Un collectif propose d’interdire les SUV les plus lourds dans Paris.
+=== eco-025 | ecologie | Interdire les SUV dans l’arrondissement ?
+Un collectif propose d’interdire les SUV les plus lourds dans les rues de l’arrondissement.
 A) Organiser un vote citoyen :: Démocratique, résultat incertain.
    bud-3 pop+1 | g+1 c+2 d0 e+3
-   > Les Parisiens sont appelés à voter.
+   > Les habitants sont appelés à voter.
    ~55 ecologie+3 rec+0.5x40 > Le oui l’emporte : le stationnement des SUV devient très cher.
 B) Interdire directement :: Radical, juridiquement risqué.
    ecologie+3 pop-2 | g+1 c-2 d-4 e+5

@@ -1,246 +1,246 @@
-// Finances : budget, impôts, dette, économies
-=== fin-001 | finances | Le budget de l’année arrive au Conseil de Paris
+// Finances : budget, impôts, dette, économies (réécrit pour un maire d'arrondissement)
+=== fin-001 | finances | Le budget de l’année arrive au conseil d’arrondissement
 Les services présentent un budget en léger déséquilibre. Il faut trancher avant le vote : augmenter les recettes, couper dans les dépenses ou laisser filer le déficit.
 A) Augmenter la taxe foncière de 4 % :: Recettes durables, mais les propriétaires vont protester.
    pop-4 bon-1 rec+3x40 achat-2 | g+2 c+1 d-4 e+1
-   > La hausse passe de justesse. Les recettes rentrent chaque semaine, mais les associations de propriétaires montent au créneau.
-   ~25 pop-2 > Une pétition contre « l’impôt Paris » dépasse les 50 000 signatures.
-B) Geler les embauches dans l’administration :: Économies discrètes, services un peu ralentis.
+   > La hausse passe de justesse. Les recettes rentrent chaque semaine, mais les associations de propriétaires du quartier montent au créneau.
+   ~25 pop-2 > Une pétition contre « l’impôt du maire » fait le tour des boulangeries de l’arrondissement.
+B) Geler les embauches à la mairie d’arrondissement :: Économies discrètes, services un peu ralentis.
    rec+2x30 services-4 | g-3 c+2 d+3 e0
    > Les postes vacants ne sont plus remplacés. Les économies s’accumulent, mais les délais s’allongent aux guichets.
-   +6 bon-2 > Les files d’attente s’allongent dans les mairies d’arrondissement.
+   +6 bon-2 > La file d’attente du service état civil déborde jusque sur le trottoir.
 C) Voter le budget tel quel :: Aucune vague aujourd’hui, mais le trou reste à combler.
    bud-40 pop+1 | g0 c-1 d-2 e0
    > Le budget est adopté sans débat houleux. Le déficit est financé sur la trésorerie.
 
-=== fin-002 | finances | Une agence de notation menace de dégrader Paris
-L’agence estime que la dette de la ville progresse trop vite. Une dégradation renchérirait les emprunts futurs et ferait les gros titres.
+=== fin-002 | finances | Une agence de notation se penche sur l’arrondissement
+L’agence estime que la dette de l’arrondissement progresse trop vite. Une mauvaise note renchérirait les prochains emprunts et ferait jaser à l’Hôtel de Ville.
 ? apres=8
-A) Présenter un plan d’économies crédible :: Rassure les marchés, mais demande des efforts.
+A) Présenter un plan d’économies crédible :: Rassure les prêteurs, mais demande des efforts.
    rec+3x25 services-3 pop-2 | g-2 c+3 d+3 e0
-   > Le plan convainc l’agence, qui maintient la note. Les syndicats dénoncent l’austérité.
+   > Le plan convainc l’agence, qui maintient la note. Les syndicats du personnel dénoncent l’austérité.
 B) Contester publiquement la méthode de l’agence :: Coup politique, risque financier.
    pop+3 | g+2 c-1 d-2 e+1
    > Ton discours plaît à tes soutiens, mais l’agence n’apprécie pas.
    ~45 rec-1.5x40 > La note est dégradée : les intérêts des prochains emprunts augmentent.
-C) Vendre des participations dans des sociétés municipales :: Rentrée d’argent immédiate, perte de contrôle.
+C) Vendre des participations dans des sociétés locales :: Rentrée d’argent immédiate, perte de contrôle.
    bud+120 coh-1 services-2 | g-4 c+1 d+3 e-1
-   > La vente rapporte gros et rassure l’agence. L’opposition parle de « bijoux de famille bradés ».
+   > La vente rapporte gros et rassure l’agence. Ton opposant parle de « bijoux de famille bradés ».
 
-=== fin-003 | finances | La Cour des comptes épingle les dépenses de la ville
-Un rapport pointe des dépenses mal contrôlées : voitures de fonction, frais de réception, subventions peu suivies.
+=== fin-003 | finances | Un audit épingle les dépenses de la mairie d’arrondissement
+Un rapport pointe des dépenses mal contrôlées : voiture de fonction, frais de réception, subventions peu suivies.
 A) Lancer un grand audit interne :: Coûte un peu, peut révéler des économies.
    bud-6 pop+2 | g+1 c+3 d+2 e+1
-   > Un cabinet indépendant passe tous les services au crible.
+   > Un cabinet indépendant passe tous les services de la mairie d’arrondissement au crible.
    +8 rec+2x30 > L’audit identifie des doublons : les économies commencent à tomber.
 B) Supprimer tous les frais de représentation :: Geste fort et visible.
    rec+0.5x50 pop+3 | g+1 c+1 d+2 e+1
-   > Les dîners officiels disparaissent. Le geste est salué, même si l’économie reste modeste.
+   > Les cocktails officiels disparaissent. Le geste est salué, même si l’économie reste modeste.
 C) Défendre la gestion de ton équipe :: Tu évites de désavouer tes services.
    pop-4 coh+1 | g0 c0 d-1 e0
-   > Ta défense paraît fragile. Les journaux reprennent les exemples les plus choquants du rapport.
-   ~30 pop-2 > Un élu d’opposition publie la liste des frais de réception du cabinet.
+   > Ta défense paraît fragile. Le journal du quartier reprend les exemples les plus choquants du rapport.
+   ~30 pop-2 > Un élu d’opposition publie la liste des frais de réception de ton cabinet.
 
-=== fin-004 | finances | L’État baisse sa dotation à la ville
-Le gouvernement annonce une baisse de la dotation versée aux grandes villes. Pour Paris, le manque à gagner est important.
+=== fin-004 | finances | L’Hôtel de Ville baisse la dotation de l’arrondissement
+L’Hôtel de Ville annonce une baisse de l’enveloppe versée aux arrondissements. Pour le tien, le manque à gagner est important.
 A) Compenser par des économies sur les services :: Budget préservé, habitants touchés.
    rec+1.5x40 services-5 bon-2 | g-3 c+1 d+2 e-1
-   > Les horaires de certains équipements sont réduits pour absorber la baisse.
-B) Mener la bataille contre le gouvernement :: Mobilise, sans garantie de résultat.
+   > Les horaires de la piscine et de la bibliothèque du quartier sont réduits pour absorber la baisse.
+B) Mener la bataille contre l’Hôtel de Ville :: Mobilise, sans garantie de résultat.
    pop+3 rec-2x30 | g+2 c0 d-1 e+1
-   > Ta campagne « Rendez l’argent aux Parisiens » fait du bruit. En attendant, la baisse s’applique.
-   ~35 bud+60 > Le gouvernement recule partiellement après la mobilisation des maires.
+   > Ta campagne « Rendez l’argent au quartier » fait du bruit. En attendant, la baisse s’applique.
+   ~35 bud+60 > L’Hôtel de Ville recule partiellement après la fronde des maires d’arrondissement.
 C) Emprunter pour maintenir le niveau de service :: Rien ne change pour les habitants… pour l’instant.
    bud-90 bon+1 | g+1 c-1 d-3 e0
    > Les services ne bougent pas. Le coût est reporté sur les années suivantes.
-   +10 pop-1 > L’opposition chiffre « l’ardoise » laissée aux futurs Parisiens.
+   +10 pop-1 > Ton opposant chiffre « l’ardoise » laissée aux futurs habitants de l’arrondissement.
 
-=== fin-005 | finances | Les droits de mutation s’effondrent
-Le marché immobilier ralentit : les taxes perçues sur les ventes de logements chutent nettement par rapport aux prévisions.
+=== fin-005 | finances | Les droits de mutation s’effondrent dans le quartier
+Le marché immobilier ralentit : les taxes perçues sur les ventes de logements de l’arrondissement chutent nettement par rapport aux prévisions.
 ? apres=5
 A) Revoir à la baisse les investissements prévus :: On retarde des chantiers pour tenir le budget.
    rec+2.5x25 transports-3 services-2 | g-1 c+2 d+2 e-1
-   > Plusieurs rénovations d’écoles et de voiries sont décalées d’un an.
+   > La rénovation de l’école de la rue voisine et de plusieurs trottoirs est décalée d’un an.
 B) Puiser dans la trésorerie et attendre la reprise :: Pari sur un retournement du marché.
    rec-2x20 | g0 c0 d-1 e0
    > Tu tiens bon, en espérant que le marché reparte.
    ~40 bud+70 > Le marché repart plus vite que prévu : les recettes rebondissent.
 C) Créer une surtaxe sur les ventes de luxe :: Recettes ciblées, débat garanti.
    rec+1.5x40 pop-1 economie-2 | g+3 c0 d-4 e+1
-   > La surtaxe frappe les ventes de plus de 3 millions d’euros. Les agences immobilières protestent.
+   > La surtaxe frappe les ventes de plus de 3 millions d’euros. Les agences immobilières du quartier protestent.
 
-=== fin-006 | finances | Proposition d’un emprunt vert
-Une banque propose à la ville un emprunt à taux avantageux, réservé à des projets de transition écologique.
+=== fin-006 | finances | Une banque propose un emprunt vert à l’arrondissement
+La banque offre un taux avantageux, réservé à des projets de transition écologique dans l’arrondissement.
 A) Accepter pour rénover les écoles :: Investissement utile, dette en hausse.
    bud+150 rec-1.5x60 ecologie+5 services+3 | g+2 c+2 d0 e+4
-   > Les fonds arrivent. Un grand plan de rénovation énergétique des écoles démarre.
+   > Les fonds arrivent. Un grand plan de rénovation énergétique des écoles du quartier démarre.
    +12 rec+1x40 > Les factures d’énergie des écoles rénovées baissent nettement.
 B) Accepter pour planter des arbres partout :: Très visible, peu d’économies.
    bud+80 rec-1x60 ecologie+6 bon+2 | g+1 c+1 d-1 e+4
-   > Des milliers d’arbres sont plantés dans les rues et les cours d’école.
+   > Des centaines d’arbres sont plantés dans les rues et les cours d’école de l’arrondissement.
 C) Refuser : pas de nouvelle dette :: Prudence budgétaire.
    pop-1 coh+1 | g-1 c+1 d+3 e-3
-   > Tu refuses l’offre. Les écologistes dénoncent une occasion manquée.
+   > Tu refuses l’offre. Les écologistes du conseil d’arrondissement dénoncent une occasion manquée.
 
-=== fin-007 | finances | La masse salariale dépasse les prévisions
-Primes, heures supplémentaires, remplacements : les dépenses de personnel dérapent de plusieurs dizaines de millions.
+=== fin-007 | finances | La masse salariale de la mairie d’arrondissement dérape
+Primes, heures supplémentaires, remplacements : les dépenses de personnel dépassent nettement les prévisions.
 A) Négocier un accord sur le temps de travail :: Long, mais durable.
    bud-8 rec+2x40 services-1 | g-1 c+3 d+2 e0
-   > Après des semaines de discussions, un accord est signé avec les syndicats.
-   ~25 pop-3 bon-2 > Une grève des agents de la ville paralyse les crèches deux jours.
+   > Après des semaines de discussions, un accord est signé avec les représentants du personnel.
+   ~25 pop-3 bon-2 > Une grève des agents de l’arrondissement ferme les crèches du quartier deux jours.
 B) Supprimer les heures supplémentaires non urgentes :: Économie rapide, services ralentis.
    rec+2.5x20 proprete-3 services-2 | g-2 c+1 d+3 e0
-   > Les heures supplémentaires sont gelées. Les week-ends, le nettoyage se fait attendre.
+   > Les heures supplémentaires sont gelées. Le week-end, le nettoyage des rues se fait attendre.
 C) Accepter le dépassement :: Paix sociale, budget alourdi.
    bud-50 bon+1 | g+2 c-1 d-3 e0
    > Le dépassement est absorbé. Les agents apprécient, la trésorerie beaucoup moins.
 
-=== fin-008 | finances | Un mécène propose de financer un grand projet
-Un grand groupe propose de payer la rénovation d’un monument, en échange d’une bâche publicitaire géante pendant les travaux.
-A) Accepter l’offre :: Gratuit pour la ville, visuel discutable.
+=== fin-008 | finances | Un mécène veut rénover un monument du quartier
+Un grand groupe propose de payer la rénovation d’un monument de l’arrondissement, en échange d’une bâche publicitaire géante pendant les travaux.
+A) Accepter l’offre :: Gratuit pour l’arrondissement, visuel discutable.
    bud+45 bon-1 economie+2 | g-2 c+2 d+3 e-1
    > La rénovation est financée. Une bâche de 600 m² couvre la façade pendant deux ans.
-   ~30 pop-2 > Une tribune d’architectes dénonce la « pubification » du patrimoine.
+   ~30 pop-2 > Une tribune d’architectes dénonce la « pubification » du patrimoine du quartier.
 B) Accepter, mais sans publicité géante :: Le mécène risque de se retirer.
    pop+1 | g0 c+2 d+1 e+1
    > Tu négocies une mention discrète.
    ~50 bud+30 > Le mécène accepte une plaque discrète et finance une partie des travaux.
 C) Refuser et financer sur fonds publics :: Patrimoine préservé, budget alourdi.
    bud-45 pop+1 | g+2 c-1 d-2 e+1
-   > La ville paie seule. Le monument est rénové sans publicité.
+   > L’arrondissement paie seul. Le monument est rénové sans publicité.
 
-=== fin-009 | finances | Les impayés de loyers explosent chez les bailleurs sociaux
-Avec l’inflation, de nombreux locataires du parc social n’arrivent plus à payer. Les bailleurs, dont la ville est actionnaire, demandent de l’aide.
+=== fin-009 | finances | Les impayés de loyers explosent dans les HLM du quartier
+Avec l’inflation, de nombreux locataires du parc social de l’arrondissement n’arrivent plus à payer. Les bailleurs demandent de l’aide.
 A) Créer un fonds d’urgence pour les ménages :: Solidarité, coût élevé.
    bud-35 achat+5 logement+2 bon+3 | g+4 c+1 d-2 e+1
-   > Le fonds permet d’éviter des milliers d’expulsions.
-B) Laisser les bailleurs gérer :: Pas de coût pour la ville.
+   > Le fonds permet d’éviter des centaines d’expulsions dans l’arrondissement.
+B) Laisser les bailleurs gérer :: Pas de coût pour la mairie d’arrondissement.
    bon-3 achat-3 | g-4 c0 d+2 e-1
    > Les bailleurs multiplient les relances et les procédures.
-   +5 pop-2 > Les premières expulsions médiatisées choquent l’opinion.
+   +5 pop-2 > Les premières expulsions dans le quartier choquent les voisins.
 C) Étaler les dettes sans aide directe :: Compromis, effet limité.
    bud-8 achat+2 | g+1 c+3 d+1 e0
    > Les locataires obtiennent des échéanciers. Ça soulage, sans régler le fond.
 
-=== fin-010 | finances | Une taxe sur les résidences secondaires
-Plus de 100 000 logements parisiens sont des résidences secondaires, souvent vides la majeure partie de l’année.
+=== fin-010 | finances | Une taxe sur les résidences secondaires du quartier
+Des milliers de logements de l’arrondissement sont des résidences secondaires, souvent vides la majeure partie de l’année.
 A) Porter la surtaxe au maximum légal :: Recettes et logements remis sur le marché.
    rec+2.5x50 logement+3 pop-1 | g+3 c+1 d-3 e+2
    > La surtaxe fait bondir la facture des propriétaires concernés.
-   +15 logement+3 > Certains propriétaires vendent ou louent : des logements se libèrent.
+   +15 logement+3 > Certains propriétaires vendent ou louent : des logements se libèrent dans le quartier.
 B) Augmentation modérée :: Recettes modestes, peu de remous.
    rec+1x50 logement+1 | g+1 c+3 d0 e+1
    > La hausse passe presque inaperçue.
 C) Ne pas toucher à cette taxe :: Rassure les propriétaires.
    pop+1 logement-1 | g-3 c0 d+2 e-1
-   > Rien ne change. Les associations de mal-logés s’indignent.
+   > Rien ne change. Les associations de mal-logés de l’arrondissement s’indignent.
 
-=== fin-011 | finances | Le contrat d’assurance de la ville expire
+=== fin-011 | finances | Le contrat d’assurance de l’arrondissement expire
 Les assureurs proposent un renouvellement avec une prime en forte hausse, à cause des risques climatiques.
 A) Accepter la nouvelle prime :: Sécurité, mais coût durable.
    rec-1.5x50 | g0 c+1 d0 e0
-   > La ville reste couverte, mais la facture annuelle grimpe.
+   > Les bâtiments de l’arrondissement restent couverts, mais la facture annuelle grimpe.
 B) S’auto-assurer en créant une réserve :: Économie probable, risque en cas de gros sinistre.
    bud-30 rec+1x50 | g0 c+1 d+1 e0
-   > La ville provisionne elle-même ses risques.
-   ~20 bud-120 > Un violent orage inonde plusieurs bâtiments municipaux : la réserve ne suffit pas.
+   > La mairie d’arrondissement provisionne elle-même ses risques.
+   ~20 bud-120 > Un violent orage inonde l’école et le gymnase du quartier : la réserve ne suffit pas.
 C) Négocier une couverture réduite :: Prime contenue, protection partielle.
    rec-0.6x50 | g0 c+2 d+1 e0
    > Les plus gros bâtiments restent couverts, les petits équipements beaucoup moins.
    ~15 bud-40 > Un incendie touche un gymnase mal couvert.
 
-=== fin-012 | finances | Les recettes de stationnement chutent
-Moins de voitures dans Paris : c’est une bonne nouvelle pour l’air, mais les recettes de stationnement baissent fortement.
+=== fin-012 | finances | Les recettes de stationnement chutent dans l’arrondissement
+Moins de voitures dans le quartier : c’est une bonne nouvelle pour l’air, mais les recettes de stationnement baissent fortement.
 A) Augmenter les tarifs pour les grosses voitures :: Recettes et cohérence écologique.
    rec+1.5x50 ecologie+2 pop-2 | g+1 c0 d-3 e+4
-   > Le stationnement des SUV coûte désormais trois fois plus cher.
-   ~30 pop-2 > Les automobilistes de banlieue organisent un rassemblement devant l’Hôtel de Ville.
+   > Le stationnement des SUV coûte désormais trois fois plus cher dans l’arrondissement.
+   ~30 pop-2 > Des automobilistes en colère se rassemblent devant la mairie d’arrondissement.
 B) Accepter la baisse :: Pas de nouvelle taxe.
    rec-1x40 | g0 c0 d+1 e+1
-   > Tu assumes la baisse comme le prix d’une ville moins polluée.
+   > Tu assumes la baisse comme le prix d’un quartier moins pollué.
 C) Rouvrir des places en surface :: Recettes en hausse, retour en arrière.
    rec+1x40 ecologie-3 transports+1 | g-1 c+1 d+3 e-5
    > Des places réapparaissent sur d’anciennes pistes cyclables.
-   +4 bon-2 > Les cyclistes dénoncent un recul et multiplient les rassemblements.
+   +4 bon-2 > Les cyclistes du quartier dénoncent un recul et multiplient les rassemblements.
 
-=== fin-013 | finances | Le Conseil de Paris réclame un budget participatif plus gros
-Le budget participatif permet aux habitants de voter pour des projets. L’opposition et des associations veulent le doubler.
+=== fin-013 | finances | Le conseil d’arrondissement réclame un budget participatif plus gros
+Le budget participatif permet aux habitants de voter pour des projets de quartier. Ton opposant et des associations veulent le doubler.
 A) Doubler le budget participatif :: Démocratie locale, coût important.
    bud-30 bon+3 pop+2 | g+3 c+1 d-2 e+3
-   > Des centaines de projets citoyens sont financés : jardins, bancs, aires de jeux.
+   > Des dizaines de projets citoyens sont financés : jardins, bancs, aires de jeux.
 B) Le maintenir à son niveau :: Statu quo.
    pop-1 | g-1 c+1 d+1 e-1
-   > Rien ne change. Les associations sont déçues.
+   > Rien ne change. Les associations du quartier sont déçues.
 C) Le transformer en budget « sécurité et propreté » :: Recentrage sur le quotidien.
    bud-15 securite+3 proprete+3 | g-2 c+1 d+3 e-2
    > Les habitants votent désormais surtout pour des caméras et des poubelles.
 
-=== fin-014 | finances | Une start-up propose de gérer les loyers municipaux
-Une entreprise propose de gérer les milliers de locaux commerciaux appartenant à la ville, en promettant d’en tirer plus de loyers.
+=== fin-014 | finances | Une start-up veut gérer les locaux commerciaux de l’arrondissement
+Une entreprise propose de gérer les locaux commerciaux appartenant à la mairie d’arrondissement, en promettant d’en tirer plus de loyers.
 A) Lui confier la gestion :: Plus de recettes, contrôle réduit.
    rec+2x40 economie+2 | g-3 c+1 d+3 e0
-   > Les loyers sont revus à la hausse, certains commerçants de quartier s’inquiètent.
+   > Les loyers sont revus à la hausse, certains commerçants du quartier s’inquiètent.
    +10 bon-2 achat-2 > Plusieurs commerces de proximité ferment, faute de pouvoir payer.
 B) Garder la gestion publique et réviser les loyers :: Compromis.
    rec+1x40 | g+1 c+3 d+1 e0
    > Les loyers sont réajustés, avec des tarifs réduits pour les commerces utiles au quartier.
 C) Baisser les loyers des commerces de proximité :: Soutien au commerce, recettes en baisse.
    rec-1x40 economie+3 bon+2 | g+3 c+1 d-1 e+2
-   > Boulangeries, librairies et cordonneries s’installent dans les locaux de la ville.
+   > Boulangeries, librairies et cordonneries s’installent dans les locaux de l’arrondissement.
 
 === fin-015 | finances | Les intérêts de la dette pèsent lourd
 ? detteMin=300
-La charge de la dette commence à prendre une part importante du budget. Les services financiers proposent plusieurs options.
+La charge de la dette commence à prendre une part importante du budget de l’arrondissement. Les services financiers proposent plusieurs options.
 A) Renégocier les emprunts :: Coût initial, économies ensuite.
    bud-10 rec+1x50 | g0 c+3 d+2 e0
    > Les banques acceptent de revoir certains taux.
-B) Vendre des immeubles de bureaux municipaux :: Rentrée d’argent massive.
+B) Vendre des bureaux de la mairie d’arrondissement :: Rentrée d’argent massive.
    bud+200 services-2 coh-1 | g-3 c+1 d+3 e-1
-   > Plusieurs immeubles administratifs sont vendus. Les services déménagent en périphérie.
-C) Lancer un grand emprunt populaire auprès des Parisiens :: Symbolique, rassemble.
+   > Plusieurs étages de bureaux sont vendus. Les services se serrent dans l’annexe.
+C) Lancer un emprunt populaire auprès des habitants :: Symbolique, rassemble.
    bud+80 rec-0.4x60 pop+2 | g+2 c+1 d0 e+2
-   > Des milliers de Parisiens prêtent à leur ville, avec un petit taux d’intérêt.
+   > Des centaines d’habitants prêtent à leur arrondissement, avec un petit taux d’intérêt.
 
 === fin-016 | finances | La taxe de séjour rapporte moins que prévu
-Les plateformes de location ne reversent pas toute la taxe de séjour. Des millions d’euros manqueraient.
+Les plateformes de location ne reversent pas toute la taxe de séjour due pour les logements de l’arrondissement.
 A) Attaquer les plateformes en justice :: Long, mais potentiellement rentable.
    bud-5 pop+2 | g+2 c+1 d0 e+1
-   > La ville lance une procédure contre plusieurs plateformes.
-   +12 bud+60 > Le tribunal donne raison à la ville : les arriérés sont versés.
+   > La mairie d’arrondissement lance une procédure contre plusieurs plateformes.
+   +12 bud+60 > Le tribunal donne raison à l’arrondissement : les arriérés sont versés.
 B) Négocier un accord à l’amiable :: Plus rapide, moins ambitieux.
    bud+25 | g0 c+3 d+2 e0
    > Un accord est trouvé : les plateformes versent une partie des sommes dues.
 C) Augmenter la taxe de séjour des hôtels de luxe :: Recettes sûres, hôteliers mécontents.
    rec+1x50 economie-1 | g+2 c0 d-2 e+1
-   > Les palaces paient davantage. La profession hôtelière proteste.
+   > Les hôtels chics du quartier paient davantage. Ils protestent.
 
-=== fin-017 | finances | Proposition de rendre les musées municipaux payants
-Les musées de la Ville de Paris sont gratuits pour leurs collections permanentes. Un adjoint propose une entrée à 5 €.
+=== fin-017 | finances | Rendre payant le musée de l’arrondissement ?
+Le petit musée municipal du quartier est gratuit. Un adjoint propose une entrée à 5 €.
 A) Rendre l’entrée payante pour tous :: Recettes nouvelles, fréquentation en baisse.
    rec+0.8x50 bon-2 pop-2 | g-3 c+1 d+2 e-1
    > Les recettes arrivent, mais la fréquentation chute de 40 %.
 B) Payant pour les touristes seulement :: Compromis délicat à appliquer.
    rec+0.5x50 economie+1 | g0 c+3 d+1 e0
-   > Les Parisiens restent gratuits sur présentation d’un justificatif.
+   > Les habitants de l’arrondissement restent gratuits sur présentation d’un justificatif.
    ~25 pop-1 > Les contrôles à l’entrée créent des files interminables.
 C) Garder la gratuité :: Accès à la culture préservé.
    bon+1 | g+3 c0 d-1 e+1
-   > Les musées restent gratuits. Les associations culturelles applaudissent.
+   > Le musée reste gratuit. Les associations culturelles du quartier applaudissent.
 
-=== fin-018 | finances | Un fonds d’investissement veut racheter des parkings
-Un fonds propose de racheter les parkings souterrains de la ville pour un prix élevé.
+=== fin-018 | finances | Un fonds d’investissement veut racheter les parkings du quartier
+Un fonds propose de racheter les parkings souterrains de l’arrondissement pour un prix élevé.
 A) Vendre les parkings :: Gros chèque immédiat, recettes futures perdues.
    bud+250 rec-1.5x60 | g-3 c0 d+3 e-1
    > La vente est signée. La trésorerie respire, les recettes de stationnement partent au privé.
 B) Garder les parkings et les transformer en fermes urbaines :: Projet original, rentabilité incertaine.
    bud-20 ecologie+4 bon+1 | g+1 c0 d-1 e+4
-   > Des champignonnières et des potagers s’installent sous terre.
+   > Des champignonnières et des potagers s’installent sous le quartier.
 C) Garder les parkings tels quels :: Statu quo.
    pop+0.5 | g+1 c+1 d0 e0
-   > Les parkings restent municipaux.
+   > Les parkings restent publics.
 
-=== fin-019 | finances | Les agents de la ville réclament une prime de vie chère
-Avec les loyers parisiens, beaucoup d’agents municipaux vivent loin et peinent à boucler les fins de mois.
+=== fin-019 | finances | Les agents de l’arrondissement réclament une prime de vie chère
+Avec les loyers du quartier, beaucoup d’agents de la mairie d’arrondissement vivent loin et peinent à boucler les fins de mois.
 A) Accorder une prime mensuelle :: Coût durable, agents plus motivés.
    rec-2x60 services+3 bon+1 | g+4 c0 d-3 e+1
    > La prime est versée chaque mois. Les recrutements deviennent plus faciles.
@@ -250,26 +250,26 @@ B) Réserver des logements sociaux aux agents :: Pas de coût direct, file d’a
 C) Refuser :: Pas de dépense.
    services-3 | g-3 c0 d+2 e0
    > La prime est refusée.
-   +6 bon-2 services-2 > Des agents démissionnent : plusieurs crèches réduisent leurs horaires.
+   +6 bon-2 services-2 > Des agents démissionnent : la crèche du quartier réduit ses horaires.
 
 === fin-020 | finances | Une erreur informatique bloque les factures
-Un nouveau logiciel de paiement a bloqué des milliers de factures. Des entreprises attendent leur argent depuis des mois.
+Un nouveau logiciel de paiement de la mairie d’arrondissement a bloqué des centaines de factures. Des entreprises attendent leur argent depuis des mois.
 A) Payer en urgence avec des intérêts de retard :: Coûteux, mais propre.
    bud-25 economie+2 | g0 c+2 d+1 e0
    > Toutes les factures sont réglées en deux semaines.
 B) Revenir à l’ancien logiciel :: Rapide, mais l’investissement est perdu.
    bud-10 pop-1 | g0 c+1 d0 e0
-   > L’ancien système est réactivé. L’opposition se moque du « fiasco informatique ».
+   > L’ancien système est réactivé. Ton opposant se moque du « fiasco informatique ».
 C) Laisser les services régler au cas par cas :: Pas de coût immédiat.
    economie-3 pop-2 | g0 c-1 d-1 e0
    > Le stock de factures diminue lentement.
-   ~35 pop-2 > Une petite entreprise du bâtiment fait faillite et accuse la ville.
+   ~35 pop-2 > Un petit artisan du quartier fait faillite et accuse la mairie d’arrondissement.
 
 === fin-021 | finances | Proposition d’une taxe sur les livraisons
-Les livraisons à domicile se multiplient. Un adjoint propose une petite taxe par colis pour financer l’entretien des rues.
+Les livraisons à domicile se multiplient dans les rues de l’arrondissement. Un adjoint propose une petite taxe par colis pour financer l’entretien des rues.
 A) Créer la taxe colis :: Recettes nouvelles, géants du commerce en ligne furieux.
    rec+1.2x50 ecologie+2 achat-1 | g+3 c0 d-3 e+3
-   > Chaque colis livré à Paris coûte quelques centimes de plus.
+   > Chaque colis livré dans l’arrondissement coûte quelques centimes de plus.
    ~25 pop-2 > Les sites marchands répercutent la taxe en gros sur leurs factures.
 B) Taxer seulement les livraisons en camion diesel :: Ciblé et écologique.
    rec+0.6x50 ecologie+3 | g+1 c+2 d-1 e+4
@@ -279,33 +279,33 @@ C) Ne rien taxer :: Pas de nouvel impôt.
    > Les livraisons continuent sans changement.
 
 === fin-022 | finances | Le budget des fêtes de fin d’année
-Illuminations, marchés de Noël, patinoires : l’opposition juge les dépenses excessives en période de difficultés.
+Illuminations, marché de Noël, patinoire sur la place : ton opposant juge les dépenses excessives en période de difficultés.
 ? apres=20 distinct
-A) Maintenir les festivités :: La ville brille, l’opposition critique.
+A) Maintenir les festivités :: L’arrondissement brille, l’opposition critique.
    bud-15 bon+3 economie+2 | g0 c+1 d0 e-1
-   > Paris scintille. Les commerçants font de bonnes affaires.
+   > Le quartier scintille. Les commerçants font de bonnes affaires.
 B) Réduire de moitié et reverser aux associations :: Geste solidaire.
    bud-7 bon+1 achat+2 | g+3 c+1 d-1 e+2
-   > Moins de lumières, mais des repas solidaires dans chaque arrondissement.
+   > Moins de lumières, mais des repas solidaires dans chaque quartier de l’arrondissement.
 C) Tout faire financer par des sponsors :: Gratuit, mais très commercial.
    bud+5 bon+1 | g-2 c+1 d+3 e-2
    > Les illuminations portent désormais le logo d’une marque de boissons.
-   ~30 pop-2 > Les sapins sponsorisés deviennent la risée des réseaux sociaux.
+   ~30 pop-2 > Le sapin sponsorisé de la place devient la risée des réseaux sociaux.
 
-=== fin-023 | finances | La Région propose de cofinancer un projet
-La Région Île-de-France propose de financer la moitié d’un grand projet… à condition qu’il corresponde à ses priorités.
-A) Un nouveau commissariat de police municipale :: Financement facile à obtenir.
+=== fin-023 | finances | L’Hôtel de Ville propose de cofinancer un projet
+L’Hôtel de Ville propose de financer la moitié d’un grand projet dans l’arrondissement… à condition qu’il corresponde à ses priorités.
+A) Un nouveau poste de police municipale :: Financement facile à obtenir.
    bud-30 securite+6 | g-1 c+1 d+4 e-1
-   > Le commissariat ouvre dans le 18e arrondissement.
+   > Le poste de police ouvre près de la place principale de l’arrondissement.
 B) Une piscine écologique :: Projet coûteux, très apprécié.
    bud-45 services+4 ecologie+2 bon+2 | g+2 c+1 d0 e+3
-   > Une piscine chauffée par récupération de chaleur ouvre dans le 13e.
-C) Refuser : la ville choisit ses projets seule :: Indépendance, pas de financement.
+   > Une piscine chauffée par récupération de chaleur ouvre dans le quartier.
+C) Refuser : l’arrondissement choisit ses projets seul :: Indépendance, pas de financement.
    coh+1 pop-1 | g+1 c-1 d-1 e+1
-   > Tu refuses de te plier aux priorités régionales.
+   > Tu refuses de te plier aux priorités de l’Hôtel de Ville.
 
 === fin-024 | finances | Les loyers des logements de fonction
-Des élus et cadres de la ville occupent des logements de fonction à des loyers très bas. Un journal enquête.
+Des élus et cadres de la mairie d’arrondissement occupent des logements de fonction à des loyers très bas. Le journal du quartier enquête.
 A) Supprimer ces avantages :: Exemplarité, colère en interne.
    rec+0.4x60 pop+3 services-1 | g+2 c+2 d+2 e+2
    > Les logements sont remis en location aux prix du marché ou attribués à des familles.
@@ -315,33 +315,33 @@ B) Augmenter les loyers progressivement :: Compromis.
 C) Défendre ces logements, nécessaires au service :: Tu protèges tes équipes.
    pop-4 | g-1 c0 d-1 e-1
    > La justification ne convainc pas.
-   ~40 pop-2 > Le journal publie la liste nominative des bénéficiaires.
+   ~40 pop-2 > Le journal du quartier publie la liste nominative des bénéficiaires.
 
 === fin-025 | finances | Une recette exceptionnelle tombe du ciel
-Un contentieux ancien se termine en faveur de la ville : 150 millions d’euros vont être versés.
+Un contentieux ancien se termine en faveur de l’arrondissement : 150 millions d’euros vont être versés.
 ? suite
 A) Rembourser la dette :: Prudent, invisible pour les habitants.
    bud+150 coh+1 | g-1 c+3 d+3 e0
-   > La dette diminue. Les marchés apprécient, les Parisiens ne remarquent rien.
+   > La dette diminue. Les banques apprécient, les habitants ne remarquent rien.
 B) Financer un grand plan pour les quartiers populaires :: Visible et solidaire.
    bud+60 bon+3 achat+3 services+3 | g+4 c+1 d-2 e+1
-   > Gymnases, centres sociaux et cantines sont rénovés dans les quartiers prioritaires.
+   > Gymnase, centre social et cantines sont rénovés dans les quartiers populaires de l’arrondissement.
 C) Baisser un impôt local pendant un an :: Populaire, temporaire.
    bud+60 pop+4 achat+3 | g-1 c+1 d+4 e-1
-   > Les Parisiens voient leur facture baisser. L’effet ne durera qu’un an.
+   > Les habitants voient leur facture baisser. L’effet ne durera qu’un an.
    +30 pop-2 > L’impôt remonte : beaucoup ont oublié la baisse, mais remarquent la hausse.
 
-=== fin-026 | finances | Le contentieux avec l’ancien concessionnaire
-Un ancien prestataire de la ville réclame des indemnités après la rupture de son contrat. L’affaire traîne depuis des années.
+=== fin-026 | finances | Le contentieux avec l’ancien prestataire
+Un ancien prestataire de la mairie d’arrondissement réclame des indemnités après la rupture de son contrat. L’affaire traîne depuis des années.
 ? apres=6
 A) Aller jusqu’au bout du procès :: Risqué, mais peut rapporter gros.
    bud-5 | g+1 c0 d+1 e0
-   > Les avocats de la ville repartent au combat.
+   > Les avocats de l’arrondissement repartent au combat.
    => fin-025 @8
 B) Transiger avec le prestataire :: On solde l’affaire en payant.
    bud-60 | g-1 c+3 d+1 e0
-   > Un accord est signé : la ville paie pour en finir.
+   > Un accord est signé : l’arrondissement paie pour en finir.
 C) Laisser l’affaire en sommeil :: Rien à payer pour l’instant.
    pop-1 | g0 c-1 d0 e0
    > Le dossier reste dans un tiroir.
-   +15 bud-35 > Le tribunal condamne la ville : les pénalités ont gonflé avec le temps.
+   +15 bud-35 > Le tribunal condamne l’arrondissement : les pénalités ont gonflé avec le temps.

@@ -1,10 +1,10 @@
 // Économie : commerce, emploi, entreprises, attractivité
-=== eco-101 | economie | Une grande enseigne veut s’installer aux Halles
-Un géant du commerce en ligne veut ouvrir un immense magasin-entrepôt au cœur de Paris.
+=== eco-101 | economie | Une grande enseigne veut s’installer dans l’arrondissement
+Un géant du commerce en ligne veut ouvrir un immense magasin-entrepôt au cœur de l’arrondissement.
 A) Accepter l’installation :: Emplois et recettes, petits commerces menacés.
    rec+0.5x50 economie+4 achat+1 | g-3 c+1 d+4 e-3
    > Le magasin ouvre et crée 400 emplois.
-   +10 economie-2 bon-1 > Plusieurs libraires et boutiques de quartier ferment.
+   +10 economie-2 bon-1 > Plusieurs libraires et boutiques du quartier ferment.
 B) Imposer des conditions strictes :: Négociation difficile.
    economie+1 | g+1 c+3 d+1 e+1
    > Tu exiges des livraisons à vélo et un espace pour les commerces locaux.
@@ -13,11 +13,11 @@ C) Refuser :: Protège le commerce de proximité.
    economie-1 bon+1 | g+3 c0 d-3 e+3
    > Le projet est refusé.
 
-=== eco-102 | economie | Les commerces de quartier ferment les uns après les autres
-Dans certaines rues, une boutique sur cinq est vide. Les habitants déplorent la disparition des commerces de proximité.
+=== eco-102 | economie | Les commerces du quartier ferment les uns après les autres
+Dans certaines rues de l’arrondissement, une boutique sur cinq est vide. Les habitants déplorent la disparition des commerces de proximité.
 A) Racheter des murs commerciaux pour les louer moins cher :: Investissement public.
    bud-30 economie+3 bon+2 | g+3 c+2 d0 e+2
-   > La ville devient propriétaire de centaines de boutiques.
+   > L’arrondissement devient propriétaire de dizaines de boutiques.
    +15 rec+0.4x40 > Les loyers perçus remboursent une partie de l’investissement.
 B) Taxer les locaux commerciaux vides :: Incite à louer.
    rec+0.3x40 economie+1 | g+2 c+2 d-1 e+1
@@ -26,12 +26,13 @@ C) Organiser des boutiques éphémères :: Animation à petit prix.
    bud-3 economie+1 bon+1 | g+1 c+3 d+1 e+1
    > Des créateurs occupent les vitrines vides pour quelques mois.
 
-=== eco-103 | economie | Les Jeux de la ville : accueillir un grand salon international
-Paris est en concurrence avec Londres pour accueillir un grand salon technologique.
+=== eco-103 | economie | Accueillir un grand salon international
+L’arrondissement est en concurrence avec Londres pour accueillir un grand salon technologique dans son centre des congrès.
+? placeMin=14
 A) Proposer des aides et des locaux gratuits :: Coûteux, prestigieux.
    bud-20 economie+4 | g-1 c+2 d+3 e0
-   > Paris remporte le salon.
-   +6 economie+2 rec+0.3x20 > Hôtels et restaurants affichent complet pendant le salon.
+   > L’arrondissement remporte le salon.
+   +6 economie+2 rec+0.3x20 > Hôtels et restaurants du quartier affichent complet pendant le salon.
 B) Candidater sans aide particulière :: Pas de dépense.
    economie+1 | g0 c+1 d+1 e0
    > Le dossier part sans offre particulière.
@@ -41,36 +42,36 @@ C) Ne pas candidater :: Pas d’impact.
    > Tu laisses filer l’événement.
 
 === eco-104 | economie | Le chômage des jeunes augmente
-Dans les quartiers populaires, un jeune sur quatre est sans emploi.
-A) Créer des emplois aidés dans la ville :: Rapide, coûteux.
+Dans les quartiers populaires de l’arrondissement, un jeune sur quatre est sans emploi.
+A) Créer des emplois aidés à la mairie d’arrondissement :: Rapide, coûteux.
    rec-1x40 economie+2 achat+2 bon+1 | g+4 c+1 d-2 e+1
-   > Mille jeunes sont recrutés en contrats aidés.
+   > Cent cinquante jeunes sont recrutés en contrats aidés.
 B) Soutenir l’apprentissage avec les entreprises :: Durable, résultats plus lents.
    bud-10 economie+3 | g+1 c+3 d+3 e+1
-   > Des centaines d’apprentis rejoignent les entreprises parisiennes.
+   > Des dizaines d’apprentis rejoignent les entreprises du quartier.
 C) Organiser un grand forum de l’emploi :: Peu cher, effet limité.
    bud-2 economie+1 | g+1 c+2 d+2 e0
-   > Le forum attire 20 000 jeunes.
+   > Le forum attire 3 000 jeunes à la mairie d’arrondissement.
 
 === eco-105 | economie | Le dimanche, ouvrir ou fermer ?
-Les grands magasins demandent à ouvrir tous les dimanches. Les syndicats sont contre.
+Les grands magasins de l’arrondissement demandent à ouvrir tous les dimanches. Les syndicats sont contre.
 A) Autoriser l’ouverture le dimanche :: Économie dynamisée, salariés mécontents.
    economie+3 rec+0.2x40 | g-4 c+1 d+4 e-1
    > Les magasins ouvrent tous les dimanches.
    ~35 pop-2 > Une grève des salariés du commerce paralyse les grands magasins.
-B) Seulement dans les zones touristiques :: Compromis.
+B) Seulement dans les rues touristiques :: Compromis.
    economie+2 | g-1 c+3 d+2 e0
-   > Les zones touristiques ouvrent le dimanche.
+   > Les rues touristiques ouvrent le dimanche.
 C) Refuser :: Le dimanche reste un jour de repos.
    bon+1 economie-1 | g+4 c0 d-3 e+1
    > Le dimanche reste fermé.
 
-=== eco-106 | economie | Une usine historique de la ville va fermer
-Une entreprise centenaire, installée dans le 13e, annonce son départ en province et la suppression de 300 emplois.
+=== eco-106 | economie | Une usine historique de l’arrondissement va fermer
+Une entreprise centenaire installée dans l’arrondissement annonce son départ en province et la suppression de 300 emplois.
 A) Proposer des aides pour la garder :: Coûteux, pas garanti.
    bud-15 economie+1 | g+1 c+1 d+2 e0
    > Tu proposes un loyer réduit et des aides.
-   ~50 economie+3 pop+2 > L’entreprise reste à Paris.
+   ~50 economie+3 pop+2 > L’entreprise reste dans l’arrondissement.
 B) Accompagner les salariés vers d’autres emplois :: Social, l’usine part quand même.
    bud-8 achat+1 bon+1 | g+3 c+2 d0 e+1
    > Une cellule de reclassement aide les salariés.
@@ -79,10 +80,10 @@ C) Racheter le site pour y créer un pôle d’artisans :: Projet ambitieux.
    > Le site devient un pôle d’artisanat et de réparation.
 
 === eco-107 | economie | Les cafés et restaurants manquent de personnel
-Les restaurateurs n’arrivent plus à recruter : les salaires sont trop bas pour vivre à Paris.
-A) Créer une école municipale de la restauration :: Formation durable.
+Les restaurateurs de l’arrondissement n’arrivent plus à recruter : les salaires sont trop bas pour vivre dans le quartier.
+A) Créer une école de la restauration dans l’arrondissement :: Formation durable.
    bud-12 economie+2 | g+2 c+2 d+2 e+1
-   > Une école forme 500 jeunes par an.
+   > Une école forme 100 jeunes par an.
 B) Faciliter le logement des saisonniers :: Pratique et ciblé.
    bud-6 logement+1 economie+2 | g+1 c+2 d+1 e0
    > Des logements temporaires sont réservés aux saisonniers.
@@ -90,24 +91,24 @@ C) Laisser le marché s’ajuster :: Pas d’intervention.
    economie-1 | g-1 c0 d+2 e0
    > Certains restaurants réduisent leurs horaires.
 
-=== eco-108 | economie | Les marchés alimentaires sont trop chers
-Les prix sur les marchés parisiens ont fortement augmenté. Les familles modestes n’y vont plus.
+=== eco-108 | economie | Le marché du quartier est trop cher
+Les prix sur le marché de l’arrondissement ont fortement augmenté. Les familles modestes n’y vont plus.
 A) Créer des étals solidaires à prix réduits :: Social, coûteux.
    rec-0.4x40 achat+3 bon+1 | g+4 c+1 d-1 e+2
-   > Chaque marché accueille un étal solidaire.
+   > Le marché accueille un étal solidaire.
 B) Baisser les droits de place des commerçants :: Les prix pourraient baisser.
    rec-0.3x40 achat+1 economie+1 | g+1 c+2 d+2 e+1
    > Les commerçants paient moins cher leur place.
    ~40 achat-1 > Les commerçants gardent la baisse pour eux : les prix ne bougent pas.
-C) Ouvrir des épiceries municipales :: Ambitieux.
+C) Ouvrir une épicerie publique :: Ambitieux.
    bud-20 achat+3 economie+1 | g+4 c0 d-3 e+2
-   > Des épiceries municipales ouvrent dans les quartiers populaires.
+   > Une épicerie publique ouvre dans le quartier le plus modeste.
 
-=== eco-109 | economie | Les start-up quittent Paris pour Londres
-Un rapport montre que des start-up prometteuses partent faute de locaux abordables.
-A) Créer un grand incubateur municipal :: Investissement.
+=== eco-109 | economie | Les start-up quittent l’arrondissement
+Une étude montre que des start-up prometteuses du quartier partent faute de locaux abordables.
+A) Créer un incubateur dans l’arrondissement :: Investissement.
    bud-30 economie+4 | g0 c+3 d+3 e+1
-   > Un incubateur de 1 000 postes ouvre dans un ancien entrepôt.
+   > Un incubateur de 300 postes ouvre dans un ancien entrepôt.
 B) Baisser une taxe locale sur les entreprises innovantes :: Attractif, perte de recettes.
    rec-0.5x40 economie+3 | g-3 c+1 d+4 e0
    > Les jeunes entreprises paient moins de taxes.
@@ -116,36 +117,36 @@ C) Ne rien faire :: Ce n’est pas une priorité.
    > Les départs continuent.
 
 === eco-110 | economie | Un festival de la gastronomie
-Les chefs proposent un grand festival de la gastronomie dans les rues de Paris.
+Les chefs proposent un grand festival de la gastronomie dans les rues de l’arrondissement.
 A) Financer le festival :: Animation et tourisme.
    bud-8 economie+3 bon+2 | g0 c+2 d+2 e0
-   > Le festival attire un million de visiteurs.
+   > Le festival attire cent mille visiteurs.
 B) Version « cuisine de quartier » à petits prix :: Populaire.
    bud-5 bon+2 achat+1 | g+3 c+2 d0 e+2
-   > Des cuisiniers de quartier font découvrir leurs plats.
+   > Des cuisiniers du quartier font découvrir leurs plats.
 C) Laisser les chefs l’organiser seuls :: Sans dépense.
    economie+1 | g0 c+1 d+2 e0
    > Le festival est plus petit, mais a lieu.
 
 === eco-111 | economie | Les livreurs à vélo veulent un statut
-Les livreurs des plateformes réclament de meilleures conditions de travail et une aide de la ville.
+Les livreurs des plateformes de l’arrondissement réclament de meilleures conditions de travail et une aide.
 ? distinct
-A) Créer une coopérative municipale de livraison :: Original, coûteux.
+A) Créer une coopérative de livraison dans l’arrondissement :: Original, coûteux.
    bud-10 economie+1 achat+1 | g+4 c+1 d-3 e+3
    > Une coopérative de livreurs salariés voit le jour.
-B) Ouvrir des lieux de repos pour les livreurs :: Concret et peu coûteux.
+B) Ouvrir un lieu de repos pour les livreurs :: Concret et peu coûteux.
    bud-4 bon+1 | g+2 c+2 d+1 e+1
-   > Des maisons des livreurs ouvrent avec toilettes et recharge.
+   > Une maison des livreurs ouvre avec toilettes et recharge.
 C) Rester neutre :: Pas ta compétence.
    pop-1 | g-2 c+1 d+2 e-1
-   > Les livreurs manifestent devant l’Hôtel de Ville.
+   > Les livreurs manifestent devant la mairie d’arrondissement.
 
 === eco-112 | economie | Les artisans d’art menacés
-Ébénistes, doreurs, luthiers : les ateliers d’artisans d’art disparaissent faute de loyers abordables.
-A) Réserver des ateliers municipaux à loyer bas :: Patrimoine vivant.
+Ébénistes, doreurs, luthiers : les ateliers d’artisans d’art de l’arrondissement disparaissent faute de loyers abordables.
+A) Réserver des ateliers publics à loyer bas :: Patrimoine vivant.
    bud-8 economie+2 bon+1 | g+2 c+2 d+1 e+2
-   > Cinquante ateliers sont réservés aux métiers d’art.
-B) Créer un label « fabriqué à Paris » :: Peu cher, visibilité.
+   > Quinze ateliers sont réservés aux métiers d’art.
+B) Créer un label « fabriqué dans l’arrondissement » :: Peu cher, visibilité.
    bud-2 economie+1 | g+1 c+2 d+2 e+1
    > Le label aide les artisans à vendre.
 C) Ne rien faire :: Le marché décide.
@@ -164,7 +165,7 @@ C) Laisser le quartier évoluer :: Liberté.
    economie-1 | g-1 c0 d+2 e0
    > Les antiquaires disparaissent peu à peu.
 === eco-114 | economie | Les grands hôtels demandent moins de taxes
-Les hôteliers estiment que les taxes parisiennes les rendent moins compétitifs que Londres ou Rome.
+Les hôteliers de l’arrondissement estiment que les taxes les rendent moins compétitifs que ceux des arrondissements voisins.
 A) Baisser la taxe de séjour :: Attractivité, recettes en baisse.
    rec-0.6x40 economie+2 | g-3 c+1 d+4 e-1
    > La taxe de séjour baisse.
@@ -175,17 +176,17 @@ C) Refuser :: Les touristes peuvent payer.
    rec+0.2x40 | g+2 c0 d-2 e+1
    > Les taxes restent les mêmes.
 
-=== eco-115 | economie | Le marché aux puces de Saint-Ouen en crise
-Les marchés aux puces aux portes de Paris perdent leurs visiteurs.
+=== eco-115 | economie | La brocante historique de l’arrondissement en crise
+La grande brocante qui fait la réputation de l’arrondissement perd ses visiteurs.
 A) Financer une grande campagne de promotion :: Visibilité.
    bud-4 economie+2 | g0 c+2 d+2 e+1
-   > Une campagne internationale vante les puces.
-B) Créer une navette gratuite depuis le centre :: Pratique et durable.
+   > Une campagne vante la brocante dans tout Paris.
+B) Créer une navette gratuite depuis le métro :: Pratique et durable.
    rec-0.2x40 economie+2 transports+1 | g+1 c+2 d+1 e+2
-   > Une navette relie les Halles aux puces le week-end.
-C) Ne pas intervenir :: C’est hors de Paris.
+   > Une navette relie le métro à la brocante le week-end.
+C) Ne pas intervenir :: Ce n’est pas une priorité.
    economie-1 | g0 c+1 d+1 e0
-   > Les puces continuent de décliner.
+   > La brocante continue de décliner.
 
 === eco-116 | economie | La filière du luxe veut plus d’espace
 Les maisons de luxe veulent agrandir leurs boutiques avenue Montaigne et faubourg Saint-Honoré.
@@ -211,29 +212,30 @@ C) Laisser faire :: Liberté du commerce.
    securite-1 | g0 c0 d+1 e0
    > Rien ne change.
 
-=== eco-118 | economie | La ville peut accueillir un grand siège social
-Une multinationale hésite entre Paris et Amsterdam pour son nouveau siège européen.
+=== eco-118 | economie | L’arrondissement peut accueillir un grand siège social
+Une multinationale hésite entre l’arrondissement et Amsterdam pour son nouveau siège européen.
+? placeMin=12
 A) Offrir un terrain et des aides :: Coûteux, gros enjeu.
    bud-35 economie+4 | g-2 c+2 d+4 e-1
-   > La multinationale choisit Paris : 3 000 emplois arrivent.
+   > La multinationale choisit l’arrondissement : 3 000 emplois arrivent.
    +12 rec+0.5x40 > Les nouvelles recettes fiscales arrivent.
 B) Mettre en avant la qualité de vie sans aide :: Un pari, sans dépense.
    economie+1 | g0 c+2 d+1 e+1
-   > Tu vantes la ville sans offrir d’argent.
-   ~45 economie+3 > Séduite par la ville, l’entreprise choisit Paris.
+   > Tu vantes le quartier sans offrir d’argent.
+   ~45 economie+3 > Séduite par le quartier, l’entreprise choisit l’arrondissement.
 C) Ne pas candidater :: Pas de cadeau aux multinationales.
    coh+1 | g+3 c-1 d-3 e+1
    > Amsterdam l’emporte.
 
 === eco-119 | economie | Les vitrines brisées après une manifestation
-Après une manifestation qui a dégénéré, des commerçants ont vu leurs vitrines brisées.
+Après une manifestation qui a dégénéré dans l’arrondissement, des commerçants ont vu leurs vitrines brisées.
 A) Indemniser rapidement les commerçants :: Solidarité.
    bud-6 economie+2 | g+1 c+2 d+2 e0
-   > Un fonds d’urgence indemnise les commerçants.
-B) Demander à l’État de payer :: Pas de dépense.
+   > Un fonds d’urgence de l’arrondissement indemnise les commerçants.
+B) Demander à l’Hôtel de Ville de payer :: Pas de dépense.
    economie-1 | g0 c+1 d+1 e0
-   > Tu demandes une indemnisation de l’État.
-   ~40 economie+1 > L’État accepte de payer une partie.
+   > Tu demandes une indemnisation à l’Hôtel de Ville.
+   ~40 economie+1 > L’Hôtel de Ville accepte de payer une partie.
 C) Rien de particulier :: Les assurances couvriront.
    economie-1 pop-1 | g0 c0 d0 e0
    > Les commerçants se sentent abandonnés.
@@ -250,8 +252,8 @@ C) Laisser faire :: Pas d’intervention.
    bon-1 | g-1 c0 d+1 e-1
    > Rien ne change.
 
-=== eco-121 | economie | Une crise de l’hôtellerie parisienne
-Les hôtels indépendants font faillite face aux chaînes et aux plateformes de location.
+=== eco-121 | economie | Une crise de l’hôtellerie dans l’arrondissement
+Les hôtels indépendants du quartier font faillite face aux chaînes et aux plateformes de location.
 A) Fonds de soutien aux hôtels indépendants :: Aider.
    bud-15 economie+2 | g0 c+2 d+3 e0
    > Les hôtels familiaux reçoivent une aide.
@@ -261,12 +263,13 @@ B) Transformer des hôtels en logements :: Reconversion.
 C) Laisser faire :: Le marché.
    economie-1 | g-2 c0 d+2 e0
    > Les faillites continuent.
+
 === eco-122 | economie | Les grèves dans les transports se multiplient
-Une série de grèves paralyse les transports chaque semaine. Les commerçants perdent beaucoup.
+Une série de grèves paralyse les transports chaque semaine. Les commerçants de l’arrondissement perdent beaucoup.
 ? apres=10
 A) Financer des solutions de secours :: Vélos et navettes gratuits.
    bud-8 transports+2 economie+1 | g+1 c+2 d+1 e+2
-   > La ville met en place des alternatives pendant les grèves.
+   > L’arrondissement met en place des alternatives pendant les grèves.
 B) Prendre position pour les grévistes :: Cohérent à gauche.
    pop-1 | g+4 c-1 d-4 e+1
    > Tu soutiens les revendications.
@@ -289,17 +292,17 @@ C) Ne rien faire :: Commerce libre.
    bon-1 | g0 c0 d+1 e0
    > Les nuisances continuent.
 
-=== eco-124 | economie | Paris veut attirer les tournages de films
+=== eco-124 | economie | L’arrondissement veut attirer les tournages de films
 Les tournages rapportent de l’argent mais gênent les riverains.
 A) Faciliter les tournages :: Rayonnement et recettes.
    rec+0.3x40 economie+2 bon-1 | g0 c+2 d+3 e0
-   > Les tournages se multiplient.
+   > Les tournages se multiplient dans les rues du quartier.
 B) Réguler et dédommager les riverains :: Équilibre.
    rec+0.1x40 economie+1 bon+1 | g+2 c+3 d+1 e+1
    > Les riverains reçoivent une compensation.
 C) Limiter fortement les tournages :: Tranquillité.
    economie-2 bon+1 | g+1 c0 d-2 e+1
-   > Les tournages partent à Lyon et Marseille.
+   > Les tournages partent dans les arrondissements voisins.
 
 === eco-125 | economie | La monnaie locale parisienne
 Des associations proposent une monnaie locale pour soutenir les commerces de proximité.

@@ -1,6 +1,6 @@
 // Vie quotidienne : bruit, voisinage, animaux, commerces de proximité, démarches
 === quo-001 | quotidien | Les trottinettes sur les trottoirs
-Des piétons se font renverser par des trottinettes qui roulent sur les trottoirs.
+Des piétons de l’arrondissement se font renverser par des trottinettes qui roulent sur les trottoirs.
 A) Amendes fortes et contrôles :: Ferme.
    rec-0.2x40 securite+2 | g0 c+2 d+3 e0
    > Des agents verbalisent les trottinettes.
@@ -26,7 +26,7 @@ C) Lâcher des moustiques mâles stériles :: Innovation.
    > Des millions de mâles stériles sont relâchés.
    ~30 pop-1 > Des habitants paniquent en voyant des nuages de moustiques.
 === quo-003 | quotidien | Les boulangeries ferment le dimanche
-Plusieurs quartiers n’ont plus de boulangerie ouverte le dimanche ni en août.
+Plusieurs quartiers de l’arrondissement n’ont plus de boulangerie ouverte le dimanche ni en août.
 A) Créer un planning d’ouverture obligatoire :: Service garanti.
    bon+1 economie-1 | g+1 c+2 d-1 e0
    > Un tableau des boulangeries de garde est publié.
@@ -35,14 +35,14 @@ B) Aider les boulangers qui ouvrent le dimanche :: Incitatif.
    > Une prime est versée aux boulangeries ouvertes.
 C) Laisser les boulangers libres :: Liberté.
    bon-1 | g-1 c0 d+2 e0
-   > Les Parisiens marchent plus loin pour leur baguette.
+   > Les habitants marchent plus loin pour leur baguette.
 
 === quo-004 | quotidien | Le bruit des bars en terrasse
-Les terrasses agrandies depuis le Covid empêchent des riverains de dormir.
+Les terrasses agrandies depuis le Covid empêchent des riverains de l’arrondissement de dormir.
 A) Fermer les terrasses à 22 h :: Calme, colère des patrons.
    bon+1 economie-2 | g0 c+1 d-1 e+1
    > Les terrasses ferment plus tôt.
-   ~35 pop-1 > Les restaurateurs manifestent en tablier devant l’Hôtel de Ville.
+   ~35 pop-1 > Les restaurateurs manifestent en tablier devant la mairie d’arrondissement.
 B) Garder les terrasses mais avec des médiateurs :: Équilibre.
    rec-0.2x40 bon+1 | g+1 c+3 d+1 e0
    > Des « chuteurs » circulent le soir.
@@ -51,16 +51,16 @@ C) Ne rien changer :: Économie d’abord.
    > Les terrasses restent comme elles sont.
 
 === quo-005 | quotidien | Les chiens et les crottes
-Les trottoirs sont souillés. Les habitants demandent des mesures.
+Les trottoirs de l’arrondissement sont souillés. Les habitants demandent des mesures.
 A) Amendes à 200 € et brigade dédiée :: Ferme.
    rec-0.2x40 proprete+2 pop+1 | g0 c+2 d+3 e0
    > La brigade verbalise les propriétaires négligents.
 B) Distributeurs de sacs dans toutes les rues :: Pratique.
    bud-3 proprete+1 | g+1 c+2 d+1 e+1
-   > Des milliers de distributeurs sont installés.
+   > Des centaines de distributeurs sont installés.
 C) Créer des espaces canins clôturés :: Pour les chiens.
    bud-5 proprete+1 bon+1 | g+1 c+2 d+1 e+1
-   > Des parcs à chiens ouvrent dans chaque arrondissement.
+   > Des parcs à chiens ouvrent dans chaque quartier.
 
 === quo-006 | quotidien | Les boîtes aux lettres débordent de publicité
 Les Parisiens reçoivent des kilos de prospectus chaque mois, même avec un autocollant « Stop pub ».
@@ -87,7 +87,7 @@ C) Laisser les syndics gérer :: Pas notre rôle.
    > Rien ne change.
 
 === quo-008 | quotidien | La canicule dans les appartements
-Les logements sous les toits deviennent invivables pendant les vagues de chaleur.
+Les logements sous les toits de l’arrondissement deviennent invivables pendant les vagues de chaleur.
 A) Ouvrir des salles climatisées dans chaque quartier :: Protéger.
    bud-6 services+2 bon+1 | g+2 c+2 d+1 e+1
    > Des « salles fraîches » ouvrent jour et nuit.
@@ -97,10 +97,10 @@ B) Subventionner les volets et l’isolation :: Long terme.
    +25 bon+2 > Les étés suivants sont plus supportables.
 C) Distribuer des ventilateurs :: Rapide, symbolique.
    bud-2 bon+1 | g+1 c+1 d+1 e-1
-   > Dix mille ventilateurs sont distribués.
+   > Deux mille ventilateurs sont distribués.
 
 === quo-009 | quotidien | Les deux-roues trafiqués qui hurlent la nuit
-Des scooters au pot trafiqué réveillent des quartiers entiers en pleine nuit.
+Des scooters au pot trafiqué réveillent des rues entières de l’arrondissement en pleine nuit.
 A) Installer des radars sonores :: Technologie.
    bud-6 bon+1 securite+1 | g0 c+3 d+2 e+2
    > Des radars sonores verbalisent les engins trop bruyants.
@@ -111,13 +111,14 @@ C) Aider à changer les pots d’échappement :: Pédagogique.
    bud-2 bon+1 | g+2 c+2 d0 e+1
    > Une prime aide à remettre un pot d’origine.
    ~40 bon-1 > Peu de conducteurs jouent le jeu.
+
 === quo-010 | quotidien | Les embouteillages des livraisons
-Les camionnettes de livraison bloquent les rues tous les matins.
+Les camionnettes de livraison bloquent les rues de l’arrondissement tous les matins.
 A) Livraisons uniquement avant 8 h :: Fluidité, coût pour les commerces.
    transports+2 economie-1 | g+1 c+2 d0 e+2
    > Les livraisons se font à l’aube.
    ~30 bon-1 > Les riverains se plaignent du bruit des camions à 6 h.
-B) Créer des hubs logistiques à vélo cargo :: Moderne.
+B) Créer un hub logistique à vélo cargo :: Moderne.
    bud-12 transports+1 ecologie+2 | g+2 c+2 d0 e+4
    > Des vélos-cargos assurent les derniers kilomètres.
 C) Créer plus d’aires de livraison :: Simple.
@@ -125,7 +126,7 @@ C) Créer plus d’aires de livraison :: Simple.
    > Les aires de livraison doublent.
 
 === quo-011 | quotidien | Les vols de vélos en série
-Un vélo est volé toutes les dix minutes à Paris. Beaucoup renoncent à en acheter un.
+Les vols de vélos explosent dans l’arrondissement. Beaucoup renoncent à en acheter un.
 A) Construire des parkings à vélos sécurisés :: Solution durable.
    bud-18 transports+2 securite+1 | g+1 c+2 d+1 e+3
    > Des abris fermés apparaissent près des gares et des écoles.
@@ -135,8 +136,9 @@ B) Créer une brigade contre le recel de vélos :: Répression.
 C) Marquer gratuitement tous les vélos :: Dissuasif.
    bud-3 securite+1 | g+1 c+3 d+1 e+2
    > Des ateliers gravent un numéro sur chaque cadre.
+
 === quo-012 | quotidien | Les ados n’ont nulle part où se retrouver
-Les adolescents se rassemblent dans les halls et les escaliers faute de lieux qui leur sont destinés.
+Les adolescents de l’arrondissement se rassemblent dans les halls et les escaliers faute de lieux qui leur sont destinés.
 A) Ouvrir des espaces jeunes tard le soir :: Encadrer.
    rec-0.4x50 securite+1 bon+1 services+1 | g+3 c+2 d0 e+1
    > Des espaces jeunes ouvrent jusqu’à 23 h.
@@ -147,33 +149,35 @@ B) Installer des terrains de sport éclairés :: Simple et apprécié.
 C) Interdire les regroupements dans les halls :: Ordre.
    securite+1 bon-1 | g-4 c0 d+4 e-1
    > Les rassemblements dans les halls sont verbalisés.
-=== quo-013 | quotidien | Les bureaux de poste ferment
-La Poste ferme des bureaux dans plusieurs quartiers. Les personnes âgées sont désemparées.
-A) Ouvrir des points poste dans les mairies :: Service public.
+
+=== quo-013 | quotidien | Le bureau de poste du quartier ferme
+La Poste ferme le bureau de poste du quartier. Les personnes âgées sont désemparées.
+A) Ouvrir un point poste à la mairie d’arrondissement :: Service public.
    rec-0.2x50 services+2 bon+1 | g+3 c+2 d0 e+1
-   > Des guichets postaux s’installent dans les mairies.
+   > Un guichet postal s’installe à la mairie d’arrondissement.
 B) Négocier des relais chez les commerçants :: Partenariat.
    bud-1 services+1 | g0 c+3 d+2 e0
    > Des épiceries deviennent relais poste.
 C) Protester auprès de La Poste :: Symbolique.
    coh+1 | g+1 c+1 d0 e0
-   > Le maire écrit au président de La Poste.
+   > Tu écris au président de La Poste.
    ~45 bon-1 > Les fermetures continuent malgré tout.
-=== quo-014 | quotidien | Le prix des cantines d’entreprise
-Les salariés parisiens se plaignent de déjeuners à 18 € en moyenne.
-A) Ouvrir des restaurants municipaux à 6 € :: Pouvoir d’achat.
+
+=== quo-014 | quotidien | Le prix du déjeuner des salariés
+Les salariés de l’arrondissement se plaignent de déjeuners à 18 € en moyenne.
+A) Ouvrir un restaurant public à 6 € :: Pouvoir d’achat.
    bud-15 rec-0.4x50 achat+3 bon+1 | g+4 c+1 d-2 e+1
-   > Des restaurants municipaux ouvrent dans les quartiers d’affaires.
+   > Un restaurant public ouvre près des bureaux de l’arrondissement.
    ~30 economie-1 > Les restaurateurs dénoncent une concurrence déloyale.
 B) Négocier un menu à 10 € avec les restaurants :: Partenariat.
    rec-0.1x50 achat+1 economie+1 | g+1 c+3 d+2 e0
-   > Un label « menu parisien » est créé.
+   > Un label « menu du quartier » est créé.
 C) Ne rien faire :: Pas notre rôle.
    achat-1 | g-2 c0 d+2 e0
    > Les prix continuent de monter.
 
 === quo-015 | quotidien | Les pigeons et les fientes
-Les habitants de certaines places se plaignent des pigeons.
+Les habitants de certaines places de l’arrondissement se plaignent des pigeons.
 A) Installer des pigeonniers contraceptifs :: Doux et efficace.
    bud-3 proprete+1 | g+1 c+2 d+1 e+2
    > Des pigeonniers régulent la population.
@@ -186,7 +190,7 @@ C) Faire venir des faucons :: Spectaculaire.
    ~30 pop-1 > Un faucon attaque un chihuahua sous les caméras.
 
 === quo-016 | quotidien | Le bruit des chantiers le samedi
-Les chantiers privés font du bruit le samedi et réveillent les familles.
+Les chantiers privés de l’arrondissement font du bruit le samedi et réveillent les familles.
 A) Interdire les chantiers le samedi :: Calme, retards.
    bon+2 economie-1 logement-1 | g+1 c+1 d-1 e+1
    > Les chantiers s’arrêtent le samedi.
@@ -198,7 +202,7 @@ C) Ne rien changer :: Laisser travailler.
    > Les chantiers continuent le samedi matin.
 
 === quo-017 | quotidien | Les ascenseurs en panne dans les HLM
-Dans plusieurs tours, l’ascenseur est en panne depuis des semaines. Des personnes âgées ne sortent plus.
+Dans plusieurs tours de l’arrondissement, l’ascenseur est en panne depuis des semaines. Des personnes âgées ne sortent plus.
 A) Imposer des pénalités aux bailleurs :: Pression.
    logement+1 bon+1 | g+2 c+2 d0 e0
    > Les bailleurs paient des pénalités par jour de panne.
@@ -207,13 +211,14 @@ B) Financer des portages de courses :: Urgence humaine.
    > Des livreurs montent les courses aux étages.
 C) Remplacer les ascenseurs vétustes :: Investissement.
    bud-30 logement+3 | g+3 c+2 d+1 e+1
-   > Cinquante ascenseurs neufs sont commandés.
+   > Quinze ascenseurs neufs sont commandés.
    +15 pop+2 > Les nouveaux ascenseurs fonctionnent enfin.
-=== quo-018 | quotidien | Les SMS de la mairie
-Une application municipale propose d’envoyer des alertes aux habitants.
+
+=== quo-018 | quotidien | Les alertes de la mairie d’arrondissement
+Une application propose d’envoyer des alertes aux habitants de l’arrondissement.
 A) Lancer une application complète :: Moderne.
    bud-8 services+2 | g0 c+3 d+2 e+1
-   > L’application « Paris Alertes » est lancée.
+   > L’application d’alertes de l’arrondissement est lancée.
    ~25 pop-1 > Une panne envoie le même message dix fois en pleine nuit.
 B) Seulement des SMS en cas d’urgence :: Sobre.
    bud-2 services+1 | g+1 c+2 d+1 e+1
@@ -223,12 +228,12 @@ C) Rester sur les panneaux d’affichage :: Classique.
    > Rien ne change.
 
 === quo-019 | quotidien | Les bancs publics retirés
-Des commerçants demandent de retirer des bancs pour éviter les regroupements.
+Des commerçants de l’arrondissement demandent de retirer des bancs pour éviter les regroupements.
 A) Retirer les bancs :: Ordre, inhumain.
    securite+1 bon-2 | g-4 c0 d+3 e-1
    > Les bancs disparaissent.
    ~40 pop-2 > Des personnes âgées témoignent ne plus pouvoir se reposer.
-B) Garder et ajouter des bancs :: Ville accueillante.
+B) Garder et ajouter des bancs :: Quartier accueillant.
    bud-3 bon+2 | g+3 c+2 d-1 e+1
    > De nouveaux bancs sont posés.
 C) Remplacer par des assises individuelles :: Compromis.
@@ -236,10 +241,10 @@ C) Remplacer par des assises individuelles :: Compromis.
    > Des sièges individuels remplacent les bancs.
 
 === quo-020 | quotidien | Les distributeurs de billets disparaissent
-Les banques ferment leurs distributeurs. Certains quartiers n’en ont plus.
-A) Installer des distributeurs dans les mairies :: Service.
+Les banques ferment leurs distributeurs. Certains quartiers de l’arrondissement n’en ont plus.
+A) Installer un distributeur à la mairie d’arrondissement :: Service.
    bud-4 services+1 achat+1 | g+2 c+2 d+1 e0
-   > Des distributeurs reviennent dans les mairies.
+   > Un distributeur revient à la mairie d’arrondissement.
 B) Négocier avec les banques :: Discussion.
    bud-1 | g0 c+3 d+2 e0
    > Les banques acceptent d’en garder quelques-uns.
@@ -249,13 +254,13 @@ C) Encourager le paiement par carte partout :: Modernité.
    > Les commerces sont incités à accepter la carte dès 1 €.
 
 === quo-021 | quotidien | Les nuisances des fêtes étudiantes
-Des soirées étudiantes dans les appartements empêchent tout un quartier de dormir.
+Des soirées étudiantes dans les appartements empêchent toute une rue de l’arrondissement de dormir.
 A) Créer une brigade anti-bruit de nuit :: Ferme.
    rec-0.3x40 securite+1 bon+1 | g0 c+2 d+3 e0
    > Une brigade intervient la nuit.
 B) Ouvrir des salles de fête pour étudiants :: Alternative.
    bud-6 bon+1 | g+2 c+2 d0 e+1
-   > Des salles municipales accueillent les soirées.
+   > Des salles de l’arrondissement accueillent les soirées.
 C) Médiation entre voisins :: Dialogue.
    bud-1 bon+1 | g+2 c+2 d0 e+1
    > Des médiateurs proposent des accords de voisinage.

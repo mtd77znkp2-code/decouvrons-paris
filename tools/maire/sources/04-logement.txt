@@ -13,73 +13,73 @@ C) Demander la fin de l’encadrement des loyers :: Libère l’offre selon cert
    > Tu demandes à l’État de supprimer l’encadrement.
    +5 bon-3 > Les associations de locataires manifestent massivement.
 
-=== log-002 | logement | Les meublés touristiques vident les quartiers
-Dans le centre, des immeubles entiers sont loués aux touristes à la nuit. Les familles quittent le quartier.
+=== log-002 | logement | Les meublés touristiques vident le quartier
+Dans l’arrondissement, des immeubles entiers sont loués aux touristes à la nuit. Les familles quittent le quartier.
 A) Limiter la location à 90 nuits par an et contrôler :: Ferme, efficace si appliqué.
    rec-0.3x40 logement+4 economie-1 | g+3 c+2 d-1 e+2
    > Une brigade de contrôleurs traque les locations illégales.
-   +10 logement+2 > Des centaines d’appartements reviennent à la location classique.
+   +10 logement+2 > Des dizaines d’appartements reviennent à la location classique.
 B) Taxer fortement les meublés touristiques :: Recettes, effet sur l’offre limité.
    rec+1x40 logement+1 | g+2 c+1 d-1 e+1
    > La taxe rapporte, mais les meublés restent nombreux.
 C) Laisser faire : c’est bon pour le tourisme :: Économie touristique soutenue.
    economie+3 logement-3 bon-1 | g-4 c0 d+3 e-2
-   > Le centre continue de se transformer en hôtel géant.
+   > L’arrondissement continue de se transformer en hôtel géant.
 
-=== log-003 | logement | Un grand terrain SNCF se libère
-La SNCF vend un vaste terrain ferroviaire dans le 17e. Promoteurs et associations s’y intéressent.
+=== log-003 | logement | Un grand terrain SNCF se libère dans l’arrondissement
+La SNCF vend un vaste terrain ferroviaire de l’arrondissement. Promoteurs et associations s’y intéressent.
 A) Y construire 60 % de logements sociaux :: Fort impact social, coûteux.
    bud-60 logement+6 achat+2 | g+5 c+1 d-3 e+1
    > Un nouveau quartier mixte sort de terre.
 B) Laisser un promoteur construire des logements libres :: Recettes immédiates.
    bud+80 logement+2 economie+2 | g-4 c+1 d+4 e-2
-   > La ville touche une belle somme sur la vente des droits à construire.
+   > L’arrondissement touche une belle somme sur la vente des droits à construire.
 C) En faire un grand parc avec quelques logements :: Écologique, peu de logements.
    bud-40 ecologie+5 bon+2 logement+1 | g+1 c+1 d-1 e+5
-   > Un parc de 10 hectares voit le jour.
+   > Un parc de plusieurs hectares voit le jour.
 
 === log-004 | logement | Des logements sociaux attribués à des proches d’élus
-Un journal révèle que des logements sociaux ont été attribués à des proches d’élus sans respecter les règles.
+Le journal du quartier révèle que des logements sociaux de l’arrondissement ont été attribués à des proches d’élus sans respecter les règles.
 A) Rendre les attributions anonymes et publiques :: Transparence totale.
    bud-3 pop+3 logement+1 | g+3 c+3 d+2 e+3
-   > Un algorithme anonyme attribue désormais les logements, avec publication des critères.
+   > Une commission anonyme attribue désormais les logements, avec publication des critères.
 B) Sanctionner les élus impliqués :: Exemplaire, tensions internes.
    pop+2 coh-1 | g+1 c+2 d+2 e+2
-   > Les élus concernés perdent leurs délégations.
+   > Les élus concernés perdent leurs délégations au conseil d’arrondissement.
    ~30 pop-1 > Un élu sanctionné balance d’autres dossiers à la presse.
 C) Minimiser l’affaire :: Évite les remous internes.
    pop-5 | g-2 c-1 d-1 e-2
    > Ta réponse passe très mal.
    ~40 pop-2 > Une enquête judiciaire est ouverte.
 
-=== log-005 | logement | Les classes moyennes quittent Paris
-Les familles de classe moyenne partent en banlieue faute de logements abordables. Les écoles ferment des classes.
+=== log-005 | logement | Les classes moyennes quittent l’arrondissement
+Les familles de classe moyenne partent en banlieue faute de logements abordables. L’école du quartier ferme une classe.
 A) Créer du logement intermédiaire pour les familles :: Investissement ciblé.
    bud-40 logement+4 services+1 | g+1 c+4 d+1 e+1
-   > Des milliers de logements à loyer modéré sont réservés aux familles.
-B) Aider à l’achat avec un prêt à taux zéro municipal :: Populaire, coûteux.
+   > Des centaines de logements à loyer modéré sont réservés aux familles.
+B) Aider à l’achat avec un prêt à taux zéro de l’arrondissement :: Populaire, coûteux.
    rec-1x40 logement+2 achat+3 pop+2 | g0 c+2 d+3 e0
-   > Des familles deviennent propriétaires grâce au prêt de la ville.
+   > Des familles deviennent propriétaires grâce au prêt de la mairie d’arrondissement.
 C) Transformer des bureaux vides en logements :: Malin, demande du temps.
    bud-25 logement+3 ecologie+1 | g+1 c+3 d+1 e+3
    > Des immeubles de bureaux deviennent des logements familiaux.
    +12 logement+2 > De nouveaux logements arrivent sur le marché.
 
 === log-006 | logement | Des immeubles entiers sont vides
-Plus de 100 000 logements sont vacants à Paris. Des associations réclament des réquisitions.
+Des milliers de logements de l’arrondissement sont vacants. Des associations réclament des réquisitions.
 A) Réquisitionner les immeubles vides des grands propriétaires :: Radical, juridiquement risqué.
    bud-15 logement+5 pop-1 | g+5 c-2 d-5 e+2
    > Plusieurs immeubles appartenant à des investisseurs sont réquisitionnés.
-   ~40 bud-20 > Les propriétaires gagnent leur recours : la ville doit indemniser.
-B) Proposer aux propriétaires une gestion garantie par la ville :: Incitatif.
+   ~40 bud-20 > Les propriétaires gagnent leur recours : l’arrondissement doit indemniser.
+B) Proposer aux propriétaires une gestion garantie par l’arrondissement :: Incitatif.
    rec-0.5x40 logement+3 | g+1 c+4 d+2 e+1
-   > La ville garantit les loyers aux propriétaires qui remettent leurs logements en location.
+   > La mairie d’arrondissement garantit les loyers aux propriétaires qui remettent leurs logements en location.
 C) Taxer davantage la vacance :: Recettes et incitation.
    rec+0.8x40 logement+2 | g+3 c+1 d-2 e+1
    > La taxe sur les logements vacants augmente fortement.
 
 === log-007 | logement | Une tour de logements sociaux à rénover
-Une tour HLM du 13e est en mauvais état : ascenseurs en panne, fuites, chauffage défaillant.
+Une tour HLM de l’arrondissement est en mauvais état : ascenseurs en panne, fuites, chauffage défaillant.
 A) Rénovation complète avec isolation :: Cher, durable.
    bud-35 logement+3 ecologie+3 bon+2 | g+3 c+2 d0 e+4
    > La tour est entièrement rénovée et isolée.
@@ -90,66 +90,66 @@ B) Réparations d’urgence :: Rapide et moins cher.
    ~35 bon-2 > De nouvelles pannes surviennent quelques semaines plus tard.
 C) Démolir et reconstruire :: Long, déplace les habitants.
    bud-70 logement+2 bon-2 | g0 c+1 d+2 e-2
-   > La tour sera démolie. Les habitants sont relogés ailleurs pendant les travaux.
+   > La tour sera démolie. Les locataires sont relogés ailleurs pendant les travaux.
    +20 logement+4 > Les nouveaux bâtiments sont livrés.
 
 === log-008 | logement | Les étudiants ne trouvent plus de logement
-La rentrée approche : des milliers d’étudiants dorment chez des amis ou dans leur voiture.
+La rentrée approche : des centaines d’étudiants de l’arrondissement dorment chez des amis ou dans leur voiture.
 A) Construire des résidences étudiantes :: Investissement nécessaire.
    bud-35 logement+3 services+1 | g+3 c+2 d0 e+1
-   > Trois résidences étudiantes sont lancées.
+   > Deux résidences étudiantes sont lancées dans l’arrondissement.
 B) Développer la colocation avec des seniors :: Malin et peu cher.
    bud-2 logement+2 bon+1 | g+2 c+3 d+1 e+2
-   > Des seniors accueillent des étudiants contre de petits services.
-C) Ouvrir des gymnases en hébergement temporaire :: Urgence, images fortes.
+   > Des seniors du quartier accueillent des étudiants contre de petits services.
+C) Ouvrir le gymnase en hébergement temporaire :: Urgence, images fortes.
    bud-3 logement+1 services-1 | g+1 c+1 d0 e0
-   > Des lits de camp sont installés dans les gymnases.
-   ~40 pop-2 > Les photos des gymnases-dortoirs font le tour des médias.
+   > Des lits de camp sont installés dans le gymnase.
+   ~40 pop-2 > Les photos du gymnase-dortoir font le tour des médias.
 
-=== log-009 | logement | Le plan local d’urbanisme doit être révisé
-Le plan local d’urbanisme fixe ce qu’on peut construire. Sa révision oppose densification et protection du paysage.
+=== log-009 | logement | Le plan d’urbanisme de l’arrondissement doit être révisé
+Le plan d’urbanisme fixe ce qu’on peut construire dans l’arrondissement. Sa révision oppose densification et protection du paysage.
 A) Autoriser des immeubles plus hauts :: Plus de logements, polémique.
    logement+4 economie+2 bon-2 | g0 c+1 d+3 e-3
-   > Des immeubles de 50 mètres pourront être construits en périphérie.
-   ~35 pop-2 > Une pétition contre « les tours » recueille 100 000 signatures.
+   > Des immeubles de 50 mètres pourront être construits en bordure de l’arrondissement.
+   ~35 pop-2 > Une pétition contre « les tours » recueille 10 000 signatures dans le quartier.
 B) Protéger les espaces verts et le paysage :: Qualité de vie, peu de logements.
    ecologie+4 logement-2 | g0 c0 d-1 e+5
-   > Tous les espaces verts deviennent inconstructibles.
+   > Tous les espaces verts de l’arrondissement deviennent inconstructibles.
 C) Densifier sans hauteur : surélévations et dents creuses :: Compromis.
    logement+2 bon+1 | g+1 c+4 d+1 e+1
    > Les surélévations d’immeubles sont facilitées.
 
 === log-010 | logement | Les marchands de sommeil
-Des propriétaires louent des taudis à prix d’or à des familles vulnérables.
+Des propriétaires louent des taudis à prix d’or à des familles vulnérables de l’arrondissement.
 A) Créer une brigade contre l’habitat indigne :: Efficace, coût durable.
    rec-0.5x40 logement+3 securite+1 | g+4 c+2 d+1 e+2
-   > Des dizaines de marchands de sommeil sont poursuivis.
+   > Une dizaine de marchands de sommeil sont poursuivis.
 B) Exproprier les pires immeubles :: Très fort, procédures longues.
    bud-30 logement+4 | g+4 c0 d-2 e+2
-   > Les immeubles les plus dangereux passent sous le contrôle de la ville.
+   > Les immeubles les plus dangereux passent sous le contrôle de l’arrondissement.
 C) Signaler à la préfecture :: Gratuit, lent.
    logement-1 | g-1 c+1 d+1 e0
-   > Les dossiers sont transmis à l’État.
+   > Les dossiers sont transmis à la préfecture.
    +6 pop-2 > Un effondrement de plafond blesse une famille dans un immeuble signalé.
 
 === log-011 | logement | Le prix du mètre carré bat des records
-Le prix moyen dépasse 11 000 € le mètre carré. Les primo-accédants sont découragés.
+Le prix moyen dans l’arrondissement dépasse 11 000 € le mètre carré. Les primo-accédants sont découragés.
 A) Développer le bail réel solidaire :: Logement moins cher, terrain public.
    bud-20 logement+3 achat+2 | g+2 c+3 d+1 e+1
-   > Les acheteurs paient le logement, la ville garde le terrain : les prix sont divisés par deux.
+   > Les acheteurs paient le logement, l’arrondissement garde le terrain : les prix sont divisés par deux.
 B) Freiner l’achat par des investisseurs étrangers :: Symbolique, juridiquement fragile.
    logement+1 economie-2 | g+2 c-1 d-1 e+1
-   > Tu demandes à l’État de surtaxer les achats non résidents.
+   > Tu demandes à l’Hôtel de Ville de réclamer une surtaxe sur les achats non résidents.
    ~50 pop-1 > La mesure est jugée contraire au droit européen.
 C) Laisser le marché s’ajuster :: Aucun coût, aucune action.
    logement-2 achat-1 | g-3 c0 d+3 e-1
    > Les prix continuent de grimper.
 
 === log-012 | logement | Une copropriété dégradée au bord de la faillite
-Une grande copropriété de Belleville accumule les impayés et les travaux non faits.
+Une grande copropriété de l’arrondissement accumule les impayés et les travaux non faits.
 A) Racheter des lots et piloter le redressement :: Coûteux, sauvetage.
    bud-25 logement+3 bon+1 | g+3 c+2 d0 e+1
-   > La ville rachète des appartements et lance les travaux.
+   > L’arrondissement rachète des appartements et lance les travaux.
 B) Mettre la copropriété sous administration judiciaire :: Procédure longue.
    bud-3 logement+1 | g0 c+3 d+2 e0
    > Un administrateur reprend la gestion.
@@ -159,10 +159,10 @@ C) Laisser les copropriétaires se débrouiller :: Risque de dégradation.
    +8 securite-2 bon-2 > L’immeuble devient insalubre et dangereux.
 
 === log-013 | logement | Les gardiens d’immeuble disparaissent
-Les bailleurs sociaux remplacent les gardiens par des sociétés de nettoyage. Les locataires se sentent abandonnés.
+Les bailleurs sociaux de l’arrondissement remplacent les gardiens par des sociétés de nettoyage. Les locataires se sentent abandonnés.
 A) Financer le retour des gardiens :: Lien social, coût durable.
    rec-0.8x40 logement+2 securite+2 bon+2 | g+4 c+1 d+1 e+1
-   > Un gardien par résidence redevient la règle.
+   > Un gardien par résidence redevient la règle dans l’arrondissement.
 B) Créer des concierges de quartier mutualisés :: Compromis.
    rec-0.3x40 logement+1 bon+1 | g+2 c+3 d+1 e+1
    > Des concierges couvrent plusieurs immeubles.
@@ -171,26 +171,26 @@ C) Laisser les bailleurs décider :: Pas de coût.
    > Les gardiens continuent de disparaître.
 
 === log-014 | logement | Le logement des travailleurs essentiels
-Infirmières, éboueurs et pompiers vivent de plus en plus loin. Les hôpitaux peinent à recruter.
+Infirmières, éboueurs et pompiers du quartier vivent de plus en plus loin. L’hôpital de l’arrondissement peine à recruter.
 A) Réserver 20 % des logements sociaux aux travailleurs essentiels :: Ciblé et efficace.
    logement+2 services+3 | g+2 c+3 d+2 e+1
-   > Des milliers de logements sont fléchés vers les métiers essentiels.
+   > Des centaines de logements sont fléchés vers les métiers essentiels.
    ~25 pop-1 > Les autres demandeurs dénoncent un passe-droit.
 B) Créer une aide au loyer pour ces métiers :: Coût durable.
    rec-1x40 achat+2 services+2 | g+2 c+1 d0 e+1
    > Une aide mensuelle compense une partie du loyer.
-C) Construire des résidences dédiées près des hôpitaux :: Long mais structurant.
+C) Construire des résidences dédiées près de l’hôpital :: Long mais structurant.
    bud-30 logement+3 services+2 | g+2 c+2 d+1 e+1
-   > Des résidences sont lancées près des grands hôpitaux.
-   +15 services+2 > Les premières résidences ouvrent : les hôpitaux recrutent plus facilement.
+   > Des résidences sont lancées près de l’hôpital.
+   +15 services+2 > Les premières résidences ouvrent : l’hôpital recrute plus facilement.
 
 === log-015 | logement | Des immeubles mal isolés, des factures qui explosent
-Avec la hausse de l’énergie, des locataires paient des factures de chauffage énormes dans des logements mal isolés.
+Avec la hausse de l’énergie, des locataires de l’arrondissement paient des factures de chauffage énormes dans des logements mal isolés.
 A) Plan massif de rénovation énergétique :: Très cher, très utile.
    bud-60 rec-0.5x40 ecologie+5 achat+3 logement+2 | g+3 c+2 d0 e+5
-   > Des dizaines de milliers de logements seront isolés.
+   > Des milliers de logements de l’arrondissement seront isolés.
    +20 achat+2 bon+2 > Les factures de chauffage baissent nettement.
-B) Chèque énergie municipal :: Soulage vite, ne règle rien.
+B) Chèque énergie de l’arrondissement :: Soulage vite, ne règle rien.
    bud-20 achat+3 bon+1 | g+3 c+1 d0 e-1
    > Les ménages modestes reçoivent une aide pour leurs factures.
 C) Interdire la location des passoires thermiques :: Ferme, réduit l’offre.
@@ -199,32 +199,32 @@ C) Interdire la location des passoires thermiques :: Ferme, réduit l’offre.
    ~40 logement-2 > Des propriétaires retirent leurs logements du marché.
 
 === log-016 | logement | Un promoteur propose une tour de luxe
-Un promoteur veut construire une tour de logements de luxe avec piscine sur le toit, en échange d’une crèche au rez-de-chaussée.
+Un promoteur veut construire une tour de logements de luxe avec piscine sur le toit dans l’arrondissement, en échange d’une crèche au rez-de-chaussée.
 A) Accepter :: Recettes et équipement public.
    bud+40 services+1 economie+2 bon-1 | g-4 c+1 d+4 e-2
-   > La tour sera construite avec une crèche municipale.
+   > La tour sera construite avec une crèche publique.
 B) Exiger 30 % de logements sociaux :: Négociation dure.
    logement+2 | g+3 c+2 d-1 e+1
    > Tu poses tes conditions.
    ~50 bud+20 logement+2 > Le promoteur accepte : la tour sera mixte.
-C) Refuser :: Pas de tour de luxe à Paris.
+C) Refuser :: Pas de tour de luxe dans l’arrondissement.
    coh+1 | g+3 c-1 d-3 e+2
    > Le projet est enterré.
 
 === log-017 | logement | Expulsions locatives à la fin de la trêve hivernale
-La fin de la trêve hivernale approche : des milliers de foyers risquent l’expulsion.
+La fin de la trêve hivernale approche : des centaines de foyers de l’arrondissement risquent l’expulsion.
 ? apres=10
 A) Fonds de prévention des expulsions :: Coûteux, humain.
    bud-20 logement+2 achat+2 bon+2 | g+4 c+1 d-1 e+1
-   > Des milliers de foyers obtiennent un accompagnement et une aide.
-B) Demander à l’État de prolonger la trêve :: Politique.
+   > Des centaines de foyers obtiennent un accompagnement et une aide.
+B) Demander à l’Hôtel de Ville d’intervenir auprès de l’État :: Politique.
    pop+1 | g+3 c+1 d-2 e+2
-   > Tu écris au gouvernement.
+   > Tu écris à l’Hôtel de Ville et au gouvernement.
    ~40 bon+2 > Le gouvernement prolonge la trêve d’un mois.
 C) Laisser la loi s’appliquer :: Pas de coût.
    bon-2 | g-4 c0 d+3 e-1
    > Les expulsions reprennent.
-   +3 pop-2 > Des expulsions de familles avec enfants font la une.
+   +3 pop-2 > Des expulsions de familles avec enfants font la une du journal du quartier.
 
 === log-018 | logement | Les chambres de bonne louées à prix d’or
 Des chambres de 9 m² sous les toits se louent plus de 800 € par mois.
@@ -239,10 +239,10 @@ C) Contrôler les loyers de ces chambres :: Ciblé sur les abus.
    > Les loyers abusifs des chambres de bonne sont sanctionnés.
 
 === log-019 | logement | La demande de logement social explose
-Plus de 250 000 demandes de logement social sont en attente à Paris.
-A) Lancer 10 000 logements sociaux en cinq ans :: Énorme effort.
+Des milliers de demandes de logement social sont en attente dans l’arrondissement.
+A) Lancer 1 000 logements sociaux en cinq ans :: Énorme effort.
    bud-80 rec-1x40 logement+7 pop+2 | g+5 c+1 d-3 e+2
-   > Le plus grand plan de construction depuis des décennies est lancé.
+   > Le plus grand plan de construction de l’arrondissement depuis des décennies est lancé.
 B) Prioriser les familles les plus en difficulté :: Juste, frustrant pour les autres.
    logement+1 bon+1 | g+3 c+1 d0 e+1
    > Les critères d’attribution sont revus.
@@ -251,26 +251,26 @@ C) Encourager la mobilité vers la banlieue :: Pas de coût, polémique.
    > Une prime aide les demandeurs qui acceptent un logement hors de Paris.
 
 === log-020 | logement | Les surélévations en bois
-Des architectes proposent d’ajouter des étages en bois sur les immeubles existants.
+Des architectes proposent d’ajouter des étages en bois sur les immeubles existants de l’arrondissement.
 A) Lancer un grand programme de surélévations :: Innovant, écologique.
    bud-20 logement+3 ecologie+2 | g+1 c+3 d+1 e+4
-   > Les premiers étages en bois sont posés sur des immeubles des années 1960.
+   > Les premiers étages en bois sont posés sur des immeubles des années 1960 du quartier.
    ~25 bon-1 > Des riverains se plaignent des nuisances des chantiers.
 B) Expérimenter sur dix immeubles :: Prudent, avant de généraliser.
    bud-4 logement+1 ecologie+1 | g+1 c+3 d+1 e+2
-   > Dix immeubles servent de test.
-C) Refuser : le paysage parisien d’abord :: Patrimoine protégé.
+   > Dix immeubles de l’arrondissement servent de test.
+C) Refuser : le paysage du quartier d’abord :: Patrimoine protégé.
    bon+1 logement-1 | g-1 c0 d+1 e-2
-   > Les toits de Paris restent intacts.
+   > Les toits de l’arrondissement restent intacts.
 
 === log-021 | logement | Les seniors isolés dans de grands appartements
-Beaucoup de seniors vivent seuls dans des logements trop grands, tandis que des familles s’entassent.
+Beaucoup de seniors de l’arrondissement vivent seuls dans des logements trop grands, tandis que des familles s’entassent.
 A) Aider les échanges de logements :: Malin, volontaire.
    bud-2 logement+2 bon+1 | g+2 c+3 d+2 e+2
-   > Une bourse aux échanges permet aux seniors et aux familles d’échanger leurs logements.
+   > Une bourse aux échanges permet aux seniors et aux familles du quartier d’échanger leurs logements.
 B) Créer des résidences seniors adaptées :: Coûteux, apprécié.
    bud-25 logement+2 services+2 | g+2 c+2 d+1 e+1
-   > Des résidences avec services ouvrent dans chaque arrondissement.
+   > Une résidence avec services ouvre dans l’arrondissement.
 C) Ne rien imposer :: Respecte la liberté de chacun.
    logement-1 | g0 c0 d+1 e0
    > Rien ne change.
@@ -289,23 +289,23 @@ C) Soutenir l’expulsion :: Respect de la propriété.
    > Le collectif est expulsé.
 
 === log-023 | logement | Les jeunes travailleurs en foyer
-Les foyers de jeunes travailleurs sont vétustes et saturés.
-A) Rénover et agrandir les foyers :: Investissement social.
+Le foyer de jeunes travailleurs de l’arrondissement est vétuste et saturé.
+A) Rénover et agrandir le foyer :: Investissement social.
    bud-20 logement+2 services+1 | g+3 c+2 d0 e+1
-   > Les foyers sont rénovés et agrandis.
+   > Le foyer est rénové et agrandi.
 B) Ouvrir des logements « tremplin » à loyer très bas :: Original et peu coûteux.
    bud-10 logement+2 achat+1 | g+2 c+2 d+1 e+1
    > Des studios à 300 € ouvrent pour les jeunes de moins de 25 ans.
-C) Confier les foyers à un gestionnaire privé :: Économies, qualité incertaine.
+C) Confier le foyer à un gestionnaire privé :: Économies, qualité incertaine.
    rec+0.3x40 logement-1 | g-3 c+1 d+3 e-1
-   > Un gestionnaire privé reprend les foyers.
+   > Un gestionnaire privé reprend le foyer.
 
 === log-024 | logement | Effondrement d’un balcon
-Un balcon s’effondre dans le 18e, blessant un passant. Beaucoup d’immeubles anciens n’ont jamais été contrôlés.
+Un balcon s’effondre dans une rue de l’arrondissement, blessant un passant. Beaucoup d’immeubles anciens n’ont jamais été contrôlés.
 A) Rendre obligatoire un diagnostic des façades :: Sécurisant, coûteux pour les propriétaires.
    bud-5 securite+3 logement+1 pop-1 | g+1 c+2 d0 e+1
-   > Tous les immeubles de plus de 50 ans devront être inspectés.
-B) Aider financièrement les copropriétés modestes :: Coûteux pour la ville.
+   > Tous les immeubles de plus de 50 ans de l’arrondissement devront être inspectés.
+B) Aider financièrement les copropriétés modestes :: Coûteux pour l’arrondissement.
    bud-20 securite+2 logement+2 | g+3 c+2 d0 e+1
    > Les copropriétés modestes reçoivent une aide pour leurs travaux.
 C) Inspecter seulement les immeubles signalés :: Économique.
@@ -314,13 +314,13 @@ C) Inspecter seulement les immeubles signalés :: Économique.
    ~25 pop-2 > Un autre balcon s’effondre quelques mois plus tard.
 
 === log-025 | logement | Une coopérative d’habitants veut un terrain
-Un groupe de familles veut construire un immeuble en coopérative, avec des espaces partagés.
+Un groupe de familles de l’arrondissement veut construire un immeuble en coopérative, avec des espaces partagés.
 A) Leur céder un terrain à prix réduit :: Innovant et solidaire.
    bud-10 logement+2 bon+1 | g+3 c+2 d0 e+3
-   > Le premier habitat coopératif de la ville verra le jour.
-B) Lancer un appel à projets pour dix coopératives :: Plus ambitieux.
+   > Le premier habitat coopératif de l’arrondissement verra le jour.
+B) Lancer un appel à projets pour plusieurs coopératives :: Plus ambitieux.
    bud-25 logement+3 bon+1 | g+3 c+2 d0 e+3
-   > Dix terrains sont réservés aux coopératives d’habitants.
+   > Cinq terrains sont réservés aux coopératives d’habitants.
 C) Refuser : priorité au logement social classique :: Cohérent, moins innovant.
    logement+1 | g+1 c0 d0 e-1
    > Le terrain est attribué à un bailleur social.

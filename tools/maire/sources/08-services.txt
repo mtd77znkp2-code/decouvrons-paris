@@ -1,6 +1,6 @@
 // Services publics : écoles, crèches, santé, piscines, bibliothèques, administration
 === ser-001 | services | Les crèches manquent de personnel
-Des sections de crèche ferment faute d’auxiliaires de puériculture. Des parents ne peuvent plus travailler.
+Des sections de crèche de l’arrondissement ferment faute d’auxiliaires de puériculture. Des parents ne peuvent plus travailler.
 ? distinct
 A) Augmenter les salaires du personnel des crèches :: Attractivité, coût durable.
    rec-1.2x50 services+4 bon+2 | g+4 c+1 d-2 e+1
@@ -8,13 +8,13 @@ A) Augmenter les salaires du personnel des crèches :: Attractivité, coût dura
 B) Confier des crèches à des entreprises privées :: Rapide, qualité discutée.
    rec-0.4x40 services+2 | g-4 c+1 d+3 e-1
    > Des crèches privées prennent le relais.
-   ~30 pop-2 > Un reportage révèle des repas insuffisants dans une crèche privée.
+   ~30 pop-2 > Un reportage révèle des repas insuffisants dans une crèche privée du quartier.
 C) Former des parents et des seniors comme assistants :: Original et bon marché.
    bud-4 services+2 bon+1 | g+1 c+2 d+1 e+2
    > Des « grands-parents de crèche » viennent renforcer les équipes.
 
 === ser-002 | services | Les cantines scolaires et le bio
-Les parents réclament 100 % de produits bio et locaux dans les cantines.
+Les parents de l’arrondissement réclament 100 % de produits bio et locaux dans les cantines.
 A) Passer à 100 % bio et local :: Qualité, surcoût important.
    rec-1x50 ecologie+3 services+2 bon+1 | g+2 c+1 d-1 e+5
    > Les cantines servent désormais des produits bio et locaux.
@@ -25,50 +25,50 @@ C) Garder les menus actuels et baisser les prix :: Pouvoir d’achat d’abord.
    rec-0.3x50 achat+2 | g+2 c+1 d+1 e-2
    > Le prix des repas baisse pour les familles.
 
-=== ser-003 | services | Les mairies d’arrondissement débordées
-Les délais pour obtenir une carte d’identité atteignent quatre mois.
-A) Ouvrir les mairies le soir et le samedi :: Coûteux, pratique.
+=== ser-003 | services | La mairie d’arrondissement débordée
+Les délais pour obtenir une carte d’identité à la mairie d’arrondissement atteignent quatre mois.
+A) Ouvrir la mairie le soir et le samedi :: Coûteux, pratique.
    rec-0.6x40 services+3 bon+1 | g+2 c+2 d+1 e+1
-   > Les mairies restent ouvertes jusqu’à 20 h et le samedi.
+   > La mairie d’arrondissement reste ouverte jusqu’à 20 h et le samedi.
 B) Tout numériser :: Moderne, exclut certains.
    bud-15 services+2 | g-1 c+3 d+2 e+1
    > Les démarches passent en ligne.
    ~35 bon-1 > Les personnes âgées se perdent dans les démarches en ligne.
-C) Envoyer des mairies mobiles dans les quartiers :: Proximité.
+C) Envoyer une mairie mobile dans les quartiers :: Proximité.
    bud-6 services+2 bon+1 | g+3 c+2 d+1 e+1
-   > Des camions-mairies sillonnent les quartiers.
+   > Un camion-mairie sillonne les quartiers de l’arrondissement.
 
-=== ser-004 | services | Les déserts médicaux à Paris
-Dans certains quartiers, il devient impossible de trouver un médecin généraliste.
-A) Ouvrir des centres de santé municipaux :: Médecins salariés, coût élevé.
+=== ser-004 | services | Un désert médical dans l’arrondissement
+Dans certains quartiers de l’arrondissement, il devient impossible de trouver un médecin généraliste.
+A) Ouvrir un centre de santé public :: Médecins salariés, coût élevé.
    bud-20 rec-0.8x50 services+5 bon+2 | g+5 c+1 d-1 e+2
-   > Cinq centres de santé ouvrent avec des médecins salariés.
+   > Un centre de santé ouvre avec des médecins salariés.
 B) Aider l’installation de médecins libéraux :: Incitatif.
    bud-8 services+2 | g0 c+3 d+3 e+1
    > Des aides au loyer attirent de jeunes médecins.
 C) Développer la téléconsultation dans les pharmacies :: Rapide, limité.
    bud-3 services+1 | g0 c+2 d+2 e0
-   > Des cabines de téléconsultation sont installées.
+   > Des cabines de téléconsultation sont installées dans les pharmacies du quartier.
 
-=== ser-005 | services | Les piscines sont saturées
-Les piscines municipales sont prises d’assaut. Il faut parfois attendre une heure pour nager.
-A) Construire deux nouvelles piscines :: Grand investissement.
+=== ser-005 | services | La piscine du quartier est saturée
+La piscine de l’arrondissement est prise d’assaut. Il faut parfois attendre une heure pour nager.
+A) Construire une deuxième piscine :: Grand investissement.
    bud-60 rec-0.5x50 services+4 bon+2 | g+2 c+1 d+1 e+1
-   > Deux piscines sont lancées.
-   +20 services+2 bon+2 > Les nouvelles piscines ouvrent.
+   > Une nouvelle piscine est lancée.
+   +20 services+2 bon+2 > La nouvelle piscine ouvre.
 B) Allonger les horaires d’ouverture :: Moins cher.
    rec-0.4x50 services+2 | g+1 c+2 d+1 e0
-   > Les piscines ouvrent de 7 h à 22 h.
+   > La piscine ouvre de 7 h à 22 h.
 C) Réservation obligatoire en ligne :: Fin des files, moins de souplesse.
    bud-2 services+1 bon-1 | g0 c+2 d+2 e0
    > Il faut désormais réserver son créneau.
 
-=== ser-006 | services | Les bibliothèques ouvertes le dimanche
-Les étudiants et les familles demandent des bibliothèques ouvertes le dimanche.
-A) Ouvrir le dimanche toutes les grandes bibliothèques :: Coûteux, très apprécié.
+=== ser-006 | services | La bibliothèque ouverte le dimanche
+Les étudiants et les familles de l’arrondissement demandent une bibliothèque ouverte le dimanche.
+A) Ouvrir le dimanche toutes les bibliothèques :: Coûteux, très apprécié.
    rec-0.5x50 services+3 bon+2 | g+2 c+2 d+1 e+1
-   > Les grandes bibliothèques ouvrent le dimanche.
-B) Ouvrir quelques bibliothèques avec des étudiants vacataires :: Moins cher.
+   > Les bibliothèques de l’arrondissement ouvrent le dimanche.
+B) Ouvrir une bibliothèque avec des étudiants vacataires :: Moins cher.
    rec-0.2x50 services+2 | g+1 c+2 d+1 e+1
    > Des étudiants assurent l’accueil le dimanche.
 C) Garder les horaires :: Pas de dépense.
@@ -76,7 +76,7 @@ C) Garder les horaires :: Pas de dépense.
    > Les bibliothèques restent fermées le dimanche.
 
 === ser-007 | services | L’école élémentaire menacée de fermeture
-La baisse des naissances entraîne la fermeture de classes. Une école du 10e pourrait fermer.
+La baisse des naissances entraîne la fermeture de classes. Une école de l’arrondissement pourrait fermer.
 A) Garder l’école et réduire les effectifs par classe :: Qualité éducative.
    rec-0.3x50 services+2 bon+1 | g+3 c+1 d0 e+1
    > L’école reste ouverte avec des classes moins chargées.
@@ -89,7 +89,7 @@ C) Transformer l’école en lieu mixte : école et maison de quartier :: Créat
    > L’école partage ses locaux avec une maison de quartier.
 
 === ser-008 | services | Les agents d’accueil victimes d’agressions
-Les agents des mairies et des centres sociaux subissent de plus en plus d’insultes et d’agressions.
+Les agents de la mairie d’arrondissement et du centre social subissent de plus en plus d’insultes et d’agressions.
 A) Installer des vigiles dans les lieux d’accueil :: Sécurisant.
    rec-0.4x40 services+1 securite+2 | g-1 c+2 d+3 e0
    > Des agents de sécurité sont présents à l’accueil.
@@ -98,10 +98,10 @@ B) Former à la gestion des conflits :: Prévention.
    > Tous les agents d’accueil sont formés.
 C) Porter plainte systématiquement :: Soutien affiché.
    bud-1 services+1 | g+1 c+2 d+2 e+1
-   > La ville porte plainte à chaque agression.
+   > La mairie d’arrondissement porte plainte à chaque agression.
 
 === ser-009 | services | Les centres sociaux manquent de moyens
-Les centres sociaux, très utiles dans les quartiers populaires, réclament plus de financements.
+Les centres sociaux, très utiles dans les quartiers populaires de l’arrondissement, réclament plus de financements.
 A) Doubler leur financement :: Lien social, coût durable.
    rec-0.8x50 services+3 bon+2 achat+1 | g+5 c+1 d-2 e+2
    > Les centres sociaux élargissent leurs activités.
@@ -113,8 +113,8 @@ C) Maintenir leur budget :: Pas de hausse.
    > Les budgets restent les mêmes.
 
 === ser-010 | services | Le soutien scolaire gratuit
-Les inégalités scolaires se creusent. Les familles aisées paient des cours particuliers.
-A) Créer un soutien scolaire gratuit dans chaque arrondissement :: Égalité, coût.
+Les inégalités scolaires se creusent dans l’arrondissement. Les familles aisées paient des cours particuliers.
+A) Créer un soutien scolaire gratuit dans chaque quartier :: Égalité, coût.
    rec-0.6x50 services+3 achat+1 | g+4 c+2 d0 e+1
    > Des étudiants rémunérés aident les élèves après l’école.
 B) Faire appel à des bénévoles :: Peu cher.
@@ -125,10 +125,10 @@ C) Laisser cette mission à l’Éducation nationale :: Pas ta compétence.
    > Rien ne change.
 
 === ser-011 | services | Les urgences pédiatriques saturées
-L’hôpital pour enfants est débordé, les parents attendent des heures.
-A) Ouvrir des centres de soins non programmés pour enfants :: Désengorge les urgences.
+L’hôpital pour enfants le plus proche est débordé, les parents de l’arrondissement attendent des heures.
+A) Ouvrir un centre de soins non programmés pour enfants :: Désengorge les urgences.
    bud-15 services+3 bon+2 | g+2 c+2 d+1 e+1
-   > Trois centres de soins pédiatriques ouvrent le soir et le week-end.
+   > Un centre de soins pédiatriques ouvre le soir et le week-end dans l’arrondissement.
 B) Financer des places de stationnement pour les soignants :: Petit geste.
    bud-2 services+1 | g0 c+1 d+1 e-1
    > Les soignants se garent plus facilement.
@@ -138,10 +138,10 @@ C) Interpeller l’Agence régionale de santé :: Politique.
    ~40 services+2 > L’État débloque des lits supplémentaires.
 
 === ser-012 | services | Les toilettes des écoles en mauvais état
-Les élèves se retiennent toute la journée car les toilettes sont sales et cassées.
+Dans les écoles de l’arrondissement, les élèves se retiennent toute la journée car les toilettes sont sales et cassées.
 A) Rénover toutes les toilettes d’école :: Coûteux, attendu.
    bud-25 services+3 bon+2 | g+2 c+2 d+1 e+1
-   > Toutes les toilettes d’école sont rénovées.
+   > Toutes les toilettes d’école de l’arrondissement sont rénovées.
 B) Ajouter du personnel de nettoyage :: Rapide.
    rec-0.4x50 services+2 proprete+1 | g+2 c+1 d0 e0
    > Les toilettes sont nettoyées trois fois par jour.
@@ -151,11 +151,11 @@ C) Faire un audit d’abord :: Prudent, mais lent.
    +6 pop-1 > Une vidéo d’élève montre l’état des toilettes : scandale.
 
 === ser-013 | services | Les personnes âgées isolées
-Des milliers de seniors vivent seuls, sans visite, surtout l’été.
+Des centaines de seniors de l’arrondissement vivent seuls, sans visite, surtout l’été.
 A) Créer un réseau de visiteurs bénévoles :: Peu coûteux, humain.
    bud-3 services+2 bon+2 | g+2 c+2 d+1 e+1
    > Des bénévoles rendent visite chaque semaine aux seniors isolés.
-B) Ouvrir des cafés seniors dans chaque arrondissement :: Lien social.
+B) Ouvrir un café seniors dans chaque quartier :: Lien social.
    bud-8 services+2 bon+1 | g+2 c+2 d+1 e+1
    > Des cafés seniors proposent activités et repas.
 C) Ligne téléphonique d’écoute :: Simple et rapide.
@@ -163,7 +163,7 @@ C) Ligne téléphonique d’écoute :: Simple et rapide.
    > Une ligne d’écoute fonctionne 24 h/24.
 
 === ser-014 | services | Le tarif des cantines selon les revenus
-Les tarifs des cantines vont de quelques centimes à plus de 7 €. Les familles aisées protestent contre la hausse de leur tarif.
+Les tarifs des cantines vont de quelques centimes à plus de 7 €. Les familles aisées de l’arrondissement protestent contre la hausse de leur tarif.
 A) Renforcer la progressivité :: Plus juste selon la gauche.
    rec+0.3x50 achat+2 pop-1 | g+4 c0 d-3 e+1
    > Les familles aisées paient davantage, les modestes moins.
@@ -172,11 +172,11 @@ B) Tarif unique à 3 € :: Simple, profite aux classes moyennes.
    > Toutes les familles paient le même prix.
 C) Cantine gratuite pour tous :: Énorme coût, très populaire.
    rec-1.5x50 achat+4 pop+3 | g+5 c-2 d-3 e+2
-   > La cantine devient gratuite.
+   > La cantine devient gratuite dans l’arrondissement.
 
-=== ser-015 | services | Le service des pompes funèbres municipal
-Les obsèques coûtent très cher à Paris. Des familles s’endettent pour enterrer leurs proches.
-A) Créer un service funéraire municipal à prix coûtant :: Social.
+=== ser-015 | services | Le service des pompes funèbres public
+Les obsèques coûtent très cher. Des familles de l’arrondissement s’endettent pour enterrer leurs proches.
+A) Créer un service funéraire public à prix coûtant :: Social.
    bud-6 achat+2 services+1 | g+4 c+1 d-2 e+1
    > Des obsèques dignes sont proposées à prix réduit.
 B) Plafonner les tarifs des concessions :: Simple.
@@ -187,7 +187,7 @@ C) Ne rien changer :: Pas de dépense.
    > Les prix restent élevés.
 
 === ser-016 | services | Les gymnases utilisés par les clubs privés
-Les clubs de sport privés occupent les gymnases municipaux au détriment des associations.
+Les clubs de sport privés occupent les gymnases de l’arrondissement au détriment des associations.
 A) Priorité absolue aux associations :: Équité.
    rec-0.1x40 services+2 bon+1 | g+3 c+1 d-1 e+1
    > Les associations retrouvent leurs créneaux.
@@ -199,23 +199,23 @@ C) Laisser les règles actuelles :: Stabilité.
    > Rien ne change.
 
 === ser-017 | services | Les inscriptions en crèche jugées opaques
-Les parents ne comprennent pas comment les places en crèche sont attribuées.
+Les parents de l’arrondissement ne comprennent pas comment les places en crèche sont attribuées.
 A) Attribution par points, publique :: Transparence.
    bud-2 services+1 pop+2 | g+2 c+3 d+2 e+2
-   > Une grille de points publique remplace les commissions.
+   > Une grille de points publique remplace la commission.
 B) Tirage au sort :: Égalité pure, critiqué.
    bud-1 pop-1 | g+1 c0 d-1 e+1
    > Les places sont tirées au sort.
    ~40 pop-1 > Une mère célibataire sans place témoigne à la télévision.
-C) Garder les commissions :: Expertise des élus.
+C) Garder la commission :: Expertise des élus.
    pop-1 | g0 c0 d+1 e0
-   > Les commissions continuent.
+   > La commission d’attribution continue.
 
 === ser-018 | services | Les équipements sportifs de quartier
-Les terrains de sport de proximité sont dégradés et peu nombreux.
-A) Rénover 100 terrains :: Visible et apprécié.
+Les terrains de sport de proximité de l’arrondissement sont dégradés et peu nombreux.
+A) Rénover tous les terrains :: Visible et apprécié.
    bud-20 services+3 bon+2 securite+1 | g+2 c+2 d+1 e+1
-   > Cent terrains sont rénovés.
+   > Une quinzaine de terrains sont rénovés.
 B) Ouvrir les cours d’école au public le week-end :: Peu cher.
    bud-2 services+2 bon+1 | g+2 c+2 d0 e+2
    > Les cours d’école deviennent des terrains de jeu le week-end.
@@ -225,10 +225,10 @@ C) Rien de nouveau :: Pas de dépense.
    > Les terrains restent dégradés.
 
 === ser-019 | services | La santé mentale des jeunes
-Les services de psychiatrie pour adolescents sont débordés.
-A) Ouvrir des maisons des adolescents :: Prévention.
+Les services de psychiatrie pour adolescents de l’arrondissement sont débordés.
+A) Ouvrir une maison des adolescents :: Prévention.
    bud-12 rec-0.4x40 services+3 bon+2 | g+3 c+2 d+1 e+2
-   > Des lieux d’écoute gratuits ouvrent pour les 12-25 ans.
+   > Un lieu d’écoute gratuit ouvre pour les 12-25 ans.
 B) Former les enseignants et animateurs :: Moins cher.
    bud-3 services+1 | g+1 c+2 d+1 e+1
    > Les adultes apprennent à repérer les signes de détresse.
@@ -237,7 +237,7 @@ C) Laisser l’État gérer :: Pas ta compétence.
    > Rien ne change.
 
 === ser-020 | services | Les centres d’animation recrutent mal
-Les animateurs périscolaires sont précaires et partent vite. Les enfants changent d’animateur chaque mois.
+Les animateurs périscolaires de l’arrondissement sont précaires et partent vite. Les enfants changent d’animateur chaque mois.
 A) Titulariser les animateurs :: Stabilité, coût.
    rec-0.8x50 services+3 | g+4 c+1 d-2 e+1
    > Les animateurs obtiennent des contrats stables.
@@ -249,20 +249,20 @@ C) Confier le périscolaire à des associations :: Externaliser.
    > Des associations prennent le relais.
 
 === ser-021 | services | Le service public de la petite enfance
-Les parents attendent un mode de garde pour chaque enfant. C’est une promesse coûteuse.
+Les parents attendent un mode de garde pour chaque enfant de l’arrondissement. C’est une promesse coûteuse.
 ? amb=services
 A) Garantir une solution à chaque famille :: Promesse forte.
    bud-40 rec-1x50 services+5 bon+3 pop+2 | g+4 c+1 d-2 e+2
    > Chaque famille se voit proposer une crèche, une assistante maternelle ou une halte-garderie.
 B) Augmenter de 20 % les places en crèche :: Effort important.
    bud-25 services+3 | g+2 c+2 d0 e+1
-   > Des milliers de places sont créées.
+   > Des centaines de places sont créées.
 C) Aider financièrement les familles à payer une nounou :: Rapide.
    rec-0.6x50 achat+2 services+1 | g0 c+2 d+3 e0
    > Une aide mensuelle soutient les familles.
 
-=== ser-022 | services | Les bains-douches municipaux
-Les bains-douches publics accueillent les personnes sans logement, mais ils sont vétustes.
+=== ser-022 | services | Les bains-douches publics
+Les bains-douches de l’arrondissement accueillent les personnes sans logement, mais ils sont vétustes.
 A) Rénover et en ouvrir de nouveaux :: Dignité.
    bud-10 services+2 bon+1 | g+4 c+2 d0 e+1
    > Les bains-douches sont rénovés.
@@ -287,18 +287,18 @@ C) Garder les bibliothèques traditionnelles :: Tradition.
    > Les livres restent au centre.
 
 === ser-024 | services | Les accueils de loisirs pendant les vacances
-Les centres de loisirs refusent des enfants faute de places l’été.
+Les centres de loisirs de l’arrondissement refusent des enfants faute de places l’été.
 A) Ouvrir plus de places l’été :: Coûteux.
    bud-8 services+2 bon+1 | g+2 c+2 d+1 e+1
-   > Des milliers de places supplémentaires sont ouvertes.
+   > Des centaines de places supplémentaires sont ouvertes.
 B) Partenariats avec des clubs sportifs :: Malin.
    bud-3 services+2 | g+1 c+3 d+2 e+1
-   > Les clubs accueillent les enfants en stage.
+   > Les clubs du quartier accueillent les enfants en stage.
 C) Priorité aux familles où les deux parents travaillent :: Tri, critiques.
    services+1 pop-1 | g-1 c+2 d+2 e0
    > Les places sont réservées aux parents qui travaillent.
 
-=== ser-025 | services | Les agents municipaux en télétravail
+=== ser-025 | services | Les agents de la mairie d’arrondissement en télétravail
 Les syndicats demandent trois jours de télétravail par semaine. Les usagers craignent des services fermés.
 A) Accorder deux jours :: Compromis.
    services-1 bon+1 rec+0.2x40 | g+1 c+3 d0 e+2
