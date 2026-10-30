@@ -21,6 +21,54 @@ function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null
 
 // Classement général (base partagée si disponible)
 var LB={db:null,uid:null,docs:[],boards:{}};
+// Nom du joueur partout (classements, sessions, poker) : son pseudo s'il en a choisi un,
+// sinon « Maire0002 » : un numéro unique attribué une seule fois (compteurs/maires), gardé dans joueurs/{uid}
+window.MAIRE_NUM=null;try{window.MAIRE_NUM=+localStorage.getItem("maire_numero")||null}catch(e){}
+function pad4(n){return ("000"+n).slice(-4)}
+window.nomJoueur=function(){
+  if(window.user)return window.user.slice(0,20);
+  if(window.MAIRE_NUM)return "Maire"+pad4(window.MAIRE_NUM);
+  // Numéro pas encore attribué (hors ligne) : un numéro provisoire, gardé sur l'appareil
+  var t=0;try{t=+localStorage.getItem("maire_numero_tmp")||0;if(!t){t=1000+Math.floor(Math.random()*9000);localStorage.setItem("maire_numero_tmp",t)}}catch(e){t=1000}
+  return "Maire"+pad4(t);
+};
+function profilJoueur(){
+  if(!LB.db||!LB.uid)return;
+  var uid=LB.uid,ref=LB.db.doc("joueurs/"+uid),u=LB.auth&&LB.auth.currentUser;
+  ref.get().then(function(d){
+    var x=d.exists?d.data():{};
+    if(x.pseudo&&!window.user){window.user=x.pseudo;try{localStorage.setItem("user",x.pseudo)}catch(e){}paintUser()}
+    if(x.numero){window.MAIRE_NUM=x.numero;try{localStorage.setItem("maire_numero",x.numero)}catch(e){}return}
+    if(window.MAIRE_NUM)return ref.set({numero:window.MAIRE_NUM,pseudo:window.user||"",google:!!(u&&!u.isAnonymous)},{merge:true});
+    var c=LB.db.doc("compteurs/maires");
+    return LB.db.runTransaction(function(tx){return tx.get(c).then(function(s){var n=(s.exists&&s.data().n||0)+1;tx.set(c,{n:n});return n})}).then(function(n){
+      if(LB.uid!==uid)return;
+      window.MAIRE_NUM=n;try{localStorage.setItem("maire_numero",n)}catch(e){}
+      return ref.set({numero:n,pseudo:window.user||"",google:!!(u&&!u.isAnonymous)},{merge:true});
+    });
+  }).catch(function(){});
+}
+// Connexion Google du joueur (facultative) : le compte invité est relié à Google (même identifiant, rien n'est perdu).
+// Si ce compte Google sert déjà sur un autre appareil, on bascule dessus (son pseudo et son numéro reviennent).
+window.connexionGoogle=function(){
+  if(!LB.auth||!window.firebase)return Promise.reject(new Error("Connexion indisponible ici."));
+  var prov=new firebase.auth.GoogleAuthProvider(),u=LB.auth.currentUser;
+  prov.setCustomParameters({prompt:"select_account"});
+  var p=u&&u.isAnonymous?u.linkWithPopup(prov).catch(function(e){
+    if(e&&(e.code==="auth/credential-already-in-use"||e.code==="auth/email-already-in-use")&&e.credential)return LB.auth.signInWithCredential(e.credential);
+    throw e;
+  }):LB.auth.signInWithPopup(prov);
+  return p.then(function(){profilJoueur();if(LB.auth.currentUser)LB.db.doc("joueurs/"+LB.auth.currentUser.uid).set({google:true},{merge:true}).catch(function(){})}).catch(function(e){
+    // Fenêtre bloquée (certains téléphones) : on passe par une redirection
+    if(e&&(e.code==="auth/popup-blocked"||e.code==="auth/operation-not-supported-in-this-environment")){
+      try{sessionStorage.setItem("connexion","jeu")}catch(x){}
+      return u&&u.isAnonymous?u.linkWithRedirect(prov):LB.auth.signInWithRedirect(prov);
+    }
+    throw e;
+  });
+};
+window.compteGoogle=function(){var u=LB.auth&&LB.auth.currentUser;return u&&!u.isAnonymous?{nom:u.displayName||"",email:u.email||""}:null};
+function garderPseudo(){if(LB.db&&LB.uid)LB.db.doc("joueurs/"+LB.uid).set({pseudo:window.user||""},{merge:true}).catch(function(){})}
 function lbBoard(id,key,title,fmt){LB.boards[id]={k:key,t:title,f:fmt};lbDraw(id)}
 function lbRender(){for(var id in LB.boards)lbDraw(id)}
 function lbDraw(id){
@@ -35,8 +83,8 @@ function lbDraw(id){
 }
 function lbSubmit(key,score){
   if(!LB.db||!LB.uid)return Promise.resolve("Le classement général n’est pas disponible ici.");
-  // Sans pseudo, le joueur apparaît quand même, sous un nom de maire tiré de son identifiant
-  var nom=window.user||("Maire n°"+LB.uid.slice(-4).toUpperCase());
+  // Sans pseudo, le joueur apparaît quand même, sous son nom de maire numéroté (Maire0002)
+  var nom=nomJoueur();
   var ref=LB.db.doc("scores/"+LB.uid);
   return ref.get().then(function(s){
     var d=s.exists?s.data():{},m=Object.assign({},d.s||{});
@@ -85,10 +133,20 @@ function lbSubmit(key,score){
     db.collection("scores").onSnapshot(function(s){
       LB.docs=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});lbRender();if(window.apRender)apRender();
     },function(){LB.db=null;lbRender()});
-    auth.getRedirectResult().then(function(r){if(r&&r.user&&!r.user.isAnonymous)adminEnter(r.user)}).catch(function(){adminFail("Connexion impossible. Réessaie.")});
+    // Retour d'une connexion Google par redirection : celle du jeu (joueur) ou celle de l'administration
+    auth.getRedirectResult().then(function(r){
+      var f=null;try{f=sessionStorage.getItem("connexion");sessionStorage.removeItem("connexion")}catch(e){}
+      if(!r||!r.user||r.user.isAnonymous)return;
+      if(f==="jeu"){profilJoueur();return}
+      adminEnter(r.user);
+    }).catch(function(e){
+      var f=null;try{f=sessionStorage.getItem("connexion");sessionStorage.removeItem("connexion")}catch(x){}
+      if(f==="jeu"){if(e&&e.credential)auth.signInWithCredential(e.credential).catch(function(){});return}
+      adminFail("Connexion impossible. Réessaie.");
+    });
     auth.onAuthStateChanged(function(u){
       if(!u){LB.uid=null;window.ADMIN_OK=false;auth.signInAnonymously().catch(function(){});return}
-      LB.uid=u.uid;window.ADMIN_OK=!u.isAnonymous;lbRender();
+      LB.uid=u.uid;window.ADMIN_OK=!u.isAnonymous;lbRender();profilJoueur();
       if(!u.isAnonymous&&u.email===ADMIN_EMAIL&&window.adminMode){adminMode(true);if(location.hash==="#admin")loadAdmin().then(function(){apOpen()})}
     });
   }catch(e){LB.db=null}
@@ -121,11 +179,11 @@ function paintUser(){
 document.getElementById("loginBtn").onclick=function(){var b=document.getElementById("loginBox");b.hidden=!b.hidden;if(!b.hidden&&!window.user)document.getElementById("pseudo").focus()};
 document.getElementById("loginForm").onsubmit=function(e){
   e.preventDefault();var v=document.getElementById("pseudo").value.trim();if(!v)return;
-  window.user=v;try{localStorage.setItem("user",v)}catch(x){}
-  document.getElementById("loginBox").hidden=true;paintUser();
+  window.user=v.slice(0,20);try{localStorage.setItem("user",window.user)}catch(x){}
+  document.getElementById("loginBox").hidden=true;paintUser();garderPseudo();
 };
 document.getElementById("logout").onclick=function(){
-  window.user="";try{localStorage.removeItem("user")}catch(x){}
+  window.user="";try{localStorage.removeItem("user")}catch(x){}garderPseudo();
   document.getElementById("pseudo").value="";document.getElementById("loginBox").hidden=true;paintUser();
 };
 paintUser();
@@ -180,6 +238,7 @@ $("adminLogin").onsubmit=function(e){
   e.preventDefault();
   if(!LB.auth){adminFail("Connexion impossible ici.");return}
   $("adm-msg").textContent="Connexion…";
+  try{sessionStorage.setItem("connexion","admin")}catch(x){}
   LB.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()).catch(function(){adminFail("Connexion impossible. Réessaie.")});
 };
 $("adminLogout").onclick=function(){adminMode(false);if(LB.auth)LB.auth.signOut();window.scrollTo(0,0)};
@@ -191,7 +250,7 @@ window.SessionLigne=(function(){
   function S(){return window.MaireSession}
   function enLigne(){return !!(LB.db&&LB.uid)}
   function moi(){return LB.uid||"local"}
-  function nom(){return (window.user||("Maire n°"+moi().slice(-4).toUpperCase())).slice(0,20)}
+  function nom(){return nomJoueur()}
   function lire(d){var x=d.data()||{};try{return JSON.parse(x.etat)}catch(e){return null}}
   function champs(s){return {etat:JSON.stringify(s),ouverte:!S().pleine(s),joueurs:S().joueurs(s).map(function(x){return x.uid}),maj:Date.now()}}
   // ---- Session locale ----
@@ -281,7 +340,7 @@ window.SessionLigne=(function(){
 // File d'attente : poker_attente/{uid} ; table : poker_tables/{id} (l'état de la table est gardé en texte JSON).
 window.PokerLigne=(function(){
   function pret(){return LB.db&&LB.uid&&window.Poker}
-  function nom(){return (window.user||"Un maire").slice(0,20)}
+  function nom(){return nomJoueur()}
   function lire(d){var x=d.data()||{};try{x.t=JSON.parse(x.etat)}catch(e){x.t=null}return x}
   // Cherche un adversaire pendant ms millisecondes ; renvoie {id, siege} ou null (=> bot)
   function chercher(ms){

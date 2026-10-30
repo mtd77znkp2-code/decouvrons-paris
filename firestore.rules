@@ -14,6 +14,18 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Profil du joueur : son numéro de maire (Maire0002) et son pseudo, écrits par lui seul
+    match /joueurs/{uid} {
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(["numero", "pseudo", "google"])
+        && request.resource.data.get("pseudo", "").size() <= 20;
+    }
+    // Compteur des numéros de maire : on ne peut que l'augmenter de 1
+    match /compteurs/maires {
+      allow create: if request.auth != null && request.resource.data.n == 1 && request.resource.data.keys().hasOnly(["n"]);
+      allow update: if request.auth != null && request.resource.data.n == resource.data.n + 1 && request.resource.data.keys().hasOnly(["n"]);
+    }
+
     // Statistiques du Maire de Paris : une fiche par partie de joueur, écrite par ce joueur, lue seulement par l'admin
     match /stats_parties/{id} {
       allow read: if isAdmin();

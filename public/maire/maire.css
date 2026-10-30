@@ -1135,3 +1135,14 @@ button.mx-ses-qui{cursor:pointer}
 .mx-hud .mx-chip{padding:6px 9px;font-size:13.5px}
 .mx-notebtn .m-note.m-note-g{font-size:15px;letter-spacing:1px}
 @media (max-width:360px){.mx-notebtn .m-note.m-note-g{font-size:13px}.mx-hud .m-tel-img{width:30px;height:30px}}
+/* Au lancement : invité ou Google */
+.mx-connexion{display:grid;gap:12px;justify-items:center;text-align:center;max-width:420px;margin:20px auto;padding:22px 18px;border-radius:22px;background:rgba(14,23,64,.78);color:#fff;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.mx-connexion h4{margin:0;font-size:24px}
+.mx-connexion p{margin:0;line-height:1.5}
+.mx-connexion-ico{font-size:52px;line-height:1}
+.mx-google{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:14px;border:0;border-radius:16px;background:#fff;color:#1f1f1f;font:inherit;font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 5px 0 #c9cbd6}
+.mx-google b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:conic-gradient(#ea4335 0 25%,#fbbc05 0 50%,#34a853 0 75%,#4285f4 0);color:#fff;font-size:15px}
+.mx-google:disabled{opacity:.6}
+.mx-connexion .mx-jouer2{margin-top:0}
+.mx-compte{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:center;margin:14px 0 4px;color:rgba(255,255,255,.75);text-align:center}
+.mx-compte .mx-lien{margin:0}

@@ -150,7 +150,34 @@
     if (f !== fondF) { fondF = f; fondV.poster = "img/maire-menu-" + f + ".webp"; if (!calme) fondV.src = "img/maire-menu-" + f + ".mp4"; }
     if (!calme) { var p = fondV.play(); if (p && p.catch) p.catch(function () {}); }
   }
+  // ---------- Au lancement : jouer en invité ou se connecter avec Google (facultatif, demandé une seule fois) ----------
+  var CONNEXION_VUE = false;
+  function choixInvite() { try { return localStorage.getItem("maire_invite") === "1"; } catch (e) { return false; } }
+  function ecranConnexion() {
+    CONNEXION_VUE = true;
+    vider(true); fondMenu(true); fermerModale();
+    var d = h("div", "mx-connexion"), msg = h("p", "m-aide", "");
+    ajout(d, h("span", "mx-connexion-ico", "🏛️"), h("h4", null, "Bienvenue, futur maire !"),
+      h("p", null, "Connecte-toi avec Google pour retrouver ton pseudo, ton numéro de maire et tes statistiques sur tous tes appareils. C’est facultatif : tu peux jouer tout de suite en invité."));
+    var g = bouton("", "mx-google", function () {
+      g.disabled = true; msg.textContent = "Connexion…";
+      window.connexionGoogle().then(function () { try { localStorage.setItem("maire_invite", "1"); } catch (e) {} toast("✅ Connecté avec Google"); accueil(); })
+        .catch(function (e) { g.disabled = false; msg.textContent = e && e.code === "auth/popup-closed-by-user" ? "Connexion annulée." : "Connexion impossible pour l’instant. Tu peux jouer en invité."; });
+    });
+    ajout(g, h("b", null, "G"), h("span", null, "Se connecter avec Google"));
+    var inv = bouton("👤 Jouer en invité", "mx-jouer mx-jouer2", function () { try { localStorage.setItem("maire_invite", "1"); } catch (e) {} accueil(); });
+    ajout(d, g, inv, msg, h("small", "m-aide", "En invité, tu joues sous le nom « " + nomJoueur() + " » (ou ton pseudo). Tu pourras te connecter plus tard depuis l’accueil du jeu."));
+    box.appendChild(d); haut();
+  }
+  // Petite ligne en bas de l'accueil : connecté avec Google, ou proposition de se connecter
+  function ligneCompte() {
+    var c = window.compteGoogle ? compteGoogle() : null, d = h("div", "mx-compte");
+    if (c) d.appendChild(h("small", null, "✅ Connecté avec Google" + (c.nom ? " · " + c.nom : "") + " · tu joues sous le nom « " + nomJoueur() + " »"));
+    else if (window.connexionGoogle) ajout(d, h("small", null, "👤 Invité · « " + nomJoueur() + " »"), bouton("Se connecter avec Google", "mx-lien", ecranConnexion));
+    return d;
+  }
   function accueil() {
+    if (!CONNEXION_VUE && !choixInvite() && window.connexionGoogle && !(window.compteGoogle && compteGoogle())) return ecranConnexion();
     vider(true); fondMenu(true); fermerModale();
     var s = lireSauvegarde(), n = nivJ(), P = G.lire(), nv = G.niveau(P.xp);
     choixNiveau(s && s.phase !== "fin" ? s.niveau : lireNiveau());
@@ -183,6 +210,7 @@
     var plus = h("details", "mx-replie"); plus.appendChild(h("summary", null, "📖 Mon parcours : histoire, succès, objets, déblocages"));
     ajout(plus, carteChapitre(n), carteProfil(), carteDeblocages(n));
     box.appendChild(plus);
+    box.appendChild(ligneCompte());
   }
   function ecranSerie() {
     vider(true); box.appendChild(bouton("← Retour", "btn m-sec", accueil));
@@ -311,8 +339,8 @@
   function carteLigue(zone) {
     zone.innerHTML = "";
     var d = h("div", "m-ligue");
-    if (!window.user || !window.LB || !LB.uid) {
-      ajout(d, h("strong", null, "🏅 Ligues de la semaine"), h("small", null, "Connecte-toi depuis l’accueil du site (avec un pseudo) pour affronter les autres maires : les meilleurs montent de ligue chaque lundi."));
+    if (!window.LB || !LB.uid) {
+      ajout(d, h("strong", null, "🏅 Ligues de la semaine"), h("small", null, "Les ligues ont besoin d’une connexion Internet : les meilleurs maires montent de ligue chaque lundi."));
       zone.appendChild(d); return;
     }
     var L = G.ligue(LB.docs || [], LB.uid);
@@ -321,20 +349,20 @@
       h("small", null, "Ton XP cette semaine : " + L.xp + " · fin dans " + L.finDans + " jour" + (L.finDans > 1 ? "s" : "") + " · les 20 % du haut montent, les 20 % du bas descendent."));
     if (L.avant && L.avant.nouveau !== L.avant.tier) d.appendChild(h("p", "m-ligue-msg", L.avant.nouveau > L.avant.tier ? "⬆️ Promotion ! Te voilà en ligue " + G.LIGUES[L.avant.nouveau].nom + "." : "⬇️ Descente en ligue " + G.LIGUES[L.avant.nouveau].nom + " : à toi de remonter !"));
     var o = h("ol", "m-ligue-l");
-    L.membres.slice(0, 10).forEach(function (m, k) { var li = h("li", m.moi ? "me" : ""); ajout(li, h("span", null, (k + 1) + ". " + (m.moi ? window.user + " (toi)" : m.nom)), h("b", null, m.xp + " XP")); o.appendChild(li); });
-    if (L.rang > 10) { var li = h("li", "me"); ajout(li, h("span", null, L.rang + ". " + window.user + " (toi)"), h("b", null, L.xp + " XP")); o.appendChild(li); }
+    L.membres.slice(0, 10).forEach(function (m, k) { var li = h("li", m.moi ? "me" : ""); ajout(li, h("span", null, (k + 1) + ". " + (m.moi ? nomJoueur() + " (toi)" : m.nom)), h("b", null, m.xp + " XP")); o.appendChild(li); });
+    if (L.rang > 10) { var li = h("li", "me"); ajout(li, h("span", null, L.rang + ". " + nomJoueur() + " (toi)"), h("b", null, L.xp + " XP")); o.appendChild(li); }
     d.appendChild(o); zone.appendChild(d);
   }
   var ligueEnvoyee = null;
   function envoyerLigue() {
-    if (!window.user || !window.LB || !LB.db || !LB.uid) return;
+    if (!window.LB || !LB.db || !LB.uid) return;
     var x = G.donneesLigue(), cle = x.lgw + ":" + x.lgx + ":" + x.lg; if (ligueEnvoyee === cle) return;
     var ref = LB.db.doc("scores/" + LB.uid);
     ref.get().then(function (sn) {
       var dd = sn.exists ? sn.data() : {}, m = Object.assign({}, dd.s || {});
       if (m.lgw === x.lgw && m.lgx === x.lgx && m.lg === x.lg) { ligueEnvoyee = cle; return; }
       m.lgw = x.lgw; m.lgx = x.lgx; m.lg = x.lg;
-      return ref.set({ name: window.user, s: m, at: Date.now() }).then(function () { ligueEnvoyee = cle; });
+      return ref.set({ name: nomJoueur(), s: m, at: Date.now() }).then(function () { ligueEnvoyee = cle; });
     }).catch(function () {});
   }
 
@@ -444,13 +472,13 @@
     return d;
   }
   function envoyerScoreJour(j, score) {
-    if (!window.LB || !LB.db || !LB.uid || !window.user) return;
+    if (!window.LB || !LB.db || !LB.uid) return;
     var ref = LB.db.doc("scores/" + LB.uid);
     ref.get().then(function (sn) {
       var dd = sn.exists ? sn.data() : {}, m = Object.assign({}, dd.s || {});
       if (m.mairedj === j && m.maired >= score) return;
       m.mairedj = j; m.maired = score;
-      return ref.set({ name: window.user, s: m, at: Date.now() });
+      return ref.set({ name: nomJoueur(), s: m, at: Date.now() });
     }).catch(function () {});
   }
   function lancerDefi(d) {
@@ -487,7 +515,7 @@
     vider();
     box.appendChild(h("p", "m-nivtxt", "La difficulté monte à chaque mandat : le premier est indulgent, les suivants de plus en plus exigeants."));
     // Le personnage remplace la ligne politique : chacun a la sienne, un avantage et un défaut
-    box.appendChild(h("p", "m-etape", "Le maire que tu incarnes"));
+    box.appendChild(h("p", "m-etape", "Ta compétence de maire"));
     var lg = h("div", "mx-maires");
     liste.forEach(function (x) {
       var b = bouton("", "mx-maire" + (x.dispo ? "" : " mx-verrouille"), function () {
@@ -521,7 +549,7 @@
     function maj() {
       var ok = !!CHOIX.maire;
       go.disabled = !ok;
-      msg.textContent = !CHOIX.maire ? "Choisis le maire que tu veux incarner." : "";
+      msg.textContent = !CHOIX.maire ? "Choisis ta compétence de maire." : "";
     }
     maj();
   }
@@ -1673,7 +1701,7 @@
     { id: "chance", ecran: "modale", si: function () { return st.special === "chance" && st.phase === "evenement"; }, etapes: [
       { q: "#m-modale .m-choix", t: "🍀 Un coup de chance ! À toi d’en profiter.", a: "choix" }] },
     { id: "maire-crea", ecran: "creation", si: function () { return !!document.querySelector(".mx-maires"); }, etapes: [
-      { q: ".mx-maires", t: "🎩 Choisis le maire que tu incarnes : son nom cache sa promesse de campagne. Certains se débloquent au fil de ta carrière.", a: "ok" }] },
+      { q: ".mx-maires", t: "🎩 Choisis ta compétence : chaque jeu de mots cache un point fort (et un point faible). Certaines se débloquent au fil de ta carrière.", a: "ok" }] },
     { id: "promesses", ecran: "jeu", si: function () { return st.ambitions.length && st.phase === "gestion"; }, etapes: [
       { q: ".mx-prom", t: "🎯 Ta promesse : dépasse le trait blanc avant l’élection pour gagner des voix.", a: "ok" }] },
     { id: "ligne-crea", ecran: "creation", si: function () { return !!document.querySelector(".m-lignes"); }, etapes: [

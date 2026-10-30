@@ -43,12 +43,16 @@
   function hache(a, b, c) { var h = (a | 0) ^ Math.imul(b + 1, 0x9E3779B1) ^ Math.imul(c + 7, 0x85EBCA77); h = Math.imul(h ^ (h >>> 16), 0x7FEB352D); h = Math.imul(h ^ (h >>> 15), 0x846CA68B); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
 
   // ---------- Bots ----------
-  var PRENOMS = ["Bernard", "Sylvie", "Gérard", "Nadia", "Philippe", "Catherine", "Rachid", "Isabelle", "Thierry", "Monique", "Karim", "Brigitte", "Jean-Pierre", "Sandrine", "Didier", "Fatima", "Michel", "Valérie", "Olivier", "Martine", "Patrick", "Hélène"];
-  var NOMS = ["Delaunay", "Morel", "Benali", "Lefèvre", "Garnier", "Rousseau", "Chevalier", "Mercier", "Diallo", "Fontaine", "Lambert", "Bonnet", "Perrin", "Girard", "Moreau", "Haddad", "Roux", "Fournier", "Blanc", "Nguyen", "Leroy", "Faure"];
+  // Noms des maires robots : inventés, en jeux de mots (aucun vrai nom de personne)
+  var NOMS_BOTS = ["Jean Bonbeurre", "Alain Proviste", "Sarah Croche", "Gérard Menvussa", "Paul Ochon", "Jacques Ouille", "Anne Orak", "Yves Remord",
+    "Laurent Outan", "Teddy Fice", "Jean Talu", "Mehdi Cament", "Sam Suffi", "Lara Clette", "Justin Ptipeu", "Cécile Encieux", "Hubert Lu", "Aude Javel",
+    "Guy Tare", "Ali Gator", "Pierre Kiroul", "Rémi Fasol", "Otto Mobile", "Larry Golade", "Agathe Zeblouse", "Sacha Touille", "Annie Versaire", "Eva Cuation",
+    "Nordine Ateur", "Mélanie Zette", "Thierry Golo", "Lucie Fer", "Ella Fontaine", "Paul Hochon", "Jean Peuplu", "Yvon Tousseul", "Sophie Stiquée", "Marc Hassin",
+    "Gilles Ettajaune", "Daisy Dratation", "Odile Igence", "Bob Inard", "Jessica Rabe", "Alex Térieur", "Mylène Fairmé", "Jean Registre", "Henri Tation", "Anna Conda"];
   var ICOS = ["🎩", "👩‍💼", "🧔", "👩‍🦳", "👨‍💼", "👩", "🧑‍🦱", "👨‍🦳", "👩‍🦰", "🧓", "🧑", "👱‍♀️"];
   function bot(graine, i) {
-    var a = hache(graine, 999, i), b = hache(graine, 998, i), c = hache(graine, 997, i);
-    return { type: "bot", id: "bot" + i, nom: PRENOMS[Math.floor(a * PRENOMS.length)] + " " + NOMS[Math.floor(b * NOMS.length)], ico: ICOS[Math.floor(c * ICOS.length)],
+    var c = hache(graine, 997, i);
+    return { type: "bot", id: "bot" + i, nom: NOMS_BOTS[(Math.floor(hache(graine, 994, 0) * NOMS_BOTS.length) + i * 7) % NOMS_BOTS.length],   // pas de 7 : 48 noms tous différents ico: ICOS[Math.floor(c * ICOS.length)],
       talent: Math.round((0.25 + hache(graine, 996, i) * 0.6) * 100) / 100,
       forme: Math.round((hache(graine, 995, i) - 0.5) * 120) / 100, xp: 0 };   // forme : -0,6 (en déclin) à +0,6 (en croissance)
   }
