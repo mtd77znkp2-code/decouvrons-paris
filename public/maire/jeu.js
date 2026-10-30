@@ -101,10 +101,12 @@
       var r = bouton("", "mx-jouer", reprise);
       ajout(r, h("strong", null, "▶ Reprendre ma partie"), h("small", null, (s.defi != null ? "Défi du jour · " : "") + "Mandat " + s.mandat + " · " + date(Math.max(1, s.t))));
       box.appendChild(r);
+      box.appendChild(bouton("🏛️ Rejoindre une session", "mx-jouer mx-jouer2", function () { ecranSessions(false); }));
       box.appendChild(bouton("Nouvelle partie", "mx-lien", function () { if (confirm("Commencer une nouvelle partie ? La partie en cours sera perdue.")) creation(); }));
     } else {
       var j = bouton("", "mx-jouer", creation); ajout(j, h("strong", null, "▶ Jouer"), h("small", null, "Deviens maire de Paris"));
       box.appendChild(j);
+      box.appendChild(bouton("🏛️ Rejoindre une session", "mx-jouer mx-jouer2", function () { ecranSessions(false); }));
     }
     // Quatre tuiles : chacune ouvre son écran
     var se = G.serie(), ps = G.paliersMois(), roue = G.roueDispo(), t = h("div", "mx-tuiles");
@@ -276,6 +278,43 @@
   }
 
   // ---------- Pass de combat ----------
+  // ---------- Les sessions en cours : nom d'auteur, joueurs présents, niveau moyen, rejoindre ----------
+  var VOULUE = null;
+  function quitterSession() {
+    if (!SES.id) return;
+    window.SessionLigne.quitter(SES.id);
+    if (SES.stop) SES.stop(); if (SES.timer) clearInterval(SES.timer);
+    SES.id = null; SES.s = null; SES.stop = null; SES.timer = null; SES.dedans = false;
+  }
+  function ecranSessions(depuisJeu) {
+    fermerModale(); vider(true); fondMenu(true);
+    var retour = depuisJeu ? function () { fondMenu(false); jeu(); } : accueil;
+    box.appendChild(bouton("← Retour", "btn m-sec", retour));
+    box.appendChild(h("h5", null, "🏛️ Rejoindre une session"));
+    box.appendChild(h("p", "m-aide", "Chaque session porte le nom d’un auteur. Tu y entres maire du plus petit arrondissement libre. On ne peut plus entrer à moins de 3 minutes d’une élection. Une session sans joueur disparaît, sauf Victor Hugo, ouverte en permanence."));
+    var zone = h("div", "mx-sessions", ""); zone.appendChild(h("p", "m-aide", "⏳ Chargement des sessions…")); box.appendChild(zone); haut();
+    window.SessionLigne.liste().then(function (l) {
+      if (!document.body.contains(zone)) return;
+      zone.innerHTML = "";
+      if (!l) { zone.appendChild(h("p", "m-aide", "📡 Connecte-toi à Internet pour voir les sessions en cours.")); return; }
+      var now = Date.now(), moi = moiSes(), partie = st && st.phase !== "fin" || (lireSauvegarde() || {}).phase && lireSauvegarde().phase !== "fin";
+      l.forEach(function (x) {
+        var ici = x.id === SES.id || x.uids.indexOf(moi) >= 0, reste = x.joueurs ? Math.max(0, x.prochaine - now) : 0;
+        var c = h("div", "mx-sescarte" + (x.id === SS().BASE_ID ? " mx-sesbase" : "") + (ici ? " mx-sesici" : ""));
+        var info = ajout(h("div"), h("strong", null, "📚 " + x.nom), x.id === SS().BASE_ID ? h("em", "mx-sesbadge", "⭐ Session de base") : null,
+          h("small", null, "👥 " + x.joueurs + " joueur" + (x.joueurs > 1 ? "s" : "") + " · ⭐ niveau moyen " + (x.niv || "—") + (x.joueurs ? " · 🗳️ élection dans " + Math.ceil(reste / 60000) + " min" : "")));
+        var b;
+        if (ici) b = bouton("✔ Tu y es", "btn mx-sesici-b", depuisJeu || !partie ? retour : reprise);
+        else if (x.pleine) { b = bouton("Complète", "btn m-sec mx-sesoff"); b.disabled = true; }
+        else if (!x.ouvre) { b = bouton("🗳️ Élection imminente", "btn m-sec mx-sesoff"); b.disabled = true; }
+        else b = bouton("Rejoindre", "btn mx-sesgo", function () {
+          quitterSession(); VOULUE = x.id; SES.afk = false;
+          if (depuisJeu) { fondMenu(false); jeu(); } else if (partie) reprise(); else creation();
+        });
+        ajout(c, info, b); zone.appendChild(c);
+      });
+    });
+  }
   function ecranPass() {
     var ps = G.paliersMois(); vider(true);
     box.appendChild(bouton("← Retour", "btn m-sec", accueil));
@@ -603,8 +642,11 @@
   function brancherSession() {
     if (SES.id || SES.enCours || SES.afk || !window.SessionLigne || !SS() || !st || st.phase === "fin" || st.scenario) return;
     SES.enCours = true; ACTIF = Date.now();
-    window.SessionLigne.rejoindre().then(function (r) {
-      SES.enCours = false; if (!r) return;
+    var v = VOULUE; VOULUE = null;
+    window.SessionLigne.rejoindre(v).then(function (r) {
+      SES.enCours = false;
+      if (!r && v) { toast("🚪 Impossible d’entrer dans cette session (élection imminente ou complète)."); return brancherSession(); }
+      if (!r) return;
       SES.id = r.id; lireReserve(); SES.temps = Date.now() + TRIM_MS;
       SES.stop = window.SessionLigne.ecouter(r.id, recuSession);
       if (!SES.timer) SES.timer = setInterval(horloge, 1000);
@@ -680,7 +722,7 @@
   function bandeauSession() {
     if (!st.session || !SES.s) return null;
     var p = st.session.place, d = h("div", "mx-session" + (p >= SS().TRONE ? " mx-trone" : ""));
-    var titre = ajout(h("div", "mx-ses-titre"), h("span", null, p >= SS().TRONE ? "👑" : "🏛️"), ajout(h("div"), h("strong", null, st.session.titre), h("small", null, "Place " + (SS().NB - p) + " sur " + SS().NB + " · puissance ×" + virg(st.session.puissance))));
+    var titre = ajout(h("div", "mx-ses-titre"), h("span", null, p >= SS().TRONE ? "👑" : "🏛️"), ajout(h("div"), h("strong", null, st.session.titre), h("small", null, "📚 " + (SES.s.nom || "Victor Hugo") + " · place " + (SS().NB - p) + " sur " + SS().NB + " · puissance ×" + virg(st.session.puissance))));
     var duo = h("div", "mx-ses-duo");
     if (st.session.rival) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-rival", function () { ficheSession(p + 1); }), h("small", null, "⚔️ Rival · au-dessus"), h("b", null, st.session.rival.ico + " " + st.session.rival.nom + (st.session.rival.type === "bot" ? " 🤖" : "")), h("small", null, st.session.rival.court)));
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "👑 Tu es au sommet"), h("b", null, "Garde ton trône !")));
@@ -1389,6 +1431,7 @@
     }
     d.appendChild(j);
     d.appendChild(ajout(h("div", "mx-quitter"),
+      bouton("🏛️ Rejoindre une session", "btn m-sec", function () { sauver(); ecranSessions(true); }),
       bouton("🏠 Menu principal", "btn m-sec", function () { sauver(); fermerModale(); accueil(); haut(); }),
       bouton("🚪 Démissionner", "btn m-sec m-demission", function () {
         if (!confirm("Démissionner ? La partie s’arrête ici : tu gardes l’XP de ce que tu as déjà accompli.")) return;

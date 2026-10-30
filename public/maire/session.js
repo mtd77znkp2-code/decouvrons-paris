@@ -62,6 +62,20 @@
     for (var i = 0; i < NB; i++) s.places.push(bot(graine, i));
     return s;
   }
+  // Les sessions portent le nom d'un auteur français ; « Victor Hugo » est la session de base, ouverte en permanence
+  var AUTEURS = ["Victor Hugo", "Émile Zola", "Molière", "Voltaire", "Albert Camus", "Colette", "George Sand", "Alexandre Dumas", "Honoré de Balzac", "Marcel Proust",
+    "Jules Verne", "Simone de Beauvoir", "Gustave Flaubert", "Charles Baudelaire", "Jean de La Fontaine", "Guy de Maupassant", "Marguerite Duras", "Antoine de Saint-Exupéry", "Arthur Rimbaud", "Stendhal"];
+  var BASE_ID = "victor-hugo";
+  function nomLibre(pris) {
+    for (var tour = 1; tour <= 5; tour++) for (var i = 1; i < AUTEURS.length; i++) { var n = AUTEURS[i] + ["", "", " II", " III", " IV", " V"][tour]; if (pris.indexOf(n) < 0) return n; }
+    return AUTEURS[1 + Math.floor(Math.random() * (AUTEURS.length - 1))] + " " + (6 + Math.floor(Math.random() * 90));
+  }
+  // Résumé pour la liste des sessions : joueurs présents (inactifs retirés), niveau moyen, élection
+  function resume(s, maintenant) {
+    var n = nettoyer(s, maintenant), js = joueurs(n), nivs = js.map(function (x) { return x.stats && x.stats.niv; }).filter(function (v) { return v > 0; });
+    return { nom: s.nom || AUTEURS[0], joueurs: js.length, uids: js.map(function (x) { return x.uid; }), pleine: pleine(n),
+      niv: nivs.length ? Math.round(nivs.reduce(function (a, v) { return a + v; }, 0) / nivs.length) : 0, prochaine: s.prochaine, ouvre: !js.length || peutEntrer(s, maintenant) };
+  }
   function joueurs(s) { return s.places.filter(function (x) { return x.type === "joueur"; }); }
   function placeDe(s, uid) { for (var i = 0; i < NB; i++) if (s.places[i].type === "joueur" && s.places[i].uid === uid) return i; return -1; }
   // Un joueur arrive : il prend la place de bot la plus basse (on commence en bas de l'échelle),
@@ -260,7 +274,7 @@
     return { p: p, titre: titre(p), court: court(p), arr: arr(p), type: x.type, nom: x.nom, ico: x.ico, uid: x.uid || null, stats: st, puissance: puissance(p), hab: st.hab || habitants(p) };
   }
 
-  var API = { NB: NB, TRONE: TRONE, MANDAT_MS: MANDAT_MS, ENTREE_MIN: ENTREE_MIN, AFK_MS: AFK_MS, peutEntrer: peutEntrer, quitter: quitter, inactif: inactif, ARR: ARR, ORDRE: ORDRE, arr: arr, nomArr: nomArr, titre: titre, court: court, puissance: puissance, habitants: habitants,
+  var API = { AUTEURS: AUTEURS, BASE_ID: BASE_ID, nomLibre: nomLibre, resume: resume, NB: NB, TRONE: TRONE, MANDAT_MS: MANDAT_MS, ENTREE_MIN: ENTREE_MIN, AFK_MS: AFK_MS, peutEntrer: peutEntrer, quitter: quitter, inactif: inactif, ARR: ARR, ORDRE: ORDRE, arr: arr, nomArr: nomArr, titre: titre, court: court, puissance: puissance, habitants: habitants,
     nouvelleSession: nouvelleSession, rejoindre: rejoindre, attaquer: attaquer, proteger: proteger, ripostes: ripostes, ATTAQUES: ATTAQUES, BOUCLIER: BOUCLIER, prixAction: prixAction, malusDe: malusDe, attente: attente,
     ventesEnCours: ventesEnCours, ventesFinies: ventesFinies, venteSuivante: venteSuivante, prochaineVente: prochaineVente, vente: vente, encherir: encherir, VENTE_P: VENTE_P, VENTE_D: VENTE_D, pleine: pleine, signaler: signaler, nettoyer: nettoyer, voter: voter, votesRequis: votesRequis, nbVotes: nbVotes,
     electionDue: electionDue, scores: scores, elire: elire, resultatDe: resultatDe, placeDe: placeDe, joueurs: joueurs, fiche: fiche, statsBot: statsBot, scoreBot: scoreBot };

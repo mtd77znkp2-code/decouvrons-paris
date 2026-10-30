@@ -189,37 +189,59 @@ window.SessionLigne=(function(){
   function lireLocal(){try{return JSON.parse(localStorage.getItem(LOCAL)||"null")}catch(e){return null}}
   function ecrireLocal(s){try{localStorage.setItem(LOCAL,JSON.stringify(s))}catch(e){}ecouteurs.forEach(function(f){setTimeout(function(){f(s)},0)})}
   // ---- Rejoindre ----
-  function rejoindre(){
+  // Ordre : la session voulue (choisie dans la liste) ou la sienne, puis « Victor Hugo » (la session de base, toujours là),
+  // puis les autres sessions actives, sinon une nouvelle session au nom d'un auteur. Jamais à moins de 3 min d'une élection.
+  function rejoindre(voulue){
     var ico="🙂";
     if(!enLigne()){
       var t=Date.now(),s=lireLocal();if(s)s=S().nettoyer(s,t);
       // Moins de 3 min avant l'élection (ou plus de session) : une nouvelle session commence
-      if(!s||S().placeDe(s,"local")<0&&!S().peutEntrer(s,t))s=S().nouvelleSession(Math.floor(Math.random()*2147483647),t);
+      if(!s||S().placeDe(s,"local")<0&&!S().peutEntrer(s,t)){s=S().nouvelleSession(Math.floor(Math.random()*2147483647),t);s.nom=S().AUTEURS[0]}
       s=S().rejoindre(s,"local",nom(),ico,t);ecrireLocal(s);return Promise.resolve({id:"local",place:S().placeDe(s,"local"),local:true});
     }
     var db=LB.db,uid=moi(),dejaId=null;try{dejaId=localStorage.getItem("maire_session")}catch(e){}
     function entrer(ref){
       return db.runTransaction(function(tx){return tx.get(ref).then(function(d){
-        var s=d.exists?lire(d):null;if(!s)return null;
+        var s=d.exists?lire(d):null;
+        if(!s&&ref.id===S().BASE_ID){s=S().nouvelleSession(Math.floor(Math.random()*2147483647),Date.now());s.nom=S().AUTEURS[0]}
+        if(!s)return null;
         s=S().nettoyer(s,Date.now());
+        // Session vide (Victor Hugo au repos) : elle repart de zéro, avec un mandat complet devant elle
+        if(!S().joueurs(s).length){var nm=s.nom;s=S().nouvelleSession(Math.floor(Math.random()*2147483647),Date.now());s.nom=nm}
         if(S().placeDe(s,uid)<0){var n=S().rejoindre(s,uid,nom(),ico,Date.now());if(n===s)return null;s=n}
         tx.set(ref,champs(s));return {id:ref.id,place:S().placeDe(s,uid)};
       })}).catch(function(){return null});
     }
     function chercher(){
-      return db.collection("sessions").where("ouverte","==",true).get().then(function(q){
-        var l=q.docs.filter(function(d){return (d.data().maj||0)>Date.now()-30*60*1000}).sort(function(a,b){return (b.data().joueurs||[]).length-(a.data().joueurs||[]).length});
-        function essai(k){if(k>=l.length)return creer();return entrer(l[k].ref).then(function(r){return r||essai(k+1)})}
+      return liste().then(function(l){
+        var autres=l.filter(function(x){return x.id!==S().BASE_ID&&x.joueurs>0&&x.ouvre&&!x.pleine}).sort(function(a,b){return b.joueurs-a.joueurs});
+        var ids=[S().BASE_ID].concat(autres.map(function(x){return x.id}));
+        function essai(k){if(k>=ids.length)return creer(l);return entrer(db.collection("sessions").doc(ids[k])).then(function(r){return r||essai(k+1)})}
         return essai(0);
       });
     }
-    function creer(){
+    function creer(l){
       var ref=db.collection("sessions").doc(),s=S().nouvelleSession(Math.floor(Math.random()*2147483647),Date.now());
+      s.nom=S().nomLibre((l||[]).map(function(x){return x.nom}));
       s=S().rejoindre(s,uid,nom(),ico,Date.now());
       return ref.set(champs(s)).then(function(){return {id:ref.id,place:S().placeDe(s,uid)}});
     }
-    var p=dejaId?entrer(db.collection("sessions").doc(dejaId)).then(function(r){return r||chercher()}):chercher();
+    var p=voulue?entrer(db.collection("sessions").doc(voulue)):dejaId?entrer(db.collection("sessions").doc(dejaId)).then(function(r){return r||chercher()}):chercher();
     return p.then(function(r){if(r)try{localStorage.setItem("maire_session",r.id)}catch(e){}return r}).catch(function(){return null});
+  }
+  // Les sessions en cours : nom, joueurs présents, niveau moyen ; une session vide disparaît (sauf Victor Hugo)
+  function liste(){
+    if(!enLigne())return Promise.resolve(null);
+    var db=LB.db,t=Date.now();
+    return Promise.all([db.collection("sessions").where("maj",">",t-60*60*1000).get(),db.collection("sessions").doc(S().BASE_ID).get()]).then(function(r){
+      var vus={},l=[];
+      r[0].docs.concat(r[1].exists?[r[1]]:[]).forEach(function(d){
+        if(vus[d.id])return;vus[d.id]=1;var s=lire(d);if(!s)return;
+        var x=S().resume(s,t);x.id=d.id;if(x.joueurs>0||d.id===S().BASE_ID)l.push(x);
+      });
+      if(!vus[S().BASE_ID])l.push({id:S().BASE_ID,nom:S().AUTEURS[0],joueurs:0,uids:[],niv:0,pleine:false,ouvre:true,prochaine:0});
+      return l.sort(function(a,b){return (b.id===S().BASE_ID)-(a.id===S().BASE_ID)||b.joueurs-a.joueurs});
+    }).catch(function(){return null});
   }
   function ecouter(id,cb){
     if(id==="local"){ecouteurs.push(cb);var s=lireLocal();if(s)setTimeout(function(){cb(s)},0);return function(){var i=ecouteurs.indexOf(cb);if(i>=0)ecouteurs.splice(i,1)}}
@@ -231,9 +253,11 @@ window.SessionLigne=(function(){
     if(id==="local"){var s=lireLocal();if(!s)return Promise.resolve(null);var n=f(s);if(n!==s)ecrireLocal(n);return Promise.resolve(n)}
     if(!enLigne())return Promise.resolve(null);
     var ref=LB.db.collection("sessions").doc(id);
-    return LB.db.runTransaction(function(tx){return tx.get(ref).then(function(d){var s=d.exists?lire(d):null;if(!s)return null;var n=f(s);if(n!==s)tx.set(ref,champs(n));return n})}).catch(function(){return null});
+    return LB.db.runTransaction(function(tx){return tx.get(ref).then(function(d){var s=d.exists?lire(d):null;if(!s)return null;var n=f(s);
+      // Plus aucun joueur : la session disparaît (la session de base Victor Hugo reste)
+      if(n!==s){if(!S().joueurs(n).length&&id!==S().BASE_ID)tx.delete(ref);else tx.set(ref,champs(n))}return n})}).catch(function(){return null});
   }
-  return {rejoindre:rejoindre,ecouter:ecouter,modifier:modifier,moi:moi,
+  return {rejoindre:rejoindre,liste:liste,ecouter:ecouter,modifier:modifier,moi:moi,
     quitter:function(id){return modifier(id,function(s){return S().quitter(s,moi())})},
     signaler:function(id,stats){return modifier(id,function(s){return S().ripostes(S().signaler(s,moi(),stats,Date.now()),moi(),Date.now(),Math.random())})},
     voter:function(id){return modifier(id,function(s){return S().voter(s,moi())})},

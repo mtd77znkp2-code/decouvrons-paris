@@ -724,6 +724,9 @@ test("sessions : 21 places, on commence en bas, on défie son rival, une place g
   assert.equal(S.placeDe(S.rejoindre(s, "u3", "Tôt", "🙂", 6.5 * 60000), "u3"), 2);
   const afk = S.signaler(s, "u2", { score: 50, actif: 10 * 60000 }, 10 * 60000);
   const net = S.nettoyer(afk, 20 * 60000); assert.equal(S.placeDe(net, "u1"), -1, "Alice inactive depuis 20 min"); assert.equal(S.placeDe(net, "u2"), 1, "Bruno actif il y a 10 min");
+  assert.equal(S.AUTEURS.length, 20); assert.equal(S.AUTEURS[0], "Victor Hugo");
+  assert.equal(S.nomLibre(["Émile Zola"]), "Molière"); assert.ok(!/Victor Hugo/.test(S.nomLibre([])), "Victor Hugo reste la session de base");
+  const rs = S.resume(S.signaler(s, "u1", { score: 50, niv: 12, actif: 0 }, 0), 60000); assert.equal(rs.joueurs, 2); assert.equal(rs.niv, 12);
   assert.equal(S.placeDe(S.quitter(s, "u1"), "u1"), -1); assert.equal(S.quitter(s, "u1").places[0].type, "bot");
   // Pas d'élection avant 10 minutes, sauf si la moitié des joueurs vote pour des anticipées
   assert.deepEqual(S.elire(s, 60000), s);
