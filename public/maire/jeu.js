@@ -1235,10 +1235,14 @@
     return b;
   }
 
+  var NOTE_AVANT = null;
   function entete() {
     var d = h("div", "mx-hud"), reste = M.prochaineElection(st) - st.t, a = Math.floor((Math.max(1, st.t) - 1) / 4) + 1, q = (Math.max(1, st.t) - 1) % 4 + 1;
     var gauche = ajout(h("div", "mx-quand"), h("strong", null, "Année " + a + " · T" + q), h("small", null, "Mandat " + st.mandat + (st.scenario ? " · défi du jour" : "")));
-    var nv = noteVille(), noteB = bouton("", "mx-notebtn", function () {
+    var nv = noteVille();
+    if (NOTE_AVANT != null && Math.floor(nv) > Math.floor(NOTE_AVANT) && window.sfx) window.sfx("etoile");   // son n°38 : une étoile de plus
+    NOTE_AVANT = nv;
+    var noteB = bouton("", "mx-notebtn", function () {
       var e = M.etatSession(st);
       toast("⭐ " + virg(nv) + "/5 · sondage " + Math.round(e.score) + " · bonheur " + e.bon + " · popularité " + e.pop + " · finances " + (e.tresor >= 0 ? "+" : "") + e.tresor);
     });
@@ -1786,7 +1790,7 @@
       setTimeout(function () { notifActive = null; suivante(); }, 800); return;
     }
     var el, duree;
-    if (window.sfx) { if (n.type === "niveau" && n.m && n.m.n) window.sfx("niveau"); else if (n.type === "fait" && /^🏆/.test(n.txt || "")) window.sfx("succes"); }   // sons n°18 et n°19
+    if (window.sfx) { if (n.type === "niveau" && n.m && n.m.n) window.sfx("niveau"); else if (n.type === "fait" && /^🏆/.test(n.txt || "")) window.sfx("succes"); else if (n.type === "fait" && /^🎟️/.test(n.txt || "")) window.sfx("palier"); }   // sons n°18, n°19 et n°37
     if (n.type === "niveau") {
       // Nouveau niveau (ou objectif rempli) : une carte courte, ce qui arrive en boutique sur une ligne
       var m = n.m, quoi = m.bats.map(function (id) { return M.BATIMENTS[id].ico + " " + M.BATIMENTS[id].nom; }).concat(m.meca.map(function (t) { return "✨ " + t; }));
@@ -2015,6 +2019,7 @@
     fermerModale();
     var ev = M.evenementCourant(st, BASE);
     if (!ev || !(st.phase === "evenement" || (st.resultat && !st.resultatVu))) return;
+    if (st.resultat && !st.resultatVu && st.resultat.d && st.resultat.d.bud > 0) sonUnique("pieces:" + st.pid + ":" + st.t + ":" + (st.evenement || ""), "pieces", 0.7);   // son n°23 : la décision rapporte de l'argent
     if (st.special === "catastrophe" && st.phase === "evenement") sonUnique("cata:" + st.pid + ":" + st.t + ":" + st.evenement, "sirene", 0.7);   // son n°16
     if (st.special === "legendaire" && st.phase === "evenement" && legendeVue !== st.t) { legendeVue = st.t; flash("🌟 ÉVÉNEMENT LÉGENDAIRE 🌟", "m-flash-legende"); if (window.sfx) window.sfx("magie"); /* son n°17 */ }
     var sp = st.special || "dossier", pop = h("div", "m-pop m-pop-" + sp); pop.id = "m-modale";

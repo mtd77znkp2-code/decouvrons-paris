@@ -504,7 +504,7 @@ var musique=(function(){
   // Préchargés pour être prêts au bon moment
   setTimeout(function(){chargerClic()},1500);
   // Les bruitages du Maire ne sont téléchargés qu'à l'ouverture du jeu (pas pour les visiteurs du site)
-  window.prechargerSons=function(){["carte","retourne","roulette","bille","gagne","perdu","jetons","achat","chantier","dossier","telephone","tampon","epee","bouclier","attaque","alarme","clang","brouhaha","ronfle","adjuge","ding","tictac","tambour","bravo","hue","sirene","magie","cloche","fanfare","niveau","succes","coffre"].forEach(function(n){chargerSfx(n)})};
+  window.prechargerSons=function(){["carte","retourne","roulette","bille","gagne","perdu","jetons","achat","chantier","dossier","telephone","tampon","epee","bouclier","attaque","alarme","clang","brouhaha","ronfle","adjuge","ding","tictac","tambour","bravo","hue","sirene","magie","cloche","fanfare","niveau","succes","coffre","palier","etoile","pieces"].forEach(function(n){chargerSfx(n)})};
   function clic(e){
     var b=e.target&&e.target.closest&&e.target.closest("button,.btn,[role=button]");
     if(!b||muet||b.disabled||b.id==="jouer"||b.classList.contains("entree"))return;
