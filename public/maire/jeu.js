@@ -2201,6 +2201,7 @@
     var zone = h("div", "m-mj-zone"); carte.appendChild(zone);
     function fin() {
       var g = J().etat === "gagne";
+      sonFin("mj:" + st.pid + ":" + st.t + ":" + i, g ? 1 : -1);
       if (g) confettis(); else { carte.classList.remove("m-secoue"); void carte.offsetWidth; carte.classList.add("m-secoue"); zone.appendChild(h("span", "m-mj-cadenas", "🔒")); }
       zone.appendChild(h("p", "m-mj-res " + (g ? "m-mj-ok" : "m-mj-ko"), g ? "🎉 Gagné ! Cette réponse est à toi" + (J().xp ? " · +" + J().xp + " XP" : "") + "." : "😬 Perdu… Cette réponse t’échappe, choisis parmi les autres."));
       zone.appendChild(bouton(g ? "Prendre cette réponse" : "Retour au dossier", "btn m-go", function () {
@@ -2323,6 +2324,12 @@
     };
   }
   // Victoire : pluie de confettis bleu, blanc, rouge et or
+  // Son de fin d'une partie de casino, joué une seule fois par résultat (l'écran peut se redessiner plusieurs fois)
+  var SONS_FIN = {};
+  function sonFin(cle, gain) {
+    if (SONS_FIN[cle] || !window.sfx) return; SONS_FIN[cle] = 1;
+    if (gain > 0) window.sfx("gagne");   // son n°5 : victoire au casino
+  }
   function confettis() {
     if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     var c = h("div", "m-confettis"), COUL = ["#2b4fb3", "#ffffff", "#c8352e", "#f5b21a"];
@@ -2417,6 +2424,7 @@
         tel.appendChild(acts);
       } else {
         tel.appendChild(h("p", "m-res " + (b.res.gain > 0 ? "m-gain" : b.res.gain < 0 ? "m-perte" : ""), b.res.txt));
+        sonFin("bjtel:" + st.pid + ":" + b.j.join("-") + "/" + b.c.join("-"), b.res.gain);
         if (st.leon && st.leon.t === st.t) tel.appendChild(ajout(h("div", "m-leon m-leon-clair"), h("span", "m-leon-ico", "🧑‍💼"), h("p", null, "« " + st.leon.txt + " »")));
         tel.appendChild(bouton("Retour à ma mairie", "btn m-go", retourJeu));
       }
@@ -2435,6 +2443,7 @@
       tel.appendChild(h("h4", null, r.type === "roulette" ? "🎡 Résultat de la roulette" : r.type === "fonds" ? "🏦 Fonds de secours" : "💰 Accord avec Gaspard Mallet"));
       if (r.type === "roulette") tel.appendChild(h("div", "m-roue " + (r.n === 0 ? "m-vert" : r.rouge ? "m-rouge" : "m-noir"), String(r.n)));
       tel.appendChild(h("p", "m-res " + (r.gain > 0 ? "m-gain" : r.gain < 0 ? "m-perte" : ""), r.txt));
+      sonFin("pari:" + st.pid + ":" + st.t + ":" + r.type + ":" + (r.n == null ? "" : r.n), r.gain);
       if (st.leon && st.leon.t === st.t) tel.appendChild(ajout(h("div", "m-leon m-leon-clair"), h("span", "m-leon-ico", "🧑‍💼"), h("p", null, "« " + st.leon.txt + " »")));
       tel.appendChild(bouton("Retour à ma mairie", "btn m-go", function () { st.pariRes = null; sauver(); retourJeu(); }));
     }
