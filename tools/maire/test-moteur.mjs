@@ -719,6 +719,12 @@ test("sessions : 21 places, on commence en bas, on défie son rival, une place g
   s = S.rejoindre(s, "u1", "Alice", "🙂", 0); assert.equal(S.placeDe(s, "u1"), 0, "on commence en bas");
   s = S.rejoindre(s, "u2", "Bruno", "🙂", 0); assert.equal(S.placeDe(s, "u2"), 1);
   assert.deepEqual(S.rejoindre(s, "u1", "Alice", "🙂", 0), s, "pas deux fois");
+  // On n'entre plus à moins de 3 minutes de l'élection ; 15 minutes sans rien faire = remplacé par un bot
+  assert.equal(S.placeDe(S.rejoindre(s, "u3", "Tard", "🙂", 7.5 * 60000), "u3"), -1, "trop près de l'élection");
+  assert.equal(S.placeDe(S.rejoindre(s, "u3", "Tôt", "🙂", 6.5 * 60000), "u3"), 2);
+  const afk = S.signaler(s, "u2", { score: 50, actif: 10 * 60000 }, 10 * 60000);
+  const net = S.nettoyer(afk, 20 * 60000); assert.equal(S.placeDe(net, "u1"), -1, "Alice inactive depuis 20 min"); assert.equal(S.placeDe(net, "u2"), 1, "Bruno actif il y a 10 min");
+  assert.equal(S.placeDe(S.quitter(s, "u1"), "u1"), -1); assert.equal(S.quitter(s, "u1").places[0].type, "bot");
   // Pas d'élection avant 10 minutes, sauf si la moitié des joueurs vote pour des anticipées
   assert.deepEqual(S.elire(s, 60000), s);
   let v = S.voter(s, "u1"); assert.equal(S.nbVotes(v), 1); assert.equal(S.votesRequis(v), 1); assert.ok(S.electionDue(v, 60000));

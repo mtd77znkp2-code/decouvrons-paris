@@ -1100,3 +1100,6 @@ button.mx-ses-qui{cursor:pointer}
 .m-toast{pointer-events:none}
 .m-option{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .m-option .m-pct{min-height:1.4em}
+.m-afk{text-align:center;display:grid;gap:10px;justify-items:center;max-width:340px}
+.m-afk .m-afk-ico{font-size:44px}
+#m-afk{z-index:1600}

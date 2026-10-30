@@ -584,9 +584,25 @@
     var p = SS().placeDe(s, moiSes()), f = function (q) { var x = SS().fiche(s, q); return { nom: x.nom, ico: x.ico, type: x.type, titre: x.titre, court: x.court }; };
     return { id: SES.id, place: p, titre: SS().titre(p), hab0: SS().habitants(p), puissance: SS().puissance(p), election: s.election, rival: p < SS().TRONE ? f(p + 1) : null, opp: p > 0 ? f(p - 1) : null };
   }
+  // Anti-AFK : le dernier geste du joueur (toucher, clic, touche) ; 15 minutes sans rien faire et on quitte la session
+  var ACTIF = Date.now();
+  ["pointerdown", "keydown"].forEach(function (t) { document.addEventListener(t, function () { ACTIF = Date.now(); }, true); });
+  function etatSes() { var e = M.etatSession(st); e.actif = ACTIF; return e; }
+  function sortieAFK(parServeur) {
+    if (!SES.id) return;
+    if (!parServeur) window.SessionLigne.quitter(SES.id);
+    if (SES.stop) SES.stop(); if (SES.timer) clearInterval(SES.timer);
+    SES.id = null; SES.s = null; SES.stop = null; SES.timer = null; SES.dedans = false; SES.afk = true;
+    cacherBulle(); var v = document.getElementById("m-afk"); if (v) v.remove();
+    var f = h("div", "m-pop"); f.id = "m-afk"; f.setAttribute("role", "dialog");
+    var c = ajout(h("div", "m-pop-in m-afk"), h("span", "m-afk-ico", "💤"), h("h4", null, "Tu as quitté la session"),
+      h("p", null, "15 minutes sans rien faire : ta place a été laissée à un maire robot."));
+    c.appendChild(bouton("🏛️ Rejoindre une session", "btn m-go", function () { f.remove(); ACTIF = Date.now(); SES.afk = false; brancherSession(); }));
+    f.appendChild(c); document.body.appendChild(f);
+  }
   function brancherSession() {
-    if (SES.id || SES.enCours || !window.SessionLigne || !SS() || !st || st.phase === "fin" || st.scenario) return;
-    SES.enCours = true;
+    if (SES.id || SES.enCours || SES.afk || !window.SessionLigne || !SS() || !st || st.phase === "fin" || st.scenario) return;
+    SES.enCours = true; ACTIF = Date.now();
     window.SessionLigne.rejoindre().then(function (r) {
       SES.enCours = false; if (!r) return;
       SES.id = r.id; lireReserve(); SES.temps = Date.now() + TRIM_MS;
@@ -596,7 +612,11 @@
   }
   // Nouvelle version de la session : élection passée ? nouvelle place ? noms du rival et de l'opposant
   function recuSession(s) {
-    SES.s = s; if (!st || st.phase === "fin" || SS().placeDe(s, moiSes()) < 0) return;
+    SES.s = s;
+    // Retiré par le serveur (inactif depuis 15 min) : on le dit au joueur
+    if (SS().placeDe(s, moiSes()) < 0) { if (SES.dedans) sortieAFK(true); return; }
+    SES.dedans = true;
+    if (!st || st.phase === "fin") return;
     surveillerAttaques(s);
     var r = SS().resultatDe(s, moiSes()), avant = st.session ? st.session.place : -1, elu = null;
     if (r && st.session && s.election > (st.session.election || 0) && st.session.dernElec !== s.election) {
@@ -614,6 +634,7 @@
     if (!st || !SES.id || !SES.s || st.phase === "fin") return;
     var visible = document.getElementById("m-app") && !document.hidden && !document.getElementById("site").hidden && !document.getElementById("jeux").hidden;
     var now = Date.now();
+    if (now - ACTIF > SS().AFK_MS) return sortieAFK(false);
     if (visible && SS().electionDue(SES.s, now) && now - SES.elire > 5000) { SES.elire = now; window.SessionLigne.elire(SES.id); }
     var libre = visible && (st.phase === "gestion" || st.phase === "pret") && !document.getElementById("m-modale") && !document.getElementById("m-telmod") && !document.body.classList.contains("m-casino") && !(st.enchere && !st.enchere.fini) && !(st.bj && !st.bj.fini);
     rechargerReserve(now);
@@ -632,7 +653,7 @@
     if (libre || st.phase === "fin") jeu(); else majSession();
     if (st.t > t0 && st.phase !== "fin") messageSaison(t0);
     if (SES.id) {
-      window.SessionLigne.signaler(SES.id, M.etatSession(st));
+      window.SessionLigne.signaler(SES.id, etatSes());
     }
   }
   // Petit message en haut de l'écran à chaque saison : la saison et ce que l'arrondissement a gagné ou perdu
@@ -1187,7 +1208,7 @@
         st = M.embaucher(st, id); sauver(); signal("achat");
         var y = document.querySelector(".mx-boutique"); if (y) y.replaceWith(boutique()); haut2();
         toast(E.ico + " " + E.nom + " embauché !");
-        if (SES.id) window.SessionLigne.signaler(SES.id, M.etatSession(st));
+        if (SES.id) window.SessionLigne.signaler(SES.id, etatSes());
       });
       b.disabled = !!non;
       c.appendChild(b); g.appendChild(c);

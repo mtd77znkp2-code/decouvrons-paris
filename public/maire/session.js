@@ -5,6 +5,7 @@
 (function (root) {
   "use strict";
   var NB = 21, TRONE = 20, MANDAT_MS = 10 * 60 * 1000, ABSENT_MS = 5 * 60 * 1000;
+  var ENTREE_MIN = 3 * 60 * 1000, AFK_MS = 15 * 60 * 1000;   // on n'entre plus à moins de 3 min d'une élection ; 15 min sans rien faire = dehors
 
   // Les arrondissements, du moins peuplé au plus peuplé (= du moins puissant au plus puissant).
   // x, y : centre sur la carte stylisée (0-100) ; r : taille de la pastille ; hab : habitants (ordre de grandeur réel)
@@ -63,26 +64,34 @@
   }
   function joueurs(s) { return s.places.filter(function (x) { return x.type === "joueur"; }); }
   function placeDe(s, uid) { for (var i = 0; i < NB; i++) if (s.places[i].type === "joueur" && s.places[i].uid === uid) return i; return -1; }
-  // Un joueur arrive : il prend la place de bot la plus basse (on commence en bas de l'échelle)
+  // Un joueur arrive : il prend la place de bot la plus basse (on commence en bas de l'échelle),
+  // seulement s'il reste au moins 3 minutes avant l'élection (sinon une nouvelle session est créée)
+  function peutEntrer(s, maintenant) { return s.prochaine - maintenant >= ENTREE_MIN; }
   function rejoindre(s0, uid, nom, ico, maintenant) {
-    if (placeDe(s0, uid) >= 0) return s0;
+    if (placeDe(s0, uid) >= 0 || !peutEntrer(s0, maintenant)) return s0;
     var s = copie(s0), p = -1;
     for (var i = 0; i < NB; i++) if (s.places[i].type === "bot") { p = i; break; }
     if (p < 0) return s0;   // session pleine
-    s.places[p] = { type: "joueur", uid: uid, nom: nom || "Un maire", ico: ico || "🙂", score: 45, stats: null, vu: maintenant, arrive: maintenant };
+    s.places[p] = { type: "joueur", uid: uid, nom: nom || "Un maire", ico: ico || "🙂", score: 45, stats: null, vu: maintenant, actif: maintenant, arrive: maintenant };
     return s;
   }
   function pleine(s) { return s.places.every(function (x) { return x.type === "joueur"; }); }
   // Le joueur envoie son état (sondage et chiffres clés) à chaque trimestre
   function signaler(s0, uid, stats, maintenant) {
     var p = placeDe(s0, uid); if (p < 0) return s0;
-    var s = copie(s0); s.places[p].score = stats.score; s.places[p].stats = stats; s.places[p].vu = maintenant; return s;
+    var s = copie(s0); s.places[p].score = stats.score; s.places[p].stats = stats; s.places[p].vu = maintenant;
+    s.places[p].actif = Math.min(maintenant, stats.actif || maintenant); return s;
   }
-  // Un joueur parti depuis longtemps est remplacé par un bot (sa place est conservée par le bot)
+  // Anti-AFK : un joueur qui n'a rien fait depuis 15 minutes (ou qui est parti) est remplacé par un bot (sa place est conservée par le bot)
+  function inactif(x, maintenant) { return maintenant - Math.max(x.actif || x.arrive || 0, 0) > AFK_MS; }
   function nettoyer(s0, maintenant) {
     var s = copie(s0), ch = false;
-    s.places.forEach(function (x, p) { if (x.type === "joueur" && maintenant - (x.vu || 0) > 30 * 60 * 1000) { s.places[p] = bot(s.graine, 100 + p + s.election * 21); delete s.votes[x.uid]; ch = true; } });
+    s.places.forEach(function (x, p) { if (x.type === "joueur" && inactif(x, maintenant)) { s.places[p] = bot(s.graine, 100 + p + s.election * 21); delete s.votes[x.uid]; ch = true; } });
     return ch ? s : s0;
+  }
+  function quitter(s0, uid) {
+    var p = placeDe(s0, uid); if (p < 0) return s0;
+    var s = copie(s0); s.places[p] = bot(s.graine, 100 + p + s.election * 21); delete s.votes[uid]; return s;
   }
 
   // ---------- Attaques : on attaque son rival (au-dessus) ou son opposant (au-dessous) ----------
@@ -251,7 +260,7 @@
     return { p: p, titre: titre(p), court: court(p), arr: arr(p), type: x.type, nom: x.nom, ico: x.ico, uid: x.uid || null, stats: st, puissance: puissance(p), hab: st.hab || habitants(p) };
   }
 
-  var API = { NB: NB, TRONE: TRONE, MANDAT_MS: MANDAT_MS, ARR: ARR, ORDRE: ORDRE, arr: arr, nomArr: nomArr, titre: titre, court: court, puissance: puissance, habitants: habitants,
+  var API = { NB: NB, TRONE: TRONE, MANDAT_MS: MANDAT_MS, ENTREE_MIN: ENTREE_MIN, AFK_MS: AFK_MS, peutEntrer: peutEntrer, quitter: quitter, inactif: inactif, ARR: ARR, ORDRE: ORDRE, arr: arr, nomArr: nomArr, titre: titre, court: court, puissance: puissance, habitants: habitants,
     nouvelleSession: nouvelleSession, rejoindre: rejoindre, attaquer: attaquer, proteger: proteger, ripostes: ripostes, ATTAQUES: ATTAQUES, BOUCLIER: BOUCLIER, prixAction: prixAction, malusDe: malusDe, attente: attente,
     ventesEnCours: ventesEnCours, ventesFinies: ventesFinies, venteSuivante: venteSuivante, prochaineVente: prochaineVente, vente: vente, encherir: encherir, VENTE_P: VENTE_P, VENTE_D: VENTE_D, pleine: pleine, signaler: signaler, nettoyer: nettoyer, voter: voter, votesRequis: votesRequis, nbVotes: nbVotes,
     electionDue: electionDue, scores: scores, elire: elire, resultatDe: resultatDe, placeDe: placeDe, joueurs: joueurs, fiche: fiche, statsBot: statsBot, scoreBot: scoreBot };

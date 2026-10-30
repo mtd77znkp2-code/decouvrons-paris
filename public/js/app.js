@@ -192,8 +192,10 @@ window.SessionLigne=(function(){
   function rejoindre(){
     var ico="🙂";
     if(!enLigne()){
-      var s=lireLocal();if(!s)s=S().nouvelleSession(Math.floor(Math.random()*2147483647),Date.now());
-      s=S().rejoindre(s,"local",nom(),ico,Date.now());ecrireLocal(s);return Promise.resolve({id:"local",place:S().placeDe(s,"local"),local:true});
+      var t=Date.now(),s=lireLocal();if(s)s=S().nettoyer(s,t);
+      // Moins de 3 min avant l'élection (ou plus de session) : une nouvelle session commence
+      if(!s||S().placeDe(s,"local")<0&&!S().peutEntrer(s,t))s=S().nouvelleSession(Math.floor(Math.random()*2147483647),t);
+      s=S().rejoindre(s,"local",nom(),ico,t);ecrireLocal(s);return Promise.resolve({id:"local",place:S().placeDe(s,"local"),local:true});
     }
     var db=LB.db,uid=moi(),dejaId=null;try{dejaId=localStorage.getItem("maire_session")}catch(e){}
     function entrer(ref){
@@ -232,6 +234,7 @@ window.SessionLigne=(function(){
     return LB.db.runTransaction(function(tx){return tx.get(ref).then(function(d){var s=d.exists?lire(d):null;if(!s)return null;var n=f(s);if(n!==s)tx.set(ref,champs(n));return n})}).catch(function(){return null});
   }
   return {rejoindre:rejoindre,ecouter:ecouter,modifier:modifier,moi:moi,
+    quitter:function(id){return modifier(id,function(s){return S().quitter(s,moi())})},
     signaler:function(id,stats){return modifier(id,function(s){return S().ripostes(S().signaler(s,moi(),stats,Date.now()),moi(),Date.now(),Math.random())})},
     voter:function(id){return modifier(id,function(s){return S().voter(s,moi())})},
     attaquer:function(id,cible,type){return modifier(id,function(s){return S().attaquer(s,moi(),cible,type,Date.now(),Math.random())})},
