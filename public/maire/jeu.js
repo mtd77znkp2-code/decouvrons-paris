@@ -39,9 +39,17 @@
   function noteVille() { return SS() ? SS().note(M.etatSession(st)) : 0; }
 
   // ---------- Données ----------
+  // Téléchargement d'un fichier de données : 3 essais (réseau qui se réveille, iPhone qui revient de veille…)
+  function chargerJSON(url, essais) {
+    essais = essais || 3;
+    return fetch(url, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).catch(function (e) {
+      if (essais > 1) return new Promise(function (ok) { setTimeout(ok, 700); }).then(function () { return chargerJSON(url, essais - 1); });
+      var err = new Error("Réseau : " + url.split("/").pop() + " (" + (e && e.message || e) + ")"); err.reseau = true; throw err;
+    });
+  }
   function index() {
     if (IDX) return Promise.resolve(IDX);
-    return fetch("maire/data/index.json", { cache: "no-cache" }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (x) { IDX = x; return x; });
+    return chargerJSON("maire/data/index.json").then(function (x) { IDX = x; return x; });
   }
   function choisirLots() {
     var l = IDX.lots.slice(), pris = [], n = 0;
@@ -51,7 +59,7 @@
   }
   function quetes() {
     if (QUETES) return Promise.resolve(QUETES);
-    return fetch("maire/data/quetes.json", { cache: "no-cache" }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (x) { QUETES = x; return x; });
+    return chargerJSON("maire/data/quetes.json").then(function (x) { QUETES = x; return x; });
   }
   // Les 3 quêtes du jour sont figées pour la journée (monter de niveau en pleine partie ne les change pas)
   function quetesAuj() {
@@ -65,9 +73,32 @@
   }
   function chargerLots(noms) {
     noms = noms.concat(IDX.speciaux ? [IDX.speciaux.f] : []);
-    return Promise.all(noms.map(function (f) { return fetch("maire/data/" + f).then(function (r) { if (!r.ok) throw 0; return r.json(); }); }))
+    return Promise.all(noms.map(function (f) { return chargerJSON("maire/data/" + f); }))
       .then(function (ls) { BASE = M.indexer([].concat.apply([], ls)); return BASE; });
   }
+
+  // ---------- Erreurs au chargement ----------
+  function fenetreErreur(ico, titre, txt, boutons, detail) {
+    var v = document.getElementById("m-erreur"); if (v) v.remove(); cacherBulle();
+    var f = h("div", "m-pop"); f.id = "m-erreur"; f.setAttribute("role", "alertdialog");
+    var c = ajout(h("div", "m-pop-in m-afk"), h("span", "m-afk-ico", ico), h("h4", null, titre), h("p", null, txt));
+    boutons.forEach(function (b) { c.appendChild(bouton(b[0], b[2] ? "btn m-go" : "btn m-sec", function () { f.remove(); b[1](); })); });
+    if (detail) c.appendChild(h("small", "m-erreur-detail", detail));
+    f.appendChild(c); document.body.appendChild(f);
+  }
+  // Problème de connexion : on peut réessayer
+  function erreurReseau(reessayer, e) {
+    fenetreErreur("📡", "Impossible de charger les dossiers", "La connexion n’a pas répondu (3 essais). Vérifie ta connexion et réessaie.",
+      [["🔄 Réessayer", reessayer, true], ["Fermer", accueil]], e && e.message);
+  }
+  // Partie trop ancienne pour la version actuelle du jeu : la seule solution est de la supprimer
+  function partieIncompatible(e) {
+    st = null;
+    fenetreErreur("😵", "Ta partie ne peut pas reprendre",
+      "Le jeu a beaucoup changé depuis le début de cette partie : elle n’est plus compatible avec la nouvelle version. La seule solution est de la supprimer et d’en commencer une nouvelle. Ton niveau, tes succès, tes objets et tes paliers sont conservés.",
+      [["🗑️ Fermer et supprimer ma partie", function () { effacer(); try { localStorage.removeItem("maire_reserve"); } catch (x) {} accueil(); }, true]], e && e.message);
+  }
+  function echec(reessayer) { return function (e) { if (e && e.reseau) erreurReseau(reessayer, e); else partieIncompatible(e); }; }
 
   // ---------- Accueil ----------
 
@@ -403,7 +434,7 @@
     chargerLots(d.lots).then(function () {
       st = M.nouvellePartie({ ligne: d.ligne, ambitions: d.ambitions, lots: d.lots, niveau: d.niveau, graine: d.graine, nivJoueur: d.nivJoueur, xpJoueur: G.lire().xp, pid: Date.now().toString(36), scenario: d.scenario, secrets: {}, passBats: G.batsExclusifs(), missions: false });
       st.defi = d.jour; sauver(); demarrerPartie();
-    }).catch(function () { alert("Impossible de charger les dossiers. Vérifie ta connexion et réessaie."); accueil(); });
+    }).catch(function (e) { if (e && e.reseau) erreurReseau(function () { lancerDefi(d); }, e); else { toast("⚠️ " + (e && e.message || e)); accueil(); } });
   }
   function succes() {
     var P = G.lire(); vider(true);
@@ -477,7 +508,7 @@
       st = M.nouvellePartie({ maire: CHOIX.maire, ligne: "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, xpJoueur: G.lire().xp, niveauPartie: true, pid: Date.now().toString(36), secrets: G.lire().secrets, sansLimite: sansLimiteAdmin(), missions: false,
         passBats: G.batsExclusifs(), bonus: G.utiliserSac(CHOIX.sac) });
       sauver(); demarrerPartie();
-    }).catch(function () { alert("Impossible de charger les dossiers. Vérifie ta connexion et réessaie."); accueil(); });
+    }).catch(function (e) { if (e && e.reseau) erreurReseau(succes, e); else { toast("⚠️ " + (e && e.message || e)); accueil(); } });
   }
   // Roulette de l'opposant (s'il est débloqué), puis le premier trimestre ; le guide prend le relais dans le jeu
   function demarrerPartie() {
@@ -497,7 +528,7 @@
       st = M.reprendre(s, BASE); st.sansMissions = true; st.mission = null; sauver(); choixNiveau(st.niveau, true);
       if (st.phase === "pret") return demarrerPartie();
       jeu();
-    }).catch(function () { alert("Impossible de charger les dossiers. Vérifie ta connexion et réessaie."); });
+    }).catch(echec(reprise));
   }
 
   // Tirage du mandat : l'opposant (s'il est débloqué), puis la crise et les trois objectifs
