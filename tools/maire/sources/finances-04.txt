@@ -353,7 +353,7 @@ C) Garder la confiance :: Bénévoles.
    > Rien ne change.
 
 === fin-094 | finances | Indemniser les commerçants gênés par les travaux
-Les travaux d’un tramway font chuter le chiffre d’affaires des commerces de toute une avenue.
+Les travaux d’un tramway font chuter le chiffre d’affaires des commerces de toute une avenue de l’arrondissement.
 A) Indemniser selon les pertes :: Juste.
    bud-12 economie+2 | g+1 c+3 d+2 e+1
    > Une commission indemnise les commerçants.
@@ -365,7 +365,7 @@ C) Pas d’indemnité :: Les travaux profiteront à tous.
    > Plusieurs commerces ferment.
 
 === fin-095 | finances | L’entretien des équipements olympiques
-Les équipements construits pour les Jeux coûtent cher à entretenir et sont peu utilisés.
+Les équipements construits dans l’arrondissement pour les Jeux coûtent cher à entretenir et sont peu utilisés.
 A) Les ouvrir massivement aux clubs et aux écoles :: Utiliser.
    rec-0.3x60 services+2 bon+1 | g+2 c+2 d+1 e+1
    > Les équipements accueillent les scolaires.
@@ -377,7 +377,7 @@ C) En reconvertir certains :: Adapter.
    > Une salle devient un centre culturel.
 
 === fin-096 | finances | Une surfacturation dans les contrats de nettoyage
-Un audit découvre que des entreprises de nettoyage facturent des heures jamais effectuées.
+Un audit découvre que des entreprises de nettoyage de l’arrondissement facturent des heures jamais effectuées.
 A) Porter plainte et exiger le remboursement :: Fermeté.
    bud+10 coh+1 | g+1 c+2 d+2 e0
    > Les entreprises sont poursuivies.
@@ -425,7 +425,7 @@ C) S’opposer :: Compétitivité.
    > La hausse est rejetée.
 
 === fin-100 | finances | La cantine gratuite pour tous
-Des élus proposent la gratuité totale des cantines scolaires.
+Des élus proposent la gratuité totale des cantines scolaires de l’arrondissement.
 A) Cantine gratuite pour tous :: Égalité.
    rec-1.5x60 achat+4 services+1 pop+2 | g+5 c0 d-3 e+2
    > Tous les enfants mangent gratuitement.
@@ -461,26 +461,26 @@ C) Effacer les dettes :: Soutien associatif.
    > Les dettes sont effacées.
 
 === fin-103 | finances | Un mécène veut financer une statue de lui-même
-Un riche donateur offre 25 M€ à la Ville, à condition d’ériger sa statue dans un jardin.
+Un riche donateur offre 25 M€ à l’arrondissement, à condition d’ériger sa statue dans un jardin.
 ? distinct
 A) Accepter :: L’argent est là.
    bud+25 pop-3 | g-3 c+1 d+2 e-1
-   > La statue fait rire tout Paris.
+   > La statue fait rire tout l’arrondissement.
 B) Proposer une plaque discrète :: Compromis.
    bud+10 | g0 c+3 d+2 e0
    > Le mécène accepte une plaque et donne moins.
 C) Refuser :: Dignité.
    pop+1 | g+2 c+1 d0 e+1
-   > Le mécène part offrir sa statue à une autre ville.
+   > Le mécène part offrir sa statue à un autre arrondissement.
 
-=== fin-104 | finances | La Ville facturée pour une erreur d’urbanisme
-Un promoteur obtient des dommages et intérêts : la Ville lui a refusé un permis sans raison valable.
+=== fin-104 | finances | La mairie facturée pour une erreur d’urbanisme
+Un promoteur obtient des dommages et intérêts : la mairie d’arrondissement lui a refusé un permis sans raison valable.
 A) Payer sans faire appel :: Assumer.
    bud-25 coh+1 | g0 c+2 d+2 e0
-   > La Ville paie l’indemnité.
+   > La mairie d’arrondissement paie l’indemnité.
 B) Faire appel :: Défendre la décision.
    bud-2 | g+1 c+1 d0 e+1
-   > La Ville fait appel.
+   > La mairie d’arrondissement fait appel.
    ~50 bud-35 > La cour d’appel alourdit la condamnation.
 C) Négocier un accord : un permis contre une indemnité réduite :: Trouver un terrain d’entente.
    bud-8 logement+1 | g-1 c+3 d+2 e0

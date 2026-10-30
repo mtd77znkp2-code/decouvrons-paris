@@ -1,6 +1,6 @@
 // Relations institutionnelles, série 2
-=== ins-026 | institutions | Retransmettre le Conseil de Paris en direct
-Les séances du Conseil de Paris sont peu suivies. Des habitants demandent plus de transparence.
+=== ins-026 | institutions | Retransmettre le conseil d’arrondissement en direct
+Les séances du conseil d’arrondissement sont peu suivies. Des habitants demandent plus de transparence.
 A) Retransmission en direct et sous-titrée :: Transparence.
    bud-2 coh+1 pop+1 | g+1 c+3 d+1 e+2
    > Les séances sont diffusées en direct.
@@ -38,27 +38,27 @@ C) Défendre la compétence avant le genre :: Assumer.
    pop-2 | g-3 c0 d+3 e-1
    > Le maire refuse de changer son équipe.
 
-=== ins-029 | institutions | Le Défenseur des droits épingle la Ville
-Le Défenseur des droits estime que les règles d’accès aux cantines discriminent les enfants de parents sans emploi.
+=== ins-029 | institutions | Le Défenseur des droits épingle la mairie
+Le Défenseur des droits estime que les règles d’accès aux cantines de l’arrondissement discriminent les enfants de parents sans emploi.
 A) Changer immédiatement les règles :: Corriger.
    rec-0.2x60 services+1 coh+1 | g+3 c+2 d0 e+1
    > Tous les enfants peuvent manger à la cantine.
-B) Contester l’avis :: Défendre la Ville.
+B) Contester l’avis :: Défendre la mairie.
    pop-2 | g-2 c0 d+2 e-1
-   > La Ville conteste.
+   > La mairie d’arrondissement conteste.
 C) Lancer une concertation :: Prendre le temps.
    bud-1 | g+1 c+3 d+1 e+1
    > Une concertation est ouverte.
 
 === ins-030 | institutions | La CNIL enquête sur l’application municipale
-La CNIL s’intéresse aux données collectées par l’application de la Ville.
+La CNIL s’intéresse aux données collectées par l’application de la mairie d’arrondissement.
 A) Coopérer et supprimer les données inutiles :: Transparence.
    bud-2 coh+1 | g+2 c+3 d+1 e+2
    > Les données superflues sont effacées.
 B) Défendre l’application :: Assumer.
    pop-1 | g-1 c0 d+2 e-1
-   > La Ville conteste les reproches.
-   ~40 bud-5 pop-1 > La CNIL inflige une amende à la Ville.
+   > La mairie d’arrondissement conteste les reproches.
+   ~40 bud-5 pop-1 > La CNIL inflige une amende à la mairie.
 C) Suspendre l’application :: Prudence.
    services-1 | g+1 c+2 d0 e+1
    > L’application est suspendue.
@@ -89,8 +89,8 @@ C) Respecter l’interdiction :: Légalité.
    coh-1 | g-1 c+1 d+3 e-2
    > La marche est annulée.
 
-=== ins-033 | institutions | L’État veut construire une prison à Paris
-Le ministère de la Justice veut construire une maison d’arrêt sur un terrain du 13e.
+=== ins-033 | institutions | L’État veut construire une prison dans l’arrondissement
+Le ministère de la Justice veut construire une maison d’arrêt sur un terrain de l’arrondissement.
 A) Accepter avec des contreparties :: Compromis.
    bud+20 securite+1 bon-1 | g0 c+3 d+2 e0
    > L’État finance une école et un parc en échange.
@@ -128,9 +128,9 @@ C) Le recevoir avec les honneurs :: Protocole.
    economie+1 coh-2 | g-3 c+1 d+3 e-2
    > La visite se fait en grande pompe.
 
-=== ins-036 | institutions | Un conseil municipal des enfants
+=== ins-036 | institutions | Un conseil d’arrondissement des enfants
 Des enseignants proposent que des élèves élus siègent dans un conseil des enfants avec un vrai budget.
-A) Créer le conseil avec un budget d’un million :: Démocratie dès l’enfance.
+A) Créer le conseil avec un vrai budget :: Démocratie dès l’enfance.
    bud-1 bon+1 pop+1 | g+2 c+2 d+1 e+2
    > Les enfants votent leurs premiers projets.
 B) Conseil consultatif sans budget :: Symbolique.
@@ -141,7 +141,7 @@ C) Refuser :: Gadget.
    > Le projet est abandonné.
 
 === ins-037 | institutions | Un accord avec les syndicats des agents
-Les syndicats proposent un accord sur trois ans : salaires, conditions de travail et télétravail.
+Les syndicats des agents de la mairie d’arrondissement proposent un accord sur trois ans : salaires, conditions de travail et télétravail.
 A) Signer l’accord :: Paix sociale.
    rec-0.6x60 services+2 | g+3 c+2 d-1 e+1
    > Trois ans de paix sociale sont garantis.
@@ -178,7 +178,7 @@ C) Minimiser :: Une erreur de bonne foi.
    > Le maire défend son adjoint.
 
 === ins-040 | institutions | Une convention citoyenne pour le climat
-Cent Parisiens tirés au sort pourraient proposer des mesures pour le climat.
+Cinquante habitants tirés au sort pourraient proposer des mesures pour le climat.
 A) Lancer la convention et s’engager à soumettre ses propositions au vote :: Démocratie.
    bud-2 coh+1 ecologie+1 | g+2 c+2 d0 e+4
    > Cent citoyens travaillent pendant six mois.
@@ -203,14 +203,14 @@ C) Rejeter les accusations :: Défendre Paris.
    > Le maire dément.
 
 === ins-042 | institutions | Des militaires dans les rues
-Le gouvernement veut renforcer la présence militaire dans les rues de Paris.
+Le gouvernement veut renforcer la présence militaire dans les rues de l’arrondissement.
 A) Soutenir le dispositif :: Sécurité.
    securite+2 bon-1 | g-3 c+1 d+4 e-2
    > Les patrouilles de militaires se multiplient.
 B) Demander plutôt des policiers :: Alternative.
    securite+1 | g+1 c+3 d+1 e+1
    > Le maire réclame des policiers plutôt que des soldats.
-C) S’y opposer :: Ville apaisée.
+C) S’y opposer :: Quartier apaisé.
    securite-1 coh+1 | g+3 c0 d-3 e+2
    > Le maire critique la militarisation.
 
@@ -228,14 +228,14 @@ C) Ne rien demander :: Respect des institutions.
    > Le jardin ferme toujours au coucher du soleil.
 
 === ins-044 | institutions | L’État ne compense plus les aides sociales
-L’État ne rembourse plus intégralement le RSA que la Ville verse aux allocataires.
+L’État ne rembourse plus intégralement le RSA versé aux allocataires de l’arrondissement.
 A) Attaquer l’État en justice :: Défendre les finances.
    bud-1 coh+1 | g+2 c+1 d0 e+1
-   > La Ville saisit le Conseil d’État.
-   ~40 bud+30 > La Ville obtient un remboursement partiel.
+   > La mairie d’arrondissement saisit le Conseil d’État.
+   ~40 bud+30 > La mairie d’arrondissement obtient un remboursement partiel.
 B) Absorber le coût :: Protéger les allocataires.
    rec-0.8x60 achat+1 | g+3 c+1 d-2 e+1
-   > La Ville paie la différence.
+   > La mairie d’arrondissement paie la différence.
 C) Renforcer les contrôles des allocataires :: Réduire la dépense.
    rec+0.2x60 bon-1 | g-4 c+1 d+4 e-1
    > Les contrôles se multiplient.
@@ -292,13 +292,13 @@ C) Les baisser :: Symbole.
    ~30 coh-1 > Des élus menacent de ne plus siéger.
 
 === ins-049 | institutions | Une ville amie bombardée
-Une ville jumelée avec Paris est bombardée. Son maire appelle à l’aide.
+Une ville jumelée avec l’arrondissement est bombardée. Son maire appelle à l’aide.
 A) Envoyer une aide humanitaire importante :: Solidarité.
    bud-10 pop+2 coh+1 | g+2 c+2 d+1 e+2
-   > Des convois d’aide partent de Paris.
+   > Des convois d’aide partent de l’arrondissement.
 B) Accueillir des familles réfugiées :: Hospitalité.
    bud-6 rec-0.2x40 bon+1 | g+3 c+2 d-1 e+2
-   > Des familles sont logées à Paris.
+   > Des familles sont logées dans l’arrondissement.
 C) Un message de soutien :: Symbolique.
    pop-1 | g0 c+1 d+1 e0
    > Le maire exprime sa solidarité.
@@ -315,31 +315,31 @@ C) Refuser :: Priorité aux Parisiens.
    coh-1 | g-3 c0 d+3 e-1
    > Le partenariat est décliné.
 
-=== ins-051 | institutions | Un ministère quitte Paris
-Le gouvernement veut déplacer un ministère et ses 3 000 agents en province.
-A) Protester :: Défendre l’emploi parisien.
+=== ins-051 | institutions | Un ministère quitte l’arrondissement
+Le gouvernement veut déplacer en province un ministère installé dans l’arrondissement, avec ses 3 000 agents.
+A) Protester :: Défendre l’emploi local.
    pop+1 | g+1 c0 d+1 e0
-   > Le maire dénonce une « punition de Paris ».
+   > Le maire dénonce une « punition de l’arrondissement ».
    ~45 economie-1 > Le ministère part quand même.
 B) Proposer de transformer les bâtiments en logements :: Rebondir.
    logement+2 | g+2 c+2 d+1 e+2
-   > L’État accepte de céder les bâtiments à la Ville.
+   > L’État accepte de céder les bâtiments à la mairie.
 C) Accepter : décentraliser est juste :: Solidarité territoriale.
    economie-1 coh+1 | g+1 c+2 d0 e+2
    > Le maire soutient le départ.
 
-=== ins-052 | institutions | Présider le réseau des grandes villes pour le climat
-Paris peut prendre la présidence d’un réseau mondial de grandes villes engagées pour le climat.
+=== ins-052 | institutions | Présider le réseau des quartiers pour le climat
+Ton arrondissement peut prendre la présidence d’un réseau mondial de quartiers engagés pour le climat.
 A) Accepter la présidence :: Rayonnement.
    bud-3 ecologie+1 pop+1 | g+1 c+2 d0 e+4
    > Le maire préside le réseau mondial.
    ~30 pop-1 > On reproche au maire de voyager plus qu’il ne gouverne.
 B) Participer sans présider :: Discret.
    ecologie+1 | g+1 c+3 d+1 e+2
-   > Paris reste un membre actif.
+   > L’arrondissement reste un membre actif.
 C) Quitter le réseau :: Priorités locales.
    coh-1 | g-1 c0 d+3 e-3
-   > Paris quitte le réseau.
+   > L’arrondissement quitte le réseau.
 
 === ins-053 | institutions | L’ancien maire critique ta politique
 Ton prédécesseur multiplie les interviews pour critiquer tes décisions.
@@ -381,7 +381,7 @@ C) Retirer la délibération :: Éviter le conflit.
    > La délibération est abandonnée.
 
 === ins-056 | institutions | L’incinérateur d’Ivry à reconstruire
-Le syndicat qui gère les déchets de Paris veut reconstruire l’incinérateur d’Ivry, très contesté.
+Le syndicat qui gère les déchets de l’arrondissement veut reconstruire l’incinérateur d’Ivry, très contesté.
 A) Soutenir un incinérateur plus petit et moderne :: Pragmatique.
    bud-30 proprete+2 ecologie+1 | g0 c+3 d+2 e+1
    > L’incinérateur sera plus petit et moins polluant.
@@ -394,19 +394,19 @@ C) Accepter le projet tel quel :: Continuité.
    > Le grand incinérateur sera reconstruit.
 
 === ins-057 | institutions | Des communes voisines refusent des places d’hébergement
-Plusieurs communes de banlieue refusent d’accueillir des centres d’hébergement, laissant Paris seul.
+Plusieurs communes de banlieue refusent d’accueillir des centres d’hébergement, laissant l’arrondissement seul.
 A) Demander à l’État de répartir équitablement :: Solidarité régionale.
    coh+1 | g+2 c+2 d0 e+1
    > Le préfet de région est saisi.
 B) Payer pour des places dans les communes volontaires :: Financer.
    bud-10 services+1 | g+2 c+2 d+1 e+1
    > Des communes acceptent contre un financement.
-C) Réduire l’hébergement à Paris :: Équité.
+C) Réduire l’hébergement dans l’arrondissement :: Équité.
    services-1 | g-4 c+1 d+4 e-2
-   > Paris arrête d’ouvrir de nouvelles places.
+   > L’arrondissement arrête d’ouvrir de nouvelles places.
 
 === ins-058 | institutions | Un commissariat fermé la nuit
-La préfecture ferme la nuit le commissariat d’un arrondissement pour manque d’effectifs.
+La préfecture ferme la nuit le commissariat de ton arrondissement pour manque d’effectifs.
 A) Protester auprès du ministre :: Pression.
    pop+1 coh+1 | g+1 c+1 d+1 e0
    > Le maire écrit au ministre de l’Intérieur.
@@ -419,21 +419,21 @@ C) Accepter :: Contraintes de l’État.
    > L’arrondissement n’a plus de commissariat la nuit.
 
 === ins-059 | institutions | Accueillir une agence européenne
-Une agence européenne cherche une ville pour s’installer. Paris peut candidater.
+Une agence européenne cherche un siège. Ton arrondissement peut candidater.
 A) Candidater avec un bâtiment offert :: Rayonnement.
    bud-25 economie+3 pop+1 | g0 c+3 d+2 e+1
-   > Paris remporte l’agence.
-   +20 economie+2 > Mille fonctionnaires européens s’installent à Paris.
+   > L’arrondissement remporte l’agence.
+   +20 economie+2 > Mille fonctionnaires européens s’installent dans l’arrondissement.
 B) Candidater sans offre spéciale :: Prudent.
    economie+1 | g0 c+2 d+1 e0
-   > Paris est candidate.
+   > L’arrondissement est candidat.
    ~50 pop-1 > L’agence choisit Amsterdam.
 C) Ne pas candidater :: Économie.
    economie-1 | g0 c0 d+1 e0
-   > Paris passe son tour.
+   > L’arrondissement passe son tour.
 
 === ins-060 | institutions | Les permanences des élus désertées
-Plus personne ne vient aux permanences des élus d’arrondissement.
+Plus personne ne vient aux permanences des élus de ton arrondissement.
 A) Permanences dans les marchés et les gares :: Aller vers les gens.
    bud-1 pop+1 | g+2 c+2 d+1 e+1
    > Les élus tiennent des stands au marché.
@@ -445,7 +445,7 @@ C) Les supprimer :: Simplifier.
    > Les permanences disparaissent.
 
 === ins-061 | institutions | Les cérémonies du 11 Novembre
-Les anciens combattants trouvent que la Ville néglige les cérémonies commémoratives.
+Les anciens combattants trouvent que la mairie d’arrondissement néglige les cérémonies commémoratives.
 A) Associer les écoles aux cérémonies :: Transmettre.
    bud-1 pop+1 | g+1 c+2 d+2 e+1
    > Des élèves lisent des lettres de poilus.
@@ -456,8 +456,8 @@ C) Garder le format actuel :: Sobriété.
    pop-1 | g0 c+1 d0 e0
    > Rien ne change.
 
-=== ins-062 | institutions | L’égalité salariale chez les agents de la Ville
-Une étude montre que les femmes agents de la Ville gagnent 12 % de moins que les hommes.
+=== ins-062 | institutions | L’égalité salariale chez les agents de la mairie
+Une étude montre que les femmes agents de la mairie d’arrondissement gagnent 12 % de moins que les hommes.
 A) Plan de rattrapage sur trois ans :: Égalité.
    rec-0.4x60 coh+1 pop+1 | g+3 c+2 d0 e+2
    > Les écarts de salaire sont corrigés.
@@ -466,10 +466,10 @@ B) Transparence sur les salaires :: Révéler.
    > Les grilles de salaires sont publiées.
 C) Contester l’étude :: Défense.
    pop-2 | g-3 c0 d+2 e-1
-   > La Ville conteste la méthode.
+   > La mairie d’arrondissement conteste la méthode.
 
 === ins-063 | institutions | La gestion de l’eau convoitée par un groupe privé
-Un groupe privé propose de reprendre la gestion de l’eau, aujourd’hui publique, en promettant des économies.
+Un groupe privé propose de reprendre la gestion de l’eau dans l’arrondissement, aujourd’hui publique, en promettant des économies.
 A) Garder Eau de Paris en régie publique :: Bien commun.
    coh+1 | g+4 c+1 d-2 e+3
    > L’eau reste publique.

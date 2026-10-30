@@ -63,8 +63,8 @@ C) Accepter :: Contraintes budgétaires.
    transports-2 pop-1 | g-1 c+1 d+1 e-1
    > Les bus passent moins souvent.
 
-=== ins-071 | institutions | Paris paie la préfecture de police
-La Ville verse des centaines de millions à la préfecture de police sans contrôle sur son action.
+=== ins-071 | institutions | L’arrondissement paie la préfecture de police
+La mairie d’arrondissement verse chaque année une grosse contribution à la préfecture de police sans contrôle sur son action.
 A) Exiger plus de contrôle en échange :: Pouvoir.
    coh+1 securite+1 | g+1 c+2 d+1 e+1
    > Un comité de suivi est créé.
@@ -77,7 +77,7 @@ C) Payer sans discuter :: Paix institutionnelle.
    > Rien ne change.
 
 === ins-072 | institutions | La Région et les lycées vétustes
-Les lycées parisiens, gérés par la Région, se dégradent. Les parents interpellent le maire.
+Les lycées de l’arrondissement, gérés par la Région, se dégradent. Les parents interpellent le maire.
 A) Proposer de cofinancer des travaux :: Agir.
    bud-20 services+2 | g+2 c+2 d+1 e+1
    > Les travaux démarrent.
@@ -116,7 +116,7 @@ C) Abandonner le projet :: Éviter le conflit.
    > Le projet est abandonné.
 
 === ins-075 | institutions | Des pénalités pour manque de logements sociaux
-L’État menace des arrondissements de pénalités pour manque de logements sociaux.
+L’État menace ton arrondissement de pénalités pour manque de logements sociaux.
 A) Accélérer la construction dans ces quartiers :: Rattraper.
    bud-40 logement+3 | g+3 c+2 d-2 e+1
    > Des programmes sont lancés.
@@ -125,19 +125,19 @@ B) Négocier un calendrier :: Temps.
    > L’État accorde un délai.
 C) Payer les pénalités :: Pas d’alternative.
    bud-15 | g-2 c0 d+2 e0
-   > La Ville paie les pénalités sans broncher.
+   > La mairie d’arrondissement paie les pénalités sans broncher.
 
 === ins-076 | institutions | Un hommage national à une grande figure
-Une grande figure populaire est morte. L’État organise un hommage national et demande l’appui de la Ville.
-A) Grand hommage populaire dans Paris :: Communion.
+Une grande figure populaire est morte. L’État organise un hommage national et demande l’appui de la mairie d’arrondissement.
+A) Grand hommage populaire dans l’arrondissement :: Communion.
    bud-3 bon+1 pop+1 | g+1 c+2 d+1 e+1
-   > Des milliers de Parisiens rendent hommage.
+   > Des milliers d’habitants rendent hommage.
 B) Donner son nom à un lieu :: Mémoire durable.
    bud-1 pop+1 | g+1 c+2 d+1 e+1
    > Une place porte son nom.
 C) Appui logistique seulement :: Sobriété.
    pop-1 bud-1 | g0 c+2 d+1 e0
-   > La Ville fournit barrières et agents.
+   > La mairie d’arrondissement fournit barrières et agents.
 
 === ins-077 | institutions | Une grande messe en plein air
 Une organisation religieuse veut organiser une messe géante sur le Champ-de-Mars.
@@ -152,11 +152,11 @@ C) Refuser :: Laïcité.
    coh+1 pop-1 | g+2 c0 d-3 e+1
    > La demande est rejetée.
 
-=== ins-078 | institutions | Un sommet international à Paris
-Les chefs d’État du G20 se réunissent à Paris. Des quartiers entiers seront bouclés.
+=== ins-078 | institutions | Un sommet international dans l’arrondissement
+Les chefs d’État du G20 se réunissent dans l’arrondissement. Des quartiers entiers seront bouclés.
 A) Coopérer pleinement :: Rayonnement.
    economie+1 bon-2 transports-1 | g-1 c+2 d+3 e0
-   > Paris accueille le sommet.
+   > L’arrondissement accueille le sommet.
 B) Négocier un périmètre réduit :: Protéger la vie quotidienne.
    bon-1 | g+1 c+3 d+1 e+1
    > Le périmètre est limité.
@@ -178,7 +178,7 @@ C) Faire du lobbying pour une loi :: Politique.
    > Le maire demande une loi pour l’autoriser.
 
 === ins-080 | institutions | Une ambassade veut fermer une rue
-Pour des raisons de sécurité, une ambassade demande la fermeture totale de sa rue.
+Pour des raisons de sécurité, une ambassade de l’arrondissement demande la fermeture totale de sa rue.
 A) Accepter :: Sécurité diplomatique.
    securite+1 bon-1 | g-1 c+2 d+3 e0
    > La rue est fermée.
@@ -203,20 +203,20 @@ C) Ignorer :: Liberté de la presse.
    > Le maire ne réagit pas.
 
 === ins-082 | institutions | Le parquet financier enquête sur un marché
-Le parquet financier ouvre une enquête sur un marché public attribué par la Ville.
+Le parquet financier ouvre une enquête sur un marché public attribué par la mairie d’arrondissement.
 A) Coopérer et suspendre le marché :: Transparence.
    coh+1 bud-5 | g+1 c+3 d+2 e+1
    > Le marché est suspendu.
 B) Défendre la procédure :: Confiance.
    pop-1 | g0 c+1 d+1 e0
-   > La Ville défend sa décision.
+   > La mairie d’arrondissement défend sa décision.
    ~40 pop-3 > Un fonctionnaire est mis en examen.
 C) Lancer un audit interne de tous les marchés :: Aller plus loin.
    bud-3 coh+2 | g+1 c+3 d+2 e+1
    > Un audit de tous les marchés est lancé.
 
-=== ins-083 | institutions | Le rapport de la médiatrice de la Ville
-La médiatrice publie son rapport : des milliers de réclamations restent sans réponse.
+=== ins-083 | institutions | Le rapport de la médiatrice
+La médiatrice publie son rapport sur l’arrondissement : des milliers de réclamations restent sans réponse.
 A) Plan d’amélioration avec délais de réponse :: Agir.
    rec-0.1x60 services+2 | g+1 c+3 d+2 e+1
    > Chaque réclamation reçoit une réponse sous un mois.
@@ -242,14 +242,14 @@ C) Ne pas signer :: Dialogue avec l’État.
    > Paris reste à l’écart.
 
 === ins-085 | institutions | L’État transfère l’entretien des berges
-L’État veut transférer à la Ville l’entretien des berges de la Seine, sans compensation suffisante.
+L’État veut transférer à la mairie d’arrondissement l’entretien des berges de la Seine, sans compensation suffisante.
 A) Refuser sans compensation :: Défendre les finances.
    coh+1 | g+1 c+2 d+1 e0
    > Le transfert est bloqué.
    ~40 rec-0.2x60 > La loi impose le transfert.
 B) Accepter en négociant :: Gestion locale.
    rec-0.2x60 ecologie+1 | g0 c+3 d+1 e+2
-   > La Ville gère les berges.
+   > La mairie d’arrondissement gère les berges.
 C) Accepter : maîtriser les berges est un atout :: Opportunité.
    rec-0.3x60 ecologie+2 bon+1 | g+1 c+1 d0 e+3
    > Les berges deviennent municipales.
@@ -291,8 +291,8 @@ C) Ignorer :: Hauteur.
    pop-1 | g0 c+2 d+1 e0
    > Le livre devient un succès de librairie.
 
-=== ins-089 | institutions | Des fausses informations sur la Ville
-De fausses informations circulent : la Ville voudrait interdire les voitures dans tout Paris dès l’an prochain.
+=== ins-089 | institutions | Des fausses informations sur la mairie
+De fausses informations circulent : la mairie voudrait interdire les voitures dans tout l’arrondissement dès l’an prochain.
 A) Démentir point par point sur les réseaux :: Réagir.
    bud-1 pop+1 | g0 c+3 d+1 e+1
    > Une page de vérification est créée.
@@ -353,8 +353,8 @@ C) Attendre la justice :: Présomption d’innocence.
    pop-2 | g-1 c+1 d+1 e-1
    > L’élu garde ses fonctions.
 
-=== ins-094 | institutions | Des pandas pour le zoo de Vincennes
-La Chine propose de prêter un couple de pandas au zoo de Vincennes.
+=== ins-094 | institutions | Des pandas pour le zoo du quartier
+La Chine propose de prêter un couple de pandas au zoo de l’arrondissement.
 A) Accepter :: Attraction et diplomatie.
    bud-5 economie+2 bon+1 | g-1 c+2 d+2 e0
    > Les pandas arrivent sous les flashs.
@@ -366,30 +366,30 @@ C) Refuser :: Principes.
    economie-1 coh+1 | g+2 c0 d-1 e+1
    > Les pandas iront à Berlin.
 
-=== ins-095 | institutions | Paris perd des habitants
-Le recensement montre que Paris perd 10 000 habitants par an. Les dotations de l’État baissent.
+=== ins-095 | institutions | Le quartier perd des habitants
+Le recensement montre que l’arrondissement perd des milliers d’habitants par an. Les dotations de l’État baissent.
 A) Plan pour retenir les familles :: Logement et écoles.
    bud-30 logement+2 services+1 | g+2 c+2 d+1 e+1
    > Un plan familles est lancé.
 B) Contester le recensement :: Défendre les dotations.
    bud-1 coh+1 | g0 c+1 d+1 e0
-   > La Ville conteste les chiffres.
+   > La mairie d’arrondissement conteste les chiffres.
    ~50 rec-0.2x60 > Le recensement est confirmé, la dotation baisse.
-C) Accepter :: Paris moins dense.
+C) Accepter :: Un quartier moins dense.
    rec-0.2x60 | g0 c+1 d+1 e+1
    > Les dotations diminuent.
 
 === ins-096 | institutions | Le tribunal ordonne de loger un sans-abri
-Le tribunal ordonne à la Ville de loger en urgence une famille à la rue, sous astreinte.
+Le tribunal ordonne à la mairie d’arrondissement de loger en urgence une famille à la rue, sous astreinte.
 A) Exécuter et créer des places d’urgence supplémentaires :: Respecter le droit.
    bud-5 services+1 logement+1 | g+3 c+2 d0 e+1
    > La famille est logée et des places sont créées.
 B) Exécuter la décision seulement :: Minimum.
    services+1 bud-1 | g0 c+2 d+1 e0
    > La famille est logée.
-C) Faire appel :: Défendre les moyens de la Ville.
+C) Faire appel :: Défendre les moyens de la mairie.
    bud-1 pop-2 | g-3 c0 d+2 e-1
-   > La Ville fait appel.
+   > La mairie d’arrondissement fait appel.
 
 === ins-097 | institutions | Un rapport parlementaire sur la sécurité à Paris
 Des députés publient un rapport accablant sur la sécurité à Paris et mettent en cause la Ville.
@@ -427,11 +427,11 @@ C) Refuser :: Les élus représentent tout le monde.
    bon-1 | g-1 c0 d+2 e0
    > Rien n’est créé.
 
-=== ins-100 | institutions | Un sommet mondial des maires à Paris
-Les maires des plus grandes villes du monde proposent de se réunir à Paris.
+=== ins-100 | institutions | Un sommet mondial des maires dans l’arrondissement
+Les maires des plus grandes villes du monde proposent de se réunir dans ton arrondissement.
 A) Organiser un grand sommet :: Rayonnement.
    bud-6 economie+1 pop+1 | g+1 c+2 d+1 e+2
-   > Cent maires se réunissent à l’Hôtel de Ville.
+   > Cent maires se réunissent à la mairie d’arrondissement.
    ~25 pop-1 > On reproche le coût du sommet.
 B) Sommet sobre et en partie à distance :: Sobriété.
    bud-2 ecologie+1 | g+1 c+3 d+1 e+3
@@ -491,8 +491,8 @@ C) S’y opposer :: Choix des électeurs.
    > Le maire refuse.
 
 === ins-105 | institutions | Le budget des pompiers de Paris
-La brigade des sapeurs-pompiers, militaire, demande à la Ville de financer de nouvelles casernes.
-A) Financer deux casernes :: Sécurité des Parisiens.
+La brigade des sapeurs-pompiers, militaire, demande à la mairie de financer de nouvelles casernes dans l’arrondissement.
+A) Financer deux casernes :: Sécurité des habitants.
    bud-40 securite+3 | g0 c+2 d+3 e0
    > Deux casernes modernes sont construites.
 B) Financer une caserne et demander à l’État le reste :: Partage.

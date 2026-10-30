@@ -47,7 +47,7 @@ C) Le défendre :: Solidarité.
    > Les syndicats d’agents manifestent devant l’Hôtel de Ville.
 
 === ins-110 | institutions | Les agents veulent la semaine de quatre jours
-Les syndicats demandent de travailler 35 heures en quatre jours.
+Les syndicats des agents de l’arrondissement demandent de travailler 35 heures en quatre jours.
 A) L’expérimenter dans quelques services :: Tester.
    bon+1 coh+1 | g+1 c+2 d+1 e+1
    > Les agents des bibliothèques testent la formule.
@@ -59,7 +59,7 @@ C) Refuser :: Continuité du service.
    > Un préavis de grève est déposé.
 
 === ins-111 | institutions | Fusionner d’autres arrondissements
-Après Paris Centre, on propose de regrouper les 5e, 6e et 7e arrondissements.
+Après Paris Centre, l’Hôtel de Ville propose de regrouper ton arrondissement avec son voisin.
 A) Lancer la fusion :: Simplifier.
    bud+1 pop-1 | g0 c+2 d+1 e+1
    > Les mairies fusionnent, les habitants râlent.
@@ -70,8 +70,8 @@ C) Garder les arrondissements :: Proximité.
    coh+1 | g0 c+1 d+1 e0
    > Le projet est enterré.
 
-=== ins-112 | institutions | L’armée veut garder le Val-de-Grâce
-L’ancien hôpital militaire est vide, la Ville le veut pour des logements, l’armée refuse.
+=== ins-112 | institutions | Bras de fer avec les militaires sur une caserne vide
+L’ancien hôpital militaire de l’arrondissement est vide, la mairie le veut pour des logements, l’armée refuse.
 A) Négocier un rachat :: Logements.
    bud-3 logement+2 | g+2 c+2 d0 e+1
    > Huit cents logements sont programmés.
@@ -186,7 +186,7 @@ B) Remettre ta majorité au pas :: Discipline.
    > Les frondeurs rentrent dans le rang.
 C) Reporter le vote :: Temporiser.
    bud-1 coh-1 | g0 c+1 d+1 e0
-   > La Ville fonctionne au budget provisoire.
+   > La mairie d’arrondissement fonctionne au budget provisoire.
 
 === ins-122 | institutions | Un adjoint publie des messages polémiques
 Un adjoint multiplie les messages agressifs sur les réseaux sociaux.

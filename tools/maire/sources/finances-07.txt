@@ -98,7 +98,7 @@ C) Refuser :: Complexité.
    > Le sujet est classé.
 
 === fin-194 | finances | Le retard d’entretien des écoles
-Des toitures et chaudières d’écoles n’ont pas été entretenues depuis des années.
+Des toitures et chaudières d’écoles de l’arrondissement n’ont pas été entretenues depuis des années.
 ? distinct
 A) Un grand plan de rattrapage :: Investir.
    bud-25 services+2 | g+1 c+2 d+1 e+1
@@ -305,7 +305,7 @@ C) Le verser au budget social :: Simplicité.
    > Le legs disparaît dans le budget.
 
 === fin-211 | finances | Une taxe pour la prévention des inondations
-La loi permet de lever une taxe pour protéger contre les crues.
+La loi permet de lever une taxe pour protéger l’arrondissement contre les crues.
 A) Lever la taxe :: Protéger.
    rec+0.1x60 bon-1 securite+1 | g0 c+2 d+1 e+1
    > Des digues et bassins sont financés.

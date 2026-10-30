@@ -24,11 +24,11 @@ C) Laisser les contrats :: Stabilité.
    rec-0.02x60 | g0 c+1 d+1 e0
    > Rien ne change.
 === fin-108 | finances | La facture du déneigement
-L’hiver a été rude. Le budget du déneigement est épuisé dès janvier.
+L’hiver a été rude. Le budget du déneigement de l’arrondissement est épuisé dès janvier.
 A) Débloquer une rallonge :: Sécurité.
    bud-6 securite+1 transports+1 | g0 c+2 d+2 e0
    > Le déneigement continue.
-B) Mutualiser les engins avec les communes voisines :: Partager.
+B) Mutualiser les engins avec les arrondissements voisins :: Partager.
    bud-2 transports+1 | g+1 c+3 d+1 e+1
    > Un accord de prêt d’engins est signé.
 C) Ne déneiger que les axes principaux :: Économie.
@@ -73,7 +73,7 @@ C) Garder les loyers :: Recettes.
    > Rien ne change.
 
 === fin-112 | finances | Une hausse de la taxe foncière sur les bureaux
-Les entreprises paient moins de taxe que les ménages. Une hausse ciblée sur les bureaux est proposée.
+Les entreprises paient moins de taxe que les ménages. Une hausse ciblée sur les bureaux de l’arrondissement est proposée.
 ? distinct
 A) Augmenter fortement la taxe sur les bureaux :: Faire payer les entreprises.
    rec+0.8x60 economie-2 | g+3 c0 d-3 e+1
@@ -98,7 +98,7 @@ C) Rien :: Budget.
    > Rien ne change.
 
 === fin-114 | finances | Le contrat des toilettes publiques
-Le contrat des toilettes publiques gratuites coûte de plus en plus cher.
+Le contrat des toilettes publiques gratuites de l’arrondissement coûte de plus en plus cher.
 ? distinct
 A) Renégocier avec un nouveau prestataire :: Concurrence.
    rec+0.1x60 proprete-1 | g-1 c+3 d+2 e0
@@ -106,7 +106,7 @@ A) Renégocier avec un nouveau prestataire :: Concurrence.
    ~30 proprete-1 > Les nouvelles toilettes sont souvent en panne.
 B) Reprendre en régie :: Maîtrise.
    bud-5 rec-0.05x60 proprete+1 | g+3 c+1 d-1 e+1
-   > La Ville gère ses toilettes.
+   > La mairie d’arrondissement gère ses toilettes.
 C) Garder le contrat :: Continuité.
    proprete+1 rec-0.05x60 | g0 c+1 d+1 e0
    > Le contrat est prolongé.
@@ -124,7 +124,7 @@ C) Rien :: Contraintes de trésorerie.
    > Les intérêts continuent.
 
 === fin-116 | finances | Le budget des maternelles
-Les écoles maternelles demandent des crédits pour du matériel pédagogique, jamais renouvelé depuis dix ans.
+Les écoles maternelles de l’arrondissement demandent des crédits pour du matériel pédagogique, jamais renouvelé depuis dix ans.
 A) Doubler le budget pédagogique :: Investir dans l’enfance.
    rec-0.2x60 services+2 | g+2 c+2 d+1 e+1
    > Les classes reçoivent jeux et livres neufs.
@@ -147,11 +147,11 @@ C) Rien :: Contrat en cours.
    rec-0.01x60 | g0 c+1 d+1 e-1
    > Rien ne change.
 === fin-118 | finances | Le coût des JO de la jeunesse dérape
-Le budget d’un grand événement sportif accueilli par Paris dépasse de 30 %.
+Le budget d’un grand événement sportif accueilli par l’arrondissement dépasse de 30 %.
 ? apres=30
 A) Payer le dépassement :: Tenir l’engagement.
    bud-30 bon+1 | g0 c+2 d+2 e0
-   > La Ville couvre le dépassement.
+   > La mairie d’arrondissement couvre le dépassement.
 B) Réduire le programme :: Économie.
    bud-10 bon-1 | g0 c+2 d+2 e+1
    > Certaines épreuves sont supprimées.
@@ -172,7 +172,7 @@ C) Amnistie des petites amendes :: Apaiser.
    > Les amendes anciennes sont annulées.
 
 === fin-120 | finances | Un mécène pour les piscines
-Un grand groupe propose de rénover trois piscines en échange de son nom sur la façade.
+Un grand groupe propose de rénover les piscines de l’arrondissement en échange de son nom sur la façade.
 A) Accepter :: Piscines rénovées gratuitement.
    bud+30 services+2 pop-1 | g-2 c+2 d+3 e0
    > Les piscines portent le nom de la marque.
@@ -196,7 +196,7 @@ C) Les supprimer :: Pas prioritaire.
    > Les harmonies disparaissent.
 
 === fin-122 | finances | Investir dans l’hydrogène
-Une entreprise propose une station d’hydrogène pour les camions-poubelles, très chère.
+Une entreprise propose une station d’hydrogène pour les camions-poubelles de l’arrondissement, très chère.
 A) Investir :: Pionnier.
    bud-25 ecologie+2 economie+1 | g0 c+2 d+2 e+3
    > Les camions roulent à l’hydrogène.
