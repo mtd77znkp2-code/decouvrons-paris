@@ -53,11 +53,16 @@
     { id: "combos", niv: 4, nom: "Les combos de bâtiments" },
     { id: "pari", niv: 4, nom: "Le dernier pari, quand tout va mal" },
     { id: "historiques", niv: 5, nom: "Les décisions historiques" },
-    { id: "grandsProjets", niv: 6, nom: "Les projets démesurés (chantiers de plusieurs trimestres)" }
+    { id: "grandsProjets", niv: 6, nom: "Les projets démesurés (chantiers de plusieurs trimestres)" },
+    // En session : ce qui s'ajoute au fil des niveaux de la partie
+    { id: "attaques", niv: 3, nom: "La salle de guerre : attaquer ses adversaires" },
+    { id: "employes", niv: 7, nom: "Les employés" },
+    { id: "encheres", niv: 10, nom: "La salle des ventes" },
+    { id: "anticipees", niv: 15, nom: "Les élections anticipées" }
   ];
   // Ce qui se choisit en créant la partie (promesses, ligne, difficulté) n'arrive qu'à la partie suivante ;
   // le reste s'active dès que le niveau est atteint, en pleine partie (l'opposant, lui, entre en scène au mandat suivant)
-  var EN_COURS = { budget: 1, opposant: 1, cata: 1, projets: 1, missions: 1, combos: 1, pari: 1, historiques: 1, grandsProjets: 1 };
+  var EN_COURS = { budget: 1, opposant: 1, cata: 1, projets: 1, missions: 1, combos: 1, pari: 1, historiques: 1, grandsProjets: 1, attaques: 1, employes: 1, encheres: 1, anticipees: 1, ligne: 1, boutique3: 1, promesses: 1 };
   function mecaniques(nivJoueur) { var m = {}; MECANIQUES.concat(EXTRAS).forEach(function (x) { m[x.id] = nivJoueur >= x.niv; }); return m; }
 
   // ---------- Boutique ----------
@@ -104,8 +109,13 @@
 
   // ---------- XP et niveaux (la courbe est partagée avec progression.js) ----------
   var NIV_MAX = 50;
+  var DOSSIER_SESSION = 0.55;   // en session, part des montants des dossiers (un dossier toutes les 25 s au lieu d'un tous les 2 ou 3 trimestres)
   function xpPour(n) { return n <= 1 ? 0 : Math.round(100 * Math.pow(n - 1, 1.75)); }
   function niveauXP(xp) { var n = 1; while (n < NIV_MAX && xp >= xpPour(n + 1)) n++; return n; }
+  // Niveaux de partie (1 à 50) : chaque partie repart au niveau 1 ; les points de partie viennent de tout ce qu'on fait (sans plafond)
+  function ptsPour(n) { return n <= 1 ? 0 : Math.round(30 * Math.pow(n - 1, 1.6)); }
+  function niveauPartie(pts) { var n = 1; while (n < NIV_MAX && pts >= ptsPour(n + 1)) n++; return n; }
+  function points(st, n) { if (!st.np || !n) return; st.pxp = (st.pxp || 0) + n; monterNiveau(st); }
   // Ce que rapporte la partie elle-même (les succès, quêtes et chapitres s'y ajoutent : voir progression.js)
   var XP = { trimestre: 2, trimestreMax: 100, achat: 2, achatMax: 50, election: { facile: 60, moyen: 120, difficile: 200 }, projet: 40, rare: 10, legendaire: 30, raresMax: 120,
     // Tenir ses engagements rapporte : décisions pour ses promesses, bâtiments qui les servent, décisions fidèles à sa ligne, promesses tenues le jour du vote
@@ -253,8 +263,10 @@
   // ---------- Création de partie ----------
   // o : { ligne, ambitions (2 piliers), niveau, nivJoueur, graine, lots, secrets (bâtiments secrets déjà découverts), scenario (défi du jour) }
   function nouvellePartie(o) {
-    var nj = o.nivJoueur || (o.xpJoueur != null ? niveauXP(o.xpJoueur) : 99);
+    var np = !!o.niveauPartie && !o.scenario && !o.sansLimite;
+    var nj = np ? 1 : o.nivJoueur || (o.xpJoueur != null ? niveauXP(o.xpJoueur) : 99);
     var nv = o.scenario ? "moyen" : "facile", m = mecaniques(nj);
+    if (np && o.maire) m.promesses = true;      // la promesse du maire incarné compte dès le départ
     var maire = o.maire && C.MAIRES[o.maire] ? o.maire : null;
     var ligne = maire ? C.MAIRES[maire].ligne : m.ligne ? o.ligne : "centre";
     if (!LIGNES[ligne]) throw new Error("Ligne politique inconnue");
@@ -272,7 +284,8 @@
       xp0: o.xpJoueur != null ? o.xpJoueur : xpPour(Math.min(nj, NIV_MAX)), nivFixe: nj >= 99 || !!o.scenario,
       // Réservé à l'administrateur : tous les bâtiments sans attendre (la partie ne compte alors pas au classement)
       sansLimite: !!o.sansLimite, triche: !!o.sansLimite,
-      sansMissions: o.missions === false                     // l'interface peut se passer des missions surprises
+      sansMissions: o.missions === false,                    // l'interface peut se passer des missions surprises
+      np: np, pxp: 0                                          // niveaux de partie (1 à 50)
     };
     migrer(st);
     st.pid = o.pid ? String(o.pid) : "p" + (st.rng >>> 0).toString(36);
@@ -379,8 +392,9 @@
   // Gagner de l'XP en pleine partie ; plafond : total maximum pour cette source dans la partie
   function gagnerXP(st, txt, n, plafond) {
     n = Math.round(n || 0);
+    if (st.np && n > 0) st.pxp = (st.pxp || 0) + n;    // les points de partie comptent tout, même au-delà des plafonds d'XP
     if (plafond != null) { var deja = st.xpSrc[txt] || 0; n = Math.min(n, plafond - deja); if (n > 0) st.xpSrc[txt] = deja + n; }
-    if (n <= 0) return 0;
+    if (n <= 0) { monterNiveau(st); return 0; }
     st.xp += n;
     var g = st.xpLog.filter(function (y) { return y.txt === txt; })[0];
     if (g) g.xp += n; else st.xpLog.push({ txt: txt, xp: n });
@@ -390,7 +404,7 @@
   // Nouveau niveau : ses bâtiments arrivent tout de suite en boutique (l'interface le fête grâce à st.montees)
   function monterNiveau(st) {
     if (st.nivFixe || st.phase === "fin") return;
-    var cible = niveauXP(st.xp0 + st.xp);
+    var cible = st.np ? niveauPartie(st.pxp || 0) : niveauXP(st.xp0 + st.xp);
     while (st.nivJ < cible) {
       var n = ++st.nivJ, m = { n: n, bats: [], meca: [], plusTard: [] };
       MECANIQUES.concat(EXTRAS).forEach(function (x) {
@@ -414,7 +428,7 @@
       rares: 0, legendaires: 0, crisesOk: 0, bonheurMax: 0, paris: 0, pariGain: 0, pariPerte: 0, projetsOk: 0, missionsOk: 0, combos: 0,
       secretsBatis: 0, absurdes: 0, genieOk: 0, genieKo: 0, hantises: 0, objets: 0, grandJour: 0, grandJourOk: 0, negSerie: 0, negSerieMax: 0,
       trimSansDette: 0, sauvetage: 0, pigeons: 0, persos: 0, financements: 0,
-      encheres: 0, encheresPerdues: 0, bonnesAffaires: 0, lances: 0 };
+      encheres: 0, encheresPerdues: 0, bonnesAffaires: 0, lances: 0, attaquesOk: 0 };
     if (!st.stats) st.stats = {};
     Object.keys(d).forEach(function (k) { if (st.stats[k] == null) st.stats[k] = d[k]; });
     return st.stats;
@@ -684,7 +698,8 @@
     combosActifs(st).forEach(function (id) { t += C.COMBOS[id].ent || 0; });
     return arrondi(t * ((st.mods && st.mods.entretien) || 1) * (1 - Math.min(0.25, atout(st, "entretienPct") / 100)));
   }
-  function depenses(st) { return arrondi(P.fonct * (1 - effetEmp(st, "comptable")) + entretien(st) + salaires(st)); }
+  // En session, une mairie d'arrondissement coûte un peu moins à faire tourner (×0,85)
+  function depenses(st) { return arrondi(P.fonct * (st.session ? 0.85 : 1) * (1 - effetEmp(st, "comptable")) + entretien(st) + salaires(st)); }
   function chantierTranches(st) { var t = 0; (st.chantiers || []).forEach(function (c) { if (!c.susp) t += Math.round(c.du / Math.max(1, c.reste)); }); return t; }
   function solde(st) { var r = 0; st.recurrents.forEach(function (x) { r += x.m; }); return arrondi(recettes(st) - depenses(st) + r - interets(st) - chantierTranches(st)); }
   function promessesTenues(st) { return st.ambitions.filter(function (k) { return st.piliers[k] >= P.ambSeuil; }); }
@@ -727,7 +742,8 @@
     if (e.pop) { var a0 = st.pop; st.pop = borne(st.pop + e.pop); d.pop = arrondi(d.pop + st.pop - a0); }
     if (e.coh && st.meca.ligne) { var c0 = st.coh; st.coh = borne(st.coh + e.coh); d.coh = arrondi(d.coh + st.coh - c0); }
     if (e.bon) { var h0 = st.humeur; st.humeur = Math.max(-20, Math.min(20, arrondi(st.humeur + e.bon))); d.bon = arrondi(d.bon + st.humeur - h0); }
-    if (e.bud) { mouvement(st, e.bud, libelle); d.bud = arrondi(d.bud + e.bud); }
+    // En session, les dossiers arrivent bien plus souvent : leurs montants sont réduits d'autant
+    if (e.bud) { var bu = arrondi(e.bud * (st.session ? DOSSIER_SESSION : 1)); mouvement(st, bu, libelle); d.bud = arrondi(d.bud + bu); }
     if (e.dom) Object.keys(e.dom).forEach(function (k) {
       var p = VERS[k]; if (!p) return;
       if (p === "eco") { st.eco = borne(st.eco + e.dom[k]); return; }
@@ -744,7 +760,7 @@
     if (e.pil) Object.keys(e.pil).forEach(function (k) { var a = st.piliers[k]; st.piliers[k] = borne(a + e.pil[k]); d.pil[k] = arrondi((d.pil[k] || 0) + st.piliers[k] - a); });
     if (e.base) Object.keys(e.base).forEach(function (k) { var a = st.piliers[k]; st.base[k] = borne(st.base[k] + e.base[k]); st.piliers[k] = borne(a + e.base[k]); d.pil[k] = arrondi((d.pil[k] || 0) + st.piliers[k] - a); });
     if (e.eco) st.eco = borne(st.eco + e.eco);
-    if (e.rec) { st.recurrents.push({ id: st.nid++, m: e.rec.m, n: e.rec.n, l: lib }); d.rec = (d.rec || []).concat([e.rec]); }
+    if (e.rec) { var rm = arrondi(e.rec.m * (st.session ? DOSSIER_SESSION : 1)); st.recurrents.push({ id: st.nid++, m: rm, n: e.rec.n, l: lib }); d.rec = (d.rec || []).concat([{ m: rm, n: e.rec.n }]); }
     if (e.chaos) st.chaos = Math.max(0, Math.min(100, st.chaos + e.chaos));
     if (e.flag) st.flags[e.flag] = st.t;
     if (e.perso) Object.keys(e.perso).forEach(function (k) { st.persos[k] = (st.persos[k] || 0) + e.perso[k]; });
@@ -1012,6 +1028,7 @@
     st.notes = notes;
     if (!ok) { faillite(st); return st; }
     gagnerXP(st, "Trimestres à l’Hôtel de Ville", XP.trimestre, XP.trimestreMax);
+    points(st, 6);
     annoncer(st);
     // Objectifs remplis (2 sur 3) : le maire peut demander des élections anticipées (bouton dans « Objectifs du mandat »)
     if (!st.session && anticipeePossible(st) && !st.anticipeeDite) { st.anticipeeDite = st.mandat; message(st, "🗳️", "Objectifs remplis", "Tu peux demander des élections anticipées : elles auront lieu 3 trimestres plus tard."); }
@@ -1503,7 +1520,7 @@
         l: lib + " (retombées)", txt: (sens > 0 ? "Bonne surprise : ta décision « " : "Retour de bâton : ta décision « ") + c.t + " » fait encore parler d’elle." });
       stats(st).retombees++;
     }
-    var x = stats(st); x.cats[ev.cat] = (x.cats[ev.cat] || 0) + 1; x.dossiers++;
+    var x = stats(st); x.cats[ev.cat] = (x.cats[ev.cat] || 0) + 1; x.dossiers++; points(st, 8);
     if (ev.cat === "catastrophe" || ev.cat === "crise") x.crisesOk++;
     if (e && e.bud < 0) x.depenses += -e.bud;
     var neg = (d.pop || 0) + (d.bon || 0) < 0; x.negSerie = neg ? x.negSerie + 1 : 0; x.negSerieMax = Math.max(x.negSerieMax, x.negSerie);
@@ -1684,6 +1701,7 @@
     var st = copie(st0), E = EMPLOYES[id], px = prixEmploye(st0, id);
     st.emp = st.emp || {}; st.emp[id] = (st.emp[id] || 0) + 1;
     mouvement(st, -px, "Embauche : " + E.nom);
+    points(st, 4);
     return st;
   }
   // Chaque trimestre : les espaces de vie mal entretenus se dégradent ; au bout d'un moment, l'un d'eux ferme
@@ -1867,6 +1885,6 @@
     roulette: roulette, placer: placer, etatSession: etatSession, electionSession: electionSession, anticipeePossible: anticipeePossible, demanderAnticipee: demanderAnticipee, HAB0: HAB0, LOGE: LOGE, logeDe: logeDe, h0: h0, capacite: capacite, besoin: besoin, emplois: emplois, chomage: chomage, BESOINS: BESOINS, etatBesoins: etatBesoins, facteurHab: facteurHab, meilleurChoix: meilleurChoix, valeurChoix: valeurChoix, choixLibre: choixLibre, jeuDe: jeuDe, mjPoker: mjPoker, mjPokerLigne: mjPokerLigne, mjPokerResultat: mjPokerResultat, preparerMiniJeu: preparerMiniJeu, mjBlackjack: mjBlackjack, mjRoulette: mjRoulette, offresFinancement: offresFinancement, financer: financer, chantierTranches: chantierTranches, scoreDefi: scoreDefi,
     palier: palier, PALIERS: PALIERS, RAYONS: RAYONS, gainAchat: gainAchat, coutBat: coutBat, objectifs: objectifs, objectifsOk: objectifsOk, retraite: retraite, criseEnCours: criseEnCours, bonusMaire: bonusMaire, objectif: objectif, prerequis: prerequis, verrou: verrou, atout: atout, interets: interets, protection: protection,
     ajouterPassBat: ajouterPassBat, voirCoffre: voirCoffre, planVille: planVille, budgetEnchere: budgetEnchere, peutEncherir: peutEncherir, ouvrirEnchere: ouvrirEnchere, encherir: encherir, finirEnchere: finirEnchere, fermerEnchere: fermerEnchere, limites: limites,
-    NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };
+    NIV_MAX: NIV_MAX, XP: XP, xpPour: xpPour, niveauXP: niveauXP, ptsPour: ptsPour, niveauPartie: niveauPartie, points: points, gagnerXP: gagnerXP, ajouterXP: ajouterXP, viderMontees: viderMontees, EN_COURS: EN_COURS };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.Maire = API;
 })(this);

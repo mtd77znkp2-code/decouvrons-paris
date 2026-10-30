@@ -405,45 +405,52 @@ test("enchères : 30 secondes face à une ville voisine, la meilleure offre gagn
   assert.ok(gagnees > 5 && perdues > 5, gagnees + " gagnées / " + perdues + " perdues");
 });
 
-test("succès journaliers et pass de combat : 5 défis par jour en pleine partie, 30 paliers, récompenses utiles", () => {
+test("succès journaliers : 5 défis par jour en pleine partie", () => {
   localStorage.removeItem("maire_profil_v1");
   const J = 20390;                                                // un jour fixe (octobre 2025)
   assert.ok(G.JOURS.length >= 30); assert.equal(new Set(G.JOURS.map(d => d.id)).size, G.JOURS.length);
   const a1 = G.journaliers(J), a2 = G.journaliers(J);
   assert.equal(a1.length, 5); assert.deepEqual(a1, a2, "fixés pour la journée");
   a1.forEach(d => assert.ok(G.JOURS.find(x => x.id === d.id).niv <= 1, "adaptés au niveau du joueur"));
-  // Les 5 succès du jour choisis pour le test, puis une partie qui les remplit
-  let P = G.lire(); P.journaliers = { j: J, ids: ["j_ach5", "j_t8", "j_log2", "j_cad3", "j_dos5"], faits: [] }; P.pass = { saison: G.saisonDe(J), pts: 280, paliers: {} }; localStorage.setItem("maire_profil_v1", JSON.stringify(P));
+  let P = G.lire(); P.journaliers = { j: J, ids: ["j_ach5", "j_t8", "j_log2", "j_cad3", "j_dos5"], faits: [] }; localStorage.setItem("maire_profil_v1", JSON.stringify(P));
   let st = M.nouvellePartie({ ligne: "centre", ambitions: [], niveau: "facile", xpJoueur: 0, graine: 90, pid: "jour" }); st.phase = "gestion";
   for (const id of ["parc", "logements", "parc", "logements", "parc"]) st = M.acheter(st, id);
   let r = G.suivrePartie(st, M, { jour: J }); st = r.st;
   assert.deepEqual(r.journaliers.map(d => d.id).sort(), ["j_ach5", "j_cad3", "j_log2"]);
   assert.ok(st.xpLog.some(g => /Succès du jour/.test(g.txt)));
-  // 280 + 3 × 100 points : palier 1 (50 XP) et palier 2 (un coup de pouce)
-  let ps = G.pass(J); assert.equal(ps.pts, 580); assert.equal(ps.palier, 1); assert.equal(r.pass.length, 1); assert.ok(st.xpLog.some(g => g.txt === "Pass de combat" && g.xp === 50));
-  r = G.suivrePartie(st, M, { jour: J }); assert.equal(r.journaliers.length, 0); assert.equal(G.pass(J).pts, 580, "pas de double comptage");
-  // Progression affichée en jeu (trimestres, dossiers), puis journée parfaite : bonus de 200 points
+  r = G.suivrePartie(st, M, { jour: J }); assert.equal(r.journaliers.length, 0, "pas de double comptage");
   const etat = G.journaliersPartie(st, M); assert.equal(etat.length, 5);
   st = jouer(st, () => 0, s => s, 16); r = G.suivrePartie(st, M, { jour: J }); st = r.st;
-  assert.ok(r.parfait, "journée parfaite"); assert.equal(G.pass(J).pts, 580 + 200 + 200);
-  assert.equal(G.lire().parfaites, 1); assert.ok(G.pass(J).sac.coupDePouce >= 1);
-  // Bâtiment exclusif du palier 8 : il arrive dans la partie en cours et reste acquis pour les suivantes
-  P = G.lire(); P.pass.pts = 8 * G.PASS_PTS - 10; localStorage.setItem("maire_profil_v1", JSON.stringify(P));
-  P = G.lire(); P.journaliers.faits = []; P.journaliers.ids = ["j_ach5"]; localStorage.setItem("maire_profil_v1", JSON.stringify(P));
-  r = G.suivrePartie(st, M, { jour: J }); st = r.st;
-  assert.ok(G.lire().passBats.kiosque); assert.ok(M.disponible(st, "kiosque"));
-  const suivante = M.nouvellePartie({ ligne: "centre", ambitions: [], graine: 91, nivJoueur: 3, passBats: G.lire().passBats });
-  assert.ok(M.disponible(suivante, "kiosque")); assert.ok(!M.disponible(M.nouvellePartie({ ligne: "centre", ambitions: [], graine: 91, nivJoueur: 3 }), "kiosque"));
+  assert.ok(r.parfait, "journée parfaite"); assert.equal(G.lire().parfaites, 1);
   // Sac à dos : un coup de pouce utilisé est retiré du profil et appliqué au départ, jamais pendant le défi du jour
-  const n0 = G.lire().sac.coupDePouce, bo = G.utiliserSac(["coupDePouce"]);
-  assert.equal(bo.tresor, 100); assert.equal(G.lire().sac.coupDePouce, n0 - 1);
+  P = G.lire(); P.sac = { coupDePouce: 2 }; localStorage.setItem("maire_profil_v1", JSON.stringify(P));
+  const bo = G.utiliserSac(["coupDePouce"]); assert.equal(bo.tresor, 100); assert.equal(G.lire().sac.coupDePouce, 1);
   const avec = M.nouvellePartie({ ligne: "centre", ambitions: [], niveau: "facile", graine: 92, nivJoueur: 3, bonus: bo });
   assert.equal(avec.tresor, M.PALIERS[0].tresor + 100);
   const defi = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 92, nivJoueur: 8, scenario: M.C.DEFIS_JOUR[0].id, bonus: bo });
   assert.deepEqual(defi.bonus, { tresor: 0, pop: 0, assurance: 0 });
-  // Nouvelle saison le mois suivant : les points repartent de zéro, les bâtiments exclusifs restent
-  assert.equal(G.pass(J + 40).pts, 0); assert.ok(G.lire().passBats.kiosque);
-  assert.equal(G.PASS.length, 30); G.PASS.forEach(x => assert.ok(x.xp || x.sac || x.bat || x.titre));
+  localStorage.removeItem("maire_profil_v1");
+});
+test("les 20 paliers du mois : objectifs cumulés d'une partie à l'autre, un bâtiment chacun, remise à zéro le mois suivant", () => {
+  localStorage.removeItem("maire_profil_v1");
+  const J = 20390;
+  assert.equal(G.PALIERS.length, 20); G.PALIERS.forEach(p => assert.ok(M.BATIMENTS[p.bat] && M.BATIMENTS[p.bat].pass, p.bat));
+  assert.equal(new Set(G.PALIERS.map(p => p.bat)).size, 20);
+  let st = M.nouvellePartie({ maire: "tribun", graine: 5, niveauPartie: true }); st.phase = "gestion"; st.t = 1;
+  assert.ok(!M.disponible(st, "bancsConnectes"));
+  let r = G.suivrePartie(st, M, { jour: J }); st = r.st;
+  assert.equal(G.paliersMois(J).palier, 1, "palier 1 : jouer une partie"); assert.equal(r.pass.length, 1); assert.ok(M.disponible(st, "bancsConnectes"), "le bâtiment arrive tout de suite");
+  // Les dossiers s'additionnent d'une partie à l'autre, sans double comptage
+  M.stats(st).dossiers = 6; st = G.suivrePartie(st, M, { jour: J }).st; st = G.suivrePartie(st, M, { jour: J }).st;
+  let st2 = M.nouvellePartie({ maire: "tribun", graine: 6, niveauPartie: true, passBats: G.batsExclusifs(J) }); st2.phase = "gestion"; st2.t = 1;
+  assert.ok(M.disponible(st2, "bancsConnectes"), "disponible dans les parties suivantes du mois");
+  M.stats(st2).dossiers = 5; r = G.suivrePartie(st2, M, { jour: J });
+  const pm = G.paliersMois(J); assert.equal(pm.paliers[1].cur, 10); assert.ok(pm.paliers[1].ok, "10 dossiers sur deux parties");
+  assert.equal(pm.paliers[0].cur, 1, "objectif atteint : le compteur affiché s'arrête au but");
+  // Niveau : le meilleur d'une partie
+  st2 = r.st; st2.nivJ = 6; st2 = G.suivrePartie(st2, M, { jour: J }).st; assert.ok(G.paliersMois(J).paliers[3].ok);
+  // Mois suivant : tout repart de zéro
+  assert.equal(G.paliersMois(J + 40).palier, 0); assert.ok(!G.batsExclusifs(J + 40).bancsConnectes);
   localStorage.removeItem("maire_profil_v1");
 });
 

@@ -107,10 +107,10 @@
       box.appendChild(j);
     }
     // Quatre tuiles : chacune ouvre son écran
-    var se = G.serie(), ps = G.pass(), roue = G.roueDispo(), t = h("div", "mx-tuiles");
+    var se = G.serie(), ps = G.paliersMois(), roue = G.roueDispo(), t = h("div", "mx-tuiles");
     function tuile(ico, titre, sous, f, vif) { var b = bouton("", "mx-tuile" + (vif ? " mx-vif" : ""), f); ajout(b, h("span", null, ico), h("strong", null, titre), h("small", null, sous)); return b; }
     ajout(t, tuile("🔥", se.n ? se.n + " jour" + (se.n > 1 ? "s" : "") : "Série", se.fait ? "validé aujourd’hui" : "joue aujourd’hui", ecranSerie, !se.fait),
-      tuile("🎟️", "Palier " + ps.palier, "pass de combat", ecranPass),
+      tuile("🎟️", "Palier " + ps.palier + "/20", "objectifs du mois", ecranPass),
       tuile("🎡", "Roue", roue ? "tour gratuit !" : "revient lundi", roue ? ecranRoue : function () { toast("🎡 Prochain tour gratuit lundi."); }, roue),
       tuile("🏅", "Ligue", "de la semaine", ecranLigue));
     box.appendChild(t);
@@ -277,17 +277,14 @@
 
   // ---------- Pass de combat ----------
   function ecranPass() {
-    var ps = G.pass(); vider(true);
+    var ps = G.paliersMois(); vider(true);
     box.appendChild(bouton("← Retour", "btn m-sec", accueil));
-    box.appendChild(h("h5", null, "🎟️ Pass de combat · saison " + ps.nom));
-    box.appendChild(h("p", "m-aide", "Gagne des points avec les succès du jour (+100, +200 si les 5 sont réussis), les quêtes (+100), chaque partie (+50) et chaque élection gagnée (+50). Tous les " + ps.parPalier + " points, un palier et sa récompense. Les points repartent à zéro chaque mois ; les bâtiments exclusifs et les titres restent."));
-    var sac = Object.keys(G.SAC).filter(function (k) { return ps.sac[k] > 0; });
-    if (sac.length) box.appendChild(h("p", "m-nivtxt", "🎒 Dans ton sac : " + sac.map(function (k) { return G.SAC[k].ico + " " + G.SAC[k].nom + " ×" + ps.sac[k]; }).join(" · ") + " (à choisir en lançant une partie)"));
-    if (ps.titres.length) box.appendChild(h("p", "m-nivtxt", "🎖️ Tes titres : " + ps.titres.join(" · ")));
+    box.appendChild(h("h5", null, "🎟️ Les 20 paliers de " + ps.nom));
+    box.appendChild(h("p", "m-aide", "Chaque objectif atteint ce mois-ci débloque un bâtiment exclusif, pour toutes tes parties du mois. Les compteurs s’additionnent d’une partie à l’autre. Tout repart à zéro le 1er du mois prochain."));
     var u = h("ol", "m-paliers");
     ps.paliers.forEach(function (x) {
-      var li = h("li", x.ok ? "m-ok" : x.n === ps.palier + 1 ? "m-suivant" : "");
-      ajout(li, h("span", "m-pn", String(x.n)), h("span", null, x.txt), h("b", null, x.ok ? "✔" : x.n === ps.palier + 1 ? ps.dans + "/" + ps.parPalier : "🔒"));
+      var li = h("li", x.ok ? "m-ok" : "");
+      ajout(li, h("span", "m-pn", String(x.n)), ajout(h("span", "m-pal"), h("b", null, x.txt), h("small", null, "🎁 " + x.batTxt)), h("b", null, x.ok ? "✔" : x.cur + "/" + x.but));
       u.appendChild(li);
     });
     box.appendChild(u); haut();
@@ -323,8 +320,8 @@
     var dj = G.journaliers(j), nf = dj.filter(function (x) { return x.fait; }).length, sj = h("div", "m-quetes m-jours");
     sj.appendChild(h("p", "m-sur", "🌞 Succès du jour · " + nf + "/" + dj.length));
     var uj = h("ul", "m-qliste");
-    dj.forEach(function (x) { var li = h("li", x.fait ? "m-qok" : ""); ajout(li, h("span", null, (x.fait ? "✔ " : "") + x.t), h("b", null, "+" + x.xp + " XP · +100 🎟️")); uj.appendChild(li); });
-    ajout(sj, uj, h("small", null, "Se valident dans n’importe quelle partie aujourd’hui. Les 5 réussis : +200 points de pass."));
+    dj.forEach(function (x) { var li = h("li", x.fait ? "m-qok" : ""); ajout(li, h("span", null, (x.fait ? "✔ " : "") + x.t), h("b", null, "+" + x.xp + " XP")); uj.appendChild(li); });
+    ajout(sj, uj, h("small", null, "Se valident dans n’importe quelle partie aujourd’hui."));
     c.appendChild(sj);
     var q = h("div", "m-quetes"), qs = quetesAuj(), ok = P.quetesJour[j] || [];
     q.appendChild(h("p", "m-sur", "Quêtes du jour" + (qs.length ? " · " + ok.length + "/3" : "")));
@@ -360,7 +357,7 @@
     choixNiveau(d.niveau, true);
     vider(); box.appendChild(h("p", "msg", "Préparation du défi…"));
     chargerLots(d.lots).then(function () {
-      st = M.nouvellePartie({ ligne: d.ligne, ambitions: d.ambitions, lots: d.lots, niveau: d.niveau, graine: d.graine, nivJoueur: d.nivJoueur, xpJoueur: G.lire().xp, pid: Date.now().toString(36), scenario: d.scenario, secrets: {}, passBats: G.lire().passBats, missions: false });
+      st = M.nouvellePartie({ ligne: d.ligne, ambitions: d.ambitions, lots: d.lots, niveau: d.niveau, graine: d.graine, nivJoueur: d.nivJoueur, xpJoueur: G.lire().xp, pid: Date.now().toString(36), scenario: d.scenario, secrets: {}, passBats: G.batsExclusifs(), missions: false });
       st.defi = d.jour; sauver(); demarrerPartie();
     }).catch(function () { alert("Impossible de charger les dossiers. Vérifie ta connexion et réessaie."); accueil(); });
   }
@@ -406,7 +403,7 @@
     box.appendChild(lg);
     // Bonus gagnés dans le pass de combat : on choisit ceux à utiliser pour cette partie
     if (sacOk.length) {
-      box.appendChild(h("p", "m-etape", "🎒 Tes bonus du pass de combat (facultatif)"));
+      box.appendChild(h("p", "m-etape", "🎒 Tes bonus (facultatif)"));
       var sb = h("div", "m-ambs m-sac");
       sacOk.forEach(function (k) {
         var o = G.SAC[k], b = bouton(o.ico + " " + o.nom + " ×" + sac[k], "m-amb", function () {
@@ -433,8 +430,8 @@
     vider(); box.appendChild(h("p", "msg", "Installation à la mairie…"));
     index().then(function () { var l = choisirLots(); return chargerLots(l).then(function () { return l; }); }).then(function (lots) {
       try { localStorage.setItem("maire_perso", CHOIX.maire); } catch (e) {}
-      st = M.nouvellePartie({ maire: CHOIX.maire, ligne: "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, xpJoueur: G.lire().xp, pid: Date.now().toString(36), secrets: G.lire().secrets, sansLimite: sansLimiteAdmin(), missions: false,
-        passBats: G.lire().passBats, bonus: G.utiliserSac(CHOIX.sac) });
+      st = M.nouvellePartie({ maire: CHOIX.maire, ligne: "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, xpJoueur: G.lire().xp, niveauPartie: true, pid: Date.now().toString(36), secrets: G.lire().secrets, sansLimite: sansLimiteAdmin(), missions: false,
+        passBats: G.batsExclusifs(), bonus: G.utiliserSac(CHOIX.sac) });
       sauver(); demarrerPartie();
     }).catch(function () { alert("Impossible de charger les dossiers. Vérifie ta connexion et réessaie."); accueil(); });
   }
@@ -668,7 +665,7 @@
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "👑 Tu es au sommet"), h("b", null, "Garde ton trône !")));
     if (st.session.opp) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-opp", function () { ficheSession(p - 1); }), h("small", null, "🛡️ Opposant · au-dessous"), h("b", null, st.session.opp.ico + " " + st.session.opp.nom + (st.session.opp.type === "bot" ? " 🤖" : "")), h("small", null, st.session.opp.court)));
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "🛡️ Personne en dessous"), h("b", null, "Pas d’opposant")));
-    var actions = ajout(h("div", "mx-ses-actions"), bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre), bouton("🔨 Enchères", "mx-ses-act", allerEncheres), bouton("🏆 Classement", "mx-ses-act mx-ses-btn", classementSession));
+    var actions = ajout(h("div", "mx-ses-actions"), verrouMeca("attaques", bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre)), verrouMeca("encheres", bouton("🔨 Enchères", "mx-ses-act", allerEncheres)), bouton("🏆 Classement", "mx-ses-act mx-ses-btn", classementSession));
     ajout(d, titre, duo, actions, h("small", "mx-ses-malus", ""));
     setTimeout(majSession, 0);
     return d;
@@ -732,7 +729,9 @@
       if (!s) return toast("📵 Attaque impossible pour l’instant.");
       var e = (s.journal || []).slice(-1)[0];
       if (!e || (s.journal || []).length === n0 && e.de.uid !== moiSes()) return toast("⏳ Pas encore prêt.");
-      if (px) { st = M.payer(st, px, A.ico + " " + A.nom + " contre " + f.court); sauver(); }
+      if (px) st = M.payer(st, px, A.ico + " " + A.nom + " contre " + f.court);
+      if (e.res === "ok") { var sx = M.stats(st); sx.attaquesOk = (sx.attaquesOk || 0) + 1; M.points(st, 5); }
+      sauver();
       SES.journalVu = Math.max(SES.journalVu || 0, e.q);
       flash(e.res === "ok" ? A.ico + " Touché ! −" + e.pts + " pts" : e.res === "bloque" ? "🛡️ Attaque bloquée" : "😬 Ça se retourne contre toi", e.res === "ok" ? "mx-flash-ok" : "mx-flash-ko");
       jeu();
@@ -956,7 +955,21 @@
   // Niveau et XP en direct : la barre se remplit à chaque action, le prochain déblocage est annoncé
   var xpAffiche = null;
 
+  // Niveau de partie (1 à 50)
+  function nivPartie() {
+    var p = st.pxp || 0, n = M.niveauPartie(p), a = M.ptsPour(n), b = n < M.NIV_MAX ? M.ptsPour(n + 1) : a;
+    return { n: n, titre: "Niveau " + n + " sur " + M.NIV_MAX + " de la partie", xp: p, depuis: p - a, besoin: b - a, pct: n < M.NIV_MAX ? Math.round((p - a) / (b - a) * 100) : 100, max: n >= M.NIV_MAX };
+  }
+  function nivMeca(id) { return (M.MECANIQUES.concat(M.EXTRAS).filter(function (x) { return x.id === id; })[0] || {}).niv || 1; }
+  // Bouton d'une fonctionnalité pas encore débloquée : grisé, avec le niveau à atteindre
+  function verrouMeca(id, b) {
+    if (st.meca[id] || st.sansLimite) return b;
+    b.classList.add("mx-lockbtn"); b.textContent = "🔒 " + b.textContent.replace(/^\S+\s/, "") + " · niv. " + nivMeca(id);
+    b.onclick = function () { toast("🔒 Se débloque au niveau " + nivMeca(id) + " de la partie."); };
+    return b;
+  }
   function barreXP() {
+    if (st.np) return barrePartie();
     var xp = st.xp0 + st.xp, n = G.niveau(xp), d = h("div", "mx-xp");
     var barre = h("div", "mx-xpbarre"), i = h("i"); barre.appendChild(i);
     var avant = xpAffiche != null && xpAffiche.pid === st.pid && xpAffiche.xp < xp ? G.niveau(xpAffiche.xp) : null;
@@ -968,6 +981,19 @@
     return d;
   }
 
+  // Barre du niveau de partie, avec la prochaine fonctionnalité à débloquer
+  var ptsAffiches = null;
+  function barrePartie() {
+    var n = nivPartie(), d = h("div", "mx-xp mx-xp-partie"), barre = h("div", "mx-xpbarre"), i = h("i"); barre.appendChild(i);
+    var avant = ptsAffiches != null && ptsAffiches.pid === st.pid && ptsAffiches.p < n.xp ? ptsAffiches.p : null;
+    i.style.width = n.pct + "%";
+    var proch = M.MECANIQUES.concat(M.EXTRAS).filter(function (x) { return x.niv > n.n && !st.meca[x.id] && (st.session || ["attaques", "employes", "encheres", "anticipees"].indexOf(x.id) < 0); }).sort(function (a, b) { return a.niv - b.niv; })[0];
+    ajout(d, h("span", "mx-niv", String(n.n)), barre, avant != null ? h("em", "m-xpplus", "+" + (n.xp - avant)) : h("small", null, n.max ? "max" : n.depuis + "/" + n.besoin));
+    d.title = n.titre;
+    ptsAffiches = { pid: st.pid, p: n.xp };
+    var w = h("div", "mx-xp-bloc"); ajout(w, d, h("small", "mx-xp-proch", n.max ? "🏆 Niveau 50 atteint !" : "Niveau " + n.n + "/50" + (proch ? " · 🔓 niv. " + proch.niv + " : " + proch.nom : "")));
+    return w;
+  }
   // Objectifs du mandat : ce qu'il faut réussir pour gagner, toujours visible
   function carteObjectifs() {
     var ob = M.objectifs(st); if (!ob.length) return null;
@@ -981,7 +1007,8 @@
       d.appendChild(l);
     });
     // Élections anticipées : à la demande, quand 2 objectifs sur 3 sont remplis (bouton gris tant que ce n'est pas possible)
-    if (st.session && SES.s) {
+    if (st.session && SES.s && !st.meca.anticipees) d.appendChild(h("small", "mx-criseinfo mx-gris", "🔒 Élections anticipées : niveau " + nivMeca("anticipees") + "."));
+    else if (st.session && SES.s) {
       var dejaVote = !!(SES.s.votes || {})[moiSes()], peut = n >= 2 && !dejaVote;
       var bv = bouton(dejaVote ? "🗳️ Tu as voté pour des élections anticipées" : "🗳️ Voter pour des élections anticipées", "mx-antic-btn" + (peut ? " mx-pret" : ""), function () {
         if (dejaVote) return toast("🗳️ Ton vote est déjà compté.");
@@ -1131,7 +1158,7 @@
   // Bâtiment pas encore disponible : une ligne, ce qui manque ; la fiche donne le détail
   function verrou(id) {
     var B = M.BATIMENTS[id], manque = M.prerequis(st, id).filter(function (x) { return !x.ok; });
-    var txt = B.pass && !manque.length ? "🎟️ " + (B.obtenu ? "série de 7 jours" : "pass de combat") : manque.map(function (x) { return x.k === "niv" ? "niv. " + x.but : x.k === "t" ? (x.but - x.cur) + " trim." : x.k === "reel" ? x.but + " réélection" + (x.but > 1 ? "s" : "") : x.txt.replace("Construis d’abord ", "après "); }).join(" · ");
+    var txt = B.pass && !manque.length ? "🎟️ " + (B.obtenu ? B.obtenu.replace(/\.$/, "").replace("Récompense de la ", "") : "palier du mois") : manque.map(function (x) { return x.k === "niv" ? "niv. " + x.but : x.k === "t" ? (x.but - x.cur) + " trim." : x.k === "reel" ? x.but + " réélection" + (x.but > 1 ? "s" : "") : x.txt.replace("Construis d’abord ", "après "); }).join(" · ");
     var l = bouton("", "mx-lock", function () { fiche(id); });
     ajout(l, h("span", null, "🔒 " + B.ico + " " + B.nom), h("small", null, txt));
     return l;
@@ -1181,6 +1208,7 @@
       st = M.limites(st, !st.sansLimite); try { localStorage.setItem("maire_sanslimite", st.sansLimite ? "1" : ""); } catch (e) {} sauver(); jeu();
     }));
     var rayons = st.session ? M.RAYONS.concat([{ id: "employes", nom: "Employés", ico: "👔" }]) : M.RAYONS;
+    var verrouR = { employes: "employes", enchere: st.session ? "encheres" : null };
     var ids = Object.keys(M.BATIMENTS), visibles = rayons.filter(function (r) {
       if (r.id === "secret") return ids.some(function (id) { return rayonDe(id) === "secret" && M.disponible(st, id); });
       if (r.id === "projet") return st.meca.grandsProjets || st.sansLimite || n >= 4;
@@ -1200,6 +1228,7 @@
     var l = ids.filter(function (id) { return rayonDe(id) === RAYON; });
     var tri = function (a, b) { var A = M.BATIMENTS[a], B = M.BATIMENTS[b]; return (A.niv || 1) - (B.niv || 1) || A.cout - B.cout; };
     var ok = l.filter(function (id) { return M.disponible(st, id); }).sort(tri), bloques = l.filter(function (id) { return !M.disponible(st, id); }).sort(tri);
+    if (verrouR[RAYON] && !st.meca[verrouR[RAYON]]) { d.appendChild(h("p", "mx-verrou", "🔒 " + (M.EXTRAS.filter(function (x) { return x.id === verrouR[RAYON]; })[0] || {}).nom + " : se débloque au niveau " + nivMeca(verrouR[RAYON]) + " de la partie.")); return d; }
     if (RAYON === "employes") { d.appendChild(employes()); return d; }
     if (RAYON === "enchere" && st.session && SES.s) {
       // En session, les bâtiments de prestige se gagnent dans la salle des ventes, contre les autres arrondissements
@@ -1435,10 +1464,10 @@
     r.chapitres.forEach(function (c) { notifier({ type: "fait", txt: "📖 Chapitre " + c.num + " accompli · +" + G.XP_CHAPITRE + " XP" }); });
     r.quetes.forEach(function (q) { notifier({ type: "fait", txt: "🎯 Quête du jour réussie · +" + q.xp + " XP", titre: q.t }); });
     r.journaliers.forEach(function (d) { notifier({ type: "fait", txt: "🌞 Succès du jour · +" + d.xp + " XP", titre: d.t }); });
-    if (r.parfait) notifier({ type: "fait", txt: "🌞 Journée parfaite · +200 🎟️" });
+    if (r.parfait) notifier({ type: "fait", txt: "🌞 Journée parfaite !" });
     if (r.joker) notifier({ type: "fait", txt: "🃏 Joker utilisé : ta série est sauvée" });
     if (r.serie) notifier({ type: "fait", txt: "🔥 " + r.serie.n + " jour" + (r.serie.n > 1 ? "s" : "") + " d’affilée", titre: r.serie.txt });
-    r.pass.forEach(function (x) { notifier({ type: "fait", txt: "🎟️ Palier " + x.n + " du pass", titre: x.txt }); });
+    r.pass.forEach(function (x) { notifier({ type: "fait", txt: "🎟️ Palier " + x.n + "/20 du mois atteint !", titre: x.txt }); });
   }
   // File d'affichage : un niveau passe avant les petites pastilles ; elles ne s'empilent jamais au-delà de 4
   var FILE = [], notifActive = null;
@@ -2427,7 +2456,7 @@
     var n = G.niveau(G.lire().xp);
     c.appendChild(h("p", "m-sur", "Ce que cette partie te rapporte : +" + p.total + " XP"));
     if (p.apres > p.avant) c.appendChild(h("p", "m-lvlup", "⬆️ Niveau " + p.apres + " atteint : " + n.titre + " !"));
-    if (p.passPts) c.appendChild(h("p", "m-debl", "🎟️ +" + p.passPts + " points de pass de combat" + ((p.passPaliers || []).length ? " · palier" + (p.passPaliers.length > 1 ? "s " : " ") + p.passPaliers.map(function (x) { return x.n; }).join(", ") + " atteint" + (p.passPaliers.length > 1 ? "s" : "") : "")));
+    if (false && p.passPts) c.appendChild(h("p", "m-debl", "🎟️ +" + p.passPts + " points de pass de combat" + ((p.passPaliers || []).length ? " · palier" + (p.passPaliers.length > 1 ? "s " : " ") + p.passPaliers.map(function (x) { return x.n; }).join(", ") + " atteint" + (p.passPaliers.length > 1 ? "s" : "") : "")));
     (p.passPaliers || []).forEach(function (x) { c.appendChild(h("p", "m-debl", "🎁 Palier " + x.n + " : " + x.txt)); });
     (p.debloque || []).forEach(function (nom) { c.appendChild(h("p", "m-debl", "🔓 Débloqué : " + nom)); });
     var u = h("ul", "m-liste");

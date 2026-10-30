@@ -277,7 +277,7 @@
   s2("diversite", "Construction", "Paris aux mille visages", "Construis 25 bâtiments différents dans une même partie.", 3, function (R) { return Object.keys(R.x.bats).length >= 25; });
   s2("jourParfait", "Défis", "Journée parfaite du maire", "Réussis les 5 succès du jour.", 2, function (R, P) { return (P.parfaites || 0) >= 1; });
   s2("jourParfait7", "Défis", "Semaine sans faute", "Réussis les 5 succès du jour 7 fois.", 3, function (R, P) { return (P.parfaites || 0) >= 7; });
-  s2("passComplet", "Défis", "Pass de combat complété", "Atteins le palier 30 du pass de combat.", 4, function (R, P) { return (P.passComplets || 0) >= 1; });
+  s2("passComplet", "Défis", "Les 20 paliers du mois", "Atteins les 20 paliers d’un même mois.", 4, function (R, P) { return !!P.mois && Object.keys(P.mois.faits).length >= 20; });
   s2("serie7", "Défis", "Fidèle au poste", "Joue 7 jours d’affilée.", 2, function (R, P) { return ((P.assidu || {}).max || 0) >= 7; });
   s2("serie30", "Défis", "Maire infatigable", "Joue 30 jours d’affilée.", 4, function (R, P) { return ((P.assidu || {}).max || 0) >= 30; });
   s2("coffre1", "Événements rares", "Butin électoral", "Ouvre un coffre de la victoire.", 1, function (R) { return (R.x.coffres || 0) >= 1; });
@@ -416,6 +416,7 @@
   }
   // Points de pass gagnés : chaque palier franchi donne sa récompense tout de suite (dans la partie en cours si elle existe)
   function gagnerPass(P, j, n, st, M, out) {
+    return;   // remplacé par les 20 paliers du mois (objectifs)
     var ps = passP(P, j), avant = palierDe(ps.pts);
     ps.pts += n; if (st) st.passPts = (st.passPts || 0) + n;
     for (var k = avant + 1; k <= palierDe(ps.pts); k++) {
@@ -441,6 +442,67 @@
       if (k === "coupDePouce") b.tresor += 100; else if (k === "bainDeFoule") b.pop += 4; else if (k === "assurance") b.assurance = 1;
     });
     ecrire(P); return b;
+  }
+
+  // ---------- Les 20 paliers du mois : des objectifs cumulés sur le mois, chacun débloque un bâtiment ----------
+  // Compteurs du mois : additionnés d'une partie à l'autre (k) ; « max » : le meilleur résultat d'une partie
+  var PALIERS = [
+    { k: "parties", but: 1, txt: "Joue une partie", bat: "bancsConnectes" },
+    { k: "dossiers", but: 10, txt: "Tranche 10 dossiers", bat: "boiteLivres" },
+    { k: "achats", but: 5, txt: "Construis 5 bâtiments", bat: "rueAuxEcoles" },
+    { k: "niveau", but: 5, max: 1, txt: "Atteins le niveau 5 dans une partie", bat: "potagerToit" },
+    { k: "casino", but: 3, txt: "Gagne 3 parties au casino", bat: "veloCargo" },
+    { k: "dossiers", but: 40, txt: "Tranche 40 dossiers", bat: "conciergerie" },
+    { k: "elections", but: 1, txt: "Gagne une élection", bat: "kiosque" },
+    { k: "achats", but: 20, txt: "Construis 20 bâtiments", bat: "brigadeCanine" },
+    { k: "employes", but: 5, txt: "Embauche 5 employés", bat: "navetteElectrique" },
+    { k: "niveau", but: 15, max: 1, txt: "Atteins le niveau 15 dans une partie", bat: "residenceArtistes" },
+    { k: "attaques", but: 5, txt: "Réussis 5 attaques contre tes adversaires", bat: "fontaineMonumentale" },
+    { k: "elections", but: 3, txt: "Gagne 3 élections", bat: "centreSecours" },
+    { k: "ventes", but: 1, txt: "Remporte une vente aux enchères", bat: "halleFood" },
+    { k: "dossiers", but: 150, txt: "Tranche 150 dossiers", bat: "teleportVelo" },
+    { k: "mandats", but: 4, max: 1, txt: "Tiens plus de 3 mandats dans une même partie", bat: "immeubleBois" },
+    { k: "niveau", but: 30, max: 1, txt: "Atteins le niveau 30 dans une partie", bat: "observatoire" },
+    { k: "ventes", but: 3, txt: "Remporte 3 ventes aux enchères", bat: "salleArcade" },
+    { k: "places", but: 5, txt: "Gagne 5 places au classement de session", bat: "tourJardin" },
+    { k: "achats", but: 80, txt: "Construis 80 bâtiments", bat: "commissariatModele" },
+    { k: "trone", but: 1, max: 1, txt: "Deviens Maire de Paris", bat: "arcLumieres" }
+  ];
+  function moisP(P, j) { var s = saisonDe(j); if (!P.mois || P.mois.saison !== s) P.mois = { saison: s, c: {}, faits: {} }; return P.mois; }
+  // Ce que la partie a accompli jusqu'ici, compteur par compteur
+  function valeursPartie(st) {
+    var x = st.stats || {}, el = st.elections || [];
+    return { dossiers: x.dossiers || 0, achats: x.achats || 0, casino: x.miniJeuxOk || 0, ventes: (x.encheres || 0), employes: Object.keys(st.emp || {}).reduce(function (n, k) { return n + st.emp[k]; }, 0),
+      attaques: x.attaquesOk || 0, elections: el.filter(function (e) { return e.gagne || e.monte; }).length, places: el.filter(function (e) { return e.monte; }).length,
+      niveau: st.np ? st.nivJ : 0, mandats: st.mandat || 1, trone: st.session && st.session.place >= 20 ? 1 : 0 };
+  }
+  // Ajoute au mois ce qui a avancé depuis la dernière fois, et débloque les paliers atteints
+  function suivreMois(P, j, st, M, out) {
+    var mo = moisP(P, j), v = valeursPartie(st), vu = st.moisVu;
+    if (!vu || vu.saison !== mo.saison) { vu = st.moisVu = { saison: mo.saison }; mo.c.parties = (mo.c.parties || 0) + 1; }
+    Object.keys(v).forEach(function (k) {
+      var estMax = PALIERS.some(function (p) { return p.k === k && p.max; });
+      if (estMax) mo.c[k] = Math.max(mo.c[k] || 0, v[k]);
+      else if (v[k] > (vu[k] || 0)) mo.c[k] = (mo.c[k] || 0) + v[k] - (vu[k] || 0);
+      vu[k] = v[k];
+    });
+    PALIERS.forEach(function (p, i) {
+      if (mo.faits[i + 1] || (mo.c[p.k] || 0) < p.but) return;
+      mo.faits[i + 1] = j; if (st && M) M.ajouterPassBat(st, p.bat);
+      if (out) out.pass.push({ n: i + 1, txt: p.txt + " → " + (MO.BATIMENTS[p.bat].ico + " " + MO.BATIMENTS[p.bat].nom) });
+    });
+  }
+  function paliersMois(j) {
+    var P = lire(), mo = moisP(P, j != null ? j : jour()), n = Object.keys(mo.faits).length;
+    return { saison: mo.saison, nom: nomSaison(mo.saison), palier: n, max: PALIERS.length,
+      paliers: PALIERS.map(function (p, i) { var B = MO.BATIMENTS[p.bat]; return { n: i + 1, txt: p.txt, cur: Math.min(mo.c[p.k] || 0, p.but), but: p.but, ok: !!mo.faits[i + 1], bat: p.bat, batTxt: B.ico + " " + B.nom }; }) };
+  }
+  // Bâtiments exclusifs disponibles dans une nouvelle partie : ceux des paliers du mois + ceux gagnés pour toujours (série de jours)
+  function batsExclusifs(j) {
+    var P = lire(), mo = moisP(P, j != null ? j : jour()), b = {};
+    Object.keys(P.passBats || {}).forEach(function (id) { if (!PALIERS.some(function (p) { return p.bat === id; })) b[id] = P.passBats[id]; });
+    Object.keys(mo.faits).forEach(function (n) { b[PALIERS[n - 1].bat] = 1; });
+    return b;
   }
 
   // ---------- Série de jours : jouer chaque jour rapporte de plus en plus ----------
@@ -594,6 +656,7 @@
     var st = JSON.parse(JSON.stringify(st0)), P = lire(), j = opts.jour != null ? opts.jour : jour();
     var out = evaluer(st, M, P, j, opts.quetes);
     if (st.t >= 1) jouerAujourdhui(P, j, st, M, out);
+    if (st.t >= 1 && !st.scenario) suivreMois(P, j, st, M, out);
     crediter(st, P);
     // Ce qui a avancé depuis le dernier affichage (la première mesure sert de point de départ)
     var R = resume(st, M), progres = [], vus = {}, faits = {};
@@ -686,7 +749,7 @@
   }
 
   var API = { jour: jour, niveau: niveau, xpPour: xpPour, lire: lire, ecrire: ecrire, profilVide: profilVide, resume: resume, terminer: terminer, suivrePartie: suivrePartie, queteProgres: queteProgres,
-    maires: maires, JOURS: JOURS, journaliers: journaliers, journaliersPartie: journaliersPartie, pass: pass, PASS: PASS, PASS_PTS: PASS_PTS, SAC: SAC, utiliserSac: utiliserSac,
+    maires: maires, JOURS: JOURS, journaliers: journaliers, journaliersPartie: journaliersPartie, pass: pass, PASS: PASS, PASS_PTS: PASS_PTS, PALIERS: PALIERS, paliersMois: paliersMois, batsExclusifs: batsExclusifs, suivreMois: suivreMois, SAC: SAC, utiliserSac: utiliserSac,
     saisonDe: saisonDe, nomSaison: nomSaison, serie: serie, SERIE: SERIE, texteSerie: texteSerie, recompenseSerie: recompenseSerie,
     ROUE: ROUE, roueDispo: roueDispo, tournerRoue: tournerRoue, semaine: semaine, LIGUES: LIGUES, ligue: ligue, nouvelleLigue: nouvelleLigue, donneesLigue: donneesLigue, noterVote: noterVote,
     nivJoueur: nivJoueur, fixerNiveau: fixerNiveau, synchroniser: synchroniser, reputation: reputation, oublierTutos: oublierTutos, guideVu: guideVu, marquerGuide: marquerGuide, chapitre: chapitre,

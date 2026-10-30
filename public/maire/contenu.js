@@ -179,10 +179,28 @@
   };
   // Bâtiments exclusifs : pass de combat (paliers 8, 18 et 30) et série de 7 jours
   var PASS_BATIMENTS = {
-    kiosque: { nom: "Kiosque à musique", ico: "🎺", cat: "cadre", cout: 60, ent: 1, e: { cadre: 3 }, popT: 0.1, txt: "Concerts gratuits le dimanche : exclusivité du pass de combat." },
-    fontaineMonumentale: { nom: "Fontaine monumentale", ico: "🌊", cat: "cadre", cout: 150, ent: 2, e: { cadre: 4 }, rev: 5, pop: 2, vote: 0.5, txt: "Des jets d’eau de 30 mètres : exclusivité du pass de combat." },
+    // Bâtiments des 20 paliers du mois (objectifs mensuels) : disponibles dans toutes les parties du mois du palier atteint
+    bancsConnectes: { nom: "Bancs connectés", ico: "🪑", cat: "cadre", cout: 40, ent: 0, e: { cadre: 2 }, popT: 0.05, obtenu: "Palier 1 du mois.", txt: "Des bancs qui rechargent les téléphones : les habitants s’y attardent." },
+    boiteLivres: { nom: "Boîtes à livres", ico: "📦", cat: "cadre", cout: 30, ent: 0, e: { cadre: 2 }, pop: 1, obtenu: "Palier 2 du mois.", txt: "Prends un livre, laisse un livre : le quartier lit davantage." },
+    rueAuxEcoles: { nom: "Rues aux écoles", ico: "🚸", cat: "securite", cout: 50, ent: 1, e: { securite: 2, cadre: 1 }, obtenu: "Palier 3 du mois.", txt: "Les rues devant les écoles deviennent piétonnes aux heures d’entrée et de sortie." },
+    potagerToit: { nom: "Potager sur les toits", ico: "🥬", cat: "cadre", cout: 60, ent: 1, e: { cadre: 3 }, popT: 0.05, obtenu: "Palier 4 du mois.", txt: "Des légumes cultivés au-dessus des immeubles, vendus au marché du coin." },
+    veloCargo: { nom: "Vélos-cargos en libre-service", ico: "🚲", cat: "transports", cout: 70, ent: 1, e: { transports: 3 }, obtenu: "Palier 5 du mois.", txt: "Faire ses courses sans voiture devient facile." },
+    conciergerie: { nom: "Conciergerie de quartier", ico: "🛎️", cat: "logement", cout: 80, ent: 1, e: { logement: 2, cadre: 1 }, rev: 2, obtenu: "Palier 6 du mois.", txt: "Colis, clés, petits travaux : un service pour tout l’immeuble." },
+    kiosque: { nom: "Kiosque à musique", ico: "🎺", cat: "cadre", cout: 60, ent: 1, e: { cadre: 3 }, popT: 0.1, obtenu: "Palier 7 du mois.", txt: "Concerts gratuits le dimanche." },
+    brigadeCanine: { nom: "Brigade canine", ico: "🐕", cat: "securite", cout: 90, ent: 2, e: { securite: 3 }, obtenu: "Palier 8 du mois.", txt: "Des maîtres-chiens rassurent les rues le soir." },
+    navetteElectrique: { nom: "Navette électrique de quartier", ico: "🚐", cat: "transports", cout: 110, ent: 2, e: { transports: 4 }, obtenu: "Palier 9 du mois.", txt: "Un petit bus gratuit qui passe dans les rues étroites." },
+    residenceArtistes: { nom: "Résidence d’artistes", ico: "🎨", cat: "logement", cout: 120, ent: 2, e: { logement: 3, cadre: 2 }, pop: 1, obtenu: "Palier 10 du mois.", txt: "Des ateliers-logements : le quartier s’anime." },
+    fontaineMonumentale: { nom: "Fontaine monumentale", ico: "🌊", cat: "cadre", cout: 150, ent: 2, e: { cadre: 4 }, rev: 5, pop: 2, vote: 0.5, obtenu: "Palier 11 du mois.", txt: "Des jets d’eau de 30 mètres." },
+    centreSecours: { nom: "Centre de secours de quartier", ico: "🚒", cat: "securite", cout: 150, ent: 3, e: { securite: 4 }, obtenu: "Palier 12 du mois.", txt: "Les pompiers arrivent deux fois plus vite." },
+    halleFood: { nom: "Halle gourmande de nuit", ico: "🌮", cat: "economie", cout: 160, ent: 2, e: { cadre: 2 }, rev: 9, eco: 2, obtenu: "Palier 13 du mois.", txt: "Des stands de cuisine du monde jusqu’à 2 heures du matin." },
+    teleportVelo: { nom: "Autoroute à vélos", ico: "🛣️", cat: "transports", cout: 180, ent: 2, e: { transports: 5 }, obtenu: "Palier 14 du mois.", txt: "Une piste express, sans feu rouge, qui traverse l’arrondissement." },
+    immeubleBois: { nom: "Immeuble en bois et paille", ico: "🪵", cat: "logement", cout: 200, ent: 2, e: { logement: 5 }, obtenu: "Palier 15 du mois.", txt: "Le logement le plus écologique de Paris." },
+    observatoire: { nom: "Observatoire sur les toits", ico: "🔭", cat: "cadre", cout: 220, ent: 3, e: { cadre: 4 }, rev: 6, pop: 2, obtenu: "Palier 16 du mois.", txt: "On vient de tout Paris observer les étoiles." },
+    salleArcade: { nom: "Arcade géante", ico: "🕹️", cat: "economie", cout: 240, ent: 3, e: { cadre: 2 }, rev: 12, eco: 3, obtenu: "Palier 17 du mois.", txt: "Des jeux vidéo d’hier et d’aujourd’hui : la jeunesse adore." },
+    tourJardin: { nom: "Tour-jardin verticale", ico: "🌴", cat: "logement", cout: 280, ent: 3, e: { logement: 4, cadre: 4 }, vote: 0.5, obtenu: "Palier 18 du mois.", txt: "Des logements entourés d’arbres, du sol au 20e étage." },
+    commissariatModele: { nom: "Commissariat modèle", ico: "🏢", cat: "securite", cout: 300, ent: 4, e: { securite: 6 }, vote: 0.5, obtenu: "Palier 19 du mois.", txt: "Ouvert jour et nuit, avec médiateurs et accueil des victimes." },
+    arcLumieres: { nom: "Arc de lumières", ico: "🌈", cat: "economie", cout: 250, ent: 3, e: { cadre: 3 }, rev: 12, vote: 1, popT: 0.1, obtenu: "Palier 20 du mois.", txt: "Il illumine la ville chaque soir : récompense ultime du mois." },
     statueAssidu: { nom: "Statue du maire assidu", ico: "🗽", cat: "cadre", cout: 80, ent: 1, e: { cadre: 2, securite: 1 }, vote: 0.5, obtenu: "Récompense de la série de 7 jours.", txt: "Pour ceux qui reviennent chaque jour : récompense de la série de 7 jours." },
-    arcLumieres: { nom: "Arc de lumières", ico: "🌈", cat: "economie", cout: 250, ent: 3, e: { cadre: 3 }, rev: 12, vote: 1, popT: 0.1, txt: "Il illumine la ville chaque soir : récompense ultime du pass." }
   };
   // Plan de Paris : emplacements (en % de l'image, x puis y) où apparaissent les bâtiments, du centre vers le périphérique :
   // d'abord un emplacement sur deux (les premiers bâtiments ne se chevauchent pas), puis la ville se densifie.
