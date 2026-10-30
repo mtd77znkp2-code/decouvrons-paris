@@ -681,7 +681,7 @@
     var vus = 0;
     function retourner(i) {
       var c = cartes[i]; if (c.classList.contains("mx-retournee")) return;
-      c.classList.add("mx-retournee"); vus++;
+      c.classList.add("mx-retournee"); vus++; if (window.sfx) window.sfx("retourne");
       if (vus === cartes.length) { aide.textContent = "Réussis-en au moins 2 sur 3 pour gagner le mandat."; setTimeout(function () { suite.classList.remove("mx-cache"); }, calme() ? 0 : 500); }
     }
     // Sans toucher, les cartes se retournent d'elles-mêmes, l'une après l'autre
@@ -2251,7 +2251,8 @@
       ajout(d, h("b", "m-cj-coin", val + "\n" + sym), h("i", null, sym), h("b", "m-cj-coin m-cj-bas", val + "\n" + sym));
       if (coul === 1 || coul === 2) d.classList.add("m-rouge");
     }
-    if (!avant) d.classList.add("m-donne"); else if (avant === "cache" && !cache) d.classList.add("m-retourne");
+    if (!avant) d.classList.add("m-donne");
+    else if (avant === "cache" && !cache) { d.classList.add("m-retourne"); if (window.sfx) window.sfx("retourne"); }   // son n°2 : la carte cachée du croupier se dévoile
     cartesVues[cle] = cache ? "cache" : "vue";
     return d;
   }
@@ -2311,7 +2312,7 @@
           setTimeout(fini, calme ? 300 : 900);
         }
         if (calme || !roue.animate) return montrer();
-        var D = 4200;
+        var D = 4200; if (window.sfx) window.sfx("roulette");   // son n°3 : la roue tourne (4 s environ)
         roue.animate([{ transform: "rotate(0deg)" }, { transform: "rotate(" + fin + "deg)" }], { duration: D, easing: "cubic-bezier(.15,.6,.25,1)", fill: "forwards" });
         orbite.animate([{ transform: "rotate(0deg)" }, { transform: "rotate(-1440deg)" }], { duration: D, easing: "cubic-bezier(.2,.65,.3,1)", fill: "forwards" });
         // La bille roule sur le bord (rayon 131 sur 300) puis descend dans les cases (rayon 90) : positions en % pour suivre la taille de la roue
