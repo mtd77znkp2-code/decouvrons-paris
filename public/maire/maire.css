@@ -967,3 +967,63 @@ button.mx-ses-qui{cursor:pointer}
 @keyframes mxReflet{0%{left:-40%}60%,100%{left:130%}}
 @keyframes mxSaut{0%{transform:scale(1)}35%{transform:scale(1.08)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.m-barmois .btn.mx-dossier.mx-pret,.m-barmois .btn.mx-dossier.mx-pret::after,.m-barmois .btn.mx-dossier.mx-nouveau{animation:none}}
+/* ===== Session : actions (attaquer, salle des ventes) ===== */
+.mx-ses-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mx-ses-act{border:0;border-radius:12px;padding:10px 8px;font:inherit;font-weight:800;font-size:14px;color:#fff;background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);cursor:pointer}
+.mx-ses-act.mx-ses-attaque{background:linear-gradient(135deg,#c8352e,#8e1f3a);box-shadow:0 6px 18px rgba(200,53,46,.35)}
+.mx-ses-malus{font-size:12px;color:#ffd3a0;min-height:0}.mx-ses-malus:empty{display:none}
+/* Salle de guerre */
+.mx-guerre{max-height:calc(100vh - 40px);overflow-y:auto}
+.mx-cibles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mx-cible{display:grid;gap:1px;text-align:left;padding:9px 10px;border-radius:12px;border:2px solid transparent;font:inherit;color:inherit;background:rgba(27,37,80,.07);cursor:pointer}
+.mx-cible small{font-size:11px;color:var(--pm)}.mx-cible b{font-size:13.5px}
+.mx-cible.mx-on{border-color:#c8352e;background:rgba(200,53,46,.1)}
+.mx-attaques{display:grid;gap:8px}
+.mx-attaque{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;text-align:left;padding:10px 12px;border-radius:14px;border:0;font:inherit;color:inherit;background:#fff;box-shadow:0 2px 8px rgba(27,37,80,.12);cursor:pointer;transition:transform .15s}
+.mx-attaque:not(:disabled):active{transform:scale(.97)}
+.mx-attaque:disabled{opacity:.5;cursor:not-allowed}
+.mx-att-ico{font-size:26px}.mx-att-txt{display:grid;gap:2px}.mx-att-txt b{font-size:14px}.mx-att-txt small{font-size:12px;color:var(--pm);line-height:1.3}
+.mx-att-prix{font-style:normal;font-weight:800;font-size:13px;white-space:nowrap;color:#c8352e}
+.mx-attaque.mx-bouclier .mx-att-prix{color:#2b4fb3}.mx-attaque.mx-bouclier.mx-on{box-shadow:0 0 0 2px #2b4fb3}
+.mx-journal-att{margin:0;padding-left:18px;font-size:12.5px;line-height:1.45;color:var(--pm)}
+.mx-guerre h5{margin:6px 0 0;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--pm)}
+.m-flash.mx-flash-ko strong{color:#ffb0a8}
+/* ===== Salle des ventes ===== */
+.mx-ventes{display:grid;gap:10px;padding:14px 16px;border-radius:20px;background:linear-gradient(135deg,rgba(245,178,26,.16),rgba(122,63,209,.14));box-shadow:inset 0 0 0 1px rgba(245,178,26,.3)}
+.mx-ventes-tete{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.mx-ventes-tete h5{margin:0!important}.mx-ventes-suiv{font-size:12px;color:var(--mut);font-variant-numeric:tabular-nums}
+.mx-ventes-liste{display:grid;gap:10px}
+.mx-ventes .mx-aide{margin:0;font-size:12px}
+.mx-vente{position:relative;display:grid;gap:8px;padding:12px;border-radius:16px;background:rgba(14,23,64,.55);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);overflow:hidden}
+.mx-vente-neuve{animation:mxVenteArrive .8s cubic-bezier(.2,1.4,.4,1)}
+@keyframes mxVenteArrive{0%{opacity:0;transform:translateY(16px) scale(.94)}100%{opacity:1;transform:none}}
+.mx-vente-haut{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+.mx-vente-ico{width:44px;height:44px;display:grid;place-items:center;font-size:30px;border-radius:12px;background:rgba(255,255,255,.08);object-fit:cover}
+.mx-vente-nom{display:grid;gap:2px;cursor:pointer}.mx-vente-nom b{font-size:14.5px;line-height:1.2}.mx-vente-nom small{font-size:11.5px;color:var(--mut)}
+.mx-vente-temps{font-weight:800;font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mx-vente-badges{display:flex;gap:6px;flex-wrap:wrap}.mx-vente-badges:empty{display:none}
+.mx-badge{font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:99px;background:rgba(255,255,255,.12)}
+.mx-vente-prix{display:grid;grid-template-columns:auto 1fr;gap:0 10px;align-items:baseline}
+.mx-vente-prix small{grid-column:1/-1;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+.mx-vente-montant{font-size:22px;font-variant-numeric:tabular-nums}.mx-vente-meneur{font-size:12.5px;color:#d6dcf5;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mx-flashprix{animation:mxPrix .7s ease}
+@keyframes mxPrix{0%{color:#f5b21a;transform:scale(1.25)}100%{color:inherit;transform:none}}
+.mx-vente-btns{display:grid;grid-template-columns:1fr auto;gap:8px}
+.mx-vente-btns .btn{min-width:0;padding:10px 14px;font-size:15px}
+.mx-vente.mx-toi{box-shadow:inset 0 0 0 2px #2f8a52}
+.mx-vente.mx-toi .mx-vente-meneur{color:#8ee6ad;font-weight:800}
+/* Sous-évaluée : reflet doré qui passe, badge qui sautille */
+.mx-vente.mx-affaire{box-shadow:inset 0 0 0 2px #f5b21a,0 0 22px rgba(245,178,26,.35);animation:mxAffaire 2.4s ease-in-out infinite}
+.mx-vente.mx-affaire::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,226,140,.22) 50%,transparent 65%);background-size:250% 100%;animation:mxReflet2 2.6s linear infinite;pointer-events:none}
+.mx-vente.mx-affaire .mx-badge:first-child{background:#f5b21a;color:#1b2550;animation:mxSautille 1.2s ease-in-out infinite}
+@keyframes mxAffaire{50%{box-shadow:inset 0 0 0 2px #ffd76a,0 0 32px rgba(245,178,26,.6)}}
+@keyframes mxReflet2{0%{background-position:150% 0}100%{background-position:-100% 0}}
+@keyframes mxSautille{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+/* Finit bientôt : bordure rouge qui bat, chrono qui tremble */
+.mx-vente.mx-bientot{box-shadow:inset 0 0 0 2px #ff5a4f;animation:mxUrgent 1s ease-in-out infinite}
+.mx-vente.mx-bientot.mx-affaire{animation:mxUrgent 1s ease-in-out infinite}
+.mx-vente.mx-bientot .mx-vente-temps{color:#ff8a80;animation:mxTremble .5s linear infinite}
+.mx-vente.mx-bientot .mx-badge{background:#ff5a4f;color:#fff}
+@keyframes mxUrgent{50%{box-shadow:inset 0 0 0 2px #ff5a4f,0 0 26px rgba(255,90,79,.55)}}
+@keyframes mxTremble{0%,100%{transform:translateX(0)}25%{transform:translateX(-1.5px) rotate(-2deg)}75%{transform:translateX(1.5px) rotate(2deg)}}
+@media (prefers-reduced-motion:reduce){.mx-vente,.mx-vente::after,.mx-vente *{animation:none!important}}

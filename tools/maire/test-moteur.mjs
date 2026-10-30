@@ -340,7 +340,7 @@ test("bâtiments : plus de 50 en boutique, chacun utile, objectifs de trimestres
     if (B.si) assert.ok((B.si.t > 0 && B.si.t <= 24) || (B.si.reel >= 1 && B.si.reel <= 3) || B.si.apres, id + " : objectif");
     // Un bâtiment prérequis existe, n'est pas lui-même un bâtiment exclusif, et s'obtient au plus tard au même niveau
     Object.keys((B.si && B.si.apres) || {}).forEach(b => { const A = M.BATIMENTS[b]; assert.ok(A && !A.pass && !A.secret && !A.enchere, id + " → " + b); assert.ok((A.niv || 1) <= (B.niv || 1), id + " exige " + b + " plus tard"); });
-    if (!B.secret) assert.ok(B.niv >= 1 && B.niv <= 40, id + " : niveau");
+    if (!B.secret && !B.seance) assert.ok(B.niv >= 1 && B.niv <= 40, id + " : niveau");
   }
   // Objectif de trimestres, puis annonce de l'arrivée en boutique
   let st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 31, nivJoueur: 40 });
@@ -368,7 +368,7 @@ test("bâtiments : plus de 50 en boutique, chacun utile, objectifs de trimestres
   assert.ok(dn < 0 && dp > dn, "protection catastrophe : " + dp + " / " + dn);
   // Administrateur : tout est disponible tout de suite, la partie est marquée
   const adm = M.nouvellePartie({ ligne: "centre", ambitions: [], graine: 33, nivJoueur: 1, sansLimite: true });
-  assert.ok(ids.filter(id => !M.BATIMENTS[id].secret).every(id => M.disponible(adm, id))); assert.ok(adm.triche);
+  assert.ok(ids.filter(id => !M.BATIMENTS[id].secret && !M.BATIMENTS[id].seance).every(id => M.disponible(adm, id))); assert.ok(adm.triche);
   const off = M.limites(adm, false); assert.ok(!M.disponible(off, "metro")); assert.ok(M.disponible(M.limites(off, true), "metro"));
 });
 
@@ -753,6 +753,48 @@ test("session : le temps passe tout seul, les dossiers arrivent à la demande", 
   st = M.choisir(st, base, M.choixLibre(M.evenementCourant(st, base))[0] || 0); assert.notEqual(st.phase, "evenement");
   // Résultat pas encore lu : il reste affiché après le passage du temps
   if (st.resultat && !st.resultatVu) { const r = st.resultat; st = M.avancerSession(st, base); assert.deepEqual(st.resultat, r); }
+});
+test("session : attaques entre voisins, bouclier, ripostes des bots", () => {
+  const S = require("../../public/maire/session.js");
+  let s = S.nouvelleSession(42, 0); s = S.rejoindre(s, "u1", "Moi", "🙂", 0); const p = S.placeDe(s, "u1");
+  assert.equal(p, 0);
+  // On ne peut viser que ses voisins
+  assert.equal(S.attaquer(s, "u1", 5, "presse", 1000, 0.9), s);
+  const sc0 = S.scores(s, 1000)[1];
+  let s2 = S.attaquer(s, "u1", 1, "presse", 1000, 0.9); assert.equal(S.malusDe(s2, 1), 2); assert.ok(S.scores(s2, 1000)[1] < sc0);
+  assert.equal(S.attaquer(s2, "u1", 1, "presse", 2000, 0.9), s2, "temps de recharge");
+  // Dossier compromettant raté : c'est l'attaquant qui perd des points
+  let s3 = S.attaquer(s2, "u1", 1, "scandale", 3000, 0.1); assert.equal(S.malusDe(s3, 0), 3); assert.equal(s3.journal.slice(-1)[0].res, "rate");
+  // Bouclier : la prochaine attaque est arrêtée
+  let t = S.rejoindre(s3, "u2", "Autre", "😎", 0); const q = S.placeDe(t, "u2"); t = S.proteger(t, "u2", 4000);
+  assert.equal(q, 1, "u2 arrive juste au-dessus de u1");
+  t = S.attaquer(t, "u1", 1, "manif", 5000, 0.9); assert.equal(t.journal.slice(-1)[0].res, "bloque"); assert.equal(S.malusDe(t, 1), 0);
+  // Malus plafonné, remis à zéro à l'élection
+  let m = s; for (let k = 0; k < 20; k++) m = S.attaquer(m, "u1", 1, "presse", k * 70000, 0.9); assert.equal(S.malusDe(m, 1), 15);
+  // Les bots voisins finissent par attaquer
+  let r = S.rejoindre(S.nouvelleSession(7, 0), "u1", "Moi", "🙂", 0), vu = 0;
+  for (let k = 0; k < 40; k++) { r = S.ripostes(r, "u1", k * 30000, (k * 0.137) % 1); }
+  vu = (r.journal || []).filter(e => e.vers && e.vers.uid === "u1").length; assert.ok(vu >= 2, "ripostes : " + vu);
+});
+test("session : salle des ventes, 3 ventes en même temps, enchères et gagnant", () => {
+  const S = require("../../public/maire/session.js"), cat = M.catalogueVentes();
+  assert.equal(cat.ids.length, 35);
+  let s = S.nouvelleSession(99, 0); s = S.rejoindre(s, "u1", "Moi", "🙂", 0);
+  // Toujours 3 ventes en cours (après les premières minutes), une nouvelle toutes les 2 minutes, chacune dure 6 minutes
+  for (let t = 5 * 60000; t < 60 * 60000; t += 37000) { const l = S.ventesEnCours(s, cat, t); assert.equal(l.length, 3); assert.equal(new Set(l.map(v => v.id)).size, 3, "3 bâtiments différents"); l.forEach(v => assert.ok(v.fin - v.debut === 6 * 60000)); }
+  const t0 = 10 * 60000 + 1000, v = S.ventesEnCours(s, cat, t0)[2];
+  assert.equal(S.encherir(s, "u1", cat, v.k, v.prix, t0), s, "il faut surenchérir d'au moins un pas");
+  const fort = Math.round(v.cout * 1.4);
+  let s2 = S.encherir(s, "u1", cat, v.k, fort, t0); const v2 = S.vente(s2, cat, v.k, t0 + 1);
+  assert.equal(v2.prix, fort); assert.equal(v2.meneur.uid, "u1", "le bot ne suit pas si cher");
+  const fin = S.vente(s2, cat, v.k, v.fin + 1); assert.ok(fin.fini); assert.equal(fin.meneur.uid, "u1");
+  assert.ok(S.ventesFinies(s2, cat, v.fin + 3 * 60000).some(x => x.k === v.k));
+  // Le moteur construit le bâtiment une seule fois
+  let st = M.nouvellePartie({ maire: "tribun", graine: 3, nivJoueur: 1 }); st.phase = "gestion";
+  const a = M.gagnerVente(st, fin.id, fin.prix, "s:" + fin.k); assert.equal(a.bat[fin.id], 1); assert.equal(M.gagnerVente(a, fin.id, fin.prix, "s:" + fin.k), a);
+  // Une petite offre : le bot surenchérit aussitôt s'il le peut
+  const w = S.ventesEnCours(s, cat, t0)[1]; const s3 = S.encherir(s, "u1", cat, w.k, w.prix + w.pas, t0); const w3 = S.vente(s3, cat, w.k, t0);
+  assert.ok(w3.prix >= w.prix + w.pas);
 });
 test("élections anticipées : à la demande du maire quand ses objectifs sont remplis, 3 trimestres plus tard, sauf si le vote est déjà proche", () => {
   const prep = (t) => { const st = M.nouvellePartie({ ligne: "centre", ambitions: ["cadre", "logement"], graine: 950, nivJoueur: 40 });

@@ -1107,7 +1107,7 @@
       if (ev) { st.special = "catastrophe"; st.repit = st.t + 6; return lancerOrdinaire(st, ev); }
     }
     // 2. L'opposant attaque une fois par an
-    if (st.meca.opposant && o && o.actif && tm % 4 === 0 && tm > 0) {
+    if (!st.session && st.meca.opposant && o && o.actif && tm % 4 === 0 && tm > 0) {
       st.evPerso = attaque(st); st.evenement = st.evPerso.id; st.special = "opposition"; st.phase = "evenement"; return st;
     }
     // 3. Les décisions passées reviennent (suites d'événements spéciaux)
@@ -1539,6 +1539,7 @@
   }
   function disponible(st, id) {
     var B = BATIMENTS[id]; if (!B) return false;
+    if (B.seance) return false;   // bâtiments de la salle des ventes en ligne : jamais en boutique
     if (st.sansLimite) return true;
     if (B.secret) return !!(st.secrets && st.secrets[id]);
     if (B.pass) return !!(st.passBats && st.passBats[id]);
@@ -1603,7 +1604,7 @@
     verifierCombos(st); suivreMission(st);
     return st;
   }
-  // ---------- Enchères : les bâtiments de prestige se disputent avec une ville voisine ----------
+  // ---------- Enchères : les bâtiments de prestige se disputent avec un autre arrondissement ----------
   // La ville voisine a un prix maximum secret, autour du prix moyen de vente : elle surenchérit tant qu'elle peut.
   // L'interface donne 30 secondes ; à la fin, la meilleure offre l'emporte.
   function budgetEnchere(st) { return Math.max(0, Math.floor(st.tresor + (PLAFOND_DETTE - st.dette) * 0.5)); }
@@ -1645,14 +1646,31 @@
       construire(st, x.id, x.j, "Enchère remportée : " + B.nom);
       s.encheres++; if (x.j <= x.moyen) s.bonnesAffaires++;
       gagnerXP(st, "Enchères remportées", 20);
-      message(st, "🔨", "Adjugé : " + B.nom, "Paris l’emporte face à " + x.ville + " pour " + x.j + " M€ (prix moyen : " + x.moyen + " M€).");
+      message(st, "🔨", "Adjugé : " + B.nom, "Ton arrondissement l’emporte face au " + x.ville + " pour " + x.j + " M€ (prix moyen : " + x.moyen + " M€).");
     } else {
       x.res = { gagne: false, prix: x.v };
       st.encheresCd[x.id] = st.t + 4; s.encheresPerdues++;
-      message(st, "🔨", x.ville + " remporte l’enchère", B.nom + " part à " + x.ville + " pour " + x.v + " M€. Il reviendra aux enchères dans 4 trimestres.");
+      message(st, "🔨", "Le " + x.ville + " remporte l’enchère", B.nom + " part au " + x.ville + " pour " + x.v + " M€. Il reviendra aux enchères dans 4 trimestres.");
     }
     return st;
   }
+  // ---------- Salle des ventes de la session (arrondissement contre arrondissement) ----------
+  function catalogueVentes() { var ids = Object.keys(C.ENCHERES), cout = {}; ids.forEach(function (id) { cout[id] = BATIMENTS[id].cout; }); return { ids: ids, cout: cout }; }
+  function gagnerVente(st0, id, prix, cle) {
+    var B = BATIMENTS[id]; if (!B || st0.phase === "fin") return st0;
+    var st = copie(st0), s = stats(st); st.ventesPrises = st.ventesPrises || {};
+    if (st.ventesPrises[cle]) return st0;
+    st.ventesPrises[cle] = 1;
+    var ks = Object.keys(st.ventesPrises); if (ks.length > 40) delete st.ventesPrises[ks[0]];
+    if (st.bat[id]) { message(st, "🔨", "Déjà à toi", B.nom + " était déjà dans ton arrondissement : la vente est annulée."); return st; }
+    construire(st, id, prix, "Vente remportée : " + B.nom);
+    s.encheres++; if (prix <= B.cout) s.bonnesAffaires++;
+    gagnerXP(st, "Enchères remportées", 20);
+    message(st, "🔨", "Adjugé : " + B.nom, "Ton arrondissement l’emporte pour " + prix + " M€ (prix moyen : " + B.cout + " M€).");
+    return st;
+  }
+  // Une dépense en session (attaque, service de communication)
+  function payer(st0, m, lib) { if (!m) return st0; var st = copie(st0); mouvement(st, -m, lib); return st; }
   function fermerEnchere(st0) { if (!st0.enchere || !st0.enchere.fini) return st0; var st = copie(st0); st.enchere = null; return st; }
   // Administrateur : passer les limites (niveau, trimestres, réélections) pour tous les bâtiments
   // Récompense du pass gagnée en pleine partie : le bâtiment exclusif arrive tout de suite en boutique
@@ -1793,7 +1811,7 @@
   var API = { MANDAT: MANDAT, PLAFOND_DETTE: PLAFOND_DETTE, TAUX: TAUX, P: P, NIVEAUX: NIVEAUX, PILIERS: PILIERS, ICO: ICO, DOMAINES: DOMAINES,
     MECANIQUES: MECANIQUES, EXTRAS: EXTRAS, mecaniques: mecaniques, BATIMENTS: BATIMENTS, OPPOSANTS: OPPOSANTS, SEUIL_OPP: SEUIL_OPP, LIGNES: LIGNES, CATS: CATS,
     FAMILLE: FAMILLE, SPECIAUX: SPECIAUX, C: C,
-    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
+    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
     disponible: disponible, enChantier: enChantier, prix: prix, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, recit: recit,
     valider: valider, indexer: indexer, engagements: engagements, evenementCourant: evenementCourant, stats: stats, opposant: opposant, humeurOpp: humeurOpp, bonheur: bonheur,
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,

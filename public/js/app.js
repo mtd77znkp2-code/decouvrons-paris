@@ -232,9 +232,11 @@ window.SessionLigne=(function(){
     return LB.db.runTransaction(function(tx){return tx.get(ref).then(function(d){var s=d.exists?lire(d):null;if(!s)return null;var n=f(s);if(n!==s)tx.set(ref,champs(n));return n})}).catch(function(){return null});
   }
   return {rejoindre:rejoindre,ecouter:ecouter,modifier:modifier,moi:moi,
-    signaler:function(id,stats){return modifier(id,function(s){return S().signaler(s,moi(),stats,Date.now())})},
+    signaler:function(id,stats){return modifier(id,function(s){return S().ripostes(S().signaler(s,moi(),stats,Date.now()),moi(),Date.now(),Math.random())})},
     voter:function(id){return modifier(id,function(s){return S().voter(s,moi())})},
-    attaquer:function(id){return modifier(id,function(s){return S().attaquer(s,moi())})},
+    attaquer:function(id,cible,type){return modifier(id,function(s){return S().attaquer(s,moi(),cible,type,Date.now(),Math.random())})},
+    proteger:function(id){return modifier(id,function(s){return S().proteger(s,moi(),Date.now())})},
+    encherir:function(id,cat,k,m){return modifier(id,function(s){return S().encherir(s,moi(),cat,k,m,Date.now())})},
     elire:function(id){return modifier(id,function(s){return S().elire(S().nettoyer(s,Date.now()),Date.now())})}};
 })();
 

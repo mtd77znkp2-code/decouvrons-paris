@@ -84,13 +84,121 @@
     return ch ? s : s0;
   }
 
-  // ---------- Attaques : on attaque automatiquement son rival (la place au-dessus) ----------
-  // Rival bot : il perd 2 points de score (jusqu'à 8) jusqu'à la prochaine élection. Rival humain : son jeu lui présente l'attaque (son opposant, c'est nous).
-  function attaquer(s0, uid) {
-    var p = placeDe(s0, uid); if (p < 0 || p >= TRONE) return s0;
-    var r = s0.places[p + 1]; if (r.type !== "bot") return s0;
-    var s = copie(s0); s.malus = s.malus || {}; s.malus[r.id] = Math.min(8, (s.malus[r.id] || 0) + 2); return s;
+  // ---------- Attaques : on attaque son rival (au-dessus) ou son opposant (au-dessous) ----------
+  // Chaque attaque retire des points au sondage de la cible jusqu'à la prochaine élection (malus, 15 au plus).
+  // Un service de communication (bouclier) arrête la prochaine attaque reçue. Les bots attaquent aussi.
+  var ATTAQUES = {
+    presse: { nom: "Campagne de presse", ico: "📰", cout: 30, pts: 2, cd: 60000, txt: "Des tribunes et des unes peu flatteuses : −2 points à son sondage." },
+    manif: { nom: "Manifestation organisée", ico: "📣", cout: 50, pts: 3, cd: 90000, txt: "Des pancartes devant sa mairie : −3 points." },
+    scandale: { nom: "Dossier compromettant", ico: "🕵️", cout: 80, pts: 5, risque: 0.35, retour: 3, cd: 150000, txt: "−5 points… mais une fois sur trois, l’affaire se retourne contre toi (−3)." },
+    debat: { nom: "Débat télévisé", ico: "🎤", cout: 0, pts: 3, duel: true, cd: 180000, txt: "Gratuit : le mieux placé dans les sondages fait perdre 3 points à l’autre." }
+  };
+  var BOUCLIER = { nom: "Service de communication", ico: "🛡️", cout: 40, cd: 120000, txt: "Arrête la prochaine attaque reçue (jusqu’à l’élection)." };
+  var MALUS_MAX = 15;
+  function cle(x) { return x.type === "joueur" ? x.uid : x.id; }
+  function qui(s, p) { var x = s.places[p]; return { nom: x.nom, ico: x.ico, court: court(p), uid: x.uid || null, bot: x.type === "bot" }; }
+  function malusDe(s, p) { return ((s.malus || {})[cle(s.places[p])]) || 0; }
+  function attente(s, k, maintenant) { return Math.max(0, ((s.cd || {})[k] || 0) - maintenant); }
+  function noter(s, e) { s.journal = (s.journal || []).concat([e]).slice(-30); }
+  // Applique une attaque de la place a vers la place c (alea entre 0 et 1, donné par l'appelant)
+  function frapper(s, a, c, type, maintenant, alea) {
+    var A = ATTAQUES[type], kc = cle(s.places[c]), ka = cle(s.places[a]), e = { q: maintenant, type: type, de: qui(s, a), vers: qui(s, c), res: "ok", pts: A.pts };
+    s.malus = s.malus || {}; s.boucliers = s.boucliers || {};
+    if (s.boucliers[kc]) { delete s.boucliers[kc]; e.res = "bloque"; e.pts = 0; }
+    else if (A.duel) {
+      var sc = scores(s, maintenant);
+      if (sc[a] >= sc[c]) s.malus[kc] = Math.min(MALUS_MAX, (s.malus[kc] || 0) + A.pts);
+      else { s.malus[ka] = Math.min(MALUS_MAX, (s.malus[ka] || 0) + A.pts); e.res = "perdu"; }
+    } else if (A.risque && alea < A.risque) { s.malus[ka] = Math.min(MALUS_MAX, (s.malus[ka] || 0) + A.retour); e.res = "rate"; e.pts = A.retour; }
+    else s.malus[kc] = Math.min(MALUS_MAX, (s.malus[kc] || 0) + A.pts);
+    noter(s, e); return e;
   }
+  // Un joueur attaque une place voisine (cible = p + 1 ou p - 1)
+  function attaquer(s0, uid, cible, type, maintenant, alea) {
+    var p = placeDe(s0, uid), A = ATTAQUES[type];
+    if (p < 0 || !A || (cible !== p + 1 && cible !== p - 1) || cible < 0 || cible >= NB) return s0;
+    if (attente(s0, uid + ":" + type, maintenant)) return s0;
+    var s = copie(s0); s.cd = s.cd || {}; s.cd[uid + ":" + type] = maintenant + A.cd;
+    frapper(s, p, cible, type, maintenant, alea || 0);
+    return s;
+  }
+  function proteger(s0, uid, maintenant) {
+    var p = placeDe(s0, uid); if (p < 0 || attente(s0, uid + ":bouclier", maintenant) || (s0.boucliers || {})[uid]) return s0;
+    var s = copie(s0); s.cd = s.cd || {}; s.cd[uid + ":bouclier"] = maintenant + BOUCLIER.cd; s.boucliers = s.boucliers || {}; s.boucliers[uid] = 1;
+    noter(s, { q: maintenant, type: "bouclier", de: qui(s, p), vers: null, res: "ok", pts: 0 }); return s;
+  }
+  // Les bots voisins d'un joueur l'attaquent de temps en temps (appelé quand le joueur envoie son état)
+  function ripostes(s0, uid, maintenant, alea) {
+    var p = placeDe(s0, uid); if (p < 0) return s0;
+    var s = s0;
+    [p + 1, p - 1].forEach(function (b, i) {
+      if (b < 0 || b >= NB || s.places[b].type !== "bot") return;
+      var bt = s.places[b], k = bt.id + ":bot";
+      if (attente(s, k, maintenant)) return;
+      var a = (alea * 7.31 + i * 0.37) % 1;
+      if (a > 0.1 + bt.talent * 0.12) return;
+      var types = ["presse", "manif", "scandale", "debat"], type = types[Math.floor(((alea * 13.7 + i) % 1) * types.length)];
+      if (s === s0) s = copie(s0);
+      s.cd = s.cd || {}; s.cd[k] = maintenant + 100000 + Math.round(a * 80000);
+      frapper(s, b, p, type, maintenant, (alea * 3.3) % 1);
+    });
+    return s;
+  }
+
+  // ---------- Salle des ventes : arrondissement contre arrondissement ----------
+  // Une vente s'ouvre toutes les 2 minutes et dure 6 minutes : il y en a toujours 3 en même temps.
+  // cat = { ids: [...], cout: { id: prix moyen } } : les bâtiments de prestige (fournis par le moteur).
+  // Chaque vente a un bot enchérisseur (une place de la session) avec un prix maximum secret ; les offres des joueurs sont gardées dans la session.
+  var VENTE_P = 2 * 60000, VENTE_D = 6 * 60000;
+  function pasDe(cout) { return Math.max(5, Math.round(cout * 0.05 / 5) * 5); }
+  function idVente(s, cat, k) {
+    var n = cat.ids.length, i = Math.floor(hache(s.graine, 5000, k) * n), pris = {};
+    for (var j = 1; j <= 2; j++) if (k - j >= 0) pris[cat.ids[Math.floor(hache(s.graine, 5000, k - j) * n)]] = 1;
+    while (pris[cat.ids[i]]) i = (i + 1) % n;
+    return cat.ids[i];
+  }
+  function vente(s, cat, k, maintenant) {
+    if (k < 0) return null;
+    var id = idVente(s, cat, k), cout = cat.cout[id], debut = s.debut + k * VENTE_P, fin = debut + VENTE_D, pas = pasDe(cout);
+    var depart = Math.round(cout * 0.5 / 5) * 5;
+    // Le bot enchérisseur : une place tenue par un bot, et son prix maximum (parfois sous le prix moyen : bonne affaire possible)
+    var b = Math.floor(hache(s.graine, 5001, k) * NB), tours = 0;
+    while (s.places[b].type !== "bot" && tours++ < NB) b = (b + 1) % NB;
+    var botMax = Math.round(cout * (0.6 + hache(s.graine, 5002, k) * 0.65) / 5) * 5;
+    // Sa courbe : il monte peu à peu jusqu'à un plafond, avant la dernière minute
+    var plafond = Math.min(botMax, Math.round(cout * (0.55 + hache(s.graine, 5003, k) * 0.35) / 5) * 5);
+    var avance = Math.max(0, Math.min(1, (Math.min(maintenant, fin) - debut) / (VENTE_D - 60000)));
+    var courbe = Math.max(depart, Math.floor((depart + (plafond - depart) * avance) / pas) * pas);
+    var offres = ((s.ventes || {})[k] || []), h = offres.length ? offres[offres.length - 1] : null, H = h ? h.m : 0;
+    var B = courbe;
+    if (H) B = botMax >= H + pas ? Math.min(botMax, Math.max(courbe, H + pas)) : Math.min(courbe, H - pas);
+    var botTete = !H || B > H;
+    var meneur = botTete ? { nom: s.places[b].nom, ico: s.places[b].ico, court: court(b), bot: true, uid: null } : { nom: h.nom, ico: h.ico, court: h.court, bot: false, uid: h.uid };
+    return { k: k, id: id, cout: cout, debut: debut, fin: fin, pas: pas, prix: botTete ? B : H, meneur: meneur, fini: maintenant >= fin, nb: offres.length + 1,
+      affaire: (botTete ? B : H) <= cout * 0.7 && fin - maintenant <= VENTE_D / 2,   // sous-évaluée : encore loin de sa valeur à mi-vente bientot: fin - maintenant <= 60000 && maintenant < fin };
+  }
+  function ventesEnCours(s, cat, maintenant) {
+    var k = Math.floor((maintenant - s.debut) / VENTE_P), l = [];
+    for (var j = k - 2; j <= k; j++) { var v = vente(s, cat, j, maintenant); if (v && !v.fini) l.push(v); }
+    return l;
+  }
+  function venteSuivante(s, maintenant) { var k = Math.floor((maintenant - s.debut) / VENTE_P) + 1; return s.debut + k * VENTE_P; }
+  // Ventes terminées récemment (pour que le gagnant récupère son bâtiment)
+  function ventesFinies(s, cat, maintenant) {
+    var k = Math.floor((maintenant - s.debut) / VENTE_P), l = [];
+    for (var j = k - 8; j <= k - 3; j++) { var v = vente(s, cat, j, maintenant); if (v && v.fini) l.push(v); }
+    return l;
+  }
+  function encherir(s0, uid, cat, k, montant, maintenant) {
+    var p = placeDe(s0, uid), v = vente(s0, cat, k, maintenant);
+    if (p < 0 || !v || v.fini || maintenant < v.debut || montant < v.prix + v.pas || (!v.meneur.bot && v.meneur.uid === uid)) return s0;
+    var s = copie(s0); s.ventes = s.ventes || {};
+    var kmin = Math.floor((maintenant - s.debut) / VENTE_P) - 10;
+    Object.keys(s.ventes).forEach(function (x) { if (+x < kmin) delete s.ventes[x]; });
+    s.ventes[k] = (s.ventes[k] || []).concat([{ uid: uid, nom: s.places[p].nom, ico: s.places[p].ico, court: court(p), m: Math.round(montant), q: maintenant }]).slice(-12);
+    return s;
+  }
+
   // ---------- Élections anticipées : la moitié des joueurs (humains) doit voter pour ----------
   function voter(s0, uid) { if (placeDe(s0, uid) < 0 || s0.votes[uid]) return s0; var s = copie(s0); s.votes[uid] = 1; return s; }
   function votesRequis(s) { return Math.max(1, Math.ceil(joueurs(s).length / 2)); }
@@ -103,7 +211,7 @@
   function scores(s, maintenant) {
     return s.places.map(function (x, p) {
       if (x.type === "bot") return scoreBot(s, x, p);
-      return (x.score || 40) - (maintenant - (x.vu || 0) > ABSENT_MS ? 10 : 0);
+      return (x.score || 40) - ((s.malus || {})[x.uid] || 0) - (maintenant - (x.vu || 0) > ABSENT_MS ? 10 : 0);
     });
   }
   function elire(s0, maintenant) {
@@ -123,7 +231,7 @@
       var pApres = placeDe(s, x.uid), d = duels.filter(function (y) { return y.bas === pAvant || y.haut === pAvant; });
       s.resultats.push({ uid: x.uid, avant: pAvant, apres: pApres, duel: d.length ? d[0] : null });
     });
-    s.election++; s.prochaine = maintenant + MANDAT_MS; s.votes = {}; s.derniere = maintenant; s.malus = {};
+    s.election++; s.prochaine = maintenant + MANDAT_MS; s.votes = {}; s.derniere = maintenant; s.malus = {}; s.boucliers = {};
     return s;
   }
   function resultatDe(s, uid) { return (s.resultats || []).filter(function (r) { return r.uid === uid; })[0] || null; }
@@ -135,7 +243,8 @@
   }
 
   var API = { NB: NB, TRONE: TRONE, MANDAT_MS: MANDAT_MS, ARR: ARR, ORDRE: ORDRE, arr: arr, nomArr: nomArr, titre: titre, court: court, puissance: puissance, habitants: habitants,
-    nouvelleSession: nouvelleSession, rejoindre: rejoindre, attaquer: attaquer, pleine: pleine, signaler: signaler, nettoyer: nettoyer, voter: voter, votesRequis: votesRequis, nbVotes: nbVotes,
+    nouvelleSession: nouvelleSession, rejoindre: rejoindre, attaquer: attaquer, proteger: proteger, ripostes: ripostes, ATTAQUES: ATTAQUES, BOUCLIER: BOUCLIER, malusDe: malusDe, attente: attente,
+    ventesEnCours: ventesEnCours, ventesFinies: ventesFinies, venteSuivante: venteSuivante, vente: vente, encherir: encherir, VENTE_P: VENTE_P, VENTE_D: VENTE_D, pleine: pleine, signaler: signaler, nettoyer: nettoyer, voter: voter, votesRequis: votesRequis, nbVotes: nbVotes,
     electionDue: electionDue, scores: scores, elire: elire, resultatDe: resultatDe, placeDe: placeDe, joueurs: joueurs, fiche: fiche, statsBot: statsBot, scoreBot: scoreBot };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.MaireSession = API;
 })(this);

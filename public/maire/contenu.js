@@ -133,15 +133,48 @@
     parcExpositions: { nom: "Parc des expositions", ico: "🎪", cat: "economie", niv: 31, si: { t: 12 }, cout: 280, ent: 5, e: {}, rev: 14, eco: 3, ali: { g: 0, c: 2, d: 2, e: 0 }, txt: "Salons et congrès du monde entier." },
     quartierAffaires: { nom: "Quartier d’affaires", ico: "🏢", cat: "economie", niv: 35, si: { reel: 1 }, cout: 400, ent: 8, e: { logement: -1 }, rev: 20, eco: 4, ali: { g: -2, c: 1, d: 3, e: -1 }, txt: "Des tours de bureaux : beaucoup de recettes, un peu moins de logements." }
   };
-  // Bâtiments de prestige : uniques, ils se gagnent aux enchères contre une ville voisine (cout = prix moyen de vente)
+  // Bâtiments de prestige : uniques, ils se gagnent aux enchères contre un autre arrondissement (cout = prix moyen de vente).
+  // seance : seulement dans la salle des ventes des sessions en ligne
   var ENCHERES = {
-    tourDeFrance: { nom: "Arrivée d’une course cycliste mythique", ico: "🚵", niv: 15, si: { t: 8 }, cout: 140, ent: 0, e: { transports: 2 }, rev: 6, pop: 3, txt: "Chaque été, le monde entier regarde Paris." },
+    // Événements et spectacles
+    tourDeFrance: { nom: "Arrivée du Tour de France", ico: "🚵", niv: 15, si: { t: 8 }, cout: 140, ent: 0, e: { transports: 2 }, rev: 6, pop: 3, txt: "Chaque été, le peloton finit sous les fenêtres de tes habitants." },
+    marathon: { nom: "Départ du marathon de Paris", ico: "🏃", seance: 1, cout: 100, ent: 1, e: { cadre: 2 }, rev: 4, pop: 2, txt: "50 000 coureurs s’élancent de ton arrondissement." },
+    festival: { nom: "Festival de musique en plein air", ico: "🎤", niv: 22, si: { t: 12 }, cout: 220, ent: 0, e: { cadre: 4 }, rev: 12, popT: 0.15, txt: "Trois jours de concerts : tout Paris en parle encore." },
+    nuitBlanche: { nom: "Cœur de la Nuit Blanche", ico: "🌙", seance: 1, cout: 110, ent: 1, e: { cadre: 3 }, rev: 3, popT: 0.1, txt: "Une nuit d’art contemporain dans tes rues, jusqu’à l’aube." },
+    feuArtifice: { nom: "Feu d’artifice du 14 Juillet", ico: "🎆", seance: 1, cout: 170, ent: 0, e: { cadre: 3 }, rev: 5, pop: 4, txt: "Le grand bouquet final tiré depuis ton arrondissement." },
+    fashionWeek: { nom: "Défilés de la Fashion Week", ico: "👗", seance: 1, cout: 240, ent: 0, e: { cadre: 1 }, rev: 14, eco: 3, txt: "Les grandes maisons défilent chez toi deux fois par an." },
+    tournoiTennis: { nom: "Tournoi de tennis sur terre battue", ico: "🎾", seance: 1, cout: 300, ent: 3, e: { cadre: 3 }, rev: 16, pop: 2, txt: "Deux semaines de tennis mondial sur l’ocre." },
+    salonAgriculture: { nom: "Salon de l’agriculture", ico: "🐄", seance: 1, cout: 150, ent: 1, e: {}, rev: 9, eco: 2, txt: "Vaches, fromages et ministres : la France entière vient chez toi." },
+    // Culture et patrimoine
     impressionnistes: { nom: "Collection impressionniste", ico: "🖼️", niv: 19, si: { t: 8 }, cout: 160, ent: 2, e: { cadre: 3 }, rev: 8, pop: 2, vote: 1, txt: "Des chefs-d’œuvre légués par un collectionneur." },
-    grandeRoue: { nom: "Grande roue géante", ico: "🎡", niv: 19, si: { t: 10 }, cout: 200, ent: 3, e: { cadre: 3 }, rev: 10, pop: 2, txt: "La plus haute d’Europe, avec vue sur toute la ville." },
-    festival: { nom: "Festival international de musique", ico: "🎤", niv: 22, si: { t: 12 }, cout: 220, ent: 0, e: { cadre: 4 }, rev: 12, popT: 0.15, txt: "Trois jours de concerts : toute la ville en parle encore." },
+    galerieArt: { nom: "Galerie d’art contemporain", ico: "🖌️", seance: 1, cout: 120, ent: 1, e: { cadre: 2 }, rev: 6, txt: "Vernissages, artistes et collectionneurs du monde entier." },
+    cabaret: { nom: "Cabaret mythique", ico: "💃", seance: 1, cout: 180, ent: 2, e: { cadre: 2 }, rev: 12, eco: 1, txt: "Plumes, French cancan et cars de touristes chaque soir." },
+    salleOpera: { nom: "Salle d’opéra", ico: "🎼", seance: 1, cout: 360, ent: 5, e: { cadre: 5 }, rev: 12, vote: 1, txt: "Dorures, lustre géant et soirées de gala." },
+    theatreBoulevard: { nom: "Théâtre de boulevard", ico: "🎟️", seance: 1, cout: 90, ent: 1, e: { cadre: 2 }, rev: 4, pop: 1, txt: "Portes qui claquent et salles combles depuis 1880." },
+    cinemaArtDeco: { nom: "Cinéma Art déco", ico: "🍿", seance: 1, cout: 95, ent: 1, e: { cadre: 2 }, rev: 4, popT: 0.05, txt: "Le plus grand écran de Paris, sous une coupole étoilée." },
+    jazzClub: { nom: "Cave de jazz légendaire", ico: "🎷", seance: 1, cout: 80, ent: 1, e: { cadre: 2 }, rev: 3, popT: 0.05, txt: "Une cave voûtée où les plus grands ont joué jusqu’au matin." },
+    salleConcert: { nom: "Salle de concert mythique", ico: "🎸", seance: 1, cout: 210, ent: 2, e: { cadre: 3 }, rev: 11, popT: 0.08, txt: "Toutes les légendes du rock y sont passées." },
+    catacombes: { nom: "Galeries souterraines à visiter", ico: "💀", seance: 1, cout: 150, ent: 2, e: { cadre: 1 }, rev: 10, txt: "Des kilomètres de couloirs sous tes rues : les touristes font la queue." },
+    bouquinistes: { nom: "Librairie ancienne et bouquinistes", ico: "📚", seance: 1, cout: 85, ent: 1, e: { cadre: 2 }, rev: 2, pop: 1, txt: "Des boîtes vertes, des livres rares et des flâneurs." },
+    // Commerce, gastronomie et luxe
+    grandMagasin: { nom: "Grand magasin à coupole", ico: "🏬", seance: 1, cout: 260, ent: 3, e: {}, rev: 18, eco: 3, emplois: 2000, txt: "Une coupole de verre et des vitrines de Noël célèbres dans le monde entier." },
+    passageCouvert: { nom: "Passage couvert du XIXe", ico: "🛍️", seance: 1, cout: 105, ent: 1, e: { cadre: 2 }, rev: 5, txt: "Verrières, mosaïques et boutiques d’autrefois." },
+    brasserie: { nom: "Brasserie Art nouveau", ico: "🍽️", seance: 1, cout: 90, ent: 1, e: { cadre: 1 }, rev: 5, pop: 1, txt: "Plateaux de fruits de mer et miroirs d’époque." },
+    palace: { nom: "Palace cinq étoiles", ico: "🛎️", seance: 1, cout: 320, ent: 2, e: {}, rev: 20, eco: 3, emplois: 600, txt: "Chefs d’État et stars de cinéma dorment chez toi." },
+    hauteCouture: { nom: "Maison de haute couture", ico: "✂️", seance: 1, cout: 270, ent: 2, e: {}, rev: 15, eco: 3, emplois: 800, txt: "Ateliers de petites mains et défilés privés." },
+    ecoleCuisine: { nom: "École de grande cuisine", ico: "👨‍🍳", seance: 1, cout: 130, ent: 1, e: { cadre: 1 }, rev: 6, eco: 2, txt: "Les futurs chefs étoilés apprennent dans ton arrondissement." },
+    patisserie: { nom: "Pâtisserie à macarons", ico: "🧁", seance: 1, cout: 80, ent: 0, e: { cadre: 1 }, rev: 4, pop: 1, txt: "La file d’attente fait le tour du pâté de maisons." },
+    marcheAuxPuces: { nom: "Marché aux puces", ico: "🧺", seance: 1, cout: 115, ent: 1, e: { cadre: 1 }, rev: 7, eco: 1, txt: "Chineurs du monde entier chaque week-end." },
+    // Tourisme et loisirs
+    grandeRoue: { nom: "Grande roue géante", ico: "🎡", niv: 19, si: { t: 10 }, cout: 200, ent: 3, e: { cadre: 3 }, rev: 10, pop: 2, txt: "Vue sur tous les toits de Paris." },
+    bateauxMouches: { nom: "Compagnie de bateaux-mouches", ico: "🛥️", seance: 1, cout: 160, ent: 2, e: { transports: 1 }, rev: 10, txt: "Croisières sur la Seine, de jour comme de nuit." },
+    belvedere: { nom: "Belvédère sur les toits", ico: "🌇", seance: 1, cout: 230, ent: 2, e: { cadre: 3 }, rev: 12, pop: 2, txt: "Une terrasse vertigineuse au-dessus des toits de zinc." },
+    aquarium: { nom: "Aquarium géant", ico: "🐠", niv: 34, si: { reel: 1 }, cout: 320, ent: 4, e: { cadre: 4 }, rev: 18, pop: 2, txt: "Des requins à deux pas de la Seine (dans des bassins, rassurez-vous)." },
+    hippodrome: { nom: "Hippodrome", ico: "🏇", seance: 1, cout: 280, ent: 4, e: { cadre: 2 }, rev: 15, txt: "Grands prix, chapeaux extravagants et paris hippiques." },
+    // Savoir, affaires et prestige
     studios: { nom: "Studios de cinéma", ico: "🎥", niv: 26, si: { t: 12 }, cout: 300, ent: 4, e: { cadre: 2 }, rev: 16, eco: 3, txt: "Hollywood-sur-Seine." },
     rechercheMedicale: { nom: "Centre de recherche médicale", ico: "🧬", niv: 32, si: { reel: 1 }, cout: 350, ent: 6, e: { cadre: 6, securite: 2 }, rev: 6, eco: 2, txt: "Des chercheurs du monde entier, des soins de pointe." },
-    aquarium: { nom: "Aquarium géant", ico: "🐠", niv: 34, si: { reel: 1 }, cout: 320, ent: 4, e: { cadre: 4 }, rev: 18, pop: 2, txt: "Des requins sous la Seine (dans des bassins, rassurez-vous)." },
+    campusStartup: { nom: "Campus de start-up", ico: "🚀", seance: 1, cout: 250, ent: 2, e: {}, rev: 12, eco: 4, emplois: 1500, txt: "Mille jeunes pousses sous une ancienne halle ferroviaire." },
     siegeInternational: { nom: "Siège d’une organisation internationale", ico: "🌐", niv: 29, si: { reel: 1 }, cout: 380, ent: 2, e: {}, rev: 20, eco: 4, vote: 1, txt: "Diplomates, congrès et prestige mondial." }
   };
   // Bâtiments exclusifs : pass de combat (paliers 8, 18 et 30) et série de 7 jours
@@ -190,7 +223,7 @@
   };
 
   // Les villes voisines qui enchérissent contre Paris
-  var VOISINES = ["Boulogne-Billancourt", "Saint-Denis", "Montreuil", "Vincennes", "Neuilly-sur-Seine", "Issy-les-Moulineaux", "Levallois-Perret", "Ivry-sur-Seine"];
+  var VOISINES = ["1er", "2e", "3e", "4e", "5e", "6e", "7e", "8e", "9e", "10e", "11e", "12e", "13e", "14e", "15e", "16e", "17e", "18e", "19e", "20e"];   // arrondissements adverses aux enchères
 
   // ---------- Missions surprises (« défis improbables ») : une à la fois, courtes ----------
   // depart(st) : mémorise ce qu'il faut ; ok(st, m) : réussie ? · si(st) : peut-elle apparaître ?

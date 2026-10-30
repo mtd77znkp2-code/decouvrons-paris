@@ -600,6 +600,7 @@
   // Nouvelle version de la session : élection passée ? nouvelle place ? noms du rival et de l'opposant
   function recuSession(s) {
     SES.s = s; if (!st || st.phase === "fin" || SS().placeDe(s, moiSes()) < 0) return;
+    surveillerAttaques(s);
     var r = SS().resultatDe(s, moiSes()), avant = st.session ? st.session.place : -1, elu = null;
     if (r && st.session && s.election > (st.session.election || 0) && st.session.dernElec !== s.election) {
       st = M.electionSession(st, { election: s.election, avant: r.avant, apres: r.apres, titre: SS().titre(r.apres), rival: r.duel ? SS().fiche(s, r.duel.bas === r.avant ? r.duel.haut : r.duel.bas).nom : "" });
@@ -619,6 +620,7 @@
     if (visible && SS().electionDue(SES.s, now) && now - SES.elire > 5000) { SES.elire = now; window.SessionLigne.elire(SES.id); }
     var libre = visible && (st.phase === "gestion" || st.phase === "pret") && !document.getElementById("m-modale") && !document.getElementById("m-telmod") && !document.body.classList.contains("m-casino") && !(st.enchere && !st.enchere.fini) && !(st.bj && !st.bj.fini);
     rechargerReserve(now);
+    if (recupererVentes() && libre) return jeu();
     // Le temps passe tout seul (saisons, recettes, dépenses), même pendant un dossier ; seulement quand le jeu est à l'écran
     if (!visible) SES.temps = Math.max(SES.temps, now + 2000);
     else if (now >= SES.temps) { SES.temps = now + TRIM_MS; return trimestreSuivant(libre); }
@@ -634,8 +636,6 @@
     if (st.t > t0 && st.phase !== "fin") { var sa = SAISONS[(st.t - 1) % 4]; toast(sa[0] + " " + sa[1] + " · an " + (Math.floor((st.t - 1) / 4) + 1)); }
     if (SES.id) {
       window.SessionLigne.signaler(SES.id, M.etatSession(st));
-      // Une fois par an, tes équipes attaquent automatiquement ton rival (la place au-dessus)
-      if (st.t % 4 === 2 && st.session && st.session.rival) { window.SessionLigne.attaquer(SES.id); setTimeout(function () { toast("⚔️ Tes équipes attaquent " + st.session.rival.nom + " (" + st.session.rival.court + ")"); }, 1800); }
     }
   }
   function mmss(ms) { ms = Math.max(0, ms); var m = Math.floor(ms / 60000), sec = Math.floor(ms % 60000 / 1000); return m + ":" + (sec < 10 ? "0" : "") + sec; }
@@ -646,6 +646,10 @@
     var v = document.querySelector(".mx-ses-votes"); if (v) v.textContent = SS().nbVotes(SES.s) + "/" + SS().votesRequis(SES.s) + " vote" + (SS().votesRequis(SES.s) > 1 ? "s" : "");
     var b = document.querySelector(".m-barmois .btn.mx-auto");
     if (b) remplirTrim(b);
+    majVentes();
+    var mx = document.querySelector(".mx-ses-malus");
+    if (mx && st.session) { var p = st.session.place, mm = SS().malusDe(SES.s, p), mr = p < SS().TRONE ? SS().malusDe(SES.s, p + 1) : 0, sh = (SES.s.boucliers || {})[moiSes()];
+      mx.textContent = [mm ? "⚔️ Tu as perdu " + mm + " pts dans les sondages" : "", mr ? "🎯 Ton rival : −" + mr + " pts" : "", sh ? "🛡️ Bouclier actif" : ""].filter(Boolean).join(" · "); }
   }
   // Bandeau de session : ton titre, ta place, le compte à rebours, ton rival et ton opposant
   function bandeauSession() {
@@ -658,9 +662,158 @@
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "👑 Tu es au sommet"), h("b", null, "Garde ton trône !")));
     if (st.session.opp) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-opp", function () { ficheSession(p - 1); }), h("small", null, "🛡️ Ton opposant (au-dessous)"), h("b", null, st.session.opp.ico + " " + st.session.opp.nom + (st.session.opp.type === "bot" ? " 🤖" : "")), h("small", null, st.session.opp.court)));
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "🛡️ Personne en dessous"), h("b", null, "Aucun opposant ne t’attaque")));
-    ajout(d, titre, l, duo);
+    var actions = ajout(h("div", "mx-ses-actions"), bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre), bouton("🔨 Salle des ventes", "mx-ses-act", function () { var v = document.querySelector(".mx-ventes"); if (v) v.scrollIntoView({ behavior: "smooth", block: "center" }); }));
+    ajout(d, titre, l, duo, actions, h("small", "mx-ses-malus", ""));
     setTimeout(majSession, 0);
     return d;
+  }
+  // ===================== Salle de guerre : attaquer son rival ou son opposant =====================
+  var CIBLE = "rival";
+  function salleGuerre() {
+    if (!SES.s || !st.session) return;
+    var m = h("div", "m-pop mx-fichepop mx-guerrepop"), c = h("div", "mx-fiche mx-guerre");
+    function fermer() { m.remove(); document.body.classList.remove("m-modal"); clearInterval(tm); }
+    m.onclick = function (e) { if (e.target === m) fermer(); };
+    function rendre() {
+      var s = SES.s, p = st.session.place, moi = moiSes(), S = SS();
+      if (CIBLE === "rival" && p >= S.TRONE) CIBLE = "opp"; if (CIBLE === "opp" && p <= 0) CIBLE = "rival";
+      var cible = CIBLE === "rival" ? p + 1 : p - 1, f = S.fiche(s, cible), now = Date.now();
+      c.textContent = "";
+      ajout(c, ajout(h("div", "m-tel-tete"), h("strong", null, "⚔️ Salle de guerre"), bouton("✕", "m-leonx", fermer)));
+      c.appendChild(h("p", "mx-ftxt", "Fais baisser le sondage d’un adversaire avant l’élection. Les points perdus comptent jusqu’au prochain vote."));
+      var choixC = h("div", "mx-cibles");
+      [["rival", p + 1, "⚔️ Rival"], ["opp", p - 1, "🛡️ Opposant"]].forEach(function (x) {
+        if (x[1] < 0 || x[1] >= S.NB) return;
+        var fx = S.fiche(s, x[1]), b = bouton("", "mx-cible" + (CIBLE === x[0] ? " mx-on" : ""), function () { CIBLE = x[0]; rendre(); });
+        ajout(b, h("small", null, x[2]), h("b", null, fx.ico + " " + fx.nom), h("small", null, fx.court + " · sondage " + Math.round(S.scores(s, now)[x[1]]) + (S.malusDe(s, x[1]) ? " (−" + S.malusDe(s, x[1]) + ")" : "")));
+        choixC.appendChild(b);
+      });
+      c.appendChild(choixC);
+      var l = h("div", "mx-attaques");
+      Object.keys(S.ATTAQUES).forEach(function (k) {
+        var A = S.ATTAQUES[k], att = S.attente(s, moi + ":" + k, now), cher = A.cout > st.tresor;
+        var b = bouton("", "mx-attaque", function () { lancerAttaque(cible, k, f); });
+        b.disabled = !!att || cher;
+        ajout(b, h("span", "mx-att-ico", A.ico), ajout(h("span", "mx-att-txt"), h("b", null, A.nom), h("small", null, A.txt)),
+          h("em", "mx-att-prix", att ? "⏳ " + mmss(att) : cher ? "💸 " + argent(A.cout) : A.cout ? argent(A.cout) : "Gratuit"));
+        l.appendChild(b);
+      });
+      c.appendChild(l);
+      var B = S.BOUCLIER, attB = S.attente(s, moi + ":bouclier", now), actif = (s.boucliers || {})[moi];
+      var bb = bouton("", "mx-attaque mx-bouclier" + (actif ? " mx-on" : ""), function () {
+        st = M.payer(st, B.cout, B.ico + " " + B.nom); sauver();
+        window.SessionLigne.proteger(SES.id).then(function () { toast("🛡️ Ton service de communication veille."); jeu(); rendre(); });
+      });
+      bb.disabled = !!actif || !!attB || B.cout > st.tresor;
+      ajout(bb, h("span", "mx-att-ico", B.ico), ajout(h("span", "mx-att-txt"), h("b", null, B.nom), h("small", null, B.txt)), h("em", "mx-att-prix", actif ? "✔ Actif" : attB ? "⏳ " + mmss(attB) : argent(B.cout)));
+      c.appendChild(bb);
+      var j = (s.journal || []).slice().reverse().filter(function (e) { return e.type !== "bouclier"; }).slice(0, 6);
+      if (j.length) { var u = h("ul", "mx-journal-att"); j.forEach(function (e) { u.appendChild(h("li", null, ligneAttaque(e))); }); ajout(c, h("h5", null, "📰 Dernières attaques"), u); }
+    }
+    var tm = setInterval(function () { if (!document.body.contains(m)) return clearInterval(tm); rendre(); }, 1000);
+    rendre(); m.appendChild(c); (document.getElementById("g-maire") || document.body).appendChild(m); document.body.classList.add("m-modal");
+  }
+  function ligneAttaque(e) {
+    var A = SS().ATTAQUES[e.type] || { ico: "⚔️", nom: "Attaque" }, de = e.de.uid === moiSes() ? "Toi" : e.de.ico + " " + e.de.nom + " (" + e.de.court + ")", vers = e.vers.uid === moiSes() ? "toi" : e.vers.nom + " (" + e.vers.court + ")";
+    var r = e.res === "bloque" ? "arrêtée par un bouclier 🛡️" : e.res === "rate" ? "se retourne contre l’attaquant (−" + e.pts + ")" : e.res === "perdu" ? "débat perdu par l’attaquant (−3)" : "−" + e.pts + " pts";
+    return A.ico + " " + de + " → " + vers + " : " + A.nom.toLowerCase() + ", " + r;
+  }
+  function lancerAttaque(cible, type, f) {
+    var A = SS().ATTAQUES[type];
+    if (A.cout > st.tresor) return toast("💸 Pas assez d’argent.");
+    var n0 = (SES.s.journal || []).length;
+    window.SessionLigne.attaquer(SES.id, cible, type).then(function (s) {
+      if (!s) return toast("📵 Attaque impossible pour l’instant.");
+      var e = (s.journal || []).slice(-1)[0];
+      if (!e || (s.journal || []).length === n0 && e.de.uid !== moiSes()) return toast("⏳ Pas encore prêt.");
+      if (A.cout) { st = M.payer(st, A.cout, A.ico + " " + A.nom + " contre " + f.court); sauver(); }
+      SES.journalVu = Math.max(SES.journalVu || 0, e.q);
+      flash(e.res === "ok" ? A.ico + " Touché ! −" + e.pts + " pts" : e.res === "bloque" ? "🛡️ Attaque bloquée" : "😬 Ça se retourne contre toi", e.res === "ok" ? "mx-flash-ok" : "mx-flash-ko");
+      jeu();
+    });
+  }
+  // Attaques reçues : un message quand un voisin t'attaque
+  function surveillerAttaques(s) {
+    var moi = moiSes(), j = s.journal || [];
+    if (SES.journalVu == null) { SES.journalVu = j.length ? j[j.length - 1].q : 0; return; }
+    j.forEach(function (e) {
+      if (e.q <= SES.journalVu) return;
+      if (e.vers && e.vers.uid === moi && e.de.uid !== moi) toast((e.res === "bloque" ? "🛡️ " : "⚔️ ") + e.de.nom + " (" + e.de.court + ") t’attaque : " + (SS().ATTAQUES[e.type] || {}).nom + (e.res === "bloque" ? " — bloquée !" : e.res === "ok" ? " (−" + e.pts + ")" : " — raté !"));
+    });
+    if (j.length) SES.journalVu = Math.max(SES.journalVu, j[j.length - 1].q);
+  }
+
+  // ===================== Salle des ventes : 3 ventes en même temps, arrondissement contre arrondissement =====================
+  var CAT = null;
+  function cat() { return CAT || (CAT = M.catalogueVentes()); }
+  function ventesSession() {
+    if (!st.session || !SES.s) return null;
+    var d = h("div", "mx-ventes");
+    ajout(d, ajout(h("div", "mx-ventes-tete"), h("h5", null, "🔨 Salle des ventes"), h("small", "mx-ventes-suiv", "")));
+    d.appendChild(h("div", "mx-ventes-liste"));
+    d.appendChild(h("p", "mx-aide", "Une vente s’ouvre toutes les 2 minutes et dure 6 minutes. Tous les arrondissements de la session enchérissent."));
+    setTimeout(majVentes, 0);
+    return d;
+  }
+  function carteVente(v) {
+    var B = M.BATIMENTS[v.id], c = h("div", "mx-vente mx-vente-neuve"); c.dataset.k = v.k;
+    setTimeout(function () { c.classList.remove("mx-vente-neuve"); }, 900);
+    ajout(c, ajout(h("div", "mx-vente-haut"), icone(v.id, "mx-vente-ico"), ajout(h("div", "mx-vente-nom"), h("b", null, B.nom), h("small", null, "Valeur ≈ " + argent(v.cout) + (B.rev ? " · +" + B.rev + " M€/t" : ""))), h("span", "mx-vente-temps", "")),
+      h("div", "mx-vente-badges"),
+      ajout(h("div", "mx-vente-prix"), h("small", null, "Meilleure offre"), h("strong", "mx-vente-montant", ""), h("span", "mx-vente-meneur", "")),
+      ajout(h("div", "mx-vente-btns"), bouton("", "btn m-go mx-vente-go", function () { offre(v.k, 1); }), bouton("", "btn m-sec mx-vente-go3", function () { offre(v.k, 3); })));
+    c.querySelector(".mx-vente-nom").onclick = function () { fiche(v.id); };
+    return c;
+  }
+  function majVentes() {
+    var d = document.querySelector(".mx-ventes"); if (!d || !SES.s) return;
+    var now = Date.now(), l = SS().ventesEnCours(SES.s, cat(), now), liste = d.querySelector(".mx-ventes-liste"), moi = moiSes(), budget = M.budgetEnchere(st);
+    var s = d.querySelector(".mx-ventes-suiv"); if (s) s.textContent = "Prochaine vente dans " + mmss(SS().venteSuivante(SES.s, now) - now);
+    var cles = l.map(function (v) { return v.k; }).join(",");
+    if (liste.dataset.k !== cles) { liste.textContent = ""; l.forEach(function (v) { liste.appendChild(carteVente(v)); }); liste.dataset.k = cles; }
+    l.forEach(function (v) {
+      var c = liste.querySelector('[data-k="' + v.k + '"]'); if (!c) return;
+      var toi = !v.meneur.bot && v.meneur.uid === moi, deja = !!st.bat[v.id];
+      c.classList.toggle("mx-affaire", v.affaire); c.classList.toggle("mx-bientot", v.bientot); c.classList.toggle("mx-toi", toi);
+      c.querySelector(".mx-vente-temps").textContent = "⏱️ " + mmss(v.fin - now);
+      var badges = []; if (v.affaire) badges.push("🔥 Sous-évaluée"); if (v.bientot) badges.push("⏰ Finit bientôt"); if (toi) badges.push("🙋 Tu mènes");
+      var bd = c.querySelector(".mx-vente-badges"), txt = badges.join(" · "); if (bd.dataset.t !== txt) { bd.dataset.t = txt; bd.textContent = ""; badges.forEach(function (x) { bd.appendChild(h("span", "mx-badge", x)); }); }
+      var mt = c.querySelector(".mx-vente-montant"), ancien = mt.dataset.v;
+      mt.textContent = argent(v.prix); mt.dataset.v = v.prix;
+      if (ancien && +ancien !== v.prix) { mt.classList.remove("mx-flashprix"); void mt.offsetWidth; mt.classList.add("mx-flashprix"); }
+      c.querySelector(".mx-vente-meneur").textContent = toi ? "🙋 Toi" : v.meneur.ico + " " + v.meneur.nom + " (" + v.meneur.court + ")" + (v.meneur.bot ? " 🤖" : "");
+      var b1 = c.querySelector(".mx-vente-go"), b3 = c.querySelector(".mx-vente-go3"), m1 = v.prix + v.pas, m3 = v.prix + v.pas * 3;
+      b1.textContent = deja ? "Déjà à toi" : toi ? "Tu mènes" : "🔨 " + argent(m1); b3.textContent = "+" + argent(v.pas * 3);
+      b1.disabled = deja || toi || m1 > budget; b3.disabled = deja || toi || m3 > budget;
+      // Dépassé : on prévient
+      var avant = (SES.menees || {})[v.k];
+      if (avant && !toi) toast("😤 " + v.meneur.nom + " (" + v.meneur.court + ") te passe devant : " + M.BATIMENTS[v.id].nom);
+      (SES.menees = SES.menees || {})[v.k] = toi;
+    });
+  }
+  function offre(k, n) {
+    var v = SS().vente(SES.s, cat(), k, Date.now()); if (!v || v.fini) return;
+    var m = v.prix + v.pas * n;
+    if (m > M.budgetEnchere(st)) return toast("💸 Pas assez d’argent pour cette offre.");
+    window.SessionLigne.encherir(SES.id, cat(), k, m).then(function (s) {
+      if (!s) return toast("📵 Offre refusée : quelqu’un a été plus rapide.");
+      var w = SS().vente(s, cat(), k, Date.now());
+      if (w && !w.meneur.bot && w.meneur.uid === moiSes()) toast("🙋 Tu mènes : " + argent(w.prix));
+      else if (w) toast("🤖 " + w.meneur.nom + " (" + w.meneur.court + ") surenchérit aussitôt : " + argent(w.prix));
+      SES.s = s; majVentes();
+    });
+  }
+  // Ventes terminées : le gagnant récupère son bâtiment (payé à ce moment-là)
+  function recupererVentes() {
+    if (!SES.s || !st.session || st.phase === "fin") return;
+    var moi = moiSes(), gagne = false;
+    SS().ventesFinies(SES.s, cat(), Date.now()).forEach(function (v) {
+      var k = SES.id + ":" + v.k;
+      if (v.meneur.bot || v.meneur.uid !== moi || (st.ventesPrises || {})[k]) return;
+      st = M.gagnerVente(st, v.id, v.prix, k); gagne = true;
+      flash("🔨 Adjugé ! " + M.BATIMENTS[v.id].ico + " " + M.BATIMENTS[v.id].nom, "mx-flash-ok");
+    });
+    if (gagne) { sauver(); return true; }
   }
   // Classement de la session : les 21 places, du trône au 1er arrondissement
   function classementSession() {
@@ -722,7 +875,7 @@
     decouvertes();
     vider();
     // Écran épuré : l'essentiel en haut (où j'en suis, est-ce que je gagne), la ville au milieu, la boutique, puis la gestion repliée
-    ajout(box, entete(), bandeauSession(), tableau(), carteObjectifs(), piliers(), carteLeon());
+    ajout(box, entete(), bandeauSession(), ventesSession(), tableau(), carteObjectifs(), piliers(), carteLeon());
     if (st.opposant) box.appendChild(bandeauOpp());
     if (st.rapport && st.notes && st.notes.length) box.appendChild(notes());
     if (st.chantiers.length) box.appendChild(chantiers());
@@ -995,7 +1148,13 @@
     var l = ids.filter(function (id) { return rayonDe(id) === RAYON; });
     var tri = function (a, b) { var A = M.BATIMENTS[a], B = M.BATIMENTS[b]; return (A.niv || 1) - (B.niv || 1) || A.cout - B.cout; };
     var ok = l.filter(function (id) { return M.disponible(st, id); }).sort(tri), bloques = l.filter(function (id) { return !M.disponible(st, id); }).sort(tri);
-    if (RAYON === "enchere") d.appendChild(h("p", "mx-aide", "🔨 30 secondes d’enchères contre une ville voisine."));
+    if (RAYON === "enchere" && st.session && SES.s) {
+      // En session, les bâtiments de prestige se gagnent dans la salle des ventes, contre les autres arrondissements
+      d.appendChild(h("p", "mx-aide", "🔨 En session, les bâtiments de prestige se disputent dans la salle des ventes, contre les autres arrondissements."));
+      d.appendChild(bouton("🔨 Aller à la salle des ventes", "btn m-go", function () { var v = document.querySelector(".mx-ventes"); if (v) v.scrollIntoView({ behavior: "smooth", block: "center" }); }));
+      return d;
+    }
+    if (RAYON === "enchere") d.appendChild(h("p", "mx-aide", "🔨 30 secondes d’enchères contre un autre arrondissement."));
     var g = h("div", "mx-bats");
     ok.forEach(function (id) { g.appendChild(carteBat(id)); });
     if (!ok.length) g.appendChild(h("p", "mx-aide", "Rien à construire ici pour l’instant."));
@@ -1006,7 +1165,7 @@
     return d;
   }
 
-  // ---------- Enchères : 30 secondes contre une ville voisine ----------
+  // ---------- Enchères : 30 secondes contre un autre arrondissement ----------
   var ENCH = null;   // enchère affichée : { fin (horloge), attente (la ville réfléchit), minuteur }
   function fermerEnchUI() { var m = document.getElementById("m-enchmod"); if (m) m.remove(); document.body.classList.remove("m-modal"); if (ENCH && ENCH.minuteur) clearInterval(ENCH.minuteur); ENCH = null; }
   function enchere(id) {
@@ -1036,7 +1195,7 @@
     if (!m) { m = h("div", "m-pop m-pop-enchere"); m.id = "m-enchmod"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true"); (document.getElementById("g-maire") || document.body).appendChild(m); document.body.classList.add("m-modal"); }
     m.innerHTML = "";
     var c = h("div", "m-pop-in m-ench");
-    ajout(c, h("p", "m-sur", "🔨 Enchère face à " + e.ville), h("h4", null, B.ico + " " + B.nom));
+    ajout(c, h("p", "m-sur", "🔨 Enchère face au " + e.ville), h("h4", null, B.ico + " " + B.nom));
     if (!e.fini) {
       var vVu = ENCH && ENCH.attente ? ENCH.vu : e.v, toiTete = e.j > vVu;
       var tps = h("div", "m-ench-tps"), barre = h("div", "m-barre"), i = h("i"); i.id = "m-ench-barre"; barre.appendChild(i);
@@ -1044,9 +1203,9 @@
       ajout(tps, ajout(h("div", "m-jt"), h("span", null, "⏱️ Temps restant"), nb), barre); c.appendChild(tps);
       c.appendChild(h("p", "m-ench-moyen", "💡 Prix moyen de vente : ≈ " + argent(e.moyen) + ". Au-delà, tu paies plus cher que la normale."));
       var t = h("div", "m-ench-tete " + (toiTete ? "m-ench-toi" : "m-ench-eux"));
-      ajout(t, h("span", null, toiTete ? "🙋 Tu mènes" : "🏙️ " + e.ville + " mène"), h("strong", null, argent(toiTete ? e.j : vVu)));
+      ajout(t, h("span", null, toiTete ? "🙋 Tu mènes" : "🏛️ Le " + e.ville + " mène"), h("strong", null, argent(toiTete ? e.j : vVu)));
       c.appendChild(t);
-      if (ENCH && ENCH.attente) c.appendChild(h("p", "m-ench-reflexion", "🤔 " + e.ville + " réfléchit…"));
+      if (ENCH && ENCH.attente) c.appendChild(h("p", "m-ench-reflexion", "🤔 Le " + e.ville + " réfléchit…"));
       var budget = M.budgetEnchere(st), base = Math.max(e.v, e.j), g = h("div", "m-ench-btns");
       [1, 2, 5].forEach(function (k) {
         var montant = base + k * e.pas;
@@ -1067,16 +1226,16 @@
       var hist = h("ul", "m-ench-hist");
       e.offres.slice(-6).reverse().forEach(function (o, k) {
         if (o.qui === "v" && ENCH && ENCH.attente && k === 0) return;
-        hist.appendChild(h("li", o.qui === "j" ? "m-ench-j" : "", (o.qui === "j" ? "🙋 Toi" : "🏙️ " + e.ville) + " : " + argent(o.m)));
+        hist.appendChild(h("li", o.qui === "j" ? "m-ench-j" : "", (o.qui === "j" ? "🙋 Toi" : "🏛️ Le " + e.ville) + " : " + argent(o.m)));
       });
       c.appendChild(hist);
       c.appendChild(bouton("Abandonner", "btn m-sec", function () { if (ENCH) clearInterval(ENCH.minuteur); st = M.finirEnchere(st); sauver(); afficherEnchere(); }));
     } else {
       var r = e.res, ecart = r.prix - e.moyen;
       c.classList.add(r.gagne ? "m-ench-gagne" : "m-ench-perdu");
-      ajout(c, h("p", "m-ench-res", r.gagne ? "🔨 Adjugé ! Paris l’emporte." : "❌ " + e.ville + " l’emporte."),
+      ajout(c, h("p", "m-ench-res", r.gagne ? "🔨 Adjugé ! Ton arrondissement l’emporte." : "❌ Le " + e.ville + " l’emporte."),
         h("p", null, r.gagne ? B.nom + " est à toi pour " + argent(r.prix) + " (" + (ecart <= 0 ? "une bonne affaire : " + argent(-ecart) + " sous le prix moyen" : argent(ecart) + " au-dessus du prix moyen") + ")."
-          : B.nom + " part à " + e.ville + " pour " + argent(r.prix) + ". Il reviendra aux enchères dans 4 trimestres."),
+          : B.nom + " part au " + e.ville + " pour " + argent(r.prix) + ". Il reviendra aux enchères dans 4 trimestres."),
         bouton("Retour à l’Hôtel de Ville", "btn m-go", function () { st = M.fermerEnchere(st); sauver(); fermerEnchUI(); jeu(); }));
       if (r.gagne) toast(B.ico + " " + B.nom + " rejoint Paris !");
     }
