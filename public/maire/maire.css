@@ -1038,3 +1038,12 @@ button.mx-ses-qui{cursor:pointer}
 .m-pct-barre i{display:block;height:100%;border-radius:inherit;background:#8a94b8;transition:width .6s ease}
 .m-pct b{font-size:13px;color:var(--pi,#1b2550)}.m-pct em{font-style:normal;text-align:right}
 .m-pct.m-pct-top .m-pct-barre i{background:#f5b21a}.m-pct.m-pct-top em{color:#b07a00;font-weight:700}
+/* En-tête : la date ne se tasse plus à côté du compte à rebours */
+.mx-hud .mx-ligne{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.mx-quand{min-width:0}.mx-quand strong{white-space:nowrap}.mx-quand small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mx-droite{flex:none}.mx-droite .mx-chip{white-space:nowrap;font-variant-numeric:tabular-nums}
+/* Bandeau de session : trois actions sur une ligne */
+.mx-ses-actions{grid-template-columns:repeat(3,1fr)}
+.mx-ses-act{padding:10px 4px;font-size:13px}
+.mx-ses-act.mx-ses-btn{background:#f5b21a;color:#1b2550;box-shadow:none;border-radius:12px}
+.mx-ses-actions .mx-ses-act{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12.5px;padding:10px 6px;font-weight:800}

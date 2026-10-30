@@ -403,7 +403,7 @@
 
   // ---------- Léon, ton directeur de cabinet : des répliques courtes, aux moments importants ----------
   var LEON = {
-    debut: ["Bienvenue à l’Hôtel de Ville. Les dossiers s’empilent déjà, je vous préviens.", "Premier jour, Monsieur le Maire. Le café est froid, mais l’ambition est chaude."],
+    debut: ["Bienvenue à la mairie. Les dossiers s’empilent déjà, je vous préviens.", "Premier jour, Monsieur le Maire. Le café est froid, mais l’ambition est chaude."],
     faillite: ["Monsieur le Maire, j’ai trois nouvelles. La première : nous avons un problème de trésorerie. La deuxième : nous avons aussi un problème de dette. La troisième : le service communication vient de tweeter que tout va très bien."],
     detteHaute: ["La dette grimpe, Monsieur le Maire. Les banquiers commencent à m’appeler par mon prénom.", "Si la dette dépasse 1,5 milliard, c’est la faillite. Nous n’en sommes plus très loin."],
     reelu: ["Félicitations, Monsieur le Maire. Vous êtes réélu. Je vais pouvoir recommander du papier pour les six prochaines années.", "Réélu ! Je savais que nous y arriverions. Enfin… je l’espérais très fort."],

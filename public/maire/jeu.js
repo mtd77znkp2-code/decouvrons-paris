@@ -430,7 +430,7 @@
   }
   function demarrer() {
     quetes().catch(function () {});
-    vider(); box.appendChild(h("p", "msg", "Installation à l’Hôtel de Ville…"));
+    vider(); box.appendChild(h("p", "msg", "Installation à la mairie…"));
     index().then(function () { var l = choisirLots(); return chargerLots(l).then(function () { return l; }); }).then(function (lots) {
       try { localStorage.setItem("maire_perso", CHOIX.maire); } catch (e) {}
       st = M.nouvellePartie({ maire: CHOIX.maire, ligne: "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, xpJoueur: G.lire().xp, pid: Date.now().toString(36), secrets: G.lire().secrets, sansLimite: sansLimiteAdmin(), missions: false,
@@ -642,7 +642,7 @@
   // Met à jour les comptes à rebours sans tout redessiner
   function majSession() {
     if (!SES.s) return;
-    var e = document.querySelector(".mx-ses-elec"); if (e) e.textContent = "🗳️ Élection dans " + mmss(SES.s.prochaine - Date.now());
+    var e = document.querySelector(".mx-ses-elec"); if (e) e.textContent = "🗳️ Vote dans " + mmss(SES.s.prochaine - Date.now());
     var v = document.querySelector(".mx-ses-votes"); if (v) v.textContent = SS().nbVotes(SES.s) + "/" + SS().votesRequis(SES.s) + " vote" + (SS().votesRequis(SES.s) > 1 ? "s" : "");
     var b = document.querySelector(".m-barmois .btn.mx-auto");
     if (b) remplirTrim(b);
@@ -656,14 +656,13 @@
     if (!st.session || !SES.s) return null;
     var p = st.session.place, d = h("div", "mx-session" + (p >= SS().TRONE ? " mx-trone" : ""));
     var titre = ajout(h("div", "mx-ses-titre"), h("span", null, p >= SS().TRONE ? "👑" : "🏛️"), ajout(h("div"), h("strong", null, st.session.titre), h("small", null, "Place " + (SS().NB - p) + " sur " + SS().NB + " · puissance ×" + virg(st.session.puissance))));
-    var l = ajout(h("div", "mx-ses-ligne"), h("b", "mx-ses-elec", ""), bouton("🏆 Classement", "mx-ses-btn", classementSession));
     var duo = h("div", "mx-ses-duo");
-    if (st.session.rival) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-rival", function () { ficheSession(p + 1); }), h("small", null, "⚔️ Ton rival (au-dessus)"), h("b", null, st.session.rival.ico + " " + st.session.rival.nom + (st.session.rival.type === "bot" ? " 🤖" : "")), h("small", null, st.session.rival.court)));
+    if (st.session.rival) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-rival", function () { ficheSession(p + 1); }), h("small", null, "⚔️ Rival · au-dessus"), h("b", null, st.session.rival.ico + " " + st.session.rival.nom + (st.session.rival.type === "bot" ? " 🤖" : "")), h("small", null, st.session.rival.court)));
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "👑 Tu es au sommet"), h("b", null, "Garde ton trône !")));
-    if (st.session.opp) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-opp", function () { ficheSession(p - 1); }), h("small", null, "🛡️ Ton opposant (au-dessous)"), h("b", null, st.session.opp.ico + " " + st.session.opp.nom + (st.session.opp.type === "bot" ? " 🤖" : "")), h("small", null, st.session.opp.court)));
-    else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "🛡️ Personne en dessous"), h("b", null, "Aucun opposant ne t’attaque")));
-    var actions = ajout(h("div", "mx-ses-actions"), bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre), bouton("🔨 Enchères", "mx-ses-act", allerEncheres));
-    ajout(d, titre, l, duo, actions, h("small", "mx-ses-malus", ""));
+    if (st.session.opp) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-opp", function () { ficheSession(p - 1); }), h("small", null, "🛡️ Opposant · au-dessous"), h("b", null, st.session.opp.ico + " " + st.session.opp.nom + (st.session.opp.type === "bot" ? " 🤖" : "")), h("small", null, st.session.opp.court)));
+    else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "🛡️ Personne en dessous"), h("b", null, "Pas d’opposant")));
+    var actions = ajout(h("div", "mx-ses-actions"), bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre), bouton("🔨 Enchères", "mx-ses-act", allerEncheres), bouton("🏆 Classement", "mx-ses-act mx-ses-btn", classementSession));
+    ajout(d, titre, duo, actions, h("small", "mx-ses-malus", ""));
     setTimeout(majSession, 0);
     return d;
   }
@@ -1005,7 +1004,7 @@
     // Jauge du sondage : le trait marque la barre des 50 %
     var jg = h("div", "mx-jauge"), ji = h("i"); ji.style.width = Math.max(2, Math.min(100, v)) + "%"; jg.appendChild(ji); gauche.appendChild(jg);
     function stat(ico, val, lib, alerte, cls) { var e = h("div", "mx-stat" + (alerte ? " mx-alerte" : "") + (cls ? " " + cls : "")), b = h("b"); b.innerHTML = val; ajout(e, h("span", null, ico), b, h("small", null, lib)); return e; }
-    function millions(n) { return (Math.round(n / 10000) / 100).toFixed(2).replace(".", ",") + " M"; }
+    function millions(n) { return n >= 1e6 ? (Math.round(n / 10000) / 100).toFixed(2).replace(".", ",") + " M" : Math.round(n / 1000) + " k"; }
     var g = h("div", "mx-stats");
     ajout(g, stat("💰", argent(st.tresor), (so >= 0 ? "+" : "") + argent(so) + "/trim." + (st.dette > 0 ? " · dette " + argent(st.dette) : ""), st.dette > M.PLAFOND_DETTE * 0.6 || so < 0),
       stat("😊", String(Math.round(M.bonheur(st))), "bonheur", M.bonheur(st) < 40),
@@ -1246,7 +1245,7 @@
       ajout(c, h("p", "m-ench-res", r.gagne ? "🔨 Adjugé ! Ton arrondissement l’emporte." : "❌ Le " + e.ville + " l’emporte."),
         h("p", null, r.gagne ? B.nom + " est à toi pour " + argent(r.prix) + " (" + (ecart <= 0 ? "une bonne affaire : " + argent(-ecart) + " sous le prix moyen" : argent(ecart) + " au-dessus du prix moyen") + ")."
           : B.nom + " part au " + e.ville + " pour " + argent(r.prix) + ". Il reviendra aux enchères dans 4 trimestres."),
-        bouton("Retour à l’Hôtel de Ville", "btn m-go", function () { st = M.fermerEnchere(st); sauver(); fermerEnchUI(); jeu(); }));
+        bouton("Retour à ma mairie", "btn m-go", function () { st = M.fermerEnchere(st); sauver(); fermerEnchUI(); jeu(); }));
       if (r.gagne) toast(B.ico + " " + B.nom + " rejoint Paris !");
     }
     m.appendChild(c);
@@ -1962,7 +1961,7 @@
         var g = h("div", "m-choix");
         if (M.pariMise(st) >= 20) {
           g.appendChild(option("🃏", "Le blackjack municipal", "Atteins 21 sans dépasser. Le croupier tire jusqu’à 17.", function () { dessin("bj"); }));
-          g.appendChild(option("🎡", "La roulette de l’Hôtel de Ville", "Rouge ou noir ×2, une douzaine ×3, le zéro ×36.", function () { dessin("roulette"); }));
+          g.appendChild(option("🎡", "La roulette de la mairie", "Rouge ou noir ×2, une douzaine ×3, le zéro ×36.", function () { dessin("roulette"); }));
         }
         g.appendChild(option("💰", "L’investisseur mystérieux", "Gaspard Mallet propose de l’argent… avec des contreparties.", function () { dessin("investisseur"); }));
         g.appendChild(option("🏦", "Le fonds de secours", "Un prêt de secours, remboursé sur 4 ans.", function () { dessin("fonds"); }));
@@ -1978,7 +1977,7 @@
     function option(ico, t, txt, f) { var b = bouton("", "m-option", f); ajout(b, h("span", "m-lettre", ico), ajout(h("div"), h("strong", null, t), h("small", null, txt))); return b; }
     function choisirMise(type) {
       var max = M.pariMise(st), mises = [50, 100, 150, 200, 250].filter(function (x) { return x < max; }).concat([max]).filter(function (x, i, a) { return x >= 20 && a.indexOf(x) === i; }), mise = mises[0], pari = "rouge";
-      tel.appendChild(h("h4", null, type === "bj" ? "🃏 Le blackjack municipal" : "🎡 La roulette de l’Hôtel de Ville"));
+      tel.appendChild(h("h4", null, type === "bj" ? "🃏 Le blackjack municipal" : "🎡 La roulette de la mairie"));
       tel.appendChild(regles(type === "bj" ? "bjTel" : "rouletteTel"));
       tel.appendChild(h("p", "m-desc", type === "bj" ? "Approche-toi de 21 sans le dépasser. L’as vaut 1 ou 11, les figures 10. Le croupier tire jusqu’à 17. Blackjack d’entrée : la mise × 1,5. Tu peux doubler sur tes deux premières cartes." :
         "Choisis ta mise et ton pari. Rouge ou noir rapporte la mise, une douzaine le double, le zéro 35 fois la mise. Si tu perds, la ville doit la mise."));
@@ -2022,7 +2021,7 @@
       } else {
         tel.appendChild(h("p", "m-res " + (b.res.gain > 0 ? "m-gain" : b.res.gain < 0 ? "m-perte" : ""), b.res.txt));
         if (st.leon && st.leon.t === st.t) tel.appendChild(ajout(h("div", "m-leon m-leon-clair"), h("span", "m-leon-ico", "🧑‍💼"), h("p", null, "« " + st.leon.txt + " »")));
-        tel.appendChild(bouton("Retour à l’Hôtel de Ville", "btn m-go", retourJeu));
+        tel.appendChild(bouton("Retour à ma mairie", "btn m-go", retourJeu));
       }
     }
     function financement(type) {
@@ -2040,7 +2039,7 @@
       if (r.type === "roulette") tel.appendChild(h("div", "m-roue " + (r.n === 0 ? "m-vert" : r.rouge ? "m-rouge" : "m-noir"), String(r.n)));
       tel.appendChild(h("p", "m-res " + (r.gain > 0 ? "m-gain" : r.gain < 0 ? "m-perte" : ""), r.txt));
       if (st.leon && st.leon.t === st.t) tel.appendChild(ajout(h("div", "m-leon m-leon-clair"), h("span", "m-leon-ico", "🧑‍💼"), h("p", null, "« " + st.leon.txt + " »")));
-      tel.appendChild(bouton("Retour à l’Hôtel de Ville", "btn m-go", function () { st.pariRes = null; sauver(); retourJeu(); }));
+      tel.appendChild(bouton("Retour à ma mairie", "btn m-go", function () { st.pariRes = null; sauver(); retourJeu(); }));
     }
     dessin(vue);
   }
@@ -2119,7 +2118,7 @@
     var d = h("details", "m-ville"); d.open = fin || villeOuverte; d.ontoggle = function () { if (!fin) villeOuverte = d.open; };
     d.appendChild(ajout(h("summary"), h("span", null, "🗺️ " + (fin ? "Le Paris que tu laisses" : st.session ? (st.session.place >= 20 ? "Ton Paris" : "Ton " + (SS() ? SS().court(st.session.place) : "") + " arrondissement") : "Ton Paris")), h("small", null, l.length + " bâtiment" + (l.length > 1 ? "s" : "") + " sur le plan")));
     var p = plan(false, nouveaux); p.onclick = function () { pleinEcranVille(); }; d.appendChild(p);
-    if (!l.length) d.appendChild(h("small", "m-aide", "Achète ton premier bâtiment : il apparaîtra ici, au cœur de Paris."));
+    if (!l.length) d.appendChild(h("small", "m-aide", "Achète ton premier bâtiment : il apparaîtra ici, dans ton arrondissement."));
     if (fin) d.appendChild(ajout(h("div", "m-bas"), bouton("🔍 Agrandir", "btn m-sec", pleinEcranVille), l.length ? bouton("📸 Partager ma ville", "btn m-go", partagerVille) : null));
     else if (l.length) d.appendChild(ajout(h("div", "mx-villebas"), h("small", null, "Touche le plan pour l’agrandir"), bouton("📸 Partager", "mx-lien", partagerVille)));
     if (!fin) d.appendChild(journal());
@@ -2251,7 +2250,7 @@
       var bi = M.bilan(st);
       x.fillStyle = "#ffd970"; x.font = "bold 54px system-ui,sans-serif"; x.fillText("🏛️ Mon Paris · " + l.length + " bâtiments", W / 2, 58);
       x.fillStyle = "#ffffff"; x.font = "32px system-ui,sans-serif";
-      x.fillText("Mandat " + st.mandat + " · " + M.duree(st.t) + " à l’Hôtel de Ville · score " + bi.score + " · " + location.host, W / 2, 112);
+      x.fillText("Mandat " + st.mandat + " · " + M.duree(st.t) + " à la mairie · score " + bi.score + " · " + location.host, W / 2, 112);
       c.toBlob(function (blob) {
         if (bt) { bt.disabled = false; bt.textContent = "📸 Partager ma ville"; }
         if (!blob) return;
