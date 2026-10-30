@@ -1387,7 +1387,8 @@
     G.marquerGuide("bat-" + id);
     if (B.enchere) { if (!M.peutEncherir(st, id)) enchere(id); return; }
     if (M.peutAcheter(st, id)) return;
-    st = M.acheter(st, id); sauver(); signal("achat"); jeu(); toast(B.ico + " " + B.nom + (B.projet ? " : chantier lancé !" : " construit !"));
+    var avantAchat = st; st = M.acheter(st, id); if (st !== avantAchat && window.sfx) window.sfx("achat");   // son n°8 : « cha-ching »
+    sauver(); signal("achat"); jeu(); toast(B.ico + " " + B.nom + (B.projet ? " : chantier lancé !" : " construit !"));
   }
   // Carte compacte : on touche pour construire ; « i » ouvre la fiche
   function carteBat(id) {
@@ -2105,7 +2106,7 @@
       }
       var o = Pk.options(t, 0); if (!o) return;
       var acts = h("div", "m-bas m-pk-acts");
-      function jouer(a, n) { st = M.mjPoker(st, i, a, n); sauver(); dessin(); }
+      function jouer(a, n) { jetons(a); st = M.mjPoker(st, i, a, n); sauver(); dessin(); }
       if (o.coucher) acts.appendChild(bouton("Se coucher", "btn m-sec", function () { jouer("coucher"); }));
       acts.appendChild(bouton(o.suivre ? "Suivre (" + o.suivre + ")" : "Parler", "btn m-go", function () { jouer("suivre"); }));
       if (o.relancerMin != null && o.relancerMin < o.relancerMax) acts.appendChild(bouton("Relancer à " + o.relancerMin, "btn m-go", function () { jouer("relancer", o.relancerMin); }));
@@ -2116,7 +2117,7 @@
   // Table en ligne contre un autre maire : l'affichage suit la table partagée, chacun joue à son tour
   function pokerLigne(zone, i, J, fin, Pk) {
     var L = J().ligne, moi = L.siege, lui = 1 - moi, mainVue = -1, derniere = null, chrono = null, envoi = false;
-    function act(a, n, pourAutre) { if (envoi) return; envoi = true; window.PokerLigne.agir(L.id, moi, a, n, pourAutre).then(function () { envoi = false; }); }
+    function act(a, n, pourAutre) { if (envoi) return; envoi = true; jetons(a); window.PokerLigne.agir(L.id, moi, a, n, pourAutre).then(function () { envoi = false; }); }
     var stop = window.PokerLigne.ecouter(L.id, function (x) { derniere = x; dessin(); });
     pokerStop = function () { stop(); clearInterval(chrono); };
     zone.innerHTML = ""; zone.appendChild(h("p", "m-pk-cherche", "🤝 Connexion à la table…"));
@@ -2234,6 +2235,7 @@
       zone.appendChild(g); zone.appendChild(aide);
       function lancer(pari) {
         if (J().roue) return;
+        jetons("miser");
         st = M.mjRoulette(st, i, pari); sauver(); g.remove(); aide.remove();
         roue.lancer(J().roue.n, fin);
       }
@@ -2331,6 +2333,9 @@
     if (gain > 0) window.sfx("gagne");        // son n°5 : victoire au casino
     else if (gain < 0) window.sfx("perdu");   // son n°6 : défaite au casino
   }
+  // Son n°7 : jetons posés (mise, relance, suivre, choix d'une mise au téléphone) ; pas pour « se coucher » ou « parler »
+  function jetons(a) { if (window.sfx && a !== "coucher" && a !== "parler" && a !== "check") window.sfx("jetons", 0.7); }
+  document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest(".m-mise")) jetons("miser"); }, true);
   function confettis() {
     if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     var c = h("div", "m-confettis"), COUL = ["#2b4fb3", "#ffffff", "#c8352e", "#f5b21a"];
@@ -2398,6 +2403,7 @@
       }
       tel.appendChild(ajout(h("div", "m-bas"), bouton("← Retour", "btn m-sec", function () { dessin(); }),
         bouton(type === "bj" ? "Distribuer les cartes" : "Lancer la bille", "btn m-go", function () {
+          jetons("miser");
           if (type === "bj") { st = M.bjCommencer(st, mise); sauver(); return dessin(); }
           st = M.roulette(st, mise, pari); if (st.pariRes) st.pariRes.t = st.t; sauver(); animerRoulette();
         })));
