@@ -208,6 +208,9 @@
     var cg = window.compteGoogle && compteGoogle(), bst = bouton("", "mx-messtats" + (cg ? "" : " mx-verrou-stats"), cg ? ecranMesStats : ecranConnexion);
     ajout(bst, h("span", null, cg ? "📊" : "🔒"), ajout(h("div"), h("strong", null, "Mes statistiques"), h("small", null, cg ? "tes parties, tes compétences, tes records" : "connecte-toi avec Google pour les voir")));
     box.appendChild(bst);
+    var breg = bouton("", "mx-messtats", function () { ecranReglagesSon(accueil); });
+    ajout(breg, h("span", null, "⚙️"), ajout(h("div"), h("strong", null, "Réglages"), h("small", null, "volume de la musique et des effets sonores")));
+    box.appendChild(breg);
     var auj = h("details", "mx-replie"); auj.appendChild(h("summary", null, "📅 Aujourd’hui : défi, quêtes et succès du jour"));
     var zone = h("div", "m-auj"); auj.appendChild(zone); box.appendChild(auj);
     Promise.all([index(), quetes()]).then(function () { panneauJour(zone, s); }).catch(function () { zone.textContent = "Indisponible pour le moment."; });
@@ -215,6 +218,28 @@
     ajout(plus, carteChapitre(n), carteProfil(), carteDeblocages(n));
     box.appendChild(plus);
     box.appendChild(ligneCompte());
+  }
+  // ---------- Réglages du joueur : volume de la musique et des effets sonores (gardés sur l'appareil) ----------
+  function ecranReglagesSon(retour) {
+    vider(true); fondMenu(true);
+    box.appendChild(bouton("← Retour", "btn m-sec", retour));
+    box.appendChild(h("h5", null, "⚙️ Réglages"));
+    var d = h("div", "m-reglages");
+    function curseur(k, ico, lib, aide) {
+      var v = window.volumeSon ? Math.round(volumeSon(k) * 100) : 100, val = h("b", null, v + " %");
+      var r = h("input"); r.type = "range"; r.min = 0; r.max = 100; r.step = 5; r.value = v; r.setAttribute("aria-label", lib);
+      r.oninput = function () {
+        val.textContent = r.value + " %";
+        try { localStorage.setItem("vol_" + k, String(r.value / 100)); } catch (e) {}
+        if (k === "musique" && window.musique) window.musique();
+      };
+      if (k === "effets") r.onchange = function () { if (window.sfx) window.sfx("pieces"); };   // on entend tout de suite le résultat
+      return ajout(h("label", "m-reg-l"), ajout(h("div", "m-reg-t"), h("span", null, ico + " " + lib), val), r, h("small", null, aide));
+    }
+    ajout(d, curseur("musique", "🎵", "Musique", "Les 3 musiques du jeu s’enchaînent dans l’ordre, et celle du casino pendant les jeux de cartes. 0 % = pas de musique."),
+      curseur("effets", "🔊", "Effets sonores", "Cartes, roulette, achats, élections, attaques… 0 % = aucun bruitage."),
+      h("small", "m-aide", "Le bouton 🔊 de l’accueil du site coupe aussi tout le son d’un coup."));
+    box.appendChild(d); haut();
   }
   // ---------- Mes statistiques (joueur connecté avec Google) : ses fiches de parties, lues dans stats_parties ----------
   var CATS_NOMS = { finances: "💶 Finances", economie: "📈 Économie", securite: "🛡️ Sécurité", logement: "🏠 Logement", transports: "🚇 Transports", proprete: "🧹 Propreté",
@@ -1683,6 +1708,7 @@
     d.appendChild(j);
     d.appendChild(ajout(h("div", "mx-quitter"),
       bouton("🏛️ Rejoindre une session", "btn m-sec", function () { sauver(); ecranSessions(true); }),
+      bouton("⚙️ Réglages du son", "btn m-sec", function () { sauver(); ecranReglagesSon(function () { fondMenu(false); jeu(); }); }),
       bouton("🏠 Menu principal", "btn m-sec", function () { sauver(); fermerModale(); accueil(); haut(); }),
       bouton("🚪 Démissionner", "btn m-sec m-demission", function () {
         if (!confirm("Démissionner ? La partie s’arrête ici : tu gardes l’XP de ce que tu as déjà accompli.")) return;

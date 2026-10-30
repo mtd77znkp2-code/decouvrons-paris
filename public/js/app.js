@@ -419,7 +419,25 @@ window.PokerLigne=(function(){
 // Un son se met en pause dès que son image n'est plus à l'écran (ou qu'on quitte l'accueil) et reprend là où il s'était arrêté.
 var musique=(function(){
   function piste(src,vol){var a=new Audio(src);a.loop=true;a.preload="none";return{a:a,vol:vol,fondu:null}}
-  var P={base:piste("audio/accueil-musique.mp3",.7),allumee:piste("audio/accueil-neige.mp3",.8),jeu:piste("audio/maire-menu.mp3",.35),casino:piste("audio/casino.mp3",.45)};
+  // Musique du jeu Maire de Paris : 3 morceaux joués dans l'ordre, en boucle. Quand une autre musique passe
+  // (casino…) ou qu'on quitte le jeu, elle se met en pause et reprend là où elle s'était arrêtée (même après un rechargement).
+  function playlist(liste,vol){
+    var p=piste(liste[0],vol),pos={i:0,t:0},dernier=0;
+    try{pos=JSON.parse(localStorage.getItem("maire_musique_pos")||"null")||pos}catch(e){}
+    p.i=Math.min(liste.length-1,Math.max(0,pos.i|0));p.a.loop=false;p.a.src=liste[p.i];
+    var reprise=+pos.t||0;
+    p.a.addEventListener("loadedmetadata",function(){if(reprise&&reprise<p.a.duration-1){try{p.a.currentTime=reprise}catch(e){}}reprise=0});
+    function garder(){try{localStorage.setItem("maire_musique_pos",JSON.stringify({i:p.i,t:Math.floor(p.a.currentTime||0)}))}catch(e){}}
+    p.a.addEventListener("pause",garder);
+    p.a.addEventListener("timeupdate",function(){var n=Date.now();if(n-dernier>5000){dernier=n;garder()}});
+    p.a.addEventListener("ended",function(){p.i=(p.i+1)%liste.length;p.a.src=liste[p.i];garder();if(quelle()==="jeu"){var r=p.a.play();if(r&&r.catch)r.catch(function(){})}});
+    return p;
+  }
+  var P={base:piste("audio/accueil-musique.mp3",.7),allumee:piste("audio/accueil-neige.mp3",.8),
+    jeu:playlist(["audio/maire-musique-1.mp3","audio/maire-musique-2.mp3","audio/maire-musique-3.mp3"],.5),casino:piste("audio/casino.mp3",.45)};
+  // Volumes choisis par le joueur (réglages du jeu) : musique et effets sonores, de 0 à 1
+  function volume(k){var v=1;try{var x=localStorage.getItem("vol_"+k);if(x!=null&&x!=="")v=+x}catch(e){}return isFinite(v)?Math.max(0,Math.min(1,v)):1}
+  window.volumeSon=volume;
   var f=document.getElementById("homeFond"),bt=document.getElementById("hson"),muet=false;
   try{muet=localStorage.getItem("musique_off")==="1"}catch(e){}
   function quelle(){
@@ -428,9 +446,9 @@ var musique=(function(){
     // Menu du jeu Maire de Paris (pas pendant la partie)
     if(home.hidden){
       if(document.getElementById("site").hidden||jeux.hidden)return "";
-      // Une partie de casino (blackjack, roulette) passe avant tout le reste
-      if(document.body.classList.contains("m-casino"))return "casino";
-      return document.body.classList.contains("m-son")?"jeu":"";
+      // Une partie de casino (blackjack, roulette, poker) passe avant tout le reste ; sinon la musique du jeu (menu et partie)
+      if(volume("musique")<=0)return "";
+      return document.body.classList.contains("m-casino")?"casino":"jeu";
     }
     if(document.body.classList.contains("eteint"))return "";
     return f&&f.classList.contains("interf")?"allumee":"base";
@@ -448,7 +466,7 @@ var musique=(function(){
     var q=quelle();
     Object.keys(P).forEach(function(k){
       var p=P[k];
-      if(k===q){if(p.a.paused){try{p.a.volume=0}catch(e){}var r=p.a.play();if(r&&r.catch)r.catch(function(){})}fondu(p,p.vol)}
+      if(k===q){if(p.a.paused){try{p.a.volume=0}catch(e){}var r=p.a.play();if(r&&r.catch)r.catch(function(){})}fondu(p,p.vol*(k==="jeu"||k==="casino"?volume("musique"):1))}
       else if(!p.a.paused){fondu(p,0,function(){if(quelle()!==k)p.a.pause()})}
     });
   }
@@ -493,7 +511,7 @@ var musique=(function(){
   }
   // Effets sonores du jeu : window.sfx("carte") joue audio/sfx-carte.mp3 (chargé à la première demande, puis instantané)
   var SFX={},SFXc={};
-  function jouerBuf(buf,vol){if(!ctx||!buf||muet)return;if(ctx.state==="suspended")ctx.resume();var s=ctx.createBufferSource(),g=ctx.createGain();g.gain.value=vol==null?.8:vol;s.buffer=buf;s.connect(g);g.connect(ctx.destination);s.start(0)}
+  function jouerBuf(buf,vol){if(!ctx||!buf||muet)return;vol=(vol==null?.8:vol)*(window.volumeSon?volumeSon("effets"):1);if(!vol)return;if(ctx.state==="suspended")ctx.resume();var s=ctx.createBufferSource(),g=ctx.createGain();g.gain.value=vol==null?.8:vol;s.buffer=buf;s.connect(g);g.connect(ctx.destination);s.start(0)}
   function chargerSfx(nom,puis){
     if(SFX[nom]||SFXc[nom]||!ctx)return;SFXc[nom]=1;
     fetch("audio/sfx-"+nom+".mp3").then(function(r){return r.arrayBuffer()}).then(function(b){
