@@ -175,7 +175,7 @@
     var botTete = !H || B > H;
     var meneur = botTete ? { nom: s.places[b].nom, ico: s.places[b].ico, court: court(b), bot: true, uid: null } : { nom: h.nom, ico: h.ico, court: h.court, bot: false, uid: h.uid };
     return { k: k, id: id, cout: cout, debut: debut, fin: fin, pas: pas, prix: botTete ? B : H, meneur: meneur, fini: maintenant >= fin, nb: offres.length + 1,
-      affaire: (botTete ? B : H) <= cout * 0.7 && fin - maintenant <= VENTE_D / 2,   // sous-évaluée : encore loin de sa valeur à mi-vente bientot: fin - maintenant <= 60000 && maintenant < fin };
+      affaire: (botTete ? B : H) <= cout * 0.7 && fin - maintenant <= VENTE_D / 2, bientot: fin - maintenant <= 60000 && maintenant < fin };
   }
   function ventesEnCours(s, cat, maintenant) {
     var k = Math.floor((maintenant - s.debut) / VENTE_P), l = [];
