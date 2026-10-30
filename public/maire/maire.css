@@ -1257,3 +1257,18 @@ body.m-casino .m-pop,#m-telmod{place-items:start center}
 .mx-ses-btn .mx-ui img,.mx-ses-attaque .mx-ui img{width:20px;height:20px}
 .mx-att-ico.mx-ui img{width:36px;height:36px}
 .mx-emp-ico.mx-ui img{width:36px;height:36px}
+/* Décors dessinés (maire/img/deco) : tableaux encadrés, boutons, ruban, tampons */
+.m-tableau{display:block;width:100%;max-width:260px;height:auto;margin:-6px auto 10px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));pointer-events:none;user-select:none}
+.m-tableau-petit{max-width:220px;margin:4px auto 8px}
+.m-final>.m-tableau{max-width:340px;margin:0 auto 12px}
+.m-dossier .m-tampon{position:absolute;top:10px;right:10px;width:64px;height:64px;transform:rotate(-14deg);animation:m-tampon .45s cubic-bezier(.2,1.6,.4,1) both;pointer-events:none}
+.m-option .m-tampon{width:22px;height:22px;vertical-align:-6px;margin-right:4px}
+@keyframes m-tampon{from{transform:rotate(-14deg) scale(2.4);opacity:0}to{transform:rotate(-14deg) scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.m-dossier .m-tampon{animation:none}}
+/* Boutons dessinés : seule la bande du milieu s'étire ; les bouts à fleur de lys gardent leurs proportions (bouton d'environ 48 px de haut) */
+.btn.m-go{border-style:solid;border-color:transparent;border-width:8px 18px;border-image:url(img/deco/btn-or.webp) 20 48 fill/8px 18px stretch;background:none;box-shadow:none;color:#3a2600;padding:7px 6px;text-shadow:0 1px 0 rgba(255,255,255,.35)}
+.m-dossier .btn.m-go{background:none;color:#3a2600}
+.mx-ses-act.mx-ses-attaque{border-style:solid;border-color:transparent;border-width:8px 18px;border-image:url(img/deco/btn-rouge.webp) 20 48 fill/8px 18px stretch;background:none;box-shadow:none;padding:6px 2px}
+.mx-ses-act.mx-ses-btn{border-style:solid;border-color:transparent;border-width:8px 18px;border-image:url(img/deco/btn-or.webp) 20 48 fill/8px 18px stretch;background:none!important;color:#3a2600;padding:6px 2px}
+.mx-ses-act.mx-lockbtn{border-style:solid!important;border-color:transparent!important;border-width:8px 36px 8px 12px!important;border-image:url(img/deco/btn-gris.webp) 20 95 20 30 fill/8px 36px 8px 12px stretch!important;background:none!important;box-shadow:none!important;color:rgba(255,255,255,.75)!important;padding:6px 2px!important}
+.m-pop-titre{border-style:solid;border-color:transparent;border-width:6px 26px 12px;border-image:url(img/deco/ruban-titre.webp) 14 72 30 fill/6px 26px 12px stretch;color:#fff!important;padding:4px 4px;text-shadow:0 2px 0 rgba(0,0,0,.35);margin:0 auto 8px;max-width:440px}

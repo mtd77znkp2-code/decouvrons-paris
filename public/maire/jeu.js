@@ -1004,6 +1004,7 @@
   function salleGuerre() {
     if (!SES.s || !st.session) return;
     var m = h("div", "m-pop mx-fichepop mx-guerrepop"), c = h("div", "mx-fiche mx-guerre");
+    var tabA = tableauDeco("attaque", "m-tableau-petit");   /* la même image à chaque rafraîchissement : pas de clignotement */
     function fermer() { m.remove(); document.body.classList.remove("m-modal"); clearInterval(tm); }
     m.onclick = function (e) { if (e.target === m) fermer(); };
     function rendre() {
@@ -1011,7 +1012,7 @@
       if (CIBLE === "rival" && p >= S.TRONE) CIBLE = "opp"; if (CIBLE === "opp" && p <= 0) CIBLE = "rival";
       var cible = CIBLE === "rival" ? p + 1 : p - 1, f = S.fiche(s, cible), now = Date.now();
       c.textContent = "";
-      ajout(c, ajout(h("div", "m-tel-tete"), h("strong", null, "⚔️ Salle de guerre"), bouton("✕", "m-leonx", fermer)));
+      ajout(c, ajout(h("div", "m-tel-tete"), h("strong", null, "⚔️ Salle de guerre"), bouton("✕", "m-leonx", fermer)), tabA);
       c.appendChild(h("p", "mx-ftxt", "Fais baisser le sondage d’un adversaire avant l’élection. Les points perdus comptent jusqu’au prochain vote."));
       var choixC = h("div", "mx-cibles");
       [["rival", p + 1, "⚔️ Rival"], ["opp", p - 1, "🛡️ Opposant"]].forEach(function (x) {
@@ -1225,7 +1226,7 @@
     var v = document.getElementById("m-election"); if (v) v.remove(); cacherBulle();
     var f = h("div", "m-pop m-election"); f.id = "m-election"; f.setAttribute("role", "dialog");
     var c = h("div", "m-pop-in m-elec-carte"), H = 30;
-    ajout(c, h("p", "m-sur", "🗳️ Élection n° " + s.election + (s.nom ? " · session " + s.nom : "")), h("h4", null, "Les résultats"));
+    ajout(c, h("p", "m-sur", "🗳️ Élection n° " + s.election + (s.nom ? " · session " + s.nom : "")), h("h4", null, "Les résultats"), tableauDeco("election", "m-tableau-petit"));
     var liste = h("div", "m-elec-liste"); liste.style.height = (cl.length * H) + "px";
     // Rangée de chaque maire, d'abord à son ancienne place (1 = trône en haut)
     var lignes = cl.map(function (x) {
@@ -1239,7 +1240,7 @@
     });
     c.appendChild(liste);
     var bilan = h("div", "m-elec-bilan mx-cache");
-    ajout(bilan, h("strong", null, titre), h("p", null, "De la " + (SS().NB - r.avant) + "ᵉ à la " + (SS().NB - r.apres) + "ᵉ place · te voilà " + SS().titre(r.apres) + "."),
+    ajout(bilan, tableauDeco(monte ? "victoire" : descend ? "defaite" : "election", "m-tableau-petit"), h("strong", null, titre), h("p", null, "De la " + (SS().NB - r.avant) + "ᵉ à la " + (SS().NB - r.apres) + "ᵉ place · te voilà " + SS().titre(r.apres) + "."),
       h("small", null, "Ton score : " + virg(r.score || 0) + " · tu as dépassé " + (r.vs || []).filter(function (x) { return x.g; }).length + " maire(s), " + (r.vs || []).filter(function (x) { return !x.g; }).length + " t’ont dépassé."),
       bouton("Continuer", "btn m-go", function () { f.remove(); }));
     c.appendChild(bilan); f.appendChild(c); document.body.appendChild(f);
@@ -1365,7 +1366,7 @@
   // Bouton d'une fonctionnalité pas encore débloquée : grisé, avec le niveau à atteindre
   function verrouMeca(id, b) {
     if (st.meca[id] || st.sansLimite) return b;
-    b.classList.add("mx-lockbtn"); b.textContent = "🔒 " + b.textContent.replace(/^\S+\s/, "") + " · niv. " + nivMeca(id);
+    b.classList.add("mx-lockbtn"); b.textContent = (b.classList.contains("mx-ses-act") ? "" : "🔒 ") /* le bouton dessiné a déjà son cadenas */ + b.textContent.replace(/^\S+\s/, "") + " · niv. " + nivMeca(id);
     b.onclick = function () { toast("🔒 Se débloque au niveau " + nivMeca(id) + " de la partie."); };
     return b;
   }
@@ -1520,6 +1521,14 @@
   // Illustration du bâtiment si elle existe, sinon son emoji
   var DESSINS = {}; (M.C.ILLUSTRES || []).forEach(function (id) { DESSINS[id] = 1; });
   // Icônes dessinées de l'interface (maire/img/ui) : une image dans un span, à la place d'un émoji
+  // Tableaux encadrés (maire/img/deco) : un par type de dossier et pour les grands moments
+  var TABLEAUX = { finances: 1, economie: 1, securite: 1, logement: 1, transports: 1, proprete: 1, ecologie: 1, services: 1, culture: 1, quotidien: 1, institutions: 1, crise: 1,
+    catastrophe: 1, chance: 1, opposition: 1, election: 1, victoire: 1, defaite: 1, attaque: 1, enchere: 1 };
+  function tableauDeco(nom, cls) {
+    if (!TABLEAUX[nom]) return null;
+    var i = h("img", "m-tableau" + (cls ? " " + cls : "")); i.src = "maire/img/deco/tab-" + nom + ".webp"; i.alt = ""; i.width = 480; i.height = 304; i.decoding = "async"; i.draggable = false; return i;
+  }
+  function tampon(oui) { var i = h("img", "m-tampon " + (oui ? "m-tampon-oui" : "m-tampon-non")); i.src = "maire/img/deco/tampon-" + (oui ? "oui" : "non") + ".webp"; i.alt = oui ? "Accepté" : "Refusé"; i.width = 80; i.height = 80; return i; }
   var TAILLE_UI = { "mx-pico": 34, "mx-mico": 58, "mx-att-ico": 36, "mx-emp-ico": 36, "mx-prom-ico": 28 };
   function icoUI(nom, cls) {
     var e = h("span", (cls || "") + " mx-ui"), i = h("img"); i.src = "maire/img/ui/" + nom + ".webp"; i.alt = ""; i.decoding = "async"; i.draggable = false;
@@ -1713,6 +1722,7 @@
     }
     if (reste <= 0) { clearInterval(ENCH.minuteur); ENCH.attente = 0; st = M.finirEnchere(st); sauver(); afficherEnchere(); }
   }
+  var TAB_ENCH = null;   /* gardé d’un affichage à l’autre : pas de clignotement */
   function afficherEnchere() {
     var e = st.enchere; if (!e) return fermerEnchUI();
     var B = M.BATIMENTS[e.id], m = document.getElementById("m-enchmod");
@@ -1720,7 +1730,7 @@
     m.innerHTML = "";
     var c = h("div", "m-pop-in m-ench");
     c.appendChild(bouton("✕ Fermer", "m-pop-fermer", function () { if (st.enchere && !st.enchere.fini && !confirm("Quitter l’enchère ? Tu l’abandonnes.")) return; if (ENCH) clearInterval(ENCH.minuteur); if (st.enchere && !st.enchere.fini) st = M.finirEnchere(st); st = M.fermerEnchere(st); sauver(); fermerEnchUI(); jeu(); }));
-    ajout(c, h("p", "m-sur", "🔨 Enchère face au " + e.ville), h("h4", null, B.ico + " " + B.nom));
+    ajout(c, TAB_ENCH || (TAB_ENCH = tableauDeco("enchere", "m-tableau-petit")), h("p", "m-sur", "🔨 Enchère face au " + e.ville), h("h4", null, B.ico + " " + B.nom));
     if (!e.fini) {
       var vVu = ENCH && ENCH.attente ? ENCH.vu : e.v, toiTete = e.j > vVu;
       var tps = h("div", "m-ench-tps"), barre = h("div", "m-barre"), i = h("i"); i.id = "m-ench-barre"; barre.appendChild(i);
@@ -2165,6 +2175,7 @@
     if (TITRES_POP[st.special]) cadre.appendChild(h("p", "m-pop-titre", TITRES_POP[st.special]));
     var carte = h("article", "m-dossier m-c-" + ev.cat);
     var LIB = { rare: "✨ Événement rare", legendaire: "🌟 Légendaire", politique: "🎭 Coup de théâtre", chantier: "🏗️ Chantier", historique: "📜 Décision historique", suite: "🔁 Le retour" };
+    var tabD = tableauDeco(/^(catastrophe|chance|opposition)$/.test(st.special) ? st.special : ev.cat); if (tabD) carte.appendChild(tabD);
     ajout(carte, h("p", "m-cat", (LIB[st.special] || M.FAMILLE[st.special || ev.cat] || "📂 Dossier") + " · " + date(st.t)), h("h4", null, T(ev.titre)));
     if (ev.perso && M.C.PERSONNAGES[ev.perso]) { var pe = M.C.PERSONNAGES[ev.perso]; carte.appendChild(ajout(h("div", "m-perso"), h("span", null, pe.ico), h("small", null, pe.nom + " · " + pe.txt))); }
     if (st.phase === "evenement") {
@@ -2195,7 +2206,8 @@
         ajout(b, h("span", "m-lettre", mj && mj.etat === "perdu" ? "🔒" : "ABCD"[i]), h("strong", null, T(x.t)));
         var best = st.mj && st.mj.best === i ? "⭐ Meilleur choix · " : "";
         if (mj) b.appendChild(h("small", "m-mj-tag", mj.etat === "a_jouer" ? best + "se joue " + ({ bj: "au 🃏 blackjack", roulette: "à la 🎡 roulette", poker: "au ♠️ poker" })[mj.jeu]
-          : mj.etat === "gagne" ? "✅ Gagné au casino : à toi de le prendre" : "❌ Perdu au casino : ce choix t’échappe"));
+          : mj.etat === "gagne" ? "Gagné au casino : à toi de le prendre" : "Perdu au casino : ce choix t’échappe"));
+        if (mj && mj.etat !== "a_jouer") b.lastChild.insertBefore(tampon(mj.etat === "gagne"), b.lastChild.firstChild);
         if (best && mj && mj.etat === "a_jouer") b.classList.add("m-mj-best");
         if (mj && mj.etat === "perdu") b.disabled = true;
         if (!st.evPerso || st.evPerso.src) b.appendChild(h("small", "m-pct", "📊 …"));
@@ -2205,6 +2217,7 @@
       if (ch.querySelector(".m-pct")) remplirParts(ch, ev, cleVote());
     } else {
       var r = st.resultat, x = ev.choix[r.i];
+      carte.appendChild(tampon(true));   /* la décision est signée */
       ajout(carte, h("p", "m-pris", "Ta décision : " + T(x.t)), h("p", "m-res", T(r.txt || x.r)));
       variations(r.d, carte);
       if (r.surprise) carte.appendChild(h("p", "m-surprise", "⚡ Imprévu : " + T(r.surprise)));
@@ -2641,7 +2654,7 @@
     var e = st.elections[st.elections.length - 1], ob = e.objectifs || [];
     var verdict = !ob.length ? "Réélu !" : e.parfait ? "🏆 Mandat parfait !" : e.reussi ? "🏆 Mandat réussi !" : "Réélu… mais objectifs manqués";
     var t = h("div", "m-final " + (e.reussi || !ob.length ? "m-gagne" : "m-perdu"));
-    ajout(t, h("p", "m-sur", "Fin du mandat " + (st.mandat - 1)), h("h4", null, verdict),
+    ajout(t, tableauDeco("victoire"), h("p", "m-sur", "Fin du mandat " + (st.mandat - 1)), h("h4", null, verdict),
       h("p", "m-raison", "Réélu avec " + String(e.pct).replace(".", ",") + " % des voix" + (ob.length ? " · " + e.nok + " objectif" + (e.nok > 1 ? "s" : "") + " sur " + ob.length + " atteint" + (e.nok > 1 ? "s" : "") : "") + "."));
     box.appendChild(t);
     if (ob.length) {
@@ -2967,7 +2980,7 @@
     var b = M.bilan(st), an = M.analyse(st), e = st.elections[st.elections.length - 1];
     if (st.fin.raison.type === "election") sonUnique("fin:" + st.pid, "hue");   // son n°15 : battu
     var type = st.fin.raison.type, t = h("div", "m-final " + (type === "defi" || type === "retraite" ? "m-gagne" : "m-perdu"));
-    ajout(t, h("p", "m-sur", (st.defi != null ? "Défi du jour · " : "") + ({ election: "Battu aux élections", faillite: "Faillite", demission: "Démission", defi: "Défi terminé", retraite: "Victoire" })[type]),
+    ajout(t, tableauDeco(type === "defi" || type === "retraite" ? "victoire" : "defaite"), h("p", "m-sur", (st.defi != null ? "Défi du jour · " : "") + ({ election: "Battu aux élections", faillite: "Faillite", demission: "Démission", defi: "Défi terminé", retraite: "Victoire" })[type]),
       h("h4", null, b.mandats ? "Fin de règne après " + M.duree(b.t) + " et " + b.mandats + " réélection" + (b.mandats > 1 ? "s" : "") : "Ton aventure s’arrête au bout de " + M.duree(b.t)),
       h("p", "m-raison", st.fin.raison.txt), h("p", "m-score", "Score : " + b.score));
     box.appendChild(t);

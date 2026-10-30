@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Découpe une planche d'illustrations générée par IA (grille de bâtiments sur fond blanc) en images du jeu.
 
-Usage : python3 tools/maire/decouper-planche.py planche.png id1 id2 ... [--apercu apercu.png] [--ui]
+Usage : python3 tools/maire/decouper-planche.py planche.png id1 id2 ... [--apercu apercu.png] [--ui | --deco [--grille 2] [--largeur 480]]
   - les identifiants sont donnés dans l'ordre de la grille (de gauche à droite, puis de haut en bas) ;
   - chaque bâtiment est enregistré dans public/maire/img/bat/<id>.webp (192 × 192, fond transparent).
 
@@ -34,7 +34,7 @@ def fond_transparent(img):
     return rgba, ~fond
 
 
-def decouper(chemin, ids, apercu=None, sortie=None, taille=None):
+def decouper(chemin, ids, apercu=None, sortie=None, taille=None, grille=None, largeur=None):
     global SORTIE, TAILLE
     if sortie: SORTIE = sortie
     if taille: TAILLE = taille
@@ -43,6 +43,7 @@ def decouper(chemin, ids, apercu=None, sortie=None, taille=None):
     h, w = plein.shape
     n = len(ids)
     cols = 3 if n > 4 else n
+    if grille: cols = grille
     rangs = (n + cols - 1) // cols
     lab, nb = ndimage.label(plein)
     tailles = ndimage.sum(plein, lab, range(1, nb + 1))
@@ -75,17 +76,22 @@ def decouper(chemin, ids, apercu=None, sortie=None, taille=None):
         y0, y1, x0, x1 = ys.min(), ys.max() + 1, xs.min(), xs.max() + 1
         bloc = rgba[y0:y1, x0:x1].copy()
         bloc[..., 3] = np.where(m[y0:y1, x0:x1], bloc[..., 3], 0)
-        cote = int(max(y1 - y0, x1 - x0) * (1 + 2 * MARGE))
-        carre = Image.new("RGBA", (cote, cote), (0, 0, 0, 0))
-        carre.paste(Image.fromarray(bloc, "RGBA"), ((cote - (x1 - x0)) // 2, (cote - (y1 - y0)) // 2))
-        fin = carre.resize((TAILLE, TAILLE), Image.LANCZOS)
+        if largeur:                                       # image rectangulaire (tableau, bouton) : on garde ses proportions
+            fin = Image.fromarray(bloc, "RGBA")
+            fin = fin.resize((largeur, max(1, round(largeur * (y1 - y0) / (x1 - x0)))), Image.LANCZOS)
+        else:
+            cote = int(max(y1 - y0, x1 - x0) * (1 + 2 * MARGE))
+            carre = Image.new("RGBA", (cote, cote), (0, 0, 0, 0))
+            carre.paste(Image.fromarray(bloc, "RGBA"), ((cote - (x1 - x0)) // 2, (cote - (y1 - y0)) // 2))
+            fin = carre.resize((TAILLE, TAILLE), Image.LANCZOS)
         fin.save(os.path.join(SORTIE, ident + ".webp"), "WEBP", quality=90, method=6)
         vignettes.append(fin)
         print("✓", ident, "(" + str(x1 - x0) + "×" + str(y1 - y0) + " px)")
     if apercu and vignettes:
-        fond = Image.new("RGBA", (TAILLE * cols, TAILLE * rangs), (24, 33, 80, 255))
+        cw2 = max(v.width for v in vignettes); ch2 = max(v.height for v in vignettes)
+        fond = Image.new("RGBA", (cw2 * cols, ch2 * rangs), (24, 33, 80, 255))
         for i, v in enumerate(vignettes):
-            fond.paste(v, ((i % cols) * TAILLE, (i // cols) * TAILLE), v)
+            fond.paste(v, ((i % cols) * cw2, (i // cols) * ch2), v)
         fond.convert("RGB").save(apercu)
 
 
@@ -112,9 +118,19 @@ if __name__ == "__main__":
     # --ui : icônes de l'interface (public/maire/img/ui, 128 px, pas de déclaration dans ILLUSTRES)
     ui = "--ui" in args
     if ui: args.remove("--ui")
+    # --deco : tableaux, boutons et cadres (public/maire/img/deco, proportions gardées, largeur donnée par --largeur)
+    largeur = grille = None
+    if "--largeur" in args:
+        k = args.index("--largeur"); largeur = int(args[k + 1]); del args[k:k + 2]
+    if "--grille" in args:
+        k = args.index("--grille"); grille = int(args[k + 1]); del args[k:k + 2]
+    deco = "--deco" in args
+    if deco: args.remove("--deco")
     if len(args) < 2:
         print(__doc__); sys.exit(1)
-    if ui:
+    if deco:
+        decouper(args[0], args[1:], apercu, os.path.join(os.path.dirname(__file__), "..", "..", "public", "maire", "img", "deco"), None, grille, largeur or 480)
+    elif ui:
         decouper(args[0], args[1:], apercu, os.path.join(os.path.dirname(__file__), "..", "..", "public", "maire", "img", "ui"), 128)
     else:
         decouper(args[0], args[1:], apercu)
