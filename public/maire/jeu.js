@@ -1688,30 +1688,34 @@
   function journal() {
     var bes = M.besoin(st), p = st.piliers, ch = M.chomage(st), plein = (st.hab || M.HAB0) >= M.capacite(st), so = M.solde(st), l = [];
     // Chaque sujet : gravité (plus c'est haut, plus il passe en premier), titre de une, citations possibles
-    function sujet(g, une, cits) { l.push({ g: g, une: une, cits: cits }); }
-    if (p.securite < bes) sujet(bes - p.securite + 10, "Insécurité : les Parisiens inquiets", ["Je ne sors plus le soir, ma rue n’est pas sûre.", "Trois vols de vélo dans mon immeuble ce mois-ci.", "On veut plus de policiers dans le quartier !"]);
-    if (p.cadre < bes) sujet(bes - p.cadre + 10, "Cadre de vie : la ville étouffe", ["Pas un parc à moins de vingt minutes de chez moi…", "Mes enfants jouent sur le parking, faute de mieux.", "Paris manque d’arbres et d’endroits pour respirer."]);
-    if (ch > 10) sujet((ch - 10) * 3 + 10, "Chômage : " + virg(ch) + " % des Parisiens sans emploi", ["Ça fait huit mois que je cherche du travail.", "Il faudrait des commerces et des entreprises dans le quartier.", "Mon fils a fini ses études et ne trouve rien."]);
-    if (plein && st.pop >= 50) sujet(12, "Crise du logement : plus une place libre", ["Impossible de trouver un appartement, il faut construire !", "Douze visites, douze refus. Paris est plein.", "Je vais devoir partir en banlieue, faute de logement."]);
-    if (p.logement < 40) sujet(45 - p.logement, "Loyers : la colère monte", ["1 400 € pour 18 m², c’est une blague ?", "Mon loyer a encore augmenté.", "Les logements sociaux, il y a dix ans d’attente."]);
-    if (p.transports < 40) sujet(45 - p.transports, "Transports : la galère quotidienne", ["Ligne 13 bondée, encore et toujours.", "Une heure pour traverser Paris en bus…", "Le métro est en panne une fois sur deux."]);
-    if (st.dette > M.PLAFOND_DETTE * 0.5) sujet(14, "Finances : la dette inquiète", ["La mairie dépense trop, qui va payer ?", "On paiera les dettes de la ville pendant vingt ans."]);
-    if (so < 0) sujet(8, "Budget dans le rouge", ["Les caisses se vident chaque trimestre.", "Il faudrait des recettes, pas que des dépenses."]);
-    if (st.habDelta < -3000) sujet(9, Math.abs(st.habDelta).toLocaleString("fr-FR") + " Parisiens ont quitté la ville", ["Mes voisins sont partis à Lyon.", "Tout le monde part, ça fait de la peine."]);
+    // plainte : un reproche général (sécurité, chômage, dette…), qui ne revient qu'un trimestre sur trois
+    var plaintes = [];
+    function sujet(g, une, cits, plainte) { (plainte ? plaintes : l).push({ g: g, une: une, cits: cits }); }
+    if (p.securite < bes) sujet(bes - p.securite + 10, "Insécurité : les Parisiens inquiets", ["Je ne sors plus le soir, ma rue n’est pas sûre.", "Trois vols de vélo dans mon immeuble ce mois-ci.", "On veut plus de policiers dans le quartier !"], 1);
+    if (p.cadre < bes) sujet(bes - p.cadre + 10, "Cadre de vie : la ville étouffe", ["Pas un parc à moins de vingt minutes de chez moi…", "Mes enfants jouent sur le parking, faute de mieux.", "Paris manque d’arbres et d’endroits pour respirer."], 1);
+    if (ch > 10) sujet((ch - 10) * 3 + 10, "Chômage : " + virg(ch) + " % des Parisiens sans emploi", ["Ça fait huit mois que je cherche du travail.", "Il faudrait des commerces et des entreprises dans le quartier.", "Mon fils a fini ses études et ne trouve rien."], 1);
+    if (plein && st.pop >= 50) sujet(12, "Crise du logement : plus une place libre", ["Impossible de trouver un appartement, il faut construire !", "Douze visites, douze refus. Paris est plein.", "Je vais devoir partir en banlieue, faute de logement."], 1);
+    if (p.logement < 40) sujet(45 - p.logement, "Loyers : la colère monte", ["1 400 € pour 18 m², c’est une blague ?", "Mon loyer a encore augmenté.", "Les logements sociaux, il y a dix ans d’attente."], 1);
+    if (p.transports < 40) sujet(45 - p.transports, "Transports : la galère quotidienne", ["Ligne 13 bondée, encore et toujours.", "Une heure pour traverser Paris en bus…", "Le métro est en panne une fois sur deux."], 1);
+    if (st.dette > M.PLAFOND_DETTE * 0.5) sujet(14, "Finances : la dette inquiète", ["La mairie dépense trop, qui va payer ?", "On paiera les dettes de la ville pendant vingt ans."], 1);
+    if (so < 0) sujet(8, "Budget dans le rouge", ["Les caisses se vident chaque trimestre.", "Il faudrait des recettes, pas que des dépenses."], 1);
+    if (st.habDelta < -3000) sujet(9, Math.abs(st.habDelta).toLocaleString("fr-FR") + " Parisiens ont quitté la ville", ["Mes voisins sont partis à Lyon.", "Tout le monde part, ça fait de la peine."], 1);
     if (st.habDelta > 3000) sujet(3, "Paris attire : " + st.habDelta.toLocaleString("fr-FR") + " nouveaux habitants", ["On vient d’emménager, on adore le quartier !", "Paris, ça reste Paris."]);
     if (M.bonheur(st) >= 60) sujet(2, "Les Parisiens heureux", ["Franchement, la ville n’a jamais été aussi agréable.", "Bravo à la mairie pour le quartier."]);
     if (st.pop >= 55) sujet(1, "Le maire au sommet des sondages", ["Je revoterai pour lui sans hésiter.", "Enfin un maire qui écoute."]);
-    // Besoins non comblés : on le demande, puis on s'énerve, puis on part
+    // Besoins exprimés par les habitants : on en parle quand ils apparaissent, deux trimestres après, puis un trimestre sur deux quand des familles partent
     M.etatBesoins(st).forEach(function (b) {
-      if (b.ok) return;
-      var c = CITS_BESOINS[b.id] || ["Il nous faudrait des " + b.nom + ".", "Toujours pas de " + b.nom + " !", "On part, il n’y a pas de " + b.nom + " ici."];
+      if (!b.dit || !(b.age === 0 || b.age === 2 || (b.age >= 4 && b.age % 2 === 0))) return;
+      var c = CITS_BESOINS[b.id] || ["Il nous faudrait des " + b.nom + ".", "Toujours pas " + de(b.nom) + " !", "On part, il n’y a pas " + de(b.nom) + " ici."];
       var et = b.age >= 4 ? 2 : b.age >= 2 ? 1 : 0;
-      sujet(16 + b.age * 3, [b.ico + " Les Parisiens réclament des " + b.nom, b.ico + " Toujours pas de " + b.nom + " : la colère monte", b.ico + " Faute de " + b.nom + ", des familles quittent Paris"][et], [c[et]]);
+      sujet(16 + b.age * 3, [b.ico + " Les Parisiens réclament des " + b.nom, b.ico + " Toujours pas " + de(b.nom) + " : la colère monte", b.ico + " Faute " + de(b.nom) + ", des familles quittent Paris"][et], [c[et]]);
     });
     Object.keys(st.besoinsOk || {}).forEach(function (id) {
       var b = M.BESOINS.filter(function (x) { return x.id === id; })[0]; if (b && st.besoinsOk[id] === st.t) sujet(5, b.ico + " Enfin des " + b.nom + " !", ["Merci pour les nouveaux " + b.nom + ", ça change la vie."]);
     });
-    if (!l.length) sujet(0, "Une semaine calme à Paris", ["Rien à signaler, et c’est tant mieux.", "Paris tourne, tranquillement."]);
+    if (st.t % 3 === 0 && plaintes.length) { plaintes.sort(function (a, b) { return b.g - a.g; }); l.push(plaintes[0]); }
+    // Le reste du temps, la vie parisienne : faits divers et petites nouvelles
+    for (var k = 0; l.length < 3 && k < 2; k++) { var f = FAITS[(st.t * 3 + k * 5) % FAITS.length]; l.push({ g: -1 - k, une: f[0], cits: [f[1]] }); }
     l.sort(function (a, b) { return b.g - a.g; });
     var d = h("div", "m-journal");
     d.appendChild(ajout(h("div", "m-journal-tete"), h("b", null, "Le Journal de Paris"), h("small", null, "n° " + st.t)));
@@ -1720,7 +1724,7 @@
     if (st.depeche && o) {
       var bd = M.BESOINS.filter(function (x) { return x.id === st.depeche.id; })[0];
       d.appendChild(ajout(h("div", "m-depeche"), h("b", null, "⚡ DÉPÊCHE · " + o.nom), h("q", null, (DEPECHES[st.depeche.id] || "Ce maire laisse Paris sans " + (bd ? bd.nom : "rien") + " !")),
-        h("small", null, "Des Parisiens partent chaque trimestre tant que tu ne construis pas de " + (bd ? bd.nom : "quoi répondre") + ".")));
+        h("small", null, "Des Parisiens partent chaque trimestre tant que tu ne construis pas " + (bd ? de(bd.nom) : "de quoi répondre") + ".")));
     }
     d.appendChild(h("p", "m-journal-une", l[0].une));
     var u = h("ul");
@@ -1737,6 +1741,20 @@
     }
     return d;
   }
+  // « de écoles » → « d’écoles »
+  function de(n) { return (/^[aeiouyhéèêàâ]/i.test(n) ? "d’" : "de ") + n; }
+  var FAITS = [
+    ["🐦 Un pigeon élu mascotte du 11e", "Il s’appelle Gérard et il est plus ponctuel que la ligne 13."],
+    ["☀️ Les terrasses prises d’assaut", "Un café en terrasse au soleil, il n’y a que ça de vrai."],
+    ["🥐 Concours du meilleur croissant", "Le jury a goûté 140 croissants. Il ne veut plus jamais en voir."],
+    ["🐀 Un rat filmé sur un Vélib’", "Franchement, il pédalait mieux que moi."],
+    ["📚 Les bouquinistes des quais en fête", "J’ai trouvé une édition de 1923 pour deux euros !"],
+    ["🎭 Une pièce de théâtre affiche complet depuis un an", "J’ai réservé pour 2028, on verra bien."],
+    ["🛶 Des Parisiens se baignent dans la Seine", "Elle est un peu fraîche, mais elle est propre !"],
+    ["🧀 Record d’affluence au marché du dimanche", "Le fromager connaît mon prénom, c’est ça Paris."],
+    ["🎸 Fête de la musique : 18 groupes dans la même rue", "Personne ne jouait la même chanson, c’était magnifique."],
+    ["🗼 La tour Eiffel s’illumine en avance", "Tout le quartier a sorti les téléphones en même temps."]
+  ];
   var CITS_BESOINS = {
     parcs: ["Un petit parc pour les enfants, c’est trop demander ?", "Toujours pas un brin d’herbe dans le quartier !", "On déménage à la campagne, ici il n’y a même pas un parc."],
     manger: ["Il faut traverser tout l’arrondissement pour acheter du pain.", "Pas une boulangerie, pas un kebab : on mange quoi ?", "On part, ici on ne trouve même pas de quoi manger."],

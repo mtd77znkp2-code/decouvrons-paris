@@ -621,30 +621,32 @@
     return BESOINS.filter(function (b) { return b.bats.some(function (id) { return BATIMENTS[id] && (BATIMENTS[id].niv || 1) <= (st.nivJ || 99); }); }).map(function (b) {
       var a = 0; b.bats.forEach(function (id) { a += (st.bat && st.bat[id]) || 0; });
       var requis = 1 + Math.floor(Math.max(0, (st.hab || HAB0) - HAB0) / b.par), x = (st.besoins || {})[b.id];
-      return { id: b.id, nom: b.nom, ico: b.ico, a: a, requis: requis, ok: a >= requis, age: a >= requis || !x ? 0 : st.t - x.depuis };
+      return { id: b.id, nom: b.nom, ico: b.ico, a: a, requis: requis, ok: a >= requis, dit: !!x && a < requis, age: a >= requis || !x ? 0 : st.t - x.depuis };
     });
   }
   // Une fois par trimestre : âge des besoins non comblés, départs proportionnés, dépêches du rival
   function suivreBesoins(st) {
     var l = etatBesoins(st), pct = 0, dep = st.depeche;
     st.besoins = st.besoins || {}; st.besoinsOk = {};
-    l.forEach(function (b) {
-      if (b.ok) { if (st.besoins[b.id]) { st.besoinsOk[b.id] = st.t; delete st.besoins[b.id]; } return; }
-      if (!st.besoins[b.id]) st.besoins[b.id] = { depuis: st.t };
-      var age = st.t - st.besoins[b.id].depuis;
-      if (age >= 4) pct -= 0.02 * Math.min(3, age - 3);
-    });
+    // Les habitants n'expriment pas tout en même temps : au plus 2 besoins à la fois, un nouveau de temps en temps
+    l.forEach(function (b) { if (b.ok && st.besoins[b.id]) { st.besoinsOk[b.id] = st.t; delete st.besoins[b.id]; } });
+    var dits = Object.keys(st.besoins).filter(function (id) { return l.some(function (b) { return b.id === id; }); });
+    if (dits.length < 2 && st.t >= 2 && st.t >= (st.besoinCd || 0)) {
+      var libres = l.filter(function (b) { return !b.ok && !st.besoins[b.id]; });
+      if (libres.length && rnd(st) < 0.35) { var nb = libres[Math.floor(rnd(st) * libres.length)]; st.besoins[nb.id] = { depuis: st.t }; st.besoinCd = st.t + 2; }
+    }
+    Object.keys(st.besoins).forEach(function (id) { var age = st.t - st.besoins[id].depuis; if (age >= 4) pct -= 0.03 * Math.min(3, age - 3); });
     // Départs proportionnés : quelques centaines de familles par besoin, jamais plus de 0,2 % de la ville par trimestre
     pct = Math.max(-0.2, pct);
     // Dépêche du rival : il pointe un manque de la ville ; tant qu'il n'est pas comblé, des Parisiens partent et la popularité s'effrite
     if (dep && (!st.besoins[dep.id])) { st.depeche = null; dep = null; }
     if (dep) { pct -= 0.05; st.pop = borne(st.pop - 0.3); }
     else if (st.opposant && st.opposant.actif && st.meca.opposant) {
-      var cand = l.filter(function (b) { return !b.ok && st.t - st.besoins[b.id].depuis >= 2; });
+      var cand = l.filter(function (b) { return !b.ok && st.besoins[b.id] && st.t - st.besoins[b.id].depuis >= 2; });
       if (cand.length && rnd(st) < 0.2) {
         var c = cand[Math.floor(rnd(st) * cand.length)];
         st.depeche = { id: c.id, t: st.t, opp: st.opposant.i };
-        message(st, "⚡", "Dépêche de " + OPPOSANTS[st.opposant.i].nom, "Ton rival dénonce le manque de " + c.nom + " à Paris. Tant que ce n’est pas réglé, des Parisiens partent.");
+        message(st, "⚡", "Dépêche de " + OPPOSANTS[st.opposant.i].nom, "Ton rival dénonce le manque " + (/^[aeiouyhéèêàâ]/i.test(c.nom) ? "d’" : "de ") + c.nom + " à Paris. Tant que ce n’est pas réglé, des Parisiens partent.");
       }
     }
     return pct;

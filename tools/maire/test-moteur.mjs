@@ -307,7 +307,9 @@ test("progression en direct : XP pendant la partie, un bâtiment par niveau, suc
   // Une vieille copie de la partie (rechargement) ne retire ni ne double l'XP
   const xpAvant = G.lire().xp; G.suivrePartie(vieux, M, {}); assert.equal(G.lire().xp, xpAvant);
   // Monter de niveau en pleine partie : le vélo arrive en boutique, les impôts s'activent
-  while (st.nivJ < 2) { st = M.acheter(st, "parc"); r = G.suivrePartie(st, M, {}); st = r.st; }
+  // (assez d'argent pour atteindre le niveau 2 quel que soit le succès du jour, qui change l'XP d'un jour à l'autre)
+  st.tresor = 5000;
+  for (let k = 0; k < 60 && st.nivJ < 2; k++) { st = M.acheter(st, "parc"); r = G.suivrePartie(st, M, {}); st = r.st; }
   assert.equal(st.montees[0].n, 2); assert.ok(st.montees[0].bats.includes("velo")); assert.ok(!st.montees[0].bats.includes("eclairageLed"), "objectif de 2 trimestres pas encore rempli"); assert.ok(st.meca.budget);
   assert.equal(M.peutAcheter(st, "velo"), ""); assert.deepEqual(M.viderMontees(st).montees, []);
   // Quête du jour : validée en pleine partie, avec sa progression
@@ -748,7 +750,7 @@ function acheteMalin(st, reserve, essais) {
       let v = 0; for (const k in B.e) v += B.e[k] * Math.max(0, 75 - st.piliers[k]) / 20 * (st.ambitions.includes(k) ? 1.5 : 1) * (vise.some(o => o.k === "pilier" && o.p === k) ? 1.8 : 1);
       if (vise.some(o => o.k === "rayon" && o.r === B.cat)) v *= 1.6;
       // Il lit le Journal de Paris : ce qui comble un besoin des habitants passe en priorité
-      const manques = M.etatBesoins(st).filter(b => !b.ok).map(b => b.id);
+      const manques = M.etatBesoins(st).filter(b => b.dit).map(b => b.id);
       if (M.BESOINS.some(b => manques.includes(b.id) && b.bats.includes(id))) v = v * 3 + 2;
       v = v / (px + B.ent * 16) * 100 + (B.rev || 0) * 16 / px * (st.tresor < 300 ? 3 : 1) + (B.pop || 0) / 3;
       if (v > bv) { bv = v; best = id; }
