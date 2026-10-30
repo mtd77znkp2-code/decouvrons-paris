@@ -181,7 +181,7 @@ C) Rien :: Métier difficile.
    > Un éboueur est grièvement blessé.
 
 === pro-201 | proprete | Des bennes à ordures silencieuses
-Les camions-bennes réveillent les habitants à l’aube.
+Les camions-bennes réveillent les habitants de l’arrondissement à l’aube.
 A) Passer à des bennes électriques :: Silence.
    bud-4 proprete+1 ecologie+1 bon+1 | g+1 c+2 d+1 e+1
    > Les collectes se font en silence.

@@ -1,20 +1,20 @@
 // Propreté, série 4
-=== pro-106 | proprete | Les berges du canal Saint-Denis
-Les berges du canal Saint-Denis, à la limite de Paris, sont couvertes de détritus.
+=== pro-106 | proprete | Les berges du canal à la limite de Paris
+Les berges du canal, à la limite de l’arrondissement et de la banlieue, sont couvertes de détritus.
 ? distinct
 A) Nettoyage commun avec les villes voisines :: Coopération.
    bud-3 proprete+2 ecologie+1 | g+2 c+3 d+1 e+2
-   > Paris, Aubervilliers et Saint-Denis nettoient ensemble.
-B) Nettoyer seulement la partie parisienne :: Notre territoire.
+   > L’arrondissement et les communes voisines nettoient ensemble.
+B) Nettoyer seulement notre partie :: Notre territoire.
    bud-2 proprete+1 | g0 c+2 d+2 e+1
-   > La rive parisienne est nettoyée.
+   > La rive de l’arrondissement est nettoyée.
 C) Rien :: Compétence partagée.
    proprete-1 | g0 c0 d+1 e-1
    > Les déchets restent.
 
 === pro-107 | proprete | Où jeter ses vieux appareils électriques ?
-Les vieux grille-pains et téléphones finissent dans les poubelles ordinaires.
-A) Bornes de collecte dans chaque mairie :: Faciliter.
+Dans l’arrondissement, les vieux grille-pains et téléphones finissent dans les poubelles ordinaires.
+A) Bornes de collecte à la mairie d’arrondissement :: Faciliter.
    bud-3 ecologie+2 proprete+1 | g+1 c+3 d+1 e+3
    > Les appareils sont collectés et recyclés.
 B) Collecte mensuelle dans les marchés :: Proximité.
@@ -37,7 +37,7 @@ C) Tolérer :: Peinture biodégradable.
    > Les logos fleurissent.
 
 === pro-109 | proprete | Recycler les jouets cassés
-Les jouets en plastique cassés finissent à la poubelle après Noël.
+Les jouets en plastique cassés finissent dans les poubelles de l’arrondissement après Noël.
 A) Ateliers de réparation et collecte de jouets :: Réemploi.
    bud-2 ecologie+2 bon+1 | g+2 c+2 d+1 e+3
    > Les jouets réparés sont donnés.
@@ -49,7 +49,7 @@ C) Rien :: Poubelle classique.
    > Les jouets partent à l’incinérateur.
 
 === pro-110 | proprete | Les fleurs fanées de la Toussaint
-Après la Toussaint, les cimetières croulent sous les pots de chrysanthèmes fanés.
+Après la Toussaint, les cimetières de l’arrondissement croulent sous les pots de chrysanthèmes fanés.
 A) Compostage des fleurs et recyclage des pots :: Valoriser.
    bud-2 ecologie+2 proprete+1 | g+1 c+3 d+1 e+3
    > Les fleurs deviennent du compost.
@@ -97,7 +97,7 @@ C) Rien :: Commerce.
    > Les sacs restent.
 
 === pro-114 | proprete | Les élèves trient leurs déchets
-Les écoles pourraient apprendre aux élèves à trier dès la maternelle.
+Les écoles de l’arrondissement pourraient apprendre aux élèves à trier dès la maternelle.
 A) Poubelles de tri dans toutes les classes :: Éducation.
    bud-3 ecologie+2 proprete+1 | g+1 c+3 d+1 e+3
    > Les élèves deviennent des champions du tri.
@@ -157,7 +157,7 @@ C) Rien :: Charme du marché.
    > Les odeurs persistent.
 
 === pro-119 | proprete | Les portions individuelles dans les cantines
-Les cantines servent beurre, fromage et compote en portions individuelles emballées.
+Les cantines de l’arrondissement servent beurre, fromage et compote en portions individuelles emballées.
 A) Passer au vrac dans toutes les cantines :: Moins de déchets.
    bud-3 ecologie+2 proprete+1 | g+1 c+2 d+1 e+4
    > Les emballages individuels disparaissent.
@@ -169,7 +169,7 @@ C) Rien :: Hygiène et praticité.
    > Rien ne change.
 
 === pro-120 | proprete | Les lâchers de ballons
-Les lâchers de ballons lors des fêtes et mariages retombent en déchets dans les parcs et la Seine.
+Les lâchers de ballons lors des fêtes et mariages retombent en déchets dans les parcs de l’arrondissement et la Seine.
 A) Interdire les lâchers de ballons :: Pollution.
    ecologie+1 proprete+1 bon-1 | g+1 c+2 d0 e+3
    > Les lâchers sont interdits.
@@ -181,7 +181,7 @@ C) Rien :: Fête.
    > Les ballons continuent de s’envoler.
 
 === pro-121 | proprete | Des clous sur les pistes cyclables
-Des clous et des débris de verre crèvent les pneus des cyclistes sur certaines pistes.
+Des clous et des débris de verre crèvent les pneus des cyclistes sur certaines pistes de l’arrondissement.
 A) Balayeuse dédiée aux pistes cyclables :: Service.
    bud-5 rec-0.1x60 proprete+1 transports+1 | g+1 c+3 d+1 e+2
    > Les pistes sont balayées chaque jour.
@@ -205,7 +205,7 @@ C) Rien :: Normal.
    > Les caniveaux restent bouchés.
 
 === pro-123 | proprete | Des poubelles de rue brûlées
-Des centaines de poubelles de rue sont brûlées ou cassées chaque année.
+Des dizaines de poubelles de rue de l’arrondissement sont brûlées ou cassées chaque année.
 A) Poubelles en métal ignifugé :: Résistance.
    bud-10 proprete+2 | g0 c+3 d+2 e0
    > Les nouvelles poubelles résistent au feu.
@@ -229,7 +229,7 @@ C) Rien :: Aux jardiniers de gérer.
    > Les déchets s’entassent.
 
 === pro-125 | proprete | Prendre rendez-vous pour ses encombrants
-Il faut attendre trois semaines pour un rendez-vous de collecte d’encombrants.
+Dans l’arrondissement, il faut attendre trois semaines pour un rendez-vous de collecte d’encombrants.
 A) Rendez-vous sous 48 h :: Réactivité.
    rec-0.2x60 proprete+2 | g+1 c+3 d+1 e+1
    > Les encombrants sont collectés en deux jours.
@@ -277,7 +277,7 @@ C) Rien :: Gadget.
    > Rien n’est installé.
 
 === pro-129 | proprete | Des canettes dans les jardinières
-Les jardinières des rues piétonnes servent de poubelles aux passants.
+Les jardinières des rues piétonnes de l’arrondissement servent de poubelles aux passants.
 A) Jardinières avec grilles de protection :: Protéger.
    bud-3 proprete+1 ecologie+1 | g0 c+3 d+1 e+2
    > Les jardinières sont protégées.
@@ -289,7 +289,7 @@ C) Supprimer les jardinières :: Simplifier.
    > Les jardinières disparaissent.
 
 === pro-130 | proprete | Nettoyer les statues
-Les statues sont couvertes de fientes et de pollution.
+Les statues de l’arrondissement sont couvertes de fientes et de pollution.
 A) Programme de nettoyage de toutes les statues :: Patrimoine.
    bud-5 proprete+2 bon+1 | g0 c+2 d+2 e0
    > Les statues retrouvent leur éclat.
@@ -301,14 +301,14 @@ C) Rien :: Coût.
    > Les statues restent sales.
 
 === pro-131 | proprete | Une grande journée du nettoyage
-Des associations proposent une grande journée où tous les Parisiens nettoient leur quartier.
+Des associations proposent une grande journée où tous les habitants de l’arrondissement nettoient leur quartier.
 A) Organiser et fournir le matériel :: Mobilisation.
    bud-2 proprete+2 bon+1 | g+1 c+2 d+2 e+2
-   > Cent mille Parisiens ramassent les déchets.
+   > Des milliers d’habitants ramassent les déchets.
 B) Soutenir les associations sans organiser :: Léger.
    bud-1 proprete+1 | g+1 c+3 d+1 e+1
    > Les associations organisent la journée.
-C) Refuser :: Le nettoyage est le travail de la Ville.
+C) Refuser :: Le nettoyage est le travail de la mairie.
    proprete-1 | g+2 c0 d-1 e0
    > Rien n’est fait.
 
@@ -337,7 +337,7 @@ C) Rien :: Pas prioritaire.
    > Les sacs restent le week-end.
 
 === pro-134 | proprete | Les passages souterrains sales
-Les passages souterrains pour piétons sont sales, sombres et sentent l’urine.
+Les passages souterrains pour piétons de l’arrondissement sont sales, sombres et sentent l’urine.
 A) Rénovation et nettoyage quotidien :: Reconquête.
    bud-8 rec-0.05x60 proprete+2 securite+1 | g+1 c+3 d+2 e0
    > Les passages sont rénovés.
@@ -361,11 +361,11 @@ C) Rien :: Ramassage normal.
    > Les dépôts continuent.
 
 === pro-136 | proprete | Des brigades vertes de jeunes l’été
-Des jeunes des quartiers pourraient être embauchés l’été pour nettoyer et embellir.
-A) Embaucher 1 000 jeunes l’été :: Emploi et propreté.
+Des jeunes de l’arrondissement pourraient être embauchés l’été pour nettoyer et embellir.
+A) Embaucher 200 jeunes l’été :: Emploi et propreté.
    rec-0.3x20 proprete+2 economie+1 bon+1 | g+3 c+2 d+1 e+2
    > Mille jeunes travaillent tout l’été.
-B) 200 jeunes en test :: Prudent.
+B) 40 jeunes en test :: Prudent.
    rec-0.1x20 proprete+1 economie+1 | g+2 c+3 d+1 e+1
    > Deux cents jeunes sont embauchés.
 C) Rien :: Agents professionnels.

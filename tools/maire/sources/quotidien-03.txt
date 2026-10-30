@@ -36,7 +36,7 @@ C) Rien :: Accident isolé.
    > Rien ne change.
 
 === quo-069 | quotidien | Des frigos solidaires dans la rue
-Des associations installent des réfrigérateurs dans la rue où chacun dépose ou prend de la nourriture.
+Des associations installent des réfrigérateurs dans les rues de l’arrondissement où chacun dépose ou prend de la nourriture.
 A) Soutenir et multiplier les frigos :: Solidarité.
    bud-2 achat+1 ecologie+1 bon+1 | g+3 c+2 d0 e+3
    > Cinquante frigos solidaires sont installés.
@@ -49,7 +49,7 @@ C) Les interdire :: Risque sanitaire.
    > Les frigos sont retirés.
 
 === quo-070 | quotidien | Les antennes 5G sur les toits
-Des habitants s’inquiètent des antennes de téléphonie installées sur leur immeuble.
+Des habitants de l’arrondissement s’inquiètent des antennes de téléphonie installées sur leur immeuble.
 A) Moratoire sur les nouvelles antennes :: Précaution.
    bon+1 economie-1 | g+1 c0 d-2 e+3
    > Les nouvelles antennes sont suspendues.
@@ -61,7 +61,7 @@ C) Laisser faire les opérateurs :: Réseau moderne.
    > Les antennes s’installent.
 
 === quo-071 | quotidien | Des trottoirs encombrés de panneaux
-Poteaux, panneaux et bornes encombrent les trottoirs. Les poussettes et fauteuils ne passent plus.
+Poteaux, panneaux et bornes encombrent les trottoirs de l’arrondissement. Les poussettes et fauteuils ne passent plus.
 A) Grand désencombrement des trottoirs :: Libérer l’espace.
    bud-6 bon+1 transports+1 | g+1 c+3 d+2 e+1
    > Des milliers d’objets inutiles sont retirés.
@@ -73,7 +73,7 @@ C) Rien :: Coût.
    > Les trottoirs restent encombrés.
 
 === quo-072 | quotidien | Élargir les trottoirs trop étroits
-Dans certaines rues, le trottoir mesure moins d’un mètre. Les piétons marchent sur la chaussée.
+Dans certaines rues de l’arrondissement, le trottoir mesure moins d’un mètre. Les piétons marchent sur la chaussée.
 A) Élargir en supprimant du stationnement :: Piétons d’abord.
    bud-12 bon+1 securite+1 pop-1 | g+1 c+2 d-2 e+3
    > Les trottoirs sont élargis.
@@ -97,8 +97,8 @@ C) Interdire la vente devant les fleuristes :: Protéger les commerces.
    > Les vendeurs sont éloignés des boutiques.
 
 === quo-074 | quotidien | Des tables d’échecs dans les parcs
-Des joueurs d’échecs et de cartes demandent des tables dans les parcs.
-A) Installer cent tables de jeux :: Convivialité.
+Des joueurs d’échecs et de cartes demandent des tables dans les parcs de l’arrondissement.
+A) Installer trente tables de jeux :: Convivialité.
    bud-2 bon+2 | g+1 c+2 d+1 e+1
    > Les parcs accueillent des tables de jeux.
 B) Quelques tables tests :: Tester.
@@ -109,7 +109,7 @@ C) Rien :: Bancs suffisants.
    > Rien ne change.
 
 === quo-075 | quotidien | Les barbecues sur les balcons
-Des barbecues au charbon sur les balcons enfument les voisins et créent des risques d’incendie.
+Des barbecues au charbon sur les balcons de l’arrondissement enfument les voisins et créent des risques d’incendie.
 A) Interdire les barbecues au charbon :: Sécurité.
    securite+1 bon-1 | g0 c+2 d+2 e+1
    > Seuls les barbecues électriques sont autorisés.
@@ -121,7 +121,7 @@ C) Rien :: Liberté.
    > Les barbecues continuent.
 
 === quo-076 | quotidien | Six semaines pour garer un camion de déménagement
-Il faut demander six semaines à l’avance l’autorisation de garer un camion de déménagement.
+À la mairie d’arrondissement, il faut demander six semaines à l’avance l’autorisation de garer un camion de déménagement.
 A) Autorisation en ligne en 48 h :: Simplifier.
    bud-2 services+1 bon+1 | g+1 c+3 d+2 e0
    > Les autorisations sont délivrées en deux jours.
@@ -133,7 +133,7 @@ C) Rien :: Procédure actuelle.
    > Les délais restent longs.
 
 === quo-077 | quotidien | Les chantiers de nuit dans le métro
-Les travaux de nuit sur les voies du métro réveillent les riverains des lignes aériennes.
+Les travaux de nuit sur les voies du métro réveillent les riverains des lignes aériennes de l’arrondissement.
 ? distinct
 A) Indemniser et fournir des bouchons et des nuits d’hôtel :: Compenser.
    bud-3 bon+1 | g+2 c+2 d+1 e0

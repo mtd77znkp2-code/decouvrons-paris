@@ -12,11 +12,11 @@ C) Amendes pour troubles du voisinage :: Sanction.
    > Les propriétaires négligents sont verbalisés.
 
 === quo-027 | quotidien | Du wifi gratuit dans les parcs
-Les étudiants et les familles demandent un wifi gratuit et rapide dans les parcs et les places.
+Les étudiants et les familles demandent un wifi gratuit et rapide dans les parcs et les places de l’arrondissement.
 A) Couvrir tous les grands parcs :: Connecté.
    bud-6 rec-0.1x60 bon+1 services+1 | g+1 c+3 d+2 e0
    > Le wifi gratuit couvre 200 parcs.
-B) Seulement dans les bibliothèques et les mairies :: Lieux publics.
+B) Seulement dans les bibliothèques et à la mairie :: Lieux publics.
    bud-2 services+1 | g+1 c+2 d+1 e0
    > Les bâtiments publics offrent un wifi gratuit.
 C) Refuser : les parcs doivent rester déconnectés :: Nature.
@@ -49,7 +49,7 @@ C) Refuser :: Les bibliothèques existent.
    > Les boîtes ne sont pas autorisées.
 
 === quo-030 | quotidien | Les plaques de rue illisibles
-Les plaques bleues des noms de rue sont effacées ou couvertes d’autocollants. Les touristes se perdent.
+Les plaques bleues des noms de rue de l’arrondissement sont effacées ou couvertes d’autocollants. Les touristes se perdent.
 A) Remplacer toutes les plaques abîmées :: Patrimoine.
    bud-4 bon+1 | g0 c+2 d+2 e0
    > Les plaques bleues retrouvent leur éclat.
@@ -61,10 +61,10 @@ C) Rien :: Les téléphones guident les gens.
    > Les plaques restent illisibles.
 
 === quo-031 | quotidien | Apprendre le vélo aux enfants
-Beaucoup d’enfants parisiens ne savent pas faire de vélo faute d’espace pour apprendre.
+Beaucoup d’enfants de l’arrondissement ne savent pas faire de vélo faute d’espace pour apprendre.
 A) Cours de vélo dans toutes les écoles :: Savoir rouler.
    rec-0.2x60 transports+1 bon+1 | g+2 c+2 d+1 e+3
-   > Les élèves de CM1 apprennent à rouler en ville.
+   > Les élèves de CM1 apprennent à rouler dans le quartier.
 B) Pistes d’apprentissage dans les parcs :: Espaces dédiés.
    bud-4 bon+1 | g+1 c+3 d+1 e+2
    > Des petites pistes d’apprentissage sont tracées.
@@ -73,7 +73,7 @@ C) Laisser faire les parents :: Pas notre rôle.
    > Rien ne change.
 
 === quo-032 | quotidien | Des fuites d’eau dans les rues
-Des canalisations vétustes cassent régulièrement et inondent les rues pendant des heures.
+Des canalisations vétustes de l’arrondissement cassent régulièrement et inondent les rues pendant des heures.
 A) Grand plan de remplacement des canalisations :: Investir.
    bud-50 services+2 ecologie+1 | g+1 c+2 d+2 e+2
    > Cinquante kilomètres de tuyaux sont remplacés.
@@ -87,7 +87,7 @@ C) Réparer au fil des casses :: Économie.
    ~40 pop-1 > Une fuite géante inonde une station de métro.
 
 === quo-033 | quotidien | L’odeur de friture des restaurants
-Des riverains se plaignent des extractions de cuisine qui rejettent des odeurs de friture dans leur cour.
+Des riverains de l’arrondissement se plaignent des extractions de cuisine qui rejettent des odeurs de friture dans leur cour.
 A) Contrôler les conduits d’extraction :: Règlement.
    bon+1 economie-1 | g0 c+2 d+1 e+1
    > Les restaurants doivent mettre leurs conduits aux normes.
@@ -99,10 +99,10 @@ C) Ne pas intervenir :: Conflit privé.
    > Les odeurs persistent.
 
 === quo-034 | quotidien | Des pianos en libre accès
-Des pianos installés dans les gares ont un grand succès. Les Parisiens en veulent dans les parcs.
-A) Installer des pianos dans vingt lieux publics :: Musique partout.
+Des pianos installés dans les gares ont un grand succès. Les habitants en veulent dans les parcs de l’arrondissement.
+A) Installer des pianos dans dix lieux publics :: Musique partout.
    bud-2 bon+2 | g+1 c+2 d+1 e+1
-   > Des pianos apparaissent dans les parcs et les mairies.
+   > Des pianos apparaissent dans les parcs et à la mairie.
    ~30 bon-1 > Des riverains se lassent des concerts à toute heure.
 B) Pianos l’été seulement :: Saisonnier.
    bud-1 bon+1 | g+1 c+3 d+1 e+1
@@ -112,8 +112,8 @@ C) Refuser :: Bruit.
    > Aucun piano n’est installé.
 
 === quo-035 | quotidien | Des jeux d’eau pour les enfants l’été
-Les familles sans vacances cherchent des endroits où les enfants peuvent se rafraîchir.
-A) Créer des jeux d’eau dans trente squares :: Fraîcheur.
+Les familles sans vacances de l’arrondissement cherchent des endroits où les enfants peuvent se rafraîchir.
+A) Créer des jeux d’eau dans dix squares :: Fraîcheur.
    bud-10 bon+2 | g+2 c+2 d+1 e0
    > Des jets d’eau font la joie des enfants.
    ~25 ecologie-1 > Les écologistes dénoncent le gaspillage d’eau.
@@ -125,7 +125,7 @@ C) Ouvrir plus longtemps les piscines :: Alternative.
    > Les piscines ferment à 21 h l’été.
 
 === quo-036 | quotidien | Trouver une pharmacie de garde la nuit
-Les habitants cherchent pendant des heures une pharmacie ouverte la nuit.
+Les habitants de l’arrondissement cherchent pendant des heures une pharmacie ouverte la nuit.
 A) Application et affichage en temps réel :: Information.
    bud-2 services+1 | g+1 c+3 d+2 e0
    > Une carte des pharmacies ouvertes est publiée.
@@ -137,7 +137,7 @@ C) Distributeurs de médicaments de base :: Automatiser.
    > Des distributeurs vendent paracétamol et pansements.
 
 === quo-037 | quotidien | Les vendeurs de maïs grillé sur des chariots
-Des vendeurs font griller du maïs sur des chariots de supermarché, dans des conditions d’hygiène douteuses.
+Des vendeurs font griller du maïs sur des chariots de supermarché dans l’arrondissement, dans des conditions d’hygiène douteuses.
 A) Saisir le matériel :: Hygiène.
    securite+1 bon-1 | g-2 c+1 d+3 e0
    > Les chariots sont saisis.
@@ -149,7 +149,7 @@ C) Tolérer :: Petite économie.
    > Les chariots restent.
 
 === quo-038 | quotidien | La mendicité avec des enfants
-Des réseaux font mendier des enfants dans le métro et aux carrefours.
+Des réseaux font mendier des enfants dans le métro et aux carrefours de l’arrondissement.
 A) Protection de l’enfance et enquêtes contre les réseaux :: Protéger les enfants.
    rec-0.2x60 securite+2 services+1 | g+2 c+2 d+2 e+1
    > Les enfants sont pris en charge par la protection de l’enfance.
@@ -162,7 +162,7 @@ C) Hébergement des familles :: Solidarité.
    > Des familles sont hébergées.
 
 === quo-039 | quotidien | Des parasols sur les places brûlantes
-Les places minérales sont brûlantes l’été. Pas un coin d’ombre.
+Les places minérales de l’arrondissement sont brûlantes l’été. Pas un coin d’ombre.
 A) Installer des voiles d’ombrage géantes :: Rapide.
    bud-5 bon+1 | g+1 c+3 d+1 e+1
    > Des voiles colorées ombragent les places.
@@ -226,7 +226,7 @@ C) Garder fermé :: Tranquillité des locataires.
    > Les grilles restent fermées.
 
 === quo-044 | quotidien | La fête des voisins
-La fête des voisins rassemble des milliers de Parisiens. Les organisateurs demandent plus d’aide.
+La fête des voisins rassemble des milliers d’habitants de l’arrondissement. Les organisateurs demandent plus d’aide.
 A) Fournir tables, chaises et kits gratuits :: Encourager.
    bud-2 bon+2 | g+2 c+2 d+2 e+1
    > Des kits de fête sont prêtés.
@@ -299,7 +299,7 @@ C) Tolérer :: Moments de joie.
    > Les klaxons continuent.
 
 === quo-050 | quotidien | Les livraisons de nuit des supermarchés
-Les camions de livraison des supérettes déchargent à 4 h du matin sous les fenêtres.
+Les camions de livraison des supérettes de l’arrondissement déchargent à 4 h du matin sous les fenêtres.
 A) Interdire les livraisons entre 22 h et 6 h :: Sommeil.
    bon+2 economie-1 transports-1 | g+1 c+1 d-1 e+1
    > Les livraisons se font en journée.
@@ -323,7 +323,7 @@ C) Rien :: Pas prioritaire.
    > Les plaques continuent de claquer.
 
 === quo-052 | quotidien | Les horaires des déchetteries
-Les déchetteries sont fermées le dimanche, le seul jour où les Parisiens bricolent.
+Les déchetteries sont fermées le dimanche, le seul jour où les habitants bricolent.
 A) Ouvrir le dimanche :: Service adapté.
    rec-0.1x60 proprete+1 | g+1 c+2 d+1 e+1
    > Les déchetteries ouvrent le dimanche.
@@ -347,7 +347,7 @@ C) Abris financés par la publicité :: Gratuit.
    > Des abris publicitaires sont posés.
 
 === quo-054 | quotidien | Le numéro de la mairie ne répond plus
-Le numéro de la mairie fait attendre quarante minutes. Les habitants raccrochent.
+Le numéro de la mairie d’arrondissement fait attendre quarante minutes. Les habitants raccrochent.
 A) Doubler les téléconseillers :: Service.
    rec-0.3x60 services+2 | g+2 c+2 d+1 e0
    > L’attente tombe à cinq minutes.
@@ -371,11 +371,11 @@ C) Accepter les pertes et en racheter :: Liberté.
    > Les chaises restent libres.
 
 === quo-056 | quotidien | Des coins pour les nounous dans les squares
-Les assistantes maternelles passent leurs journées dans les squares sans toilettes ni abri.
+Les assistantes maternelles de l’arrondissement passent leurs journées dans les squares sans toilettes ni abri.
 A) Aménager des espaces couverts et des toilettes :: Confort.
    bud-6 services+1 bon+1 | g+2 c+2 d+1 e+1
    > Des abris et des toilettes sont installés.
-B) Ouvrir des salles municipales pour les nounous :: Lieu chaud.
+B) Ouvrir des salles de la mairie pour les nounous :: Lieu chaud.
    bud-2 services+1 | g+2 c+2 d+1 e+1
    > Des salles d’accueil ouvrent le matin.
 C) Rien :: Pas notre rôle.
@@ -383,7 +383,7 @@ C) Rien :: Pas notre rôle.
    > Les nounous restent dehors.
 
 === quo-057 | quotidien | Les bacs à sable sales
-Les bacs à sable des squares sont souillés par les chats et les mégots.
+Les bacs à sable des squares de l’arrondissement sont souillés par les chats et les mégots.
 A) Changer le sable tous les mois :: Hygiène.
    rec-0.1x60 proprete+1 bon+1 | g+1 c+2 d+1 e0
    > Le sable est renouvelé régulièrement.
@@ -395,10 +395,10 @@ C) Les supprimer :: Simple.
    > Les bacs à sable disparaissent.
 
 === quo-058 | quotidien | Des parcours de jogging balisés
-Les coureurs demandent des parcours balisés avec distances et points d’eau.
-A) Baliser cent kilomètres de parcours :: Sport pour tous.
+Les coureurs de l’arrondissement demandent des parcours balisés avec distances et points d’eau.
+A) Baliser vingt kilomètres de parcours :: Sport pour tous.
    bud-3 bon+1 | g+1 c+2 d+2 e+2
-   > Des parcours balisés traversent la ville.
+   > Des parcours balisés traversent l’arrondissement.
 B) Points d’eau et vestiaires dans les grands parcs :: Équipement.
    bud-6 bon+1 services+1 | g+1 c+2 d+1 e+1
    > Des vestiaires sont installés.
@@ -407,10 +407,10 @@ C) Rien :: Les coureurs se débrouillent.
    > Rien ne change.
 
 === quo-059 | quotidien | Prêter des outils entre voisins
-Chaque foyer possède une perceuse utilisée dix minutes par an. Des habitants veulent une outilthèque.
-A) Ouvrir des outilthèques dans les mairies :: Partage.
+Chaque foyer possède une perceuse utilisée dix minutes par an. Des habitants de l’arrondissement veulent une outilthèque.
+A) Ouvrir une outilthèque à la mairie d’arrondissement :: Partage.
    bud-3 bon+1 ecologie+1 achat+1 | g+2 c+2 d+1 e+3
-   > Les Parisiens empruntent perceuses et échelles.
+   > Les habitants empruntent perceuses et échelles.
 B) Plateforme de prêt entre voisins :: Numérique.
    bud-1 bon+1 ecologie+1 | g+1 c+3 d+1 e+2
    > Une application facilite le prêt.
@@ -432,7 +432,7 @@ C) Garder les amendes :: Responsabilité.
    > Rien ne change.
 
 === quo-061 | quotidien | Les lampadaires éclairent les chambres
-Des habitants ne dorment plus à cause d’un lampadaire trop puissant devant leur fenêtre.
+Des habitants de l’arrondissement ne dorment plus à cause d’un lampadaire trop puissant devant leur fenêtre.
 A) Lampadaires orientés vers le sol :: Réduire la lumière.
    bud-5 bon+1 ecologie+1 | g+1 c+3 d+1 e+3
    > Les lampadaires éclairent le trottoir, pas les fenêtres.
@@ -468,7 +468,7 @@ C) Rien :: Pas prioritaire.
    > Les chiens ont soif.
 
 === quo-064 | quotidien | Le froid dans les écoles en hiver
-Des écoles mal chauffées obligent les enfants à garder leur manteau en classe.
+Des écoles mal chauffées de l’arrondissement obligent les enfants à garder leur manteau en classe.
 A) Réparer les chaudières en urgence :: Chaleur.
    bud-10 services+2 bon+1 | g+2 c+2 d+1 e0
    > Les chaudières défectueuses sont remplacées.
@@ -480,7 +480,7 @@ C) Distribuer des radiateurs d’appoint :: Rapide.
    > Des radiateurs électriques sont livrés.
 
 === quo-065 | quotidien | Les ronds-points fleuris
-Les habitants regrettent que les ronds-points et terre-pleins soient laissés en friche.
+Les habitants regrettent que les ronds-points de l’arrondissement et terre-pleins soient laissés en friche.
 A) Fleurir tous les terre-pleins :: Embellir.
    bud-5 rec-0.1x60 bon+1 ecologie+1 | g+1 c+2 d+2 e+2
    > Les terre-pleins se couvrent de fleurs.
