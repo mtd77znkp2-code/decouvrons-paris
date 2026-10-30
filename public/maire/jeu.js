@@ -1652,14 +1652,16 @@
     var info = h("p", "m-pct-info", "📊 Ce qu’ont choisi les autres maires…"); ch.parentNode.insertBefore(info, ch);
     lireVotes(cle).then(function (d) {
       if (!document.body.contains(ch)) return;
-      var r = partsVotes(ev, d);
-      if (!r) { info.textContent = "📊 Aucun maire n’a encore tranché ce dossier : tu seras le premier !"; return; }
-      info.textContent = "📊 " + r.tot + " maire" + (r.tot > 1 ? "s ont" : " a") + " déjà tranché ce dossier";
-      var max = Math.max.apply(null, r.p);
+      var r = partsVotes(ev, d), c = ev.choix.map(function (_, k) { return (d && d["c" + k]) || 0; });
+      info.textContent = r ? "📊 " + r.tot + " maire" + (r.tot > 1 ? "s ont" : " a") + " déjà tranché ce dossier" : "📊 Aucun maire n’a encore tranché ce dossier : tu seras le premier !";
+      var max = r ? Math.max.apply(null, r.p) : 0;
+      // Sous chaque réponse : sa part des votes, ou « pas encore de stat » si personne ne l'a choisie (un seul vote suffit)
       ch.querySelectorAll(".m-pct").forEach(function (e, k) {
-        e.textContent = ""; var b = h("i"); b.style.width = r.p[k] + "%";
+        e.textContent = "";
+        if (!c[k]) { e.appendChild(h("em", "m-pct-vide", "📊 Pas encore de stat : personne n’a fait ce choix")); e.classList.remove("m-pct-top"); return; }
+        var b = h("i"); b.style.width = r.p[k] + "%";
         ajout(e, ajout(h("span", "m-pct-barre"), b), h("b", null, r.p[k] + " % des maires ont fait ce choix"));
-        e.classList.toggle("m-pct-top", r.p[k] === max && r.tot > 1);
+        e.classList.toggle("m-pct-top", r.p[k] === max);
       });
     });
   }
