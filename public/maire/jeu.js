@@ -198,7 +198,8 @@
     }
     // Quatre tuiles : chacune ouvre son écran
     var se = G.serie(), ps = G.paliersMois(), roue = G.roueDispo(), t = h("div", "mx-tuiles");
-    function tuile(ico, titre, sous, f, vif) { var b = bouton("", "mx-tuile" + (vif ? " mx-vif" : ""), f); ajout(b, h("span", null, ico), h("strong", null, titre), h("small", null, sous)); return b; }
+    var TUILE_ICO = { "🔥": "menu-serie", "🎟️": "menu-palier", "🎡": "menu-roue", "🏅": "menu-ligue" };
+    function tuile(ico, titre, sous, f, vif) { var b = bouton("", "mx-tuile" + (vif ? " mx-vif" : ""), f); ajout(b, TUILE_ICO[ico] ? icoUI(TUILE_ICO[ico]) : h("span", null, ico), h("strong", null, titre), h("small", null, sous)); return b; }
     ajout(t, tuile("🔥", se.n ? se.n + " jour" + (se.n > 1 ? "s" : "") : "Série", se.fait ? "validé aujourd’hui" : "joue aujourd’hui", ecranSerie, !se.fait),
       tuile("🎟️", "Palier " + ps.palier + "/20", "objectifs du mois", ecranPass),
       tuile("🎡", "Roue", roue ? "tour gratuit !" : "revient lundi", roue ? ecranRoue : function () { toast("🎡 Prochain tour gratuit lundi."); }, roue),
@@ -206,10 +207,10 @@
     box.appendChild(t);
     // Mes statistiques : seulement avec un compte Google (sinon, on propose de se connecter)
     var cg = window.compteGoogle && compteGoogle(), bst = bouton("", "mx-messtats" + (cg ? "" : " mx-verrou-stats"), cg ? ecranMesStats : ecranConnexion);
-    ajout(bst, h("span", null, cg ? "📊" : "🔒"), ajout(h("div"), h("strong", null, "Mes statistiques"), h("small", null, cg ? "tes parties, tes compétences, tes records" : "connecte-toi avec Google pour les voir")));
+    ajout(bst, cg ? icoUI("menu-stats") : h("span", null, "🔒"), ajout(h("div"), h("strong", null, "Mes statistiques"), h("small", null, cg ? "tes parties, tes compétences, tes records" : "connecte-toi avec Google pour les voir")));
     box.appendChild(bst);
     var breg = bouton("", "mx-messtats", function () { ecranReglagesSon(accueil); });
-    ajout(breg, h("span", null, "⚙️"), ajout(h("div"), h("strong", null, "Réglages"), h("small", null, "volume de la musique et des effets sonores")));
+    ajout(breg, icoUI("ui-reglages"), ajout(h("div"), h("strong", null, "Réglages"), h("small", null, "volume de la musique et des effets sonores")));
     box.appendChild(breg);
     var auj = h("details", "mx-replie"); auj.appendChild(h("summary", null, "📅 Aujourd’hui : défi, quêtes et succès du jour"));
     var zone = h("div", "m-auj"); auj.appendChild(zone); box.appendChild(auj);
@@ -614,7 +615,7 @@
       });
       b.dataset.id = x.id; b.setAttribute("aria-pressed", x.id === CHOIX.maire);
       var prom = x.promesses.map(function (k) { return M.ICO[k] + " " + M.PILIERS[k]; }).join(" · ");
-      ajout(b, h("span", "mx-mico", x.dispo ? x.ico : "🔒"), ajout(h("div"), h("strong", null, x.nom + (m.ligne ? " · " + M.LIGNES[x.ligne].nom : "")),
+      ajout(b, x.dispo ? icoUI("maire-" + x.id, "mx-mico mx-portrait") : h("span", "mx-mico", "🔒"), ajout(h("div"), h("strong", null, x.nom + (m.ligne ? " · " + M.LIGNES[x.ligne].nom : "")),
         x.slogan ? h("em", "mx-slogan", x.slogan) : null, m.promesses && prom ? h("small", "mx-prom-maire", "🎯 Promesses : " + prom) : null, h("small", null, x.dispo ? x.txt : "🔒 " + x.cond)));
       lg.appendChild(b);
     });
@@ -989,11 +990,11 @@
     var p = st.session.place, d = h("div", "mx-session" + (p >= SS().TRONE ? " mx-trone" : ""));
     var titre = ajout(h("div", "mx-ses-titre"), h("span", null, p >= SS().TRONE ? "👑" : "🏛️"), ajout(h("div"), h("strong", null, st.session.titre), h("small", null, "📚 " + (SES.s.nom || "Victor Hugo") + " · place " + (SS().NB - p) + " sur " + SS().NB + " · puissance ×" + virg(st.session.puissance))));
     var duo = h("div", "mx-ses-duo");
-    if (st.session.rival) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-rival", function () { ficheSession(p + 1); }), h("small", null, "⚔️ Rival · au-dessus"), h("b", null, st.session.rival.ico + " " + st.session.rival.nom + (st.session.rival.type === "bot" ? " 🤖" : "")), h("small", null, st.session.rival.court)));
+    if (st.session.rival) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-rival", function () { ficheSession(p + 1); }), ajout(h("small", "mx-ses-lib"), icoUI("badge-rival"), document.createTextNode(" Rival · au-dessus")), h("b", null, st.session.rival.ico + " " + st.session.rival.nom + (st.session.rival.type === "bot" ? " 🤖" : "")), h("small", null, st.session.rival.court)));
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "👑 Tu es au sommet"), h("b", null, "Garde ton trône !")));
-    if (st.session.opp) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-opp", function () { ficheSession(p - 1); }), h("small", null, "🛡️ Opposant · au-dessous"), h("b", null, st.session.opp.ico + " " + st.session.opp.nom + (st.session.opp.type === "bot" ? " 🤖" : "")), h("small", null, st.session.opp.court)));
+    if (st.session.opp) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-opp", function () { ficheSession(p - 1); }), ajout(h("small", "mx-ses-lib"), icoUI("badge-opposant"), document.createTextNode(" Opposant · au-dessous")), h("b", null, st.session.opp.ico + " " + st.session.opp.nom + (st.session.opp.type === "bot" ? " 🤖" : "")), h("small", null, st.session.opp.court)));
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "🛡️ Personne en dessous"), h("b", null, "Pas d’opposant")));
-    var actions = ajout(h("div", "mx-ses-actions"), majAttaque(verrouMeca("attaques", bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre))), bouton("🏆 Classement", "mx-ses-act mx-ses-btn", classementSession));
+    var actions = ajout(h("div", "mx-ses-actions"), majAttaque(verrouMeca("attaques", bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre))), ajout(bouton("", "mx-ses-act mx-ses-btn", classementSession), icoUI("ui-classement"), document.createTextNode(" Classement")));
     ajout(d, titre, duo, actions, h("small", "mx-ses-malus", ""));
     setTimeout(majSession, 0);
     return d;
@@ -1025,7 +1026,7 @@
         var A = S.ATTAQUES[k], px = S.prixAction(A.cout, p), att = S.attente(s, moi + ":" + k, now), cher = px > st.tresor;
         var b = bouton("", "mx-attaque", function () { lancerAttaque(cible, k, f); });
         b.disabled = !!att || cher;
-        ajout(b, h("span", "mx-att-ico", A.ico), ajout(h("span", "mx-att-txt"), h("b", null, A.nom), h("small", null, A.txt)),
+        ajout(b, icoUI("att-" + k, "mx-att-ico"), ajout(h("span", "mx-att-txt"), h("b", null, A.nom), h("small", null, A.txt)),
           h("em", "mx-att-prix", att ? "⏳ " + mmss(att) : cher ? "💸 " + argent(px) : px ? argent(px) : "Gratuit"));
         l.appendChild(b);
       });
@@ -1036,7 +1037,7 @@
         window.SessionLigne.proteger(SES.id).then(function () { toast("🛡️ Ton service de communication veille."); jeu(); rendre(); });
       });
       bb.disabled = !!actif || !!attB || pxB > st.tresor;
-      ajout(bb, h("span", "mx-att-ico", B.ico), ajout(h("span", "mx-att-txt"), h("b", null, B.nom), h("small", null, B.txt)), h("em", "mx-att-prix", actif ? "✔ Actif" : attB ? "⏳ " + mmss(attB) : argent(pxB)));
+      ajout(bb, icoUI("att-bouclier", "mx-att-ico"), ajout(h("span", "mx-att-txt"), h("b", null, B.nom), h("small", null, B.txt)), h("em", "mx-att-prix", actif ? "✔ Actif" : attB ? "⏳ " + mmss(attB) : argent(pxB)));
       c.appendChild(bb);
       var j = (s.journal || []).slice().reverse().filter(function (e) { return e.type !== "bouclier"; }).slice(0, 6);
       if (j.length) { var u = h("ul", "mx-journal-att"); j.forEach(function (e) { u.appendChild(h("li", null, ligneAttaque(e))); }); ajout(c, h("h5", null, "📰 Dernières attaques"), u); }
@@ -1319,7 +1320,7 @@
     return d;
   }
   // Le téléphone du maire : un vieux téléphone rouge animé
-  function imgTel(cls) { var i = h("img", cls); i.src = "maire/img/telephone.gif"; i.alt = ""; i.width = 40; i.height = 40; i.decoding = "async"; return i; }
+  function imgTel(cls) { var i = h("img", cls); i.src = "maire/img/ui/ui-telephone.webp"; i.alt = ""; i.width = 40; i.height = 40; i.decoding = "async"; return i; }
   var TEL_AVANT = null;
   function telephone() {
     var nl = st.messages.filter(function (m) { return !m.lu; }).length;
@@ -1438,7 +1439,8 @@
     var gauche = ajout(h("div", "mx-sond"), h("b", null, virg(v) + " %"), h("small", null, etat === "bien" ? "Sondage · tu serais réélu" : etat === "juste" ? "Sondage · au coude-à-coude" : "Sondage · tu serais battu"));
     // Jauge du sondage : le trait marque la barre des 50 %
     var jg = h("div", "mx-jauge"), ji = h("i"); ji.style.width = Math.max(2, Math.min(100, v)) + "%"; jg.appendChild(ji); gauche.appendChild(jg);
-    function stat(ico, val, lib, alerte, cls) { var e = h("div", "mx-stat" + (alerte ? " mx-alerte" : "") + (cls ? " " + cls : "")), b = h("b"); b.innerHTML = val; ajout(e, h("span", null, ico), b, h("small", null, lib)); return e; }
+    var STAT_ICO = { "💰": "stat-argent", "😊": "stat-bonheur", "📣": "stat-popularite", "👥": "stat-habitants" };
+    function stat(ico, val, lib, alerte, cls) { var e = h("div", "mx-stat" + (alerte ? " mx-alerte" : "") + (cls ? " " + cls : "")), b = h("b"); b.innerHTML = val; ajout(e, STAT_ICO[ico] ? icoUI(STAT_ICO[ico]) : h("span", null, ico), b, h("small", null, lib)); return e; }
     function millions(n) { return n >= 1e6 ? (Math.round(n / 10000) / 100).toFixed(2).replace(".", ",") + " M" : Math.round(n / 1000) + " k"; }
     var g = h("div", "mx-stats");
     ajout(g, stat("💰", argent(st.tresor), (so >= 0 ? "+" : "") + argent(so) + "/trim." + (st.dette > 0 ? " · dette " + argent(st.dette) : ""), st.dette > M.PLAFOND_DETTE * 0.6 || so < 0),
@@ -1459,7 +1461,7 @@
       var p = h("div", "mx-pilier" + (prom ? " mx-prom" : ""));
       var barre = h("div", "mx-barre"), r = h("i"); r.style.width = v + "%"; r.style.background = couleur(v); barre.appendChild(r);
       if (prom) { var cible = h("em"); cible.style.left = M.P.ambSeuil + "%"; barre.appendChild(cible); }
-      ajout(p, h("span", "mx-pico", M.ICO[k]), ajout(h("div"), ajout(h("div", "mx-pt"), h("span", null, M.PILIERS[k]), h("b", null, Math.round(v) + (fl ? " " + fl : ""))), barre),
+      ajout(p, icoUI("pilier-" + k, "mx-pico"), ajout(h("div"), ajout(h("div", "mx-pt"), h("span", null, M.PILIERS[k]), h("b", null, Math.round(v) + (fl ? " " + fl : ""))), barre),
         prom ? h("i", "mx-prom-ico", "🎯") : null);   // promesse : cadre doré + petit badge dans le coin
       d.appendChild(p);
     });
@@ -1517,6 +1519,10 @@
   // Effet principal en une ligne (piliers et recettes) ; le reste est dans la fiche
   // Illustration du bâtiment si elle existe, sinon son emoji
   var DESSINS = {}; (M.C.ILLUSTRES || []).forEach(function (id) { DESSINS[id] = 1; });
+  // Icônes dessinées de l'interface (maire/img/ui) : une image dans un span, à la place d'un émoji
+  function icoUI(nom, cls) {
+    var e = h("span", (cls || "") + " mx-ui"), i = h("img"); i.src = "maire/img/ui/" + nom + ".webp"; i.alt = ""; i.decoding = "async"; i.draggable = false; e.appendChild(i); return e;
+  }
   function srcBat(id) { return "maire/img/bat/" + id + ".webp"; }
   function icone(id, cls) {
     if (!DESSINS[id]) return h("span", cls, M.BATIMENTS[id].ico);
@@ -1604,7 +1610,7 @@
       var E = M.EMPLOYES[id], n = M.nbEmp(st, id), px = M.prixEmploye(st, id), non = M.peutEmbaucher(st, id);
       var en = M.effetEmp(st, id), plus = M.effetEmp(st, id, 1) - en;
       var c = h("div", "mx-emp" + (n ? " mx-emp-on" : "") + (id === "proprete" && pr.manque ? " mx-emp-urgent" : ""));
-      ajout(c, ajout(h("div", "mx-emp-tete"), h("span", "mx-emp-ico", E.ico), ajout(h("div"), h("b", null, E.nom), h("small", null, n ? "Salaires : " + argent(E.salaire * n) + "/trim." : "Aucun")), n ? h("em", "mx-emp-n", "×" + n) : null),
+      ajout(c, ajout(h("div", "mx-emp-tete"), icoUI("emp-" + id, "mx-emp-ico"), ajout(h("div"), h("b", null, E.nom), h("small", null, n ? "Salaires : " + argent(E.salaire * n) + "/trim." : "Aucun")), n ? h("em", "mx-emp-n", "×" + n) : null),
         h("p", "mx-emp-txt", E.txt),
         n ? h("p", "mx-emp-effet", "✔ " + effetCourtEmp(id, en)) : null,
         h("p", "mx-emp-plus", "Suivant : " + effetCourtEmp(id, plus) + " · " + argent(E.salaire) + "/trim."));
@@ -1653,7 +1659,8 @@
       var neuf = ok.some(function (id) { return !G.guideVu("bat-" + id) && !st.bat[id] && (M.BATIMENTS[id].niv > 1 || M.BATIMENTS[id].si); });
       var t = bouton("", "mx-rayon" + (neuf ? " mx-rayon-neuf" : ""), function () { RAYON = r.id; var b = document.querySelector(".mx-boutique"); if (b) b.replaceWith(boutique()); else jeu(); });
       t.setAttribute("role", "tab"); t.setAttribute("aria-selected", r.id === RAYON); t.title = r.nom;
-      ajout(t, h("span", null, r.ico), h("small", null, r.nom));
+      var RAYON_ICO = { logement: "pilier-logement", transports: "pilier-transports", cadre: "pilier-cadre", securite: "pilier-securite", economie: "rayon-economie", commerce: "rayon-commerces", enchere: "ui-enchere", projet: "rayon-projets", secret: "rayon-secrets" };
+      ajout(t, RAYON_ICO[r.id] ? icoUI(RAYON_ICO[r.id]) : h("span", null, r.ico), h("small", null, r.nom));
       onglets.appendChild(t);
     });
     d.appendChild(onglets);

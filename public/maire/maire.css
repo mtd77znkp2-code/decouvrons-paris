@@ -1043,7 +1043,7 @@ button.mx-ses-qui{cursor:pointer}
 .mx-quand{min-width:0}.mx-quand strong{white-space:nowrap}.mx-quand small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mx-droite{flex:none}.mx-droite .mx-chip{white-space:nowrap;font-variant-numeric:tabular-nums}
 /* Bandeau de session : trois actions sur une ligne */
-.mx-ses-actions{grid-template-columns:repeat(3,1fr)}
+.mx-ses-actions{grid-template-columns:repeat(2,1fr)}
 .mx-ses-act{padding:10px 4px;font-size:13px}
 .mx-ses-act.mx-ses-btn{background:#f5b21a;color:#1b2550;box-shadow:none;border-radius:12px}
 .mx-ses-actions .mx-ses-act{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12.5px;padding:10px 6px;font-weight:800}
@@ -1243,3 +1243,17 @@ body.m-casino .m-pop,#m-telmod{place-items:start center}
 .mx-eq-barre i{display:block;height:100%;border-radius:inherit;background:#f5b21a}
 .mx-eq-bien .mx-eq-barre i{background:#6fdc95}.mx-eq-mal .mx-eq-barre i{background:#ff8a80}
 .mx-eq-l small{font-size:12px;opacity:.75;line-height:1.35}
+/* Icônes dessinées de l'interface (maire/img/ui) */
+.mx-ui{display:inline-grid;place-items:center;line-height:0;vertical-align:middle}
+.mx-ui img{width:1.6em;height:1.6em;object-fit:contain;image-rendering:auto}
+.mx-pico.mx-ui img{width:34px;height:34px}
+.mx-stat>.mx-ui img{width:28px;height:28px}
+.mx-tuile>.mx-ui img{width:40px;height:40px}
+.mx-messtats>.mx-ui img{width:36px;height:36px}
+.mx-rayon>.mx-ui img{width:30px;height:30px}
+.mx-mico.mx-portrait img{width:58px;height:58px;border-radius:50%}
+.mx-ses-lib{display:inline-flex;align-items:center;gap:4px}
+.mx-ses-lib .mx-ui img{width:16px;height:16px}
+.mx-ses-btn .mx-ui img,.mx-ses-attaque .mx-ui img{width:20px;height:20px}
+.mx-att-ico.mx-ui img{width:36px;height:36px}
+.mx-emp-ico.mx-ui img{width:36px;height:36px}
