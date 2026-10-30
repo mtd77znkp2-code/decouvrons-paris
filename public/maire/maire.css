@@ -860,7 +860,7 @@ body.m-fond-on:has(#site[hidden]) .m-fond,body.m-fond-on:has(#jeux[hidden]) .m-f
 /* Cartes en verre : même fond, même bord, même ombre partout */
 #m-app>.mx-hud,#m-app>.mx-tableau,#m-app>.mx-objectifs,#m-app>.m-ville,#m-app>.mx-gestion,#m-app>.mx-replie,#m-app>.m-chantiers,#m-app>.mx-notes,#m-app>.mx-boutique{
   border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.035));
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 10px 28px rgba(0,0,0,.22);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 10px 28px rgba(0,0,0,.22)}
 #m-app>.mx-boutique{padding:14px 12px 12px}
 #m-app>.mx-hud{padding:14px 16px}
 /* Sondage : gros chiffre, jauge avec la ligne des 50 % */
@@ -937,11 +937,12 @@ button.mx-ses-qui{cursor:pointer}
 .m-zone:hover{transform:translate(-50%,-50%) scale(1.08)}
 .m-zone b{font-size:clamp(8px,1.6vw,12px);line-height:1}.m-zone span{font-size:clamp(9px,1.8vw,14px);line-height:1.1}
 .m-zone.m-z-haut{background:rgba(15,18,40,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);filter:grayscale(1)}
-.m-zone.m-z-moi{background:rgba(245,178,26,.18);box-shadow:inset 0 0 0 3px #f5b21a,0 0 18px rgba(245,178,26,.8);z-index:1990;animation:m-z-pulse 2s ease-in-out infinite}
+.m-zone.m-z-moi{background:rgba(245,178,26,.18);box-shadow:inset 0 0 0 3px #f5b21a,0 0 18px rgba(245,178,26,.8);z-index:1990}
+.m-zone.m-z-moi::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 30px rgba(245,178,26,1);animation:m-z-pulse 2s ease-in-out infinite;pointer-events:none}
 .m-zone.m-z-moi b,.m-zone.m-z-moi span{opacity:.0}
 .m-zone.m-z-rival{box-shadow:inset 0 0 0 2px #ff8a80}
 .m-zone.m-z-joueur::after{content:"👤";position:absolute;top:-6px;right:-4px;font-size:12px}
-@keyframes m-z-pulse{50%{box-shadow:inset 0 0 0 3px #f5b21a,0 0 30px rgba(245,178,26,1)}}
+@keyframes m-z-pulse{0%,100%{opacity:0}50%{opacity:1}}
 .m-trone-pl{position:absolute;left:50%;top:2%;transform:translateX(-50%);z-index:2100;display:flex;gap:6px;align-items:center;padding:4px 10px;border-radius:99px;border:0;font:inherit;font-size:12px;color:#1b2550;background:linear-gradient(180deg,#ffd76a,#f5b21a);box-shadow:0 4px 12px rgba(0,0,0,.4);cursor:pointer;white-space:nowrap}
 /* Résultat d'élection de session */
 .m-flash-elec .m-flash-in{display:grid;gap:6px;justify-items:center;text-align:center;padding:26px 30px;border-radius:24px;background:#1b2550;color:#fff;box-shadow:0 0 0 3px #f5b21a,0 30px 80px rgba(0,0,0,.6)}
@@ -960,11 +961,10 @@ button.mx-ses-qui{cursor:pointer}
 .m-barmois .btn.mx-dossier{position:relative;overflow:hidden;color:#2a2416;border:1px solid #e8d08a;background:linear-gradient(90deg,#d9bc68 calc(var(--p,0)*100%),#a9a493 calc(var(--p,0)*100%));text-shadow:0 1px 0 rgba(255,255,255,.35)}
 .m-barmois .btn.mx-dossier .mx-reserve{font-size:11px;letter-spacing:.02em}
 .m-barmois .btn.mx-dossier.mx-vide{background:linear-gradient(90deg,#b9a76d calc(var(--p,0)*100%),#7d7a72 calc(var(--p,0)*100%));color:#26241e;border-color:#9b9070}
-.m-barmois .btn.mx-dossier.mx-pret{background:linear-gradient(135deg,#f6e3a1,#d4af45 45%,#b8bdc4);animation:mxBrille 2.2s ease-in-out infinite}
-.m-barmois .btn.mx-dossier.mx-pret::after{content:"";position:absolute;top:0;bottom:0;left:-40%;width:30%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-18deg);animation:mxReflet 2.6s ease-in-out infinite}
+.m-barmois .btn.mx-dossier.mx-pret{background:linear-gradient(135deg,#f6e3a1,#d4af45 45%,#b8bdc4);box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 18px 2px rgba(240,200,90,.45)}
+.m-barmois .btn.mx-dossier.mx-pret::after{content:"";position:absolute;top:0;bottom:0;left:0;width:30%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);transform:translateX(-120%) skewX(-18deg);animation:mxReflet 2.6s ease-in-out infinite;will-change:transform}
 .m-barmois .btn.mx-dossier.mx-nouveau{animation:mxSaut .7s cubic-bezier(.3,1.6,.5,1)}
-@keyframes mxBrille{0%,100%{box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 0 0 rgba(240,200,90,.0)}50%{box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 22px 4px rgba(240,200,90,.55)}}
-@keyframes mxReflet{0%{left:-40%}60%,100%{left:130%}}
+@keyframes mxReflet{0%{transform:translateX(-120%) skewX(-18deg)}60%,100%{transform:translateX(450%) skewX(-18deg)}}
 @keyframes mxSaut{0%{transform:scale(1)}35%{transform:scale(1.08)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.m-barmois .btn.mx-dossier.mx-pret,.m-barmois .btn.mx-dossier.mx-pret::after,.m-barmois .btn.mx-dossier.mx-nouveau{animation:none}}
 /* ===== Session : actions (attaquer, salle des ventes) ===== */
@@ -1013,18 +1013,18 @@ button.mx-ses-qui{cursor:pointer}
 .mx-vente.mx-toi{box-shadow:inset 0 0 0 2px #2f8a52}
 .mx-vente.mx-toi .mx-vente-meneur{color:#8ee6ad;font-weight:800}
 /* Sous-évaluée : reflet doré qui passe, badge qui sautille */
-.mx-vente.mx-affaire{box-shadow:inset 0 0 0 2px #f5b21a,0 0 22px rgba(245,178,26,.35);animation:mxAffaire 2.4s ease-in-out infinite}
-.mx-vente.mx-affaire::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,226,140,.22) 50%,transparent 65%);background-size:250% 100%;animation:mxReflet2 2.6s linear infinite;pointer-events:none}
+.mx-vente.mx-affaire{box-shadow:inset 0 0 0 2px #f5b21a,0 0 22px rgba(245,178,26,.4)}
+.mx-vente.mx-affaire::after{content:"";position:absolute;top:0;bottom:0;left:0;width:45%;background:linear-gradient(110deg,transparent,rgba(255,226,140,.25),transparent);transform:translateX(-110%);animation:mxReflet2 2.6s linear infinite;pointer-events:none;will-change:transform}
 .mx-vente.mx-affaire .mx-badge:first-child{background:#f5b21a;color:#1b2550;animation:mxSautille 1.2s ease-in-out infinite}
-@keyframes mxAffaire{50%{box-shadow:inset 0 0 0 2px #ffd76a,0 0 32px rgba(245,178,26,.6)}}
-@keyframes mxReflet2{0%{background-position:150% 0}100%{background-position:-100% 0}}
+@keyframes mxReflet2{0%{transform:translateX(-110%)}100%{transform:translateX(330%)}}
 @keyframes mxSautille{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 /* Finit bientôt : bordure rouge qui bat, chrono qui tremble */
-.mx-vente.mx-bientot{box-shadow:inset 0 0 0 2px #ff5a4f;animation:mxUrgent 1s ease-in-out infinite}
-.mx-vente.mx-bientot.mx-affaire{animation:mxUrgent 1s ease-in-out infinite}
+.mx-vente.mx-bientot{box-shadow:inset 0 0 0 2px #ff5a4f,0 0 20px rgba(255,90,79,.45)}
+.mx-vente.mx-bientot::before{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 3px #ff8a80;animation:mxUrgent 1s ease-in-out infinite;pointer-events:none}
+
 .mx-vente.mx-bientot .mx-vente-temps{color:#ff8a80;animation:mxTremble .5s linear infinite}
 .mx-vente.mx-bientot .mx-badge{background:#ff5a4f;color:#fff}
-@keyframes mxUrgent{50%{box-shadow:inset 0 0 0 2px #ff5a4f,0 0 26px rgba(255,90,79,.55)}}
+@keyframes mxUrgent{0%,100%{opacity:0}50%{opacity:1}}
 @keyframes mxTremble{0%,100%{transform:translateX(0)}25%{transform:translateX(-1.5px) rotate(-2deg)}75%{transform:translateX(1.5px) rotate(2deg)}}
 @media (prefers-reduced-motion:reduce){.mx-vente,.mx-vente::after,.mx-vente *{animation:none!important}}
 /* Vente à venir : en gris, avec le compte à rebours */

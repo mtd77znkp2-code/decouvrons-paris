@@ -1150,7 +1150,7 @@
     visibles.forEach(function (r) {
       var l = ids.filter(function (id) { return rayonDe(id) === r.id; }), ok = l.filter(function (id) { return M.disponible(st, id); });
       var neuf = ok.some(function (id) { return !G.guideVu("bat-" + id) && !st.bat[id] && (M.BATIMENTS[id].niv > 1 || M.BATIMENTS[id].si); });
-      var t = bouton("", "mx-rayon" + (neuf ? " mx-rayon-neuf" : ""), function () { RAYON = r.id; var y = window.scrollY; jeu(); window.scrollTo(0, y); });
+      var t = bouton("", "mx-rayon" + (neuf ? " mx-rayon-neuf" : ""), function () { RAYON = r.id; var b = document.querySelector(".mx-boutique"); if (b) b.replaceWith(boutique()); else jeu(); });
       t.setAttribute("role", "tab"); t.setAttribute("aria-selected", r.id === RAYON); t.title = r.nom;
       ajout(t, h("span", null, r.ico), h("small", null, r.nom));
       onglets.appendChild(t);
