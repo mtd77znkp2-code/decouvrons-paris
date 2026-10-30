@@ -19,7 +19,9 @@
     { k: "entreeMin", g: "Rythme de la session", nom: "Fermeture avant l’élection", unite: "min", def: 3, min: 0, max: 10, pas: 0.5,
       desc: "On ne peut plus entrer dans une session à moins de X minutes de l’élection (une nouvelle session est créée)." },
     { k: "afkMin", g: "Rythme de la session", nom: "Anti-AFK", unite: "min", def: 15, min: 2, max: 120, pas: 1,
-      desc: "Un joueur qui ne touche à rien pendant X minutes quitte la session (un bot prend sa place)." },
+      desc: "Un joueur qui ne touche à rien pendant X minutes voit l’écran d’attente (puis quitte la session si personne ne revient)." },
+    { k: "afkAttenteMin", g: "Rythme de la session", nom: "Écran d’attente avant la sortie", unite: "min", def: 10, min: 1, max: 60, pas: 1,
+      desc: "Après l’anti-AFK, un écran « Tu es toujours là ? » laisse X minutes pour revenir avant de quitter la session." },
     { k: "venteMin", g: "Rythme de la session", nom: "Enchères de prestige", unite: "min", def: 6, min: 1, max: 30, pas: 1,
       desc: "Une enchère de bâtiment de prestige toutes les X minutes, qui dure X minutes." },
 

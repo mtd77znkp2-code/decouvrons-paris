@@ -9,7 +9,8 @@
   var R = root.MaireReglages || (typeof require === "function" ? require("./reglages.js") : null);
   function mandatMs() { return R.v.mandatMin * 60000; }   // entre deux élections
   function entreeMs() { return R.v.entreeMin * 60000; }   // on n'entre plus à moins de X min d'une élection
-  function afkMs() { return R.v.afkMin * 60000; }         // X min sans rien faire = dehors
+  function afkMs() { return R.v.afkMin * 60000; }         // X min sans rien faire = écran d'attente
+  function sortieMs() { return (R.v.afkMin + R.v.afkAttenteMin) * 60000; }   // ... puis X min d'attente = dehors
   function venteMs() { return R.v.venteMin * 60000; }     // une enchère de prestige toutes les X min, qui dure X min
 
   // Les arrondissements, du moins peuplé au plus peuplé (= du moins puissant au plus puissant).
@@ -133,7 +134,7 @@
     s.places[p].actif = Math.min(maintenant, stats.actif || maintenant); return s;
   }
   // Anti-AFK : un joueur qui n'a rien fait depuis 15 minutes (ou qui est parti) est remplacé par un bot (sa place est conservée par le bot)
-  function inactif(x, maintenant) { return maintenant - Math.max(x.actif || x.arrive || 0, 0) > afkMs(); }
+  function inactif(x, maintenant) { return maintenant - Math.max(x.actif || x.arrive || 0, 0) > sortieMs(); }
   function nettoyer(s0, maintenant) {
     var s = copie(s0), ch = false;
     s.places.forEach(function (x, p) { if (x.type === "joueur" && inactif(x, maintenant)) { s.places[p] = bot(s.graine, 100 + p + s.election * 21); delete s.votes[x.uid]; ch = true; } });
@@ -314,6 +315,6 @@
     ventesEnCours: ventesEnCours, ventesFinies: ventesFinies, venteSuivante: venteSuivante, prochaineVente: prochaineVente, vente: vente, encherir: encherir, pleine: pleine, signaler: signaler, nettoyer: nettoyer, voter: voter, votesRequis: votesRequis, nbVotes: nbVotes,
     electionDue: electionDue, scores: scores, elire: elire, resultatDe: resultatDe, placeDe: placeDe, joueurs: joueurs, fiche: fiche, statsBot: statsBot, scoreBot: scoreBot };
   // Durées réglables, lues en direct (S.MANDAT_MS suit les réglages)
-  [["MANDAT_MS", mandatMs], ["ENTREE_MIN", entreeMs], ["AFK_MS", afkMs], ["VENTE_P", venteMs], ["VENTE_D", venteMs], ["MALUS_MAX", function () { return R.v.malusMax; }]].forEach(function (x) { Object.defineProperty(API, x[0], { get: x[1], enumerable: true }); });
+  [["MANDAT_MS", mandatMs], ["ENTREE_MIN", entreeMs], ["AFK_MS", afkMs], ["SORTIE_MS", sortieMs], ["VENTE_P", venteMs], ["VENTE_D", venteMs], ["MALUS_MAX", function () { return R.v.malusMax; }]].forEach(function (x) { Object.defineProperty(API, x[0], { get: x[1], enumerable: true }); });
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.MaireSession = API;
 })(this);

@@ -800,6 +800,25 @@
   var ACTIF = Date.now();
   ["pointerdown", "keydown"].forEach(function (t) { document.addEventListener(t, function () { ACTIF = Date.now(); }, true); });
   function etatSes() { var e = M.etatSession(st); e.actif = ACTIF; e.note = SS().note(e); return e; }
+  // Écran d'attente « Tu es toujours là ? » : la place est gardée pendant le compte à rebours
+  function fermerAttente() { var v = document.getElementById("m-attente"); if (v) v.remove(); }
+  function attenteAFK(now) {
+    var reste = SS().SORTIE_MS - (now - ACTIF), f = document.getElementById("m-attente");
+    if (!f) {
+      cacherBulle();
+      f = h("div", "m-pop"); f.id = "m-attente"; f.setAttribute("role", "alertdialog");
+      var p = st && st.session ? st.session.place : -1;
+      var c = ajout(h("div", "m-pop-in m-afk"), h("span", "m-afk-ico", "💤"), h("h4", null, "Tu es toujours là ?"),
+        h("p", null, "Tu n’as rien fait depuis " + RG().v.afkMin + " minutes. Sans action de ta part, tu quitteras la session dans :"),
+        h("b", "m-attente-t", ""),
+        p >= 0 ? h("p", "m-attente-place", "🏛️ Ta place : " + SS().titre(p) + " · " + (SS().NB - p) + "ᵉ sur " + SS().NB + (SES.s && SES.s.nom ? " · session " + SES.s.nom : "")) : null);
+      c.appendChild(bouton("▶ Revenir dans la partie", "btn m-go", function () { ACTIF = Date.now(); fermerAttente(); }));
+      c.appendChild(bouton("🏠 Menu principal", "btn m-sec", function () { ACTIF = Date.now(); fermerAttente(); sauver(); fermerModale(); accueil(); haut(); }));
+      c.appendChild(h("small", "m-aide", "Tu gardes ta place tant que le compte à rebours n’est pas fini."));
+      f.appendChild(c); document.body.appendChild(f);
+    }
+    f.querySelector(".m-attente-t").textContent = mmss(Math.max(0, reste));
+  }
   function sortieAFK(parServeur) {
     if (!SES.id) return;
     if (!parServeur) window.SessionLigne.quitter(SES.id);
@@ -808,7 +827,7 @@
     cacherBulle(); var v = document.getElementById("m-afk"); if (v) v.remove();
     var f = h("div", "m-pop"); f.id = "m-afk"; f.setAttribute("role", "dialog");
     var c = ajout(h("div", "m-pop-in m-afk"), h("span", "m-afk-ico", "💤"), h("h4", null, "Tu as quitté la session"),
-      h("p", null, "15 minutes sans rien faire : ta place a été laissée à un maire robot."));
+      h("p", null, (RG().v.afkMin + RG().v.afkAttenteMin) + " minutes sans rien faire : ta place a été laissée à un maire robot."));
     c.appendChild(bouton("🏛️ Rejoindre une session", "btn m-go", function () { f.remove(); ACTIF = Date.now(); SES.afk = false; brancherSession(); }));
     f.appendChild(c); document.body.appendChild(f);
   }
@@ -855,7 +874,8 @@
     if (!st || !SES.id || !SES.s || st.phase === "fin") return;
     var visible = document.getElementById("m-app") && !document.hidden && !document.getElementById("site").hidden && !document.getElementById("jeux").hidden;
     var now = Date.now();
-    if (now - ACTIF > SS().AFK_MS) return sortieAFK(false);
+    if (now - ACTIF > SS().SORTIE_MS) { fermerAttente(); return sortieAFK(false); }
+    if (now - ACTIF > SS().AFK_MS) attenteAFK(now); else fermerAttente();
     if (visible && SS().electionDue(SES.s, now) && now - SES.elire > 5000) { SES.elire = now; window.SessionLigne.elire(SES.id); }
     var libre = visible && (st.phase === "gestion" || st.phase === "pret") && !document.getElementById("m-modale") && !document.getElementById("m-telmod") && !document.body.classList.contains("m-casino") && !(st.enchere && !st.enchere.fini) && !(st.bj && !st.bj.fini);
     rechargerReserve(now);
@@ -1458,13 +1478,15 @@
   var RAYON = null, gestionOuverte = false;
   function rayonDe(id) { return M.BATIMENTS[id].cat; }
 
+  var RAYONS_SL = 0;
   function boutique() {
     var d = h("div", "mx-boutique"), n = st.nivJ;
     d.appendChild(h("h5", null, "🛒 Construire"));
     if (window.ADMIN_UNLOCKED) d.appendChild(bouton(st.sansLimite ? "🛠 Limites désactivées (admin)" : "🛠 Passer les limites pour les bâtiments", "btn m-sec m-adminbat", function () {
       st = M.limites(st, !st.sansLimite); try { localStorage.setItem("maire_sanslimite", st.sansLimite ? "1" : ""); } catch (e) {} sauver(); jeu();
     }));
-    var rayons = st.session ? M.RAYONS.concat([{ id: "employes", nom: "Employés", ico: "👔" }]) : M.RAYONS;
+    // Employés juste après le premier rayon (bien visibles sans faire défiler)
+    var rayons = st.session ? M.RAYONS.slice(0, 1).concat([{ id: "employes", nom: "Employés", ico: "👔" }], M.RAYONS.slice(1)) : M.RAYONS;
     var verrouR = { employes: "employes", enchere: st.session ? "encheres" : null };
     var ids = Object.keys(M.BATIMENTS), visibles = rayons.filter(function (r) {
       if (r.id === "secret") return ids.some(function (id) { return rayonDe(id) === "secret" && M.disponible(st, id); });
@@ -1473,6 +1495,9 @@
     });
     if (!RAYON || !visibles.some(function (r) { return r.id === RAYON; })) RAYON = Object.keys(M.PILIERS).sort(function (a, b) { return st.piliers[a] - st.piliers[b]; })[0];
     var onglets = h("div", "mx-rayons"); onglets.setAttribute("role", "tablist");
+    // Les onglets gardent leur position de défilement quand on change de rayon ou que l'écran se redessine
+    onglets.addEventListener("scroll", function () { RAYONS_SL = onglets.scrollLeft; }, { passive: true });
+    requestAnimationFrame(function () { onglets.scrollLeft = RAYONS_SL; });
     visibles.forEach(function (r) {
       var l = ids.filter(function (id) { return rayonDe(id) === r.id; }), ok = l.filter(function (id) { return M.disponible(st, id); });
       var neuf = ok.some(function (id) { return !G.guideVu("bat-" + id) && !st.bat[id] && (M.BATIMENTS[id].niv > 1 || M.BATIMENTS[id].si); });
@@ -2152,12 +2177,18 @@
   // Les règles ne s'ouvrent jamais par un appui « en trop » juste après une action de jeu (Tirer, Rester, Miser…) :
   // pendant que la table se redessine, le doigt peut retomber sur le titre des règles.
   var DERNIER_COUP = 0;
-  document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest("button")) DERNIER_COUP = Date.now(); }, true);
+  document.addEventListener("click", function (e) { var b = e.target.closest && e.target.closest("button"); if (b && !b.classList.contains("m-regles-btn")) DERNIER_COUP = Date.now(); }, true);
+  // Règles des jeux de cartes : un petit bouton qui ouvre une fenêtre par-dessus la table (rien ne se déplie dans la table)
   function regles(type) {
-    var d = h("details", "m-regles"), sm = h("summary", null, "📖 Règles du jeu"); d.appendChild(sm);
-    sm.addEventListener("click", function (e) { if (Date.now() - DERNIER_COUP < 900) e.preventDefault(); });
-    var l = h("ul"); REGLES[type].forEach(function (t) { l.appendChild(h("li", null, t)); }); d.appendChild(l);
-    return d;
+    var b = bouton("📖 Règles", "m-regles-btn", function () {
+      if (Date.now() - DERNIER_COUP < 900) return;   // appui « en trop » juste après Tirer, Rester, Miser…
+      var f = h("div", "m-pop m-regles-pop"), c = h("div", "m-pop-in m-regles-carte"), l = h("ul");
+      REGLES[type].forEach(function (t) { l.appendChild(h("li", null, t)); });
+      ajout(c, h("strong", null, "📖 Règles du jeu"), l, bouton("Fermer", "btn m-go", function () { f.remove(); }));
+      f.appendChild(c); f.onclick = function (e) { if (e.target === f) f.remove(); };
+      (document.getElementById("g-maire") || document.body).appendChild(f);
+    });
+    return ajout(h("div", "m-regles"), b);
   }
   // Musique du casino : joue tant qu'une partie de casino est à l'écran, reprend où elle s'était arrêtée
   function casino(on) { document.body.classList.toggle("m-casino", !!on); if (window.musique) window.musique(); }

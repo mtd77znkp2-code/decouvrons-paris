@@ -1710,7 +1710,8 @@
   }
   // Chaque trimestre : les espaces de vie mal entretenus se dégradent ; au bout d'un moment, l'un d'eux ferme
   function entretienEspaces(st, notes) {
-    if (!st.session) return;
+    // Pas encore d'employés débloqués (niveau trop bas) : les espaces de vie ne se dégradent pas
+    if (!st.session || !st.meca.employes) { st.usureEsp = 0; return; }
     var pr = proprete(st);
     if (!pr.manque) { st.usureEsp = 0; return; }
     st.usureEsp = (st.usureEsp || 0) + pr.manque;

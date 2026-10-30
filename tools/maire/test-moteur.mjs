@@ -723,7 +723,8 @@ test("sessions : 21 places, on commence en bas, on défie son rival, une place g
   assert.equal(S.placeDe(S.rejoindre(s, "u3", "Tard", "🙂", 7.5 * 60000), "u3"), -1, "trop près de l'élection");
   assert.equal(S.placeDe(S.rejoindre(s, "u3", "Tôt", "🙂", 6.5 * 60000), "u3"), 2);
   const afk = S.signaler(s, "u2", { score: 50, actif: 10 * 60000 }, 10 * 60000);
-  const net = S.nettoyer(afk, 20 * 60000); assert.equal(S.placeDe(net, "u1"), -1, "Alice inactive depuis 20 min"); assert.equal(S.placeDe(net, "u2"), 1, "Bruno actif il y a 10 min");
+  assert.equal(S.placeDe(S.nettoyer(afk, 20 * 60000), "u1"), 0, "après 15 min : écran d’attente, la place est gardée");
+  const net = S.nettoyer(afk, 26 * 60000); assert.equal(S.placeDe(net, "u1"), -1, "Alice inactive depuis 26 min (15 + 10 d’attente)"); assert.equal(S.placeDe(net, "u2"), 1, "Bruno actif il y a 16 min : encore dans l’attente");
   // Les bots évoluent : élan pendant le mandat, forme et expérience qui changent à chaque élection
   { let b = S.nouvelleSession(7, 0); const f0 = b.places.map(x => x.forme), deb = S.scores(b, 1), fin = S.scores(b, S.MANDAT_MS - 1);
     assert.ok(deb.some((v, i) => fin[i] > v) && deb.some((v, i) => fin[i] < v), "des bots montent, d'autres baissent pendant le mandat");

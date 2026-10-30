@@ -1182,3 +1182,11 @@ body.m-casino .m-pop,#m-telmod{place-items:start center}
 @media (prefers-reduced-motion:reduce){.m-zone.m-z-rival::before,.m-zone.m-z-opp::before,.mx-ses-rival::after,.mx-ses-opp::after{animation:none;opacity:.6}}
 .mx-pilier{position:relative}.mx-prom-ico{position:absolute;top:-7px;right:-5px;font-size:15px;font-style:normal;line-height:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
 .mx-piliers{padding-top:6px}
+/* Règles des jeux de cartes : petit bouton + fenêtre par-dessus */
+.m-regles{display:flex;justify-content:flex-end;padding:0;background:none}
+.m-regles-btn{font:inherit;font-size:13px;font-weight:800;padding:6px 12px;border-radius:99px;border:1px solid rgba(27,37,80,.2);background:rgba(27,37,80,.06);color:var(--bl,#2b4fb3);cursor:pointer}
+.m-regles-pop{z-index:1600}
+.m-regles-carte{max-width:420px;padding:18px;border-radius:18px;background:#fff;color:#1b2550;gap:10px}
+.m-regles-carte ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14.5px;line-height:1.45}
+#m-attente{z-index:1650}.m-attente-t{font-size:40px;font-variant-numeric:tabular-nums;color:#ffd970}.m-attente-place{margin:0;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.08);font-weight:700}#m-attente .btn{width:100%}
+.m-regles-carte .btn{background:#f5b21a;color:#1b2550;border:0}
