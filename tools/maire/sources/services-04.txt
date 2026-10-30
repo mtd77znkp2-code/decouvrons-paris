@@ -13,7 +13,7 @@ C) Laisser chaque école décider :: Souplesse.
    > Les pratiques varient d’une école à l’autre.
 
 === ser-107 | services | Des sorties au musée pour toutes les classes
-Beaucoup d’écoles ne vont jamais au musée faute de budget de transport.
+Beaucoup d’écoles de l’arrondissement ne vont jamais au musée faute de budget de transport.
 A) Financer cars et entrées pour toutes les classes :: Égalité culturelle.
    rec-0.2x60 services+2 bon+1 | g+3 c+2 d+1 e+1
    > Chaque classe visite au moins deux musées par an.
@@ -37,7 +37,7 @@ C) Rien :: Sphère privée.
    > Rien ne change.
 
 === ser-109 | services | Des maisons des familles
-Les familles cherchent un lieu pour se retrouver, jouer et demander conseil.
+Les familles de l’arrondissement cherchent un lieu pour se retrouver, jouer et demander conseil.
 A) Ouvrir une maison des familles par arrondissement :: Lien social.
    bud-10 rec-0.2x60 services+2 bon+1 | g+2 c+2 d+1 e+1
    > Les maisons des familles ouvrent.
@@ -184,7 +184,7 @@ C) Rien :: Pas le rôle de la Ville.
    > Rien ne change.
 
 === ser-121 | services | Un centre de loisirs pour enfants handicapés
-Les enfants handicapés n’ont pas de centre de loisirs adapté pendant les vacances.
+Les enfants handicapés de l’arrondissement n’ont pas de centre de loisirs adapté pendant les vacances.
 A) Ouvrir des centres adaptés :: Inclusion.
    bud-6 rec-0.2x60 services+2 | g+3 c+2 d+1 e+1
    > Des centres adaptés ouvrent.
@@ -243,7 +243,7 @@ C) Orienter vers les cimetières extra-muros :: Coût.
    services-1 bon-1 | g0 c+1 d+1 e0
    > Les familles doivent aller loin pour se recueillir.
 === ser-126 | services | Des assistantes sociales dans les écoles
-Les situations familiales difficiles ne sont pas repérées à temps.
+Dans les écoles de l’arrondissement, les situations familiales difficiles ne sont pas repérées à temps.
 A) Une assistante sociale pour quatre écoles :: Protéger.
    rec-0.3x60 services+2 | g+3 c+2 d+1 e+1
    > Les situations sont repérées plus tôt.
@@ -364,7 +364,7 @@ C) Rien :: Règles d’hygiène.
    > Les sans-abri avec chiens restent dehors.
 
 === ser-136 | services | Des aires de jeux couvertes pour l’hiver
-L’hiver, les familles n’ont nulle part où emmener les enfants jouer.
+L’hiver, les familles de l’arrondissement n’ont nulle part où emmener les enfants jouer.
 A) Créer des aires de jeux couvertes :: Toute l’année.
    bud-10 bon+2 services+1 | g+2 c+2 d+1 e+1
    > Des aires couvertes ouvrent.
@@ -413,7 +413,7 @@ C) Rien :: Compétence de l’État.
    > Rien ne change.
 
 === ser-140 | services | Des maisons sport-santé
-Des centres où l’on fait du sport encadré pour sa santé pourraient ouvrir dans les quartiers.
+Des centres où l’on fait du sport encadré pour sa santé pourraient ouvrir dans les quartiers de l’arrondissement.
 A) Ouvrir une maison sport-santé par arrondissement :: Prévention.
    bud-8 rec-0.2x60 services+2 bon+1 | g+2 c+2 d+1 e+1
    > Les maisons sport-santé ouvrent.
@@ -425,7 +425,7 @@ C) Rien :: Les clubs existent.
    > Rien n’est créé.
 
 === ser-141 | services | Un agent par classe de maternelle
-Dans certaines maternelles, un seul agent aide trois classes.
+Dans certaines maternelles de l’arrondissement, un seul agent aide trois classes.
 A) Un agent par classe :: Qualité.
    rec-0.5x60 services+3 | g+3 c+2 d0 e+1
    > Chaque classe a son agent.

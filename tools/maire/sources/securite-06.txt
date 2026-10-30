@@ -61,7 +61,7 @@ C) Rien :: Coût.
    > Un socle vide remplace une statue de 1900.
 
 === sec-191 | securite | Des bagarres dans les piscines l’été
-Des groupes de jeunes se battent et menacent les maîtres-nageurs.
+À la piscine de l’arrondissement, des groupes de jeunes se battent et menacent les maîtres-nageurs.
 A) Des agents de sécurité aux entrées :: Fermeté.
    rec-0.02x60 securite+1 | g-1 c+2 d+2 e0
    > Le calme revient au bord des bassins.

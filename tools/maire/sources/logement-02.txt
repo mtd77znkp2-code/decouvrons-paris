@@ -46,7 +46,7 @@ A) Racheter la tour et la transformer :: Logements rapidement.
    +25 logement+2 pop+2 > Les premiers locataires emménagent dans l’ancienne tour.
 B) Aider le propriétaire à transformer :: Partenariat.
    bud-25 logement+2 | g0 c+3 d+2 e+1
-   > Le propriétaire transforme avec l’aide de la Ville.
+   > Le propriétaire transforme avec l’aide de la mairie.
 C) Laisser la tour vide :: Pas d’argent public.
    logement-1 | g-2 c0 d+1 e-1
    > La tour reste vide.

@@ -1,13 +1,13 @@
 // Transports, série 3
-=== tra-066 | transports | Prolonger une ligne de métro vers l’est
-Les habitants des communes de l’est demandent le prolongement d’une ligne de métro jusqu’à chez eux.
+=== tra-066 | transports | Prolonger une ligne de métro vers la banlieue
+Les habitants des communes voisines demandent le prolongement de la ligne de métro de l’arrondissement jusqu’à chez eux.
 A) Cofinancer le prolongement :: Désenclaver.
    bud-80 transports+3 | g+2 c+2 d+1 e+3
    > Le prolongement est lancé.
    +30 transports+2 pop+2 > Les nouvelles stations ouvrent.
 B) Créer une ligne de bus express en attendant :: Rapide.
    rec-0.3x60 transports+1 | g+1 c+3 d+1 e+2
-   > Un bus express relie l’est à Paris.
+   > Un bus express relie la banlieue à l’arrondissement.
 C) Laisser la Région décider :: Pas notre budget.
    transports-1 | g0 c+1 d+2 e0
    > Le projet attend.
@@ -25,7 +25,7 @@ C) Verbaliser :: Discipline.
    > Les cars sont verbalisés.
 
 === tra-068 | transports | Des zones de rencontre à 20 km/h
-Dans les rues étroites, piétons, vélos et voitures pourraient partager l’espace à 20 km/h.
+Dans les rues étroites de l’arrondissement, piétons, vélos et voitures pourraient partager l’espace à 20 km/h.
 A) Créer cent zones de rencontre :: Rues apaisées.
    bud-8 securite+1 ecologie+1 bon+1 | g+1 c+2 d-1 e+3
    > Les piétons ont la priorité dans cent rues.
@@ -37,7 +37,7 @@ C) Rien :: Le 30 suffit.
    > Rien ne change.
 
 === tra-069 | transports | Les pistes cyclables bidirectionnelles dangereuses
-Les pistes cyclables à double sens provoquent des collisions entre cyclistes et avec les piétons.
+Les pistes cyclables à double sens de l’arrondissement provoquent des collisions entre cyclistes et avec les piétons.
 A) Les remplacer par deux pistes séparées :: Sécurité.
    bud-20 transports+2 securite+2 | g+1 c+2 d0 e+3
    > Une piste de chaque côté de la rue.
@@ -49,20 +49,20 @@ C) Garder en l’état :: Coût.
    > Les collisions continuent.
 
 === tra-070 | transports | Un péage urbain ?
-Comme à Londres, les voitures pourraient payer pour entrer dans Paris en journée.
+Comme à Londres, les voitures pourraient payer pour entrer dans l’arrondissement en journée.
 A) Instaurer un péage :: Moins de voitures, recettes.
    bud-30 rec+2x60 ecologie+3 pop-4 | g+1 c0 d-4 e+5
-   > Les voitures paient 10 € pour entrer dans Paris.
+   > Les voitures paient 10 € pour entrer dans l’arrondissement.
    ~40 pop-3 > Les banlieusards organisent des blocages.
 B) Péage limité au centre :: Ciblé.
    bud-15 rec+0.8x60 ecologie+2 pop-2 | g+1 c+2 d-2 e+3
    > Le centre devient payant pour les voitures.
-C) Refuser :: Pas de mur autour de Paris.
+C) Refuser :: Pas de mur autour du quartier.
    pop+1 | g0 c+1 d+3 e-3
-   > Le maire renonce au péage urbain.
+   > Le maire d’arrondissement renonce au péage urbain.
 
 === tra-071 | transports | Des parkings relais aux portes de Paris
-Les banlieusards veulent laisser leur voiture à l’entrée de Paris et finir en métro.
+Les banlieusards veulent laisser leur voiture à l’entrée de l’arrondissement et finir en métro.
 A) Construire cinq parkings relais :: Combiner voiture et métro.
    bud-40 transports+2 ecologie+1 | g+1 c+3 d+2 e+2
    > Cinq parkings relais ouvrent.
@@ -86,8 +86,8 @@ C) Laisser faire :: Cohabitation.
    securite-1 | g0 c0 d0 e+1
    > Les conflits continuent.
 
-=== tra-073 | transports | La porte Maillot, carrefour dangereux
-La porte Maillot reste un enfer pour les piétons et les cyclistes.
+=== tra-073 | transports | La porte de Paris, un enfer pour les piétons
+La porte de Paris qui borde l’arrondissement reste un enfer pour les piétons et les cyclistes.
 A) Réaménagement complet :: Grand chantier.
    bud-50 securite+2 transports+2 | g+1 c+2 d+1 e+3
    > La place est entièrement redessinée.
@@ -99,8 +99,8 @@ C) Rien :: Fluidité automobile.
    > Le carrefour reste dangereux.
 
 === tra-074 | transports | Des parkings vélos géants dans les gares
-Les cyclistes ne trouvent pas où garer leur vélo près des gares.
-A) Construire des vélostations de 2 000 places :: Intermodalité.
+Les cyclistes ne trouvent pas où garer leur vélo près de la gare de l’arrondissement.
+A) Construire une vélostation de 1 000 places :: Intermodalité.
    bud-20 transports+2 ecologie+1 | g+1 c+3 d+1 e+3
    > Des parkings géants ouvrent dans les gares.
 B) Arceaux supplémentaires autour des gares :: Économique.
@@ -111,7 +111,7 @@ C) Laisser la SNCF gérer :: Pas notre propriété.
    > Rien ne change.
 
 === tra-075 | transports | Une nouvelle passerelle sur la Seine
-Une passerelle piétonne et cyclable pourrait relier deux quartiers séparés par la Seine.
+Une passerelle piétonne et cyclable pourrait relier l’arrondissement à la rive d’en face.
 A) Construire la passerelle :: Relier.
    bud-35 transports+2 bon+1 | g+1 c+2 d+1 e+3
    > Une passerelle élégante enjambe la Seine.
@@ -123,7 +123,7 @@ C) Rien :: Les ponts existants suffisent.
    > Rien n’est fait.
 
 === tra-076 | transports | Les touristes perdus dans le métro
-La signalétique du métro est incompréhensible pour les étrangers.
+La signalétique des stations de l’arrondissement est incompréhensible pour les étrangers.
 A) Nouvelle signalétique multilingue :: Accueil.
    bud-10 transports+1 economie+1 | g0 c+3 d+2 e+1
    > Les panneaux sont traduits.
@@ -135,7 +135,7 @@ C) Rien :: Applications existantes.
    > Rien ne change.
 
 === tra-077 | transports | Des pistes cyclables à travers les parcs
-Des cyclistes demandent de traverser les grands parcs pour gagner du temps.
+Des cyclistes demandent de traverser les grands parcs de l’arrondissement pour gagner du temps.
 A) Tracer des pistes à travers les parcs :: Continuité cyclable.
    bud-5 transports+2 bon-1 | g0 c+2 d0 e+3
    > Des pistes traversent les parcs.
@@ -147,8 +147,8 @@ C) Interdire les vélos dans les parcs :: Tranquillité.
    transports-1 bon+1 | g0 c+1 d+2 e-1
    > Les parcs restent piétons.
 
-=== tra-078 | transports | Le tramway T3 saturé
-Le tramway des Maréchaux est bondé aux heures de pointe.
+=== tra-078 | transports | Le tramway des boulevards saturé
+Le tramway qui longe l’arrondissement est bondé aux heures de pointe.
 A) Rames plus longues et plus fréquentes :: Capacité.
    bud-30 transports+2 | g+1 c+3 d+1 e+2
    > Le tramway passe toutes les trois minutes.
@@ -171,8 +171,8 @@ C) Laisser faire :: Tolérance.
    transports-1 | g+1 c0 d-2 e0
    > Les vans restent.
 
-=== tra-080 | transports | Le funiculaire de Montmartre en panne
-Le funiculaire de Montmartre tombe régulièrement en panne. Les seniors du quartier ne peuvent plus monter.
+=== tra-080 | transports | Le funiculaire en panne
+Le funiculaire de l’arrondissement tombe régulièrement en panne. Les seniors du quartier ne peuvent plus monter.
 A) Le rénover entièrement :: Patrimoine et service.
    bud-25 transports+2 bon+1 | g+1 c+2 d+2 e+1
    > Le funiculaire est modernisé.
@@ -184,7 +184,7 @@ C) Réparer au cas par cas :: Économie.
    > Les pannes continuent.
 
 === tra-081 | transports | Faire payer le stationnement selon le poids
-Les véhicules les plus lourds pourraient payer un stationnement trois fois plus cher.
+Dans l’arrondissement, les véhicules les plus lourds pourraient payer un stationnement trois fois plus cher.
 A) Tarif selon le poids :: Pollueur-payeur.
    rec+0.4x60 ecologie+2 pop-1 | g+1 c+1 d-2 e+4
    > Les gros véhicules paient plus.
@@ -197,7 +197,7 @@ C) Refuser :: Liberté de choix.
    > Les tarifs restent uniformes.
 
 === tra-082 | transports | Automatiser une ligne de métro
-La RATP propose d’automatiser une ligne surchargée, avec des travaux pendant plusieurs étés.
+La RATP propose d’automatiser la ligne surchargée qui dessert l’arrondissement, avec des travaux pendant plusieurs étés.
 ? distinct
 A) Soutenir l’automatisation :: Modernité.
    bud-30 transports+1 | g-1 c+3 d+3 e+1
@@ -208,13 +208,13 @@ B) Exiger plus de rames d’abord :: Court terme.
    > De nouvelles rames sont commandées.
 C) S’opposer pour protéger les conducteurs :: Emploi.
    transports-1 coh+1 | g+3 c0 d-2 e0
-   > Le maire s’oppose au projet.
+   > Le maire d’arrondissement s’oppose au projet.
 
-=== tra-083 | transports | La ligne 13 surchargée
-La ligne 13 est la plus saturée de Paris. Les voyageurs s’entassent sur les quais.
+=== tra-083 | transports | La ligne de métro surchargée
+La ligne qui dessert l’arrondissement est la plus saturée de Paris. Les voyageurs s’entassent sur les quais.
 A) Financer des bus de renfort parallèles :: Délester.
    rec-0.3x60 transports+2 | g+1 c+2 d+1 e+2
-   > Un bus express double la ligne 13.
+   > Un bus express double la ligne.
 B) Portes palières et régulation :: Fluidité.
    bud-15 transports+1 securite+1 | g0 c+3 d+2 e+1
    > Des portes sécurisent les quais.
@@ -261,7 +261,7 @@ C) Rien :: Contrôles de police.
    > Rien ne change.
 
 === tra-087 | transports | Des couloirs de bus sur les quais
-Les bus sont coincés dans les embouteillages des quais hauts de la Seine.
+Les bus sont coincés dans les embouteillages des quais de l’arrondissement.
 A) Couloir de bus continu sur les quais :: Bus rapides.
    bud-10 transports+2 ecologie+1 pop-1 | g+1 c+2 d-2 e+3
    > Les bus filent sur les quais.
@@ -273,7 +273,7 @@ C) Rien :: Fluidité automobile.
    > Les bus restent bloqués.
 
 === tra-088 | transports | Le marquage au sol effacé
-Les passages piétons et les marquages des pistes cyclables sont effacés dans de nombreuses rues.
+Les passages piétons et les marquages des pistes cyclables sont effacés dans de nombreuses rues de l’arrondissement.
 A) Grand plan de remarquage :: Sécurité.
    bud-8 securite+2 | g0 c+3 d+2 e+1
    > Les marquages sont refaits.
@@ -334,7 +334,7 @@ C) Rien :: Compétence de la SNCF.
    > Rien ne change.
 
 === tra-093 | transports | Élargir les couloirs de bus pour les vélos
-Les bus et les vélos se gênent dans les couloirs de bus trop étroits.
+Les bus et les vélos se gênent dans les couloirs de bus trop étroits de l’arrondissement.
 A) Élargir les couloirs à 4,5 mètres :: Partage sécurisé.
    bud-15 transports+2 securite+1 | g+1 c+2 d-1 e+3
    > Les couloirs sont élargis.
@@ -359,7 +359,7 @@ C) Rien :: Pas notre réseau.
    > La situation continue.
 
 === tra-095 | transports | Subventionner le covoiturage domicile-travail
-Les banlieusards qui viennent seuls en voiture pourraient être incités à covoiturer.
+Les banlieusards qui viennent seuls en voiture dans l’arrondissement pourraient être incités à covoiturer.
 A) Prime de 2 € par trajet covoituré :: Inciter.
    rec-0.2x60 ecologie+1 transports+1 | g+1 c+3 d+1 e+3
    > Le covoiturage se développe.
@@ -395,7 +395,7 @@ C) Rien :: Les applications suffisent.
    > Les écrans restent noirs.
 
 === tra-098 | transports | Des chèques taxi pour les seniors
-Les seniors qui ne peuvent plus marcher jusqu’au métro restent chez eux.
+Les seniors de l’arrondissement qui ne peuvent plus marcher jusqu’au métro restent chez eux.
 A) Chèques taxi pour les plus de 80 ans modestes :: Mobilité.
    rec-0.3x60 transports+1 bon+1 | g+3 c+2 d+1 e0
    > Les seniors reçoivent des chèques taxi.
@@ -407,7 +407,7 @@ C) Rien :: Budget.
    > Les seniors restent chez eux.
 
 === tra-099 | transports | Des petits bus de quartier
-Les grands bus ne passent pas dans les petites rues. Des minibus pourraient desservir les quartiers.
+Les grands bus ne passent pas dans les petites rues. Des minibus pourraient desservir les quartiers de l’arrondissement.
 A) Créer dix lignes de bus de quartier :: Proximité.
    rec-0.4x60 transports+2 bon+1 | g+2 c+2 d+1 e+2
    > Des minibus électriques sillonnent les quartiers.
@@ -467,7 +467,7 @@ C) Rien :: Code de la route.
    > Rien ne change.
 
 === tra-104 | transports | Les stations de métro fantômes
-Plusieurs stations de métro fermées depuis des décennies pourraient avoir une seconde vie.
+Plusieurs stations de métro de l’arrondissement fermées depuis des décennies pourraient avoir une seconde vie.
 A) Les transformer en lieux culturels :: Insolite.
    bud-20 bon+2 economie+1 | g+1 c+2 d+1 e+1
    > Une station fantôme devient une salle de concert.
@@ -479,7 +479,7 @@ C) Les laisser fermées :: Coût.
    > Les stations restent fantômes.
 
 === tra-105 | transports | Stationnement gratuit pour les artisans
-Plombiers et électriciens paient des fortunes en stationnement et en amendes.
+Dans l’arrondissement, plombiers et électriciens paient des fortunes en stationnement et en amendes.
 ? distinct
 A) Carte de stationnement artisan à petit prix :: Soutenir.
    rec-0.2x60 economie+2 | g0 c+3 d+3 e-1

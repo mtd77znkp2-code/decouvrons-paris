@@ -145,7 +145,7 @@ C) Ne rien faire :: Laisser le marché.
 === cul-012 | culture | La tour Eiffel augmente ses prix
 La société d’exploitation de la tour Eiffel veut augmenter le billet de 20 %.
 ? placeMin=17
-A) Accepter : plus de recettes pour la ville :: Recettes.
+A) Accepter : plus de recettes pour l’arrondissement :: Recettes.
    rec+0.6x60 pop-1 | g-2 c+2 d+2 e0
    > Le billet augmente.
 B) Créer un tarif réduit pour les habitants :: Populaire.
@@ -282,7 +282,7 @@ C) Organiser des visites nocturnes payantes :: Insolite.
    > Les visites nocturnes affichent complet.
 
 === cul-023 | culture | Accueillir une Exposition universelle
-Le gouvernement demande si la ville veut porter une candidature pour une Exposition universelle.
+Le gouvernement demande si l’arrondissement veut accueillir le site principal d’une Exposition universelle.
 ? placeMin=18
 A) Se porter candidate :: Ambition, coûts énormes.
    bud-30 economie+2 bon+1 | g-1 c+2 d+3 e-2

@@ -307,7 +307,7 @@ C) Supprimer la brigade :: Économie.
    > Les chevaux partent à la retraite.
 
 === sec-091 | securite | Des maîtres-chiens dans les cités
-Des bailleurs proposent des maîtres-chiens pour sécuriser les halls des cités.
+Des bailleurs proposent des maîtres-chiens pour sécuriser les halls des cités de l’arrondissement.
 A) Accepter :: Sécurité immédiate.
    rec-0.3x40 securite+2 bon-1 | g-3 c+1 d+4 e-1
    > Des agents avec chiens patrouillent les cités.
@@ -332,7 +332,7 @@ C) Rien de spécial :: Police nationale.
    > Les chauffeurs refusent les courses de nuit.
 
 === sec-093 | securite | Un vol dans un musée municipal
-Des voleurs dérobent une œuvre d’art dans un musée de la Ville en pleine nuit.
+Des voleurs dérobent une œuvre d’art dans le musée de l’arrondissement en pleine nuit.
 A) Renforcer la sécurité de tous les musées :: Protéger.
    bud-15 securite+2 | g0 c+2 d+3 e0
    > Alarmes et gardiens sont renforcés.
@@ -342,10 +342,10 @@ B) Enquête et récompense pour retrouver l’œuvre :: Récupérer.
    ~40 pop+2 > L’œuvre est retrouvée chez un receleur.
 C) Minimiser l’affaire :: Discrétion.
    pop-2 | g0 c0 d0 e0
-   > La Ville parle d’une œuvre « mineure ».
+   > La mairie d’arrondissement parle d’une œuvre « mineure ».
 
 === sec-094 | securite | La fraude dans les bus
-La fraude atteint 20 % dans certains bus. Les contrôleurs manquent.
+La fraude atteint 20 % dans certains bus de l’arrondissement. Les contrôleurs manquent.
 A) Financer des contrôleurs avec la RATP :: Faire payer.
    rec-0.2x60 securite+1 transports+1 | g-1 c+2 d+3 e0
    > Les contrôles se multiplient.
@@ -369,8 +369,8 @@ C) Refuser :: Pas de risque.
    > Le triathlon va à Lyon.
 
 === sec-096 | securite | Des fêtes de quartier annulées
-Plusieurs associations annulent leur fête de quartier faute de pouvoir payer la sécurité exigée.
-A) La Ville prend en charge la sécurité :: Sauver les fêtes.
+Plusieurs associations de l’arrondissement annulent leur fête de quartier faute de pouvoir payer la sécurité exigée.
+A) La mairie prend en charge la sécurité :: Sauver les fêtes.
    bud-3 bon+2 securite+1 | g+2 c+2 d+1 e+1
    > Les fêtes de quartier ont lieu.
 B) Alléger les exigences pour les petites fêtes :: Bon sens.
@@ -405,10 +405,10 @@ C) Campagne de respect :: Sensibiliser.
    > Des affiches rappellent le travail des éboueurs.
 
 === sec-099 | securite | Un centre de vidéosurveillance municipal
-La Ville pourrait créer une salle où des agents surveillent les caméras en temps réel.
+La mairie d’arrondissement pourrait créer une salle où des agents surveillent les caméras en temps réel.
 A) Créer le centre :: Réactivité.
    bud-20 rec-0.3x60 securite+3 | g-3 c+2 d+4 e-1
-   > Le centre surveille la ville jour et nuit.
+   > Le centre surveille l’arrondissement jour et nuit.
    ~30 coh-2 > Des associations dénoncent une surveillance de masse.
 B) Partager les images avec la préfecture seulement :: Mutualiser.
    bud-5 securite+1 | g0 c+3 d+2 e0
@@ -418,7 +418,7 @@ C) Refuser :: Libertés.
    > Pas de centre de surveillance.
 
 === sec-100 | securite | Les cambriolages de bureaux la nuit
-Des bandes vident les bureaux d’entreprises du quartier d’affaires la nuit.
+Des bandes vident la nuit les bureaux d’entreprises de l’arrondissement.
 A) Patrouilles de nuit dans le quartier d’affaires :: Présence.
    rec-0.2x40 securite+2 economie+1 | g-1 c+2 d+3 e0
    > Les patrouilles dissuadent les voleurs.
@@ -478,7 +478,7 @@ C) Rien de spécial :: Police nationale.
    > Les guet-apens continuent.
 
 === sec-105 | securite | Les pompiers agressés en intervention
-Des pompiers sont caillassés lors d’interventions dans certains quartiers.
+Des pompiers sont caillassés lors d’interventions dans certains quartiers de l’arrondissement.
 A) Escorte policière lors des interventions sensibles :: Protéger.
    securite+2 bon-1 | g-2 c+2 d+4 e0
    > Les pompiers interviennent sous escorte.

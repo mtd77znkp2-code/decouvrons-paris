@@ -77,7 +77,7 @@ A) Négocier un rachat :: Logements.
    > Huit cents logements sont programmés.
 B) Proposer un usage partagé :: Compromis.
    logement+1 coh+1 | g+1 c+2 d+1 e+1
-   > L’armée garde une aile, la Ville en prend deux.
+   > L’armée garde une aile, la mairie en prend deux.
 C) Abandonner :: Ne pas froisser l’État.
    pop-1 | g-1 c+1 d+1 e0
    > Le bâtiment reste vide.

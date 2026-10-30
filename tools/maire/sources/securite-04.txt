@@ -12,7 +12,7 @@ C) Campagne d’information :: Prévenir.
    > Des conseils sont distribués.
 
 === sec-107 | securite | Des feux dans les halls d’immeubles
-Des incendies volontaires de poubelles se multiplient dans les halls d’une cité.
+Des incendies volontaires de poubelles se multiplient dans les halls d’une cité de l’arrondissement.
 A) Locaux poubelles fermés et détecteurs :: Sécuriser.
    bud-5 securite+2 logement+1 | g0 c+3 d+2 e0
    > Les locaux sont sécurisés.
@@ -60,7 +60,7 @@ C) Rien :: Police nationale.
    > Les incidents continuent.
 
 === sec-111 | securite | Les cyclistes percutés par des portières
-Des cyclistes sont gravement blessés par des portières ouvertes sans regarder.
+Dans l’arrondissement, des cyclistes sont gravement blessés par des portières ouvertes sans regarder.
 A) Pistes cyclables éloignées des places de stationnement :: Aménager.
    bud-10 securite+2 transports+1 | g+1 c+2 d0 e+3
    > Les pistes sont décalées.
@@ -132,7 +132,7 @@ C) Rien :: Police nationale.
    > Les trafics continuent.
 
 === sec-117 | securite | Le vol à l’étalage organisé
-Des bandes organisées dévalisent les magasins à la chaîne et revendent sur internet.
+Des bandes organisées dévalisent les magasins de l’arrondissement à la chaîne et revendent sur internet.
 A) Cellule commune police et commerçants :: Coopérer.
    bud-2 securite+2 economie+1 | g0 c+3 d+3 e0
    > Plusieurs réseaux sont démantelés.
@@ -144,7 +144,7 @@ C) Rien :: Aux commerçants de se protéger.
    > Les vols continuent.
 
 === sec-118 | securite | La sécurité dans les centres d’hébergement
-Des rixes éclatent dans un grand centre d’hébergement. Les résidents ont peur.
+Des rixes éclatent dans le grand centre d’hébergement de l’arrondissement. Les résidents ont peur.
 A) Plus de personnel et des chambres plus petites :: Apaiser.
    rec-0.3x60 securite+1 services+1 | g+3 c+2 d0 e+1
    > Le centre est réorganisé.
@@ -168,7 +168,7 @@ C) Réduire les contrôles dans les quartiers tendus :: Prudence.
    > Les contrôles diminuent.
 
 === sec-120 | securite | Les braquages de joailleries
-Plusieurs joailleries de la place Vendôme sont braquées en quelques mois.
+Plusieurs joailleries de la plus belle place de l’arrondissement sont braquées en quelques mois.
 A) Poste de police municipale permanent :: Présence.
    rec-0.2x60 securite+2 economie+1 | g-1 c+2 d+4 e0
    > Un poste est installé sur la place.
@@ -204,7 +204,7 @@ C) Rien :: Plateformes responsables.
    > Les agressions continuent.
 
 === sec-123 | securite | Des caméras dans les écoles ?
-Après une intrusion, des parents réclament des caméras dans les cours d’école.
+Après une intrusion, des parents de l’arrondissement réclament des caméras dans les cours d’école.
 A) Caméras aux entrées seulement :: Compromis.
    bud-4 securite+1 | g0 c+3 d+2 e0
    > Les entrées sont filmées.
@@ -217,7 +217,7 @@ C) Pas de caméras, des gardiens :: Présence humaine.
    > Des gardiens surveillent les entrées.
 
 === sec-124 | securite | Le risque d’incendie dans les squats
-Des squats d’immeubles sont équipés de branchements électriques sauvages. Un incendie menace.
+Des squats d’immeubles de l’arrondissement sont équipés de branchements électriques sauvages. Un incendie menace.
 A) Mise en sécurité électrique et accompagnement :: Protéger.
    bud-3 securite+1 logement+1 | g+2 c+2 d0 e+1
    > Les installations sont sécurisées.
@@ -255,7 +255,7 @@ C) Rien :: Compétence des banques.
    > Les vols continuent.
 
 === sec-127 | securite | La police municipale à vélo électrique
-Les agents à pied ne peuvent pas couvrir les grands quartiers. Des vélos électriques sont proposés.
+Les agents à pied ne peuvent pas couvrir tout l’arrondissement. Des vélos électriques sont proposés.
 A) Équiper toute la police municipale :: Mobilité.
    bud-5 securite+2 ecologie+1 | g0 c+3 d+2 e+2
    > Les agents patrouillent à vélo.
@@ -267,7 +267,7 @@ C) Préférer des voitures :: Rapidité.
    > De nouvelles voitures sont achetées.
 
 === sec-128 | securite | La police municipale la nuit
-La police municipale cesse son service à 2 h. Les nuits sont sans présence.
+Dans l’arrondissement, la police municipale cesse son service à 2 h. Les nuits sont sans présence.
 A) Service 24 h sur 24 :: Présence permanente.
    rec-0.6x60 securite+3 | g-1 c+2 d+4 e0
    > La police municipale tourne toute la nuit.
@@ -315,7 +315,7 @@ C) Bons alimentaires distribués par les commerçants :: Partenariat.
    > Les commerçants distribuent des bons.
 
 === sec-132 | securite | Des violences dans un foyer de jeunes
-Des violences éclatent dans un foyer de jeunes placés. Les éducateurs sont débordés.
+Des violences éclatent dans un foyer de jeunes placés de l’arrondissement. Les éducateurs sont débordés.
 ? distinct
 A) Plus d’éducateurs :: Encadrer.
    rec-0.3x60 securite+1 services+2 | g+3 c+2 d+1 e+1
@@ -365,14 +365,14 @@ C) Panneaux d’avertissement :: Informer.
    > Des panneaux sont posés.
 
 === sec-136 | securite | La lecture automatique des plaques
-Des caméras pourraient lire les plaques d’immatriculation pour retrouver les voitures volées.
+Des caméras de l’arrondissement pourraient lire les plaques d’immatriculation pour retrouver les voitures volées.
 A) Installer la lecture automatique :: Efficacité.
    bud-5 securite+2 | g-2 c+2 d+3 e0
    > Des voitures volées sont retrouvées.
    ~30 coh-1 > Des associations dénoncent un fichage.
-B) Seulement aux entrées de Paris :: Ciblé.
+B) Seulement aux entrées de l’arrondissement :: Ciblé.
    bud-2 securite+1 | g0 c+3 d+2 e0
-   > Les portes de Paris sont équipées.
+   > Les entrées de l’arrondissement sont équipées.
 C) Refuser :: Libertés.
    securite-1 coh+1 | g+3 c0 d-3 e+1
    > Pas de lecture de plaques.
@@ -402,8 +402,8 @@ C) Rien :: Difficile à prouver.
    > Les jets continuent.
 
 === sec-139 | securite | Des commerçants rackettés
-Des commerçants d’une rue paient une « protection » à une bande pour ne pas être vandalisés.
-A) Plainte collective accompagnée par la Ville :: Briser le silence.
+Des commerçants d’une rue de l’arrondissement paient une « protection » à une bande pour ne pas être vandalisés.
+A) Plainte collective accompagnée par la mairie :: Briser le silence.
    bud-1 securite+2 economie+1 | g+1 c+2 d+3 e0
    > La bande est démantelée.
 B) Présence policière renforcée :: Dissuasion.
@@ -414,7 +414,7 @@ C) Rien :: Personne ne porte plainte.
    > Le racket continue.
 
 === sec-140 | securite | Des touristes asiatiques ciblés
-Des bandes ciblent les touristes asiatiques, réputés transporter de l’argent liquide.
+Dans l’arrondissement, des bandes ciblent les touristes asiatiques, réputés transporter de l’argent liquide.
 A) Policiers parlant chinois dans les zones touristiques :: Accueil et sécurité.
    rec-0.1x60 securite+2 economie+1 | g+1 c+3 d+2 e0
    > Des agents multilingues patrouillent.
@@ -463,7 +463,7 @@ C) Rien :: Police nationale.
    > Les arnaques continuent.
 
 === sec-144 | securite | Des chutes sur les voies du métro
-Des voyageurs tombent sur les voies dans les stations bondées.
+Des voyageurs tombent sur les voies dans les stations bondées de l’arrondissement.
 A) Cofinancer des portes palières :: Sécurité.
    bud-30 securite+2 transports+1 | g+1 c+3 d+2 e+1
    > Des portes protègent les quais.

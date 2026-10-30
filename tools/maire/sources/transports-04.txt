@@ -1,6 +1,6 @@
 // Transports, série 4
 === tra-106 | transports | Des vélos en libre-service pour enfants
-Les parents qui circulent à vélo ne peuvent pas emmener leurs enfants en vélo partagé.
+Les parents de l’arrondissement qui circulent à vélo ne peuvent pas emmener leurs enfants en vélo partagé.
 A) Ajouter des vélos enfants et des sièges bébé :: Familles.
    bud-6 transports+1 bon+1 | g+1 c+3 d+1 e+3
    > Des vélos enfants apparaissent dans les stations.
@@ -24,7 +24,7 @@ C) Rien :: Profession fragile.
    > Les taxis diesel restent.
 
 === tra-108 | transports | Les bus articulés dans les rues étroites
-Les bus articulés bloquent les rues étroites et accrochent les voitures garées.
+Les bus articulés bloquent les rues étroites de l’arrondissement et accrochent les voitures garées.
 A) Bus plus courts et plus fréquents :: Adapter.
    rec-0.2x60 transports+1 | g+1 c+3 d+1 e+1
    > Des bus plus petits circulent.
@@ -49,7 +49,7 @@ C) Refuser :: Proximité.
    > Les arrêts restent.
 
 === tra-110 | transports | Les transports gratuits pour les plus de 65 ans
-Des associations de retraités demandent la gratuité totale des transports pour les seniors.
+Des associations de retraités de l’arrondissement demandent la gratuité totale des transports pour les seniors.
 A) Gratuité pour tous les seniors :: Générosité.
    rec-0.6x60 achat+2 transports+1 | g+2 c0 d+1 e+1
    > Les seniors voyagent gratuitement.
@@ -61,7 +61,7 @@ C) Rien :: Coût.
    > Les tarifs restent.
 
 === tra-111 | transports | Étendre les vélos partagés en banlieue
-Les communes voisines veulent les vélos en libre-service, mais elles ne peuvent pas payer.
+Les communes voisines de l’arrondissement veulent les vélos en libre-service, mais elles ne peuvent pas payer.
 A) Cofinancer l’extension :: Mobilité métropolitaine.
    bud-15 transports+2 ecologie+1 | g+2 c+2 d0 e+3
    > Les vélos s’étendent dans la petite couronne.
@@ -85,7 +85,7 @@ C) Rien :: Pas prioritaire.
    > Rien ne change.
 
 === tra-113 | transports | Des pistes cyclables sur les ponts
-Les ponts sont les points dangereux des itinéraires cyclables.
+Les ponts de l’arrondissement sont les points dangereux des itinéraires cyclables.
 A) Une piste protégée sur chaque pont :: Continuité.
    bud-15 transports+2 securite+1 | g+1 c+2 d0 e+3
    > Les ponts sont équipés.
@@ -121,7 +121,7 @@ C) Rien :: Fluidité automobile.
    > Rien ne change.
 
 === tra-116 | transports | Un axe vélo express nord-sud
-Un grand axe cyclable sans interruption pourrait traverser Paris du nord au sud.
+Un grand axe cyclable sans interruption pourrait traverser l’arrondissement de part en part.
 A) Créer l’axe en supprimant une voie de voiture :: Ambition.
    bud-20 transports+3 ecologie+2 pop-1 | g+1 c+1 d-2 e+4
    > L’axe express est inauguré.
@@ -133,7 +133,7 @@ C) Rien :: Les pistes existantes suffisent.
    > Rien ne change.
 
 === tra-117 | transports | Le RER C fermé tout l’été
-Le RER C doit fermer deux mois pour travaux. Des milliers d’usagers sont concernés.
+Le RER C, qui dessert l’arrondissement, doit fermer deux mois pour travaux. Des milliers d’usagers sont concernés.
 A) Bus de substitution gratuits :: Compenser.
    bud-5 transports+1 | g+1 c+2 d+1 e+1
    > Des bus remplacent le RER.
@@ -145,7 +145,7 @@ C) Rien :: Compétence de la SNCF.
    > Les usagers se débrouillent.
 
 === tra-118 | transports | Des arrêts de bus inaccessibles
-Les quais de certains arrêts sont trop bas pour que les fauteuils montent dans le bus.
+Les quais de certains arrêts de l’arrondissement sont trop bas pour que les fauteuils montent dans le bus.
 A) Rehausser tous les quais :: Accessibilité.
    bud-15 transports+1 services+1 | g+2 c+3 d+1 e+1
    > Les quais sont rehaussés.
@@ -182,7 +182,7 @@ C) Autoriser sans condition :: Liberté.
    > Les scooters envahissent les trottoirs.
 
 === tra-121 | transports | Des carrefours sans feux
-Des urbanistes proposent de supprimer les feux de certains carrefours pour obliger chacun à ralentir.
+Des urbanistes proposent de supprimer les feux de certains carrefours de l’arrondissement pour obliger chacun à ralentir.
 A) Tester dans dix carrefours :: Innovation.
    bud-2 securite+1 transports+1 | g+1 c+2 d0 e+2
    > Les carrefours sans feux sont plus fluides.
@@ -195,7 +195,7 @@ C) Garder les feux :: Prudence.
    > Rien ne change.
 
 === tra-122 | transports | Des trottoirs traversants
-Aux croisements avec les petites rues, le trottoir pourrait continuer sans interruption, les voitures devant céder.
+Aux croisements avec les petites rues de l’arrondissement, le trottoir pourrait continuer sans interruption, les voitures devant céder.
 A) Généraliser les trottoirs traversants :: Priorité aux piétons.
    bud-8 securite+2 bon+1 | g+1 c+2 d0 e+3
    > Les piétons traversent sans descendre du trottoir.
@@ -219,7 +219,7 @@ C) Rien :: Les travaux priment.
    > Les cyclistes se retrouvent au milieu des voitures.
 
 === tra-124 | transports | Les chauffeurs de bus manquent
-Faute de chauffeurs, des centaines de bus ne circulent pas.
+Faute de chauffeurs, des dizaines de bus de l’arrondissement ne circulent pas.
 A) Financer une école de conduite de bus :: Former.
    bud-8 transports+2 economie+1 | g+2 c+2 d+1 e+1
    > Des centaines de chauffeurs sont formés.
@@ -255,7 +255,7 @@ C) Interdire totalement :: Piétons.
    > Les motos doivent trouver une place en chaussée.
 
 === tra-127 | transports | Des carrefours protégés pour les vélos
-Des carrefours « à la hollandaise » protègent les cyclistes avec des îlots aux angles.
+Dans l’arrondissement, des carrefours « à la hollandaise » protégeraient les cyclistes avec des îlots aux angles.
 A) Aménager les cinquante carrefours les plus dangereux :: Sécurité.
    bud-20 securite+2 transports+1 | g+1 c+2 d0 e+3
    > Les accidents diminuent.
@@ -327,7 +327,7 @@ C) Rien :: Pas prioritaire.
    > Rien ne change.
 
 === tra-133 | transports | Des vélos électriques pour les entreprises
-Les entreprises pourraient fournir des vélos électriques à leurs salariés.
+Les entreprises de l’arrondissement pourraient fournir des vélos électriques à leurs salariés.
 A) Aide aux entreprises pour des flottes de vélos :: Inciter.
    bud-5 transports+1 ecologie+1 economie+1 | g0 c+3 d+2 e+3
    > Des milliers de salariés viennent à vélo.
@@ -339,7 +339,7 @@ C) Rien :: Affaire des entreprises.
    > Rien ne change.
 
 === tra-134 | transports | La fin des voitures à essence en 2030
-Des écologistes proposent d’interdire toutes les voitures thermiques dans Paris dès 2030.
+Des écologistes proposent d’interdire toutes les voitures thermiques dans l’arrondissement dès 2030.
 A) Adopter l’objectif :: Ambition climatique.
    ecologie+3 pop-3 | g0 c-1 d-4 e+5
    > Les voitures thermiques seront interdites en 2030.
@@ -352,11 +352,11 @@ C) Refuser :: Liberté.
    > Aucune interdiction n’est prévue.
 
 === tra-135 | transports | Les pavés et les cyclistes
-Les rues pavées sont dangereuses et inconfortables pour les vélos et les poussettes.
+Les rues pavées de l’arrondissement sont dangereuses et inconfortables pour les vélos et les poussettes.
 A) Remplacer par de l’asphalte :: Confort.
    bud-10 transports+1 bon-1 | g0 c+2 d+1 e+1
    > Les pavés disparaissent.
-   ~30 pop-1 > Des amoureux du vieux Paris protestent.
+   ~30 pop-1 > Des amoureux des vieilles rues protestent.
 B) Bande lisse au milieu des pavés :: Compromis.
    bud-4 transports+1 | g+1 c+3 d+1 e+2
    > Une bande cyclable lisse traverse les pavés.
@@ -377,7 +377,7 @@ C) Rien :: Compétence de l’État.
    > Rien ne change.
 
 === tra-137 | transports | Relier les grandes gares entre elles
-Changer de gare à Paris prend parfois une heure. Une navette directe est proposée.
+Changer de gare à Paris prend parfois une heure. Une navette directe partant de l’arrondissement est proposée.
 A) Navette électrique entre les six grandes gares :: Fluidité.
    rec-0.3x60 transports+2 economie+1 | g+1 c+3 d+2 e+1
    > Une navette relie les gares.

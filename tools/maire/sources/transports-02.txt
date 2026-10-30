@@ -1,7 +1,7 @@
 // Transports, série 2
 === tra-026 | transports | Les bornes de recharge manquent
-Les conducteurs de voitures électriques tournent des heures pour trouver une borne libre.
-A) Installer 2 000 bornes dans la rue :: Accélérer l’électrique.
+Les conducteurs de voitures électriques tournent des heures pour trouver une borne libre dans l’arrondissement.
+A) Installer 400 bornes dans la rue :: Accélérer l’électrique.
    bud-25 transports+2 ecologie+2 | g0 c+3 d+2 e+2
    > Des bornes apparaissent dans toutes les rues.
 B) Équiper les parkings souterrains :: Libérer la rue.
@@ -12,7 +12,7 @@ C) Ne pas encourager la voiture, même électrique :: Ligne claire.
    > Aucune borne supplémentaire n’est prévue.
 
 === tra-027 | transports | Un téléphérique au-dessus des voies ferrées
-Des ingénieurs proposent un téléphérique pour relier des quartiers coupés par les voies ferrées du nord.
+Des ingénieurs proposent un téléphérique pour relier des quartiers de l’arrondissement coupés par les voies ferrées.
 ? distinct
 A) Construire la ligne :: Innovation spectaculaire.
    bud-70 transports+3 pop+1 | g+1 c+2 d+1 e+3
@@ -26,10 +26,10 @@ C) Renforcer les bus :: Simple.
    > Une nouvelle ligne de bus est créée.
 
 === tra-028 | transports | Les bus diesel à remplacer
-Une partie des bus roule encore au diesel. Les remplacer coûte cher.
+Une partie des bus de l’arrondissement roule encore au diesel. Les remplacer coûte cher.
 A) Financer des bus électriques avec la Région :: Air plus pur.
    bud-40 ecologie+3 transports+1 | g+2 c+2 d0 e+4
-   > Les bus électriques arrivent dans Paris.
+   > Les bus électriques arrivent dans l’arrondissement.
 B) Passer au biogaz, moins cher :: Compromis.
    bud-20 ecologie+2 | g+1 c+3 d+1 e+2
    > Les bus roulent au biogaz.
@@ -38,7 +38,7 @@ C) Attendre la fin de vie des bus :: Économie.
    > Les vieux bus continuent de rouler.
 
 === tra-029 | transports | Des feux tricolores intelligents
-Des feux connectés pourraient adapter leur durée au trafic, aux bus et aux piétons.
+Dans l’arrondissement, des feux connectés pourraient adapter leur durée au trafic, aux bus et aux piétons.
 A) Équiper les 500 carrefours principaux :: Fluidifier.
    bud-30 transports+3 | g0 c+3 d+2 e+1
    > Les bus attendent beaucoup moins aux feux.
@@ -50,7 +50,7 @@ C) Garder les feux classiques :: Pas de dépense.
    > Rien ne change aux carrefours.
 
 === tra-030 | transports | Des bateaux-bus sur la Seine
-Une compagnie propose des navettes fluviales régulières, intégrées au ticket de métro.
+Une compagnie propose des navettes fluviales régulières depuis les quais de l’arrondissement, intégrées au ticket de métro.
 ? distinct
 A) Subventionner une vraie ligne régulière :: Nouveau transport.
    rec-0.5x60 transports+2 ecologie+1 bon+1 | g+1 c+2 d+1 e+3
@@ -76,7 +76,7 @@ C) Refuser :: Fluidité.
    > Toutes les voies restent ouvertes à tous.
 
 === tra-032 | transports | Les pistes cyclables saturées
-Aux heures de pointe, certaines pistes cyclables sont embouteillées de vélos.
+Aux heures de pointe, certaines pistes cyclables de l’arrondissement sont embouteillées de vélos.
 A) Élargir les pistes en prenant des voies de voiture :: Assumer le vélo.
    bud-15 transports+2 ecologie+2 pop-1 | g+1 c+1 d-3 e+4
    > Les pistes doublent de largeur.
@@ -88,7 +88,7 @@ C) Laisser en l’état :: Les cyclistes s’adapteront.
    > Les bouchons à vélo continuent.
 
 === tra-033 | transports | Le métro inaccessible aux fauteuils roulants
-Seules quelques stations de métro sont accessibles aux personnes en fauteuil.
+Seules quelques stations de métro de l’arrondissement sont accessibles aux personnes en fauteuil.
 A) Cofinancer un plan massif d’ascenseurs :: Accessibilité.
    bud-80 transports+3 services+1 | g+3 c+2 d+1 e+1
    > Cinquante stations vont être équipées.
@@ -125,7 +125,7 @@ C) Refuser :: Pas plus de voitures.
    > Les opérateurs partent.
 
 === tra-036 | transports | Un tarif social pour les familles modestes
-Les familles modestes dépensent une part énorme de leur budget en transports.
+Les familles modestes de l’arrondissement dépensent une part énorme de leur budget en transports.
 A) Pass à moitié prix pour les familles modestes :: Aide ciblée.
    rec-0.6x60 achat+3 transports+1 | g+4 c+2 d0 e+2
    > Le pass est divisé par deux pour les foyers modestes.
@@ -137,7 +137,7 @@ C) Garder les tarifs actuels :: Équilibre budgétaire.
    > Les tarifs ne changent pas.
 
 === tra-037 | transports | Les nids-de-poule se multiplient
-Après l’hiver, des centaines de nids-de-poule abîment les vélos et les voitures.
+Après l’hiver, des centaines de nids-de-poule de l’arrondissement abîment les vélos et les voitures.
 A) Plan d’urgence de réfection des chaussées :: Réparer vite.
    bud-25 transports+2 | g0 c+2 d+2 e0
    > Les équipes rebouchent tout en un mois.
@@ -149,8 +149,8 @@ C) Réparer au fil des signalements :: Économie.
    > Les réparations prennent des semaines.
    ~40 pop-1 > Un cycliste chute gravement dans un trou.
 
-=== tra-038 | transports | Le chaos de la place de l’Étoile
-La place de l’Étoile est un des carrefours les plus accidentogènes de France.
+=== tra-038 | transports | Le chaos du grand rond-point
+Le grand rond-point de l’arrondissement est un des carrefours les plus accidentogènes de France.
 A) Réduire à deux voies et créer une piste cyclable :: Apaiser.
    bud-15 transports+1 securite+2 | g+1 c+1 d-2 e+3
    > L’Étoile est réaménagée.
@@ -163,7 +163,7 @@ C) Ne pas toucher à ce symbole :: Tradition.
    > La place reste un tourbillon.
 
 === tra-039 | transports | Une ligne de bus de nuit menacée
-Le Noctilien vers l’est parisien doit être supprimé faute de financement.
+Le Noctilien qui dessert l’arrondissement doit être supprimé faute de financement.
 A) Payer pour la maintenir :: Service de nuit.
    rec-0.3x60 transports+1 | g+3 c+2 d0 e+1
    > La ligne est sauvée.
@@ -211,7 +211,7 @@ C) Plus tard :: Pas prioritaire.
    > Les associations sont déçues.
 
 === tra-043 | transports | Couvrir le périphérique
-Les riverains du périphérique demandent de le couvrir pour réduire le bruit et créer des jardins.
+Les riverains du périphérique, au bord de l’arrondissement, demandent de le couvrir pour réduire le bruit et créer des jardins.
 A) Couvrir un tronçon porte des Lilas :: Grand projet.
    bud-120 ecologie+2 bon+2 transports+1 | g+2 c+2 d+1 e+2
    > Un jardin recouvrira le périphérique.
@@ -224,7 +224,7 @@ C) Réduire la vitesse à 50 km/h :: Gratuit.
    > Le bruit baisse un peu.
 
 === tra-044 | transports | Une prime pour les vélos cargo
-Les familles voudraient remplacer leur voiture par un vélo cargo, mais il coûte 4 000 €.
+Les familles de l’arrondissement voudraient remplacer leur voiture par un vélo cargo, mais il coûte 4 000 €.
 A) Prime de 1 500 € par vélo cargo :: Remplacer la voiture.
    bud-12 transports+1 ecologie+2 | g+1 c+2 d0 e+4
    > Les vélos cargos se multiplient.
@@ -300,19 +300,19 @@ C) Rappels par affichage :: Doux.
    ~40 pop-1 > Une vidéo d’une personne en fauteuil privée de place devient virale.
 
 === tra-050 | transports | La gare routière des cars longue distance
-Les cars longue distance arrivent dans une gare routière sombre et mal équipée sous un parking de Bercy.
+Les cars longue distance arrivent dans une gare routière sombre et mal équipée sous un parking de l’arrondissement.
 A) Construire une vraie gare routière moderne :: Accueil digne.
    bud-40 transports+2 bon+1 | g+2 c+2 d+1 e+1
    > Une gare routière lumineuse est construite.
 B) Rénover l’existante :: Moins cher.
    bud-12 transports+1 | g+1 c+3 d+1 e0
    > La gare actuelle est rafraîchie.
-C) Envoyer les cars en banlieue :: Moins de cars dans Paris.
+C) Envoyer les cars en banlieue :: Moins de cars dans l’arrondissement.
    transports-1 ecologie+1 | g-1 c+1 d0 e+2
    > Les cars s’arrêtent désormais à la porte de Paris.
 
 === tra-051 | transports | Le bruit du métro aérien
-Les riverains de la ligne 6 aérienne n’en peuvent plus du crissement des rames.
+Les riverains du métro aérien de l’arrondissement n’en peuvent plus du crissement des rames.
 A) Financer des protections acoustiques sur le viaduc :: Calme.
    bud-25 bon+2 | g+1 c+2 d+1 e+2
    > Des écrans absorbent le bruit.
@@ -348,14 +348,14 @@ C) Ne rien faire :: Chacun s’organise.
    > Le métro reste bondé.
 
 === tra-054 | transports | Des taxis volants sur la Seine ?
-Une entreprise veut lancer des taxis volants électriques avec une base sur une barge de la Seine.
+Une entreprise veut lancer des taxis volants électriques avec une base sur une barge amarrée dans l’arrondissement.
 A) Accepter un test :: Innovation.
    bud+5 economie+2 bon-1 | g-2 c+2 d+3 e-3
    > Les premiers vols d’essai ont lieu.
    ~35 pop-2 > Le bruit des engins provoque la colère des riverains.
 B) Refuser :: Gadget pour riches.
    pop+1 | g+3 c0 d-2 e+3
-   > Le maire refuse « des taxis pour milliardaires ».
+   > Le maire d’arrondissement refuse « des taxis pour milliardaires ».
 C) Réserver aux urgences médicales :: Utile.
    bud-5 services+1 | g+1 c+3 d+1 e0
    > Les engins transporteront des organes et des médecins.
@@ -373,19 +373,19 @@ C) Ne rien imposer :: Tourisme.
    > Les bateaux continuent de fumer.
 
 === tra-056 | transports | Un pass transport pour les touristes
-Les touristes s’emmêlent entre tickets et forfaits. Les files aux guichets s’allongent.
+Les touristes de l’arrondissement s’emmêlent entre tickets et forfaits. Les files aux guichets s’allongent.
 A) Créer un pass touristique illimité :: Simplicité.
    rec+0.3x60 transports+1 economie+1 | g0 c+3 d+2 e+1
    > Un pass 3 jours rencontre un grand succès.
 B) Pass plus cher pour les touristes, réduit pour les habitants :: Faire payer les visiteurs.
    rec+0.5x60 achat+1 | g+2 c+1 d0 e+1
-   > Les touristes paient plus cher que les Parisiens.
+   > Les touristes paient plus cher que les habitants.
 C) Garder le système :: Pas de complication.
    transports-1 | g0 c+1 d+1 e0
    > Les files aux guichets restent longues.
 
 === tra-057 | transports | La chaleur étouffante dans le métro
-L’été, il fait plus de 35 °C dans certaines rames. Des malaises sont signalés chaque jour.
+L’été, il fait plus de 35 °C dans certaines rames qui traversent l’arrondissement. Des malaises sont signalés chaque jour.
 A) Cofinancer la climatisation des rames :: Confort.
    bud-50 transports+2 bon+1 ecologie-1 | g+1 c+2 d+2 e-1
    > Les nouvelles rames seront climatisées.
@@ -397,7 +397,7 @@ C) Distribuer de l’eau aux heures chaudes :: Minimum.
    > Des agents distribuent des bouteilles.
 
 === tra-058 | transports | Les tunnels routiers vieillissants
-Les tunnels sous les Halles et le long de la Seine doivent être rénovés pour la sécurité incendie.
+Les tunnels routiers de l’arrondissement doivent être rénovés pour la sécurité incendie.
 A) Fermer les tunnels six mois pour tout refaire :: Rapide et radical.
    bud-60 securite+3 transports-3 | g0 c+2 d+1 e+1
    > Les tunnels sont fermés pour travaux.
@@ -420,11 +420,11 @@ C) Campagne de prévention :: Doux.
    bud-1 | g+1 c+2 d0 e+1
    > Des affiches rappellent la limite de 25 km/h.
    ~40 pop-1 > Un piéton est grièvement blessé par un vélo débridé.
-=== tra-060 | transports | La navette entre Paris et Orly
-Rejoindre Orly en transports prend plus d’une heure. Les voyageurs prennent le taxi.
+=== tra-060 | transports | Rejoindre Orly en moins d’une heure
+Depuis l’arrondissement, rejoindre Orly en transports prend plus d’une heure. Les voyageurs prennent le taxi.
 A) Financer une navette express :: Liaison rapide.
    rec-0.3x60 transports+2 economie+1 | g0 c+3 d+2 e+1
-   > Une navette relie Paris à Orly en 30 minutes.
+   > Une navette relie l’arrondissement à Orly en 30 minutes.
 B) Attendre la ligne 14 prolongée :: Patience.
    transports-1 | g0 c+1 d+1 e+1
    > Les voyageurs patientent jusqu’à l’arrivée du métro.
@@ -481,10 +481,10 @@ C) Rien de spécial :: Le métro existe.
    > Les seniors se débrouillent.
 
 === tra-065 | transports | Le prix du ticket de métro augmente
-L’autorité des transports annonce une hausse de 15 % du ticket. Paris peut compenser une partie.
-A) Compenser la hausse pour les Parisiens :: Pouvoir d’achat.
+L’autorité des transports annonce une hausse de 15 % du ticket. L’arrondissement peut compenser une partie pour ses habitants.
+A) Compenser la hausse pour les habitants :: Pouvoir d’achat.
    rec-0.8x60 achat+3 | g+3 c+1 d-1 e+2
-   > Les Parisiens ne voient pas la hausse.
+   > Les habitants ne voient pas la hausse.
 B) Compenser seulement pour les jeunes et les seniors :: Ciblé.
    rec-0.3x60 achat+1 | g+2 c+3 d+1 e+1
    > Les jeunes et seniors sont épargnés.

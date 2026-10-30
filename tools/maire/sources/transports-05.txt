@@ -11,8 +11,9 @@ C) Refuser :: Laisser le bois tranquille.
    ecologie+1 | g+1 c+1 d0 e0
    > Le bois reste piéton et cycliste.
 
-=== tra-147 | transports | Un tramway le long de la Seine rive droite
-Les urbanistes proposent un tramway sur les quais hauts, de Bercy au Trocadéro.
+=== tra-147 | transports | Un tramway le long de la Seine
+Les urbanistes proposent un tramway sur les quais hauts qui longent l’arrondissement.
+? placeMin=8
 A) Lancer les études :: Ambition.
    bud-5 transports+1 ecologie+1 | g+2 c+2 d0 e+1
    ~50 transports+2 > Le tramway des quais est inauguré.

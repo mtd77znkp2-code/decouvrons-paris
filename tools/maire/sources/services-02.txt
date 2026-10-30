@@ -1,6 +1,6 @@
 // Services publics, série 2
 === ser-026 | services | Des classes de maternelle surchargées
-Certaines classes de maternelle comptent 30 enfants de trois ans. Les enseignants sont épuisés.
+Certaines classes de maternelle de l’arrondissement comptent 30 enfants de trois ans. Les enseignants sont épuisés.
 A) Financer des assistants maternels supplémentaires :: Soulager.
    rec-0.5x60 services+3 bon+1 | g+3 c+2 d+1 e+1
    > Chaque classe chargée reçoit un adulte de plus.
@@ -9,11 +9,11 @@ B) Ouvrir de nouvelles classes dans des locaux provisoires :: Dédoubler.
    > Des classes s’installent dans des modulaires.
 C) Demander à l’État plus d’enseignants :: Compétence nationale.
    coh+1 | g+1 c+1 d+1 e0
-   > Le maire écrit au ministre.
+   > Le maire d’arrondissement écrit au ministre.
    ~45 bon-1 > Rien ne change à la rentrée.
 
 === ser-027 | services | Les élèves handicapés sans accompagnant
-Des enfants handicapés ne peuvent pas aller à l’école faute d’accompagnant.
+Des enfants handicapés de l’arrondissement ne peuvent pas aller à l’école faute d’accompagnant.
 A) Recruter des accompagnants municipaux sur le temps périscolaire :: Agir vite.
    rec-0.4x60 services+2 bon+1 | g+3 c+2 d+1 e+1
    > Les enfants sont accompagnés aussi à la cantine et au centre de loisirs.
@@ -25,20 +25,20 @@ C) Renvoyer vers l’Éducation nationale :: Pas notre rôle.
    > Les familles restent sans solution.
 
 === ser-028 | services | Les centres de protection maternelle et infantile ferment
-Faute de médecins, des centres de PMI ferment. Des femmes enceintes n’ont plus de suivi gratuit.
+Faute de médecins, des centres de PMI de l’arrondissement ferment. Des femmes enceintes n’ont plus de suivi gratuit.
 A) Revaloriser les salaires des médecins de PMI :: Attirer.
    rec-0.4x60 services+3 | g+3 c+2 d0 e+1
    > Les centres retrouvent des médecins.
 B) Regrouper les centres :: Rationaliser.
    rec+0.2x60 services-1 | g-2 c+2 d+2 e0
    > Les centres fusionnent.
-   ~35 pop-1 > Des mères doivent traverser Paris avec leur bébé.
+   ~35 pop-1 > Des mères doivent traverser l’arrondissement avec leur bébé.
 C) Téléconsultations avec des sages-femmes :: Moderne.
    bud-3 services+1 | g+1 c+3 d+1 e0
    > Des consultations à distance sont proposées.
 
 === ser-029 | services | Un centre dentaire municipal
-Les soins dentaires coûtent si cher que des Parisiens renoncent à se soigner.
+Les soins dentaires coûtent si cher que des habitants de l’arrondissement renoncent à se soigner.
 ? distinct
 A) Ouvrir trois centres dentaires à tarifs sociaux :: Santé pour tous.
    bud-20 rec-0.3x60 services+3 achat+1 | g+4 c+2 d0 e+1
@@ -51,7 +51,7 @@ C) Ne rien faire :: Pas notre compétence.
    > Les soins dentaires restent hors de portée.
 
 === ser-030 | services | Des équipes de santé pour les sans-abri
-Les personnes à la rue meurent en moyenne trente ans plus tôt. Les soins arrivent trop tard.
+Les personnes à la rue de l’arrondissement meurent en moyenne trente ans plus tôt. Les soins arrivent trop tard.
 A) Créer des équipes médicales mobiles :: Aller vers.
    rec-0.3x60 services+2 | g+4 c+2 d0 e+2
    > Des médecins et infirmiers tournent la nuit.
@@ -62,8 +62,8 @@ C) Financer les associations existantes :: Soutien.
    rec-0.1x60 services+1 | g+2 c+3 d+1 e+1
    > Les associations reçoivent une aide.
 
-=== ser-031 | services | Les conservatoires refusent des milliers d’enfants
-Les conservatoires de musique et de danse tirent au sort les élèves. Des milliers d’enfants restent sur liste d’attente.
+=== ser-031 | services | Le conservatoire refuse des centaines d’enfants
+Le conservatoire de l’arrondissement tire au sort les élèves. Des centaines d’enfants restent sur liste d’attente.
 A) Ouvrir un conservatoire dans chaque arrondissement :: Accès à la culture.
    bud-40 rec-0.4x60 services+3 bon+1 | g+3 c+2 d+1 e+1
    > De nouveaux conservatoires ouvrent.
@@ -75,7 +75,7 @@ C) Augmenter les tarifs pour financer plus de places :: Autofinancement.
    > Les tarifs augmentent, l’offre aussi.
 
 === ser-032 | services | Les billes de caoutchouc des terrains synthétiques
-Les terrains de foot synthétiques sont remplis de billes de pneus broyés. Des parents s’inquiètent.
+Les terrains de foot synthétiques de l’arrondissement sont remplis de billes de pneus broyés. Des parents s’inquiètent.
 A) Remplacer par du liège sur tous les terrains :: Santé et environnement.
    bud-20 ecologie+2 services+1 | g+1 c+2 d+1 e+4
    > Les terrains passent au liège naturel.
@@ -86,8 +86,8 @@ C) Garder les terrains :: Pas de preuve de danger.
    pop-1 | g0 c+1 d+2 e-2
    > Les billes restent.
 
-=== ser-033 | services | Les cimetières parisiens sont pleins
-Il n’y a presque plus de places dans les cimetières parisiens. Les familles attendent des mois.
+=== ser-033 | services | Le cimetière du quartier est plein
+Il n’y a presque plus de places dans le cimetière de l’arrondissement. Les familles attendent des mois.
 A) Ouvrir un nouveau cimetière paysager en banlieue :: Espace.
    bud-30 services+2 | g+1 c+2 d+1 e+1
    > Un nouveau cimetière est aménagé.
@@ -100,8 +100,8 @@ C) Encourager la crémation et les jardins du souvenir :: Alternative.
    > Des jardins du souvenir sont créés.
 
 === ser-034 | services | Les mariages du samedi saturés
-Les couples attendent un an pour se marier un samedi dans les mairies d’arrondissement.
-A) Ouvrir les mairies le dimanche pour les mariages :: Répondre à la demande.
+Les couples attendent un an pour se marier un samedi à la mairie d’arrondissement.
+A) Ouvrir la mairie le dimanche pour les mariages :: Répondre à la demande.
    rec-0.2x60 services+2 bon+1 | g+1 c+2 d+1 e0
    > Les mariages sont possibles le dimanche.
 B) Célébrer dans des lieux insolites :: Original.
@@ -112,7 +112,7 @@ C) Garder l’organisation :: Pas de dépense.
    > Les délais restent longs.
 
 === ser-035 | services | Les colonies de vacances municipales
-Des milliers d’enfants parisiens ne partent jamais en vacances.
+Des centaines d’enfants de l’arrondissement ne partent jamais en vacances.
 A) Doubler les places en colonies à tarif social :: Vacances pour tous.
    rec-0.5x50 services+2 bon+2 | g+4 c+2 d0 e+1
    > Dix mille enfants partent cet été.
@@ -121,10 +121,10 @@ B) Séjours courts à la campagne :: Moins cher.
    > Des week-ends à la ferme sont proposés.
 C) Garder l’offre actuelle :: Budget.
    bon-1 | g-2 c+1 d+2 e0
-   > Beaucoup d’enfants restent à Paris.
+   > Beaucoup d’enfants restent dans l’arrondissement.
 
 === ser-036 | services | Le portage de repas aux seniors
-Les personnes âgées qui ne peuvent plus cuisiner attendent des semaines le portage de repas.
+Les personnes âgées de l’arrondissement qui ne peuvent plus cuisiner attendent des semaines le portage de repas.
 A) Doubler le service de portage :: Répondre aux besoins.
    rec-0.4x60 services+2 bon+1 | g+3 c+2 d+1 e+1
    > Les repas sont livrés dès la semaine suivante.
@@ -137,7 +137,7 @@ C) Confier au privé :: Moins cher.
    ~30 pop-1 > Les repas sont jugés immangeables.
 
 === ser-037 | services | Une maison de retraite municipale mise en cause
-Des familles dénoncent des négligences dans une maison de retraite gérée par la Ville.
+Des familles dénoncent des négligences dans la maison de retraite gérée par la mairie d’arrondissement.
 A) Audit indépendant et sanctions :: Transparence.
    bud-2 services+1 coh+1 | g+2 c+3 d+2 e+1
    > Un audit révèle des manques de personnel.
@@ -150,7 +150,7 @@ C) Contester les accusations :: Défense.
    > La direction dément.
 
 === ser-038 | services | Le mercredi à l’école ou au centre de loisirs
-Les parents sont divisés : école le mercredi matin, ou journée entière de loisirs.
+Les parents de l’arrondissement sont divisés : école le mercredi matin, ou journée entière de loisirs.
 A) Mercredi entier en centre de loisirs gratuit :: Activités.
    rec-0.4x60 services+2 bon+1 | g+3 c+1 d0 e+1
    > Les enfants passent le mercredi en activités.
@@ -162,7 +162,7 @@ C) Consultation des parents école par école :: Démocratie.
    > Chaque école choisit son organisation.
 
 === ser-039 | services | Les fournitures scolaires gratuites
-La rentrée coûte plus de 200 € par enfant en fournitures. Certaines familles n’y arrivent pas.
+La rentrée coûte plus de 200 € par enfant en fournitures. Certaines familles de l’arrondissement n’y arrivent pas.
 A) Fournir gratuitement toutes les fournitures :: Égalité.
    rec-0.3x30 achat+3 services+1 | g+4 c+1 d-1 e+1
    > Chaque élève reçoit son kit de rentrée.
@@ -174,7 +174,7 @@ C) Rien de plus :: Allocation de l’État suffisante.
    > Les familles paient.
 
 === ser-040 | services | Un ordinateur pour chaque collégien
-Les collégiens sans ordinateur à la maison prennent du retard.
+Les collégiens de l’arrondissement sans ordinateur à la maison prennent du retard.
 A) Offrir un ordinateur à chaque collégien :: Égalité numérique.
    bud-30 services+2 achat+1 | g+3 c+2 d+1 e0
    > Les élèves de sixième reçoivent un ordinateur.
@@ -186,7 +186,7 @@ C) Salles informatiques ouvertes le soir :: Collectif.
    > Les collèges ouvrent leurs salles informatiques.
 
 === ser-041 | services | Le harcèlement scolaire
-Le suicide d’un collégien harcelé bouleverse Paris. Les parents réclament des mesures.
+Le suicide d’un collégien harcelé bouleverse l’arrondissement. Les parents réclament des mesures.
 A) Un psychologue dans chaque collège :: Écoute.
    rec-0.5x60 services+3 | g+3 c+2 d+1 e+1
    > Des psychologues sont recrutés.
@@ -198,7 +198,7 @@ C) Exclure plus facilement les harceleurs :: Sanction.
    > Le règlement des activités municipales est durci.
 
 === ser-042 | services | Les enfants ne savent plus nager
-Un enfant sur deux entre en sixième sans savoir nager. Les créneaux scolaires manquent.
+Dans l’arrondissement, un enfant sur deux entre en sixième sans savoir nager. Les créneaux scolaires manquent.
 A) Réserver les piscines aux écoles le matin :: Priorité aux enfants.
    services+2 bon-1 | g+2 c+2 d+1 e0
    > Les nageurs adultes perdent des créneaux matinaux.
@@ -210,7 +210,7 @@ C) Stages gratuits pendant les vacances :: Complément.
    > Des stages de natation sont proposés.
 
 === ser-043 | services | Les clubs seniors ferment
-Les clubs où les retraités se retrouvent pour jouer aux cartes ferment faute d’animateurs.
+Les clubs où les retraités de l’arrondissement se retrouvent pour jouer aux cartes ferment faute d’animateurs.
 A) Recruter des animateurs :: Lien social.
    rec-0.3x60 services+1 bon+2 | g+3 c+2 d+1 e+1
    > Les clubs rouvrent avec des activités variées.
@@ -222,19 +222,19 @@ C) Les fermer :: Économie.
    > Les clubs ferment.
 
 === ser-044 | services | Des cours de français pour adultes
-Des milliers d’adultes étrangers attendent une place en cours de français.
+Des centaines d’adultes étrangers de l’arrondissement attendent une place en cours de français.
 A) Ouvrir des cours du soir dans les écoles :: Intégration.
    rec-0.3x60 services+2 economie+1 | g+4 c+2 d-1 e+1
    > Les écoles accueillent des cours du soir.
 B) Financer les associations de formation :: Soutien.
    rec-0.1x60 services+1 | g+2 c+3 d0 e+1
    > Les associations ouvrent plus de places.
-C) Ce n’est pas le rôle de la Ville :: Compétence de l’État.
+C) Ce n’est pas le rôle de la mairie :: Compétence de l’État.
    services-1 | g-3 c+1 d+3 e-1
    > Les listes d’attente s’allongent.
 
 === ser-045 | services | Des ludothèques dans les quartiers
-Les familles réclament des lieux où emprunter des jeux comme on emprunte des livres.
+Les familles de l’arrondissement réclament des lieux où emprunter des jeux comme on emprunte des livres.
 A) Ouvrir une ludothèque par arrondissement :: Jouer ensemble.
    bud-8 rec-0.2x60 services+1 bon+2 | g+2 c+2 d+1 e+1
    > Vingt ludothèques ouvrent.
@@ -246,7 +246,7 @@ C) Pas prioritaire :: D’autres urgences.
    > Rien n’est fait.
 
 === ser-046 | services | Les aires de jeux vétustes
-Des toboggans rouillés et des balançoires cassées sont fermés dans des dizaines de squares.
+Des toboggans rouillés et des balançoires cassées sont fermés dans de nombreux squares de l’arrondissement.
 ? distinct
 A) Rénover toutes les aires de jeux :: Grand plan.
    bud-25 services+2 bon+2 | g+2 c+2 d+1 e+1
@@ -259,8 +259,8 @@ C) Réparer les plus abîmées :: Économique.
    > Les jeux dangereux sont réparés.
 
 === ser-047 | services | Les éducateurs de rue menacés
-Le financement des éducateurs de prévention dans les quartiers est réduit de moitié.
-A) La Ville compense entièrement :: Prévention.
+Le financement des éducateurs de prévention dans les quartiers de l’arrondissement est réduit de moitié.
+A) La mairie compense entièrement :: Prévention.
    rec-0.4x60 securite+2 services+1 | g+4 c+2 d0 e+1
    > Les éducateurs restent sur le terrain.
 B) Compenser en partie :: Compromis.
@@ -272,7 +272,7 @@ C) Ne pas compenser :: Rigueur.
    ~40 pop-2 > Une rixe éclate dans un quartier abandonné par les éducateurs.
 
 === ser-048 | services | L’aide aux démarches en ligne
-Les démarches administratives sont toutes en ligne. Les personnes âgées et précaires sont perdues.
+Les démarches administratives sont toutes en ligne. Les personnes âgées et précaires de l’arrondissement sont perdues.
 A) Conseillers numériques dans chaque mairie :: Accompagner.
    rec-0.3x60 services+2 | g+3 c+2 d+1 e+1
    > Des conseillers aident à remplir les démarches.
@@ -296,7 +296,7 @@ C) Pas notre rôle :: Priorités humaines.
    > Rien n’est fait.
 
 === ser-050 | services | Les centres de santé mentale débordés
-Les centres médico-psychologiques ont des délais de six mois pour les adultes en souffrance.
+Les centres médico-psychologiques de l’arrondissement ont des délais de six mois pour les adultes en souffrance.
 ? distinct
 A) Financer des psychologues dans les centres de santé municipaux :: Répondre à l’urgence.
    rec-0.5x60 services+3 bon+1 | g+3 c+2 d+1 e+1
@@ -306,10 +306,10 @@ B) Ligne d’écoute municipale 24 h/24 :: Accessible.
    > Une ligne d’écoute répond jour et nuit.
 C) Interpeller l’État :: Compétence nationale.
    coh+1 | g0 c+1 d+2 e0
-   > Le maire écrit au ministre de la Santé.
+   > Le maire d’arrondissement écrit au ministre de la Santé.
 
 === ser-051 | services | Des épiceries solidaires
-Des familles qui travaillent ne parviennent plus à se nourrir correctement.
+Des familles de l’arrondissement qui travaillent ne parviennent plus à se nourrir correctement.
 A) Ouvrir dix épiceries solidaires :: Aide alimentaire digne.
    bud-6 rec-0.3x60 achat+2 bon+1 | g+4 c+2 d0 e+1
    > Des épiceries vendent à 20 % du prix.
@@ -333,8 +333,8 @@ C) Pas prioritaire :: Budget.
    > Rien n’est fait.
 
 === ser-053 | services | Des crèches ouvertes la nuit
-Les infirmières, agents de nettoyage et soignants de nuit n’ont aucune solution de garde.
-A) Ouvrir deux crèches à horaires étendus :: Pour ceux qui font tourner la ville.
+Les infirmières, agents de nettoyage et soignants de nuit de l’arrondissement n’ont aucune solution de garde.
+A) Ouvrir deux crèches à horaires étendus :: Pour ceux qui font tourner le quartier.
    bud-10 rec-0.4x60 services+2 achat+1 | g+4 c+2 d+1 e+1
    > Des crèches ouvrent de 5 h à 23 h.
 B) Aide pour une garde à domicile :: Souple.
@@ -345,7 +345,7 @@ C) Pas de crèche de nuit :: Bien-être des enfants.
    > Les parents se débrouillent.
 
 === ser-054 | services | Des animateurs périscolaires sans formation
-Les centres de loisirs recrutent des animateurs sans diplôme. Des incidents se multiplient.
+Les centres de loisirs de l’arrondissement recrutent des animateurs sans diplôme. Des incidents se multiplient.
 A) Financer le diplôme d’animateur :: Qualité.
    rec-0.3x60 services+2 securite+1 | g+2 c+3 d+1 e+1
    > Les animateurs sont formés et diplômés.
@@ -357,7 +357,7 @@ C) Contrôles renforcés seulement :: Surveiller.
    > Des inspections sont menées.
 
 === ser-055 | services | Les allergies alimentaires à la cantine
-Les enfants allergiques ne peuvent pas manger à la cantine. Leurs parents doivent venir les chercher à midi.
+Les enfants allergiques ne peuvent pas manger à la cantine dans l’arrondissement. Leurs parents doivent venir les chercher à midi.
 A) Cuisines équipées pour les régimes spéciaux :: Inclusion.
    bud-10 rec-0.2x60 services+2 | g+2 c+2 d+1 e+1
    > Les cantines servent des repas sans allergènes.
@@ -369,7 +369,7 @@ C) Ne rien changer :: Sécurité.
    > Les parents continuent de venir à midi.
 
 === ser-056 | services | Les médecins scolaires disparaissent
-Il ne reste qu’un médecin scolaire pour 10 000 élèves. Les bilans de santé ne sont plus faits.
+Il ne reste qu’un médecin scolaire pour tout l’arrondissement. Les bilans de santé ne sont plus faits.
 A) Recruter des médecins municipaux pour les écoles :: Santé des enfants.
    rec-0.4x60 services+3 | g+3 c+2 d+1 e+1
    > Les bilans de santé reprennent.
@@ -393,7 +393,7 @@ C) Donner les objets non réclamés aux associations après trois mois :: Solida
    > Les objets non réclamés sont donnés.
 
 === ser-058 | services | Des bibliothèques avec automates de prêt
-Pour ouvrir plus longtemps, des bibliothèques pourraient fonctionner le soir avec des automates, sans personnel.
+Pour ouvrir plus longtemps, les bibliothèques de l’arrondissement pourraient fonctionner le soir avec des automates, sans personnel.
 A) Ouvrir le soir en libre-service :: Horaires élargis.
    bud-8 services+2 | g0 c+3 d+2 e+1
    > Les bibliothèques ouvrent jusqu’à 22 h avec un badge.
@@ -419,7 +419,7 @@ C) Ne pas louer :: Éviter les nuisances.
    > Les salles restent fermées le week-end.
 
 === ser-060 | services | Un skatepark réclamé par les jeunes
-Les skateurs se font chasser des places et demandent un vrai skatepark.
+Les skateurs se font chasser des places de l’arrondissement et demandent un vrai skatepark.
 A) Construire un grand skatepark :: Espace pour les jeunes.
    bud-15 bon+2 services+1 | g+2 c+2 d+1 e+1
    > Un skatepark ouvre sous le métro aérien.
@@ -431,7 +431,7 @@ C) Interdire le skate sur les places :: Calme.
    > Les skateurs sont verbalisés.
 
 === ser-061 | services | Les proches aidants épuisés
-Des milliers de Parisiens s’occupent seuls d’un parent malade ou handicapé, au bord de l’épuisement.
+Des milliers d’habitants de l’arrondissement s’occupent seuls d’un parent malade ou handicapé, au bord de l’épuisement.
 A) Créer des places de répit et des gardes à domicile :: Souffler.
    rec-0.4x60 services+2 bon+1 | g+3 c+2 d+1 e+1
    > Les aidants peuvent prendre des vacances.
@@ -455,7 +455,7 @@ C) Équiper seulement les bâtiments publics :: Minimum légal.
    > Les bâtiments municipaux sont équipés.
 
 === ser-063 | services | Du sport en plein air pour les seniors
-Les seniors demandent des cours de gymnastique gratuits dans les parcs.
+Les seniors de l’arrondissement demandent des cours de gymnastique gratuits dans les parcs.
 A) Cours gratuits dans tous les grands parcs :: Santé.
    rec-0.2x60 services+1 bon+2 | g+2 c+2 d+1 e+2
    > Des coachs animent des séances chaque matin.
@@ -479,7 +479,7 @@ C) Laisser faire les associations :: Pas notre rôle.
    > Rien ne change.
 
 === ser-065 | services | Les familles monoparentales en difficulté
-Une famille parisienne sur quatre est monoparentale. Beaucoup de mères seules vivent sous le seuil de pauvreté.
+Une famille de l’arrondissement sur quatre est monoparentale. Beaucoup de mères seules vivent sous le seuil de pauvreté.
 A) Priorité en crèche et aide financière :: Soutien concret.
    rec-0.4x60 achat+2 services+1 | g+4 c+2 d0 e+1
    > Les parents seuls passent en priorité.
