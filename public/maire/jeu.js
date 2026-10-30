@@ -706,6 +706,8 @@
     function opp() {
       if (ses) {
         var se = st.session;
+        // Sons n°25 et n°26 : l'épée pour ton rival, puis le bouclier pour ton opposant
+        if (window.sfx) { if (se.rival) window.sfx("epee"); if (se.opp) setTimeout(function () { window.sfx("bouclier"); }, se.rival ? 700 : 0); }
         d.insertBefore(ajout(h("div", "mx-resume mx-entre"),
           ajout(h("div", "mx-oppres"), h("span", null, "🏛️"), ajout(h("div"), h("strong", null, "Tu es " + se.titre), h("small", null, "Place " + (SS().NB - se.place) + " sur " + SS().NB + " : gagne tes élections pour monter jusqu’au trône de Maire de Paris."))),
           se.rival ? ajout(h("div", "mx-oppres"), h("span", null, se.rival.ico), ajout(h("div"), h("strong", null, "⚔️ Ton rival : " + se.rival.nom + (se.rival.type === "bot" ? " 🤖" : "")), h("small", null, se.rival.titre + " · bats-le à l’élection pour prendre sa place"))) : null,
@@ -863,7 +865,13 @@
         st.duels = st.duels || {}; var dd = st.duels[cle] || (st.duels[cle] = { g: 0, p: 0 }); if (gagne) dd.g++; else dd.p++;
       }
     }
-    var info = infoSession(s), change = !st.session || st.session.place !== info.place || st.session.election !== info.election || !st.session.rival || (info.rival && st.session.rival.nom !== info.rival.nom);
+    var info = infoSession(s);
+    // Nouveau rival ou nouvel opposant en cours de partie (après une élection, un départ…) : épée / bouclier
+    if (st.session && window.sfx) {
+      if (info.rival && st.session.rival && info.rival.nom !== st.session.rival.nom) window.sfx("epee");
+      else if (info.opp && (!st.session.opp || info.opp.nom !== st.session.opp.nom)) window.sfx("bouclier");
+    }
+    var change = !st.session || st.session.place !== info.place || st.session.election !== info.election || !st.session.rival || (info.rival && st.session.rival.nom !== info.rival.nom);
     st = M.placer(st, info); sauver();
     if (elu) annonceElection(elu, s);
     if (change && document.getElementById("m-app") && st.phase !== "fin") { if (!document.getElementById("m-modale")) jeu(); }
@@ -1466,7 +1474,8 @@
         h("p", "mx-emp-plus", "Suivant : " + effetCourtEmp(id, plus) + " · " + argent(E.salaire) + "/trim."));
       var b = bouton("Embaucher · " + argent(px), "btn m-go mx-emp-go", function () {
         if (M.peutEmbaucher(st, id)) return toast("💸 " + M.peutEmbaucher(st, id));
-        st = M.embaucher(st, id); sauver(); signal("achat");
+        var avantEmb = st; st = M.embaucher(st, id); if (st !== avantEmb && window.sfx) window.sfx("tampon");   // son n°24 : coup de tampon « embauché »
+        sauver(); signal("achat");
         var y = document.querySelector(".mx-boutique"); if (y) y.replaceWith(boutique()); haut2();
         toast(E.ico + " " + E.nom + " embauché !");
         if (SES.id) window.SessionLigne.signaler(SES.id, etatSes());
