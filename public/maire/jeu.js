@@ -995,6 +995,7 @@
     var A = SS().ATTAQUES[type], px = SS().prixAction(A.cout, st.session.place);
     if (px > st.tresor) return toast("💸 Pas assez d’argent.");
     var n0 = (SES.s.journal || []).length;
+    if (window.sfx) window.sfx("attaque");   // son n°27 : attaque envoyée (« whoosh »)
     window.SessionLigne.attaquer(SES.id, cible, type).then(function (s) {
       if (!s) return toast("📵 Attaque impossible pour l’instant.");
       var e = (s.journal || []).slice(-1)[0];
