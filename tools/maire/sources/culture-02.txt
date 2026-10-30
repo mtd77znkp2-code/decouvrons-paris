@@ -1,9 +1,9 @@
 // Culture et tourisme, série 2
-=== cul-026 | culture | Les clubs de jazz de Saint-Germain
-Les derniers clubs de jazz historiques de Saint-Germain-des-Prés risquent de fermer.
+=== cul-026 | culture | Les caves de jazz en sursis
+Les derniers clubs de jazz historiques de l’arrondissement risquent de fermer.
 A) Racheter les murs d’un club mythique :: Patrimoine musical.
    bud-15 bon+1 economie+1 | g+1 c+2 d+2 e0
-   > La Ville devient propriétaire d’une cave de jazz.
+   > La mairie d’arrondissement devient propriétaire d’une cave de jazz.
 B) Subventionner une programmation de jeunes musiciens :: Soutien artistique.
    rec-0.1x60 bon+1 | g+2 c+2 d0 e+1
    > Les clubs accueillent de jeunes talents.
@@ -11,21 +11,21 @@ C) Laisser faire :: Le marché décide.
    bon-1 | g-1 c0 d+2 e0
    > Les caves deviennent des bars à cocktails.
 
-=== cul-027 | culture | Faut-il continuer Paris Plages ?
-Paris Plages coûte cher et certains le jugent dépassé depuis que l’on peut se baigner dans la Seine.
+=== cul-027 | culture | Faut-il continuer la plage d’été ?
+La plage d’été installée sur les quais de l’arrondissement coûte cher et certains la jugent dépassée depuis que l’on peut se baigner dans la Seine.
 A) Le réinventer autour de la baignade :: Moderniser.
    bud-8 bon+2 ecologie+1 | g+1 c+2 d+1 e+2
-   > Paris Plages devient un festival de l’eau.
+   > La plage d’été devient un festival de l’eau.
 B) Le garder tel quel :: Tradition populaire.
    bud-5 bon+1 | g+2 c+1 d0 e0
    > Le sable revient sur les quais.
 C) Le supprimer :: Économie.
    bud+5 bon-2 | g-2 c+1 d+2 e0
-   > Pas de Paris Plages cet été.
+   > Pas de plage d’été cette année.
 
 === cul-028 | culture | Ouvrir les lieux fermés aux Journées du patrimoine
-Les Parisiens veulent visiter les salons de l’Hôtel de Ville, les réservoirs d’eau et les ateliers municipaux.
-A) Ouvrir trente lieux insolites :: Fierté parisienne.
+Les habitants veulent visiter les salons de la mairie d’arrondissement, les réservoirs d’eau et les ateliers municipaux.
+A) Ouvrir trente lieux insolites :: Fierté du quartier.
    bud-3 bon+2 pop+1 | g+1 c+2 d+1 e+1
    > Des files se forment devant les réservoirs de Montsouris.
 B) Visites virtuelles toute l’année :: Accès permanent.
@@ -61,8 +61,8 @@ C) Garder les noms existants :: Tradition.
    coh-1 | g-2 c0 d+3 e-1
    > Rien ne change.
 
-=== cul-031 | culture | Les cabarets de Pigalle en difficulté
-Les cabarets historiques de Pigalle perdent leur public et menacent de fermer.
+=== cul-031 | culture | Les cabarets historiques en difficulté
+Les cabarets historiques de l’arrondissement perdent leur public et menacent de fermer.
 A) Aide exceptionnelle et promotion internationale :: Patrimoine du spectacle.
    bud-6 economie+2 | g0 c+2 d+2 e0
    > Une campagne remet les cabarets à la mode.
@@ -111,22 +111,22 @@ C) Tolérer :: Attraction.
    ~30 pop-2 > Un nouvel accident fait la une.
 
 === cul-035 | culture | Les places de l’Opéra trop chères
-Une place à l’Opéra coûte jusqu’à 200 €. Les Parisiens modestes n’y vont jamais.
+Une place à l’Opéra coûte jusqu’à 200 €. Les habitants modestes de l’arrondissement n’y vont jamais.
 A) Acheter des places pour les offrir aux jeunes et aux modestes :: Ouvrir l’Opéra.
    rec-0.2x60 bon+2 | g+3 c+2 d0 e+1
    > Des milliers de places sont offertes.
 B) Retransmissions gratuites sur écran géant :: Partage.
    bud-3 bon+2 | g+2 c+2 d+1 e+1
-   > Les opéras sont projetés sur le parvis de l’Hôtel de Ville.
+   > Les opéras sont projetés sur le parvis de la mairie d’arrondissement.
 C) Pas notre rôle :: Opéra national.
    bon-1 | g-1 c+1 d+2 e0
    > Rien ne change.
 
 === cul-036 | culture | Le marathon de Paris change de parcours
-Les organisateurs veulent faire passer le marathon par les quartiers populaires de l’est.
-A) Accepter le nouveau parcours :: Fête dans tout Paris.
+Les organisateurs veulent faire passer le marathon par les quartiers populaires de l’arrondissement.
+A) Accepter le nouveau parcours :: Fête dans tous les quartiers.
    bud-2 bon+2 transports-1 | g+2 c+2 d0 e+1
-   > Le marathon traverse Belleville et Ménilmontant.
+   > Le marathon traverse les rues populaires de l’arrondissement.
 B) Garder le parcours classique :: Monuments.
    economie+1 | g0 c+2 d+2 e0
    > Le marathon reste sur les grands axes.
@@ -147,23 +147,23 @@ C) Proposer une arrivée dans les quartiers de l’est :: Partager la fête.
    > L’arrivée se fera place de la Nation.
 
 === cul-038 | culture | Les bals des pompiers du 14-Juillet
-Les casernes de pompiers ne peuvent plus organiser leurs bals faute de bénévoles et de sécurité.
+Les casernes de pompiers de l’arrondissement ne peuvent plus organiser leurs bals faute de bénévoles et de sécurité.
 A) Financer la sécurité des bals :: Tradition populaire.
    bud-3 bon+2 | g+1 c+2 d+2 e0
    > Les bals des pompiers sont sauvés.
-B) Organiser de grands bals sur les places :: Ville en fête.
+B) Organiser de grands bals sur les places :: Quartier en fête.
    bud-6 bon+2 securite-1 | g+2 c+2 d0 e+1
-   > Des bals géants ont lieu dans chaque arrondissement.
+   > Des bals géants ont lieu sur chaque place de l’arrondissement.
 C) Laisser les pompiers décider :: Pas notre rôle.
    bon-1 | g-1 c0 d+1 e0
    > Plusieurs bals sont annulés.
 
-=== cul-039 | culture | Le cinéma en plein air de la Villette
-Le cinéma en plein air de la Villette attire des milliers de spectateurs, mais son budget est menacé.
+=== cul-039 | culture | Le cinéma en plein air du grand parc
+Le cinéma en plein air du grand parc de l’arrondissement attire des milliers de spectateurs, mais son budget est menacé.
 A) Le financer et l’étendre à d’autres parcs :: Culture gratuite.
    rec-0.1x30 bon+2 | g+2 c+2 d0 e+1
    > Des projections ont lieu dans cinq parcs.
-B) Le maintenir à la Villette seulement :: Tradition.
+B) Le maintenir dans le grand parc seulement :: Tradition.
    rec-0.05x30 bon+1 | g+1 c+2 d+1 e0
    > Le festival est maintenu.
 C) Le rendre payant :: Autofinancement.
@@ -207,10 +207,10 @@ C) Réduire les autorisations :: Calme dans le métro.
    > Le métro devient plus silencieux.
 
 === cul-043 | culture | Une résidence d’écrivains
-Une fondation propose de créer une résidence pour écrivains étrangers dans un hôtel particulier municipal.
+Une fondation propose de créer une résidence pour écrivains étrangers dans un hôtel particulier appartenant à l’arrondissement.
 A) Accepter :: Rayonnement littéraire.
    bud-3 bon+1 economie+1 | g+1 c+2 d+2 e+1
-   > Des écrivains du monde entier viennent écrire à Paris.
+   > Des écrivains du monde entier viennent écrire dans l’arrondissement.
 B) Ouvrir aussi des ateliers d’écriture pour les habitants :: Partage.
    bud-5 bon+2 | g+3 c+2 d0 e+1
    > Les écrivains animent des ateliers dans les quartiers.
@@ -219,7 +219,7 @@ C) Vendre l’hôtel particulier :: Recettes.
    > Le bâtiment est vendu.
 
 === cul-044 | culture | Sauver une ancienne usine
-Une usine du 19e siècle doit être démolie. Des associations veulent la transformer en lieu culturel.
+Une usine du XIXe siècle de l’arrondissement doit être démolie. Des associations veulent la transformer en lieu culturel.
 A) Racheter et créer un lieu culturel :: Patrimoine industriel.
    bud-40 bon+2 economie+1 | g+2 c+2 d0 e+2
    > L’usine devient une fabrique d’arts.
@@ -232,13 +232,13 @@ C) Laisser démolir :: Pas d’argent.
    > L’usine est démolie.
 
 === cul-045 | culture | Une rue au nom d’un artiste disparu
-Les fans d’un chanteur populaire décédé demandent une rue à son nom.
+Les fans d’un chanteur populaire décédé, né dans l’arrondissement, demandent une rue à son nom.
 A) Donner son nom à une rue de son quartier :: Hommage populaire.
    bud-1 pop+2 bon+1 | g+1 c+2 d+1 e0
    > Une rue porte désormais son nom.
 B) Attendre cinq ans comme le veut l’usage :: Règle.
    pop-1 | g0 c+2 d+1 e0
-   > Le maire promet un hommage plus tard.
+   > Le maire d’arrondissement promet un hommage plus tard.
 C) Une fresque à son effigie :: Original.
    bud-2 pop+1 bon+1 | g+1 c+2 d+1 e+1
    > Une fresque géante est peinte.
@@ -256,7 +256,7 @@ C) Ne rien changer :: Respect de l’histoire.
    > La plaque reste.
 
 === cul-047 | culture | Le musée des égouts
-Le musée des égouts de Paris, très apprécié, a besoin de travaux importants.
+Le musée des égouts installé dans l’arrondissement, très apprécié, a besoin de travaux importants.
 A) Rénover et agrandir le musée :: Curiosité parisienne.
    bud-12 economie+1 bon+1 | g+1 c+2 d+1 e+1
    > Le musée rouvre avec un nouveau parcours.
@@ -281,7 +281,7 @@ C) Refuser :: Calme.
    > Les berges restent tranquilles.
 
 === cul-049 | culture | Un centre pour la danse
-Les compagnies de danse n’ont pas de lieu pour répéter et partent en banlieue.
+Les compagnies de danse de l’arrondissement n’ont pas de lieu pour répéter et partent en banlieue.
 A) Créer un grand centre chorégraphique :: Ambition.
    bud-30 bon+1 economie+1 | g+2 c+2 d0 e+1
    > Un centre de la danse ouvre.
@@ -294,7 +294,7 @@ C) Pas de lieu :: Priorités.
 
 === cul-050 | culture | Des terrains de pétanque sur les places
 Des habitants demandent des terrains de pétanque sur les places du quartier.
-A) Créer cinquante terrains :: Convivialité.
+A) Créer des terrains sur chaque place :: Convivialité.
    bud-3 bon+2 | g+1 c+2 d+2 e+1
    > Les boulistes envahissent les places.
 B) Quelques terrains dans les grands parcs :: Mesuré.
@@ -305,7 +305,7 @@ C) Pas de terrains :: Places pour tous.
    > Les boulistes jouent sur les trottoirs.
 
 === cul-051 | culture | Rendre les musées accessibles aux sourds
-Les musées municipaux n’ont presque aucune visite en langue des signes.
+Les musées de l’arrondissement n’ont presque aucune visite en langue des signes.
 ? distinct
 A) Visites en langue des signes dans tous les musées :: Inclusion.
    rec-0.1x60 bon+1 services+1 | g+2 c+2 d+1 e+1
@@ -318,7 +318,7 @@ C) Plus tard :: Pas prioritaire.
    > Rien ne change.
 
 === cul-052 | culture | Des spectacles de marionnettes gratuits
-Les théâtres de marionnettes des jardins publics ferment faute de public payant.
+Les théâtres de marionnettes des jardins de l’arrondissement ferment faute de public payant.
 A) Spectacles gratuits subventionnés :: Pour les enfants.
    rec-0.1x60 bon+2 | g+2 c+2 d+1 e+1
    > Les marionnettes jouent gratuitement le mercredi.
@@ -354,8 +354,8 @@ C) Ouvrir les églises à des concerts payants :: Recettes.
    > Les églises accueillent des concerts.
 
 === cul-055 | culture | Des bals populaires toute l’année
-Des habitants veulent faire revivre les bals populaires sur les places.
-A) Un bal par mois dans chaque arrondissement :: Fête de quartier.
+Des habitants veulent faire revivre les bals populaires sur les places de l’arrondissement.
+A) Un bal par mois dans chaque quartier :: Fête de quartier.
    bud-4 bon+2 | g+2 c+2 d+1 e+1
    > Les bals reviennent.
 B) Bals l’été seulement :: Saison.
@@ -365,8 +365,8 @@ C) Laisser les associations organiser :: Pas d’argent.
    bon-1 | g-1 c0 d+1 e0
    > Quelques bals ont lieu.
 
-=== cul-056 | culture | Un passe culture pour les jeunes Parisiens
-Les jeunes Parisiens vont peu au théâtre et dans les musées.
+=== cul-056 | culture | Un passe culture pour les jeunes du quartier
+Les jeunes de l’arrondissement vont peu au théâtre et dans les musées.
 A) Passe gratuit pour tous les musées et théâtres municipaux :: Accès à la culture.
    rec-0.3x60 bon+2 | g+3 c+2 d0 e+1
    > Les 15-25 ans entrent gratuitement.
@@ -390,19 +390,19 @@ C) Laisser faire :: Liberté.
    > Les habitants restent assiégés.
 
 === cul-058 | culture | Les manèges anciens menacés
-Les manèges de chevaux de bois des jardins publics sont vétustes. Leurs propriétaires ne peuvent pas payer les réparations.
+Les manèges de chevaux de bois des jardins de l’arrondissement sont vétustes. Leurs propriétaires ne peuvent pas payer les réparations.
 A) Restaurer les manèges historiques :: Patrimoine enfantin.
    bud-5 bon+1 | g+1 c+2 d+2 e0
    > Les manèges retrouvent leurs couleurs.
 B) Les racheter et les gérer en régie :: Service public.
    bud-8 rec-0.1x60 bon+1 | g+2 c+1 d0 e0
-   > La Ville devient propriétaire.
+   > La mairie d’arrondissement devient propriétaire.
 C) Remplacer par des jeux modernes :: Changement.
    bon-1 bud-3 | g0 c+2 d+1 e0
    > Les manèges disparaissent.
 
 === cul-059 | culture | La Fashion Week bloque les rues
-Pendant la semaine de la mode, des rues entières sont fermées pour des défilés.
+Pendant la semaine de la mode, des rues entières de l’arrondissement sont fermées pour des défilés.
 A) Faire payer les fermetures de rues :: Recettes.
    rec+0.2x60 economie-1 | g+2 c+2 d0 e+1
    > Les maisons de couture paient l’occupation.
@@ -414,7 +414,7 @@ C) Faciliter les défilés :: Industrie du luxe.
    > Les fermetures de rues se multiplient.
 
 === cul-060 | culture | Une ancienne gare de la petite ceinture
-Une gare abandonnée de la petite ceinture peut devenir un lieu culturel ou un restaurant.
+Une gare abandonnée de la petite ceinture, dans l’arrondissement, peut devenir un lieu culturel ou un restaurant.
 A) Lieu culturel associatif :: Pour le quartier.
    bud-10 bon+2 | g+3 c+2 d0 e+1
    > La gare devient une salle de concert et de jeux.
@@ -461,8 +461,8 @@ C) Les tournages font rayonner Paris :: Économie.
    economie+1 bon-1 | g-1 c+1 d+2 e0
    > Le tournage continue.
 
-=== cul-064 | culture | Le marché aux timbres des Champs-Élysées
-Le marché aux timbres et aux cartes postales, installé depuis 150 ans près des Champs-Élysées, perd ses derniers marchands.
+=== cul-064 | culture | Le vieux marché aux timbres
+Le marché aux timbres et aux cartes postales, installé depuis 150 ans dans l’arrondissement, perd ses derniers marchands.
 A) Le relancer avec des animations pour les jeunes collectionneurs :: Tradition vivante.
    bud-2 bon+1 economie+1 | g+1 c+2 d+2 e0
    > Des ateliers attirent de jeunes collectionneurs.
@@ -472,8 +472,9 @@ B) L’ouvrir aux cartes à collectionner et aux vinyles :: Moderniser.
 C) Le laisser disparaître :: Évolution.
    bon-1 | g-1 c0 d+1 e0
    > Le marché s’éteint.
-=== cul-065 | culture | Un nouveau festival de musique au parc de Bercy
-Un producteur propose un festival rock de trois jours au parc de Bercy.
+
+=== cul-065 | culture | Un festival rock dans le parc
+Un producteur propose un festival rock de trois jours dans le parc de l’arrondissement.
 A) Accepter avec une redevance :: Recettes et fête.
    bud+6 bon+1 ecologie-1 | g0 c+2 d+2 e-1
    > Le festival attire 60 000 personnes.

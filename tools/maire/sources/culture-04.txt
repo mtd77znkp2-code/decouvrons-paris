@@ -11,16 +11,17 @@ C) Le garder en réserve d’eau de secours :: Prudence.
    ecologie+1 bon-1 | g+1 c+1 d0 e+1
    > Le réservoir reste fermé.
 === cul-107 | culture | Les cafés historiques menacés de rachat
-Des chaînes veulent racheter des cafés centenaires et en changer le décor.
+Des chaînes veulent racheter des cafés centenaires de l’arrondissement et en changer le décor.
 A) Protéger les décors par le plan d’urbanisme :: Patrimoine.
    bon+1 economie-1 | g+1 c+2 d0 e+1
    > Zincs et banquettes sont protégés.
 B) Racheter les murs d’un café emblématique :: Symbole.
    bud-2 bon+1 | g+1 c+2 d+1 e0
-   > La Ville devient propriétaire d’un café de 1880.
+   > La mairie d’arrondissement devient propriétaire d’un café de 1880.
 C) Laisser faire :: Liberté de commerce.
    economie+1 bon-1 | g-1 c+1 d+2 e0
    > Un café centenaire devient une enseigne de bagels.
+
 === cul-108 | culture | Un marché de Noël au Trocadéro
 Des forains proposent de grands chalets face à la tour Eiffel chaque hiver.
 A) Accepter avec un cahier des charges strict :: Qualité.
@@ -58,7 +59,7 @@ C) Refuser pour protéger les pelouses :: Jardins.
    > Les comédiens partent en banlieue.
 
 === cul-111 | culture | Le musée de la Libération trop petit
-Le musée consacré à la Résistance refuse des classes faute de place.
+Le musée de l’arrondissement consacré à la Résistance refuse des classes faute de place.
 A) L’agrandir dans le bâtiment voisin :: Mémoire.
    bud-3 bon+1 services+1 | g+1 c+2 d+1 e+1
    > Le musée double sa surface.

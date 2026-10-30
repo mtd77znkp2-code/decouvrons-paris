@@ -36,7 +36,7 @@ C) Attendre l’assureur :: Procédure.
    > Des siècles d’histoire moisissent.
 
 === cri-189 | crise | Un plancher s’effondre pendant une fête
-Lors d’une soirée dans un appartement, un plancher cède, des dizaines de blessés.
+Lors d’une soirée dans un appartement de l’arrondissement, un plancher cède, des dizaines de blessés.
 A) Contrôler les immeubles anciens du quartier :: Prévenir.
    bud-2 securite+1 logement+1 | g0 c+2 d+2 e+1
    > Des planchers fragiles sont étayés.
@@ -84,7 +84,7 @@ C) Rouvrir vite :: Tourisme.
    > Les inspecteurs s’alarment.
 
 === cri-193 | crise | Un incendie dans une tour : des familles piégées
-Le feu se propage dans une tour de quinze étages, des familles sont coincées.
+Le feu se propage dans une tour de quinze étages de l’arrondissement, des familles sont coincées.
 A) Reloger toutes les familles immédiatement :: Protéger.
    bud-3 logement-1 bon+1 | g+1 c+2 d+1 e+1
    > Les familles dorment à l’abri.
@@ -132,7 +132,7 @@ C) Rien :: Compétence de l’État.
    > Les images choquent le pays.
 
 === cri-197 | crise | La station d’épuration en panne rejette dans la Seine
-Une panne envoie des eaux usées non traitées dans le fleuve.
+Une panne envoie des eaux usées non traitées dans le fleuve, juste devant les quais de l’arrondissement.
 A) Interdire la baignade et informer :: Transparence.
    bon-1 ecologie+1 | g+1 c+2 d+1 e+1
    > Les baignades sont suspendues.
@@ -264,14 +264,14 @@ C) Garder les inscriptions passées :: Rapidité.
    > Les familles bloquées crient à l’injustice.
 
 === cri-208 | crise | Un violent orage pendant la Fête de la musique
-Un orage éclate sur des milliers de fêtards, des scènes s’effondrent.
+Un orage éclate sur des milliers de fêtards dans l’arrondissement, des scènes s’effondrent.
 ? distinct
 A) Arrêter toutes les scènes :: Sécurité.
    securite+1 bon-1 | g0 c+2 d+2 e+1
    > La fête s’arrête, personne n’est blessé.
 B) Ouvrir les bâtiments publics pour abriter la foule :: Accueillir.
    bud-1 bon+1 | g+1 c+2 d+1 e+1
-   > Les mairies deviennent des salles de concert.
+   > La mairie d’arrondissement devient une salle de concert.
 C) Laisser continuer :: Fête.
    securite-2 | g0 c0 d+1 e0
    > Une structure tombe sur le public.
@@ -361,8 +361,8 @@ C) Rien :: RATP.
    transports-2 | g0 c+1 d+1 e0
    > Des lignes s’arrêtent.
 
-=== cri-216 | crise | La faillite d’une grande enseigne parisienne
-Une chaîne historique ferme, deux mille salariés perdent leur emploi.
+=== cri-216 | crise | La faillite d’une grande enseigne du quartier
+Une chaîne historique installée dans l’arrondissement ferme, des centaines de salariés perdent leur emploi.
 A) Une cellule de reclassement :: Accompagner.
    bud-2 economie+1 bon+1 | g+1 c+2 d+1 e+1
    > Des salariés retrouvent un emploi.
@@ -410,7 +410,7 @@ C) Rien :: Incident clos.
    > Les parents s’inquiètent.
 
 === cri-220 | crise | Un incendie dans un foyer de travailleurs migrants
-Un foyer vétuste brûle, des centaines de résidents sont à la rue.
+Un foyer vétuste de l’arrondissement brûle, des centaines de résidents sont à la rue.
 ? distinct
 A) Reloger tous les résidents :: Protéger.
    bud-3 logement-1 bon+1 | g+2 c+2 d0 e+1

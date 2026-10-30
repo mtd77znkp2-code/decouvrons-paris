@@ -102,7 +102,7 @@ C) Refuser de céder :: Fermeté.
    coh-1 bon-1 | g0 c+1 d+1 e0
    > Des baignades sauvages se multiplient.
 === cri-235 | crise | Un champignon tueur attaque les platanes
-Le chancre coloré oblige à abattre des centaines d’arbres le long des quais.
+Le chancre coloré oblige à abattre des centaines d’arbres le long des avenues de l’arrondissement.
 A) Abattre vite pour stopper la maladie :: Protéger.
    ecologie-1 bon-1 | g0 c+2 d+2 e+1
    > La maladie ne se répand plus.
@@ -113,6 +113,7 @@ C) Attendre un traitement :: Espoir.
    ecologie-1 | g0 c+1 d+1 e0
    ~10 ecologie-2 > Le champignon gagne les boulevards.
    > Les experts sont sceptiques.
+
 === cri-236 | crise | Un embouteillage géant paralyse la région
 Grève, pluie et accident : on mesure 700 km de bouchons autour de Paris.
 A) Rendre les transports gratuits pour la soirée :: Désengorger.
@@ -124,9 +125,9 @@ B) Ouvrir les voies de bus à tous :: Fluidifier.
 C) Conseiller de rester chez soi :: Prudence.
    economie-1 | g0 c+2 d+1 e+1
    > Le télétravail sauve la journée.
-=== cri-237 | crise | Des tombes profanées au Père-Lachaise
-Des dizaines de sépultures sont renversées et taguées en une nuit.
-A) Restaurer les tombes aux frais de la Ville :: Respect.
+=== cri-237 | crise | Des tombes profanées au cimetière du quartier
+Des dizaines de sépultures du cimetière de l’arrondissement sont renversées et taguées en une nuit.
+A) Restaurer les tombes aux frais de la mairie :: Respect.
    bud-1 bon+1 | g+1 c+2 d+1 e+1
    > Les familles sont touchées par le geste.
 B) Installer des caméras dans les cimetières :: Surveiller.
@@ -135,6 +136,7 @@ B) Installer des caméras dans les cimetières :: Surveiller.
 C) Laisser les familles réparer :: Discrétion.
    bon-2 | g-1 c+1 d+1 e0
    > Les familles se sentent abandonnées.
+
 === cri-238 | crise | Des cueilleurs intoxiqués par des champignons
 Une dizaine de personnes sont hospitalisées après une cueillette au bois de Vincennes.
 A) Interdire la cueillette dans les bois :: Protéger.
@@ -182,7 +184,7 @@ C) Fermer certaines zones :: Précaution.
    bon-1 | g0 c+2 d+1 e+1
    > Les joggeurs râlent.
 === cri-242 | crise | Le 115 ne répond plus
-Le numéro d’urgence pour les sans-abri est saturé en plein hiver.
+Le numéro d’urgence pour les sans-abri est saturé en plein hiver. Des dizaines de personnes dorment dehors dans l’arrondissement.
 A) Ouvrir des places d’hébergement municipales :: Héberger.
    bud-2 logement+1 bon+1 | g+1 c+2 d+2 e+1
    > Des centaines de personnes dorment au chaud.
@@ -192,6 +194,7 @@ B) Envoyer des maraudes dans les rues :: Aller vers.
 C) Rappeler que c’est le rôle de l’État :: Compétence.
    bon-2 | g-1 c+1 d+1 e0
    > Les associations sont scandalisées.
+
 === cri-243 | crise | L’Arc de triomphe tagué
 Des slogans sont peints sur le monument au lendemain d’une manifestation.
 A) Nettoyer dans la nuit :: Effacer.

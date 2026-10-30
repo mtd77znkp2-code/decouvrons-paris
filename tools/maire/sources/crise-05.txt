@@ -123,7 +123,7 @@ C) Rien :: État.
    > Un drame survient dans un hall d’hôpital.
 
 === cri-156 | crise | Un hôtel social prend feu
-Un hôtel qui héberge des familles sans logement brûle en pleine nuit.
+Un hôtel de l’arrondissement qui héberge des familles sans logement brûle en pleine nuit.
 A) Reloger toutes les familles :: Protéger.
    bud-3 logement-1 bon+1 | g+1 c+2 d+1 e+1
    > Les familles sont mises à l’abri.
@@ -195,7 +195,7 @@ C) Laisser faire :: Liberté.
    > Les embouteillages s’étendent.
 
 === cri-162 | crise | Les pompes anti-crue en panne
-Alors que la Seine monte, des pompes de protection tombent en panne.
+Alors que la Seine monte, les pompes qui protègent l’arrondissement tombent en panne.
 A) Louer des pompes en urgence :: Protéger.
    bud-2 securite+1 | g0 c+2 d+2 e0
    > Les quartiers bas restent au sec.
@@ -475,8 +475,8 @@ C) Minimiser :: Calme.
    bon-2 | g-1 c+1 d+1 e0
    > Des habitants se plaignent de maux de ventre.
 
-=== cri-185 | crise | Une classe parisienne bloquée par une avalanche
-Une école en classe de neige est coincée dans un chalet après une avalanche sur la route.
+=== cri-185 | crise | Une classe de l’arrondissement bloquée par une avalanche
+Une école de l’arrondissement en classe de neige est coincée dans un chalet après une avalanche sur la route.
 A) Affréter des secours et un car de rapatriement :: Ramener les enfants.
    bud-2 services+1 bon+1 | g0 c+2 d+2 e+1
    > Les enfants rentrent deux jours plus tard.

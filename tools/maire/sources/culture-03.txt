@@ -25,8 +25,8 @@ C) Les retirer :: Respect du monument.
    pop-1 | g-1 c+1 d+2 e0
    > La tour retrouve sa silhouette.
 
-=== cul-068 | culture | La vasque olympique aux Tuileries
-La vasque olympique pourrait être rallumée chaque été dans le jardin des Tuileries.
+=== cul-068 | culture | Une vasque olympique dans le jardin
+Une réplique de la vasque olympique pourrait être rallumée chaque été dans le jardin de l’arrondissement.
 A) La rallumer chaque été :: Tradition nouvelle.
    bud-3 bon+2 economie+1 | g+1 c+2 d+1 e0
    > La vasque s’élève chaque soir d’été.
@@ -38,10 +38,10 @@ C) L’envoyer dans un musée :: Patrimoine.
    > La vasque rejoint un musée.
 
 === cul-069 | culture | Un musée du street art
-Paris compte des centaines d’artistes de rue reconnus mondialement, mais aucun musée dédié.
+L’arrondissement compte des dizaines d’artistes de rue reconnus mondialement, mais aucun musée dédié.
 A) Créer un musée dans un ancien entrepôt :: Reconnaître un art.
    bud-25 bon+1 economie+2 | g+2 c+2 d0 e+1
-   > Le musée du street art ouvre dans le 13e.
+   > Le musée du street art ouvre dans l’arrondissement.
 B) Parcours d’art dans les rues :: Gratuit.
    bud-2 bon+1 economie+1 | g+1 c+3 d+1 e+1
    > Un parcours balisé relie les œuvres.
@@ -73,20 +73,20 @@ C) Rien :: Protéger le site.
    bon-1 | g0 c+1 d+1 e+1
    > Les arènes restent calmes.
 
-=== cul-072 | culture | Une grande exposition dans un musée de la Ville
+=== cul-072 | culture | Une grande exposition dans le musée du quartier
 Un grand musée étranger propose de prêter ses chefs-d’œuvre pour une exposition événement.
 A) Organiser l’exposition :: Événement.
    bud-8 economie+2 bon+1 | g0 c+2 d+2 e0
    > L’exposition attire 800 000 visiteurs.
-B) Exposition gratuite pour les Parisiens le dimanche :: Partager.
+B) Exposition gratuite pour les habitants le dimanche :: Partager.
    bud-10 bon+2 | g+2 c+2 d+1 e+1
-   > Les Parisiens visitent gratuitement le dimanche.
+   > Les habitants visitent gratuitement le dimanche.
 C) Refuser :: Trop coûteux.
    economie-1 | g0 c+1 d+1 e0
    > L’exposition va à Londres.
 
 === cul-073 | culture | Des places de concert pour les écoles
-Les élèves des quartiers populaires n’ont jamais assisté à un concert symphonique.
+Les élèves des quartiers populaires de l’arrondissement n’ont jamais assisté à un concert symphonique.
 A) Concerts réservés aux scolaires :: Découverte.
    rec-0.1x60 bon+1 services+1 | g+3 c+2 d+1 e+1
    > Des milliers d’élèves découvrent l’orchestre.
@@ -98,8 +98,8 @@ C) Rien :: Compétence de l’Éducation nationale.
    > Rien ne change.
 
 === cul-074 | culture | Un festival de littérature
-Les éditeurs proposent un grand festival du livre dans les jardins de Paris.
-A) Festival gratuit dans dix jardins :: Lecture pour tous.
+Les éditeurs proposent un grand festival du livre dans les jardins de l’arrondissement.
+A) Festival gratuit dans tous les jardins :: Lecture pour tous.
    bud-4 bon+2 | g+2 c+2 d+1 e+1
    > Des auteurs lisent dans les jardins.
 B) Un salon unique dans un grand lieu :: Prestige.
@@ -109,9 +109,9 @@ C) Rien :: Les éditeurs s’en chargent.
    bon-1 | g0 c0 d+1 e0
    > Rien n’est organisé.
 
-=== cul-075 | culture | La fête des vendanges de Montmartre
-La fête des vendanges attire des centaines de milliers de personnes dans des rues étroites.
-A) Étendre la fête à tout le 18e :: Répartir la foule.
+=== cul-075 | culture | Les vendanges attirent trop de monde
+La fête des vendanges de l’arrondissement attire des centaines de milliers de personnes dans des rues étroites.
+A) Étendre la fête à tout l’arrondissement :: Répartir la foule.
    bud-3 bon+2 securite-1 | g+1 c+2 d+1 e+1
    > La fête s’étend aux quartiers voisins.
 B) Limiter la jauge :: Sécurité.
@@ -122,7 +122,7 @@ C) Garder la formule :: Tradition.
    > La fête se déroule comme chaque année.
 
 === cul-076 | culture | Le défilé du Nouvel An chinois
-Le défilé du Nouvel An chinois du 13e attire de plus en plus de monde.
+Le défilé du Nouvel An chinois de l’arrondissement attire de plus en plus de monde.
 A) Soutenir un grand défilé :: Diversité culturelle.
    bud-3 bon+2 economie+1 | g+2 c+2 d+1 e+1
    > Le défilé devient un événement majeur.
@@ -146,23 +146,23 @@ C) Aucun soutien particulier :: Neutralité stricte.
    > Les organisateurs dénoncent un désengagement.
 
 === cul-078 | culture | Le carnaval tropical
-Le carnaval tropical rassemble les communautés antillaises et sud-américaines chaque été.
-A) L’accueillir sur les Champs-Élysées :: Visibilité.
+Le carnaval tropical rassemble les communautés antillaises et sud-américaines chaque été. Il pourrait passer par l’arrondissement.
+A) L’accueillir sur la grande avenue de l’arrondissement :: Visibilité.
    bud-4 bon+2 securite-1 | g+2 c+2 d0 e+1
    > Le carnaval défile sur la plus belle avenue.
-B) Le garder dans l’est parisien :: Ancrage local.
+B) Le garder dans les quartiers populaires :: Ancrage local.
    bud-2 bon+1 | g+1 c+3 d+1 e+1
    > Le carnaval reste sur son parcours habituel.
 C) Réduire le soutien :: Économie.
    bud+1 bon-1 | g-2 c+1 d+2 e0
    > Le carnaval se fait plus discret.
 
-=== cul-079 | culture | Le salon du livre veut quitter Paris
-Les éditeurs jugent le rendez-vous parisien trop cher et étudient une installation à Lyon dès l’an prochain.
+=== cul-079 | culture | Le salon du livre veut quitter l’arrondissement
+Les éditeurs jugent le rendez-vous de l’arrondissement trop cher et étudient une installation à Lyon dès l’an prochain.
 ? distinct
-A) Proposer le Grand Palais à prix réduit :: Retenir.
+A) Proposer la grande halle à prix réduit :: Retenir.
    bud-5 bon+1 economie+1 | g0 c+2 d+2 e0
-   > Le salon reste à Paris.
+   > Le salon reste dans l’arrondissement.
 B) Le transformer en festival dans les quartiers :: Réinventer.
    bud-3 bon+2 | g+2 c+2 d0 e+1
    > Le salon devient un festival décentralisé.
@@ -170,8 +170,8 @@ C) Le laisser partir :: Pas de subvention.
    bon-1 | g0 c+1 d+1 e0
    > Le salon part à Lyon.
 
-=== cul-080 | culture | La maison de Victor Hugo à rénover
-La maison de Victor Hugo, place des Vosges, a besoin de travaux importants.
+=== cul-080 | culture | La maison d’un grand écrivain à rénover
+La maison d’un grand écrivain, sur la plus belle place de l’arrondissement, a besoin de travaux importants.
 A) Rénovation complète :: Patrimoine littéraire.
    bud-15 bon+1 economie+1 | g+1 c+2 d+2 e0
    > La maison rouvre rénovée.
@@ -182,8 +182,8 @@ C) Fermer temporairement sans travaux :: Attendre.
    bon-1 | g-1 c0 d+1 e0
    > La maison ferme.
 
-=== cul-081 | culture | La Ruche, cité d’artistes
-La Ruche, cité d’artistes historique, a besoin de travaux. Les artistes craignent d’être expulsés.
+=== cul-081 | culture | La cité d’artistes menacée
+La cité d’artistes historique de l’arrondissement a besoin de travaux. Les artistes craignent d’être expulsés.
 A) Rénover en gardant les artistes :: Lieu vivant.
    bud-10 bon+1 | g+2 c+2 d+1 e+1
    > Les ateliers sont rénovés.
@@ -207,7 +207,7 @@ C) Rien :: Liberté des commerçants.
    > Les enseignes disparaissent.
 
 === cul-083 | culture | Les petits théâtres privés ferment
-Plusieurs petits théâtres privés ferment faute de public.
+Plusieurs petits théâtres privés de l’arrondissement ferment faute de public.
 A) Aide aux théâtres privés :: Diversité culturelle.
    rec-0.2x60 bon+1 economie+1 | g+1 c+2 d+1 e+1
    > Un fonds soutient les petites salles.
@@ -231,19 +231,19 @@ C) Plaque unique à l’Hôtel de Ville :: Symbole.
    > Une plaque est posée à l’Hôtel de Ville.
 
 === cul-085 | culture | Un tableau célèbre mis aux enchères
-Un tableau représentant Paris au XIXe siècle est mis aux enchères. La Ville peut l’acheter.
-A) L’acheter pour le musée Carnavalet :: Patrimoine.
+Un tableau représentant l’arrondissement au XIXe siècle est mis aux enchères. La mairie peut l’acheter.
+A) L’acheter pour le musée du quartier :: Patrimoine.
    bud-12 bon+1 | g0 c+2 d+2 e0
-   > Le tableau rejoint les collections parisiennes.
+   > Le tableau rejoint les collections de l’arrondissement.
 B) Souscription publique :: Participatif.
    bud-3 bon+1 pop+1 | g+1 c+3 d+1 e+1
-   > Les Parisiens financent l’achat.
+   > Les habitants financent l’achat.
 C) Laisser partir :: Trop cher.
    bon-1 | g0 c+1 d+1 e0
    > Le tableau part chez un collectionneur.
 
 === cul-086 | culture | Les maisons d’écrivains peu fréquentées
-Les maisons de Balzac et d’autres écrivains attirent peu de visiteurs.
+Les maisons d’écrivains de l’arrondissement attirent peu de visiteurs.
 A) Programme d’animations et de lectures :: Faire revivre.
    bud-3 bon+1 | g+1 c+2 d+1 e+1
    > Des lectures et concerts attirent un nouveau public.
@@ -254,8 +254,8 @@ C) Réduire les horaires :: Économie.
    rec+0.05x60 bon-1 | g-1 c+1 d+2 e0
    > Les maisons ouvrent trois jours par semaine.
 
-=== cul-087 | culture | Le festival de jazz du Parc floral
-Le festival de jazz gratuit du Parc floral manque de financement.
+=== cul-087 | culture | Le festival de jazz du jardin
+Le festival de jazz gratuit du jardin de l’arrondissement manque de financement.
 A) Garantir le financement :: Tradition gratuite.
    bud-3 bon+2 | g+2 c+2 d+1 e+1
    > Le festival est sauvé.
@@ -278,8 +278,8 @@ C) Faire payer davantage :: Recettes.
    rec+0.1x60 pop-1 | g-2 c+1 d+2 e0
    > Les droits augmentent.
 
-=== cul-089 | culture | La Bibliothèque historique de la Ville
-La Bibliothèque historique de la Ville de Paris est peu connue et ses collections s’abîment.
+=== cul-089 | culture | La bibliothèque historique oubliée
+La bibliothèque historique de l’arrondissement est peu connue et ses collections s’abîment.
 A) Numériser les collections :: Ouvrir à tous.
    bud-6 bon+1 services+1 | g+1 c+3 d+1 e+1
    > Des milliers de documents sont en ligne.
@@ -291,7 +291,7 @@ C) Rien :: Pas prioritaire.
    > Rien ne change.
 
 === cul-090 | culture | Un battle géant de danse hip-hop
-Des danseurs proposent un championnat international de hip-hop sur le parvis de l’Hôtel de Ville.
+Des danseurs proposent un championnat international de hip-hop sur le parvis de la mairie d’arrondissement.
 A) Accueillir le championnat :: Culture urbaine.
    bud-3 bon+2 economie+1 | g+2 c+2 d0 e+1
    > Le battle attire des danseurs du monde entier.
@@ -302,22 +302,22 @@ C) Refuser :: Pas de lieu adapté.
    bon-1 | g-1 c0 d+2 e0
    > Le championnat va à Lyon.
 
-=== cul-091 | culture | Rénover la tour Montparnasse
-La tour Montparnasse doit être rénovée. Certains veulent la démolir.
+=== cul-091 | culture | Rénover la grande tour de bureaux
+La grande tour de bureaux de l’arrondissement doit être rénovée. Certains veulent la démolir.
 ? distinct
 A) Soutenir une rénovation verte et une terrasse publique :: Transformer.
    bud-20 bon+1 ecologie+1 | g+1 c+2 d+2 e+2
    > La tour sera végétalisée avec un belvédère gratuit.
 B) Demander sa démolition :: Supprimer une verrue.
    pop+1 coh-1 | g0 c0 d+1 e+1
-   > Le maire réclame la démolition.
+   > Le maire d’arrondissement réclame la démolition.
    ~40 pop-1 > Les propriétaires refusent et la polémique dure.
 C) Laisser les propriétaires décider :: Privé.
    bon-1 | g-1 c+1 d+2 e0
    > La tour est rénovée sans changement.
 
 === cul-092 | culture | Les kiosques à musique des jardins
-Les kiosques à musique des jardins sont abandonnés et dégradés.
+Les kiosques à musique des jardins de l’arrondissement sont abandonnés et dégradés.
 A) Restaurer et programmer des concerts gratuits :: Faire revivre.
    bud-4 bon+2 | g+1 c+2 d+2 e+1
    > Des concerts ont lieu chaque dimanche.
@@ -329,8 +329,8 @@ C) Les démonter :: Économie.
    > Les kiosques disparaissent.
 
 === cul-093 | culture | Un festival des lanternes
-Un festival de sculptures lumineuses géantes pourrait illuminer un parc l’hiver.
-A) Organiser le festival au Jardin des Plantes :: Spectacle.
+Un festival de sculptures lumineuses géantes pourrait illuminer le parc de l’arrondissement l’hiver.
+A) Organiser le festival dans le grand jardin :: Spectacle.
    bud-4 bon+2 economie+1 | g+1 c+2 d+1 e0
    > Des lanternes géantes attirent les familles.
    ~25 ecologie-1 > Les naturalistes dénoncent la lumière pour les animaux.
@@ -366,7 +366,7 @@ C) Rien :: Le CNC s’en charge.
    > Rien ne change.
 
 === cul-096 | culture | Un musée pour les enfants
-Paris n’a pas de grand musée pensé pour les tout-petits, où l’on touche et l’on joue.
+L’arrondissement n’a pas de musée pensé pour les tout-petits, où l’on touche et l’on joue.
 A) Créer un musée des enfants :: Éveil.
    bud-20 bon+2 services+1 | g+2 c+2 d+1 e+1
    > Un musée interactif ouvre pour les 2-10 ans.
@@ -376,6 +376,7 @@ B) Espaces enfants dans les musées existants :: Économique.
 C) Rien :: Les musées sont pour tous.
    bon-1 | g0 c0 d+1 e0
    > Rien ne change.
+
 === cul-097 | culture | Une sculpture géante place Vendôme
 Une sculpture d’art contemporain géante installée place Vendôme provoque la polémique.
 A) Maintenir l’œuvre :: Liberté de création.
@@ -413,8 +414,8 @@ C) Laisser faire :: Propriété privée.
    bon-1 | g-1 c0 d+2 e0
    > Les fresques disparaissent.
 
-=== cul-100 | culture | Déménager la Foire du Trône ?
-Les riverains du bois de Vincennes demandent que la Foire du Trône déménage.
+=== cul-100 | culture | Les forains doivent-ils partir du bois ?
+Les riverains du bois de l’arrondissement demandent que la grande fête foraine déménage.
 A) Déplacer la foire sur un terrain bétonné :: Protéger le bois.
    bud-5 ecologie+2 bon-1 | g+1 c+2 d0 e+3
    > La foire s’installe sur un parking.
@@ -475,7 +476,7 @@ C) Rien :: Pas prioritaire.
    > Rien n’est fait.
 
 === cul-105 | culture | Des concerts au pied des immeubles
-Des musiciens proposent des concerts dans les cours d’immeubles sociaux.
+Des musiciens proposent des concerts dans les cours d’immeubles sociaux de l’arrondissement.
 A) Programme de concerts dans les cités :: Culture de proximité.
    rec-0.1x60 bon+2 | g+3 c+2 d0 e+1
    > Des concerts animent les cours le week-end.
