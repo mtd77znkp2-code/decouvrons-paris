@@ -1161,3 +1161,6 @@ button.mx-ses-qui{cursor:pointer}
 .m-ms-l:last-child{border-bottom:0}
 .m-ms-l small{grid-column:1/-1;font-size:12.5px;opacity:.75}
 .m-ms-l b.m-plus{color:#8ee6ad}.m-ms-l b.m-moins{color:#ff9d94}
+/* Jeux de cartes : la table ne « saute » pas quand elle se redessine (sinon un appui tombait sur les règles) */
+body.m-casino .m-pop,#m-telmod{place-items:start center}
+.m-mj-zone{min-height:360px;display:grid;align-content:start;gap:10px}

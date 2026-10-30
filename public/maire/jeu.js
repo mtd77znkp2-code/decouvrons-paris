@@ -2148,8 +2148,13 @@
     bjTel: ["Approche-toi de 21 sans le dépasser. L’As vaut 1 ou 11, les figures 10.", "Le croupier tire jusqu’à 17.", "Blackjack d’entrée : la mise × 1,5. « Doubler » : tu doubles la mise et reçois une seule carte.", "Si tu gagnes, la ville empoche la mise ; si tu perds, elle la doit à Monsieur Valentin."],
     rouletteTel: ["Rouge ou noir : la mise × 2. Une douzaine (1-12, 13-24, 25-36) : × 3. Le zéro : × 36.", "Si tu perds, la ville doit la mise à Monsieur Valentin."]
   };
+  // Les règles ne s'ouvrent jamais par un appui « en trop » juste après une action de jeu (Tirer, Rester, Miser…) :
+  // pendant que la table se redessine, le doigt peut retomber sur le titre des règles.
+  var DERNIER_COUP = 0;
+  document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest("button")) DERNIER_COUP = Date.now(); }, true);
   function regles(type) {
-    var d = h("details", "m-regles"); d.appendChild(h("summary", null, "📖 Règles du jeu"));
+    var d = h("details", "m-regles"), sm = h("summary", null, "📖 Règles du jeu"); d.appendChild(sm);
+    sm.addEventListener("click", function (e) { if (Date.now() - DERNIER_COUP < 900) e.preventDefault(); });
     var l = h("ul"); REGLES[type].forEach(function (t) { l.appendChild(h("li", null, t)); }); d.appendChild(l);
     return d;
   }
