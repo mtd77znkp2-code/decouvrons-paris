@@ -266,10 +266,10 @@ C) Médiation entre voisins :: Dialogue.
    > Des médiateurs proposent des accords de voisinage.
 
 === quo-022 | quotidien | Le permis de végétaliser
-Des habitants veulent planter au pied des arbres et sur les trottoirs.
+Des habitants de l’arrondissement veulent planter au pied des arbres et sur les trottoirs.
 A) Généraliser le permis de végétaliser :: Participatif.
    bud-1 ecologie+2 bon+1 | g+2 c+2 d0 e+4
-   > Des milliers de jardinières fleurissent.
+   > Des centaines de jardinières fleurissent dans le quartier.
    ~25 proprete-1 > Certaines jardinières deviennent des poubelles.
 B) Le limiter à quelques rues :: Prudent.
    ecologie+1 | g+1 c+2 d+1 e+2
@@ -279,39 +279,40 @@ C) L’interdire :: Uniformité.
    > Les trottoirs restent nus.
 
 === quo-023 | quotidien | Les poubelles de tri trop petites
-Les bacs jaunes débordent deux jours après le ramassage.
+Dans l’arrondissement, les bacs jaunes débordent deux jours après le ramassage.
 A) Doubler la collecte du tri :: Efficace, coûteux.
    rec-0.4x50 proprete+2 ecologie+1 | g+1 c+2 d+1 e+2
    > Les bacs jaunes sont vidés deux fois par semaine.
 B) Installer de grands conteneurs de rue :: Pratique.
    bud-12 proprete+1 ecologie+1 | g+1 c+2 d+1 e+2
-   > Des conteneurs enterrés apparaissent dans les rues.
+   > Des conteneurs enterrés apparaissent dans les rues du quartier.
 C) Demander aux habitants de compacter :: Gratuit.
    bud-1 proprete-1 | g0 c+1 d+1 e0
    > Une affiche explique comment plier les cartons.
    ~40 bon-1 > Les cartons s’empilent sur les trottoirs.
+
 === quo-024 | quotidien | Les caves inondées
-Des orages ont inondé des centaines de caves.
+Des orages ont inondé des dizaines de caves de l’arrondissement.
 A) Aide d’urgence aux sinistrés :: Solidarité.
    bud-10 bon+2 | g+2 c+2 d+1 e+1
-   > Les sinistrés reçoivent une aide rapide.
+   > Les sinistrés reçoivent une aide rapide de la mairie d’arrondissement.
 B) Grand plan anti-inondation :: Long terme.
    bud-35 ecologie+2 logement+1 | g+1 c+2 d+1 e+3
-   > Des bassins de rétention sont creusés.
+   > Des bassins de rétention sont creusés sous le quartier.
    +30 bon+2 > Le prochain orage ne fait aucun dégât.
 C) Renvoyer vers les assurances :: Pas d’argent public.
    bon-2 | g-2 c+1 d+2 e0
    > Les sinistrés attendent leurs assureurs.
 
-=== quo-025 | quotidien | Les parcs fermés la nuit en été
-Les Parisiens étouffent l’été et réclament l’ouverture des parcs toute la nuit.
-A) Ouvrir les grands parcs la nuit en été :: Fraîcheur.
+=== quo-025 | quotidien | Dormir à la belle étoile au grand parc ?
+Les habitants étouffent l’été et réclament l’ouverture du grand parc de l’arrondissement toute la nuit.
+A) Ouvrir le parc la nuit en été :: Fraîcheur.
    rec-0.3x30 bon+2 securite-1 | g+2 c+1 d-2 e+2
-   > Les Buttes-Chaumont restent ouvertes jusqu’à l’aube.
+   > Le parc reste ouvert jusqu’à l’aube.
    ~30 proprete-2 > Les pelouses sont jonchées de déchets au petit matin.
 B) Ouvrir jusqu’à minuit seulement :: Compromis.
    rec-0.1x30 bon+1 | g+1 c+3 d0 e+1
-   > Les parcs ferment à minuit en juillet et août.
+   > Le parc ferme à minuit en juillet et août.
 C) Garder les horaires :: Tranquillité.
    bon-1 | g-1 c0 d+2 e-1
    > Les grilles ferment à 21 h 30.

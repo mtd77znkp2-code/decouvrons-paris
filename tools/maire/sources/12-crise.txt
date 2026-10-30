@@ -1,13 +1,13 @@
 // Crises exceptionnelles : catastrophes, épidémies, attentats, pannes, crues
 === cri-001 | crise | La crue de la Seine
-La Seine monte de façon spectaculaire. Les quais sont submergés et le RER C est coupé.
+La Seine monte de façon spectaculaire. Les quais de l’arrondissement sont submergés et le RER est coupé.
 A) Évacuer les zones à risque et fermer des stations :: Prudence.
    bud-20 securite+2 transports-2 bon-1 | g+1 c+2 d+2 e+1
-   > Des milliers d’habitants sont évacués.
+   > Des centaines d’habitants sont évacués.
    ~30 pop+3 > L’évacuation est saluée : aucun blessé.
-B) Ériger des barrières et protéger le centre :: Protéger le patrimoine.
+B) Ériger des barrières et protéger le patrimoine :: Protéger les monuments.
    bud-30 economie+1 | g0 c+2 d+2 e0
-   > Des murs anti-crue protègent le Louvre et l’Île de la Cité.
+   > Des murs anti-crue protègent les monuments de l’arrondissement.
    ~35 pop-2 > Les quartiers populaires se sentent sacrifiés.
 C) Attendre la décrue :: Risqué.
    bon-3 logement-2 | g-2 c-1 d0 e-1
@@ -15,20 +15,20 @@ C) Attendre la décrue :: Risqué.
    ~50 pop-4 > Des caves et des commerces sont ravagés.
 
 === cri-002 | crise | Une épidémie de grippe sévère
-Une grippe violente frappe Paris. Les hôpitaux et les écoles sont débordés.
+Une grippe violente frappe l’arrondissement. Le centre de santé et les écoles sont débordés.
 A) Fermer les écoles deux semaines :: Freiner l’épidémie.
    services-2 economie-2 bon-2 | g0 c+2 d+1 e+1
-   > Les écoles ferment.
+   > Les écoles de l’arrondissement ferment.
    +3 bon+2 > L’épidémie recule nettement.
 B) Ouvrir des centres de vaccination gratuits :: Prévention massive.
    bud-25 services+3 | g+2 c+3 d+1 e+1
-   > Des centres ouvrent dans chaque arrondissement.
+   > Des centres ouvrent dans chaque quartier.
 C) Laisser les écoles ouvertes :: Continuité.
    economie+1 services-1 | g-1 c0 d+2 e-1
    > Les écoles restent ouvertes.
    ~45 pop-3 > Plusieurs enfants sont hospitalisés et les parents s’indignent.
 
-=== cri-003 | crise | Une explosion de gaz rue de Trévise
+=== cri-003 | crise | Une explosion de gaz dans une rue de l’arrondissement
 Une explosion de gaz détruit un immeuble. Il y a des blessés et des familles à la rue.
 A) Reloger immédiatement toutes les familles :: Solidarité.
    bud-8 logement-1 bon+1 pop+2 | g+2 c+2 d+1 e+1
@@ -41,37 +41,37 @@ C) Laisser l’assurance gérer :: Lent.
    > Les familles attendent des mois.
 
 === cri-004 | crise | Panne géante d’électricité
-Une panne plonge la moitié de Paris dans le noir pendant une nuit.
+Une panne plonge tout l’arrondissement dans le noir pendant une nuit.
 A) Déclencher le plan d’urgence :: Rassurer.
    bud-6 securite+2 bon+1 | g+1 c+2 d+2 e0
-   > Pompiers et agents de la Ville se déploient.
+   > Pompiers et agents de l’arrondissement se déploient.
 B) Exiger des comptes du fournisseur :: Bras de fer.
    bud+5 pop+1 | g+2 c+1 d0 e+1
-   > La Ville obtient des indemnités.
+   > L’arrondissement obtient des indemnités.
 C) Lancer des microcentrales solaires de quartier :: Long terme.
    bud-30 ecologie+3 | g+1 c+1 d0 e+5
    > Des panneaux solaires couvrent les toits publics.
-   +25 bon+1 > Les quartiers deviennent plus résilients.
+   +25 bon+1 > Le quartier devient plus résilient.
 
 === cri-005 | crise | Des émeutes après un drame
-La mort d’un jeune lors d’un contrôle de police provoque des émeutes dans plusieurs quartiers.
+La mort d’un jeune lors d’un contrôle de police provoque des émeutes dans plusieurs quartiers de l’arrondissement.
 A) Appeler au calme et réunir les habitants :: Apaiser.
    bon+1 securite-1 | g+3 c+2 d-2 e+2
-   > Le maire se rend sur place et écoute les familles.
+   > Tu te rends sur place et écoutes les familles.
    ~35 securite-2 > Les violences continuent une nuit de plus.
 B) Demander des renforts de police :: Ordre.
    securite+3 bon-2 | g-4 c+1 d+5 e-2
    > Les émeutes cessent rapidement.
-   ~40 coh-2 > Votre majorité se fracture sur la réponse sécuritaire.
+   ~40 coh-2 > Ta majorité se fracture sur la réponse sécuritaire.
 C) Financer la reconstruction et la médiation :: Réparer.
    bud-25 securite+1 bon+1 | g+2 c+2 d0 e+1
    > Les commerces brûlés sont aidés à rouvrir.
 
 === cri-006 | crise | Un glissement de terrain sur la petite ceinture
-Après des pluies diluviennes, un talus de la petite ceinture s’effondre sur des jardins partagés.
+Après des pluies diluviennes, un talus de la petite ceinture s’effondre sur des jardins partagés de l’arrondissement.
 A) Consolider tout le tracé :: Sécurité durable.
    bud-35 securite+2 ecologie+1 | g+1 c+2 d+2 e+2
-   > Le talus est renforcé sur huit kilomètres.
+   > Le talus est renforcé sur deux kilomètres.
 B) Fermer la promenade au public :: Prudence.
    bon-2 securite+1 | g0 c+1 d+1 e-1
    > La promenade est fermée jusqu’à nouvel ordre.
@@ -79,11 +79,12 @@ C) Réparer seulement la zone touchée :: Économie.
    bud-6 | g0 c+2 d+1 e0
    > Seul le talus effondré est réparé.
    ~35 pop-3 > Un second effondrement emporte une cabane de jardin.
+
 === cri-007 | crise | La canicule extrême
-Il fait 42 °C à Paris. Les personnes âgées sont en danger.
+Il fait 42 °C. Les personnes âgées de l’arrondissement sont en danger.
 A) Plan canicule maximal : appels, visites, salles fraîches :: Protéger.
    bud-10 services+2 bon+1 | g+2 c+2 d+1 e+1
-   > Tous les seniors isolés sont appelés chaque jour.
+   > Tous les seniors isolés du quartier sont appelés chaque jour.
 B) Ouvrir les parcs toute la nuit :: Rafraîchir.
    bud-3 bon+2 securite-1 | g+2 c+1 d-1 e+2
    > Les parcs restent ouverts la nuit.
@@ -93,11 +94,11 @@ C) Communiquer des conseils :: Minimal.
    ~40 pop-3 > La presse dénombre des décès évitables.
 
 === cri-008 | crise | Une cyberattaque contre la mairie
-Des pirates bloquent les ordinateurs de la mairie et réclament une rançon.
+Des pirates bloquent les ordinateurs de la mairie d’arrondissement et réclament une rançon.
 A) Payer la rançon :: Rapide, dangereux.
    bud-10 services+1 coh-2 | g-2 c0 d0 e-1
    > Les systèmes sont débloqués.
-   ~40 pop-3 > On apprend que la Ville a payé des criminels.
+   ~40 pop-3 > On apprend que l’arrondissement a payé des criminels.
 B) Refuser et tout reconstruire :: Long.
    bud-20 services-3 | g+1 c+2 d+2 e+1
    > Les services fonctionnent au papier pendant un mois.
@@ -106,20 +107,20 @@ C) Faire appel à l’État et à des experts :: Coopération.
    > Des experts de l’État restaurent les systèmes.
 
 === cri-009 | crise | Le métro paralysé par une grève générale
-Une grève nationale paralyse les transports pendant trois semaines.
+Une grève nationale paralyse les transports pendant trois semaines. L’arrondissement est à l’arrêt.
 A) Mettre en place des navettes et vélos gratuits :: Alternatives.
    bud-15 transports+2 bon+1 | g+1 c+2 d+1 e+3
    > Des navettes et des vélos gratuits sont proposés.
 B) Soutenir les grévistes :: Ligne politique.
    coh+2 transports-1 | g+4 c-1 d-4 e+1
-   > Le maire rejoint les manifestants.
-   ~40 pop-2 > Les usagers épuisés reprochent au maire son engagement.
+   > Tu rejoins les manifestants.
+   ~40 pop-2 > Les usagers épuisés te reprochent ton engagement.
 C) Encourager le télétravail :: Pragmatique.
    economie-1 | g0 c+2 d+1 e+1
-   > Les entreprises sont incitées au télétravail.
+   > Les entreprises du quartier sont incitées au télétravail.
 
 === cri-010 | crise | Un attentat déjoué
-Les services de renseignement ont déjoué un attentat visant un grand événement parisien.
+Les services de renseignement ont déjoué un attentat visant un grand événement de l’arrondissement.
 A) Annuler les grands événements du mois :: Prudence.
    bon-2 economie-2 securite+2 | g0 c+2 d+2 e0
    > Les concerts et fêtes sont annulés.
@@ -128,11 +129,11 @@ B) Maintenir avec une sécurité renforcée :: Ne pas céder.
    > Les événements se tiennent sous haute protection.
 C) Maintenir sans changement :: Risqué.
    bon+1 | g+1 c-1 d-3 e0
-   > Le maire refuse de « céder à la peur ».
+   > Tu refuses de « céder à la peur ».
    ~30 securite-3 pop-3 > Un incident de foule provoque la panique.
 
 === cri-011 | crise | Effondrement d’une carrière souterraine
-Une rue s’effondre dans le 14e à cause d’anciennes carrières.
+Une rue de l’arrondissement s’effondre à cause d’anciennes carrières.
 A) Combler toutes les carrières à risque :: Sécurité totale.
    bud-60 securite+2 logement+1 | g+1 c+2 d+2 e0
    > Un grand chantier de comblement est lancé.
@@ -145,7 +146,7 @@ C) Reloger les riverains et attendre :: Temporiser.
    > Les riverains sont relogés provisoirement.
 
 === cri-012 | crise | Une pollution au plomb autour d’un chantier
-Des taux de plomb élevés sont mesurés près des écoles autour d’un grand chantier.
+Des taux de plomb élevés sont mesurés près des écoles de l’arrondissement autour d’un grand chantier.
 A) Fermer les écoles et dépolluer :: Santé d’abord.
    bud-15 services-1 ecologie+2 pop+1 | g+2 c+2 d+1 e+4
    > Les écoles ferment pour nettoyage.
@@ -154,11 +155,11 @@ B) Faire des tests sanguins gratuits :: Rassurer.
    > Les enfants sont dépistés.
 C) Minimiser le risque :: Dangereux.
    pop-3 coh-2 | g-2 c-1 d0 e-4
-   > La mairie parle d’un « risque limité ».
+   > La mairie d’arrondissement parle d’un « risque limité ».
    ~50 pop-3 > Une enquête révèle que des alertes avaient été ignorées.
 
 === cri-013 | crise | Une tempête violente
-Des rafales à 130 km/h arrachent des arbres et des toitures.
+Des rafales à 130 km/h arrachent des arbres et des toitures dans l’arrondissement.
 A) Fermer parcs et cimetières, mobiliser les équipes :: Prévoir.
    bud-8 securite+2 | g0 c+2 d+2 e+1
    > Aucun blessé grave n’est à déplorer.
@@ -170,16 +171,16 @@ C) Replanter des arbres plus résistants :: Après la crise.
    > Des essences plus robustes remplacent les arbres tombés.
 
 === cri-014 | crise | Pénurie de carburant
-Des blocages de raffineries provoquent une pénurie d’essence à Paris.
+Des blocages de raffineries provoquent une pénurie d’essence dans l’arrondissement.
 A) Réserver le carburant aux services essentiels :: Prioriser.
    services+1 economie-1 | g+1 c+2 d+1 e+1
    > Ambulances, pompiers et bus sont prioritaires.
-B) Rendre les transports publics gratuits une semaine :: Généreux.
+B) Rendre les navettes de quartier gratuites une semaine :: Généreux.
    bud-15 transports+2 bon+2 | g+3 c+1 d-1 e+3
-   > Les Parisiens prennent les transports gratuitement.
+   > Les habitants prennent les navettes gratuitement.
 C) Ne rien faire :: L’État gère.
    bon-2 | g-1 c0 d+1 e0
-   > Les files d’attente s’allongent aux stations.
+   > Les files d’attente s’allongent aux stations-service.
 
 === cri-015 | crise | Un pont menace de s’effondrer
 Des fissures inquiétantes sont découvertes sur un pont parisien très fréquenté.
@@ -195,55 +196,55 @@ C) Laisser ouvert en surveillant :: Risqué.
    > Le pont reste ouvert.
    ~25 pop-6 securite-3 > Un morceau de corniche tombe sur une voiture.
 
-=== cri-016 | crise | Les punaises de lit envahissent Paris
-Des punaises de lit sont signalées dans les cinémas, les trains et les écoles.
+=== cri-016 | crise | Les punaises de lit envahissent l’arrondissement
+Des punaises de lit sont signalées dans les cinémas, les écoles et les immeubles de l’arrondissement.
 A) Créer un service public de désinsectisation gratuit :: Efficace.
    bud-12 services+2 bon+1 | g+3 c+2 d0 e+1
    > Des équipes traitent gratuitement les logements.
 B) Lancer une campagne d’information :: Peu cher.
    bud-2 | g+1 c+2 d+1 e+1
    > Des conseils sont diffusés partout.
-   ~40 pop-2 > Des images de punaises dans le métro font le tour du monde.
+   ~40 pop-2 > Des images de punaises dans le cinéma du quartier font le tour du monde.
 C) Former des chiens détecteurs :: Original.
    bud-4 bon+1 | g0 c+2 d+1 e+1
    > Des chiens renifleurs inspectent les lieux publics.
 
 === cri-017 | crise | Un krach boursier
-Un krach provoque des faillites d’entreprises parisiennes et une chute des recettes.
+Un krach provoque des faillites d’entreprises de l’arrondissement et une chute des recettes.
 A) Plan de soutien aux entreprises :: Relancer.
    bud-40 economie+3 | g0 c+2 d+3 e0
-   > Des prêts garantis sont accordés aux PME.
+   > Des prêts garantis sont accordés aux PME du quartier.
 B) Plan de soutien aux ménages :: Protéger.
    bud-40 achat+3 bon+1 | g+4 c+1 d-1 e+1
    > Une aide est versée aux familles modestes.
-C) Réduire les dépenses de la Ville :: Austérité.
+C) Réduire les dépenses de l’arrondissement :: Austérité.
    rec+0.6x60 services-2 bon-2 | g-3 c+1 d+4 e-1
-   > La Ville se serre la ceinture.
+   > La mairie d’arrondissement se serre la ceinture.
 
 === cri-018 | crise | Une fuite toxique dans une usine proche
-Un nuage chimique venant d’une usine de banlieue survole Paris.
+Un nuage chimique venant d’une usine de banlieue survole l’arrondissement.
 A) Confinement général pendant une journée :: Prudence.
    economie-1 securite+2 | g+1 c+2 d+1 e+2
-   > Les Parisiens restent chez eux.
+   > Les habitants restent chez eux.
 B) Distribuer des masques :: Rassurer.
    bud-5 bon+1 | g+1 c+2 d+1 e+1
    > Des masques sont distribués dans les pharmacies.
 C) Attendre les mesures officielles :: Passivité.
    pop-2 | g-1 c+1 d+1 e-1
-   > La mairie attend les instructions de l’État.
+   > La mairie d’arrondissement attend les instructions de l’État.
    ~40 pop-2 > Des habitants disent avoir été laissés sans information.
 
 === cri-019 | crise | Une épidémie de rougeole dans les écoles
-Plusieurs écoles connaissent des cas de rougeole.
+Plusieurs écoles de l’arrondissement signalent des cas de rougeole.
 A) Vaccination dans les écoles :: Efficace.
    bud-6 services+2 | g+2 c+3 d+1 e+1
-   > Des médecins vaccinent dans les écoles.
+   > Des médecins vaccinent dans les écoles de l’arrondissement.
 B) Fermer les écoles touchées :: Prudence.
    services-1 bon-1 | g0 c+2 d+1 e0
    > Les écoles concernées ferment.
 C) Rappeler les obligations vaccinales :: Simple.
    bud-1 | g0 c+2 d+2 e0
-   > Un courrier est envoyé aux parents.
+   > La mairie d’arrondissement envoie un courrier aux parents.
 
 === cri-020 | crise | Une manifestation dégénère
 Une manifestation nationale dégénère : vitrines cassées, voitures brûlées.
@@ -259,46 +260,46 @@ C) Mobiliser les agents pour nettoyer dès l’aube :: Effacer les traces.
    > Au matin, les rues sont propres.
 
 === cri-021 | crise | Une sécheresse historique
-Les nappes phréatiques sont basses. L’eau doit être rationnée.
+Les nappes phréatiques sont basses. L’arrondissement doit rationner l’eau.
 A) Restrictions strictes d’arrosage et de lavage :: Économiser l’eau.
    ecologie+2 bon-1 | g+1 c+2 d0 e+4
-   > Les fontaines et l’arrosage sont coupés.
+   > Les fontaines et l’arrosage des squares sont coupés.
 B) Réutiliser l’eau non potable :: Ingénieux.
    bud-15 ecologie+3 | g+1 c+2 d+1 e+4
-   > Le réseau d’eau non potable arrose les parcs.
+   > Le réseau d’eau non potable arrose les jardins de l’arrondissement.
 C) Ne rien changer :: Confort.
    ecologie-2 | g-1 c0 d+1 e-4
    > L’eau coule normalement.
-   ~40 pop-2 > Des coupures d’eau touchent certains quartiers.
+   ~40 pop-2 > Des coupures d’eau touchent certaines rues.
 
-=== cri-022 | crise | Le Louvre évacué après une menace
-Une menace grave entraîne l’évacuation du Louvre et de plusieurs lieux touristiques.
+=== cri-022 | crise | Le grand musée du quartier évacué après une menace
+Une menace grave entraîne l’évacuation du musée de l’arrondissement et de plusieurs lieux touristiques voisins.
 A) Renforcer la sécurité de tous les sites :: Rassurer.
    bud-12 securite+2 economie+1 | g0 c+2 d+3 e0
-   > Des contrôles renforcés sont installés partout.
+   > Des contrôles renforcés sont installés partout dans l’arrondissement.
 B) Réouvrir rapidement pour ne pas céder :: Message de résistance.
    economie+1 bon+1 | g+1 c+2 d0 e+1
-   > Le Louvre rouvre dès le lendemain.
+   > Le musée rouvre dès le lendemain.
    ~25 securite-2 > Une nouvelle alerte provoque une bousculade.
 C) Garder fermé une semaine :: Prudence maximale.
    economie-2 securite+1 | g0 c+1 d+2 e0
    > Les touristes trouvent porte close.
 
 === cri-023 | crise | Le froid extrême et les sans-abri
-Une vague de froid à -10 °C met en danger les personnes à la rue.
+Une vague de froid à -10 °C met en danger les personnes à la rue dans l’arrondissement.
 A) Ouvrir tous les gymnases :: Urgence.
    bud-8 services-1 bon+1 pop+1 | g+4 c+2 d0 e+2
-   > Les gymnases accueillent les sans-abri.
+   > Les gymnases de l’arrondissement accueillent les sans-abri.
 B) Ouvrir des stations de métro la nuit :: Original.
    bud-3 transports-1 bon+1 | g+3 c+1 d0 e+1
-   > Des stations restent ouvertes la nuit.
+   > Les stations du quartier restent ouvertes la nuit.
 C) Laisser l’État gérer :: Pas notre rôle.
    pop-2 | g-3 c0 d+2 e-1
-   > La mairie renvoie à la préfecture.
-   ~40 pop-3 > Plusieurs décès sont signalés dans les rues.
+   > La mairie d’arrondissement renvoie à la préfecture.
+   ~40 pop-3 > Plusieurs décès sont signalés dans les rues de l’arrondissement.
 
 === cri-024 | crise | L’incendie d’un monument historique
-Un incendie ravage la toiture d’une église historique.
+Un incendie ravage la toiture de la vieille église de l’arrondissement.
 A) Lancer une souscription nationale :: Élan collectif.
    bud-5 bon+1 pop+2 | g+1 c+2 d+2 e0
    > Les dons affluent de toute la France.
@@ -309,13 +310,13 @@ B) Financer la reconstruction seul :: Rapide.
 C) Reconstruire de manière moderne :: Audace.
    bud-30 pop-2 economie+1 | g+1 c+1 d-2 e+2
    > Un toit de verre est proposé.
-   ~45 pop-2 > Une pétition exige une reconstruction à l’identique.
+   ~45 pop-2 > Une pétition des habitants exige une reconstruction à l’identique.
 
 === cri-025 | crise | Une inflation record
-Les prix flambent. Les familles parisiennes ne bouclent plus leurs fins de mois.
+Les prix flambent. Les familles de l’arrondissement ne bouclent plus leurs fins de mois.
 A) Geler les tarifs municipaux :: Protéger.
    rec-0.6x50 achat+3 | g+3 c+2 d+1 e+1
-   > Cantines, piscines et crèches ne changent pas de prix.
+   > Cantines, piscines et crèches de l’arrondissement ne changent pas de prix.
 B) Distribuer un chèque alimentation :: Aide directe.
    bud-30 achat+3 bon+1 | g+4 c+1 d-1 e+1
    > Un chèque de 100 € est versé aux familles modestes.

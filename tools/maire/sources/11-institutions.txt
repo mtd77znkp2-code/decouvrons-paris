@@ -1,25 +1,26 @@
 // Relations institutionnelles : État, Région, Métropole, conseil de Paris, opposition, justice
 === ins-001 | institutions | Le préfet veut reprendre la main
-Le préfet de police critique la gestion municipale de la sécurité et demande plus de pouvoirs.
+Le préfet de police critique la gestion de la sécurité dans l’arrondissement et demande plus de pouvoirs.
 A) Accepter une coopération renforcée :: Apaisement.
    securite+2 coh-1 | g-2 c+3 d+3 e-1
-   > Une convention police-mairie est signée.
+   > Une convention entre la police et la mairie d’arrondissement est signée.
 B) Refuser et défendre la police municipale :: Indépendance.
    securite+1 pop+1 | g+1 c0 d0 e+1
-   > Le maire défend ses prérogatives.
-   ~35 securite-1 > Le préfet retire des patrouilles dans plusieurs quartiers.
-C) Saisir le Conseil d’État :: Bras de fer juridique.
+   > Tu défends tes prérogatives.
+   ~35 securite-1 > Le préfet retire des patrouilles dans plusieurs rues.
+C) Saisir le tribunal administratif :: Bras de fer juridique.
    bud-2 coh+1 | g+1 c-1 d-1 e+1
    > Le différend part devant les juges.
 
 === ins-002 | institutions | La Région refuse de financer le métro
-La présidente de Région refuse de financer sa part d’un prolongement de ligne.
+La présidente de Région refuse de financer sa part du prolongement de ligne qui doit desservir l’arrondissement.
+? placeMin=12
 A) Payer seul :: Le projet avance.
    bud-60 transports+3 | g+1 c+1 d0 e+2
-   > Paris paie la part de la Région.
+   > L’arrondissement paie la part de la Région.
 B) Attaquer publiquement la Région :: Polémique.
    pop+1 coh+1 | g+2 c-1 d-2 e+1
-   > Le maire dénonce « l’abandon des Parisiens ».
+   > Tu dénonces « l’abandon des habitants ».
    ~40 transports-1 > Le projet est gelé pour deux ans.
 C) Négocier un report et un partage :: Diplomatie.
    bud-15 transports+1 | g0 c+3 d+2 e+1
@@ -52,18 +53,19 @@ C) Lancer une charte éthique pour tous les élus :: Réforme.
    bud-1 pop+1 coh+2 | g+2 c+2 d+1 e+2
    > Une charte de déontologie est adoptée.
 
-=== ins-005 | institutions | Le gouvernement veut récupérer des bâtiments
-L’État veut reprendre trois casernes prêtées à la Ville, où vivent des familles en logement social provisoire.
-A) Racheter les casernes à l’État :: Garder les logements.
+=== ins-005 | institutions | L’État veut récupérer une caserne
+L’État veut reprendre une caserne prêtée à l’arrondissement, où vivent des familles en logement social provisoire.
+A) Racheter la caserne à l’État :: Garder les logements.
    bud-70 logement+3 | g+3 c+1 d0 e+1
-   > Les casernes deviennent propriété de la Ville.
+   > La caserne devient propriété de l’arrondissement.
 B) Négocier un bail de quinze ans :: Gagner du temps.
    rec-0.3x60 logement+1 | g+1 c+3 d+1 e+1
    > Un loyer est versé à l’État.
-C) Rendre les bâtiments et reloger les familles :: Respect du droit.
+C) Rendre le bâtiment et reloger les familles :: Respect du droit.
    bud-10 logement-2 pop-2 | g-3 c+1 d+3 e-1
    > Les familles sont relogées ailleurs.
    ~40 pop-2 > Des enfants doivent changer d’école en cours d’année.
+
 === ins-006 | institutions | La Métropole veut plus de pouvoirs
 La Métropole du Grand Paris veut gérer elle-même l’urbanisme de toute l’agglomération.
 A) Soutenir la Métropole :: Vision globale.
@@ -76,8 +78,8 @@ C) Proposer une compétence partagée :: Compromis.
    coh+1 | g+1 c+3 d+1 e+1
    > Un comité commun est créé.
 
-=== ins-007 | institutions | Une grève des agents de la Ville
-Les syndicats des agents municipaux lancent une grève pour les salaires.
+=== ins-007 | institutions | Une grève des agents de l’arrondissement
+Les syndicats des agents de la mairie d’arrondissement lancent une grève pour les salaires.
 A) Accorder une hausse de salaire :: Paix sociale.
    rec-1x50 services+2 | g+4 c+1 d-3 e+1
    > Les agents obtiennent 4 %.
@@ -115,18 +117,19 @@ C) Passer en force :: Autorité.
    > Le budget passe de justesse et les alliés boudent.
    ~40 coh-2 > Deux adjoints démissionnent.
 
-=== ins-010 | institutions | Le Sénat veut plafonner les dépenses des grandes villes
-Une proposition de loi limiterait la hausse des dépenses de fonctionnement de Paris à 1 % par an.
-A) Mobiliser les maires des grandes villes contre la loi :: Front commun.
+=== ins-010 | institutions | L’Hôtel de Ville veut plafonner les dépenses des arrondissements
+Une réforme limiterait la hausse des dépenses de fonctionnement de chaque arrondissement à 1 % par an.
+A) Mobiliser les autres maires d’arrondissement contre la réforme :: Front commun.
    coh+2 pop+1 | g+3 c+1 d-2 e+2
-   > Lyon, Marseille et Bordeaux signent une tribune avec Paris.
-   ~40 rec-0.3x40 > La loi passe quand même : certaines dépenses doivent être gelées.
+   > Plusieurs maires d’arrondissement signent une tribune avec toi.
+   ~40 rec-0.3x40 > La réforme passe quand même : certaines dépenses doivent être gelées.
 B) Anticiper en réduisant déjà les dépenses :: Prendre les devants.
    rec+0.5x60 services-2 bon-1 | g-3 c+2 d+4 e-1
    > Un plan d’économies est lancé avant même le vote.
-C) Négocier une exception pour Paris capitale :: Diplomatie.
+C) Négocier une exception pour ton arrondissement :: Diplomatie.
    coh+1 | g0 c+3 d+1 e0
-   > Les sénateurs envisagent un statut particulier.
+   > L’Hôtel de Ville envisage un régime particulier.
+
 === ins-011 | institutions | Le jumelage avec une ville étrangère
 Une grande ville étrangère propose un jumelage, mais son gouvernement est critiqué pour les droits humains.
 A) Accepter le jumelage :: Économie.
@@ -140,16 +143,16 @@ C) Accepter avec un volet droits humains :: Diplomatie.
    economie+1 | g0 c+3 d+1 e+1
    > Le jumelage inclut des échanges entre associations.
 
-=== ins-012 | institutions | Les maires d’arrondissement réclament plus d’autonomie
-Les maires d’arrondissement veulent gérer eux-mêmes une partie du budget.
+=== ins-012 | institutions | Les conseils de quartier réclament plus d’autonomie
+Les conseils de quartier de l’arrondissement veulent gérer eux-mêmes une partie du budget.
 A) Leur confier 10 % du budget :: Décentralisation.
    rec-0.3x60 bon+1 services+1 | g+2 c+2 d+1 e+2
-   > Les arrondissements gèrent leurs projets.
-   ~30 coh-1 > Un maire d’arrondissement de l’opposition s’en sert contre vous.
+   > Les quartiers gèrent leurs propres projets.
+   ~30 coh-1 > Un conseil de quartier proche de ton opposant s’en sert contre toi.
 B) Refuser :: Garder le contrôle.
    coh+1 bon-1 | g-1 c0 d+1 e-1
-   > Tout reste centralisé.
-C) Créer un budget participatif par arrondissement :: Les habitants décident.
+   > Tout reste décidé à la mairie d’arrondissement.
+C) Créer un budget participatif par quartier :: Les habitants décident.
    rec-0.2x60 bon+2 | g+3 c+2 d0 e+3
    > Les habitants votent pour leurs projets.
 
@@ -167,17 +170,17 @@ C) Ignorer :: Calme.
    ~30 pop-1 > Le silence est interprété comme un aveu.
 
 === ins-014 | institutions | Le référendum local
-Des citoyens demandent un référendum sur un grand projet d’aménagement.
+Des habitants demandent un référendum sur un grand projet d’aménagement de l’arrondissement.
 A) Organiser le référendum :: Démocratie, risque.
    bud-6 coh+2 | g+2 c+2 d0 e+3
-   > Les Parisiens votent.
-   ~40 pop-2 > Le projet est rejeté et la majorité apparaît désavouée.
+   > Les habitants votent.
+   ~40 pop-2 > Le projet est rejeté et ta majorité apparaît désavouée.
 B) Refuser le référendum :: Décider soi-même.
    pop-2 | g-2 c0 d+2 e-2
    > Le projet continue sans vote.
 C) Organiser une consultation en ligne :: Rapide.
    bud-1 coh+1 | g+1 c+3 d+1 e+1
-   > Une consultation en ligne recueille 80 000 avis.
+   > Une consultation en ligne recueille 8 000 avis.
 
 === ins-015 | institutions | Un élu de ta majorité passe à l’opposition
 Un adjoint très médiatique quitte ta majorité et rejoint l’opposition avec deux conseillers.
@@ -191,59 +194,60 @@ B) Dénoncer sa trahison publiquement :: Resserrer les rangs.
 C) Négocier pour récupérer les deux conseillers :: Limiter la casse.
    bud-5 coh+1 | g0 c+3 d+1 e0
    > Les deux conseillers reviennent contre des délégations.
-=== ins-016 | institutions | Paris et la banlieue : le périphérique
-Les maires de banlieue reprochent à Paris de décider seul de l’avenir du périphérique.
-A) Créer une conférence métropolitaine :: Coopération.
+=== ins-016 | institutions | Le périphérique divise les élus de banlieue
+Les maires des communes voisines reprochent à l’arrondissement de décider seul de l’avenir des portes de Paris.
+A) Créer une conférence avec les communes voisines :: Coopération.
    bud-1 coh+1 transports+1 | g+2 c+3 d+1 e+2
    > Les maires se réunissent chaque trimestre.
-B) Maintenir la décision parisienne :: Fermeté.
+B) Maintenir ta décision :: Fermeté.
    transports+1 pop-1 | g0 c0 d+1 e+1
-   > Paris décide seul.
-   ~40 coh-1 > Les maires de banlieue boycottent les réunions métropolitaines.
+   > L’arrondissement décide seul.
+   ~40 coh-1 > Les maires voisins boycottent les réunions métropolitaines.
 C) Proposer un fonds commun pour les communes voisines :: Solidarité.
    bud-20 economie+1 | g+3 c+2 d0 e+2
-   > Un fonds de solidarité métropolitain est créé.
+   > Un fonds de solidarité est créé avec les communes voisines.
 
 === ins-017 | institutions | Une ancienne promesse oubliée
-Un journaliste rappelle une promesse de campagne jamais tenue : un parc dans le 18e.
+Un journaliste du quartier rappelle une promesse de campagne jamais tenue : un grand parc dans l’arrondissement.
 A) Lancer le projet immédiatement :: Tenir parole.
    bud-30 ecologie+2 bon+1 coh+2 | g+2 c+2 d+1 e+3
    > Les travaux du parc démarrent.
 B) Expliquer pourquoi c’est impossible :: Franchise.
    pop-1 coh+1 | g0 c+2 d+1 e0
-   > Le maire s’explique publiquement.
+   > Tu t’expliques publiquement.
 C) Remplacer par un projet plus modeste :: Compromis.
    bud-10 ecologie+1 | g+1 c+2 d+1 e+2
    > Un square remplace le grand parc promis.
 
 === ins-018 | institutions | Les Jeux olympiques de la jeunesse
-Le Comité olympique propose à Paris d’organiser les Jeux olympiques de la jeunesse.
+Le Comité olympique propose d’organiser les Jeux olympiques de la jeunesse dans tes équipements.
+? placeMin=16
 A) Accepter :: Rayonnement.
    bud-40 economie+2 bon+1 | g0 c+2 d+3 e-1
-   > Paris accueillera les jeunes athlètes.
+   > Les jeunes athlètes du monde entier sont attendus.
    +25 pop+2 > Les Jeux sont un succès populaire.
 B) Refuser :: Pas de grands événements.
    pop-1 | g+1 c0 d-2 e+2
-   > Paris décline la proposition du Comité.
+   > Tu déclines la proposition du Comité.
 C) Accepter avec les équipements existants uniquement :: Sobre.
    bud-15 economie+1 | g+1 c+3 d+1 e+2
    > Les Jeux se tiendront dans les sites de 2024.
 
 === ins-019 | institutions | Un conflit avec la SNCF
-La SNCF veut construire des bureaux sur une friche ferroviaire que vous vouliez transformer en parc.
+La SNCF veut construire des bureaux sur une friche ferroviaire de l’arrondissement que tu voulais transformer en parc.
 A) Négocier un partage bureaux-parc :: Compromis.
    ecologie+1 economie+1 | g+1 c+3 d+2 e+1
    > Un tiers bureaux, deux tiers parc.
 B) Bloquer le permis de construire :: Bras de fer.
    ecologie+2 economie-1 | g+2 c-1 d-2 e+3
    > Le permis est refusé.
-   ~40 pop-1 > La SNCF attaque la Ville en justice.
+   ~40 pop-1 > La SNCF attaque l’arrondissement en justice.
 C) Racheter le terrain :: Coûteux.
    bud-80 ecologie+3 bon+1 | g+2 c+1 d0 e+4
-   > La Ville devient propriétaire de la friche.
+   > L’arrondissement devient propriétaire de la friche.
 
 === ins-020 | institutions | Le scandale des notes de frais
-Des notes de frais d’élus municipaux font la une : restaurants étoilés et voyages.
+Des notes de frais d’élus de l’arrondissement font la une : restaurants étoilés et voyages.
 A) Publier toutes les notes de frais :: Transparence.
    pop+2 coh+1 | g+2 c+2 d+1 e+2
    > Toutes les dépenses des élus sont en ligne.
@@ -253,33 +257,33 @@ B) Plafonner les frais :: Réforme.
    > Les frais sont strictement plafonnés.
 C) Minimiser l’affaire :: Risqué.
    pop-3 coh-1 | g-1 c0 d0 e-1
-   > Le maire parle de « détails ».
+   > Tu parles de « détails ».
 
 === ins-021 | institutions | L’État veut installer un centre d’accueil de migrants
-L’État annonce un centre d’accueil pour 500 personnes dans un arrondissement parisien.
+L’État annonce un centre d’accueil pour 500 personnes dans l’arrondissement.
 A) Accepter et accompagner :: Humanité.
    bud-5 services+1 | g+4 c+1 d-4 e+3
-   > Le centre ouvre avec l’appui de la Ville.
+   > Le centre ouvre avec l’appui de la mairie d’arrondissement.
    ~35 pop-2 > Une réunion publique tourne à l’affrontement.
 B) Refuser :: Écouter les riverains.
    pop+1 coh-1 | g-4 c0 d+4 e-3
-   > Le maire s’oppose au projet.
+   > Tu t’opposes au projet.
 C) Proposer plusieurs petits centres répartis :: Équilibre.
    bud-3 | g+2 c+3 d0 e+2
-   > Cinq petits centres sont ouverts.
+   > Cinq petits centres sont ouverts dans différents quartiers.
 
 === ins-022 | institutions | L’Union européenne propose des fonds
-Bruxelles propose des fonds pour la transition écologique, mais le dossier est très lourd.
+Bruxelles propose des fonds pour la transition écologique des quartiers, mais le dossier est très lourd.
 A) Monter un dossier ambitieux :: Recettes potentielles.
    bud-3 ecologie+1 | g+1 c+2 d+1 e+3
-   > Une équipe prépare le dossier.
-   +15 bud+40 > Paris obtient 40 millions de fonds européens.
+   > Une équipe de la mairie d’arrondissement prépare le dossier.
+   +15 bud+40 > L’arrondissement obtient 40 millions de fonds européens.
 B) Ne pas candidater :: Trop compliqué.
    ecologie-1 | g-1 c-1 d+1 e-2
-   > Paris passe son tour.
-C) Candidater avec d’autres villes européennes :: Réseau.
+   > L’arrondissement passe son tour.
+C) Candidater avec des quartiers d’autres villes européennes :: Réseau.
    bud-1 ecologie+1 | g+1 c+3 d+1 e+2
-   > Paris s’allie avec Milan et Barcelone.
+   > L’arrondissement s’allie avec des quartiers de Milan et Barcelone.
    +15 bud+15 > Le consortium obtient des financements.
 
 === ins-023 | institutions | La dissolution de la majorité ?
