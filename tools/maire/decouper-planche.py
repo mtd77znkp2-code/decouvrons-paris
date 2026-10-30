@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Découpe une planche d'illustrations générée par IA (grille de bâtiments sur fond blanc) en images du jeu.
 
-Usage : python3 tools/maire/decouper-planche.py planche.png id1 id2 ... [--apercu apercu.png]
+Usage : python3 tools/maire/decouper-planche.py planche.png id1 id2 ... [--apercu apercu.png] [--ui]
   - les identifiants sont donnés dans l'ordre de la grille (de gauche à droite, puis de haut en bas) ;
   - chaque bâtiment est enregistré dans public/maire/img/bat/<id>.webp (192 × 192, fond transparent).
 
@@ -34,7 +34,10 @@ def fond_transparent(img):
     return rgba, ~fond
 
 
-def decouper(chemin, ids, apercu=None):
+def decouper(chemin, ids, apercu=None, sortie=None, taille=None):
+    global SORTIE, TAILLE
+    if sortie: SORTIE = sortie
+    if taille: TAILLE = taille
     img = Image.open(chemin)
     rgba, plein = fond_transparent(img)
     h, w = plein.shape
@@ -106,7 +109,13 @@ if __name__ == "__main__":
     apercu = None
     if "--apercu" in args:
         k = args.index("--apercu"); apercu = args[k + 1]; del args[k:k + 2]
+    # --ui : icônes de l'interface (public/maire/img/ui, 128 px, pas de déclaration dans ILLUSTRES)
+    ui = "--ui" in args
+    if ui: args.remove("--ui")
     if len(args) < 2:
         print(__doc__); sys.exit(1)
-    decouper(args[0], args[1:], apercu)
-    declarer(args[1:])
+    if ui:
+        decouper(args[0], args[1:], apercu, os.path.join(os.path.dirname(__file__), "..", "..", "public", "maire", "img", "ui"), 128)
+    else:
+        decouper(args[0], args[1:], apercu)
+        declarer(args[1:])
