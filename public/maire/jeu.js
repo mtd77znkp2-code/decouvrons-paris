@@ -691,21 +691,21 @@
       c.appendChild(choixC);
       var l = h("div", "mx-attaques");
       Object.keys(S.ATTAQUES).forEach(function (k) {
-        var A = S.ATTAQUES[k], att = S.attente(s, moi + ":" + k, now), cher = A.cout > st.tresor;
+        var A = S.ATTAQUES[k], px = S.prixAction(A.cout, p), att = S.attente(s, moi + ":" + k, now), cher = px > st.tresor;
         var b = bouton("", "mx-attaque", function () { lancerAttaque(cible, k, f); });
         b.disabled = !!att || cher;
         ajout(b, h("span", "mx-att-ico", A.ico), ajout(h("span", "mx-att-txt"), h("b", null, A.nom), h("small", null, A.txt)),
-          h("em", "mx-att-prix", att ? "⏳ " + mmss(att) : cher ? "💸 " + argent(A.cout) : A.cout ? argent(A.cout) : "Gratuit"));
+          h("em", "mx-att-prix", att ? "⏳ " + mmss(att) : cher ? "💸 " + argent(px) : px ? argent(px) : "Gratuit"));
         l.appendChild(b);
       });
       c.appendChild(l);
-      var B = S.BOUCLIER, attB = S.attente(s, moi + ":bouclier", now), actif = (s.boucliers || {})[moi];
+      var B = S.BOUCLIER, pxB = S.prixAction(B.cout, p), attB = S.attente(s, moi + ":bouclier", now), actif = (s.boucliers || {})[moi];
       var bb = bouton("", "mx-attaque mx-bouclier" + (actif ? " mx-on" : ""), function () {
-        st = M.payer(st, B.cout, B.ico + " " + B.nom); sauver();
+        st = M.payer(st, pxB, B.ico + " " + B.nom); sauver();
         window.SessionLigne.proteger(SES.id).then(function () { toast("🛡️ Ton service de communication veille."); jeu(); rendre(); });
       });
-      bb.disabled = !!actif || !!attB || B.cout > st.tresor;
-      ajout(bb, h("span", "mx-att-ico", B.ico), ajout(h("span", "mx-att-txt"), h("b", null, B.nom), h("small", null, B.txt)), h("em", "mx-att-prix", actif ? "✔ Actif" : attB ? "⏳ " + mmss(attB) : argent(B.cout)));
+      bb.disabled = !!actif || !!attB || pxB > st.tresor;
+      ajout(bb, h("span", "mx-att-ico", B.ico), ajout(h("span", "mx-att-txt"), h("b", null, B.nom), h("small", null, B.txt)), h("em", "mx-att-prix", actif ? "✔ Actif" : attB ? "⏳ " + mmss(attB) : argent(pxB)));
       c.appendChild(bb);
       var j = (s.journal || []).slice().reverse().filter(function (e) { return e.type !== "bouclier"; }).slice(0, 6);
       if (j.length) { var u = h("ul", "mx-journal-att"); j.forEach(function (e) { u.appendChild(h("li", null, ligneAttaque(e))); }); ajout(c, h("h5", null, "📰 Dernières attaques"), u); }
@@ -719,14 +719,14 @@
     return A.ico + " " + de + " → " + vers + " : " + A.nom.toLowerCase() + ", " + r;
   }
   function lancerAttaque(cible, type, f) {
-    var A = SS().ATTAQUES[type];
-    if (A.cout > st.tresor) return toast("💸 Pas assez d’argent.");
+    var A = SS().ATTAQUES[type], px = SS().prixAction(A.cout, st.session.place);
+    if (px > st.tresor) return toast("💸 Pas assez d’argent.");
     var n0 = (SES.s.journal || []).length;
     window.SessionLigne.attaquer(SES.id, cible, type).then(function (s) {
       if (!s) return toast("📵 Attaque impossible pour l’instant.");
       var e = (s.journal || []).slice(-1)[0];
       if (!e || (s.journal || []).length === n0 && e.de.uid !== moiSes()) return toast("⏳ Pas encore prêt.");
-      if (A.cout) { st = M.payer(st, A.cout, A.ico + " " + A.nom + " contre " + f.court); sauver(); }
+      if (px) { st = M.payer(st, px, A.ico + " " + A.nom + " contre " + f.court); sauver(); }
       SES.journalVu = Math.max(SES.journalVu || 0, e.q);
       flash(e.res === "ok" ? A.ico + " Touché ! −" + e.pts + " pts" : e.res === "bloque" ? "🛡️ Attaque bloquée" : "😬 Ça se retourne contre toi", e.res === "ok" ? "mx-flash-ok" : "mx-flash-ko");
       jeu();
@@ -989,7 +989,7 @@
     else if (!st.scenario) {
       var ok = M.anticipeePossible(st), b = bouton("🗳️ Demander des élections anticipées", "mx-antic-btn" + (ok ? " mx-pret" : ""), function () {
         if (!M.anticipeePossible(st)) return toast(n < 2 ? "🎯 Remplis 2 objectifs sur 3 pour pouvoir le demander." : "🗳️ Le vote prévu est déjà trop proche.");
-        if (!confirm("Demander des élections anticipées ? Les Parisiens voteront dans 3 trimestres.")) return;
+        if (!confirm("Demander des élections anticipées ? Les habitants voteront dans 3 trimestres.")) return;
         st = M.demanderAnticipee(st); sauver(); jeu();
       });
       b.setAttribute("aria-disabled", ok ? "false" : "true");
@@ -1108,7 +1108,7 @@
     Object.keys(ga).forEach(function (k) { l.appendChild(h("li", null, M.ICO[k] + " " + M.PILIERS[k] + " : " + (ga[k] >= 0 ? "+" : "−") + virg(Math.abs(ga[k])))); });
     if (B.rev) l.appendChild(h("li", null, "💶 Recettes : +" + B.rev + " M€ par trimestre"));
     if (B.pop) l.appendChild(h("li", null, "📣 Popularité : +" + B.pop + " à l’inauguration"));
-    if (M.LOGE[id]) l.appendChild(h("li", null, "🏠 Logements : place pour " + M.LOGE[id].toLocaleString("fr-FR") + " Parisiens de plus"));
+    if (M.LOGE[id]) l.appendChild(h("li", null, "🏠 Logements : place pour " + M.LOGE[id].toLocaleString("fr-FR") + " habitants de plus"));
     if (B.emplois) l.appendChild(h("li", null, "💼 Emplois : " + B.emplois.toLocaleString("fr-FR") + " postes créés (le chômage baisse)"));
     atouts(B).forEach(function (t) { l.appendChild(h("li", null, t)); });
     l.appendChild(h("li", "mx-fcout", ench ? "🔨 Aux enchères · prix moyen ≈ " + argent(B.cout) : B.projet ? "🏗️ " + argent(M.coutBat(st, id)) + " au total, 30 % au lancement, " + B.duree + " trimestres de travaux" : "💰 " + argent(M.prix(st, id)) + (B.ent ? " · entretien " + argent(B.ent) + "/trim." : "")));
@@ -1437,17 +1437,17 @@
   // a = "ok" : un bouton OK dans la bulle (ou toucher l'élément) suffit.
   var GUIDES = [
     { id: "base", ecran: "modale", si: function () { return st.phase === "evenement" && !st.special; }, etapes: [
-      { q: "#m-modale .m-choix", t: "📂 Un dossier arrive chaque trimestre. Choisis une réponse.", a: "choix" },
+      { q: "#m-modale .m-choix", t: "📂 Un dossier t’attend : choisis une réponse. Les pourcentages montrent ce qu’ont choisi les autres maires.", a: "choix" },
       { q: "#m-modale .m-delta, #m-modale .m-res", t: "Voilà les conséquences de ta décision.", a: "ok" },
-      { q: "#m-modale .m-go", t: "Retourne à l’Hôtel de Ville.", a: "fermer" },
+      { q: "#m-modale .m-go", t: "Retourne à ta mairie.", a: "fermer" },
       { q: ".mx-tableau", t: "🗳️ Ton but : rester au-dessus de 50 % jusqu’à l’élection.", a: "ok" },
-      { q: ".mx-piliers", t: "Ces 4 piliers font le bonheur des Parisiens. Ils baissent avec le temps.", a: "ok" },
+      { q: ".mx-piliers", t: "Ces 4 piliers font le bonheur de tes habitants. Ils baissent avec le temps : construis pour les remonter.", a: "ok" },
       { q: ".mx-bat:not(:disabled)", t: "🛒 Achète un bâtiment pour faire monter un pilier.", a: "achat" },
-      { q: ".m-barmois .btn", t: "Bravo ! Passe au trimestre suivant.", a: "trimestre" }] },
+      { q: ".m-barmois .btn", t: "Bravo ! Appelle le dossier suivant.", a: "trimestre" }] },
     { id: "budget", ecran: "jeu", si: function () { return st.meca.budget && st.phase === "gestion"; }, etapes: [
       { q: ".mx-gestion summary", t: "💶 Nouveau : les impôts ! Règle-les dans « Gestion de la ville ».", a: "ok" }] },
     { id: "opposant", ecran: "jeu", si: function () { return st.meca.opposant && st.opposant && st.phase === "gestion"; }, etapes: [
-      { q: ".mx-opp", t: "⚔️ Ton opposant attaque une fois par an. Son influence fait baisser ton sondage.", a: "ok" }] },
+      { q: ".mx-opp", t: "⚔️ Ton opposant veut ta place : ses attaques font baisser ton sondage.", a: "ok" }] },
     { id: "attaque", ecran: "modale", si: function () { return st.special === "opposition" && st.phase === "evenement"; }, etapes: [
       { q: "#m-modale .m-choix", t: "Riposte, tente de le faire tomber… ou laisse faire, il reviendra plus fort.", a: "choix" }] },
     { id: "cata", ecran: "modale", si: function () { return st.special === "catastrophe" && st.phase === "evenement"; }, etapes: [
@@ -1471,10 +1471,11 @@
     { id: "session", ecran: "jeu", si: function () { return !!document.querySelector(".mx-session"); }, etapes: [
       { q: ".mx-session", t: "🏛️ Tu commences maire du plus petit arrondissement. Toutes les 10 minutes, élection : bats ton rival (juste au-dessus) pour prendre sa place, jusqu’au trône de Maire de Paris. Ton opposant (juste en dessous) veut la tienne.", a: "ok" },
       { q: ".m-barmois", t: "📂 C’est toi qui appelles le dossier suivant. Un nouveau arrive toutes les 25 secondes (le bouton s’illumine) et tu peux en garder 4 en réserve. Les saisons, elles, passent toutes seules : recettes et dépenses tombent sans que tu aies à cliquer. Le petit emoji montre la saison. Ne traîne pas trop : les autres maires avancent pendant ce temps !", a: "ok" },
+      { q: ".mx-ses-attaque", t: "⚔️ Attaque ton rival ou ton opposant pour faire baisser son sondage avant l’élection. Le bouclier 🛡️ te protège de la prochaine attaque.", a: "ok" },
       { q: ".mx-ses-btn", t: "🏆 Le classement de ta session : de vrais joueurs et des maires robots. Touche un maire pour comparer vos villes.", a: "ok" }] },
     { id: "habitants3", ecran: "jeu", si: function () { return st.phase === "gestion"; }, etapes: [
-      { q: ".mx-hab", t: "👥 Les habitants : plus Paris est peuplé, plus les impôts rapportent. Ils arrivent quand ta popularité monte… s’il y a des logements libres (construis-en pour en accueillir plus).", a: "ok" },
-      { q: ".mx-chom", t: "💼 Une ville cohérente : plus il y a d’habitants, plus il faut de sécurité, de cadre de vie et d’emplois (les commerces en créent). Sinon, ou si ta popularité baisse, les Parisiens s’en vont.", a: "ok" },
+      { q: ".mx-hab", t: "👥 Les habitants : plus ton arrondissement est peuplé, plus les impôts rapportent. Ils arrivent quand ta popularité monte… s’il y a des logements libres (construis-en pour en accueillir plus).", a: "ok" },
+      { q: ".mx-chom", t: "💼 Une ville cohérente : plus il y a d’habitants, plus il faut de sécurité, de cadre de vie et d’emplois (les commerces en créent). Sinon, ou si ta popularité baisse, les habitants s’en vont.", a: "ok" },
       { q: ".m-journal", t: "📰 Le Journal de Paris te dit ce que veulent les habitants : lis-le à chaque trimestre !", a: "ok" }] },
     { id: "casino", ecran: "modale", si: function () { return st.phase === "evenement" && !!document.querySelector("#m-modale .m-mj"); }, etapes: [
       { q: "#m-modale .m-mj", t: "🎰 Chaque réponse se joue au casino (blackjack, roulette ou poker) : gagne pour la prendre. La réponse « ne rien faire » reste libre.", a: "ok" }] },

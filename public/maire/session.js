@@ -28,8 +28,9 @@
   function nomArr(n) { return n === 1 ? "1er" : n + "e"; }
   function titre(p) { return p >= TRONE ? "Maire de Paris" : "Maire du " + nomArr(arr(p)) + " arrondissement"; }
   function court(p) { return p >= TRONE ? "Paris" : nomArr(arr(p)); }
-  // Puissance : plus la place est haute, plus les impôts rapportent (×0,8 en bas, ×1,2 au trône)
-  function puissance(p) { return Math.round((0.8 + Math.min(p, TRONE) * 0.02) * 100) / 100; }
+  // Puissance : plus la place est haute, plus les impôts rapportent (×0,92 en bas, ×1,2 au trône).
+  // En bas de l'échelle, les comptes restent légèrement positifs : on ne s'endette pas sans rien faire.
+  function puissance(p) { return Math.round((0.92 + Math.min(p, TRONE) * 0.014) * 1000) / 1000; }
   function habitants(p) { return p >= TRONE ? 2100000 : ARR[arr(p)].hab; }
 
   // ---------- Hasard déterministe (graine de la session + élection + place) ----------
@@ -88,13 +89,15 @@
   // Chaque attaque retire des points au sondage de la cible jusqu'à la prochaine élection (malus, 15 au plus).
   // Un service de communication (bouclier) arrête la prochaine attaque reçue. Les bots attaquent aussi.
   var ATTAQUES = {
-    presse: { nom: "Campagne de presse", ico: "📰", cout: 30, pts: 2, cd: 60000, txt: "Des tribunes et des unes peu flatteuses : −2 points à son sondage." },
-    manif: { nom: "Manifestation organisée", ico: "📣", cout: 50, pts: 3, cd: 90000, txt: "Des pancartes devant sa mairie : −3 points." },
-    scandale: { nom: "Dossier compromettant", ico: "🕵️", cout: 80, pts: 5, risque: 0.35, retour: 3, cd: 150000, txt: "−5 points… mais une fois sur trois, l’affaire se retourne contre toi (−3)." },
+    presse: { nom: "Campagne de presse", ico: "📰", cout: 35, pts: 2, cd: 60000, txt: "Des tribunes et des unes peu flatteuses : −2 points à son sondage." },
+    manif: { nom: "Manifestation organisée", ico: "📣", cout: 60, pts: 3, cd: 90000, txt: "Des pancartes devant sa mairie : −3 points." },
+    scandale: { nom: "Dossier compromettant", ico: "🕵️", cout: 100, pts: 5, risque: 0.35, retour: 3, cd: 150000, txt: "−5 points… mais une fois sur trois, l’affaire se retourne contre toi (−3)." },
     debat: { nom: "Débat télévisé", ico: "🎤", cout: 0, pts: 3, duel: true, cd: 180000, txt: "Gratuit : le mieux placé dans les sondages fait perdre 3 points à l’autre." }
   };
-  var BOUCLIER = { nom: "Service de communication", ico: "🛡️", cout: 40, cd: 120000, txt: "Arrête la prochaine attaque reçue (jusqu’à l’élection)." };
+  var BOUCLIER = { nom: "Service de communication", ico: "🛡️", cout: 50, cd: 120000, txt: "Arrête la prochaine attaque reçue (jusqu’à l’élection)." };
   var MALUS_MAX = 15;
+  // Prix d'une action selon la place : plus on est puissant (et riche), plus elle coûte cher (×1 en bas, ×3 au trône)
+  function prixAction(cout, p) { return Math.round(cout * (1 + Math.min(p, TRONE) * 0.1) / 5) * 5; }
   function cle(x) { return x.type === "joueur" ? x.uid : x.id; }
   function qui(s, p) { var x = s.places[p]; return { nom: x.nom, ico: x.ico, court: court(p), uid: x.uid || null, bot: x.type === "bot" }; }
   function malusDe(s, p) { return ((s.malus || {})[cle(s.places[p])]) || 0; }
@@ -245,7 +248,7 @@
   }
 
   var API = { NB: NB, TRONE: TRONE, MANDAT_MS: MANDAT_MS, ARR: ARR, ORDRE: ORDRE, arr: arr, nomArr: nomArr, titre: titre, court: court, puissance: puissance, habitants: habitants,
-    nouvelleSession: nouvelleSession, rejoindre: rejoindre, attaquer: attaquer, proteger: proteger, ripostes: ripostes, ATTAQUES: ATTAQUES, BOUCLIER: BOUCLIER, malusDe: malusDe, attente: attente,
+    nouvelleSession: nouvelleSession, rejoindre: rejoindre, attaquer: attaquer, proteger: proteger, ripostes: ripostes, ATTAQUES: ATTAQUES, BOUCLIER: BOUCLIER, prixAction: prixAction, malusDe: malusDe, attente: attente,
     ventesEnCours: ventesEnCours, ventesFinies: ventesFinies, venteSuivante: venteSuivante, prochaineVente: prochaineVente, vente: vente, encherir: encherir, VENTE_P: VENTE_P, VENTE_D: VENTE_D, pleine: pleine, signaler: signaler, nettoyer: nettoyer, voter: voter, votesRequis: votesRequis, nbVotes: nbVotes,
     electionDue: electionDue, scores: scores, elire: elire, resultatDe: resultatDe, placeDe: placeDe, joueurs: joueurs, fiche: fiche, statsBot: statsBot, scoreBot: scoreBot };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else root.MaireSession = API;
