@@ -89,9 +89,9 @@
     });
     add(t, h("p", "am-aide", "⏩ Vitesse des saisons et des dossiers dans tes parties :"), seg);
     var outils = h("div", "am-outils"), info = h("p", "am-aide");
-    function outil(txt, f) { return btn(txt, "btn ghost", function () { if (!window.MaireTest || !MaireTest.pret()) { info.textContent = "Ouvre d’abord ta partie dans « Maire de Paris » (le jeu doit être lancé sur cet appareil), puis reviens ici."; return; } f(); info.textContent = "✅ Fait. Retourne dans le jeu pour voir le résultat."; }); }
+    function outil(txt, f) { return btn(txt, "btn ghost", function () { if (!window.MaireTest || !MaireTest.pret()) { info.textContent = "Ouvre d’abord ta partie dans « Maire de Paris » (le jeu doit être lancé sur cet appareil), puis reviens ici."; return; } if (f() !== false) info.textContent = "✅ Fait. Retourne dans le jeu pour voir le résultat."; }); }
     add(outils, outil("💰 +1 000 M€", function () { MaireTest.argent(1000); }), outil("⬆️ +5 niveaux de partie", function () { MaireTest.niveaux(5); }),
-      outil("📂 Remplir la réserve de dossiers", function () { MaireTest.reserve(); }), outil("🗳️ Élection maintenant", function () { MaireTest.election(); }));
+      outil("📂 Remplir la réserve de dossiers", function () { MaireTest.reserve(); }), outil("🗳️ Forcer l’élection (dans 30 s)", function () { if (MaireTest.election30()) return; info.textContent = "Tu n’es dans aucune session pour l’instant : lance ta partie d’abord."; return false; }));
     add(t, h("p", "am-aide", "🛠️ Sur ta partie en cours :"), outils, info);
   }
 

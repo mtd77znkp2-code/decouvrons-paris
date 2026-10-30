@@ -815,7 +815,9 @@
     argent: function (n) { if (!st) return; st.tresor += n; sauver(); jeu(); },
     niveaux: function (n) { if (!st || !st.np) return; M.points(st, Math.max(1, M.ptsPour(Math.min(50, st.nivJ + n)) - (st.pxp || 0))); sauver(); jeu(); },
     reserve: function () { if (!SES.id) return; SES.jetons = RG().v.reserveMax; garderReserve(); jeu(); },
-    election: function () { if (SES.id) window.SessionLigne.modifier(SES.id, function (s) { s = JSON.parse(JSON.stringify(s)); s.prochaine = Date.now(); return s; }); }
+    election: function () { if (SES.id) window.SessionLigne.modifier(SES.id, function (s) { s = JSON.parse(JSON.stringify(s)); s.prochaine = Date.now(); return s; }); },
+    // Forcer l'élection de la session où joue l'admin : elle a lieu dans 30 s (pour tous les joueurs de la session)
+    election30: function () { if (!SES.id) return false; window.SessionLigne.modifier(SES.id, function (s) { s = JSON.parse(JSON.stringify(s)); s.prochaine = Date.now() + 30000; return s; }); return true; }
   };
   function SS() { return window.MaireSession; }
   function moiSes() { return window.SessionLigne ? window.SessionLigne.moi() : "local"; }
@@ -898,7 +900,11 @@
     }
     var change = !st.session || st.session.place !== info.place || st.session.election !== info.election || !st.session.rival || (info.rival && st.session.rival.nom !== info.rival.nom);
     st = M.placer(st, info); sauver();
-    if (elu) annonceElection(elu, s);
+    if (elu) {
+      SES.derniere = { r: elu, s: s };
+      // Téléphone en veille ou appli en arrière-plan : la cérémonie attend qu'on revienne
+      if (document.hidden) SES.ceremonieAttente = true; else annonceElection(elu, s);
+    }
     if (change && document.getElementById("m-app") && st.phase !== "fin") { if (!document.getElementById("m-modale")) jeu(); }
     else majSession();
   }
@@ -942,8 +948,27 @@
   }
   function mmss(ms) { ms = Math.max(0, ms); var m = Math.floor(ms / 60000), sec = Math.floor(ms % 60000 / 1000); return m + ":" + (sec < 10 ? "0" : "") + sec; }
   // Met à jour les comptes à rebours sans tout redessiner
+  // Bouton « Attaquer » : grisé quand aucune attaque n'est possible, avec le temps avant la prochaine
+  function etatAttaque(now) {
+    if (!SES.s || !st || !st.session) return null;
+    var p = st.session.place, moi = moiSes();
+    if (!(p < SS().TRONE || p > 0)) return { off: true, txt: "personne à attaquer" };
+    var types = Object.keys(SS().ATTAQUES), w = types.map(function (k) { return SS().attente(SES.s, moi + ":" + k, now); });
+    if (types.some(function (k, i) { return !w[i] && SS().prixAction(SS().ATTAQUES[k].cout, p) <= st.tresor; })) return { off: false };
+    if (w.every(function (x) { return x > 0; })) return { off: true, txt: "prochaine dans " + mmss(Math.min.apply(null, w)) };
+    return { off: true, txt: "pas assez d’argent" };
+  }
+  function majAttaque(b) {
+    b = b || document.querySelector(".mx-ses-attaque"); if (!b || b.classList.contains("mx-lockbtn")) return b;
+    var e = etatAttaque(Date.now()); if (!e) return b;
+    b.disabled = e.off; b.classList.toggle("mx-att-off", e.off);
+    var t = b.querySelector(".mx-att-t"); if (!t) { t = h("small", "mx-att-t"); b.appendChild(t); }
+    t.textContent = e.off ? e.txt : "";
+    return b;
+  }
   function majSession() {
     if (!SES.s) return;
+    majAttaque();
     var e = document.querySelector(".mx-ses-elec"); if (e) e.textContent = "🗳️ " + mmss(SES.s.prochaine - Date.now());
     var v = document.querySelector(".mx-ses-votes"); if (v) v.textContent = SS().nbVotes(SES.s) + "/" + SS().votesRequis(SES.s) + " vote" + (SS().votesRequis(SES.s) > 1 ? "s" : "");
     var b = document.querySelector(".m-barmois .btn.mx-auto");
@@ -963,7 +988,7 @@
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "👑 Tu es au sommet"), h("b", null, "Garde ton trône !")));
     if (st.session.opp) duo.appendChild(ajout(bouton("", "mx-ses-qui mx-ses-opp", function () { ficheSession(p - 1); }), h("small", null, "🛡️ Opposant · au-dessous"), h("b", null, st.session.opp.ico + " " + st.session.opp.nom + (st.session.opp.type === "bot" ? " 🤖" : "")), h("small", null, st.session.opp.court)));
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "🛡️ Personne en dessous"), h("b", null, "Pas d’opposant")));
-    var actions = ajout(h("div", "mx-ses-actions"), verrouMeca("attaques", bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre)), bouton("🏆 Classement", "mx-ses-act mx-ses-btn", classementSession));
+    var actions = ajout(h("div", "mx-ses-actions"), majAttaque(verrouMeca("attaques", bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre))), bouton("🏆 Classement", "mx-ses-act mx-ses-btn", classementSession));
     ajout(d, titre, duo, actions, h("small", "mx-ses-malus", ""));
     setTimeout(majSession, 0);
     return d;
@@ -1143,7 +1168,8 @@
     var pop = h("div", "m-pop m-pop-ses"); pop.id = "m-telmod"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "true");
     var c = h("div", "m-pop-in"), a = h("article", "m-dossier m-ses-carte");
     ajout(a, ajout(h("div", "m-tel-tete"), h("strong", "m-tel-titre", "🏆 Classement de la session"), bouton("✕", "m-leonx", fermerTel)),
-      h("p", "m-aide", "À chaque élection, tout le monde est classé selon son score : on peut gagner ou perdre plusieurs places d’un coup. Touche un maire pour comparer."));
+      h("p", "m-aide", "À chaque élection, tout le monde est classé selon son score : on peut gagner ou perdre plusieurs places d’un coup. Touche un maire pour comparer."),
+      SES.derniere ? bouton("🗳️ Revoir les résultats de la dernière élection", "btn m-sec m-revoir", function () { fermerTel(); annonceElection(SES.derniere.r, SES.derniere.s); }) : null);
     var l = h("ol", "m-ses-liste");
     for (var p = SS().NB - 1; p >= 0; p--) (function (p) {
       var f = SS().fiche(s, p), cls = "m-ses-l" + (p === moiP ? " m-moi" : p === moiP + 1 ? " m-rival" : p === moiP - 1 ? " m-opp" : "") + (p >= SS().TRONE ? " m-trone" : "");
@@ -1183,6 +1209,9 @@
   }
   // Résultat d'une élection de session : grand écran animé
   // ---------- Cérémonie des résultats : tous les maires, leur score qui monte, puis le nouveau classement ----------
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden && SES.ceremonieAttente && SES.derniere) { SES.ceremonieAttente = false; annonceElection(SES.derniere.r, SES.derniere.s); }
+  });
   function annonceElection(r, s) {
     var monte = r.apres > r.avant, descend = r.apres < r.avant, cl = s.classement || [], moi = moiSes();
     var ecart = Math.abs(r.apres - r.avant), places = ecart + " place" + (ecart > 1 ? "s" : "");
@@ -2688,6 +2717,18 @@
       u.appendChild(ajout(h("li"), h("q", null, c), h("small", null, n + ", " + age + " ans, " + arr + (arr === 1 ? "er" : "e"))));
     });
     d.appendChild(u);
+    // Les conseils de la rédaction : ce qu'il faut faire MAINTENANT, avec un bouton pour y aller
+    var cs = conseilsJournal();
+    if (cs.length) {
+      var bc = h("div", "m-conseils"); bc.appendChild(h("b", null, "💡 Les conseils de la rédaction"));
+      cs.forEach(function (x) {
+        var li = ajout(h("div", "m-conseil"), h("span", null, x.ico), h("p", null, x.txt));
+        if (x.aller) li.appendChild(bouton("Y aller →", "mx-lien m-conseil-go", function () { allerRayon(x.aller); }));
+        bc.appendChild(li);
+      });
+      d.appendChild(bc);
+    }
+    d.appendChild(ajout(h("div", "m-billet"), h("b", null, "😄 Le billet d’humeur"), h("q", null, BILLETS[(st.t * 7 + (st.mandat || 1)) % BILLETS.length])));
     // Le mot du rival, à chaque numéro
     if (o) {
       var tm = M.trimMandat(st), proch = (Math.floor(tm / 4) + 1) * 4 - tm, so = M.sondage(st);
@@ -2696,6 +2737,76 @@
     }
     return d;
   }
+  // Ouvre la boutique sur un rayon (bouton « Y aller » du journal)
+  function allerRayon(r) {
+    RAYON = r; jeu();
+    setTimeout(function () { var b = document.querySelector(".mx-boutique"); if (b) b.scrollIntoView({ behavior: "smooth", block: "start" }); }, 50);
+  }
+  // Le meilleur achat possible maintenant dans un rayon (le plus d'effet sur le pilier visé pour le prix)
+  function meilleurAchat(rayon, pilier) {
+    var best = null, bv = -1;
+    Object.keys(M.BATIMENTS).forEach(function (id) {
+      if (rayonDe(id) !== rayon || M.peutAcheter(st, id)) return;
+      var B = M.BATIMENTS[id], px = M.prix(st, id), v = ((pilier ? (B.e || {})[pilier] || 0 : 1) + (B.emplois ? 1 : 0) + (B.rev ? 0.5 : 0)) / Math.max(1, px);
+      if (v > bv) { bv = v; best = { id: id, B: B, px: px }; }
+    });
+    return best;
+  }
+  function nomAchat(b, pilier) { var e = pilier && (b.B.e || {})[pilier]; return b.B.ico + " " + b.B.nom + " (" + (e ? "+" + e + ", " : "") + argent(b.px) + ")"; }
+  // Les conseils : chaque situation a une gravité, on garde les 3 plus urgentes
+  function conseilsJournal() {
+    var c = [], bes = M.besoin(st), so = M.solde(st), now = Date.now();
+    function conseil(g, ico, txt, aller) { c.push({ g: g, ico: ico, txt: txt, aller: aller }); }
+    var NOMS_P = { securite: "Ta sécurité est", logement: "Ton logement est", transports: "Tes transports sont", cadre: "Ton cadre de vie est" };
+    Object.keys(M.PILIERS).forEach(function (k) {
+      var v = Math.round(st.piliers[k]); if (v >= bes) return;
+      var b = meilleurAchat(k, k), debloques = Object.keys(M.BATIMENTS).some(function (id) { return rayonDe(id) === k && M.disponible(st, id); });
+      if (!b && !debloques) return;   // rien de débloqué dans ce rayon : pas de conseil impossible à suivre
+      conseil(bes - v + 20, M.ICO[k], NOMS_P[k] + " à " + v + " alors que les habitants attendent " + bes + ". " + (b ? "Meilleur achat maintenant : " + nomAchat(b, k) + "." : "Pas assez d’argent pour ce rayon : économise ou monte un peu les impôts."), b ? k : null);
+    });
+    var ch = M.chomage(st);
+    if (ch > 9) { var bc = meilleurAchat("commerce"); conseil((ch - 9) * 3 + 12, "💼", "Chômage à " + virg(ch) + " % : les commerces et les entreprises créent des emplois." + (bc ? " Essaie " + nomAchat(bc) + "." : ""), bc ? "commerce" : null); }
+    if ((st.hab || M.HAB0) >= M.capacite(st)) { var bl = meilleurAchat("logement", "logement"); conseil(18, "🏠", "Ton arrondissement est plein : sans nouveaux logements, la population ne peut plus grandir." + (bl ? " Construis " + nomAchat(bl, "logement") + "." : ""), bl ? "logement" : null); }
+    if (so < 0) conseil(16 + Math.min(10, -so / 10), "💸", "Tu perds " + argent(-so) + " par saison. Monte un peu les impôts (⚙️ Gestion de la ville) ou construis ce qui rapporte.", "economie");
+    else if (st.tresor - st.dette > 400) conseil(10, "💰", argent(Math.round(st.tresor - st.dette)) + " dorment dans les caisses : investis-les, une ville qui progresse grimpe dans les sondages.", null);
+    if (st.session && st.meca.employes) { var pr = M.proprete(st); if (pr.manque > 0) conseil(15, "🧹", pr.manque + " agent" + (pr.manque > 1 ? "s" : "") + " de propreté manque" + (pr.manque > 1 ? "nt" : "") + " : sans eux, tes parcs et espaces de vie se dégradent.", "employes"); }
+    if (st.session && SES.id && SES.jetons >= 2) conseil(13, "📂", SES.jetons + " dossiers t’attendent : chacun rapporte des points de niveau et peut faire bouger ta popularité.", null);
+    // Si on votait maintenant : la place que tu aurais, et le rival à surveiller
+    if (st.session && SES.s) {
+      var sc = SS().scores(SES.s, now), p = st.session.place, mien = sc[p];
+      if (mien != null) {
+        var devant = sc.filter(function (v, q) { return q !== p && v > mien; }).length, projete = devant + 1, actuelle = SS().NB - p, reste = SES.s.prochaine - now;
+        conseil(reste < 120000 ? 30 : 11, "🗳️", "Si on votait maintenant, tu finirais " + projete + "ᵉ (aujourd’hui " + actuelle + "ᵉ)" + (reste > 0 ? ", vote dans " + mmss(reste) : "") + "." +
+          (projete < actuelle ? " Continue comme ça !" : projete > actuelle ? " Attention, tu reculerais : soigne ta popularité ou attaque tes adversaires." : " Pour grimper, dépasse le score de ceux juste devant toi."), null);
+        if (p < SS().TRONE && st.meca.attaques) { var r = SS().fiche(SES.s, p + 1); if (r.type === "bot" && r.stats && r.stats.tendance === "declin") conseil(14, "📉", r.nom + ", juste devant toi, est en déclin : c’est le bon moment pour l’attaquer (⚔️ Attaquer).", null); }
+      }
+    }
+    var e = M.etatSession(st);
+    if (e.bon < e.pop - 8) conseil(9, "😊", "Le bonheur (" + e.bon + ") tire ta note vers le bas : améliore les piliers les plus faibles de ta ville.", null);
+    else if (e.pop < e.bon - 8) conseil(9, "📣", "Ta popularité (" + e.pop + ") est en retard : les bonnes réponses aux dossiers et les promesses tenues la font monter.", null);
+    return c.sort(function (a, b) { return b.g - a.g; }).slice(0, 3);
+  }
+  // Billets d'humeur : un peu d'humour parisien à chaque numéro
+  var BILLETS = ["Un pigeon a été élu « Parisien de l’année ». Il a promis des miettes pour tous.",
+    "La ligne 13 a battu son record : 0 centimètre carré libre à 8 h 12.",
+    "Selon une étude très sérieuse, 9 Parisiens sur 10 râlent. Le dixième râle qu’on l’ait interrogé.",
+    "Un touriste a demandé où était la tour Eiffel. Il était dessous.",
+    "Une trottinette a été retrouvée dans la Seine. Elle dit qu’elle voulait juste voir la mer.",
+    "Le prix du croissant augmente : les boulangers jurent que c’est le beurre, le beurre jure que c’est la crise.",
+    "Grève des grèves : les grévistes réclament le droit de ne pas faire grève.",
+    "Un rat du métro a ouvert un compte Instagram. 200 000 abonnés en une nuit.",
+    "Le maire voisin affirme que son arrondissement est le plus beau. Personne ne l’a cru, même pas lui.",
+    "Météo : 100 % de chances que quelqu’un dise « il fait gris » aujourd’hui.",
+    "Un Parisien a dit bonjour à un inconnu dans le métro. Les autorités enquêtent.",
+    "La baguette tradition est désormais protégée par l’UNESCO, le pigeon par personne.",
+    "Record battu : un appartement de 9 m² loué avec « vue sur cour, charme fou ».",
+    "Un chauffeur de bus a souri. Les passagers ont applaudi, puis ont repris leurs habitudes.",
+    "Le café en terrasse a atteint 4 €. Le soleil, lui, reste gratuit… quand il vient.",
+    "Paris-Plages ouvre bientôt : le sable est livré, la mer est toujours en retard.",
+    "Un vélo en libre-service a fait le tour de Paris tout seul. Il cherchait une place libre.",
+    "Le Conseil de Paris a débattu trois heures de la couleur des bancs. Verdict : vert. Comme d’habitude.",
+    "On a vu un Parisien courir pour attraper un métro. Il est arrivé avant les portes. Miracle.",
+    "Sondage : 100 % des maires pensent faire mieux que leur rival. 50 % se trompent."];
   // « de écoles » → « d’écoles »
   function de(n) { return (/^[aeiouyhéèêàâ]/i.test(n) ? "d’" : "de ") + n; }
   var FAITS = [
