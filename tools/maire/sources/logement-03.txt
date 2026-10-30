@@ -63,7 +63,7 @@ C) Rien :: Espaces privés.
    > Les cours restent bitumées.
 
 === log-071 | logement | Des seniors prisonniers de leur cinquième étage
-Dans les immeubles anciens sans ascenseur, des seniors ne peuvent plus sortir de chez eux.
+Dans les immeubles anciens de l’arrondissement sans ascenseur, des seniors ne peuvent plus sortir de chez eux.
 A) Aider à installer des ascenseurs dans les cages d’escalier :: Technique.
    bud-20 logement+2 services+1 | g+2 c+2 d+2 e0
    > Des ascenseurs extérieurs sont posés.
@@ -100,8 +100,8 @@ C) Rénover d’abord pour attirer :: Améliorer le quartier.
    > Les cités sont rénovées.
 
 === log-074 | logement | Des jardins sur les toits des immeubles sociaux
-Les toits plats des HLM pourraient accueillir des potagers partagés pour les habitants.
-A) Aménager vingt toits potagers :: Nature et lien social.
+Les toits plats des HLM de l’arrondissement pourraient accueillir des potagers partagés pour les habitants.
+A) Aménager dix toits potagers :: Nature et lien social.
    bud-10 ecologie+2 bon+1 | g+2 c+2 d+1 e+4
    > Les habitants jardinent sur les toits.
 B) Les confier à des fermes urbaines :: Production.
@@ -149,7 +149,7 @@ C) Aucune priorité :: Égalité de traitement.
    > Les réfugiés attendent comme les autres.
 
 === log-078 | logement | Les jeunes sortant de l’aide sociale à l’enfance
-À 18 ans, des jeunes placés se retrouvent à la rue faute de logement.
+À 18 ans, des jeunes placés de l’arrondissement se retrouvent à la rue faute de logement.
 A) Garantir un logement à chaque jeune sortant :: Protéger.
    bud-6 rec-0.3x60 logement+1 services+1 | g+4 c+2 d0 e+1
    > Aucun jeune ne sort sans solution.
@@ -161,8 +161,8 @@ C) Ne rien changer :: Budget.
    > Des jeunes finissent à la rue.
 
 === log-079 | logement | Des pensions de famille
-Des personnes isolées et fragiles ont besoin de petits logements avec un accompagnement au quotidien.
-A) Ouvrir dix pensions de famille :: Solution durable.
+Des personnes isolées et fragiles de l’arrondissement ont besoin de petits logements avec un accompagnement au quotidien.
+A) Ouvrir trois pensions de famille :: Solution durable.
    bud-20 rec-0.3x60 logement+2 services+1 | g+3 c+2 d+1 e+1
    > Dix pensions de famille ouvrent.
 B) Deux pensions pilotes :: Prudence.
@@ -222,7 +222,7 @@ C) Autoriser partout :: Urgence climatique.
    ~40 pop-2 > Les défenseurs du patrimoine sont furieux.
 
 === log-084 | logement | Un immeuble en bois de 15 étages
-Un architecte propose la plus haute tour en bois de France, avec 200 logements.
+Un architecte propose dans l’arrondissement la plus haute tour en bois de France, avec 200 logements.
 A) Soutenir le projet :: Innovation.
    bud-20 logement+2 ecologie+2 | g+1 c+2 d+1 e+4
    > Le chantier de la tour en bois démarre.
@@ -234,8 +234,8 @@ C) Refuser :: Risque incendie.
    > Le projet est refusé.
 
 === log-085 | logement | Des logements modulaires sur les terrains vides
-Des terrains vides pour quelques années pourraient accueillir des logements démontables pour sans-abri.
-A) Installer 500 logements modulaires :: Rapide.
+Des terrains vides de l’arrondissement pourraient accueillir pour quelques années des logements démontables pour sans-abri.
+A) Installer 150 logements modulaires :: Rapide.
    bud-20 logement+2 services+1 | g+3 c+2 d0 e+2
    > Des villages de logements modulaires s’installent.
    ~30 pop-1 > Des riverains contestent un village dans leur quartier.
@@ -246,8 +246,8 @@ C) Refuser :: Logements au rabais.
    logement-1 | g0 c0 d+1 e0
    > Les terrains restent vides.
 
-=== log-086 | logement | Rénover les tours des Olympiades
-Les tours des années 1970 du 13e sont des passoires énergétiques et vieillissent mal.
+=== log-086 | logement | Des tours en béton devenues des passoires
+Les tours des années 1970 de l’arrondissement sont des passoires énergétiques et vieillissent mal.
 A) Grand plan de rénovation :: Moderniser.
    bud-70 logement+3 ecologie+2 | g+2 c+2 d+1 e+3
    > Les tours sont entièrement rénovées.
@@ -260,7 +260,7 @@ C) Laisser aux copropriétés :: Privé.
    > Les tours continuent de vieillir.
 
 === log-087 | logement | Les vélos interdits dans les halls
-Des copropriétés interdisent les vélos dans les halls et les caves. Les cyclistes ne savent plus où les mettre.
+Des copropriétés de l’arrondissement interdisent les vélos dans les halls et les caves. Les cyclistes ne savent plus où les mettre.
 A) Imposer des locaux vélos dans les immeubles :: Mobilité.
    transports+1 ecologie+1 bon-1 | g+1 c+2 d-1 e+3
    > Les copropriétés doivent aménager un local.
@@ -272,10 +272,10 @@ C) Rien :: Règlement de copropriété.
    > Les vélos restent dans les appartements.
 
 === log-088 | logement | Les ventes à la découpe
-Un investisseur rachète un immeuble entier et revend les appartements un par un, poussant les locataires dehors.
+Un investisseur rachète un immeuble entier de l’arrondissement et revend les appartements un par un, poussant les locataires dehors.
 A) Préempter l’immeuble :: Protéger les locataires.
    bud-50 logement+2 | g+4 c+1 d-3 e+1
-   > La Ville rachète l’immeuble.
+   > La mairie d’arrondissement rachète l’immeuble.
 B) Accompagner juridiquement les locataires :: Soutien.
    bud-1 logement+1 | g+2 c+2 d0 e+1
    > Les locataires connaissent leurs droits.
@@ -308,8 +308,8 @@ C) Rien :: Les travaux sont nécessaires.
    > Les échafaudages restent.
 
 === log-091 | logement | Racheter des chambres de bonne pour les étudiants
-Des milliers de chambres de bonne sont vides ou louées très cher.
-A) Racheter et rénover 500 chambres :: Logement étudiant.
+Des centaines de chambres de bonne de l’arrondissement sont vides ou louées très cher.
+A) Racheter et rénover 150 chambres :: Logement étudiant.
    bud-30 logement+2 | g+2 c+2 d+1 e+1
    > Des étudiants s’installent sous les toits.
 B) Aider les propriétaires à les louer aux étudiants :: Incitation.
@@ -369,7 +369,7 @@ C) Garder le papier :: Simplicité.
    > Les dossiers continuent de se perdre.
 
 === log-096 | logement | Rénover les foyers de travailleurs migrants
-Les foyers de travailleurs migrants sont vétustes et surpeuplés.
+Les foyers de travailleurs migrants de l’arrondissement sont vétustes et surpeuplés.
 A) Plan de transformation en résidences sociales :: Dignité.
    bud-40 logement+2 | g+4 c+2 d-1 e+1
    > Les foyers deviennent des résidences modernes.
@@ -406,12 +406,12 @@ C) Rien de plus :: Pas assez de logements.
    > Les familles attendent.
 
 === log-099 | logement | Construire plus haut ?
-Le plan d’urbanisme limite la hauteur des immeubles à 37 mètres. Des urbanistes veulent assouplir la règle.
-A) Autoriser des tours de logements en périphérie :: Densifier.
+Le plan d’urbanisme limite la hauteur des immeubles de l’arrondissement à 37 mètres. Des urbanistes veulent assouplir la règle.
+A) Autoriser des tours de logements en bordure de l’arrondissement :: Densifier.
    logement+3 bon-1 | g0 c+2 d+3 e-1
    > Des tours de 50 mètres sont autorisées près du périphérique.
    ~35 pop-2 > Une pétition contre les tours recueille 100 000 signatures.
-B) Garder la limite :: Paysage parisien.
+B) Garder la limite :: Paysage du quartier.
    logement-1 bon+1 | g0 c+1 d+1 e+1
    > La règle ne change pas.
 C) Autoriser seulement des surélévations :: Compromis.
@@ -468,7 +468,7 @@ C) Rien de spécifique :: Égalité.
    > Les jeunes restent chez leurs parents.
 
 === log-104 | logement | Construire au-dessus des voies ferrées
-Les voies ferrées des gares du Nord et de l’Est pourraient être couvertes par des logements.
+Les voies ferrées qui traversent l’arrondissement pourraient être couvertes par des logements.
 A) Lancer un grand projet de couverture :: Ambition.
    bud-120 logement+4 | g+1 c+2 d+2 e+1
    > Un nouveau quartier sera construit sur les voies.
@@ -481,9 +481,9 @@ C) Abandonner :: Trop cher.
    > Le projet est oublié.
 
 === log-105 | logement | Une garantie contre les loyers impayés
-Des propriétaires refusent de louer par peur des impayés. La Ville pourrait garantir les loyers.
+Des propriétaires refusent de louer par peur des impayés. La mairie d’arrondissement pourrait garantir les loyers.
 ? distinct
-A) Garantie municipale gratuite :: Rassurer les propriétaires.
+A) Garantie gratuite de la mairie :: Rassurer les propriétaires.
    bud-5 logement+2 | g+1 c+3 d+3 e0
    > Des propriétaires remettent leurs logements en location.
    ~25 bud-4 > Les impayés coûtent plus cher que prévu.

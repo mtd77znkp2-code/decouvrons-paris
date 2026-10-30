@@ -1,6 +1,6 @@
 // Propreté, série 2
 === pro-026 | proprete | Les chewing-gums collés sur les trottoirs
-Des millions de chewing-gums noircissent les trottoirs. Les retirer coûte une fortune.
+Des milliers de chewing-gums noircissent les trottoirs de l’arrondissement. Les retirer coûte une fortune.
 A) Acheter des machines de décollage à vapeur :: Efficace, coûteux.
    bud-8 rec-0.2x40 proprete+2 | g0 c+2 d+2 e0
    > Les trottoirs des grandes artères retrouvent leur couleur.
@@ -12,7 +12,7 @@ C) Amende de 135 € pour un chewing-gum jeté :: Dissuasion.
    > Les premières amendes tombent.
 
 === pro-027 | proprete | L’affichage sauvage des concerts
-Les murs et les armoires électriques sont couverts d’affiches de concerts et de soirées.
+Les murs et les armoires électriques de l’arrondissement sont couverts d’affiches de concerts et de soirées.
 A) Facturer le nettoyage aux organisateurs :: Responsabiliser.
    rec+0.1x60 proprete+2 | g0 c+3 d+2 e+1
    > Les organisateurs reçoivent la facture du décollage.
@@ -24,8 +24,8 @@ C) Tolérer :: Vie culturelle.
    > Les affiches restent.
 
 === pro-028 | proprete | Des composteurs dans chaque quartier
-Des habitants demandent des bacs à compost collectifs pour leurs épluchures.
-A) Installer 500 composteurs de quartier :: Écologie de proximité.
+Des habitants de l’arrondissement demandent des bacs à compost collectifs pour leurs épluchures.
+A) Installer 100 composteurs de quartier :: Écologie de proximité.
    bud-6 ecologie+2 proprete+1 | g+2 c+2 d0 e+4
    > Les composteurs se remplissent vite.
    ~30 proprete-1 > Certains bacs mal entretenus attirent les rats.
@@ -37,7 +37,7 @@ C) Miser uniquement sur la collecte en porte-à-porte :: Centralisé.
    > Un bac marron est distribué à chaque immeuble.
 
 === pro-029 | proprete | La saleté devant les écoles le matin
-Les parents se plaignent de trottoirs sales et de déjections devant les écoles.
+Les parents se plaignent de trottoirs sales et de déjections devant les écoles de l’arrondissement.
 A) Nettoyer chaque abord d’école avant 8 h :: Priorité enfants.
    rec-0.3x50 proprete+2 bon+1 | g+2 c+2 d+1 e+1
    > Les abords des écoles sont nettoyés chaque matin.
@@ -49,7 +49,7 @@ C) Impliquer les élèves dans des opérations propreté :: Éducatif.
    > Les élèves deviennent « ambassadeurs propreté ».
 
 === pro-030 | proprete | Les sapins abandonnés en janvier
-Après les fêtes, des milliers de sapins jonchent les trottoirs pendant des semaines.
+Après les fêtes, des centaines de sapins jonchent les trottoirs de l’arrondissement pendant des semaines.
 A) Créer des points de collecte dans les parcs :: Organiser.
    bud-2 proprete+2 ecologie+1 | g+1 c+3 d+1 e+2
    > Les sapins collectés deviennent du paillis.
@@ -61,7 +61,7 @@ C) Amender ceux qui jettent leur sapin dans la rue :: Sanction.
    > Les contrevenants sont verbalisés.
 
 === pro-031 | proprete | Les gravats déposés la nuit par des artisans
-Des artisans peu scrupuleux déposent leurs gravats sur les trottoirs pour éviter de payer la déchetterie.
+Des artisans peu scrupuleux déposent leurs gravats sur les trottoirs de l’arrondissement pour éviter de payer la déchetterie.
 A) Caméras mobiles sur les points de dépôt :: Surveiller.
    bud-5 proprete+2 securite+1 | g-1 c+2 d+3 e+1
    > Plusieurs artisans sont identifiés et sanctionnés.
@@ -124,15 +124,15 @@ Une entreprise propose des poubelles qui signalent quand elles sont pleines et c
 A) Équiper toutes les rues commerçantes :: Moderne.
    bud-20 rec+0.2x60 proprete+3 | g0 c+3 d+2 e+1
    > Les camions ne passent plus que lorsqu’il faut.
-B) Tester dans un arrondissement :: Prudent.
+B) Tester dans un quartier :: Prudent.
    bud-4 proprete+1 | g0 c+3 d+1 e+1
-   > Le 11e devient laboratoire.
+   > L’arrondissement devient laboratoire.
 C) Embaucher des agents plutôt que des capteurs :: Humain.
    rec-0.4x60 proprete+2 | g+3 c+1 d-1 e0
    > De nouveaux agents de propreté sont recrutés.
 
 === pro-037 | proprete | Les balayeuses bruyantes à six heures du matin
-Des habitants dénoncent le vacarme des machines de nettoyage au petit matin.
+Des habitants de l’arrondissement dénoncent le vacarme des machines de nettoyage au petit matin.
 A) Remplacer par des balayeuses électriques silencieuses :: Investissement.
    bud-18 bon+1 ecologie+1 | g+1 c+2 d+1 e+3
    > Les nouvelles machines sont presque silencieuses.
@@ -144,7 +144,7 @@ C) Garder les horaires :: Efficacité.
    > Les machines passent toujours à l’aube.
 
 === pro-038 | proprete | Un monument historique tagué
-Une statue célèbre a été couverte de tags pendant une manifestation.
+La statue la plus célèbre de l’arrondissement a été couverte de tags pendant une manifestation.
 ? distinct
 A) Nettoyer dans la nuit :: Effacer vite.
    bud-2 proprete+1 pop+1 | g0 c+2 d+2 e0
@@ -154,7 +154,7 @@ B) Poser un vernis anti-tag sur tous les monuments :: Prévention.
    > Les monuments sont protégés.
 C) Porter plainte contre les organisateurs :: Responsabiliser.
    bud-1 coh+1 | g-3 c+1 d+4 e-1
-   > La Ville poursuit les organisateurs.
+   > La mairie d’arrondissement poursuit les organisateurs.
    ~35 pop-1 > Les syndicats dénoncent une criminalisation des manifestations.
 
 === pro-039 | proprete | Les décharges sauvages du bois de Vincennes
@@ -220,7 +220,7 @@ C) Ne rien changer :: Laisser travailler.
    > Les bennes restent.
 
 === pro-044 | proprete | Les conteneurs à vêtements débordent
-Les bornes de collecte de vêtements débordent. Des sacs éventrés s’entassent autour.
+Les bornes de collecte de vêtements de l’arrondissement débordent. Des sacs éventrés s’entassent autour.
 A) Doubler les collectes avec les associations :: Solidarité.
    rec-0.1x50 proprete+1 bon+1 | g+2 c+2 d+1 e+2
    > Les associations passent deux fois plus souvent.
@@ -232,10 +232,10 @@ C) Retirer les bornes qui posent problème :: Simple.
    > Les bornes sales disparaissent.
 
 === pro-045 | proprete | Le retour de la consigne des bouteilles
-Des commerçants proposent de rétablir la consigne sur les bouteilles en verre.
-A) Créer une consigne municipale avec les commerces :: Pionnier.
+Des commerçants de l’arrondissement proposent de rétablir la consigne sur les bouteilles en verre.
+A) Créer une consigne de quartier avec les commerces :: Pionnier.
    bud-8 ecologie+3 proprete+1 | g+2 c+2 d0 e+5
-   > Les Parisiens rapportent leurs bouteilles chez le commerçant.
+   > Les habitants rapportent leurs bouteilles chez le commerçant.
 B) Soutenir seulement les initiatives volontaires :: Souple.
    bud-2 ecologie+1 | g+1 c+3 d+2 e+2
    > Quelques commerces lancent la consigne.
@@ -244,7 +244,7 @@ C) Rester au tri classique :: Simple.
    > Les bouteilles continuent d’aller au conteneur.
 
 === pro-046 | proprete | Les déménagements de fin d’année étudiante
-En juin, les étudiants qui quittent Paris abandonnent meubles et sacs dans la rue.
+En juin, les étudiants qui quittent l’arrondissement abandonnent meubles et sacs dans la rue.
 A) Organiser des journées de dons et de récupération :: Solidaire.
    bud-2 proprete+2 ecologie+1 | g+2 c+2 d+1 e+3
    > Les meubles trouvent preneur.
@@ -256,7 +256,7 @@ C) Amendes pour dépôts sauvages :: Sanction.
    > Les contrevenants sont verbalisés.
 
 === pro-047 | proprete | La collecte des ordures de jour ou de nuit ?
-Les camions-poubelle de nuit réveillent les habitants, ceux de jour bloquent la circulation.
+Les camions-poubelle de nuit réveillent les habitants de l’arrondissement, ceux de jour bloquent la circulation.
 A) Collecte de nuit avec camions électriques :: Silence.
    bud-30 bon+1 ecologie+2 | g+1 c+2 d+1 e+3
    > Les camions électriques passent la nuit sans bruit.
@@ -280,7 +280,7 @@ C) Ne pas s’en mêler :: Contrat en cours.
    > Les stations restent sales.
 
 === pro-049 | proprete | Les fontaines Wallace en panne
-Une fontaine Wallace sur trois ne fonctionne plus et certaines sont recouvertes de déchets.
+Une fontaine Wallace sur trois de l’arrondissement ne fonctionne plus et certaines sont recouvertes de déchets.
 A) Les restaurer toutes :: Patrimoine.
    bud-6 proprete+1 bon+1 ecologie+1 | g+1 c+2 d+2 e+2
    > Les fontaines vertes coulent à nouveau.
@@ -328,7 +328,7 @@ C) Demander l’interdiction nationale des lingettes jetables :: Politique.
    > Paris porte la demande devant le Parlement.
 
 === pro-053 | proprete | Des déchets sur les toits des abribus
-Des passants lancent canettes et sacs sur les toits des abribus, impossibles à nettoyer depuis le sol.
+Des passants lancent canettes et sacs sur les toits des abribus de l’arrondissement, impossibles à nettoyer depuis le sol.
 A) Nettoyer avec des nacelles chaque mois :: Entretien.
    rec-0.1x60 proprete+1 | g0 c+2 d+1 e0
    > Les toits des abribus sont nettoyés.
@@ -354,7 +354,7 @@ C) Utiliser les robots seulement dans les tunnels et parkings :: Ciblé.
    > Les robots nettoient les lieux difficiles.
 
 === pro-055 | proprete | Les décharges sous le périphérique
-Sous les ponts du périphérique, des montagnes de déchets s’accumulent depuis des mois.
+Sous les ponts du périphérique, à la limite de l’arrondissement, des montagnes de déchets s’accumulent depuis des mois.
 A) Grand nettoyage et clôtures :: Reconquête.
    bud-10 proprete+2 | g0 c+2 d+2 e+1
    > Les dessous du périphérique sont nettoyés et fermés.
@@ -367,7 +367,7 @@ C) Nettoyer une fois :: Minimum.
    ~50 proprete-1 > Les dépôts reprennent un mois plus tard.
 
 === pro-056 | proprete | Les immeubles anciens sans local à poubelles
-Dans le vieux Paris, des immeubles n’ont pas de local : les poubelles restent sur le trottoir.
+Dans les vieilles rues de l’arrondissement, des immeubles n’ont pas de local : les poubelles restent sur le trottoir.
 A) Créer des points de collecte enterrés dans la rue :: Solution durable.
    bud-25 proprete+3 | g+1 c+2 d+1 e+2
    > Des conteneurs enterrés remplacent les bacs.
@@ -379,7 +379,7 @@ C) Obliger les copropriétés à aménager un local :: Responsabiliser.
    > Les copropriétés ont deux ans pour s’équiper.
 
 === pro-057 | proprete | Une application pour signaler la saleté
-Les habitants veulent pouvoir signaler en photo un dépôt ou un tag.
+Les habitants de l’arrondissement veulent pouvoir signaler en photo un dépôt ou un tag.
 A) Créer l’application avec intervention sous 48 h :: Réactivité.
    bud-4 rec-0.2x60 proprete+2 bon+1 | g+1 c+3 d+2 e+1
    > Les signalements affluent et sont traités vite.
@@ -428,13 +428,13 @@ C) Garder le système actuel :: Sécurité.
    > Les sacs transparents restent.
 
 === pro-061 | proprete | Les rideaux de fer tagués des commerces
-Les rideaux métalliques des boutiques sont couverts de tags. Les commerçants n’en peuvent plus.
+Les rideaux métalliques des boutiques de l’arrondissement sont couverts de tags. Les commerçants n’en peuvent plus.
 A) Financer des fresques d’artistes sur les rideaux :: Embellir.
    bud-4 proprete+1 bon+1 economie+1 | g+2 c+2 d+1 e+1
    > Les rideaux deviennent des œuvres d’art.
-B) Nettoyage gratuit par la Ville :: Service.
+B) Nettoyage gratuit par la mairie :: Service.
    rec-0.2x50 proprete+2 | g+1 c+2 d+1 e0
-   > La Ville nettoie les rideaux à la demande.
+   > La mairie d’arrondissement nettoie les rideaux à la demande.
 C) Laisser les commerçants gérer :: Privé.
    proprete-1 | g-1 c0 d+2 e0
    > Les tags restent.
@@ -465,11 +465,11 @@ C) Déplacer les conteneurs loin des fenêtres :: Pratique.
    > Les conteneurs sont éloignés des habitations.
 
 === pro-064 | proprete | Les herbes folles depuis l’arrêt des pesticides
-Depuis l’interdiction des pesticides, l’herbe pousse entre les pavés et sur les trottoirs.
+Depuis l’interdiction des pesticides, l’herbe pousse entre les pavés et sur les trottoirs de l’arrondissement.
 A) Assumer la nature en ville :: Biodiversité.
    ecologie+2 proprete-1 | g+1 c+1 d-2 e+4
    > Des panneaux expliquent « ici, la nature reprend ses droits ».
-   ~30 pop-1 > Des habitants trouvent que Paris fait « négligé ».
+   ~30 pop-1 > Des habitants trouvent que le quartier fait « négligé ».
 B) Désherber à la main et à la vapeur :: Entretien écologique.
    rec-0.3x50 proprete+2 ecologie+1 | g+1 c+2 d+1 e+2
    > Des équipes désherbent sans produits chimiques.
@@ -478,8 +478,8 @@ C) Laisser les habitants désherber leur bout de trottoir :: Participatif.
    > Des opérations « mon trottoir » sont lancées.
 
 === pro-065 | proprete | Le ravalement des façades noircies
-Des façades d’immeubles sont noircies par la pollution. La Ville peut imposer leur ravalement.
-A) Imposer le ravalement tous les dix ans :: Ville éclatante.
+Des façades d’immeubles de l’arrondissement sont noircies par la pollution. La mairie peut imposer leur ravalement.
+A) Imposer le ravalement tous les dix ans :: Quartier éclatant.
    proprete+2 pop-1 achat-1 | g-1 c+2 d+1 e0
    > Les propriétaires reçoivent des injonctions.
 B) Aider financièrement les copropriétés modestes :: Accompagner.

@@ -1,6 +1,6 @@
 // Propreté, série 3
-=== pro-066 | proprete | Les escaliers de Montmartre jonchés de détritus
-Les escaliers de la Butte sont couverts de canettes et de déchets laissés par les touristes au coucher du soleil.
+=== pro-066 | proprete | Les escaliers de la butte jonchés de détritus
+Les grands escaliers de l’arrondissement sont couverts de canettes et de déchets laissés par les touristes au coucher du soleil.
 A) Équipe de nettoyage dédiée le soir :: Ciblé.
    rec-0.2x60 proprete+2 | g+1 c+2 d+1 e0
    > Les escaliers sont nettoyés chaque soir.
@@ -11,8 +11,8 @@ C) Amendes pour les jets de déchets :: Sanction.
    proprete+1 pop-1 | g-1 c+1 d+3 e0
    > Des agents verbalisent sur la Butte.
 
-=== pro-067 | proprete | Le Champ-de-Mars après les soirées d’été
-Chaque matin d’été, la pelouse du Champ-de-Mars est couverte de bouteilles et d’emballages.
+=== pro-067 | proprete | La grande pelouse après les soirées d’été
+Chaque matin d’été, la grande pelouse de l’arrondissement est couverte de bouteilles et d’emballages.
 A) Fermer la pelouse à minuit :: Limiter.
    proprete+1 bon-1 | g0 c+2 d+2 e0
    > La pelouse ferme à minuit.
@@ -36,7 +36,7 @@ C) Amendes pour dépôt :: Sanction.
    > Les auteurs identifiés sont verbalisés.
 
 === pro-069 | proprete | Des seringues dans les parcs
-Des seringues usagées sont trouvées dans des squares fréquentés par des enfants.
+Des seringues usagées sont trouvées dans des squares de l’arrondissement fréquentés par des enfants.
 A) Ramassage quotidien par des équipes formées :: Protéger.
    rec-0.2x60 proprete+2 securite+1 | g+1 c+2 d+1 e+1
    > Des équipes spécialisées passent chaque jour.
@@ -47,8 +47,8 @@ C) Fermer les squares concernés la nuit :: Sécurité.
    proprete+1 bon-1 | g-1 c+1 d+2 e0
    > Les squares sont fermés.
 
-=== pro-070 | proprete | Les déchets flottants du canal de l’Ourcq
-Bouteilles, sacs et ballons flottent sur le canal de l’Ourcq.
+=== pro-070 | proprete | Les déchets flottants du canal
+Bouteilles, sacs et ballons flottent sur le canal qui traverse l’arrondissement.
 ? distinct
 A) Bateau-nettoyeur quotidien :: Efficace.
    bud-6 rec-0.1x60 proprete+2 ecologie+1 | g+1 c+3 d+1 e+2
@@ -61,7 +61,7 @@ C) Opérations bénévoles mensuelles :: Mobilisation.
    > Des bénévoles nettoient le canal en kayak.
 
 === pro-071 | proprete | Des poubelles de rue pour trier
-Les poubelles de rue mélangent tout. Les déchets recyclables finissent incinérés.
+Les poubelles de rue de l’arrondissement mélangent tout. Les déchets recyclables finissent incinérés.
 A) Poubelles à deux compartiments partout :: Trier dans la rue.
    bud-20 ecologie+2 proprete+1 | g+1 c+2 d+1 e+4
    > Des milliers de poubelles de tri sont installées.
@@ -73,7 +73,7 @@ C) Garder les poubelles actuelles :: Simple.
    > Rien ne change.
 
 === pro-072 | proprete | Les agents de propreté sans vestiaires
-Les agents de propreté n’ont pas de vestiaires ni de douches dans plusieurs arrondissements.
+Les agents de propreté de l’arrondissement n’ont pas de vestiaires ni de douches.
 A) Construire des locaux modernes :: Dignité.
    bud-15 services+1 proprete+1 | g+3 c+2 d+1 e+1
    > Des locaux neufs accueillent les agents.
@@ -86,8 +86,8 @@ C) Pas de budget :: Plus tard.
    ~40 proprete-1 > Les agents se mettent en grève.
 
 === pro-073 | proprete | Une brigade contre les incivilités
-Des agents assermentés pourraient verbaliser jets de mégots, crachats et dépôts sauvages.
-A) Créer une brigade de 300 agents :: Fermeté.
+Dans l’arrondissement, des agents assermentés pourraient verbaliser jets de mégots, crachats et dépôts sauvages.
+A) Créer une brigade de 60 agents :: Fermeté.
    rec-0.5x60 proprete+3 pop-1 | g-1 c+2 d+4 e+1
    > Les amendes pleuvent.
 B) Brigade réduite et pédagogique :: Avertir d’abord.
@@ -110,7 +110,7 @@ C) Ne rien changer :: Petit sujet.
    > Les coquilles vont à l’incinérateur.
 
 === pro-075 | proprete | Les passages couverts négligés
-Les passages couverts du XIXe siècle sont sales et leurs verrières encrassées.
+Les passages couverts du XIXe siècle de l’arrondissement sont sales et leurs verrières encrassées.
 A) Restaurer et nettoyer avec les copropriétés :: Patrimoine.
    bud-8 proprete+2 bon+1 | g0 c+2 d+2 e0
    > Les passages retrouvent leur lumière.

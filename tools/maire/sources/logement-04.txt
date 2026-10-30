@@ -12,11 +12,11 @@ C) Rien :: Égalité avec les autres demandeurs.
    > Les agents démissionnent.
 
 === log-107 | logement | Racheter des appartements un par un
-Au lieu d’immeubles entiers, la Ville pourrait racheter des appartements isolés pour créer des logements sociaux partout.
-A) Programme de rachat de 500 appartements :: Mixité diffuse.
+Au lieu d’immeubles entiers, la mairie pourrait racheter des appartements isolés pour créer des logements sociaux dans tout l’arrondissement.
+A) Programme de rachat de 150 appartements :: Mixité diffuse.
    bud-60 logement+2 | g+3 c+2 d0 e+1
    > Des logements sociaux apparaissent dans tous les immeubles.
-B) Cent appartements :: Prudence.
+B) Trente appartements :: Prudence.
    bud-15 logement+1 | g+1 c+3 d+1 e+1
    > Un premier lot est acheté.
 C) Rien :: Trop cher.
@@ -36,7 +36,7 @@ C) Rien :: Contrôle nécessaire.
    > Les délais restent longs.
 
 === log-109 | logement | Réquisitionner des logements vides
-La loi permet de réquisitionner des logements vides depuis longtemps appartenant à des sociétés.
+La loi permet de réquisitionner dans l’arrondissement des logements vides depuis longtemps appartenant à des sociétés.
 A) Réquisitionner :: Logements pour tous.
    logement+3 pop-1 | g+5 c-1 d-5 e+2
    > Des centaines de logements sont réquisitionnés.
@@ -86,7 +86,7 @@ C) Supprimer l’accession sociale au profit de la location :: Location.
    > L’argent va au logement locatif.
 
 === log-113 | logement | Des femmes enceintes à la rue
-Des femmes enceintes et des jeunes mères dorment dans la rue ou aux urgences.
+Des femmes enceintes et des jeunes mères dorment dans les rues de l’arrondissement ou aux urgences.
 A) Ouvrir des places d’hébergement dédiées :: Protéger.
    bud-6 rec-0.2x60 services+2 logement+1 | g+4 c+2 d0 e+1
    > Un centre d’accueil ouvre.
@@ -95,7 +95,7 @@ B) Chambres d’hôtel réservées :: Rapide.
    > Des chambres sont réservées.
 C) Interpeller l’État :: Compétence.
    pop-1 coh+1 | g0 c+1 d+2 e0
-   > Le maire écrit au préfet.
+   > Le maire d’arrondissement écrit au préfet.
 
 === log-114 | logement | Les fenêtres en plastique dans les immeubles anciens
 Des propriétaires remplacent les fenêtres en bois par du PVC, défigurant les façades.
@@ -146,7 +146,7 @@ C) Rien :: Droit des propriétaires.
    > Les seniors partent.
 
 === log-118 | logement | Des résidences hôtelières sociales
-Des hôtels pourraient être transformés en résidences meublées à loyer social pour les travailleurs précaires.
+Des hôtels de l’arrondissement pourraient être transformés en résidences meublées à loyer social pour les travailleurs précaires.
 A) Racheter et transformer des hôtels :: Logement rapide.
    bud-35 logement+2 | g+3 c+2 d0 e+1
    > Trois hôtels deviennent des résidences.
@@ -183,12 +183,12 @@ C) Rien :: Gestionnaires.
    > Rien ne change.
 
 === log-121 | logement | Le « logement d’abord »
-Des experts proposent de donner directement un logement aux sans-abri, sans passer par l’hébergement d’urgence.
+Des experts proposent de donner directement un logement aux sans-abri de l’arrondissement, sans passer par l’hébergement d’urgence.
 A) Lancer le programme à grande échelle :: Changer de modèle.
    bud-20 rec-0.3x60 logement+2 services+1 | g+4 c+2 d-1 e+2
    > Des centaines de sans-abri obtiennent un logement.
    +20 pop+2 > Le programme montre des résultats impressionnants.
-B) Expérimentation sur cent personnes :: Tester.
+B) Expérimentation sur trente personnes :: Tester.
    bud-5 rec-0.1x60 logement+1 | g+2 c+3 d+1 e+1
    > Cent personnes sont logées.
 C) Garder les centres d’hébergement :: Modèle actuel.
@@ -208,8 +208,8 @@ C) Rien :: Affaire privée.
    > Rien ne change.
 
 === log-123 | logement | Les espaces verts des cités à l’abandon
-Les pelouses et jardins des cités sont mal entretenus par les bailleurs.
-A) Confier l’entretien aux jardiniers de la Ville :: Qualité.
+Les pelouses et jardins des cités de l’arrondissement sont mal entretenus par les bailleurs.
+A) Confier l’entretien aux jardiniers de la mairie :: Qualité.
    rec-0.2x60 ecologie+1 bon+1 | g+2 c+2 d+1 e+2
    > Les cités retrouvent des jardins soignés.
 B) Jardins partagés gérés par les habitants :: Participation.
@@ -232,7 +232,7 @@ C) Rien :: Propriété privée.
    > Les fuites continuent.
 
 === log-125 | logement | Des immeubles flottants sur la Seine
-Des architectes proposent des immeubles de logements flottants amarrés en bord de Seine.
+Des architectes proposent des immeubles de logements flottants amarrés le long des quais de l’arrondissement.
 A) Accepter un projet pilote :: Innovation.
    bud-10 logement+1 bon+1 | g+1 c+2 d+1 e+2
    > Un immeuble flottant est construit.
@@ -269,7 +269,7 @@ C) Rien :: Marché.
    > Les habitants restent sans assurance.
 
 === log-128 | logement | Vendre des terrains moins cher aux bailleurs sociaux
-La Ville vend ses terrains au prix fort, ce qui renchérit les logements sociaux.
+La mairie d’arrondissement vend ses terrains au prix fort, ce qui renchérit les logements sociaux.
 A) Décote de 50 % pour le logement social :: Priorité sociale.
    bud-20 logement+3 | g+3 c+1 d-2 e+1
    > Les terrains sont cédés à moitié prix.
@@ -305,7 +305,7 @@ C) Rien :: Pas prioritaire.
    > Les vérandas se multiplient.
 
 === log-131 | logement | Le chauffage collectif allumé trop tard
-Dans les HLM, le chauffage collectif n’est allumé que le 15 octobre, même par temps froid.
+Dans les HLM de l’arrondissement, le chauffage collectif n’est allumé que le 15 octobre, même par temps froid.
 A) Allumer dès que la température baisse :: Confort.
    rec-0.1x60 bon+1 logement+1 | g+2 c+2 d+1 e-1
    > Le chauffage s’allume selon la météo.
@@ -317,7 +317,7 @@ C) Garder la règle :: Économie.
    > Les locataires ont froid.
 
 === log-132 | logement | Des immeubles qui produisent plus d’énergie qu’ils n’en consomment
-Un bailleur propose des immeubles neufs à énergie positive, 10 % plus chers.
+Un bailleur propose dans l’arrondissement des immeubles neufs à énergie positive, 10 % plus chers.
 A) Généraliser dans les logements sociaux neufs :: Avenir.
    bud-15 ecologie+3 logement+1 | g+1 c+2 d0 e+5
    > Les nouveaux HLM produisent leur énergie.
@@ -366,7 +366,7 @@ C) Rien :: Coût.
    > Rien ne change.
 
 === log-136 | logement | Ouvrir les toits-terrasses aux habitants
-Les toits-terrasses des immeubles sociaux sont fermés. Les habitants voudraient en profiter.
+Les toits-terrasses des immeubles sociaux de l’arrondissement sont fermés. Les habitants voudraient en profiter.
 A) Aménager et ouvrir des toits sécurisés :: Espace et fraîcheur.
    bud-10 bon+2 ecologie+1 | g+2 c+2 d+1 e+2
    > Les habitants profitent des toits.
@@ -451,7 +451,7 @@ C) Interdire les grands chiens :: Sécurité.
    > Les grands chiens sont interdits.
 
 === log-143 | logement | Des compteurs connectés dans les HLM
-Des compteurs connectés permettraient aux locataires de suivre leur consommation d’eau et de chauffage.
+Des compteurs connectés permettraient aux locataires des HLM de l’arrondissement de suivre leur consommation d’eau et de chauffage.
 A) Équiper tous les logements :: Économies.
    bud-10 ecologie+2 achat+1 | g+1 c+3 d+2 e+3
    > Les locataires suivent leur consommation.
@@ -464,7 +464,7 @@ C) Rien :: Coût.
    > Rien ne change.
 
 === log-144 | logement | Le logement des apprentis
-Les apprentis alternent entre deux villes et ne trouvent pas de logement pour quelques semaines.
+Les apprentis de l’arrondissement alternent entre deux villes et ne trouvent pas de logement pour quelques semaines.
 A) Résidence dédiée aux alternants :: Solution adaptée.
    bud-12 logement+1 economie+1 | g+2 c+2 d+2 e+1
    > Une résidence à la semaine ouvre.

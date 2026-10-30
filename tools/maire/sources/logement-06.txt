@@ -461,8 +461,8 @@ C) Rien :: AP-HP.
    logement-1 | g0 c+1 d+1 e0
    > Les logements restent vides.
 
-=== log-224 | logement | Les prix baissent : la Ville doit-elle acheter ?
-Le marché immobilier recule, une occasion d’acheter des immeubles.
+=== log-224 | logement | Les prix baissent : la mairie doit-elle acheter ?
+Le marché immobilier de l’arrondissement recule, une occasion d’acheter des immeubles.
 A) Un grand plan d’achat :: Saisir l’occasion.
    bud-12 logement+2 | g+1 c+2 d+1 e+1
    > Des immeubles entiers sont acquis.

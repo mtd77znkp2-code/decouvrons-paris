@@ -61,7 +61,7 @@ C) Rien :: Propriétaires.
    > Les malaises se multiplient.
 
 === log-151 | logement | Transformer un ancien hôpital en logements
-Un hôpital déménage et libère un vaste ensemble de bâtiments.
+L’hôpital de l’arrondissement déménage et libère un vaste ensemble de bâtiments.
 A) Cent pour cent de logements sociaux :: Social.
    bud-5 logement+2 | g+2 c+2 d0 e+1
    > Huit cents familles sont logées.
