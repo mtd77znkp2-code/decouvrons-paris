@@ -14,6 +14,12 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Grand Tournoi des Maires : lecture publique (classement en direct), écriture par le serveur seulement
+    match /tournois/{t}/parts/{uid} {
+      allow read: if true;
+      allow write: if false;
+    }
+
     // Profil du joueur : son numéro de maire (Maire0002) et son pseudo, écrits par lui seul
     match /joueurs/{uid} {
       allow create, update: if request.auth != null && request.auth.uid == uid

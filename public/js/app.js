@@ -232,7 +232,7 @@ function reglagesMaire(){
 }
 function loadMaire(){
   if(!LOADED.mcss){LOADED.mcss=1;var l=document.createElement("link");l.rel="stylesheet";l.href="maire/maire.css?v="+MVER;document.head.appendChild(l)}
-  return loadScript("maire/reglages.js?v="+MVER).then(reglagesMaire).then(function(){return loadScript("maire/contenu.js?v="+MVER)}).then(function(){return loadScript("maire/poker.js?v="+MVER)}).then(function(){return loadScript("maire/session.js?v="+MVER)}).then(function(){return loadScript("maire/moteur.js?v="+MVER)}).then(function(){return loadScript("maire/progression.js?v="+MVER)}).then(function(){return loadScript("maire/jeu.js?v="+MVER)}).then(function(){maireInit();if(window.prechargerSons)setTimeout(prechargerSons,800)})
+  return loadScript("maire/reglages.js?v="+MVER).then(reglagesMaire).then(function(){return loadScript("maire/contenu.js?v="+MVER)}).then(function(){return loadScript("maire/poker.js?v="+MVER)}).then(function(){return loadScript("maire/session.js?v="+MVER)}).then(function(){return loadScript("maire/moteur.js?v="+MVER)}).then(function(){return loadScript("maire/progression.js?v="+MVER)}).then(function(){return loadScript("maire/tournoi-jeux.js?v="+MVER)}).then(function(){return loadScript("maire/tournoi-regles.js?v="+MVER)}).then(function(){return loadScript("maire/tournoi-ui.js?v="+MVER)}).then(function(){return loadScript("maire/jeu.js?v="+MVER)}).then(function(){maireInit();if(window.prechargerSons)setTimeout(prechargerSons,800)})
     .catch(function(){$("m-app").textContent="Le jeu n’a pas pu se charger. Vérifie ta connexion."});
 }
 function loadAdmin(){

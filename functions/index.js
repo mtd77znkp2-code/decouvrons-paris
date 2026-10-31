@@ -42,3 +42,6 @@ export const instaRefresh = onSchedule({ schedule: "every day 05:17", timeZone: 
     console.error("Instagram :", e.message);
   }
 });
+
+// Grand Tournoi des Maires (Maire de Paris)
+export { tournoiOuvrir, tournoiCommencer, tournoiTerminer, tournoiClore } from "./tournoi.js";

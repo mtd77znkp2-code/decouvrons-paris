@@ -35,6 +35,8 @@ jobs:
             npx --yes esbuild@0.24.0 "$f" --minify --target=es2017 --charset=utf8 --log-level=warning --allow-overwrite --outfile="$f"
           done
           du -ch public/maire/*.js public/js/*.js public/maire/*.css public/css/*.css | tail -1
+      - name: Fichiers du jeu partagés avec le serveur (règles et mini-jeux du tournoi)
+        run: ./tools/maire/copier-partage.sh
       - run: npm ci
         working-directory: functions
       - name: Mise en ligne

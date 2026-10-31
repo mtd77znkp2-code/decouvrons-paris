@@ -862,6 +862,7 @@
     SES.jetons--; garderReserve(); st = s2; sauver(); jeu();
   }
   // ---------- Outils de test (boutons de l'admin, onglet « Réglages du jeu ») : agissent sur la partie ouverte ----------
+  window.confettis = function () { confettis(); };   // utilisé par le Grand Tournoi
   window.MaireTest = {
     pret: function () { return !!st && st.phase !== "fin"; },
     argent: function (n) { if (!st) return; st.tresor += n; sauver(); jeu(); },
@@ -985,6 +986,14 @@
     if (st.phase !== "fin" && (document.getElementById("m-modale") || document.getElementById("m-telmod") || document.querySelector(".mx-fichepop"))) { SES.aRedessiner = true; return majSession(); }
     jeu();
   }
+  // Récompense du Grand Tournoi : appliquée une seule fois par tournoi à la partie en cours (popularité entre 0 et 100)
+  function gainTournoi(tid, gain, rang) {
+    if (!st || st.phase === "fin") return false;
+    st.tournois = st.tournois || {}; if (st.tournois[tid] != null) return false;
+    st.tournois[tid] = gain; st.pop = Math.max(0, Math.min(100, st.pop + gain));
+    st.historique.push({ t: st.t, titre: "🏆 Grand Tournoi des Maires : " + rang + (rang === 1 ? "er" : "e"), choix: (gain > 0 ? "+" : "") + gain + " de popularité", d: { pop: gain, bon: 0, coh: 0, bud: 0, pil: {} }, c: "tournoi" });
+    sauver(); jeuAuto(); return true;
+  }
   function horloge() {
     if (!st || !SES.id || !SES.s || st.phase === "fin") return;
     var visible = document.getElementById("m-app") && !document.hidden && !document.getElementById("site").hidden && !document.getElementById("jeux").hidden;
@@ -997,6 +1006,7 @@
     if (visible && SS().electionDue(SES.s, now) && now - SES.elire > 5000) { SES.elire = now; window.SessionLigne.elire(SES.id); }
     var libre = visible && (st.phase === "gestion" || st.phase === "pret") && !document.getElementById("m-modale") && !document.getElementById("m-telmod") && !document.body.classList.contains("m-casino") && !(st.enchere && !st.enchere.fini) && !(st.bj && !st.bj.fini);
     rechargerReserve(now);
+    if (window.MaireTournoiUI && st.session) MaireTournoiUI.tic({ sid: SES.id, session: SES.s, toast: toast, appliquer: gainTournoi });   // Grand Tournoi des Maires
     if (recupererVentes() && libre) return jeuAuto();
     // Le temps passe tout seul (saisons, recettes, dépenses), même pendant un dossier ; seulement quand le jeu est à l'écran
     if (!visible) SES.temps = Math.max(SES.temps, now + 2000);
@@ -1070,6 +1080,10 @@
     var actions = ajout(h("div", "mx-ses-actions"), majAttaque(verrouMeca("attaques", bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre))), ajout(bouton("", "mx-ses-act mx-ses-btn", classementSession), icoUI("ui-classement"), document.createTextNode(" Classement")));
     ajout(d, titre, duo, actions, h("small", "mx-ses-malus", ""));
     // Administrateur seulement : forcer l'élection de cette session (elle a lieu dans 30 s, pour tous les joueurs)
+    if (window.ADMIN_UNLOCKED) d.appendChild(bouton("🛠 Admin : lancer le Grand Tournoi maintenant", "mx-admin-elec", function () {
+      if (!confirm("Lancer le Grand Tournoi maintenant ? L’élection de la session est replacée dans 4 minutes (pour tous les joueurs).")) return;
+      window.SessionLigne.modifier(SES.id, function (s) { s = JSON.parse(JSON.stringify(s)); s.prochaine = Date.now() + 238000; return s; }).then(function () { toast("🏆 Le tournoi s’ouvre dans quelques secondes."); });
+    }));
     if (window.ADMIN_UNLOCKED) d.appendChild(bouton("🛠 Admin : forcer l’élection (dans 30 s)", "mx-admin-elec", function () {
       if (!confirm("Forcer l’élection de cette session dans 30 secondes ? (pour tous les joueurs de la session)")) return;
       toast(window.MaireTest.election30() ? "🗳️ Élection dans 30 secondes." : "Pas de session en cours.");
@@ -1404,7 +1418,7 @@
     var gmp = document.getElementById("g-maire"); if (gmp) gmp.classList.add("m-partie");
     box.classList.add("mx-partie");
     var ciel = h("div", "mx-ciel"); ciel.setAttribute("aria-hidden", "true");
-    ajout(box, entete(), ciel, bandeauSession(), tableau(), carteObjectifs(), piliers(), carteEquilibre(), carteLeon());
+    ajout(box, entete(), ciel, st.session && window.MaireTournoiUI ? MaireTournoiUI.bandeau() : null, bandeauSession(), tableau(), carteObjectifs(), piliers(), carteEquilibre(), carteLeon());
     if (st.opposant) box.appendChild(bandeauOpp());
     if (st.rapport && st.notes && st.notes.length) box.appendChild(notes());
     box.appendChild(carteVille(false));

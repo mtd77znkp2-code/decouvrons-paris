@@ -954,6 +954,28 @@ test("session : objectifs manqués à l'élection = éliminé ; réussis = nouve
   assert.ok(k2.every(k => k1.indexOf(k) < 0), "toutes les sortes d'objectifs sont renouvelées : " + k1 + " -> " + k2);
 });
 
+test("tournoi : les 10 épreuves rejouées par le serveur donnent exactement le même score", () => {
+  const TJ = require("../../public/maire/tournoi-jeux.js");
+  assert.equal(TJ.IDS.length, 10);
+  TJ.IDS.forEach((id) => {
+    const s = TJ.JEUX[id].creer(99), g = []; let x = 7;
+    while (!s.fin) { x = (x * 16807) % 2147483647; const lot = s.f % 7 === 0 ? [{ f: s.f, a: ["tap","feu","bac","elu","saut","glisse","opt","ok","evt","titre"][x % 10], x: x % 360, y: x % 540, k: x % 4 }] : []; lot.forEach((o) => g.push(o)); TJ.pas(id, s, lot); }
+    TJ.terminer(id, s);
+    assert.equal(TJ.rejouer(id, 99, TJ.nettoyer(g)).score, s.score, id);
+  });
+  assert.equal(TJ.nettoyer([{ f: 5, a: "tap" }, { f: 2, a: "tap" }]), null, "gestes dans le désordre refusés");
+  assert.equal(TJ.nettoyer([{ f: 1, a: "pirater" }]), null, "action inconnue refusée");
+});
+test("tournoi : classement des 21 maires et gains de popularité", () => {
+  const TR = require("../../public/maire/tournoi-regles.js"), S = require("../../public/maire/session.js");
+  let s = S.nouvelleSession(5, Date.now()); s = S.rejoindre(s, "u1", "A", "🙂", Date.now()); s = S.rejoindre(s, "u2", "B", "🙂", Date.now());
+  const r = TR.classement({ id: "x_1", jeu: "budget" }, s, { u1: { score: 9999, fin: 5, statut: "fini" } });
+  assert.equal(r.length, 21); assert.equal(r[0].uid, "u1"); assert.equal(r[0].gain, 10);
+  assert.ok(r.find((x) => x.uid === "u2").absent, "un joueur qui n'a pas joué compte pour 0");
+  assert.deepEqual(r.map((x) => x.gain), [10,9,8,7,6,5,4,3,2,1].concat(Array(11).fill(-11)));
+  const f = TR.fenetre(s); assert.equal(f.cloture - f.ouverture, 4 * 60000 - 30000);
+});
+
 console.log(ok + " tests réussis.\n");
 if (!N) { console.log("Simulation d’équilibrage ignorée (0 partie demandée)."); process.exit(0); }
 
