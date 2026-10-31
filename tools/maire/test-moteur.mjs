@@ -900,6 +900,17 @@ test("session : une partie de casino dans un dossier ouvert survit au passage d'
   assert.ok(st.t > t0, "la saison est passée"); assert.ok(M.jeuDe(st, i), "la partie de casino est toujours là");
 });
 
+test("session : des dossiers laissés de côté font partir des habitants", () => {
+  const S = require("../../public/maire/session.js");
+  let st = M.nouvellePartie({ maire: "tribun", graine: 22, niveauPartie: true });
+  st = M.placer(st, { id: "s", place: 0, titre: S.titre(0), hab0: S.habitants(0), puissance: S.puissance(0), rival: null, opp: null });
+  st.phase = "gestion";
+  const h0 = st.hab;
+  st = M.dossierNeglige(st); st = M.dossierNeglige(st);
+  assert.ok(st.hab < h0, "la population baisse");
+  assert.equal(st.neglige.n, 2); assert.equal(st.neglige.perte, h0 - st.hab, "le journal connaît le nombre de départs");
+});
+
 console.log(ok + " tests réussis.\n");
 if (!N) { console.log("Simulation d’équilibrage ignorée (0 partie demandée)."); process.exit(0); }
 

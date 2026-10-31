@@ -1126,6 +1126,13 @@
     if (mj) { r.mj = mj; mj.t = r.t; }
     return r;
   }
+  // Session : la réserve de dossiers est pleine et un nouveau dossier arrive sans réponse : des habitants, lassés d'attendre, quittent l'arrondissement
+  function dossierNeglige(st0) {
+    if (st0.phase === "fin" || st0.phase === "election") return st0;
+    var st = copie(st0), d = bougerHab(st, -R.v.negligePct), avant = st.neglige && st.neglige.t >= st.t - 1 ? st.neglige : null;
+    st.neglige = { t: st.t, n: (avant ? avant.n : 0) + 1, perte: (avant ? avant.perte : 0) - d };
+    return st;
+  }
   function dossierSession(st0, base) {
     if (st0.phase !== "pret" && st0.phase !== "gestion") return st0;
     if ((st0.bj && !st0.bj.fini) || (st0.enchere && !st0.enchere.fini)) return st0;
@@ -1904,7 +1911,7 @@
   var API = { MANDAT: MANDAT, PLAFOND_DETTE: PLAFOND_DETTE, TAUX: TAUX, P: P, NIVEAUX: NIVEAUX, PILIERS: PILIERS, ICO: ICO, DOMAINES: DOMAINES,
     MECANIQUES: MECANIQUES, EXTRAS: EXTRAS, mecaniques: mecaniques, BATIMENTS: BATIMENTS, OPPOSANTS: OPPOSANTS, SEUIL_OPP: SEUIL_OPP, LIGNES: LIGNES, CATS: CATS,
     FAMILLE: FAMILLE, SPECIAUX: SPECIAUX, C: C,
-    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, EMPLOYES: EMPLOYES, nbEmp: nbEmp, effetEmp: effetEmp, prixEmploye: prixEmploye, salaires: salaires, proprete: proprete, peutEmbaucher: peutEmbaucher, embaucher: embaucher, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
+    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, dossierNeglige: dossierNeglige, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, EMPLOYES: EMPLOYES, nbEmp: nbEmp, effetEmp: effetEmp, prixEmploye: prixEmploye, salaires: salaires, proprete: proprete, peutEmbaucher: peutEmbaucher, embaucher: embaucher, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
     disponible: disponible, enChantier: enChantier, prix: prix, equilibre: equilibre, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, recit: recit,
     valider: valider, indexer: indexer, engagements: engagements, evenementCourant: evenementCourant, stats: stats, opposant: opposant, humeurOpp: humeurOpp, bonheur: bonheur,
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,

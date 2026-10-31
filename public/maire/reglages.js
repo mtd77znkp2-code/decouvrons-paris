@@ -14,6 +14,8 @@
       desc: "Un nouveau dossier arrive dans la réserve toutes les X secondes (90 s = 1 min 30)." },
     { k: "reserveMax", g: "Rythme de la session", nom: "Dossiers en réserve (max)", unite: "", def: 3, min: 1, max: 10, pas: 1,
       desc: "Nombre de dossiers qu’un joueur peut garder en attente." },
+    { k: "negligePct", g: "Rythme de la session", nom: "Habitants perdus par dossier laissé de côté", unite: "%", def: 1, min: 0, max: 5, pas: 0.1,
+      desc: "Quand la réserve de dossiers est pleine, chaque nouveau dossier qui arrive sans réponse fait partir X % des habitants (et le Journal de Paris en parle)." },
     { k: "mandatMin", g: "Rythme de la session", nom: "Durée d’un mandat (entre deux élections)", unite: "min", def: 6.5, min: 2, max: 60, pas: 0.5,
       desc: "Temps entre deux élections dans une session." },
     { k: "entreeMin", g: "Rythme de la session", nom: "Fermeture avant l’élection", unite: "min", def: 3, min: 0, max: 10, pas: 0.5,

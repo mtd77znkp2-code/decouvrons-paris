@@ -801,7 +801,16 @@
     if (!SES.s) return;                                   // l'horaire de la session n'est pas encore connu
     if (SES.tick == null) SES.tick = prochainDossier(now);
     var n = 0;
-    while (now >= SES.tick) { if (SES.jetons < RG().v.reserveMax) { SES.jetons++; n++; } SES.tick = prochainDossier(SES.tick); }
+    var perdus = 0;
+    while (now >= SES.tick) {
+      if (SES.jetons < RG().v.reserveMax) { SES.jetons++; n++; }
+      else if (SES.tick >= now - dossierMs() && st && st.session) perdus++;   // réserve pleine : ce dossier reste sans réponse (pas de rattrapage après une longue absence)
+      SES.tick = prochainDossier(SES.tick);
+    }
+    if (perdus && RG().v.negligePct > 0) {
+      var h0 = st.hab; st = M.dossierNeglige(st); sauver();
+      if (st.hab < h0) toast("📂 Trop de dossiers en attente : " + (h0 - st.hab).toLocaleString("fr-FR") + " habitants, lassés, quittent l’arrondissement !");
+    }
     if (n) {
       garderReserve(); if (window.sfx) window.sfx("dossier");   // son n°11 : un nouveau dossier arrive
       // Nouveau dossier disponible : le bouton fait un petit saut doré
@@ -1838,7 +1847,7 @@
     else if ((st.bj && !st.bj.fini) || (st.enchere && !st.enchere.fini)) haut = "🃏 Une partie de cartes est en cours";
     else haut = SES.jetons < 1 ? "⏳ Prochain dossier dans " + rt : "📂 Dossier suivant →";
     // La saison du prochain dossier, en tout petit
-    bas = SAISONS[Math.max(0, st.t - 1) % 4][0] + " · " + SES.jetons + "/" + RG().v.reserveMax + (SES.jetons < RG().v.reserveMax ? " · +1 dans " + rt : " · réserve pleine");
+    bas = SAISONS[Math.max(0, st.t - 1) % 4][0] + " · " + SES.jetons + "/" + RG().v.reserveMax + (SES.jetons < RG().v.reserveMax ? " · +1 dans " + rt : " · réserve pleine : des habitants partent dans " + rt + " !");
     b.textContent = ""; b.appendChild(h("span", null, haut)); b.appendChild(h("small", "mx-reserve", bas));
     b.classList.toggle("mx-vide", SES.jetons < 1);
     b.classList.toggle("mx-pret", st.phase === "evenement" || (SES.jetons > 0 && (st.phase === "gestion" || st.phase === "pret")));
@@ -2736,7 +2745,9 @@
     if (p.transports < 40) sujet(45 - p.transports, "Transports : la galère quotidienne", ["Ligne 13 bondée, encore et toujours.", "Une heure pour traverser Paris en bus…", "Le métro est en panne une fois sur deux."], 1);
     if (st.dette > M.PLAFOND_DETTE * 0.5) sujet(14, "Finances : la dette inquiète", ["La mairie dépense trop, qui va payer ?", "On paiera les dettes de la ville pendant vingt ans."], 1);
     if (so < 0) sujet(8, "Budget dans le rouge", ["Les caisses se vident chaque trimestre.", "Il faudrait des recettes, pas que des dépenses."], 1);
-    if (st.habDelta < -3000) sujet(9, Math.abs(st.habDelta).toLocaleString("fr-FR") + " Parisiens ont quitté la ville", ["Mes voisins sont partis à Lyon.", "Tout le monde part, ça fait de la peine."], 1);
+    if (st.neglige && st.neglige.t >= st.t - 1) sujet(80, "📂 Dossiers en souffrance : " + st.neglige.perte.toLocaleString("fr-FR") + " Parisiens quittent l’arrondissement",
+      ["La mairie ne répond plus à rien. On déménage.", "Trois mois que mon dossier attend sur le bureau du maire !", "Un maire qui ne tranche rien, ça ne sert à rien. Je m’en vais."]);
+        if (st.habDelta < -3000) sujet(9, Math.abs(st.habDelta).toLocaleString("fr-FR") + " Parisiens ont quitté la ville", ["Mes voisins sont partis à Lyon.", "Tout le monde part, ça fait de la peine."], 1);
     if (st.habDelta > 3000) sujet(3, "Paris attire : " + st.habDelta.toLocaleString("fr-FR") + " nouveaux habitants", ["On vient d’emménager, on adore le quartier !", "Paris, ça reste Paris."]);
     if (M.bonheur(st) >= 60) sujet(2, "Les Parisiens heureux", ["Franchement, la ville n’a jamais été aussi agréable.", "Bravo à la mairie pour le quartier."]);
     if (st.pop >= 55) sujet(1, "Le maire au sommet des sondages", ["Je revoterai pour lui sans hésiter.", "Enfin un maire qui écoute."]);
@@ -2796,6 +2807,7 @@
     if ((st.hab || M.HAB0) >= M.capacite(st)) dit(18, ["Plus un appartement de libre : construisez des logements !", "Mes enfants veulent rester dans le quartier, mais il n’y a plus de place."]);
     if (so < 0) dit(16 + Math.min(10, -so / 10), ["La mairie perd de l’argent chaque saison, ça va mal finir.", "Les caisses se vident… il faudra bien payer un jour."]);
     else if (st.tresor - st.dette > 400) dit(10, ["La mairie a plein d’argent qui dort : qu’elle construise quelque chose !", "Avec tout cet argent en caisse, on attend des projets !"]);
+    if (st.session && SES.id && SES.jetons >= RG().v.reserveMax) dit(35, ["Les dossiers s’empilent à la mairie… si personne ne répond, je pars !", "Le maire laisse traîner ses dossiers, mes voisins font déjà leurs cartons."]);
     if (st.session && st.meca.employes) { var pr = M.proprete(st); if (pr.manque > 0) dit(15, ["Les poubelles débordent et les parcs sont sales : où sont les agents de propreté ?", "Mon parc est devenu une décharge, il faut du personnel !"]); }
     if (st.session && SES.s) {
       var sc = SS().scores(SES.s, now), p = st.session.place, mien = sc[p];
