@@ -1280,7 +1280,7 @@
     var titre = r.apres >= SS().TRONE && monte ? "👑 Maire de Paris !" : monte ? "🎉 Tu gagnes " + places + " !" : descend ? "📉 Tu perds " + places : "🗳️ Tu gardes ta place";
     var v = document.getElementById("m-election"); if (v) v.remove(); cacherBulle();
     var f = h("div", "m-pop m-election"); f.id = "m-election"; f.setAttribute("role", "dialog");
-    var c = h("div", "m-pop-in m-elec-carte"), H = 30;
+    var c = h("div", "m-pop-in m-elec-carte"), H = window.innerWidth < 700 ? 21 : 30;   /* téléphone : tout tient sur un écran */
     f.appendChild(imgDeco("elec-balcon", "m-elec-balcon", 741, 555));   // ordinateur : le maire acclamé au balcon
     c.appendChild(imgDeco("elec-haut", "m-elec-haut", 853, 150));
     ajout(c, h("p", "m-sur m-elec-num", "Élection n° " + s.election), h("h4", null, "Les résultats" + (s.nom ? " · " + s.nom : "")));

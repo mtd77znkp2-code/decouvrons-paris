@@ -1579,3 +1579,17 @@ body.m-acc-on .m-fond{display:none}
   .m-fin-pluie{max-height:340px;object-fit:cover;object-position:center 30%}
   .mx-fin-bas{grid-template-columns:1.4fr 1fr;align-items:center;max-width:720px;margin:0 auto}
 }
+/* Cérémonie sur téléphone : compacte, tient sur un écran */
+@media (max-width:699px){
+  #m-election .m-elec-carte{padding:10px 10px 12px;gap:6px;max-height:calc(100dvh - 20px);overflow-y:auto}
+  .m-elec-haut{width:calc(100% + 20px);margin:-10px -10px 0;max-height:64px;object-fit:cover}
+  .m-elec-num{font-size:20px!important;margin:0!important}
+  #m-election .m-elec-carte h4{font-size:15px}
+  .m-elec-l{height:19px;font-size:11px;grid-template-columns:22px minmax(0,1fr) 54px 32px 26px;gap:4px;padding:0 4px}
+  .m-elec-bilan{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:10px;text-align:left;justify-items:start;padding:8px 10px}
+  .m-elec-bilan>*{grid-column:2}
+  .m-elec-bilan>.m-elec-trophee,.m-elec-bilan>.m-tableau{grid-column:1;grid-row:1/span 4;width:64px;max-width:64px;margin:0}
+  .m-elec-bilan strong{font-size:16px}
+  .m-elec-bilan p,.m-elec-bilan small,.m-elec-obj{font-size:12px}
+  .m-elec-bilan .btn{grid-column:1/-1;justify-self:stretch}
+}
