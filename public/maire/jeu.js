@@ -1866,7 +1866,11 @@
     else haut = SES.jetons < 1 ? "⏳ Prochain dossier dans " + rt : "📂 Dossier suivant →";
     // La saison du prochain dossier, en tout petit
     bas = SAISONS[Math.max(0, st.t - 1) % 4][0] + " · " + SES.jetons + "/" + RG().v.reserveMax + (SES.jetons < RG().v.reserveMax ? " · +1 dans " + rt : " · réserve pleine : des habitants partent dans " + rt + " !");
-    b.textContent = ""; b.appendChild(h("span", null, haut)); b.appendChild(h("small", "mx-reserve", bas));
+    // Le texte change chaque seconde : on modifie les lignes en place, sans les recréer
+    // (sinon, sur téléphone, un toucher commencé sur une ligne remplacée entre-temps est perdu et il faut appuyer deux fois)
+    if (!b._haut || b._haut.parentNode !== b) { b.textContent = ""; b._haut = b.appendChild(h("span")); b._bas = b.appendChild(h("small", "mx-reserve")); }
+    if (b._haut.textContent !== haut) b._haut.textContent = haut;
+    if (b._bas.textContent !== bas) b._bas.textContent = bas;
     b.classList.toggle("mx-vide", SES.jetons < 1);
     b.classList.toggle("mx-pret", st.phase === "evenement" || (SES.jetons > 0 && (st.phase === "gestion" || st.phase === "pret")));
     b.style.setProperty("--p", SES.jetons >= RG().v.reserveMax ? 1 : Math.max(0, Math.min(1, 1 - r / (dossierMs() / 1000))));
@@ -1888,7 +1892,7 @@
     }));
     if (auto) remplirTrim(b.lastChild);
     if (st.phase === "evenement") b.lastChild.classList.add("mx-pret");
-    else if (st.phase !== "evenement" && !cartes) {
+    else if (st.phase !== "evenement" && !cartes && !auto) {
       // Partie hors session : même bouton doré, toujours prêt, avec la saison en petit
       var go = b.lastChild; go.textContent = ""; go.classList.add("mx-pret");
       go.appendChild(h("span", null, "📂 Dossier suivant →")); go.appendChild(h("small", "mx-reserve", SAISONS[st.t % 4][0] + " · " + SAISONS[st.t % 4][1]));
@@ -2413,7 +2417,16 @@
       if (g) confettis(); else { carte.classList.remove("m-secoue"); void carte.offsetWidth; carte.classList.add("m-secoue"); zone.appendChild(h("span", "m-mj-cadenas", "🔒")); }
       zone.appendChild(h("p", "m-mj-res " + (g ? "m-mj-ok" : "m-mj-ko"), g ? "🎉 Gagné ! Cette réponse est à toi" + (J().xp ? " · +" + J().xp + " XP" : "") + "." : "😬 Perdu… Cette réponse t’échappe, choisis parmi les autres."));
       zone.appendChild(bouton(g ? "Prendre cette réponse" : "Retour au dossier", "btn m-go", function () {
-        if (g) { casino(false); var cle = cleVote(), t = st.t, p = voter(cle, i); VOTE = p ? { t: t, i: i, p: p } : null; st = M.choisir(st, BASE, i); sauver(); signal("choix"); return jeu(); }
+        if (g) {
+          casino(false);
+          var avant = st, t = st.t, p = null;
+          try { p = voter(cleVote(), i); } catch (e) { p = null; }   // le vote des autres maires ne doit jamais bloquer le choix
+          VOTE = p ? { t: t, i: i, p: p } : null;
+          try { st = M.choisir(st, BASE, i); } catch (e) { st = avant; }
+          if (st !== avant) { sauver(); signal("choix"); return jeu(); }
+          // Rien n'a bougé (le dossier a changé entre-temps) : on rouvre le dossier à jour au lieu de ne rien faire
+          MASQUE = null; return modale();
+        }
         modale();
       }));
       if (g) zone.appendChild(bouton("Revoir le dossier", "btn m-sec", modale));
