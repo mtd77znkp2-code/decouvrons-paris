@@ -27,6 +27,18 @@
     { k: "venteMin", g: "Rythme de la session", nom: "Enchères de prestige", unite: "min", def: 6, min: 1, max: 30, pas: 1,
       desc: "Une enchère de bâtiment de prestige toutes les X minutes, qui dure X minutes." },
 
+    // ---- Mandats de session : objectifs et élimination ----
+    { k: "objMin", g: "Mandats et objectifs", nom: "Objectifs à réussir pour rester en jeu", unite: "sur 3", def: 2, min: 0, max: 3, pas: 1,
+      desc: "À chaque élection de session (fin de mandat), un maire qui a réussi moins de X objectifs sur 3 est éliminé et doit recommencer une partie. 0 = personne n’est éliminé." },
+    { k: "objGrace", g: "Mandats et objectifs", nom: "Mandat trop court pour être jugé", unite: "saisons", def: 4, min: 0, max: 20, pas: 1,
+      desc: "Un joueur arrivé moins de X saisons avant l’élection n’est pas jugé : il garde ses objectifs pour le mandat suivant." },
+
+    // ---- Construction des bâtiments (session) ----
+    { k: "dureeConstruction", g: "Construction", nom: "Durée des travaux", unite: "×", def: 1, min: 0, max: 4, pas: 0.25,
+      desc: "Un bâtiment met de 1 saison (les moins chers) à 5 saisons (les plus chers) à sortir de terre, multiplié par X. 0 = construction immédiate." },
+    { k: "chantiersMax", g: "Construction", nom: "Travaux en même temps", unite: "", def: 2, min: 1, max: 10, pas: 1,
+      desc: "Nombre de bâtiments qu’on peut construire en même temps." },
+
     // ---- Argent ----
     { k: "dossierSession", g: "Argent", nom: "Montants des dossiers en session", unite: "×", def: 1, min: 0.1, max: 3, pas: 0.05,
       desc: "Multiplie l’argent gagné ou perdu par les réponses aux dossiers (1 = montants normaux)." },

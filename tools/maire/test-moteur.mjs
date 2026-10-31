@@ -911,6 +911,41 @@ test("session : des dossiers laissés de côté font partir des habitants", () =
   assert.equal(st.neglige.n, 2); assert.equal(st.neglige.perte, h0 - st.hab, "le journal connaît le nombre de départs");
 });
 
+function partieSession(graine) {
+  const S = require("../../public/maire/session.js");
+  let st = M.nouvellePartie({ maire: "tribun", graine, niveauPartie: true, session: true });
+  st = M.placer(st, { id: "s", place: 0, titre: S.titre(0), hab0: S.habitants(0), puissance: S.puissance(0), rival: null, opp: null });
+  st.phase = "gestion"; return st;
+}
+test("session : 1er mandat avec 3 objectifs très simples et sans crise", () => {
+  const st = partieSession(31), ob = M.objectifs(st);
+  assert.equal(ob.length, 3); assert.equal(st.crise, null);
+  const k = ob.map(o => o.k).sort().join(","); assert.equal(k, "diversite,dossiers,rayon");
+  assert.ok(ob.every(o => o.but <= 2), "cibles minuscules : " + ob.map(o => o.txt).join(" / "));
+});
+test("session : un bâtiment met des saisons à se construire et n'agit qu'une fois fini", () => {
+  let st = partieSession(32); st.tresor = 5000;
+  const id = Object.keys(M.BATIMENTS).find(i => { const B = M.BATIMENTS[i]; return !B.projet && !B.enchere && B.cout <= 50 && !M.peutAcheter(st, i); });
+  const id2 = Object.keys(M.BATIMENTS).find(i => { const B = M.BATIMENTS[i]; return i !== id && !B.projet && !B.enchere && B.cout > 50 && !M.peutAcheter(st, i); });
+  assert.equal(M.dureeTravaux(st, id), 1); assert.ok(M.dureeTravaux(st, id2) >= 2, "les plus chers sont plus longs");
+  const t0 = st.tresor; st = M.acheter(st, id);
+  assert.ok(st.tresor < t0, "payé tout de suite"); assert.ok(!st.bat[id], "pas encore construit"); assert.ok(M.peutAcheter(st, id), "pas deux fois en même temps");
+  st = M.avancerSession(st, base);
+  assert.equal(st.bat[id], 1, "construit au bout d'une saison"); assert.equal((st.travaux || []).length, 0);
+});
+test("session : objectifs manqués à l'élection = éliminé ; réussis = nouveaux objectifs", () => {
+  let st = partieSession(33); st.t = 10; st.debutMandat = 0;
+  const rate = M.electionSession(st, { election: 1, avant: 0, apres: 0 });
+  assert.equal(rate.phase, "fin"); assert.equal(rate.fin.raison.type, "objectifs");
+  st.objectifs = st.objectifs.map(o => Object.assign({}, o, { but: 0 }));
+  const ok2 = M.electionSession(st, { election: 1, avant: 0, apres: 0 });
+  assert.notEqual(ok2.phase, "fin"); assert.equal(ok2.mandat, 2); assert.equal(M.objectifs(ok2).length, 3);
+  // Arrivé juste avant le vote : pas jugé, mêmes objectifs
+  let tard = partieSession(34); tard.t = 2; tard.debutMandat = 0;
+  const r = M.electionSession(tard, { election: 1, avant: 0, apres: 0 });
+  assert.notEqual(r.phase, "fin"); assert.equal(r.mandat, 1);
+});
+
 console.log(ok + " tests réussis.\n");
 if (!N) { console.log("Simulation d’équilibrage ignorée (0 partie demandée)."); process.exit(0); }
 

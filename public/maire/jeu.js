@@ -649,7 +649,7 @@
     vider(); box.appendChild(h("p", "msg", "Installation à la mairie…"));
     index().then(function () { var l = choisirLots(); return chargerLots(l).then(function () { return l; }); }).then(function (lots) {
       try { localStorage.setItem("maire_perso", CHOIX.maire); } catch (e) {}
-      st = M.nouvellePartie({ maire: CHOIX.maire, ligne: "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, xpJoueur: G.lire().xp, niveauPartie: true, pid: Date.now().toString(36), secrets: G.lire().secrets, sansLimite: sansLimiteAdmin(), missions: false,
+      st = M.nouvellePartie({ maire: CHOIX.maire, ligne: "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, xpJoueur: G.lire().xp, niveauPartie: true, pid: Date.now().toString(36), secrets: G.lire().secrets, sansLimite: sansLimiteAdmin(), missions: false, session: !!window.SessionLigne,
         passBats: G.batsExclusifs(), bonus: G.utiliserSac(CHOIX.sac) });
       SES.jetons = 0; garderReserve();   // nouvelle partie : toujours 0 dossier en réserve
       sauver(); demarrerPartie();
@@ -769,7 +769,7 @@
     var u = h("ul", "mx-objliste");
     M.objectifs(st).forEach(function (x, j) { var li = h("li", "mx-entre"); li.style.animationDelay = (calme() ? 0 : 0.15 * (j + 2)) + "s"; ajout(li, h("span", null, x.ico), h("span", null, x.txt)); u.appendChild(li); });
     if (u.children.length) { l.appendChild(h("p", "m-sur", "🎯 Tes objectifs")); l.appendChild(u); }
-    ajout(d, l, h("small", "m-aide", "Réussis au moins 2 objectifs sur 3 pour gagner le mandat. Chaque objectif atteint rapporte aussi +" + ((M.bonusMaire(st).objVote) || M.P.objVote) + " % au vote."),
+    ajout(d, l, h("small", "m-aide", (st.modeSession && RG().v.objMin ? "À l’élection, il faut au moins " + RG().v.objMin + " objectif" + (RG().v.objMin > 1 ? "s" : "") + " sur 3, sinon tu es éliminé ! " : "Réussis au moins 2 objectifs sur 3 pour gagner le mandat. ") + "Chaque objectif atteint rapporte aussi +" + ((M.bonusMaire(st).objVote) || M.P.objVote) + " % au vote."),
       bouton(st.t ? "Commencer le mandat " + st.mandat : "Entrer en fonctions", "btn m-go", function () {
         st = st.phase === "election" ? M.continuer(st, BASE) : tourSansDossier(st); sauver(); jeu(); haut();
       }));
@@ -920,7 +920,8 @@
       // Téléphone en veille ou appli en arrière-plan : la cérémonie attend qu'on revienne
       if (document.hidden) SES.ceremonieAttente = true; else annonceElection(elu, s);
     }
-    if (change && document.getElementById("m-app") && st.phase !== "fin") { if (!document.getElementById("m-modale")) jeu(); }
+    if (elu && st.phase === "fin" && document.getElementById("m-app")) { fermerModale(); jeu(); }   // éliminé (objectifs manqués) : l'écran de fin, derrière la cérémonie
+    else if (change && document.getElementById("m-app") && st.phase !== "fin") { if (!document.getElementById("m-modale")) jeu(); }
     else majSession();
   }
   // Chaque seconde : comptes à rebours, recharge de la réserve, mode auto, élection quand l'heure est venue
@@ -1252,6 +1253,12 @@
     ajout(bilan, tableauDeco(monte ? "victoire" : descend ? "defaite" : "election", "m-tableau-petit"), h("strong", null, titre), h("p", null, "De la " + (SS().NB - r.avant) + "ᵉ à la " + (SS().NB - r.apres) + "ᵉ place · te voilà " + SS().titre(r.apres) + "."),
       h("small", null, "Ton score : " + virg(r.score || 0) + " · tu as dépassé " + (r.vs || []).filter(function (x) { return x.g; }).length + " maire(s), " + (r.vs || []).filter(function (x) { return !x.g; }).length + " t’ont dépassé."),
       bouton("Continuer", "btn m-go", function () { f.remove(); }));
+    // Objectifs du mandat jugés à cette élection
+    var el = st && st.elections && st.elections[st.elections.length - 1];
+    if (el && el.session && el.objectifs && el.objectifs.length) {
+      var oj = h("p", "m-elec-obj " + (el.reussi ? "m-plus" : "m-moins"), !el.juge ? "🎯 Arrivé trop tard pour être jugé : tu gardes tes objectifs." : el.reussi ? "🎯 Objectifs : " + el.nok + "/" + el.objectifs.length + " réussis · nouveaux objectifs pour le mandat suivant !" : "❌ Objectifs : " + el.nok + "/" + el.objectifs.length + " seulement · tu es éliminé, il faut recommencer.");
+      bilan.insertBefore(oj, bilan.lastChild);
+    }
     c.appendChild(bilan); f.appendChild(c); document.body.appendChild(f);
     var calmeA = calme();
     // 1. Les scores se remplissent, du haut vers le bas
@@ -1289,7 +1296,7 @@
     ajout(box, entete(), bandeauSession(), tableau(), carteObjectifs(), piliers(), carteEquilibre(), carteLeon());
     if (st.opposant) box.appendChild(bandeauOpp());
     if (st.rapport && st.notes && st.notes.length) box.appendChild(notes());
-    if (st.chantiers.length) box.appendChild(chantiers());
+    if (st.chantiers.length || (st.travaux || []).length) box.appendChild(chantiers());
     box.appendChild(carteVille(false));
     box.appendChild(boutique());
     box.appendChild(gestion());
@@ -1320,6 +1327,13 @@
   }
   function chantiers() {
     var d = h("div", "m-chantiers"); d.appendChild(h("h5", null, "🏗️ Chantiers en cours"));
+    // Bâtiments en travaux (session) : ils agissent une fois terminés
+    (st.travaux || []).forEach(function (w) {
+      var B = M.BATIMENTS[w.id], reste = Math.max(1, w.fin - st.t), l = h("div", "m-chantier");
+      var barre = h("div", "m-barre"), i = h("i"); i.style.width = Math.round((w.du - reste) / w.du * 100) + "%"; barre.appendChild(i);
+      ajout(l, ajout(h("div", "m-jt"), h("span", null, B.ico + " " + B.nom), h("b", null, "prêt dans " + reste + " saison" + (reste > 1 ? "s" : ""))), barre);
+      d.appendChild(l);
+    });
     st.chantiers.forEach(function (c) {
       var B = M.BATIMENTS[c.id], tot = B.duree, fait = Math.max(0, Math.min(tot, tot - c.reste)), l = h("div", "m-chantier");
       var barre = h("div", "m-barre"), i = h("i"); i.style.width = Math.round(fait / Math.max(tot, fait + c.reste) * 100) + "%"; barre.appendChild(i);
@@ -1411,6 +1425,7 @@
     var cr = M.criseEnCours(st), n = ob.filter(function (o) { return o.ok; }).length, d = h("div", "mx-objectifs");
     ajout(d, ajout(h("div", "mx-pt"), h("strong", null, "🎯 Objectifs du mandat"), h("b", "mx-objn" + (n >= 2 ? " mx-objbon" : ""), n + "/" + ob.length)));
     if (cr) d.appendChild(h("small", "mx-criseinfo", cr.ico + " " + cr.nom + " · " + cr.txt));
+    if (st.modeSession && RG().v.objMin) d.appendChild(h("small", "mx-criseinfo" + (n >= RG().v.objMin ? "" : " mx-alerte"), n >= RG().v.objMin ? "✔ Assez d’objectifs pour rester en jeu à l’élection." : "⚠️ Il en faut " + RG().v.objMin + " à l’élection, sinon tu es éliminé."));
     ob.forEach(function (o) {
       var l = h("div", "mx-objl" + (o.ok ? " mx-ok" : ""));
       var etat = o.ok ? (o.garde ? "✔ à tenir" : "✔") : o.inverse ? o.cur + " M€ (max " + o.but + ")" : o.cur + " / " + o.but;
@@ -1564,7 +1579,8 @@
     if (M.peutAcheter(st, id)) return;
     var avantAchat = st; st = M.acheter(st, id);
     if (st !== avantAchat && window.sfx) { window.sfx("achat"); setTimeout(function () { window.sfx("chantier", 0.7); }, 450); }   // sons n°8 « cha-ching » puis n°9 marteau
-    sauver(); signal("achat"); jeu(); toast(B.ico + " " + B.nom + (B.projet ? " : chantier lancé !" : " construit !"));
+    var du = M.dureeTravaux(avantAchat, id);
+    sauver(); signal("achat"); jeu(); toast(B.ico + " " + B.nom + (B.projet ? " : chantier lancé !" : du ? " : travaux lancés, prêt dans " + du + " saison" + (du > 1 ? "s" : "") + " !" : " construit !"));
   }
   // Carte compacte : on touche pour construire ; « i » ouvre la fiche
   function carteBat(id) {
@@ -1574,7 +1590,9 @@
     var c = h("div", "mx-batc");
     var b = bouton("", "mx-bat" + (ench ? " mx-ench" : B.projet ? " mx-projet" : B.secret || B.pass ? " mx-rare" : "") + (neuf ? " mx-new" : ""), function () { acheterBat(id); });
     b.disabled = !!non;
-    var prix = ench ? "🔨 ≈ " + argent(px) : B.projet ? argent(px) + " + tranches" : argent(px);
+    var du = !ench && M.dureeTravaux(st, id), tr = (st.travaux || []).filter(function (w) { return w.id === id; })[0];
+    var prix = ench ? "🔨 ≈ " + argent(px) : B.projet ? argent(px) + " + tranches" : argent(px) + (du ? " · 🏗️ " + du + " saison" + (du > 1 ? "s" : "") : "");
+    if (tr) non = "🏗️ En travaux : prêt dans " + Math.max(1, tr.fin - st.t) + " saison" + (tr.fin - st.t > 1 ? "s" : "");
     ajout(b, icone(id, "mx-bico"), h("strong", null, B.nom), h("span", "mx-eff", effetCourt(id) || "✨ atout spécial"),
       h("small", "mx-prix" + (non && /argent/.test(non) ? " mx-cher" : ""), non && !/argent/.test(non) ? non.replace(/\.$/, "") : prix),
       deja && !B.unique ? h("em", null, "×" + deja) : null, neuf ? h("i", "mx-neuf", "Nouveau") : null);
@@ -2961,9 +2979,9 @@
     vider(); fermerModale();
     choixNiveau(st.niveau);
     var b = M.bilan(st), an = M.analyse(st), e = st.elections[st.elections.length - 1];
-    if (st.fin.raison.type === "election") sonUnique("fin:" + st.pid, "hue");   // son n°15 : battu
+    if (st.fin.raison.type === "election" || st.fin.raison.type === "objectifs") sonUnique("fin:" + st.pid, "hue");   // son n°15 : battu
     var type = st.fin.raison.type, t = h("div", "m-final " + (type === "defi" || type === "retraite" ? "m-gagne" : "m-perdu"));
-    ajout(t, tableauDeco(type === "defi" || type === "retraite" ? "victoire" : "defaite"), h("p", "m-sur", (st.defi != null ? "Défi du jour · " : "") + ({ election: "Battu aux élections", faillite: "Faillite", demission: "Démission", defi: "Défi terminé", retraite: "Victoire" })[type]),
+    ajout(t, tableauDeco(type === "defi" || type === "retraite" ? "victoire" : "defaite"), h("p", "m-sur", (st.defi != null ? "Défi du jour · " : "") + ({ election: "Battu aux élections", faillite: "Faillite", demission: "Démission", defi: "Défi terminé", retraite: "Victoire", objectifs: "Éliminé : objectifs manqués" })[type]),
       h("h4", null, b.mandats ? "Fin de règne après " + M.duree(b.t) + " et " + b.mandats + " réélection" + (b.mandats > 1 ? "s" : "") : "Ton aventure s’arrête au bout de " + M.duree(b.t)),
       h("p", "m-raison", st.fin.raison.txt), h("p", "m-score", "Score : " + b.score));
     box.appendChild(t);

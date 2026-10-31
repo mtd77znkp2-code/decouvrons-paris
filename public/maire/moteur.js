@@ -286,7 +286,8 @@
       // Réservé à l'administrateur : tous les bâtiments sans attendre (la partie ne compte alors pas au classement)
       sansLimite: !!o.sansLimite, triche: !!o.sansLimite,
       sansMissions: o.missions === false,                    // l'interface peut se passer des missions surprises
-      np: np, pxp: 0                                          // niveaux de partie (1 à 50)
+      np: np, pxp: 0,                                         // niveaux de partie (1 à 50)
+      modeSession: !!o.session && !o.scenario                 // partie de session : objectifs de session dès le 1er mandat
     };
     migrer(st);
     st.pid = o.pid ? String(o.pid) : "p" + (st.rng >>> 0).toString(36);
@@ -506,6 +507,7 @@
     else if (o.k === "opposant") { x.but = 1; x.ico = "⚔️"; x.txt = "Pousse ton opposant à renoncer"; }
     else if (o.k === "coherence") { x.but = cibleObj("coherence", st); x.ico = "🧭"; x.txt = "Garde une cohérence de " + x.but; }
     else if (o.k === "enchere") { x.but = 1; x.ico = "🔨"; x.txt = "Remporte une enchère"; }
+    else if (o.k === "dossiers") { x.but = o.but; x.ico = "📂"; x.txt = "Tranche " + x.but + " dossier" + (x.but > 1 ? "s" : ""); }
     if (crise) x.crise = 1;
     return x;
   }
@@ -518,6 +520,7 @@
     else if (o.k === "coherence") cur = Math.round(st.coh);
     else if (o.k === "tresor") cur = Math.round(st.tresor);
     else if (o.k === "dette") { cur = Math.round(st.dette); ok = cur <= o.but; }
+    else if (o.k === "dossiers") { garde = false; cur = (x.dossiers || 0) - (b.dossiers || 0); }
     else { garde = false;
       cur = o.k === "rayon" ? (st.mandatBats[o.r] || 0) : o.k === "diversite" ? Object.keys(st.mandatTypes).length : o.k === "projet" ? x.projetsOk - (b.projetsOk || 0)
         : o.k === "enchere" ? (x.encheres || 0) - (b.encheres || 0) : (st.opposant && !st.opposant.actif ? 1 : 0); }
@@ -528,6 +531,7 @@
   function objectifsOk(st) { return objectifs(st).filter(function (o) { return o.ok; }).length; }
   // Nouveau mandat : une crise (différente de la précédente) et trois objectifs, dont celui de la crise
   function tirerMandat(st, sansCrise) {
+    if (st.modeSession || st.session) return tirerMandatSession(st);
     var ids = Object.keys(C.CRISES).filter(function (id) { return !st.crise || st.crise.id !== id; }), cr = null;
     if (!sansCrise) {
       var id = ids[Math.floor(rnd(st) * ids.length)]; cr = C.CRISES[id];
@@ -554,7 +558,37 @@
     }
     st.objectifs = liste;
     st.mandatBats = {}; st.mandatTypes = {};
-    var x = stats(st); st.mandatBase = { projetsOk: x.projetsOk, encheres: x.encheres || 0 };
+    var x = stats(st); st.mandatBase = { projetsOk: x.projetsOk, encheres: x.encheres || 0, dossiers: x.dossiers || 0 };
+  }
+  // Session : un mandat dure quelques minutes ; les objectifs partent de la ville telle qu'elle est et grandissent de mandat en mandat.
+  // 1er mandat : trois objectifs très simples (1 bâtiment, 2 bâtiments différents, 2 dossiers), sans crise.
+  var CIBLES_SES = { rayon: [1, 2, 3, 4], diversite: [2, 3, 4, 5], dossiers: [2, 3, 3, 4], pilier: [0, 3, 5, 7], bonheur: [0, 2, 3, 4] };
+  function tirerMandatSession(st) {
+    var k = Math.max(0, Math.min(3, (st.mandat || 1) - 1)), liste = [];
+    if (k >= 2) {   // à partir du 3e mandat, une crise (qui abîme un peu la ville) revient
+      var ids = Object.keys(C.CRISES).filter(function (id) { return !st.crise || st.crise.id !== id; }), id = ids[Math.floor(rnd(st) * ids.length)], d = C.CRISES[id].depart || {};
+      st.crise = { id: id, mandat: st.mandat };
+      Object.keys(d.pil || {}).forEach(function (p) { st.base[p] = Math.max(P.plancher, st.base[p] + d.pil[p]); st.piliers[p] = borne(st.piliers[p] + d.pil[p]); });
+      if (d.pop) st.pop = borne(st.pop + d.pop);
+    } else st.crise = null;
+    // Un rayon où l'on peut vraiment construire en ce moment
+    var rayons = ["logement", "transports", "cadre", "securite", "economie"].filter(function (r) {
+      return Object.keys(BATIMENTS).some(function (id) { var B = BATIMENTS[id]; return B.cat === r && !B.projet && !B.enchere && disponible(st, id); });
+    });
+    var r = rayons.length ? rayons[Math.floor(rnd(st) * rayons.length)] : "logement";
+    var ob = [{ k: "rayon", r: r, but: CIBLES_SES.rayon[k], txt: "Construis " + CIBLES_SES.rayon[k] + " bâtiment" + (CIBLES_SES.rayon[k] > 1 ? "s " : " ") + RAYON_NOM[r], ico: "🏗️" },
+      { k: "dossiers", but: CIBLES_SES.dossiers[k] }];
+    if (k === 0) ob.push({ k: "diversite", but: CIBLES_SES.diversite[0], ico: "🧩", txt: "Construis " + CIBLES_SES.diversite[0] + " bâtiments différents" });
+    else {
+      // Un pilier (le plus faible) ou le bonheur, à faire monter par rapport à aujourd'hui
+      var faible = PK.slice().sort(function (a, b) { return st.piliers[a] - st.piliers[b]; })[0];
+      if (rnd(st) < 0.6) { var bp = Math.min(90, Math.round(st.piliers[faible]) + CIBLES_SES.pilier[k]); ob.push({ k: "pilier", p: faible, but: bp, ico: ICO[faible], txt: "Monte " + ({ logement: "le logement", transports: "les transports", cadre: "le cadre de vie", securite: "la sécurité" })[faible] + " à " + bp }); }
+      else { var bb = Math.min(90, Math.round(bonheur(st)) + CIBLES_SES.bonheur[k]); ob.push({ k: "bonheur", but: bb, ico: "😊", txt: "Bonheur des Parisiens à " + bb }); }
+    }
+    ob.forEach(function (o) { var x = o.txt ? o : creerObjectif(st, o, false); liste.push({ k: x.k, p: x.p, r: x.r, but: x.but, ico: x.ico, txt: x.txt }); });
+    st.objectifs = liste;
+    st.mandatBats = {}; st.mandatTypes = {};
+    var x = stats(st); st.mandatBase = { projetsOk: x.projetsOk, encheres: x.encheres || 0, dossiers: x.dossiers || 0 };
   }
   // Fin de partie choisie après une réélection : on part en vainqueur
   function retraite(st0) {
@@ -983,6 +1017,18 @@
       opposant: r.rival || "ton rival", popu: st.pop, bon: bonheur(st) };
     st.elections.push(el);
     if (monte) gagnerXP(st, "Élections gagnées", XP.election[palier(st)]);
+    // Fin du mandat : les objectifs sont jugés (sauf pour un maire arrivé juste avant le vote, qui les garde)
+    // Partie de session commencée avant les objectifs de session : pas jugée cette fois, elle passe aux objectifs de session
+    var ancien = !st.modeSession; st.modeSession = true;
+    var ob = objectifs(st), nok = ob.filter(function (o) { return o.ok; }).length, juge = !ancien && ob.length && st.t - st.debutMandat >= R.v.objGrace;
+    el.objectifs = ob; el.nok = nok; el.juge = !!juge; el.reussi = !juge || nok >= R.v.objMin; el.parfait = !!juge && nok === ob.length;
+    if (juge) { var xs = stats(st); xs.objectifsOk = (xs.objectifsOk || 0) + nok; if (el.reussi) xs.mandatsReussis = (xs.mandatsReussis || 0) + 1; }
+    if (juge && !el.reussi) {
+      st.fin = { gagne: false, raison: { type: "objectifs", txt: "Fin du mandat : " + nok + " objectif" + (nok > 1 ? "s" : "") + " réussi" + (nok > 1 ? "s" : "") + " sur " + ob.length + " (il en fallait " + R.v.objMin + "). Les Parisiens te remercient : tu es éliminé." }, t: st.t };
+      st.phase = "fin";
+      return st;
+    }
+    if (!juge && ob.length && !ancien) { st.debutMandat = st.t; return st; }   // pas jugé : même mandat, mêmes objectifs
     st.mandat++; st.debutMandat = st.t; st.pariMandat = 0;
     if (st.meca.opposant && st.opposant) { st.opposant.force = Math.max(20, st.opposant.force - 10); }
     if (!st.scenario) tirerMandat(st);
@@ -1022,6 +1068,12 @@
       }
     });
     finis.forEach(function (ch) { inaugurer(st, ch, notes); });
+    // Travaux des bâtiments (session) : ceux qui sont terminés rejoignent la ville
+    var prets = (st.travaux || []).filter(function (w) { return w.fin <= st.t; });
+    if (prets.length) {
+      st.travaux = st.travaux.filter(function (w) { return w.fin > st.t; });
+      prets.forEach(function (w) { construire(st, w.id, w.px, BATIMENTS[w.id].nom, true); notes.push({ txt: BATIMENTS[w.id].ico + " " + BATIMENTS[w.id].nom + " : travaux terminés !", d: { pop: 0, bon: 0, coh: 0, bud: 0, pil: {} } }); });
+    }
     entretienEspaces(st, notes);
     var restants = [];
     st.prevus.forEach(function (p) {
@@ -1605,7 +1657,13 @@
     if ((st.nivJ || 99) < (B.niv || 1) && !st.sansLimite) return "Se débloque au niveau " + B.niv + ".";
     var o = objectif(st, id); return o ? o.txt + "." : "";
   }
-  function enChantier(st, id) { return (st.chantiers || []).some(function (c) { return c.id === id; }); }
+  function enChantier(st, id) { return (st.chantiers || []).some(function (c) { return c.id === id; }) || (st.travaux || []).some(function (c) { return c.id === id; }); }
+  // Session : chaque bâtiment met quelques saisons à sortir de terre (1 pour les moins chers, jusqu'à 5 pour les plus chers)
+  function dureeTravaux(st, id) {
+    var B = BATIMENTS[id]; if (!st.session || !B || B.projet || !R.v.dureeConstruction) return 0;
+    var c = B.cout, n = c <= 50 ? 1 : c <= 100 ? 2 : c <= 180 ? 3 : c <= 300 ? 4 : 5;
+    return Math.max(1, Math.round(n * R.v.dureeConstruction));
+  }
   function peutAcheter(st, id) {
     var B = BATIMENTS[id];
     if (!B || st.phase === "fin") return "Impossible pour l’instant.";
@@ -1615,6 +1673,7 @@
     if ((bonusMaire(st).interdit || []).indexOf(id) >= 0) return "Ton personnage refuse de construire ça.";
     if (enChantier(st, id)) return "Chantier en cours.";
     if (B.projet && st.chantiers.length >= 2) return "Deux chantiers à la fois, pas plus.";
+    if (dureeTravaux(st, id) && (st.travaux || []).length >= R.v.chantiersMax) return "Déjà " + R.v.chantiersMax + " bâtiments en travaux : attends qu’un chantier se termine.";
     var px = B.projet ? Math.round(coutBat(st, id) * 0.3) : prix(st, id);
     if (px > st.tresor + (PLAFOND_DETTE - st.dette) * 0.5) return "Pas assez d’argent, même en empruntant.";
     return "";
@@ -1634,14 +1693,22 @@
       if (!financement(st)) faillite(st); suivre(st);
       return st;
     }
+    var du = dureeTravaux(st, id);
+    if (du) {   // payé tout de suite, mais le bâtiment n'agit qu'une fois construit
+      var px = prix(st0, id);
+      mouvement(st, -px, "Travaux : " + B.nom);
+      st.travaux = (st.travaux || []).concat([{ id: id, px: px, fin: st.t + du, du: du }]);
+      if (!financement(st)) faillite(st);
+      return st;
+    }
     return construire(st, id, prix(st0, id), B.nom);
   }
   // Un bâtiment rejoint la ville (achat en boutique ou enchère remportée)
-  function construire(st, id, px, libelle) {
+  function construire(st, id, px, libelle, dejaPaye) {
     var B = BATIMENTS[id], x = stats(st);
     st.bat[id] = (st.bat[id] || 0) + 1;
     if (st.mandatBats) { st.mandatBats[B.cat] = (st.mandatBats[B.cat] || 0) + 1; st.mandatTypes[id] = 1; }
-    mouvement(st, -px, libelle);
+    if (!dejaPaye) mouvement(st, -px, libelle);
     x.achats++; x.bats[id] = (x.bats[id] || 0) + 1; x.investi += px;
     if (B.secret) x.secretsBatis++;
     if (B.eco) st.eco = borne(st.eco + B.eco);
@@ -1912,7 +1979,7 @@
     MECANIQUES: MECANIQUES, EXTRAS: EXTRAS, mecaniques: mecaniques, BATIMENTS: BATIMENTS, OPPOSANTS: OPPOSANTS, SEUIL_OPP: SEUIL_OPP, LIGNES: LIGNES, CATS: CATS,
     FAMILLE: FAMILLE, SPECIAUX: SPECIAUX, C: C,
     nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, dossierNeglige: dossierNeglige, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, EMPLOYES: EMPLOYES, nbEmp: nbEmp, effetEmp: effetEmp, prixEmploye: prixEmploye, salaires: salaires, proprete: proprete, peutEmbaucher: peutEmbaucher, embaucher: embaucher, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
-    disponible: disponible, enChantier: enChantier, prix: prix, equilibre: equilibre, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, recit: recit,
+    disponible: disponible, enChantier: enChantier, dureeTravaux: dureeTravaux, prix: prix, equilibre: equilibre, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, recit: recit,
     valider: valider, indexer: indexer, engagements: engagements, evenementCourant: evenementCourant, stats: stats, opposant: opposant, humeurOpp: humeurOpp, bonheur: bonheur,
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
     prochaineElection: prochaineElection, promessesTenues: promessesTenues, combosActifs: combosActifs, lireMessages: lireMessages, viderDecouvertes: viderDecouvertes,
