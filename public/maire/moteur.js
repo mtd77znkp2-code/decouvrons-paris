@@ -1657,7 +1657,7 @@
     if ((st.nivJ || 99) < (B.niv || 1) && !st.sansLimite) return "Se débloque au niveau " + B.niv + ".";
     var o = objectif(st, id); return o ? o.txt + "." : "";
   }
-  function enChantier(st, id) { return (st.chantiers || []).some(function (c) { return c.id === id; }) || (st.travaux || []).some(function (c) { return c.id === id; }); }
+  function enChantier(st, id) { return (st.chantiers || []).some(function (c) { return c.id === id; }) || (!!(BATIMENTS[id] || {}).unique && (st.travaux || []).some(function (c) { return c.id === id; })); }
   // Session : chaque bâtiment met quelques saisons à sortir de terre (1 pour les moins chers, jusqu'à 5 pour les plus chers)
   function dureeTravaux(st, id) {
     var B = BATIMENTS[id]; if (!st.session || !B || B.projet || !R.v.dureeConstruction) return 0;

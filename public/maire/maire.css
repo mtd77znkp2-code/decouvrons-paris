@@ -1629,3 +1629,5 @@ body.m-acc-on .m-fond{display:none}
 .m-casino-carte .m-regles{display:flex;justify-content:center}
 .m-casino-carte .m-regles-btn{color:#f6dfa0}
 @media (min-width:900px){.m-casino-carte .m-croupier{width:150px;height:150px}}
+.mx-partie .mx-bat.mx-bat-off{filter:grayscale(.8);opacity:.8}.mx-partie .mx-bat.mx-bat-off .mx-prix{background:#2c376e;color:#d9dcef!important}.mx-bat.mx-bat-off{opacity:.6}
+.mx-vide-rayon{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center}.mx-vide-rayon p{flex-basis:100%;margin:0}

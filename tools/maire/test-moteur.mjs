@@ -929,7 +929,7 @@ test("session : un bâtiment met des saisons à se construire et n'agit qu'une f
   const id2 = Object.keys(M.BATIMENTS).find(i => { const B = M.BATIMENTS[i]; return i !== id && !B.projet && !B.enchere && B.cout > 50 && !M.peutAcheter(st, i); });
   assert.equal(M.dureeTravaux(st, id), 1); assert.ok(M.dureeTravaux(st, id2) >= 2, "les plus chers sont plus longs");
   const t0 = st.tresor; st = M.acheter(st, id);
-  assert.ok(st.tresor < t0, "payé tout de suite"); assert.ok(!st.bat[id], "pas encore construit"); assert.ok(M.peutAcheter(st, id), "pas deux fois en même temps");
+  assert.ok(st.tresor < t0, "payé tout de suite"); assert.ok(!st.bat[id], "pas encore construit"); assert.ok(!M.peutAcheter(st, id), "le même bâtiment peut être relancé (autre chantier)");
   st = M.avancerSession(st, base);
   assert.equal(st.bat[id], 1, "construit au bout d'une saison"); assert.equal((st.travaux || []).length, 0);
 });

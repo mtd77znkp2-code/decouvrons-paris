@@ -36,7 +36,7 @@
     // ---- Construction des bâtiments (session) ----
     { k: "dureeConstruction", g: "Construction", nom: "Durée des travaux", unite: "×", def: 1, min: 0, max: 4, pas: 0.25,
       desc: "Un bâtiment met de 1 saison (les moins chers) à 5 saisons (les plus chers) à sortir de terre, multiplié par X. 0 = construction immédiate." },
-    { k: "chantiersMax", g: "Construction", nom: "Travaux en même temps", unite: "", def: 2, min: 1, max: 10, pas: 1,
+    { k: "chantiersMax", g: "Construction", nom: "Travaux en même temps", unite: "", def: 3, min: 1, max: 10, pas: 1,
       desc: "Nombre de bâtiments qu’on peut construire en même temps." },
 
     // ---- Argent ----

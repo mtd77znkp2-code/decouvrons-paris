@@ -1038,6 +1038,8 @@
   }
   function majSession() {
     if (!SES.s) return;
+    Array.prototype.forEach.call(document.querySelectorAll(".mx-cd[data-fin]"), function (e) { var s = secondesAvant(+e.dataset.fin); e.textContent = s > 0 ? "prêt dans " + mmss(s) : "prêt à la prochaine saison"; });
+    var cc = document.querySelector(".mx-cd-chantier"); if (cc) cc.textContent = attenteChantier();
     majAttaque();
     var e = document.querySelector(".mx-ses-elec"); if (e) e.textContent = "🗳️ " + mmss(SES.s.prochaine - Date.now());
     var v = document.querySelector(".mx-ses-votes"); if (v) v.textContent = SS().nbVotes(SES.s) + "/" + SS().votesRequis(SES.s) + " vote" + (SS().votesRequis(SES.s) > 1 ? "s" : "");
@@ -1392,6 +1394,13 @@
     ajout(d, h("span", "m-leon-ico", "🧑‍💼"), h("p", null, st.leon.txt), bouton("×", "m-leonx", function () { leonVu = st.leon.t + st.leon.k; d.remove(); }));
     return d;
   }
+  // Temps réel avant la fin d'un chantier (en session, une saison passe toutes les X secondes)
+  function secondesAvant(fin) { var r = fin - st.t; if (r <= 0) return 0; return Math.max(0, (r - 1) * trimMs() + Math.max(0, (SES.temps || Date.now()) - Date.now())); }
+  function attenteChantier() {
+    var l = (st.travaux || []); if (!l.length) return "maintenant";
+    var s = secondesAvant(Math.min.apply(null, l.map(function (w) { return w.fin; })));
+    return s > 0 ? "dans " + mmss(s) : "à la prochaine saison";
+  }
   function chantiers() {
     var nT = (st.travaux || []).length, mxT = st.session ? RG().v.chantiersMax : 0;
     var d = h("div", "m-chantiers"); d.appendChild(h("h5", null, "🏗️ Chantiers en cours" + (mxT ? " (" + nT + "/" + mxT + ")" : "")));
@@ -1399,7 +1408,8 @@
     (st.travaux || []).forEach(function (w) {
       var B = M.BATIMENTS[w.id], reste = Math.max(1, w.fin - st.t), l = h("div", "m-chantier");
       var barre = h("div", "m-barre"), i = h("i"); i.style.width = Math.round((w.du - reste) / w.du * 100) + "%"; barre.appendChild(i);
-      ajout(l, icone(w.id, "m-chantier-ico"), ajout(h("div"), ajout(h("div", "m-jt"), h("span", null, B.nom), h("b", null, "prêt dans " + reste + " saison" + (reste > 1 ? "s" : ""))), barre));
+      var cd = h("b", "mx-cd", "prêt dans " + mmss(secondesAvant(w.fin))); cd.dataset.fin = w.fin;
+      ajout(l, icone(w.id, "m-chantier-ico"), ajout(h("div"), ajout(h("div", "m-jt"), h("span", null, B.nom), cd), barre));
       l.classList.add("m-travaux"); d.appendChild(l);
     });
     for (var k = nT; k < mxT; k++) d.appendChild(h("div", "m-chantier-libre", "＋ Emplacement disponible pour un nouveau chantier"));
@@ -1668,10 +1678,11 @@
     var neuf = (B.niv > 1 || B.secret || B.projet || B.si) && !G.guideVu("bat-" + id) && !deja;
     var c = h("div", "mx-batc");
     var b = bouton("", "mx-bat" + (ench ? " mx-ench" : B.projet ? " mx-projet" : B.secret || B.pass ? " mx-rare" : "") + (neuf ? " mx-new" : ""), function () { acheterBat(id); });
-    b.disabled = !!non;
+    // Jamais un bouton mort : touché alors qu'il est impossible, il explique pourquoi
+    if (non) { b.classList.add("mx-bat-off"); b.setAttribute("aria-disabled", "true"); b.onclick = function () { toast("🔒 " + B.nom + " : " + String(non).replace(/\.$/, "") + (/Chantiers pleins/.test(non) ? " — un emplacement se libère " + attenteChantier() : "")); }; }
     var du = !ench && M.dureeTravaux(st, id), tr = (st.travaux || []).filter(function (w) { return w.id === id; })[0];
     var prix = ench ? "🔨 ≈ " + argent(px) : B.projet ? argent(px) + " + tranches" : argent(px) + (du ? " · 🏗️ " + du + " saison" + (du > 1 ? "s" : "") : "");
-    if (tr) non = "🏗️ En travaux : prêt dans " + Math.max(1, tr.fin - st.t) + " saison" + (tr.fin - st.t > 1 ? "s" : "");
+    if (tr && B.unique) non = "🏗️ En travaux : prêt dans " + Math.max(1, tr.fin - st.t) + " saison" + (tr.fin - st.t > 1 ? "s" : "");
     ajout(b, icone(id, "mx-bico"), h("strong", null, B.nom), h("span", "mx-eff", effetCourt(id) || "✨ atout spécial"),
       h("small", "mx-prix" + (non && /argent/.test(non) ? " mx-cher" : ""), non && !/argent/.test(non) ? non.replace(/\.$/, "") : prix),
       deja && !B.unique ? h("em", null, "×" + deja) : null, neuf ? h("i", "mx-neuf", "Nouveau") : null);
@@ -1768,7 +1779,9 @@
       if (r.id === "projet") return st.meca.grandsProjets || st.sansLimite || n >= 4;
       return true;
     });
-    if (!RAYON || !visibles.some(function (r) { return r.id === RAYON; })) RAYON = Object.keys(M.PILIERS).sort(function (a, b) { return st.piliers[a] - st.piliers[b]; })[0];
+    // Premier rayon : le pilier le plus faible… parmi ceux où l'on peut vraiment construire quelque chose
+    function aDuChoix(r) { return ids.some(function (id) { return rayonDe(id) === r && M.disponible(st, id) && !M.BATIMENTS[id].enchere; }); }
+    if (!RAYON || !visibles.some(function (r) { return r.id === RAYON; })) RAYON = Object.keys(M.PILIERS).filter(aDuChoix).sort(function (a, b) { return st.piliers[a] - st.piliers[b]; })[0] || "logement";
     var onglets = h("div", "mx-rayons"); onglets.setAttribute("role", "tablist");
     // Les onglets gardent leur position de défilement quand on change de rayon ou que l'écran se redessine
     onglets.addEventListener("scroll", function () { RAYONS_SL = onglets.scrollLeft; }, { passive: true });
@@ -1797,11 +1810,17 @@
     var nTr = (st.travaux || []).length;
     if (st.session && nTr >= RG().v.chantiersMax && RAYON !== "projet") {
       var proch = Math.max(1, Math.min.apply(null, st.travaux.map(function (w) { return w.fin - st.t; })));
-      d.appendChild(h("p", "mx-plein", "🏗️ " + nTr + " chantiers en cours sur " + RG().v.chantiersMax + " : le prochain se termine dans " + proch + " saison" + (proch > 1 ? "s" : "") + ". Tu pourras alors construire à nouveau."));
+      d.appendChild(ajout(h("p", "mx-plein"), document.createTextNode("🏗️ " + nTr + " chantiers en cours sur " + RG().v.chantiersMax + " : un emplacement se libère "), h("b", "mx-cd-chantier", attenteChantier()), document.createTextNode(".")));
     }
     var g = h("div", "mx-bats");
     ok.forEach(function (id) { g.appendChild(carteBat(id)); });
-    if (!ok.length) g.appendChild(h("p", "mx-aide", "Rien à construire ici pour l’instant."));
+    if (!ok.length) {
+      // Onglet vide : on montre où l'on peut construire dès maintenant
+      var ailleurs = visibles.filter(function (r) { return r.id !== RAYON && r.id !== "employes" && r.id !== "enchere" && aDuChoix(r.id); });
+      var vide = ajout(h("div", "mx-aide mx-vide-rayon"), h("p", null, "Rien à construire ici pour l’instant." + (ailleurs.length ? " Tu peux construire dans :" : "")));
+      ailleurs.forEach(function (r) { vide.appendChild(bouton(r.ico + " " + r.nom, "mx-jouer2", function () { RAYON = r.id; var bq = document.querySelector(".mx-boutique"); if (bq) bq.replaceWith(boutique()); })); });
+      g.appendChild(vide);
+    }
     d.appendChild(g);
     // Les 3 prochains seulement ; le reste est compté
     var proches = bloques.slice(0, 3), loin = bloques.length - proches.length;
