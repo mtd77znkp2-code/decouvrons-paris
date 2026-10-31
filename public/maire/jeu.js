@@ -1302,6 +1302,34 @@
   document.addEventListener("visibilitychange", function () {
     if (!document.hidden && SES.ceremonieAttente && SES.derniere) { SES.ceremonieAttente = false; annonceElection(SES.derniere.r, SES.derniere.s); }
   });
+  // Après l'élection : trois rouleaux défilent et s'arrêtent, l'un après l'autre, sur les objectifs du nouveau mandat
+  var LEURRES = [["🏗️", "Construis 3 bâtiments de logement"], ["📂", "Tranche 4 dossiers"], ["😊", "Bonheur des Parisiens à 60"], ["📣", "Popularité à 58"],
+    ["👥", "Fais grandir la population de 2 %"], ["💼", "Chômage sous 6 %"], ["💰", "500 M€ en caisse le jour du vote"], ["📈", "Gagne 80 M€ par saison"],
+    ["🏛️", "Les 4 piliers à 55 ou plus"], ["🧩", "Construis 5 bâtiments différents"], ["👔", "Embauche 2 employés"], ["⚔️", "Réussis 2 attaques"],
+    ["🎰", "Gagne 2 parties au casino"], ["🔨", "Remporte une enchère"], ["🚇", "Monte les transports à 60"], ["🛡️", "Monte la sécurité à 58"], ["🌳", "Monte le cadre de vie à 57"]];
+  function tirageObjectifs() {
+    var ob = M.objectifs(st); if (!ob.length) return jeu();
+    var f = h("div", "m-pop m-tirage-obj"); f.setAttribute("role", "dialog");
+    var c = h("div", "m-pop-in m-tirage-carte");
+    ajout(c, h("p", "m-sur", "🗳️ Mandat " + st.mandat), h("h4", null, "Tes nouveaux objectifs"), h("small", "m-aide", "Il en faut au moins " + (RG().v.objMin || 2) + " sur 3 à la prochaine élection."));
+    var zone = h("div", "m-tirage-rouleaux"); c.appendChild(zone);
+    var go = bouton("C’est parti !", "btn m-go mx-cache", function () { f.remove(); if (st && document.getElementById("m-app") && !document.getElementById("m-modale")) jeu(); else SES.aRedessiner = true; });
+    c.appendChild(go); f.appendChild(c); document.body.appendChild(f);
+    // Les trois rouleaux partent l'un après l'autre (0,7 s d'écart) et s'arrêtent dans l'ordre
+    var finis = 0;
+    if (window.sfx && !calme()) window.sfx("roulette", 0.35);
+    ob.forEach(function (o, i) {
+      var place = h("div"); zone.appendChild(place);
+      setTimeout(function () {
+        var l = LEURRES.filter(function (x) { return x[1] !== o.txt; }).map(function (x) { return { ico: x[0], nom: x[1] }; }), k = Math.floor(Math.random() * l.length);
+        l.splice(k, 0, { ico: o.ico, nom: o.txt });
+        place.replaceWith(rouleau(l, k, function () {
+          if (window.sfx) window.sfx("ding", 0.6);
+          if (++finis === ob.length) setTimeout(function () { go.classList.remove("mx-cache"); }, calme() ? 0 : 400);
+        }));
+      }, calme() ? 0 : i * 700);
+    });
+  }
   function annonceElection(r, s) {
     var monte = r.apres > r.avant, descend = r.apres < r.avant, cl = s.classement || [], moi = moiSes();
     var ecart = Math.abs(r.apres - r.avant), places = ecart + " place" + (ecart > 1 ? "s" : "");
@@ -1327,7 +1355,11 @@
     var bilan = h("div", "m-elec-bilan mx-cache");
     ajout(bilan, monte ? imgDeco("trophee", "m-elec-trophee", 255, 200) : tableauDeco(descend ? "defaite" : "election", "m-tableau-petit"), h("strong", null, titre), h("p", null, "De la " + (SS().NB - r.avant) + "ᵉ à la " + (SS().NB - r.apres) + "ᵉ place · te voilà " + SS().titre(r.apres) + "."),
       h("small", null, "Ton score : " + virg(r.score || 0) + " · tu as dépassé " + (r.vs || []).filter(function (x) { return x.g; }).length + " maire(s), " + (r.vs || []).filter(function (x) { return !x.g; }).length + " t’ont dépassé."),
-      bouton("Continuer", "btn m-go", function () { f.remove(); if (st && document.getElementById("m-app") && !document.getElementById("m-modale")) jeu(); }));   // les nouveaux objectifs tout de suite
+      bouton("Continuer", "btn m-go", function () {
+        f.remove();
+        if (st && st.phase !== "fin" && M.objectifs(st).length) return tirageObjectifs();   // les nouveaux objectifs sortent de la roulette
+        if (st && document.getElementById("m-app") && !document.getElementById("m-modale")) jeu();
+      }));
     // Objectifs du mandat jugés à cette élection
     var el = st && st.elections && st.elections[st.elections.length - 1];
     if (el && el.session && el.objectifs && el.objectifs.length) {

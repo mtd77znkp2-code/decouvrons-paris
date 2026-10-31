@@ -1633,3 +1633,13 @@ body.m-acc-on .m-fond{display:none}
 .mx-vide-rayon{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center}.mx-vide-rayon p{flex-basis:100%;margin:0}
 .mx-admin-elec{font:inherit;font-weight:800;font-size:13px;color:#fff;background:#5a2a8a;border:2px dashed #c9a0ff;border-radius:10px;padding:8px;cursor:pointer;grid-column:1/-1}
 .mx-partie .mx-ses-titre small{display:block}
+/* Tirage des objectifs après l'élection */
+.m-tirage-obj{z-index:1200}
+.m-tirage-carte{width:min(460px,100%);display:grid;gap:10px;padding:18px 14px;border-radius:20px;background:linear-gradient(#1d2860,#141c4a);border:3px solid #d9a53a;color:#fff;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.m-tirage-carte h4{margin:0;font:900 24px Georgia,serif;color:#ffd56a}
+.m-tirage-rouleaux{display:grid;gap:8px}
+.m-tirage-rouleaux .mx-rouleau{display:grid;grid-template-columns:40px minmax(0,1fr);align-items:center;gap:8px;min-height:54px;padding:8px 12px;border-radius:12px;background:#0e1438;border:2px solid #2c376e;text-align:left;overflow:hidden}
+.m-tirage-rouleaux .m-rico{font-size:26px;text-align:center}
+.m-tirage-rouleaux .m-rnom{font-size:15px;line-height:1.25}
+.m-tirage-rouleaux .mx-rouleau.m-rstop{border-color:#ffd56a;background:linear-gradient(90deg,rgba(245,178,26,.25),#0e1438);animation:mxSaut .5s cubic-bezier(.3,1.6,.5,1)}
+.m-tirage-carte .btn.m-go{border-style:solid;border-color:transparent;border-width:12px 30px;border-image:url(img/deco/btn-or.webp) 26 64 fill/12px 30px stretch;background:none;box-shadow:none;border-radius:0;color:#1b2550;font:900 20px Georgia,serif;padding:2px 8px}
