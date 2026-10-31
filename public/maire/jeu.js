@@ -1296,9 +1296,9 @@
     ajout(box, entete(), bandeauSession(), tableau(), carteObjectifs(), piliers(), carteEquilibre(), carteLeon());
     if (st.opposant) box.appendChild(bandeauOpp());
     if (st.rapport && st.notes && st.notes.length) box.appendChild(notes());
-    if (st.chantiers.length || (st.travaux || []).length) box.appendChild(chantiers());
     box.appendChild(carteVille(false));
     box.appendChild(boutique());
+    if (st.chantiers.length || (st.travaux || []).length) box.appendChild(chantiers());   // juste sous la boutique
     box.appendChild(gestion());
     box.appendChild(barreTrimestre());
     box.style.minHeight = ""; window.scrollTo(0, y);
