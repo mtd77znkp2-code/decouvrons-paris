@@ -1270,7 +1270,7 @@ body.m-casino .m-pop,#m-telmod{place-items:start center}
 .m-elec-obj{margin:4px 0 0;font-weight:800;font-size:14px}
 .m-elec-obj.m-plus{color:#6fdc95}.m-elec-obj.m-moins{color:#ff8a80}
 /* ---------- Accueil du jeu (maquette « accueil ») ---------- */
-#g-maire.m-accueil>h3{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}   /* le logo est dans l'illustration */
+#g-maire.m-sanstitre>h3{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}   /* le logo est dans l'illustration */
 .mx-acc{display:grid;gap:14px}
 .mx-acc-g,.mx-acc-d{display:grid;gap:12px;align-content:start}
 .mx-hero{display:block;position:relative;margin:0 -16px;line-height:0}
@@ -1318,3 +1318,142 @@ body.m-casino .m-pop,#m-telmod{place-items:start center}
   .mx-acc-btns{grid-template-columns:1fr}
 }
 body.m-acc-on .m-fond{display:none}
+/* ---------- Choisis ton maire (maquette) ---------- */
+.mx-choix-hero img{-webkit-mask-image:linear-gradient(#000 85%,transparent);mask-image:linear-gradient(#000 85%,transparent)}
+.mx-choix{display:grid;gap:12px}
+.mx-choix .mx-maires{display:grid;gap:10px}
+.mx-choix .mx-maire{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;text-align:left;font:inherit;color:#fff;cursor:pointer;padding:10px 12px;border-radius:16px;background:linear-gradient(#1d2860,#141c4a);border:2px solid #c99a2e;box-shadow:inset 0 0 0 2px rgba(0,0,0,.35),0 4px 12px rgba(0,0,0,.35)}
+.mx-choix .mx-maire[aria-pressed="true"]{border-color:#ffd56a;box-shadow:0 0 0 3px rgba(255,213,106,.45),0 0 22px rgba(255,190,60,.35)}
+.mx-choix .mx-maire.mx-verrouille{border-color:#59607e;background:linear-gradient(#262c4e,#1b2042);color:#b8bdd6}
+.mx-choix .mx-maire.mx-verrouille .mx-mporte img{filter:grayscale(1) brightness(.85)}
+.mx-mporte{position:relative;display:block;line-height:0}
+.mx-choix .mx-mporte .mx-ui img{width:76px;height:76px;max-width:none;max-height:none}
+.mx-cad{position:absolute;left:-4px;bottom:-2px;font-style:normal;font-size:22px;line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.6))}
+.mx-mtxt{display:grid;gap:3px;min-width:0}
+.mx-mtxt>strong{font:900 19px/1.15 Georgia,"Times New Roman",serif;color:#ffd56a;text-shadow:0 2px 0 rgba(0,0,0,.4)}
+.mx-verrouille .mx-mtxt>strong{color:#c9cde0}
+.mx-mtxt .mx-slogan{font-family:Georgia,serif;font-size:13.5px;color:#e8e2cf}
+.mx-atout{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:center;margin-top:2px}
+.mx-atout .mx-ui img{width:30px;height:30px}
+.mx-atout b{font:800 14.5px Georgia,serif;color:#6fdc95}
+.mx-verrouille .mx-atout b{color:#c9cde0}
+.mx-atout small{display:block;font-size:11.5px;line-height:1.3;color:#d9dcef}
+.mx-verrouille .mx-chev{color:#8d93b3}
+.mx-choix-fiche{display:none}
+.mx-choix-bas{position:sticky;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:5;display:grid;gap:6px;justify-items:center}
+.mx-choix-bas .mx-choix-go,.mx-choix-fiche .mx-choix-go{width:100%;border-style:solid;border-color:transparent;border-width:14px 34px;border-image:url(img/deco/btn-or.webp) 26 64 fill/14px 34px stretch;background:none;box-shadow:none;border-radius:0;padding:2px 8px;color:#1b2550;font:900 clamp(20px,5.4vw,26px)/1.2 Georgia,"Times New Roman",serif;filter:drop-shadow(0 8px 16px rgba(0,0,0,.5))}
+.mx-choix-bas .mx-lien{order:2}
+@media (min-width:900px){
+  .mx-choix-hero{margin:0;border-radius:18px;overflow:hidden}
+  .mx-choix-hero img{-webkit-mask-image:none;mask-image:none}
+  .mx-choix{grid-template-columns:minmax(0,1.7fr) minmax(320px,1fr);align-items:start;gap:16px}
+  .mx-choix .mx-maires{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .mx-choix .mx-maire{grid-template-columns:auto minmax(0,1fr);padding:10px}
+  .mx-choix .mx-maire .mx-chev{display:none}
+  .mx-choix .mx-mporte .mx-ui img{width:64px;height:64px}
+  .mx-mtxt>strong{font-size:16px}
+  .mx-mtxt .mx-slogan{font-size:12px}
+  .mx-atout small{display:none}
+  .mx-choix-fiche{display:grid;gap:10px;position:sticky;top:90px;padding:18px;border-radius:18px;background:linear-gradient(#1d2860,#141c4a);border:3px solid #d9a53a;box-shadow:inset 0 0 0 2px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.45);color:#fff;text-align:center}
+  .mx-choix-fiche h4{margin:0;font:900 30px/1.1 Georgia,serif;color:#ffd56a;text-shadow:0 2px 0 rgba(0,0,0,.4)}
+  .mx-choix-fiche .mx-slogan{font-family:Georgia,serif;font-size:16px}
+  .mx-fiche-haut{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;text-align:left}
+  .mx-fiche-portrait img{width:130px!important;height:130px!important;max-width:none!important;max-height:none!important}
+  .mx-atout-grand{display:grid;gap:6px;padding:10px 12px;border-radius:12px;border:2px solid #c99a2e;background:#141c4a}
+  .mx-atout-grand small{font-weight:800;color:#e8e2cf}
+  .mx-atout-grand>div{display:flex;align-items:center;gap:8px}
+  .mx-atout-grand>div .mx-ui img{width:36px;height:36px}
+  .mx-atout-grand b{font:900 18px Georgia,serif;color:#6fdc95}
+  .mx-atout-grand p{margin:0;font-size:13px;line-height:1.4;color:#d9dcef}
+  .mx-axes-t{margin:4px 0 0;text-align:left;font:800 16px Georgia,serif;color:#ffd56a}
+  .mx-axes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .mx-axe{display:grid;justify-items:center;gap:4px;padding:10px;border-radius:12px;background:#141c4a;border:1px solid #2c376e}
+  .mx-axe .mx-ui img{width:48px;height:48px}
+  .mx-axe b{font:800 14px Georgia,serif}
+  .mx-choix-bas{position:static}
+  .mx-choix-bas .mx-choix-go{display:none}
+}
+.mx-choix .mx-maires{border:0;padding:0;background:none;box-shadow:none;border-radius:0}
+.mx-atout b{white-space:nowrap}
+.mx-retour{justify-self:start;margin-bottom:4px}
+.mx-choix-bas{padding-top:18px;background:linear-gradient(transparent,#141c4a 40%)}
+@media (min-width:900px){.mx-choix .mx-maires{grid-template-columns:repeat(2,minmax(0,1fr))}.mx-atout-grand{min-width:0}.mx-fiche-haut{grid-template-columns:110px minmax(0,1fr)}.mx-fiche-portrait img{width:110px!important;height:110px!important}.mx-choix-bas{background:none;padding:0}}
+/* ---------- Écran de jeu (maquette) ---------- */
+.mx-partie{--or:#d9a53a;--carte:linear-gradient(#1d2860,#141c4a)}
+.mx-partie>.mx-hud,.mx-partie>.mx-session,.mx-partie>.mx-tableau,.mx-partie>.mx-objectifs,.mx-partie>.mx-piliers,.mx-partie>.mx-journal-carte{background:var(--carte);border:2px solid var(--or);border-radius:16px;box-shadow:inset 0 0 0 2px rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.35)}
+/* En-tête : saison et note, élection, téléphone */
+.mx-partie .mx-quand strong{font:800 16px Georgia,"Times New Roman",serif}
+.mx-partie .mx-hud .mx-chip{background:#141c4a;border:2px solid var(--or);border-radius:12px;font-size:16px;padding:6px 10px}
+.mx-partie .mx-hud .m-tel{background:linear-gradient(#c8352e,#8e1f3a);border:2px solid var(--or);border-radius:12px;padding:2px 6px}
+/* Bandeau du ciel de Paris */
+.mx-ciel{height:84px;margin:-4px -2px;border-radius:12px;background:url(img/deco/jeu-ciel.webp) center/cover;box-shadow:inset 0 0 0 1px rgba(0,0,0,.3)}
+/* Carte du maire : la mairie illustrée à gauche */
+.mx-partie .mx-session{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.mx-partie .mx-ses-titre{grid-row:span 1;display:grid;grid-template-columns:minmax(0,1fr);position:relative;min-height:170px;padding:10px 10px 10px 46%;border-radius:12px;background:linear-gradient(90deg,transparent 30%,rgba(20,28,74,.92) 52%),url(img/deco/jeu-mairie.webp) left center/auto 100% no-repeat;align-content:center;text-align:center}
+.mx-partie .mx-ses-titre>.mx-ses-illu{position:absolute;left:8px;top:6px;font-size:26px}
+.mx-ses-gros{display:grid!important;line-height:1}
+.mx-ses-gros small{font:800 15px Georgia,serif!important;color:#fff!important}
+.mx-ses-gros b{font:900 54px/1 Georgia,"Times New Roman",serif;color:#ffd56a;text-shadow:0 3px 0 #8a5a12,0 6px 12px rgba(0,0,0,.5)}
+.mx-ses-gros sup{font-size:.45em;vertical-align:super}
+.mx-ses-place{font:700 14px Georgia,serif!important;color:#fff!important;border-top:1px solid rgba(255,255,255,.25);margin-top:6px;padding-top:4px}
+.mx-partie .mx-ses-duo{grid-template-columns:1fr;align-content:start}
+.mx-partie .mx-ses-qui{background:#141c4a;border:2px solid #2c376e;box-shadow:none}
+.mx-partie .mx-ses-actions{grid-column:2;grid-template-columns:1fr;align-self:end}
+@media (max-width:420px){
+  .mx-partie .mx-session{grid-template-columns:1fr}
+  .mx-partie .mx-ses-actions{grid-column:auto;grid-template-columns:1fr 1fr}
+  .mx-partie .mx-ses-duo{grid-template-columns:1fr 1fr}
+}
+/* Soutien : le chiffre en très grand, la foule à droite, l'évolution de la saison */
+.mx-partie .mx-tableau{position:relative;border-left-width:2px;background:linear-gradient(90deg,#1d2860 45%,rgba(29,40,96,.2)),url(img/deco/jeu-foule.webp) right top/auto 70% no-repeat,#141c4a}
+.mx-sond-t{display:block;flex-basis:100%;font:800 15px Georgia,serif;font-style:normal;color:#fff}
+.mx-partie .mx-sond b{font:900 52px/1 Georgia,"Times New Roman",serif;text-shadow:0 3px 0 rgba(0,0,0,.4)}
+.mx-partie .mx-tableau.mx-bien .mx-sond b,.mx-partie .mx-tableau.mx-juste .mx-sond b{color:#ffd56a}
+.mx-partie .mx-jauge{height:16px;border:2px solid #2c376e;background:#0e1438}
+.mx-partie .mx-tableau.mx-bien .mx-jauge i{background:linear-gradient(#7cf08f,#2fae4c)}
+.mx-sond-delta{position:absolute;right:12px;top:44px;display:grid;justify-items:center;padding:4px 10px;border-radius:10px;background:#141c4a;border:2px solid #2c376e;color:#fff}
+.mx-sond-delta b{font:900 17px Georgia,serif}
+.mx-sond-delta.mx-bas b{color:#ff6b6b}.mx-sond-delta.mx-haut b{color:#6fdc95}
+.mx-sond-delta small{font-size:11px;color:#d9dcef}
+/* Objectifs */
+.mx-partie .mx-objectifs .mx-pt strong{font:800 17px Georgia,serif}
+.mx-partie .mx-objl{grid-template-columns:30px minmax(0,1fr) auto;padding:8px 10px;border-radius:10px;background:#141c4a;border:1px solid #2c376e;font-size:14px}
+.mx-partie .mx-objl>span:first-child{font-size:20px;text-align:center}
+.mx-partie .mx-objl b{padding:2px 10px;border-radius:8px;background:#0e1438;border:1px solid #2c376e;color:#fff;font:800 14px Georgia,serif}
+/* Situation de l'arrondissement : 4 tuiles */
+.mx-partie .mx-piliers{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:10px}
+.mx-sec-t{grid-column:1/-1;display:flex;align-items:center;gap:8px}
+.mx-sec-t .mx-ui img{width:26px;height:26px}
+.mx-sec-t strong{font:800 16px Georgia,serif}
+.mx-partie .mx-pilier{grid-template-columns:1fr;justify-items:center;text-align:center;gap:4px;padding:8px 6px;background:#141c4a;border:1px solid #2c376e;border-radius:12px}
+.mx-partie .mx-pilier .mx-pico img{width:40px;height:40px}
+.mx-partie .mx-pilier>div{width:100%}
+.mx-partie .mx-pilier .mx-pt{display:grid;justify-items:center;gap:0}
+.mx-partie .mx-pilier .mx-pt span{font:800 12.5px Georgia,serif}
+.mx-partie .mx-pilier .mx-barre{height:10px;border:1px solid #2c376e;background:#0e1438}
+@media (max-width:360px){.mx-partie .mx-piliers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Journal à part */
+.mx-partie>.mx-journal-carte{padding:6px}
+.mx-journal-carte .m-journal{margin:0}
+/* Le bouton Dossier suivant : bouton doré dessiné */
+.mx-partie .m-barmois .btn.mx-dossier{border-style:solid;border-color:transparent;border-width:12px 34px;border-image:url(img/deco/btn-or.webp) 26 64 fill/12px 34px stretch;border-radius:0;box-shadow:none;filter:drop-shadow(0 8px 16px rgba(0,0,0,.5));color:#1b2550;font-family:Georgia,"Times New Roman",serif;padding:2px 10px;overflow:visible}
+.mx-partie .m-barmois .btn.mx-dossier>span{font-size:19px;font-weight:900}
+.mx-partie .m-barmois .btn.mx-dossier.mx-vide{filter:grayscale(.75) brightness(.9) drop-shadow(0 8px 16px rgba(0,0,0,.5));color:#2a2a2a}
+.mx-partie .m-barmois .btn.mx-dossier.mx-pret::after{display:none}
+/* Ordinateur : trois colonnes, comme la maquette */
+@media (min-width:1100px){
+  #g-maire.m-partie{width:min(1480px,calc(100vw - 32px));margin-left:calc(50% - min(740px,50vw - 16px))}
+  #m-app.mx-partie{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) minmax(0,1fr);grid-template-areas:"hud hud hud" "ses ville pil" "tab ville jour" "obj bout jour" "obj bout bar";gap:14px;align-items:start}
+  #m-app.mx-partie>*{grid-column:1/-1}
+  #m-app.mx-partie>.mx-hud{grid-area:hud}
+  #m-app.mx-partie>.mx-ciel{display:none}
+  #m-app.mx-partie>.mx-session{grid-area:ses}
+  #m-app.mx-partie>.mx-tableau{grid-area:tab}
+  #m-app.mx-partie>.mx-objectifs{grid-area:obj}
+  #m-app.mx-partie>.m-ville{grid-area:ville}
+  #m-app.mx-partie>.mx-boutique{grid-area:bout}
+  #m-app.mx-partie>.mx-piliers{grid-area:pil;grid-template-columns:repeat(2,minmax(0,1fr))}
+  #m-app.mx-partie>.mx-journal-carte{grid-area:jour}
+  #m-app.mx-partie>.m-barmois{grid-area:bar;position:sticky;bottom:12px}
+  #m-app.mx-partie>.mx-hud{background:linear-gradient(90deg,rgba(20,28,74,.95) 40%,rgba(20,28,74,.4)),url(img/deco/jeu-ciel.webp) right center/auto 100% no-repeat,#141c4a}
+}
