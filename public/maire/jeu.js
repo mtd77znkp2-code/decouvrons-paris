@@ -868,6 +868,11 @@
     reserve: function () { if (!SES.id) return; SES.jetons = RG().v.reserveMax; garderReserve(); jeu(); },
     election: function () { if (SES.id) window.SessionLigne.modifier(SES.id, function (s) { s = JSON.parse(JSON.stringify(s)); s.prochaine = Date.now(); return s; }); },
     // Forcer l'élection de la session où joue l'admin : elle a lieu dans 30 s (pour tous les joueurs de la session)
+    // Aperçus pour vérifier l'affichage (cérémonie d'élection, écran de fin)
+    ceremonie: function () { if (!SES.s || !st || !st.session) return; var p = st.session.place, cl = [];
+      for (var q = 0; q < SS().NB; q++) { var f = SS().fiche(SES.s, q); cl.push({ nom: f.nom, ico: f.ico, bot: f.type === "bot", uid: f.type === "bot" ? null : moiSes(), score: 70 - q * 2, avant: q, apres: q === p ? Math.min(SS().NB - 1, q + 3) : q > p && q <= p + 3 ? q - 1 : q }); }
+      annonceElection({ avant: p, apres: Math.min(SS().NB - 1, p + 3), score: 44.8, vs: [{ g: 1 }, { g: 1 }, { g: 1 }] }, { election: 3, nom: SES.s.nom, classement: cl }); },
+    elimine: function () { if (!st) return; st.fin = { gagne: false, raison: { type: "objectifs", txt: "Fin du mandat : 1 objectif réussi sur 3 (il en fallait 2)." }, t: st.t }; st.phase = "fin"; sauver(); jeu(); },
     election30: function () { if (!SES.id) return false; window.SessionLigne.modifier(SES.id, function (s) { s = JSON.parse(JSON.stringify(s)); s.prochaine = Date.now() + 30000; return s; }); return true; }
   };
   function SS() { return window.MaireSession; }
@@ -1051,7 +1056,7 @@
   function salleGuerre() {
     if (!SES.s || !st.session) return;
     var m = h("div", "m-pop mx-fichepop mx-guerrepop"), c = h("div", "mx-fiche mx-guerre");
-    var tabA = tableauDeco("attaque", "m-tableau-petit");   /* la même image à chaque rafraîchissement : pas de clignotement */
+    var tabA = imgDeco("kiosque", "mx-kiosque", 853, 270), IMGA = {}, IMGB = imgDeco("bouclier", "mx-bouclier-img", 310, 230);   /* gardées d'un rafraîchissement à l'autre : pas de clignotement */
     function fermer() { m.remove(); document.body.classList.remove("m-modal"); clearInterval(tm); }
     m.onclick = function (e) { if (e.target === m) fermer(); };
     function rendre() {
@@ -1059,13 +1064,13 @@
       if (CIBLE === "rival" && p >= S.TRONE) CIBLE = "opp"; if (CIBLE === "opp" && p <= 0) CIBLE = "rival";
       var cible = CIBLE === "rival" ? p + 1 : p - 1, f = S.fiche(s, cible), now = Date.now();
       c.textContent = "";
-      ajout(c, ajout(h("div", "m-tel-tete"), h("strong", null, "⚔️ Salle de guerre"), bouton("✕", "m-leonx", fermer)), tabA);
-      c.appendChild(h("p", "mx-ftxt", "Fais baisser le sondage d’un adversaire avant l’élection. Les points perdus comptent jusqu’au prochain vote."));
+      ajout(c, ajout(h("div", "m-tel-tete"), h("span"), bouton("✕", "m-leonx", fermer)), tabA,
+        ajout(h("div", "mx-guerre-titre"), h("strong", null, "⚔️ Salle de guerre"), h("small", null, "Choisis une cible et une action : les points perdus comptent jusqu’au prochain vote.")));
       var choixC = h("div", "mx-cibles");
       [["rival", p + 1, "⚔️ Rival"], ["opp", p - 1, "🛡️ Opposant"]].forEach(function (x) {
         if (x[1] < 0 || x[1] >= S.NB) return;
-        var fx = S.fiche(s, x[1]), b = bouton("", "mx-cible" + (CIBLE === x[0] ? " mx-on" : ""), function () { CIBLE = x[0]; rendre(); });
-        ajout(b, h("small", null, x[2]), h("b", null, fx.ico + " " + fx.nom), h("small", null, fx.court + " · sondage " + Math.round(S.scores(s, now)[x[1]]) + (S.malusDe(s, x[1]) ? " (−" + S.malusDe(s, x[1]) + ")" : "")));
+        var fx = S.fiche(s, x[1]), b = bouton("", "mx-cible mx-cible-" + x[0] + (CIBLE === x[0] ? " mx-on" : ""), function () { CIBLE = x[0]; rendre(); });
+        ajout(b, h("span", "mx-cible-rang", String(S.NB - x[1])), h("small", "mx-cible-tag", x[2].replace(/^\S+\s/, "")), h("b", null, fx.ico + " " + fx.nom), h("small", null, fx.court + " · sondage " + Math.round(S.scores(s, now)[x[1]]) + (S.malusDe(s, x[1]) ? " (−" + S.malusDe(s, x[1]) + ")" : "")));
         choixC.appendChild(b);
       });
       c.appendChild(choixC);
@@ -1074,8 +1079,10 @@
         var A = S.ATTAQUES[k], px = S.prixAction(A.cout, p), att = S.attente(s, moi + ":" + k, now), cher = px > st.tresor;
         var b = bouton("", "mx-attaque", function () { lancerAttaque(cible, k, f); });
         b.disabled = !!att || cher;
-        ajout(b, icoUI("att-" + k, "mx-att-ico"), ajout(h("span", "mx-att-txt"), h("b", null, A.nom), h("small", null, A.txt)),
-          h("em", "mx-att-prix", att ? "⏳ " + mmss(att) : cher ? "💸 " + argent(px) : px ? argent(px) : "Gratuit"));
+        var im = IMGA[k] || (IMGA[k] = imgDeco("att-img-" + k, "mx-att-img", 380, 105));
+        ajout(b, im, ajout(h("span", "mx-att-txt"), h("b", null, A.nom), h("small", null, A.txt)),
+          ajout(h("span", "mx-att-pied"), h("em", "mx-att-prix", att ? "⏳ " + mmss(att) : cher ? "💸 " + argent(px) : px ? argent(px) : "Gratuit"), h("em", "mx-att-pts", "−" + A.pts + " pts")),
+          h("span", "mx-att-go", att ? "En attente" : cher ? "Trop cher" : "Lancer l’attaque"));
         l.appendChild(b);
       });
       c.appendChild(l);
@@ -1085,7 +1092,8 @@
         window.SessionLigne.proteger(SES.id).then(function () { toast("🛡️ Ton service de communication veille."); jeu(); rendre(); });
       });
       bb.disabled = !!actif || !!attB || pxB > st.tresor;
-      ajout(bb, icoUI("att-bouclier", "mx-att-ico"), ajout(h("span", "mx-att-txt"), h("b", null, B.nom), h("small", null, B.txt)), h("em", "mx-att-prix", actif ? "✔ Actif" : attB ? "⏳ " + mmss(attB) : argent(pxB)));
+      ajout(bb, IMGB, ajout(h("span", "mx-att-txt"), h("b", null, "Protéger ma mairie"), h("small", null, B.nom + " : " + B.txt)), h("em", "mx-att-prix", actif ? "✔ Actif" : attB ? "⏳ " + mmss(attB) : argent(pxB)),
+        h("span", "mx-att-go", actif ? "Protection active" : "Activer la protection"));
       c.appendChild(bb);
       var j = (s.journal || []).slice().reverse().filter(function (e) { return e.type !== "bouclier"; }).slice(0, 6);
       if (j.length) { var u = h("ul", "mx-journal-att"); j.forEach(function (e) { u.appendChild(h("li", null, ligneAttaque(e))); }); ajout(c, h("h5", null, "📰 Dernières attaques"), u); }
@@ -1273,7 +1281,9 @@
     var v = document.getElementById("m-election"); if (v) v.remove(); cacherBulle();
     var f = h("div", "m-pop m-election"); f.id = "m-election"; f.setAttribute("role", "dialog");
     var c = h("div", "m-pop-in m-elec-carte"), H = 30;
-    ajout(c, h("p", "m-sur", "🗳️ Élection n° " + s.election + (s.nom ? " · session " + s.nom : "")), h("h4", null, "Les résultats"), tableauDeco("election", "m-tableau-petit"));
+    f.appendChild(imgDeco("elec-balcon", "m-elec-balcon", 741, 555));   // ordinateur : le maire acclamé au balcon
+    c.appendChild(imgDeco("elec-haut", "m-elec-haut", 853, 150));
+    ajout(c, h("p", "m-sur m-elec-num", "Élection n° " + s.election), h("h4", null, "Les résultats" + (s.nom ? " · " + s.nom : "")));
     var liste = h("div", "m-elec-liste"); liste.style.height = (cl.length * H) + "px";
     // Rangée de chaque maire, d'abord à son ancienne place (1 = trône en haut)
     var lignes = cl.map(function (x) {
@@ -1287,7 +1297,7 @@
     });
     c.appendChild(liste);
     var bilan = h("div", "m-elec-bilan mx-cache");
-    ajout(bilan, tableauDeco(monte ? "victoire" : descend ? "defaite" : "election", "m-tableau-petit"), h("strong", null, titre), h("p", null, "De la " + (SS().NB - r.avant) + "ᵉ à la " + (SS().NB - r.apres) + "ᵉ place · te voilà " + SS().titre(r.apres) + "."),
+    ajout(bilan, monte ? imgDeco("trophee", "m-elec-trophee", 255, 200) : tableauDeco(descend ? "defaite" : "election", "m-tableau-petit"), h("strong", null, titre), h("p", null, "De la " + (SS().NB - r.avant) + "ᵉ à la " + (SS().NB - r.apres) + "ᵉ place · te voilà " + SS().titre(r.apres) + "."),
       h("small", null, "Ton score : " + virg(r.score || 0) + " · tu as dépassé " + (r.vs || []).filter(function (x) { return x.g; }).length + " maire(s), " + (r.vs || []).filter(function (x) { return !x.g; }).length + " t’ont dépassé."),
       bouton("Continuer", "btn m-go", function () { f.remove(); }));
     // Objectifs du mandat jugés à cette élection
@@ -1368,14 +1378,16 @@
     return d;
   }
   function chantiers() {
-    var d = h("div", "m-chantiers"); d.appendChild(h("h5", null, "🏗️ Chantiers en cours"));
+    var nT = (st.travaux || []).length, mxT = st.session ? RG().v.chantiersMax : 0;
+    var d = h("div", "m-chantiers"); d.appendChild(h("h5", null, "🏗️ Chantiers en cours" + (mxT ? " (" + nT + "/" + mxT + ")" : "")));
     // Bâtiments en travaux (session) : ils agissent une fois terminés
     (st.travaux || []).forEach(function (w) {
       var B = M.BATIMENTS[w.id], reste = Math.max(1, w.fin - st.t), l = h("div", "m-chantier");
       var barre = h("div", "m-barre"), i = h("i"); i.style.width = Math.round((w.du - reste) / w.du * 100) + "%"; barre.appendChild(i);
-      ajout(l, ajout(h("div", "m-jt"), h("span", null, B.ico + " " + B.nom), h("b", null, "prêt dans " + reste + " saison" + (reste > 1 ? "s" : ""))), barre);
-      d.appendChild(l);
+      ajout(l, icone(w.id, "m-chantier-ico"), ajout(h("div"), ajout(h("div", "m-jt"), h("span", null, B.nom), h("b", null, "prêt dans " + reste + " saison" + (reste > 1 ? "s" : ""))), barre));
+      l.classList.add("m-travaux"); d.appendChild(l);
     });
+    for (var k = nT; k < mxT; k++) d.appendChild(h("div", "m-chantier-libre", "＋ Emplacement disponible pour un nouveau chantier"));
     st.chantiers.forEach(function (c) {
       var B = M.BATIMENTS[c.id], tot = B.duree, fait = Math.max(0, Math.min(tot, tot - c.reste)), l = h("div", "m-chantier");
       var barre = h("div", "m-barre"), i = h("i"); i.style.width = Math.round(fait / Math.max(tot, fait + c.reste) * 100) + "%"; barre.appendChild(i);
@@ -1603,6 +1615,7 @@
     if (!TABLEAUX[nom]) return null;
     var i = h("img", "m-tableau" + (cls ? " " + cls : "")); i.src = "maire/img/deco/tab-" + nom + ".webp"; i.alt = ""; i.width = 480; i.height = 304; i.decoding = "async"; i.draggable = false; return i;
   }
+  function imgDeco(nom, cls, w, ht) { var i = h("img", cls); i.src = "maire/img/deco/" + nom + ".webp"; i.alt = ""; i.width = w; i.height = ht; i.decoding = "async"; i.draggable = false; return i; }
   function tampon(oui) { var i = h("img", "m-tampon " + (oui ? "m-tampon-oui" : "m-tampon-non")); i.src = "maire/img/deco/tampon-" + (oui ? "oui" : "non") + ".webp"; i.alt = oui ? "Accepté" : "Refusé"; i.width = 80; i.height = 80; return i; }
   var TAILLE_UI = { "mx-pico": 34, "mx-mico": 58, "mx-att-ico": 36, "mx-emp-ico": 36, "mx-prom-ico": 28 };
   function icoUI(nom, cls) {
@@ -1728,7 +1741,7 @@
   var RAYONS_SL = 0;
   function boutique() {
     var d = h("div", "mx-boutique"), n = st.nivJ;
-    d.appendChild(h("h5", null, "🛒 Construire"));
+    d.appendChild(imgDeco("construire", "mx-construire", 853, 210));   // bandeau « Construire » de la maquette
     if (window.ADMIN_UNLOCKED) d.appendChild(bouton(st.sansLimite ? "🛠 Limites désactivées (admin)" : "🛠 Passer les limites pour les bâtiments", "btn m-sec m-adminbat", function () {
       st = M.limites(st, !st.sansLimite); try { localStorage.setItem("maire_sanslimite", st.sansLimite ? "1" : ""); } catch (e) {} sauver(); jeu();
     }));
@@ -2257,8 +2270,9 @@
     if (TITRES_POP[st.special]) cadre.appendChild(h("p", "m-pop-titre", TITRES_POP[st.special]));
     var carte = h("article", "m-dossier m-c-" + ev.cat);
     var LIB = { rare: "✨ Événement rare", legendaire: "🌟 Légendaire", politique: "🎭 Coup de théâtre", chantier: "🏗️ Chantier", historique: "📜 Décision historique", suite: "🔁 Le retour" };
-    var tabD = tableauDeco(/^(catastrophe|chance|opposition)$/.test(st.special) ? st.special : ev.cat); if (tabD) carte.appendChild(tabD);
-    ajout(carte, h("p", "m-cat", (LIB[st.special] || M.FAMILLE[st.special || ev.cat] || "📂 Dossier") + " · " + date(st.t)), h("h4", null, T(ev.titre)));
+    var tabD = tableauDeco(/^(catastrophe|chance|opposition)$/.test(st.special) ? st.special : ev.cat);
+    carte.appendChild(imgDeco("ruban", "m-ruban", 400, 112));   // maquette : ruban tricolore en haut du dossier
+    ajout(carte, h("p", "m-cat", (LIB[st.special] || M.FAMILLE[st.special || ev.cat] || "📂 Dossier") + " · " + date(st.t)), h("h4", null, T(ev.titre)), tabD);
     if (ev.perso && M.C.PERSONNAGES[ev.perso]) { var pe = M.C.PERSONNAGES[ev.perso]; carte.appendChild(ajout(h("div", "m-perso"), h("span", null, pe.ico), h("small", null, pe.nom + " · " + pe.txt))); }
     if (st.phase === "evenement") {
       // Chaque réponse se joue au casino (blackjack ou roulette), sauf la réponse « rien »
@@ -2458,8 +2472,8 @@
   function miniJeu(carte, ev, i) {
     var mj = M.jeuDe(st, i), x = ev.choix[i];
     function J() { return M.jeuDe(st, i); }
-    cacherBulle(); carte.innerHTML = ""; casino(true);
-    ajout(carte, h("p", "m-cat", "🎰 Casino · " + ev.titre), h("h4", null, mj.jeu === "bj" ? "🃏 Blackjack du maire" : mj.jeu === "poker" ? "♠️ Poker de l’Hôtel de Ville" : "🎡 Roulette de l’Hôtel de Ville"),
+    cacherBulle(); carte.innerHTML = ""; casino(true); carte.classList.add("m-casino-carte");
+    ajout(carte, imgDeco("croupier", "m-croupier", 432, 465), h("p", "m-cat", "🎰 Casino · " + ev.titre), h("h4", null, mj.jeu === "bj" ? "🃏 Blackjack du maire" : mj.jeu === "poker" ? "♠️ Poker de l’Hôtel de Ville" : "🎡 Roulette de l’Hôtel de Ville"),
       h("p", "m-desc", "Gagne pour prendre la réponse « " + x.t + " ». Si tu perds, elle t’échappe pour ce dossier."), regles(mj.jeu));
     var zone = h("div", "m-mj-zone"); carte.appendChild(zone);
     function fin() {
@@ -2493,8 +2507,8 @@
         function main(t, l, val) { var m = h("div", "m-bj-main"); l.forEach(function (c, k) { var e = carteJeu(c, cache && t === "c" && k === 1); posee(e, k); m.appendChild(e); }); return ajout(h("div", "m-bj-ligne"), h("small", "m-bj-val", (t === "j" ? "Toi" : "Croupier") + (val != null ? " · " + val : "")), m); }
         zone.appendChild(ajout(tapis(), main("c", b.c, cache ? null : M.valeurMain(b.c)), main("j", b.j, M.valeurMain(b.j))));
         if (!b.fini) {
-          zone.appendChild(ajout(h("div", "m-bas"), bouton("Tirer une carte", "btn m-sec", function () { st = M.mjBlackjack(st, i, "tirer"); sauver(); dessin(); }),
-            bouton("Rester", "btn m-go", function () { st = M.mjBlackjack(st, i, "rester"); sauver(); dessin(); })));
+          zone.appendChild(ajout(h("div", "m-bas m-bj-acts"), bouton("Tirer", "btn m-go m-bj-tirer", function () { st = M.mjBlackjack(st, i, "tirer"); sauver(); dessin(); }),
+            bouton("Rester", "btn m-go m-bj-rester", function () { st = M.mjBlackjack(st, i, "rester"); sauver(); dessin(); })));
         } else if (b.res === "egal") {
           zone.appendChild(h("p", "m-mj-res", "🤝 Égalité (" + M.valeurMain(b.j) + ") : on redistribue !"));
           zone.appendChild(bouton("Nouvelle main", "btn m-go", function () { st = M.mjBlackjack(st, i, "donner"); sauver(); cartesVues = {}; dessin(); }));
@@ -3043,8 +3057,9 @@
     choixNiveau(st.niveau);
     var b = M.bilan(st), an = M.analyse(st), e = st.elections[st.elections.length - 1];
     if (st.fin.raison.type === "election" || st.fin.raison.type === "objectifs") sonUnique("fin:" + st.pid, "hue");   // son n°15 : battu
-    var type = st.fin.raison.type, t = h("div", "m-final " + (type === "defi" || type === "retraite" ? "m-gagne" : "m-perdu"));
-    ajout(t, tableauDeco(type === "defi" || type === "retraite" ? "victoire" : "defaite"), h("p", "m-sur", (st.defi != null ? "Défi du jour · " : "") + ({ election: "Battu aux élections", faillite: "Faillite", demission: "Démission", defi: "Défi terminé", retraite: "Victoire", objectifs: "Éliminé : objectifs manqués" })[type]),
+    var type = st.fin.raison.type, t = h("div", "m-final mx-fin-carte " + (type === "defi" || type === "retraite" ? "m-gagne" : "m-perdu"));
+    var gagneF = type === "defi" || type === "retraite";
+    ajout(t, gagneF ? tableauDeco("victoire") : imgDeco("fin-pluie", "m-fin-pluie", 785, 498), h("p", "m-sur", (st.defi != null ? "Défi du jour · " : "") + ({ election: "Battu aux élections", faillite: "Faillite", demission: "Démission", defi: "Défi terminé", retraite: "Victoire", objectifs: "Éliminé : objectifs manqués" })[type]),
       h("h4", null, b.mandats ? "Fin de règne après " + M.duree(b.t) + " et " + b.mandats + " réélection" + (b.mandats > 1 ? "s" : "") : "Ton aventure s’arrête au bout de " + M.duree(b.t)),
       h("p", "m-raison", st.fin.raison.txt), h("p", "m-score", "Score : " + b.score));
     box.appendChild(t);
@@ -3067,9 +3082,9 @@
     if (st.triche) { if (!st.envoye) { st.envoye = true; sauver(); } msg.textContent = "Partie jouée sans limites (admin) : elle ne compte pas au classement."; }
     else if (!st.envoye && st.scenario) { st.envoye = true; sauver(); if (st.defi === G.jour()) envoyerScoreJour(st.defi, b.score); }
     else if (!st.envoye && window.lbSubmit) { st.envoye = true; sauver(); lbSubmit(cleClassement(st.niveau), b.score).then(function (x) { msg.textContent = x; }); }
-    var bas = h("div", "m-bas");
-    ajout(bas, bouton("Accueil", "btn m-sec", function () { effacer(); st = null; accueil(); haut(); }),
-      bouton("▶ Rejouer", "btn m-go", function () { effacer(); st = null; creation(); haut(); }));
+    var bas = h("div", "m-bas mx-fin-bas");
+    ajout(bas, bouton("Rejouer", "btn m-go mx-fin-rejouer", function () { effacer(); st = null; creation(); haut(); }),
+      bouton("Retour au menu", "mx-jouer2 mx-fin-menu", function () { effacer(); st = null; accueil(); haut(); }));
     box.appendChild(bas);
     haut();
   }

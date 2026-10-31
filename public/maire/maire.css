@@ -1457,3 +1457,125 @@ body.m-acc-on .m-fond{display:none}
   #m-app.mx-partie>.m-barmois{grid-area:bar;position:sticky;bottom:12px}
   #m-app.mx-partie>.mx-hud{background:linear-gradient(90deg,rgba(20,28,74,.95) 40%,rgba(20,28,74,.4)),url(img/deco/jeu-ciel.webp) right center/auto 100% no-repeat,#141c4a}
 }
+/* ===== Maquettes : dossier, casino, élection, boutique, salle de guerre, fin ===== */
+/* Dossier : carte papier crème, ruban tricolore, réponses bleu nuit avec pastilles A/B/C */
+#m-modale .m-dossier{background:#f7efdc;border:4px solid #d9a53a;border-radius:14px;box-shadow:inset 0 0 0 2px #fff6dd,0 18px 50px rgba(0,0,0,.6);padding:34px 16px 16px;margin-top:22px}
+.m-ruban{position:absolute;left:50%;top:-30px;transform:translateX(-50%);width:min(260px,62%);height:auto;pointer-events:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.35))}
+#m-modale .m-dossier .m-cat{text-align:center;letter-spacing:.08em;text-transform:uppercase;font-weight:800;font-size:12.5px;color:#1b2550}
+#m-modale .m-dossier h4{text-align:center;font-weight:900;font-size:clamp(24px,6vw,32px);color:#141c4a;margin:2px 0 10px}
+#m-modale .m-dossier .m-tableau{max-width:100%;margin:0 auto 10px;border-radius:6px}
+#m-modale .m-dossier .m-desc{text-align:center;font-family:Georgia,serif;color:#2a3460}
+#m-modale .m-option{background:linear-gradient(#1d2860,#141c4a);color:#fff;border:3px solid #d9a53a;border-radius:14px;grid-template-columns:52px 1fr;padding:12px 12px;box-shadow:inset 0 0 0 2px rgba(0,0,0,.35)}
+#m-modale .m-option strong{font:800 17px/1.25 Georgia,"Times New Roman",serif;color:#fff}
+#m-modale .m-option small,#m-modale .m-option .m-pct{color:#d9dcef}
+#m-modale .m-option .m-mj-tag{display:inline-block;justify-self:start;margin-top:6px;padding:2px 10px;border-radius:6px;background:#f6dfa0;color:#1b2550;font-weight:700}
+#m-modale .m-lettre{width:48px;height:48px;font:900 26px Georgia,serif;color:#1b2550;background:radial-gradient(circle at 35% 30%,#ffe9a0,#f5b21a 60%,#b9800c);box-shadow:0 0 0 3px #7a4f0a,inset 0 -3px 0 rgba(0,0,0,.2)}
+#m-modale .m-option:nth-child(2) .m-lettre{color:#fff;background:radial-gradient(circle at 35% 30%,#ff8a80,#d6362c 60%,#8e1f1a);box-shadow:0 0 0 3px #5e1310}
+#m-modale .m-option:nth-child(3) .m-lettre{color:#fff;background:radial-gradient(circle at 35% 30%,#8ec5ff,#2b6fe0 60%,#163f8e);box-shadow:0 0 0 3px #0e2a5e}
+#m-modale .m-option:nth-child(4) .m-lettre{color:#fff;background:radial-gradient(circle at 35% 30%,#a6f0b4,#2fae4c 60%,#1b6b2e);box-shadow:0 0 0 3px #10401b}
+#m-modale .m-option:disabled{filter:grayscale(.6);opacity:.75}
+#m-modale .m-pop-fermer{background:linear-gradient(#d6362c,#8e1f1a);color:#fff;border:2px solid #d9a53a;border-radius:10px;font-weight:800}
+@media (min-width:900px){
+  #m-modale .m-pop-in{max-width:1000px;width:min(1000px,94vw)}
+  #m-modale .m-dossier:not(.m-casino-carte){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);column-gap:20px;align-items:start}
+  #m-modale .m-dossier:not(.m-casino-carte)>*{grid-column:2}
+  #m-modale .m-dossier:not(.m-casino-carte)>.m-tableau{grid-column:1;grid-row:1/span 6;max-width:100%}
+  #m-modale .m-dossier:not(.m-casino-carte)>.m-ruban{grid-column:auto}
+  #m-modale .m-dossier .m-desc{text-align:left}
+}
+/* Casino : le croupier en haut, la table verte, Tirer (or) et Rester (bleu) */
+#m-modale .m-casino-carte{background:radial-gradient(ellipse at 50% 0%,#5a2a18,#2a1410 70%);border-color:#d9a53a;color:#fff;padding-top:0;overflow:hidden}
+.m-casino-carte .m-ruban{display:none}
+.m-croupier{display:block;width:min(300px,80%);height:auto;margin:0 auto -18px;border-radius:0 0 14px 14px;-webkit-mask-image:linear-gradient(#000 75%,transparent);mask-image:linear-gradient(#000 75%,transparent)}
+#m-modale .m-casino-carte .m-cat{color:#f6dfa0}
+#m-modale .m-casino-carte h4{color:#ffd56a;text-shadow:0 2px 0 rgba(0,0,0,.5)}
+#m-modale .m-casino-carte .m-desc{color:#f2e6c8}
+.m-bj-acts{display:grid!important;grid-template-columns:1fr 1fr;gap:8px}
+.m-bj-acts .btn{border-style:solid;border-color:transparent;border-width:12px 30px;border-image:url(img/deco/btn-or.webp) 26 64 fill/12px 30px stretch;background:none!important;box-shadow:none;border-radius:0;color:#1b2550!important;font:900 20px Georgia,serif;padding:2px 4px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.5))}
+.m-bj-acts .m-bj-rester{border-image-source:url(img/deco/btn-bleu.webp);color:#fff!important}
+/* Élection : bandeau, rangs médaillés, ma ligne dorée, trophée, balcon sur ordinateur */
+.m-elec-balcon{display:none}
+.m-elec-haut{display:block;width:calc(100% + 28px);height:auto;margin:-16px -14px 0;border-radius:20px 20px 0 0}
+.m-elec-carte{border:3px solid #d9a53a}
+.m-elec-num{text-align:center;font:900 28px Georgia,serif!important;color:#ffd56a!important;margin-top:-6px!important;text-shadow:0 2px 0 #8a5a12}
+.m-elec-carte h4{text-align:center;font-family:Georgia,serif}
+.m-elec-moi{background:linear-gradient(90deg,#f5b21a,#ffd56a)!important;color:#1b2550!important;border-radius:8px}
+.m-elec-moi *{color:#1b2550!important}
+.m-elec-trophee{display:block;width:110px;height:auto;margin:0 auto}
+@media (min-width:1000px){
+  #m-election.m-pop{display:grid;grid-template-columns:minmax(0,520px) minmax(0,560px);justify-content:center;align-items:center;gap:20px}
+  .m-elec-balcon{display:block;grid-column:2;grid-row:1;width:100%;height:auto;border-radius:18px;border:3px solid #d9a53a;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+  #m-election .m-elec-carte{grid-column:1;grid-row:1}
+}
+/* Boutique : bandeau Construire, onglets en tuiles, cartes avec prix dorés */
+.mx-construire{display:block;width:calc(100% + 24px);height:auto;margin:-14px -12px 6px;border-radius:16px 16px 0 0}
+.mx-partie .mx-rayon{background:linear-gradient(#1d2860,#141c4a);border:2px solid #2c376e;border-radius:10px;color:#fff}
+.mx-partie .mx-rayon[aria-selected="true"]{background:linear-gradient(#ffd56a,#f5b21a);border-color:#fff2c4;color:#1b2550}
+.mx-partie .mx-bats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.mx-partie .mx-bat{background:linear-gradient(#1d2860,#141c4a);border:2px solid #d9a53a;color:#fff;border-radius:14px;justify-items:center;text-align:center}
+.mx-partie .mx-bat strong{font:800 15px Georgia,serif;color:#fff}
+.mx-partie .mx-bat .mx-bico img{width:110px;height:110px}
+.mx-partie .mx-bat .mx-eff{color:#d9dcef}
+.mx-partie .mx-bat .mx-prix{display:block;width:100%;padding:4px 6px;border-radius:8px;background:linear-gradient(#ffe39a,#f5b21a);color:#1b2550!important;font:800 13px Georgia,serif;box-shadow:inset 0 0 0 1px #8a5a12}
+.mx-partie .mx-bat:disabled{filter:grayscale(.8);opacity:.8}
+.mx-partie .mx-bat:disabled .mx-prix{background:#2c376e;color:#d9dcef!important}
+.mx-partie>.m-chantiers{background:linear-gradient(#1d2860,#141c4a);border:2px solid #d9a53a;border-radius:16px;padding:12px}
+.m-chantiers h5{font:800 17px Georgia,serif!important;color:#ffd56a!important;text-transform:none!important;letter-spacing:0!important}
+.m-travaux{display:grid!important;grid-template-columns:56px minmax(0,1fr);gap:10px;align-items:center}
+.m-chantier-ico img{width:56px;height:56px}
+.m-chantier-libre{padding:12px;border:2px dashed #3a467e;border-radius:12px;text-align:center;color:#b8bdd6;font-size:13.5px}
+/* Salle de guerre : kiosque, cibles, attaques illustrées, protection */
+.mx-guerre{background:linear-gradient(#1d2860,#141c4a)!important;border:3px solid #d9a53a;color:#fff}
+.mx-guerre .m-tel-tete{position:absolute;right:10px;top:10px;z-index:2}
+.mx-guerre{position:relative}
+.mx-kiosque{display:block;width:calc(100% + 32px);max-width:none;height:auto;margin:-16px -16px 0;border-radius:14px 14px 0 0}
+.mx-guerre-titre{display:grid;justify-items:center;text-align:center;gap:2px;margin:6px 0}
+.mx-guerre-titre strong{font:900 28px Georgia,serif;color:#ffd56a;text-shadow:0 2px 0 #8a5a12}
+.mx-guerre-titre small{color:#d9dcef}
+.mx-guerre .mx-cibles{display:grid;gap:8px}
+.mx-guerre .mx-cible{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:10px;text-align:left;background:#141c4a;border:2px solid #2c376e;border-radius:12px;color:#fff;padding:10px}
+.mx-guerre .mx-cible.mx-on{border-color:#ffd56a;box-shadow:0 0 0 2px rgba(255,213,106,.35)}
+.mx-cible-rang{grid-row:span 3;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe9a0,#c98a1a);color:#3a2600;font:900 18px Georgia,serif}
+.mx-cible-tag{justify-self:start;padding:1px 8px;border-radius:6px;background:#f5b21a;color:#1b2550!important;font-weight:800}
+.mx-cible-opp .mx-cible-tag{background:#d6362c;color:#fff!important}
+.mx-guerre .mx-attaques{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.mx-guerre .mx-attaque{display:grid;justify-items:center;text-align:center;gap:4px;padding:0 0 8px;overflow:hidden;background:#141c4a;border:2px solid #d9a53a;border-radius:12px;color:#fff}
+.mx-att-img{display:block;width:100%;height:auto;aspect-ratio:380/105;object-fit:cover}
+.mx-guerre .mx-att-txt{display:grid;gap:2px;padding:0 8px}
+.mx-guerre .mx-att-txt b{font:800 15px Georgia,serif}
+.mx-guerre .mx-att-txt small{font-size:11.5px;color:#d9dcef}
+.mx-att-pied{display:flex;gap:10px;justify-content:center}
+.mx-att-pied em{font-style:normal;font-weight:800}
+.mx-att-pts{color:#ff6b6b}
+.mx-att-go{display:block;width:calc(100% - 16px);padding:6px;border-radius:8px;background:linear-gradient(#ffe39a,#f5b21a);color:#1b2550;font:900 14px Georgia,serif;box-shadow:inset 0 0 0 1px #8a5a12}
+.mx-guerre .mx-attaque:disabled{filter:grayscale(.6);opacity:.8}
+.mx-guerre .mx-attaque.mx-bouclier{grid-template-columns:120px minmax(0,1fr);grid-column:1/-1;justify-items:start;text-align:left;padding:8px;margin-top:8px;column-gap:10px}
+.mx-guerre .mx-bouclier .mx-bouclier-img{grid-row:span 3;width:120px;height:auto;border-radius:8px}
+@media (min-width:900px){
+  .mx-guerrepop .mx-guerre{max-width:1000px;width:94vw}
+  .mx-guerre .mx-cibles{grid-template-columns:1fr 1fr}
+  .mx-guerre .mx-attaques{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .mx-kiosque{max-height:240px;object-fit:cover}
+}
+/* Fin de partie : illustration, bandeau du titre, boutons Rejouer / Retour au menu */
+.mx-fin-carte{background:linear-gradient(#1d2860,#141c4a)!important;color:#fff!important;border:3px solid #d9a53a;text-align:center}
+.m-fin-pluie{display:block;width:calc(100% + 40px);height:auto;margin:-22px -20px 12px;border-radius:12px 12px 0 0}
+.mx-fin-carte .m-sur{display:inline-block;padding:6px 18px;border-radius:10px;background:linear-gradient(#a3221b,#6b120e);border:2px solid #d9a53a;color:#fff!important;font:900 20px Georgia,serif!important;letter-spacing:0}
+.mx-fin-carte.m-gagne .m-sur{background:linear-gradient(#2f8a52,#1b5a33)}
+.mx-fin-carte h4{color:#ffd56a!important}
+.mx-fin-carte .m-raison{color:#e8e2cf}
+.mx-fin-carte .m-score{display:inline-block;padding:8px 18px;border-radius:12px;border:2px solid #d9a53a;background:#141c4a;font:900 28px Georgia,serif;color:#ffd56a}
+.mx-fin-bas{display:grid!important;gap:10px;justify-items:stretch}
+.mx-fin-rejouer{border-style:solid;border-color:transparent;border-width:14px 34px;border-image:url(img/deco/btn-or.webp) 26 64 fill/14px 34px stretch;background:none!important;box-shadow:none;border-radius:0;color:#1b2550!important;font:900 26px Georgia,serif;padding:2px 8px;filter:drop-shadow(0 8px 16px rgba(0,0,0,.5))}
+.mx-fin-menu{font:800 17px Georgia,serif;color:#fff;background:#141c4a;border:2px solid #d9a53a;border-radius:12px;padding:12px;cursor:pointer}
+.mx-guerre .mx-attaque{grid-template-columns:minmax(0,1fr)!important;align-content:start}
+.mx-guerre .mx-attaque.mx-bouclier{grid-template-columns:120px minmax(0,1fr)!important}
+.mx-guerre .mx-bouclier .mx-att-go{grid-column:2}
+.mx-guerre .mx-att-pied{flex-wrap:wrap}
+.mx-partie .mx-bat .mx-prix{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (min-width:900px){
+  .m-croupier{width:200px}
+  .m-bj-acts{width:min(460px,100%);margin:0 auto}
+  .m-fin-pluie{max-height:340px;object-fit:cover;object-position:center 30%}
+  .mx-fin-bas{grid-template-columns:1.4fr 1fr;align-items:center;max-width:720px;margin:0 auto}
+}
