@@ -564,7 +564,8 @@
   // 1er mandat : trois objectifs très simples (1 bâtiment, 2 bâtiments différents, 2 dossiers), sans crise.
   var CIBLES_SES = { rayon: [1, 2, 3, 4], diversite: [2, 3, 4, 5], dossiers: [2, 3, 3, 4], pilier: [0, 3, 5, 7], bonheur: [0, 2, 3, 4] };
   function tirerMandatSession(st) {
-    var k = Math.max(0, Math.min(3, (st.mandat || 1) - 1)), liste = [];
+    var k = Math.max(0, Math.min(3, (st.mandat || 1) - 1)), liste = [], avant = {};
+    (st.objectifs || []).forEach(function (o) { avant[o.k + (o.r || o.p || "")] = 1; });   // les objectifs du mandat précédent ne reviennent pas à l'identique
     if (k >= 2) {   // à partir du 3e mandat, une crise (qui abîme un peu la ville) revient
       var ids = Object.keys(C.CRISES).filter(function (id) { return !st.crise || st.crise.id !== id; }), id = ids[Math.floor(rnd(st) * ids.length)], d = C.CRISES[id].depart || {};
       st.crise = { id: id, mandat: st.mandat };
@@ -575,14 +576,15 @@
     var rayons = ["logement", "transports", "cadre", "securite", "economie"].filter(function (r) {
       return Object.keys(BATIMENTS).some(function (id) { var B = BATIMENTS[id]; return B.cat === r && !B.projet && !B.enchere && disponible(st, id); });
     });
+    var neufs = rayons.filter(function (x) { return !avant["rayon" + x]; }); if (neufs.length) rayons = neufs;
     var r = rayons.length ? rayons[Math.floor(rnd(st) * rayons.length)] : "logement";
     var ob = [{ k: "rayon", r: r, but: CIBLES_SES.rayon[k], txt: "Construis " + CIBLES_SES.rayon[k] + " bâtiment" + (CIBLES_SES.rayon[k] > 1 ? "s " : " ") + RAYON_NOM[r], ico: "🏗️" },
       { k: "dossiers", but: CIBLES_SES.dossiers[k] }];
     if (k === 0) ob.push({ k: "diversite", but: CIBLES_SES.diversite[0], ico: "🧩", txt: "Construis " + CIBLES_SES.diversite[0] + " bâtiments différents" });
     else {
       // Un pilier (le plus faible) ou le bonheur, à faire monter par rapport à aujourd'hui
-      var faible = PK.slice().sort(function (a, b) { return st.piliers[a] - st.piliers[b]; })[0];
-      if (rnd(st) < 0.6) { var bp = Math.min(90, Math.round(st.piliers[faible]) + CIBLES_SES.pilier[k]); ob.push({ k: "pilier", p: faible, but: bp, ico: ICO[faible], txt: "Monte " + ({ logement: "le logement", transports: "les transports", cadre: "le cadre de vie", securite: "la sécurité" })[faible] + " à " + bp }); }
+      var faible = PK.slice().filter(function (x) { return !avant["pilier" + x]; }).sort(function (a, b) { return st.piliers[a] - st.piliers[b]; })[0] || PK[0];
+      if (avant.bonheur || (!avant["pilier" + faible] && rnd(st) < 0.6)) { var bp = Math.min(90, Math.round(st.piliers[faible]) + CIBLES_SES.pilier[k]); ob.push({ k: "pilier", p: faible, but: bp, ico: ICO[faible], txt: "Monte " + ({ logement: "le logement", transports: "les transports", cadre: "le cadre de vie", securite: "la sécurité" })[faible] + " à " + bp }); }
       else { var bb = Math.min(90, Math.round(bonheur(st)) + CIBLES_SES.bonheur[k]); ob.push({ k: "bonheur", but: bb, ico: "😊", txt: "Bonheur des Parisiens à " + bb }); }
     }
     ob.forEach(function (o) { var x = o.txt ? o : creerObjectif(st, o, false); liste.push({ k: x.k, p: x.p, r: x.r, but: x.but, ico: x.ico, txt: x.txt }); });
@@ -1028,7 +1030,7 @@
       st.phase = "fin";
       return st;
     }
-    if (!juge && ob.length && !ancien) { st.debutMandat = st.t; tirerMandat(st); return st; }   // pas jugé (arrivé juste avant le vote) : même difficulté, mais de nouveaux objectifs
+    // Pas jugé (arrivé juste avant le vote) : pas d'élimination, mais le mandat change comme pour tout le monde
     st.mandat++; st.debutMandat = st.t; st.pariMandat = 0;
     if (st.meca.opposant && st.opposant) { st.opposant.force = Math.max(20, st.opposant.force - 10); }
     if (!st.scenario) tirerMandat(st);

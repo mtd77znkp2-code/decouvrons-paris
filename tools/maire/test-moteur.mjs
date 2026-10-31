@@ -946,7 +946,8 @@ test("session : objectifs manqués à l'élection = éliminé ; réussis = nouve
   // Arrivé juste avant le vote : pas jugé (pas éliminé), mais de nouveaux objectifs quand même
   let tard = partieSession(34); tard.t = 2; tard.debutMandat = 0; tard.mandatBats = { cadre: 3 };
   const r = M.electionSession(tard, { election: 1, avant: 0, apres: 0 });
-  assert.notEqual(r.phase, "fin"); assert.equal(r.mandat, 1); assert.deepEqual(r.mandatBats, {}); assert.equal(r.debutMandat, 2);
+  assert.notEqual(r.phase, "fin"); assert.equal(r.mandat, 2); assert.deepEqual(r.mandatBats, {}); assert.equal(r.debutMandat, 2);
+  assert.notEqual(M.objectifs(r).map(o => o.txt).join("|"), M.objectifs(tard).map(o => o.txt).join("|"), "les objectifs changent vraiment");
 });
 
 console.log(ok + " tests réussis.\n");
