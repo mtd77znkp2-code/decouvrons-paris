@@ -944,10 +944,14 @@ test("session : objectifs manqués à l'élection = éliminé ; réussis = nouve
   st.mandatBats = { logement: 5 }; const ok3 = M.electionSession(st, { election: 1, avant: 0, apres: 0 });
   assert.deepEqual(ok3.mandatBats, {}); assert.ok(M.objectifs(ok3).every(o => o.cur === 0 || o.garde), "nouveaux objectifs, repartis de zéro");
   // Arrivé juste avant le vote : pas jugé (pas éliminé), mais de nouveaux objectifs quand même
-  let tard = partieSession(34); tard.t = 2; tard.debutMandat = 0; tard.mandatBats = { cadre: 3 };
+  // Même un mandat très court est jugé (objectifs ratés = éliminé)
+  let court = partieSession(35); court.t = 1; court.debutMandat = 0;
+  assert.equal(M.electionSession(court, { election: 1, avant: 0, apres: 0 }).phase, "fin", "objectifs ratés, même vite : éliminé");
+  let tard = partieSession(34); tard.t = 2; tard.debutMandat = 0; tard.mandatBats = { cadre: 3 }; tard.objectifs = tard.objectifs.map(o => Object.assign({}, o, { but: 0 }));
   const r = M.electionSession(tard, { election: 1, avant: 0, apres: 0 });
   assert.notEqual(r.phase, "fin"); assert.equal(r.mandat, 2); assert.deepEqual(r.mandatBats, {}); assert.equal(r.debutMandat, 2);
-  assert.notEqual(M.objectifs(r).map(o => o.txt).join("|"), M.objectifs(tard).map(o => o.txt).join("|"), "les objectifs changent vraiment");
+  const k1 = M.objectifs(tard).map(o => o.k), k2 = M.objectifs(r).map(o => o.k);
+  assert.ok(k2.every(k => k1.indexOf(k) < 0), "toutes les sortes d'objectifs sont renouvelées : " + k1 + " -> " + k2);
 });
 
 console.log(ok + " tests réussis.\n");

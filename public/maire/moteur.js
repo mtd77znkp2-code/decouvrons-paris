@@ -521,7 +521,7 @@
     else if (o.k === "tresor") cur = Math.round(st.tresor);
     else if (o.k === "dette") { cur = Math.round(st.dette); ok = cur <= o.but; }
     else if (o.k === "dossiers") { garde = false; cur = (x.dossiers || 0) - (b.dossiers || 0); }
-    else if (o.k === "habitants") cur = st.hab || h0(st);
+    else if (o.k === "habitants") { cur = st.hab || h0(st); if (o.ratio) { o = Object.assign({}, o, { but: Math.round(h0(st) * o.ratio / 100) * 100 }); o.txt = "Fais grandir la population de " + String(o.pct).replace(".", ",") + " % (" + o.but.toLocaleString("fr-FR") + " habitants)"; } }
     else if (o.k === "chomage") { cur = chomage(st); ok = cur <= o.but; }
     else if (o.k === "solde") cur = Math.round(solde(st));
     else if (o.k === "tousPiliers") cur = Math.round(Math.min.apply(null, PK.map(function (k) { return st.piliers[k]; })));
@@ -576,8 +576,9 @@
   function totalEmp(st) { return Object.keys(st.emp || {}).reduce(function (n, k) { return n + st.emp[k]; }, 0); }
   function casinoGagnes(st) { var c = stats(st).casino || {}; return Object.keys(c).reduce(function (n, k) { return n + (c[k].g || 0); }, 0); }
   function tirerMandatSession(st) {
-    var m = st.mandat || 1, d = Math.min(1, (m - 1) / 40), avant = {}, liste = [];
-    (st.objectifs || []).forEach(function (o) { avant[o.k + (o.r || o.p || "")] = 1; avant[o.k] = 1; });
+    // Difficulté : le nombre de mandats ET le niveau du joueur (un débutant n'a jamais d'objectifs de vétéran)
+    var m = st.mandat || 1, nj = st.nivJ || 1, d = Math.min(1, (m - 1) / 40) * Math.min(1, 0.25 + nj / 40), avant = {}, famAvant = {}, liste = [];
+    (st.objectifs || []).forEach(function (o) { avant[o.k] = 1; if (o.f) famAvant[o.f] = 1; });
     if (m >= 3) {   // à partir du 3e mandat, une crise (qui abîme un peu la ville) revient
       var ids = Object.keys(C.CRISES).filter(function (id) { return !st.crise || st.crise.id !== id; }), id = ids[Math.floor(rnd(st) * ids.length)], dp = C.CRISES[id].depart || {};
       st.crise = { id: id, mandat: m };
@@ -596,7 +597,7 @@
       var minP = Math.round(Math.min.apply(null, PK.map(function (k) { return st.piliers[k]; })));
       // Chaque proposition : famille (une seule par mandat), condition, objectif
       var props = [];
-      function prop(fam, poids, o) { if (o && !avant[o.k + (o.r || o.p || "")]) props.push({ f: fam, w: poids, o: o }); }
+      function prop(fam, poids, o) { if (o && !avant[o.k]) { o.f = fam; props.push({ f: fam, w: poids, o: o }); } }   // aucune sorte d'objectif du mandat précédent
       rayons.forEach(function (r) { var b = n(2, 6); prop("bat", 1.2 / rayons.length * 2, { k: "rayon", r: r, but: b, ico: "🏗️", txt: "Construis " + b + " bâtiments " + RAYON_NOM[r] }); });
       var dv = Math.min(dispo.length, n(3, 8)); if (dv >= 3) prop("bat", 1, { k: "diversite", but: dv, ico: "🧩", txt: "Construis " + dv + " bâtiments différents" });
       var nd = n(3, 5); prop("dos", 1, { k: "dossiers", but: nd, ico: "📂", txt: "Tranche " + nd + " dossiers" });
@@ -604,7 +605,8 @@
       var tp = Math.min(90, minP + n(2, 7)); prop("pil", 0.7, { k: "tousPiliers", but: tp, ico: "🏛️", txt: "Les 4 piliers à " + tp + " ou plus" });
       var bb = Math.min(92, Math.round(bonheur(st)) + n(2, 8)); prop("hum", 1, { k: "bonheur", but: bb, ico: "😊", txt: "Bonheur des Parisiens à " + bb });
       var bp = Math.min(92, Math.round(st.pop) + n(2, 7)); prop("hum", 1, { k: "pop", but: bp, ico: "📣", txt: "Popularité à " + bp });
-      var bh = Math.round(hab * (1 + 0.01 + 0.04 * d) / 100) * 100; prop("hab", 0.8, { k: "habitants", but: bh, ico: "👥", txt: "Atteins " + bh.toLocaleString("fr-FR") + " habitants" });
+      // Habitants : une croissance en % de la population actuelle (elle suit l'arrondissement si l'élection te fait changer de place)
+      var gh = Math.round((1 + 3 * d) * 10) / 10; prop("hab", 0.8, { k: "habitants", ratio: Math.round(hab / h0(st) * (1 + gh / 100) * 1000) / 1000, pct: gh, ico: "👥", txt: "" });
       if (ch > 4) { var bc = Math.max(3, Math.round((ch - 0.5 - 3 * d) * 10) / 10); prop("hab", 0.8, { k: "chomage", but: bc, ico: "💼", txt: "Chômage sous " + String(bc).replace(".", ",") + " %" }); }
       var bt = Math.round((Math.max(0, st.tresor) + n(60, 450)) / 10) * 10; prop("arg", 0.8, { k: "tresor", but: bt, ico: "💰", txt: "Au moins " + bt + " M€ en caisse le jour du vote" });
       var bs = Math.round(Math.max(so + 5, n(10, 70))); prop("arg", 0.8, { k: "solde", but: bs, ico: "📈", txt: "Gagne au moins " + bs + " M€ par saison" });
@@ -613,14 +615,18 @@
       var bk = n(1, 3); prop("act", 0.7, { k: "casino", but: bk, ico: "🎰", txt: "Gagne " + bk + " partie" + (bk > 1 ? "s" : "") + " au casino" });
       if (st.meca.encheres || st.meca.ventes) prop("act", 0.5, { k: "enchere", but: 1, ico: "🔨", txt: "Remporte une enchère" });
       var fams = {};
-      while (liste.length < 3 && props.length) {
+      // D'abord des familles différentes du mandat précédent ; s'il n'y en a pas assez, on complète
+      var nouvelles = props.filter(function (x) { return !famAvant[x.f]; }), autres = props.filter(function (x) { return famAvant[x.f]; });
+      props = nouvelles;
+      while (liste.length < 3 && (props.length || autres.length)) {
+        if (!props.length) { props = autres; autres = []; }
         var tot = props.reduce(function (a, x) { return a + x.w; }, 0), r = rnd(st) * tot, kx = 0;
         for (; kx < props.length - 1 && (r -= props[kx].w) > 0; kx++);
         var x = props.splice(kx, 1)[0]; if (fams[x.f]) continue;
         fams[x.f] = 1; liste.push(x.o);
       }
     }
-    st.objectifs = liste.map(function (o) { return { k: o.k, p: o.p, r: o.r, but: o.but, ico: o.ico, txt: o.txt }; });
+    st.objectifs = liste.map(function (o) { return { k: o.k, p: o.p, r: o.r, but: o.but, ratio: o.ratio, pct: o.pct, f: o.f || (o.k === "dossiers" ? "dos" : "bat"), ico: o.ico, txt: o.txt }; });
     st.mandatBats = {}; st.mandatTypes = {};
     var x = stats(st); st.mandatBase = { projetsOk: x.projetsOk, encheres: x.encheres || 0, dossiers: x.dossiers || 0, emp: totalEmp(st), attaques: x.attaquesOk || 0, casino: casinoGagnes(st) };
   }
