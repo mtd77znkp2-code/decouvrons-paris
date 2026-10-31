@@ -794,8 +794,9 @@
         d.insertBefore(ajout(h("p", "mx-entre mx-fichetxt mx-crisetxt"), document.createTextNode(cr.txt)), bas);
         setTimeout(opp, calme() ? 0 : 1100);
       }));
-    } else opp();
-    d.appendChild(bas);
+    }
+    d.appendChild(bas);   // le bouton d'abord : opp() s'insère juste avant lui (sans crise, opp() part tout de suite)
+    if (!cr) opp();
   }
   function ouvertureResume() {
     var d = scene(st.mandat > 1 ? "Mandat " + st.mandat : "Ton premier mandat", "Le résumé"), cr = M.criseEnCours(st), o = st.meca.opposant && st.opposant ? M.opposant(st) : null;
@@ -962,10 +963,22 @@
       if (document.hidden) SES.ceremonieAttente = true; else annonceElection(elu, s);
     }
     if (elu && st.phase === "fin" && document.getElementById("m-app")) { fermerModale(); jeu(); }   // éliminé (objectifs manqués) : l'écran de fin, derrière la cérémonie
-    else if (change && document.getElementById("m-app") && st.phase !== "fin") { if (!document.getElementById("m-modale")) jeu(); }
+    else if (change && document.getElementById("m-app") && st.phase !== "fin") { if (!document.getElementById("m-modale")) jeuAuto(); }
     else majSession();
   }
   // Chaque seconde : comptes à rebours, recharge de la réserve, mode auto, élection quand l'heure est venue
+  // Redessin demandé par le temps qui passe (saison, session, ventes) : jamais sous le doigt du joueur.
+  // Un écran redessiné pendant un toucher perd ce toucher (achat, dossier, choix…) : on attend que le doigt soit levé.
+  var JEU_AUTO = null, DOIGT = false;
+  ["pointerdown", "touchstart"].forEach(function (t) { document.addEventListener(t, function () { DOIGT = true; }, { capture: true, passive: true }); });
+  ["pointerup", "pointercancel", "touchend", "touchcancel"].forEach(function (t) { document.addEventListener(t, function () { setTimeout(function () { DOIGT = false; }, 350); }, { capture: true, passive: true }); });
+  function jeuAuto() {
+    if (DOIGT || Date.now() - ACTIF < 900) { clearTimeout(JEU_AUTO); JEU_AUTO = setTimeout(jeuAuto, 400); return; }
+    JEU_AUTO = null;
+    if (!st || !document.getElementById("m-app")) return;
+    if (st.phase !== "fin" && (document.getElementById("m-modale") || document.getElementById("m-telmod") || document.querySelector(".mx-fichepop"))) return majSession();
+    jeu();
+  }
   function horloge() {
     if (!st || !SES.id || !SES.s || st.phase === "fin") return;
     var visible = document.getElementById("m-app") && !document.hidden && !document.getElementById("site").hidden && !document.getElementById("jeux").hidden;
@@ -978,7 +991,7 @@
     if (visible && SS().electionDue(SES.s, now) && now - SES.elire > 5000) { SES.elire = now; window.SessionLigne.elire(SES.id); }
     var libre = visible && (st.phase === "gestion" || st.phase === "pret") && !document.getElementById("m-modale") && !document.getElementById("m-telmod") && !document.body.classList.contains("m-casino") && !(st.enchere && !st.enchere.fini) && !(st.bj && !st.bj.fini);
     rechargerReserve(now);
-    if (recupererVentes() && libre) return jeu();
+    if (recupererVentes() && libre) return jeuAuto();
     // Le temps passe tout seul (saisons, recettes, dépenses), même pendant un dossier ; seulement quand le jeu est à l'écran
     if (!visible) SES.temps = Math.max(SES.temps, now + 2000);
     else if (now >= SES.temps) { SES.temps = now + trimMs(); return trimestreSuivant(libre); }
@@ -990,7 +1003,7 @@
     if (s2 === st) return;
     st = s2; sauver(); signal("trimestre");
     // Pas de grande fenêtre : on redessine seulement si rien n'est ouvert (dossier, casino, téléphone)
-    if (libre || st.phase === "fin") jeu(); else majSession();
+    if (libre || st.phase === "fin") jeuAuto(); else majSession();
     if (st.t > t0 && st.phase !== "fin") messageSaison(t0);
     if (SES.id) {
       window.SessionLigne.signaler(SES.id, etatSes());
@@ -1781,6 +1794,11 @@
       return d;
     }
     if (RAYON === "enchere") d.appendChild(h("p", "mx-aide", "🔨 30 secondes d’enchères contre un autre arrondissement."));
+    var nTr = (st.travaux || []).length;
+    if (st.session && nTr >= RG().v.chantiersMax && RAYON !== "projet") {
+      var proch = Math.max(1, Math.min.apply(null, st.travaux.map(function (w) { return w.fin - st.t; })));
+      d.appendChild(h("p", "mx-plein", "🏗️ " + nTr + " chantiers en cours sur " + RG().v.chantiersMax + " : le prochain se termine dans " + proch + " saison" + (proch > 1 ? "s" : "") + ". Tu pourras alors construire à nouveau."));
+    }
     var g = h("div", "mx-bats");
     ok.forEach(function (id) { g.appendChild(carteBat(id)); });
     if (!ok.length) g.appendChild(h("p", "mx-aide", "Rien à construire ici pour l’instant."));

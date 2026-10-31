@@ -99,7 +99,7 @@ test("projets démesurés : 30 % au lancement, tranches à chaque trimestre, ina
   const B = M.BATIMENTS.grandParc, t0 = st.tresor;
   st = M.acheter(st, "grandParc");
   assert.equal(st.chantiers.length, 1); assert.equal(st.tresor, t0 - Math.round(B.cout * 0.3)); assert.ok(!st.bat.grandParc);
-  assert.equal(M.peutAcheter(st, "grandParc"), "Chantier en cours.");
+  assert.equal(M.peutAcheter(st, "grandParc"), "En travaux.");
   for (let k = 0; k < 40 && !st.bat.grandParc && st.phase !== "fin"; k++) st = jouer(st, () => 0, null, st.t + 1);
   assert.equal(st.bat.grandParc, 1, "le parc est inauguré"); assert.equal(st.chantiers.length, 0); assert.ok(M.stats(st).projetsOk >= 1);
   assert.ok(st.objets.includes("casque"));

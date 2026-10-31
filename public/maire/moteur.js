@@ -1671,9 +1671,9 @@
     if (B.unique && st.bat[id]) return "Déjà réalisé.";
     if (B.enchere) return "Aux enchères uniquement.";
     if ((bonusMaire(st).interdit || []).indexOf(id) >= 0) return "Ton personnage refuse de construire ça.";
-    if (enChantier(st, id)) return "Chantier en cours.";
+    if (enChantier(st, id)) return "En travaux.";
     if (B.projet && st.chantiers.length >= 2) return "Deux chantiers à la fois, pas plus.";
-    if (dureeTravaux(st, id) && (st.travaux || []).length >= R.v.chantiersMax) return "Déjà " + R.v.chantiersMax + " bâtiments en travaux : attends qu’un chantier se termine.";
+    if (dureeTravaux(st, id) && (st.travaux || []).length >= R.v.chantiersMax) return "Chantiers pleins.";
     var px = B.projet ? Math.round(coutBat(st, id) * 0.3) : prix(st, id);
     if (px > st.tresor + (PLAFOND_DETTE - st.dette) * 0.5) return "Pas assez d’argent, même en empruntant.";
     return "";

@@ -1602,3 +1602,4 @@ body.m-acc-on .m-fond{display:none}
 .mx-partie .mx-pilier .mx-prom-ico{top:2px;right:2px;font-size:12px}
 @media (min-width:1100px){.mx-partie .mx-pilier .mx-pt span{font-size:12.5px}.mx-partie .mx-pilier .mx-pt b{font-size:15px}}
 #m-app.mx-partie .mx-pilier .mx-pt{display:grid;justify-items:center;text-align:center;grid-template-columns:minmax(0,1fr)}
+.mx-plein{margin:4px 0 8px;padding:10px 12px;border-radius:12px;background:rgba(245,178,26,.14);border:1px solid rgba(245,178,26,.5);font-size:13.5px;line-height:1.4}
