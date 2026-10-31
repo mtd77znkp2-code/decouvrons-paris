@@ -1609,3 +1609,14 @@ body.m-acc-on .m-fond{display:none}
 .m-travaux .m-jt{flex-wrap:wrap;align-items:center}
 .m-travaux .m-jt span{font-weight:800;font-size:14px;line-height:1.25}
 .m-travaux .m-jt b{font-size:13px;white-space:nowrap;color:#ffd56a}
+/* En-tête du jeu : rien ne sort du cadre, même avec « Automne » sur un petit écran */
+#m-app.mx-partie>.mx-hud{grid-template-columns:minmax(0,1fr);overflow:hidden}
+.mx-partie .mx-hud .mx-ligne{display:flex;flex-wrap:nowrap;align-items:center;gap:8px;min-width:0}
+.mx-partie .mx-hud .mx-quand{flex:1 1 auto;min-width:0}
+.mx-partie .mx-quand strong{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mx-partie .mx-hud .mx-droite{flex:0 0 auto;display:flex;gap:6px}
+.mx-partie .mx-hud .mx-chip{font-size:14px;padding:5px 8px}
+.mx-partie .mx-hud .m-tel-img{width:30px;height:30px}
+.mx-partie .mx-prog,.mx-partie .mx-xp-bloc,.mx-partie .mx-xp{min-width:0;max-width:100%}
+.mx-partie .mx-xp-proch{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:380px){.mx-partie .mx-quand strong{font-size:13.5px}.mx-partie .mx-hud .mx-chip{font-size:13px}}
