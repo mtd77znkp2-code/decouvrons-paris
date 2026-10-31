@@ -276,15 +276,16 @@ window.SessionLigne=(function(){
   // ---- Rejoindre ----
   // Ordre : la session voulue (choisie dans la liste) ou la sienne, puis « Victor Hugo » (la session de base, toujours là),
   // puis les autres sessions actives, sinon une nouvelle session au nom d'un auteur. Jamais à moins de 3 min d'une élection.
-  function rejoindre(voulue){
+  function rejoindre(voulue,neuve){
     var ico="🙂";
     if(!enLigne()){
       var t=Date.now(),s=lireLocal();if(s)s=S().nettoyer(s,t);
       // Moins de 3 min avant l'élection (ou plus de session) : une nouvelle session commence
-      if(!s||S().placeDe(s,"local")<0&&!S().peutEntrer(s,t)){s=S().nouvelleSession(Math.floor(Math.random()*2147483647),t);s.nom=S().AUTEURS[0]}
+      if(!s||(S().placeDe(s,"local")<0||neuve)&&!S().peutEntrer(s,t)){s=S().nouvelleSession(Math.floor(Math.random()*2147483647),t);s.nom=S().AUTEURS[0]}
       s=S().rejoindre(s,"local",nom(),ico,t);ecrireLocal(s);return Promise.resolve({id:"local",place:S().placeDe(s,"local"),local:true});
     }
     var db=LB.db,uid=moi(),dejaId=null;try{dejaId=localStorage.getItem("maire_session")}catch(e){}
+    // neuve : partie qui commence. Une partie neuve n'entre jamais à moins de 3 min de l'élection, même dans sa session d'avant (sinon : élection dès l'arrivée)
     function entrer(ref){
       return db.runTransaction(function(tx){return tx.get(ref).then(function(d){
         var s=d.exists?lire(d):null;
@@ -293,6 +294,7 @@ window.SessionLigne=(function(){
         s=S().nettoyer(s,Date.now());
         // Session vide (Victor Hugo au repos) : elle repart de zéro, avec un mandat complet devant elle
         if(!S().joueurs(s).length){var nm=s.nom;s=S().nouvelleSession(Math.floor(Math.random()*2147483647),Date.now());s.nom=nm}
+        if(neuve&&S().placeDe(s,uid)>=0&&!S().peutEntrer(s,Date.now())){tx.set(ref,champs(S().quitter(s,uid)));return null}
         if(S().placeDe(s,uid)<0){var n=S().rejoindre(s,uid,nom(),ico,Date.now());if(n===s)return null;s=n}
         tx.set(ref,champs(s));return {id:ref.id,place:S().placeDe(s,uid)};
       })}).catch(function(){return null});

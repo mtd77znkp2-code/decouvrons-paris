@@ -921,7 +921,7 @@
     if (SES.id || SES.enCours || SES.afk || !window.SessionLigne || !SS() || !st || st.phase === "fin" || st.scenario) return;
     SES.enCours = true; ACTIF = Date.now();
     var v = VOULUE; VOULUE = null;
-    window.SessionLigne.rejoindre(v).then(function (r) {
+    window.SessionLigne.rejoindre(v, !st.session).then(function (r) {   // partie neuve : jamais juste avant une élection
       SES.enCours = false;
       if (!r && v) { toast("🚪 Impossible d’entrer dans cette session (élection imminente ou complète)."); return brancherSession(); }
       if (!r) return;
@@ -1098,7 +1098,9 @@
       var j = (s.journal || []).slice().reverse().filter(function (e) { return e.type !== "bouclier"; }).slice(0, 6);
       if (j.length) { var u = h("ul", "mx-journal-att"); j.forEach(function (e) { u.appendChild(h("li", null, ligneAttaque(e))); }); ajout(c, h("h5", null, "📰 Dernières attaques"), u); }
     }
-    var tm = setInterval(function () { if (!document.body.contains(m)) return clearInterval(tm); rendre(); }, 1000);
+    // Rafraîchi chaque seconde (minuteurs), mais jamais juste après un toucher : sinon le bouton touché est remplacé et le choix se perd
+    var touche = 0; c.addEventListener("pointerdown", function () { touche = Date.now(); }, true);
+    var tm = setInterval(function () { if (!document.body.contains(m)) return clearInterval(tm); if (Date.now() - touche < 1500) return; rendre(); }, 1000);
     rendre(); m.appendChild(c); (document.getElementById("g-maire") || document.body).appendChild(m); document.body.classList.add("m-modal");
   }
   function ligneAttaque(e) {
