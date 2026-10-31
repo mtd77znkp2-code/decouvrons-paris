@@ -2764,23 +2764,14 @@
         h("small", null, "Des Parisiens partent chaque trimestre tant que tu ne construis pas " + (bd ? de(bd.nom) : "de quoi répondre") + ".")));
     }
     d.appendChild(h("p", "m-journal-une", l[0].une));
-    var u = h("ul");
-    l.slice(0, 3).forEach(function (x, k) {
-      var c = x.cits[(st.t + k) % x.cits.length], n = PRENOMS[(st.t * 7 + k * 3) % PRENOMS.length], age = 19 + (st.t * 13 + k * 17) % 60, arr = 1 + (st.t * 5 + k * 11) % 20;
+    // Les réactions des Parisiens : d'abord ce qui presse dans la ville (ce qu'il faut faire), puis les sujets du numéro ; 3 lignes au plus
+    var cits = reactionsJournal(), u = h("ul");
+    l.slice(0, 3).forEach(function (x, k) { var c = x.cits[(st.t + k) % x.cits.length]; if (cits.indexOf(c) < 0) cits.push(c); });
+    cits.slice(0, 3).forEach(function (c, k) {
+      var n = PRENOMS[(st.t * 7 + k * 3) % PRENOMS.length], age = 19 + (st.t * 13 + k * 17) % 60, arr = 1 + (st.t * 5 + k * 11) % 20;
       u.appendChild(ajout(h("li"), h("q", null, c), h("small", null, n + ", " + age + " ans, " + arr + (arr === 1 ? "er" : "e"))));
     });
     d.appendChild(u);
-    // Les conseils de la rédaction : ce qu'il faut faire MAINTENANT, avec un bouton pour y aller
-    var cs = conseilsJournal();
-    if (cs.length) {
-      var bc = h("div", "m-conseils"); bc.appendChild(h("b", null, "💡 Les conseils de la rédaction"));
-      cs.forEach(function (x) {
-        var li = ajout(h("div", "m-conseil"), h("span", null, x.ico), h("p", null, x.txt));
-        if (x.aller) li.appendChild(bouton("Y aller →", "mx-lien m-conseil-go", function () { allerRayon(x.aller); }));
-        bc.appendChild(li);
-      });
-      d.appendChild(bc);
-    }
     d.appendChild(ajout(h("div", "m-billet"), h("b", null, "😄 Le billet d’humeur"), h("q", null, BILLETS[(st.t * 7 + (st.mandat || 1)) % BILLETS.length])));
     // Le mot du rival, à chaque numéro
     if (o) {
@@ -2790,54 +2781,34 @@
     }
     return d;
   }
-  // Ouvre la boutique sur un rayon (bouton « Y aller » du journal)
-  function allerRayon(r) {
-    RAYON = r; jeu();
-    setTimeout(function () { var b = document.querySelector(".mx-boutique"); if (b) b.scrollIntoView({ behavior: "smooth", block: "start" }); }, 50);
-  }
-  // Le meilleur achat possible maintenant dans un rayon (le plus d'effet sur le pilier visé pour le prix)
-  function meilleurAchat(rayon, pilier) {
-    var best = null, bv = -1;
-    Object.keys(M.BATIMENTS).forEach(function (id) {
-      if (rayonDe(id) !== rayon || M.peutAcheter(st, id)) return;
-      var B = M.BATIMENTS[id], px = M.prix(st, id), v = ((pilier ? (B.e || {})[pilier] || 0 : 1) + (B.emplois ? 1 : 0) + (B.rev ? 0.5 : 0)) / Math.max(1, px);
-      if (v > bv) { bv = v; best = { id: id, B: B, px: px }; }
-    });
-    return best;
-  }
-  function nomAchat(b, pilier) { var e = pilier && (b.B.e || {})[pilier]; return b.B.ico + " " + b.B.nom + " (" + (e ? "+" + e + ", " : "") + argent(b.px) + ")"; }
-  // Les conseils : chaque situation a une gravité, on garde les 3 plus urgentes
-  function conseilsJournal() {
-    var c = [], bes = M.besoin(st), so = M.solde(st), now = Date.now();
-    function conseil(g, ico, txt, aller) { c.push({ g: g, ico: ico, txt: txt, aller: aller }); }
-    var NOMS_P = { securite: "Ta sécurité est", logement: "Ton logement est", transports: "Tes transports sont", cadre: "Ton cadre de vie est" };
-    Object.keys(M.PILIERS).forEach(function (k) {
-      var v = Math.round(st.piliers[k]); if (v >= bes) return;
-      var b = meilleurAchat(k, k), debloques = Object.keys(M.BATIMENTS).some(function (id) { return rayonDe(id) === k && M.disponible(st, id); });
-      if (!b && !debloques) return;   // rien de débloqué dans ce rayon : pas de conseil impossible à suivre
-      conseil(bes - v + 20, M.ICO[k], NOMS_P[k] + " à " + v + " alors que les habitants attendent " + bes + ". " + (b ? "Meilleur achat maintenant : " + nomAchat(b, k) + "." : "Pas assez d’argent pour ce rayon : économise ou monte un peu les impôts."), b ? k : null);
-    });
+  // Réactions des Parisiens : chaque situation de la ville a une gravité, on garde les 2 plus urgentes (dites par un habitant, en une ligne)
+  function reactionsJournal() {
+    var c = [], bes = M.besoin(st), so = M.solde(st), now = Date.now(), v = st.t;
+    function dit(g, l) { c.push({ g: g, txt: l[v % l.length] }); }
+    var PIL = {
+      securite: ["On ne se sent plus en sécurité dans le quartier : il faut plus de policiers !", "Encore un vol dans ma rue. La sécurité, c’est pour quand ?"],
+      logement: ["Il manque des logements, et les loyers explosent !", "Trouver un appart ici, c’est mission impossible."],
+      transports: ["Le métro est bondé tous les matins : il faut plus de transports !", "Une heure pour aller au travail… il nous faut des transports."],
+      cadre: ["Il nous faut des parcs et des arbres, on étouffe !", "Pas un coin de verdure près de chez moi, c’est triste."] };
+    Object.keys(M.PILIERS).forEach(function (k) { var x = Math.round(st.piliers[k]); if (x < bes && PIL[k]) dit(bes - x + 20, PIL[k]); });
     var ch = M.chomage(st);
-    if (ch > 9) { var bc = meilleurAchat("commerce"); conseil((ch - 9) * 3 + 12, "💼", "Chômage à " + virg(ch) + " % : les commerces et les entreprises créent des emplois." + (bc ? " Essaie " + nomAchat(bc) + "." : ""), bc ? "commerce" : null); }
-    if ((st.hab || M.HAB0) >= M.capacite(st)) { var bl = meilleurAchat("logement", "logement"); conseil(18, "🏠", "Ton arrondissement est plein : sans nouveaux logements, la population ne peut plus grandir." + (bl ? " Construis " + nomAchat(bl, "logement") + "." : ""), bl ? "logement" : null); }
-    if (so < 0) conseil(16 + Math.min(10, -so / 10), "💸", "Tu perds " + argent(-so) + " par saison. Monte un peu les impôts (⚙️ Gestion de la ville) ou construis ce qui rapporte.", "economie");
-    else if (st.tresor - st.dette > 400) conseil(10, "💰", argent(Math.round(st.tresor - st.dette)) + " dorment dans les caisses : investis-les, une ville qui progresse grimpe dans les sondages.", null);
-    if (st.session && st.meca.employes) { var pr = M.proprete(st); if (pr.manque > 0) conseil(15, "🧹", pr.manque + " agent" + (pr.manque > 1 ? "s" : "") + " de propreté manque" + (pr.manque > 1 ? "nt" : "") + " : sans eux, tes parcs et espaces de vie se dégradent.", "employes"); }
-    if (st.session && SES.id && SES.jetons >= 2) conseil(13, "📂", SES.jetons + " dossiers t’attendent : chacun rapporte des points de niveau et peut faire bouger ta popularité.", null);
-    // Si on votait maintenant : la place que tu aurais, et le rival à surveiller
+    if (ch > 9) dit((ch - 9) * 3 + 12, ["Je cherche du travail depuis des mois : ouvrez des commerces et des entreprises !", "Pas de boulot dans le quartier, il faut des commerces !"]);
+    if ((st.hab || M.HAB0) >= M.capacite(st)) dit(18, ["Plus un appartement de libre : construisez des logements !", "Mes enfants veulent rester dans le quartier, mais il n’y a plus de place."]);
+    if (so < 0) dit(16 + Math.min(10, -so / 10), ["La mairie perd de l’argent chaque saison, ça va mal finir.", "Les caisses se vident… il faudra bien payer un jour."]);
+    else if (st.tresor - st.dette > 400) dit(10, ["La mairie a plein d’argent qui dort : qu’elle construise quelque chose !", "Avec tout cet argent en caisse, on attend des projets !"]);
+    if (st.session && st.meca.employes) { var pr = M.proprete(st); if (pr.manque > 0) dit(15, ["Les poubelles débordent et les parcs sont sales : où sont les agents de propreté ?", "Mon parc est devenu une décharge, il faut du personnel !"]); }
     if (st.session && SES.s) {
       var sc = SS().scores(SES.s, now), p = st.session.place, mien = sc[p];
       if (mien != null) {
-        var devant = sc.filter(function (v, q) { return q !== p && v > mien; }).length, projete = devant + 1, actuelle = SS().NB - p, reste = SES.s.prochaine - now;
-        conseil(reste < 120000 ? 30 : 11, "🗳️", "Si on votait maintenant, tu finirais " + projete + "ᵉ (aujourd’hui " + actuelle + "ᵉ)" + (reste > 0 ? ", vote dans " + mmss(reste) : "") + "." +
-          (projete < actuelle ? " Continue comme ça !" : projete > actuelle ? " Attention, tu reculerais : soigne ta popularité ou attaque tes adversaires." : " Pour grimper, dépasse le score de ceux juste devant toi."), null);
-        if (p < SS().TRONE && st.meca.attaques) { var r = SS().fiche(SES.s, p + 1); if (r.type === "bot" && r.stats && r.stats.tendance === "declin") conseil(14, "📉", r.nom + ", juste devant toi, est en déclin : c’est le bon moment pour l’attaquer (⚔️ Attaquer).", null); }
+        var projete = sc.filter(function (x, q) { return q !== p && x > mien; }).length + 1, actuelle = SS().NB - p, proche = SES.s.prochaine - now < 120000;
+        if (projete > actuelle) dit(proche ? 30 : 11, ["Si on votait demain, je ne revoterais pas pour ce maire…", "Le maire d’à côté me plaît de plus en plus, moi."]);
+        else if (projete < actuelle) dit(proche ? 30 : 11, ["Ce maire monte dans les sondages, je voterai pour lui !", "Franchement, il fait du bon travail, mon maire."]);
       }
     }
     var e = M.etatSession(st);
-    if (e.bon < e.pop - 8) conseil(9, "😊", "Le bonheur (" + e.bon + ") tire ta note vers le bas : améliore les piliers les plus faibles de ta ville.", null);
-    else if (e.pop < e.bon - 8) conseil(9, "📣", "Ta popularité (" + e.pop + ") est en retard : les bonnes réponses aux dossiers et les promesses tenues la font monter.", null);
-    return c.sort(function (a, b) { return b.g - a.g; }).slice(0, 3);
+    if (e.bon < e.pop - 8) dit(9, ["On aime bien le maire, mais la vie de tous les jours reste dure.", "De belles paroles, mais mon quotidien n’a pas changé."]);
+    else if (e.pop < e.bon - 8) dit(9, ["La ville va bien, mais le maire, on ne le voit jamais.", "Tout va mieux, mais qui est le maire déjà ?"]);
+    return c.sort(function (a, b) { return b.g - a.g; }).slice(0, 2).map(function (x) { return x.txt; });
   }
   // Billets d'humeur : un peu d'humour parisien à chaque numéro
   var BILLETS = ["Un pigeon a été élu « Parisien de l’année ». Il a promis des miettes pour tous.",
