@@ -1069,6 +1069,11 @@
     else duo.appendChild(ajout(h("div", "mx-ses-qui"), h("small", null, "🛡️ Personne en dessous"), h("b", null, "Pas d’opposant")));
     var actions = ajout(h("div", "mx-ses-actions"), majAttaque(verrouMeca("attaques", bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre))), ajout(bouton("", "mx-ses-act mx-ses-btn", classementSession), icoUI("ui-classement"), document.createTextNode(" Classement")));
     ajout(d, titre, duo, actions, h("small", "mx-ses-malus", ""));
+    // Administrateur seulement : forcer l'élection de cette session (elle a lieu dans 30 s, pour tous les joueurs)
+    if (window.ADMIN_UNLOCKED) d.appendChild(bouton("🛠 Admin : forcer l’élection (dans 30 s)", "mx-admin-elec", function () {
+      if (!confirm("Forcer l’élection de cette session dans 30 secondes ? (pour tous les joueurs de la session)")) return;
+      toast(window.MaireTest.election30() ? "🗳️ Élection dans 30 secondes." : "Pas de session en cours.");
+    }));
     setTimeout(majSession, 0);
     return d;
   }
