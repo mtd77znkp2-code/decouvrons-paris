@@ -1620,3 +1620,12 @@ body.m-acc-on .m-fond{display:none}
 .mx-partie .mx-prog,.mx-partie .mx-xp-bloc,.mx-partie .mx-xp{min-width:0;max-width:100%}
 .mx-partie .mx-xp-proch{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (max-width:380px){.mx-partie .mx-quand strong{font-size:13.5px}.mx-partie .mx-hud .mx-chip{font-size:13px}}
+/* Casino : le croupier en médaillon, plus de grand rectangle coupé */
+#m-modale .m-casino-carte{padding-top:16px}
+.m-casino-carte .m-croupier{display:block;width:128px;height:128px;margin:0 auto 6px;object-fit:cover;object-position:50% 12%;border-radius:50%;border:4px solid #d9a53a;box-shadow:0 0 0 3px #5a2a18,0 8px 20px rgba(0,0,0,.5);-webkit-mask-image:none;mask-image:none}
+#m-modale .m-casino-carte .m-cat{font-size:11px;letter-spacing:.06em}
+#m-modale .m-casino-carte h4{font-size:clamp(22px,6vw,28px);margin:2px 0 6px}
+#m-modale .m-casino-carte .m-desc{font-size:14px;margin:0 0 4px}
+.m-casino-carte .m-regles{display:flex;justify-content:center}
+.m-casino-carte .m-regles-btn{color:#f6dfa0}
+@media (min-width:900px){.m-casino-carte .m-croupier{width:150px;height:150px}}

@@ -2364,7 +2364,9 @@
     var n = 5, info = h("p", "m-pk-cherche", ""), anim = h("div", "m-pk-radar"); zone.innerHTML = ""; ajout(zone, anim, info);
     function compte() { info.textContent = "🔎 Recherche d’un autre maire… " + n + " s"; }
     compte(); var tic = setInterval(function () { n = Math.max(0, n - 1); compte(); }, 1000);
-    (window.PokerLigne ? window.PokerLigne.chercher(5000) : Promise.resolve(null)).then(function (r) {
+    // Jamais bloqué sur « 0 s » : si la recherche en ligne traîne (réseau lent), on joue contre le croupier
+    var recherche = window.PokerLigne ? window.PokerLigne.chercher(5000).catch(function () { return null; }) : Promise.resolve(null);
+    Promise.race([recherche, new Promise(function (ok) { setTimeout(function () { ok(null); }, 6500); })]).then(function (r) {
       clearInterval(tic);
       if (!J() || J().etat !== "a_jouer" || !zone.isConnected) return;
       if (r) { st = M.mjPokerLigne(st, i, r); sauver(); return pokerLigne(zone, i, J, fin, Pk); }
