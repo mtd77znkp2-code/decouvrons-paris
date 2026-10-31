@@ -949,6 +949,12 @@
       st.duels = st.duels || {};
       (r.vs || []).forEach(function (v) { var dd = st.duels[v.k] || (st.duels[v.k] = { g: 0, p: 0 }); if (v.g) dd.g++; else dd.p++; });
     }
+    // Élection passée sans résultat à mon nom (connexion coupée, page en veille au mauvais moment…) : le mandat change quand même,
+    // sinon les objectifs resteraient ceux du mandat d'avant
+    else if (!r && st.session && st.session.id === SES.id && st.session.election && s.election > st.session.election && st.session.dernElec !== s.election) {
+      var pl = SS().placeDe(s, moiSes());
+      st = M.electionSession(st, { election: s.election, avant: pl, apres: pl, titre: SS().titre(pl), rival: "" });
+    }
     var info = infoSession(s);
     // Nouveau rival ou nouvel opposant en cours de partie (après une élection, un départ…) : épée / bouclier
     if (st.session && window.sfx) {
@@ -963,7 +969,7 @@
       if (document.hidden) SES.ceremonieAttente = true; else annonceElection(elu, s);
     }
     if (elu && st.phase === "fin" && document.getElementById("m-app")) { fermerModale(); jeu(); }   // éliminé (objectifs manqués) : l'écran de fin, derrière la cérémonie
-    else if (change && document.getElementById("m-app") && st.phase !== "fin") { if (!document.getElementById("m-modale")) jeuAuto(); }
+    else if (change && document.getElementById("m-app") && st.phase !== "fin") { if (!document.getElementById("m-modale")) jeuAuto(); else SES.aRedessiner = true; }   // dossier ouvert : on redessine à sa fermeture
     else majSession();
   }
   // Chaque seconde : comptes à rebours, recharge de la réserve, mode auto, élection quand l'heure est venue
@@ -976,7 +982,7 @@
     if (DOIGT || Date.now() - ACTIF < 900) { clearTimeout(JEU_AUTO); JEU_AUTO = setTimeout(jeuAuto, 400); return; }
     JEU_AUTO = null;
     if (!st || !document.getElementById("m-app")) return;
-    if (st.phase !== "fin" && (document.getElementById("m-modale") || document.getElementById("m-telmod") || document.querySelector(".mx-fichepop"))) return majSession();
+    if (st.phase !== "fin" && (document.getElementById("m-modale") || document.getElementById("m-telmod") || document.querySelector(".mx-fichepop"))) { SES.aRedessiner = true; return majSession(); }
     jeu();
   }
   function horloge() {
@@ -1316,7 +1322,7 @@
     var bilan = h("div", "m-elec-bilan mx-cache");
     ajout(bilan, monte ? imgDeco("trophee", "m-elec-trophee", 255, 200) : tableauDeco(descend ? "defaite" : "election", "m-tableau-petit"), h("strong", null, titre), h("p", null, "De la " + (SS().NB - r.avant) + "ᵉ à la " + (SS().NB - r.apres) + "ᵉ place · te voilà " + SS().titre(r.apres) + "."),
       h("small", null, "Ton score : " + virg(r.score || 0) + " · tu as dépassé " + (r.vs || []).filter(function (x) { return x.g; }).length + " maire(s), " + (r.vs || []).filter(function (x) { return !x.g; }).length + " t’ont dépassé."),
-      bouton("Continuer", "btn m-go", function () { f.remove(); }));
+      bouton("Continuer", "btn m-go", function () { f.remove(); if (st && document.getElementById("m-app") && !document.getElementById("m-modale")) jeu(); }));   // les nouveaux objectifs tout de suite
     // Objectifs du mandat jugés à cette élection
     var el = st && st.elections && st.elections[st.elections.length - 1];
     if (el && el.session && el.objectifs && el.objectifs.length) {
@@ -2281,7 +2287,7 @@
       if (moi < 20 && tot >= 10) { zone.appendChild(h("small", "m-vote-libre", "🦄 Esprit libre : tu vas à contre-courant !")); if (!v.note) { v.note = 1; G.noterVote(moi); } }
     });
   }
-  function fermerModale() { var m = document.getElementById("m-modale"); if (m) m.remove(); document.body.classList.remove("m-modal"); cacherBulle(); if (document.body.classList.contains("m-casino")) casino(false); }
+  function fermerModale() { var m = document.getElementById("m-modale"); if (m) m.remove(); if (SES.aRedessiner && m) { SES.aRedessiner = false; setTimeout(function () { if (st && st.phase !== "fin" && !document.getElementById("m-modale")) jeu(); }, 0); } document.body.classList.remove("m-modal"); cacherBulle(); if (document.body.classList.contains("m-casino")) casino(false); }
   // Les dossiers sont écrits pour un maire d'arrondissement ; sur le trône de Maire de Paris, on passe à l'échelle de la ville
   var TRONE_TXT = [[/l’Hôtel de Ville/g, "l’\u0001"], [/L’Hôtel de Ville/g, "L’\u0001"], [/la mairie d’arrondissement/g, "l’Hôtel de Ville"], [/La mairie d’arrondissement/g, "L’Hôtel de Ville"],
     [/le conseil d’arrondissement/g, "le Conseil de Paris"], [/Le conseil d’arrondissement/g, "Le Conseil de Paris"], [/au conseil d’arrondissement/g, "au Conseil de Paris"], [/du conseil d’arrondissement/g, "du Conseil de Paris"],
