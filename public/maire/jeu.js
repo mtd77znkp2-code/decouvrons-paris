@@ -1256,7 +1256,7 @@
     // Objectifs du mandat jugés à cette élection
     var el = st && st.elections && st.elections[st.elections.length - 1];
     if (el && el.session && el.objectifs && el.objectifs.length) {
-      var oj = h("p", "m-elec-obj " + (el.reussi ? "m-plus" : "m-moins"), !el.juge ? "🎯 Arrivé trop tard pour être jugé : tu gardes tes objectifs." : el.reussi ? "🎯 Objectifs : " + el.nok + "/" + el.objectifs.length + " réussis · nouveaux objectifs pour le mandat suivant !" : "❌ Objectifs : " + el.nok + "/" + el.objectifs.length + " seulement · tu es éliminé, il faut recommencer.");
+      var oj = h("p", "m-elec-obj " + (el.reussi ? "m-plus" : "m-moins"), !el.juge ? "🎯 Arrivé trop tard pour être jugé · voici tes nouveaux objectifs." : el.reussi ? "🎯 Objectifs : " + el.nok + "/" + el.objectifs.length + " réussis · nouveaux objectifs pour le mandat suivant !" : "❌ Objectifs : " + el.nok + "/" + el.objectifs.length + " seulement · tu es éliminé, il faut recommencer.");
       bilan.insertBefore(oj, bilan.lastChild);
     }
     c.appendChild(bilan); f.appendChild(c); document.body.appendChild(f);

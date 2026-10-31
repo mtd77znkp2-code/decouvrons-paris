@@ -940,10 +940,13 @@ test("session : objectifs manqués à l'élection = éliminé ; réussis = nouve
   st.objectifs = st.objectifs.map(o => Object.assign({}, o, { but: 0 }));
   const ok2 = M.electionSession(st, { election: 1, avant: 0, apres: 0 });
   assert.notEqual(ok2.phase, "fin"); assert.equal(ok2.mandat, 2); assert.equal(M.objectifs(ok2).length, 3);
-  // Arrivé juste avant le vote : pas jugé, mêmes objectifs
-  let tard = partieSession(34); tard.t = 2; tard.debutMandat = 0;
+  // Les objectifs changent à chaque élection (compteurs remis à zéro)
+  st.mandatBats = { logement: 5 }; const ok3 = M.electionSession(st, { election: 1, avant: 0, apres: 0 });
+  assert.deepEqual(ok3.mandatBats, {}); assert.ok(M.objectifs(ok3).every(o => o.cur === 0 || o.garde), "nouveaux objectifs, repartis de zéro");
+  // Arrivé juste avant le vote : pas jugé (pas éliminé), mais de nouveaux objectifs quand même
+  let tard = partieSession(34); tard.t = 2; tard.debutMandat = 0; tard.mandatBats = { cadre: 3 };
   const r = M.electionSession(tard, { election: 1, avant: 0, apres: 0 });
-  assert.notEqual(r.phase, "fin"); assert.equal(r.mandat, 1);
+  assert.notEqual(r.phase, "fin"); assert.equal(r.mandat, 1); assert.deepEqual(r.mandatBats, {}); assert.equal(r.debutMandat, 2);
 });
 
 console.log(ok + " tests réussis.\n");

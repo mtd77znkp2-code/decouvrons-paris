@@ -31,7 +31,7 @@
     { k: "objMin", g: "Mandats et objectifs", nom: "Objectifs à réussir pour rester en jeu", unite: "sur 3", def: 2, min: 0, max: 3, pas: 1,
       desc: "À chaque élection de session (fin de mandat), un maire qui a réussi moins de X objectifs sur 3 est éliminé et doit recommencer une partie. 0 = personne n’est éliminé." },
     { k: "objGrace", g: "Mandats et objectifs", nom: "Mandat trop court pour être jugé", unite: "saisons", def: 4, min: 0, max: 20, pas: 1,
-      desc: "Un joueur arrivé moins de X saisons avant l’élection n’est pas jugé : il garde ses objectifs pour le mandat suivant." },
+      desc: "Un joueur arrivé moins de X saisons avant l’élection n’est pas jugé : il n’est pas éliminé et reçoit de nouveaux objectifs comme les autres." },
 
     // ---- Construction des bâtiments (session) ----
     { k: "dureeConstruction", g: "Construction", nom: "Durée des travaux", unite: "×", def: 1, min: 0, max: 4, pas: 0.25,

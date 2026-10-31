@@ -1028,7 +1028,7 @@
       st.phase = "fin";
       return st;
     }
-    if (!juge && ob.length && !ancien) { st.debutMandat = st.t; return st; }   // pas jugé : même mandat, mêmes objectifs
+    if (!juge && ob.length && !ancien) { st.debutMandat = st.t; tirerMandat(st); return st; }   // pas jugé (arrivé juste avant le vote) : même difficulté, mais de nouveaux objectifs
     st.mandat++; st.debutMandat = st.t; st.pariMandat = 0;
     if (st.meca.opposant && st.opposant) { st.opposant.force = Math.max(20, st.opposant.force - 10); }
     if (!st.scenario) tirerMandat(st);
