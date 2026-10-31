@@ -1519,7 +1519,7 @@
     if (st.modeSession && RG().v.objMin) d.appendChild(h("small", "mx-criseinfo" + (n >= RG().v.objMin ? "" : " mx-alerte"), n >= RG().v.objMin ? "✔ Assez d’objectifs pour rester en jeu à l’élection." : "⚠️ Il en faut " + RG().v.objMin + " à l’élection, sinon tu es éliminé."));
     ob.forEach(function (o) {
       var l = h("div", "mx-objl" + (o.ok ? " mx-ok" : ""));
-      var etat = o.ok ? (o.garde ? "✔ à tenir" : "✔") : o.inverse ? o.cur + " M€ (max " + o.but + ")" : o.cur + " / " + o.but;
+      var etat = o.ok ? (o.garde ? "✔ à tenir" : "✔") : o.inverse ? o.cur + (o.unite || " M€") + " (max " + String(o.but).replace(".", ",") + ")" : o.cur + " / " + (o.k === "habitants" ? o.but.toLocaleString("fr-FR") : o.but);
       ajout(l, h("span", null, o.ico), h("span", null, o.txt), h("b", null, etat));
       d.appendChild(l);
     });
@@ -2816,7 +2816,7 @@
     box.appendChild(t);
     if (ob.length) {
       var u = h("div", "mx-objectifs");
-      ob.forEach(function (o) { var l = h("div", "mx-objl" + (o.ok ? " mx-ok" : " mx-rate")); ajout(l, h("span", null, o.ok ? "✅" : "❌"), h("span", null, o.txt), h("b", null, o.inverse ? o.cur + " M€" : o.cur + "/" + o.but)); u.appendChild(l); });
+      ob.forEach(function (o) { var l = h("div", "mx-objl" + (o.ok ? " mx-ok" : " mx-rate")); ajout(l, h("span", null, o.ok ? "✅" : "❌"), h("span", null, o.txt), h("b", null, o.inverse ? o.cur + (o.unite || " M€") : o.cur + "/" + o.but)); u.appendChild(l); });
       box.appendChild(u);
     }
     box.appendChild(carteElection(e));

@@ -521,11 +521,19 @@
     else if (o.k === "tresor") cur = Math.round(st.tresor);
     else if (o.k === "dette") { cur = Math.round(st.dette); ok = cur <= o.but; }
     else if (o.k === "dossiers") { garde = false; cur = (x.dossiers || 0) - (b.dossiers || 0); }
+    else if (o.k === "habitants") cur = st.hab || h0(st);
+    else if (o.k === "chomage") { cur = chomage(st); ok = cur <= o.but; }
+    else if (o.k === "solde") cur = Math.round(solde(st));
+    else if (o.k === "tousPiliers") cur = Math.round(Math.min.apply(null, PK.map(function (k) { return st.piliers[k]; })));
+    else if (o.k === "emploi") { garde = false; cur = totalEmp(st) - (b.emp || 0); }
+    else if (o.k === "attaques") { garde = false; cur = (x.attaquesOk || 0) - (b.attaques || 0); }
+    else if (o.k === "casino") { garde = false; cur = casinoGagnes(st) - (b.casino || 0); }
     else { garde = false;
       cur = o.k === "rayon" ? (st.mandatBats[o.r] || 0) : o.k === "diversite" ? Object.keys(st.mandatTypes).length : o.k === "projet" ? x.projetsOk - (b.projetsOk || 0)
         : o.k === "enchere" ? (x.encheres || 0) - (b.encheres || 0) : (st.opposant && !st.opposant.actif ? 1 : 0); }
-    if (o.k !== "dette") ok = cur >= o.but;
-    return { k: o.k, ico: o.ico, txt: o.txt, but: o.but, cur: cur, ok: ok, garde: garde, crise: !!o.crise, inverse: o.k === "dette" };
+    if (o.k !== "dette" && o.k !== "chomage") ok = cur >= o.but;
+    return { k: o.k, ico: o.ico, txt: o.txt, but: o.but, cur: o.k === "habitants" ? cur.toLocaleString("fr-FR") : o.k === "chomage" ? String(cur).replace(".", ",") : cur, ok: ok, garde: garde, crise: !!o.crise,
+      inverse: o.k === "dette" || o.k === "chomage", unite: o.k === "chomage" ? " %" : " M€" };
   }
   function objectifs(st) { return (st.objectifs || []).map(function (o) { return etatObjectif(st, o); }); }
   function objectifsOk(st) { return objectifs(st).filter(function (o) { return o.ok; }).length; }
@@ -560,37 +568,61 @@
     st.mandatBats = {}; st.mandatTypes = {};
     var x = stats(st); st.mandatBase = { projetsOk: x.projetsOk, encheres: x.encheres || 0, dossiers: x.dossiers || 0 };
   }
-  // Session : un mandat dure quelques minutes ; les objectifs partent de la ville telle qu'elle est et grandissent de mandat en mandat.
-  // 1er mandat : trois objectifs très simples (1 bâtiment, 2 bâtiments différents, 2 dossiers), sans crise.
-  var CIBLES_SES = { rayon: [1, 2, 3, 4], diversite: [2, 3, 4, 5], dossiers: [2, 3, 3, 4], pilier: [0, 3, 5, 7], bonheur: [0, 2, 3, 4] };
+  // Session : un mandat dure quelques minutes ; 50 mandats possibles, la difficulté monte jusqu'au 41e puis reste au plus haut.
+  // 1er mandat : trois objectifs très simples (1 bâtiment, 2 dossiers, 2 bâtiments différents), sans crise.
+  // Ensuite : trois objectifs tirés dans une réserve de 15 sortes (jamais deux de la même famille, jamais ceux du mandat précédent),
+  // chacun calculé à partir de la ville telle qu'elle est (« fais monter… de tant ») pour rester faisable en un mandat.
+  var RAYON_NOM2 = { logement: "le logement", transports: "les transports", cadre: "le cadre de vie", securite: "la sécurité" };
+  function totalEmp(st) { return Object.keys(st.emp || {}).reduce(function (n, k) { return n + st.emp[k]; }, 0); }
+  function casinoGagnes(st) { var c = stats(st).casino || {}; return Object.keys(c).reduce(function (n, k) { return n + (c[k].g || 0); }, 0); }
   function tirerMandatSession(st) {
-    var k = Math.max(0, Math.min(3, (st.mandat || 1) - 1)), liste = [], avant = {};
-    (st.objectifs || []).forEach(function (o) { avant[o.k + (o.r || o.p || "")] = 1; });   // les objectifs du mandat précédent ne reviennent pas à l'identique
-    if (k >= 2) {   // à partir du 3e mandat, une crise (qui abîme un peu la ville) revient
-      var ids = Object.keys(C.CRISES).filter(function (id) { return !st.crise || st.crise.id !== id; }), id = ids[Math.floor(rnd(st) * ids.length)], d = C.CRISES[id].depart || {};
-      st.crise = { id: id, mandat: st.mandat };
-      Object.keys(d.pil || {}).forEach(function (p) { st.base[p] = Math.max(P.plancher, st.base[p] + d.pil[p]); st.piliers[p] = borne(st.piliers[p] + d.pil[p]); });
-      if (d.pop) st.pop = borne(st.pop + d.pop);
+    var m = st.mandat || 1, d = Math.min(1, (m - 1) / 40), avant = {}, liste = [];
+    (st.objectifs || []).forEach(function (o) { avant[o.k + (o.r || o.p || "")] = 1; avant[o.k] = 1; });
+    if (m >= 3) {   // à partir du 3e mandat, une crise (qui abîme un peu la ville) revient
+      var ids = Object.keys(C.CRISES).filter(function (id) { return !st.crise || st.crise.id !== id; }), id = ids[Math.floor(rnd(st) * ids.length)], dp = C.CRISES[id].depart || {};
+      st.crise = { id: id, mandat: m };
+      Object.keys(dp.pil || {}).forEach(function (p) { st.base[p] = Math.max(P.plancher, st.base[p] + dp.pil[p]); st.piliers[p] = borne(st.piliers[p] + dp.pil[p]); });
+      if (dp.pop) st.pop = borne(st.pop + dp.pop);
     } else st.crise = null;
-    // Un rayon où l'on peut vraiment construire en ce moment
-    var rayons = ["logement", "transports", "cadre", "securite", "economie"].filter(function (r) {
-      return Object.keys(BATIMENTS).some(function (id) { var B = BATIMENTS[id]; return B.cat === r && !B.projet && !B.enchere && disponible(st, id); });
-    });
-    var neufs = rayons.filter(function (x) { return !avant["rayon" + x]; }); if (neufs.length) rayons = neufs;
-    var r = rayons.length ? rayons[Math.floor(rnd(st) * rayons.length)] : "logement";
-    var ob = [{ k: "rayon", r: r, but: CIBLES_SES.rayon[k], txt: "Construis " + CIBLES_SES.rayon[k] + " bâtiment" + (CIBLES_SES.rayon[k] > 1 ? "s " : " ") + RAYON_NOM[r], ico: "🏗️" },
-      { k: "dossiers", but: CIBLES_SES.dossiers[k] }];
-    if (k === 0) ob.push({ k: "diversite", but: CIBLES_SES.diversite[0], ico: "🧩", txt: "Construis " + CIBLES_SES.diversite[0] + " bâtiments différents" });
-    else {
-      // Un pilier (le plus faible) ou le bonheur, à faire monter par rapport à aujourd'hui
-      var faible = PK.slice().filter(function (x) { return !avant["pilier" + x]; }).sort(function (a, b) { return st.piliers[a] - st.piliers[b]; })[0] || PK[0];
-      if (avant.bonheur || (!avant["pilier" + faible] && rnd(st) < 0.6)) { var bp = Math.min(90, Math.round(st.piliers[faible]) + CIBLES_SES.pilier[k]); ob.push({ k: "pilier", p: faible, but: bp, ico: ICO[faible], txt: "Monte " + ({ logement: "le logement", transports: "les transports", cadre: "le cadre de vie", securite: "la sécurité" })[faible] + " à " + bp }); }
-      else { var bb = Math.min(90, Math.round(bonheur(st)) + CIBLES_SES.bonheur[k]); ob.push({ k: "bonheur", but: bb, ico: "😊", txt: "Bonheur des Parisiens à " + bb }); }
+    var dispo = Object.keys(BATIMENTS).filter(function (id) { var B = BATIMENTS[id]; return !B.projet && !B.enchere && disponible(st, id); });
+    var rayons = ["logement", "transports", "cadre", "securite", "economie", "commerce"].filter(function (r) { return dispo.some(function (id) { return BATIMENTS[id].cat === r; }); });
+    function n(a, b) { return Math.round(a + (b - a) * d); }   // de a (mandat 2) à b (mandat 41+)
+    if (m === 1) {
+      var r1 = rayons.length ? rayons[Math.floor(rnd(st) * rayons.length)] : "logement";
+      liste = [{ k: "rayon", r: r1, but: 1, ico: "🏗️", txt: "Construis 1 bâtiment " + RAYON_NOM[r1] }, { k: "dossiers", but: 2, ico: "📂", txt: "Tranche 2 dossiers" },
+        { k: "diversite", but: 2, ico: "🧩", txt: "Construis 2 bâtiments différents" }];
+    } else {
+      var pil = PK.slice().sort(function (a, b) { return st.piliers[a] - st.piliers[b]; }), ch = chomage(st), so = solde(st), hab = st.hab || h0(st);
+      var minP = Math.round(Math.min.apply(null, PK.map(function (k) { return st.piliers[k]; })));
+      // Chaque proposition : famille (une seule par mandat), condition, objectif
+      var props = [];
+      function prop(fam, poids, o) { if (o && !avant[o.k + (o.r || o.p || "")]) props.push({ f: fam, w: poids, o: o }); }
+      rayons.forEach(function (r) { var b = n(2, 6); prop("bat", 1.2 / rayons.length * 2, { k: "rayon", r: r, but: b, ico: "🏗️", txt: "Construis " + b + " bâtiments " + RAYON_NOM[r] }); });
+      var dv = Math.min(dispo.length, n(3, 8)); if (dv >= 3) prop("bat", 1, { k: "diversite", but: dv, ico: "🧩", txt: "Construis " + dv + " bâtiments différents" });
+      var nd = n(3, 5); prop("dos", 1, { k: "dossiers", but: nd, ico: "📂", txt: "Tranche " + nd + " dossiers" });
+      pil.slice(0, 2).forEach(function (p) { var b = Math.min(95, Math.round(st.piliers[p]) + n(3, 10)); prop("pil", 1, { k: "pilier", p: p, but: b, ico: ICO[p], txt: "Monte " + RAYON_NOM2[p] + " à " + b }); });
+      var tp = Math.min(90, minP + n(2, 7)); prop("pil", 0.7, { k: "tousPiliers", but: tp, ico: "🏛️", txt: "Les 4 piliers à " + tp + " ou plus" });
+      var bb = Math.min(92, Math.round(bonheur(st)) + n(2, 8)); prop("hum", 1, { k: "bonheur", but: bb, ico: "😊", txt: "Bonheur des Parisiens à " + bb });
+      var bp = Math.min(92, Math.round(st.pop) + n(2, 7)); prop("hum", 1, { k: "pop", but: bp, ico: "📣", txt: "Popularité à " + bp });
+      var bh = Math.round(hab * (1 + 0.01 + 0.04 * d) / 100) * 100; prop("hab", 0.8, { k: "habitants", but: bh, ico: "👥", txt: "Atteins " + bh.toLocaleString("fr-FR") + " habitants" });
+      if (ch > 4) { var bc = Math.max(3, Math.round((ch - 0.5 - 3 * d) * 10) / 10); prop("hab", 0.8, { k: "chomage", but: bc, ico: "💼", txt: "Chômage sous " + String(bc).replace(".", ",") + " %" }); }
+      var bt = Math.round((Math.max(0, st.tresor) + n(60, 450)) / 10) * 10; prop("arg", 0.8, { k: "tresor", but: bt, ico: "💰", txt: "Au moins " + bt + " M€ en caisse le jour du vote" });
+      var bs = Math.round(Math.max(so + 5, n(10, 70))); prop("arg", 0.8, { k: "solde", but: bs, ico: "📈", txt: "Gagne au moins " + bs + " M€ par saison" });
+      if (st.meca.employes) { var be = n(1, 4); prop("act", 0.8, { k: "emploi", but: be, ico: "👔", txt: "Embauche " + be + " employé" + (be > 1 ? "s" : "") }); }
+      if (st.meca.attaques) { var ba = n(1, 3); prop("act", 0.8, { k: "attaques", but: ba, ico: "⚔️", txt: "Réussis " + ba + " attaque" + (ba > 1 ? "s" : "") + " contre tes adversaires" }); }
+      var bk = n(1, 3); prop("act", 0.7, { k: "casino", but: bk, ico: "🎰", txt: "Gagne " + bk + " partie" + (bk > 1 ? "s" : "") + " au casino" });
+      if (st.meca.encheres || st.meca.ventes) prop("act", 0.5, { k: "enchere", but: 1, ico: "🔨", txt: "Remporte une enchère" });
+      var fams = {};
+      while (liste.length < 3 && props.length) {
+        var tot = props.reduce(function (a, x) { return a + x.w; }, 0), r = rnd(st) * tot, kx = 0;
+        for (; kx < props.length - 1 && (r -= props[kx].w) > 0; kx++);
+        var x = props.splice(kx, 1)[0]; if (fams[x.f]) continue;
+        fams[x.f] = 1; liste.push(x.o);
+      }
     }
-    ob.forEach(function (o) { var x = o.txt ? o : creerObjectif(st, o, false); liste.push({ k: x.k, p: x.p, r: x.r, but: x.but, ico: x.ico, txt: x.txt }); });
-    st.objectifs = liste;
+    st.objectifs = liste.map(function (o) { return { k: o.k, p: o.p, r: o.r, but: o.but, ico: o.ico, txt: o.txt }; });
     st.mandatBats = {}; st.mandatTypes = {};
-    var x = stats(st); st.mandatBase = { projetsOk: x.projetsOk, encheres: x.encheres || 0, dossiers: x.dossiers || 0 };
+    var x = stats(st); st.mandatBase = { projetsOk: x.projetsOk, encheres: x.encheres || 0, dossiers: x.dossiers || 0, emp: totalEmp(st), attaques: x.attaquesOk || 0, casino: casinoGagnes(st) };
   }
   // Fin de partie choisie après une réélection : on part en vainqueur
   function retraite(st0) {
