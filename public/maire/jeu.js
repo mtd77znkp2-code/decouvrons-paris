@@ -131,7 +131,7 @@
   // ---------- Fond vidéo (rue de Paris en pixel art) derrière le menu du jeu, pas pendant la partie ----------
   var fondV = null, fondF = "";
   // menu = true pour le menu et ses sections (série, pass, roue, ligue, succès, objets) : la musique du menu continue
-  function vider(menu) { box.innerHTML = ""; fondMenu(false); document.body.classList.toggle("m-son", !!menu); if (window.musique) setTimeout(window.musique, 0); }
+  function vider(menu) { box.innerHTML = ""; var gm = document.getElementById("g-maire"); if (gm) gm.classList.remove("m-accueil"); document.body.classList.remove("m-acc-on"); fondMenu(false); document.body.classList.toggle("m-son", !!menu); if (window.musique) setTimeout(window.musique, 0); }
   function fondMenu(on) {
     var g = document.getElementById("g-maire"); if (!g) return;
     g.classList.toggle("m-menu", on); document.body.classList.toggle("m-fond-on", on);
@@ -170,55 +170,70 @@
     box.appendChild(d); haut();
   }
   // Petite ligne en bas de l'accueil : connecté avec Google, ou proposition de se connecter
+  // Ligne de compte de l'accueil : portrait du maire, nom de joueur, connexion
   function ligneCompte() {
     var c = window.compteGoogle ? compteGoogle() : null, d = h("div", "mx-compte");
-    if (c) d.appendChild(h("small", null, "✅ Connecté avec Google" + (c.nom ? " · " + c.nom : "") + " · tu joues sous le nom « " + nomJoueur() + " »"));
-    else if (window.connexionGoogle) ajout(d, h("small", null, "👤 Invité · « " + nomJoueur() + " »"), bouton("Se connecter avec Google", "mx-lien", ecranConnexion));
+    var perso = "tribun"; try { perso = localStorage.getItem("maire_perso") || perso; } catch (e) {}
+    ajout(d, icoUI("maire-" + perso, "mx-compte-ico"), h("span", "mx-compte-nom", null));
+    d.lastChild.appendChild(document.createTextNode(c ? "Connecté : " : "Invité : ")); d.lastChild.appendChild(h("b", null, nomJoueur()));
+    if (!c && window.connexionGoogle) d.appendChild(bouton("Se connecter", "mx-lien", ecranConnexion));
+    d.appendChild(h("i", "mx-compte-pt" + (c ? " mx-on" : ""), null));
+    d.title = c ? "Connecté avec Google" + (c.nom ? " · " + c.nom : "") : "Partie en invité";
     return d;
   }
+  // Accueil du jeu (maquette « accueil ») : l'illustration avec le logo, le grand bouton Jouer, quatre tuiles, deux boutons, le compte.
+  // Sur ordinateur : l'illustration et Jouer à gauche, le reste dans une colonne à droite.
   function accueil() {
     if (!CONNEXION_VUE && !choixInvite() && window.connexionGoogle && !(window.compteGoogle && compteGoogle())) return ecranConnexion();
     vider(true); fondMenu(true); fermerModale();
+    var gm = document.getElementById("g-maire"); if (gm) gm.classList.add("m-accueil"); document.body.classList.add("m-acc-on");   /* pas de vidéo de fond : l’illustration suffit */
     var s = lireSauvegarde(), n = nivJ(), P = G.lire(), nv = G.niveau(P.xp);
     choixNiveau(s && s.phase !== "fin" ? s.niveau : lireNiveau());
-    var pr = h("div", "mx-profil"), barre = h("div", "mx-xpbarre"), bi = h("i"); bi.style.width = nv.pct + "%"; barre.appendChild(bi);
-    ajout(pr, h("span", "mx-niv mx-niv-gros", String(nv.n)), ajout(h("div"), h("strong", null, nv.titre + ((P.titres || []).length ? " · 🎖️ " + P.titres[P.titres.length - 1] : "")), barre,
-      h("small", null, nv.max ? "Niveau maximum" : nv.depuis + " / " + nv.besoin + " XP vers le niveau " + (nv.n + 1))));
-    box.appendChild(pr);
+    var page = h("div", "mx-acc"), g = h("div", "mx-acc-g"), dr = h("div", "mx-acc-d");
+    // L'illustration (le logo « Maire de Paris » est dessiné dedans)
+    var pic = h("picture", "mx-hero"), src = h("source"), im = h("img");
+    src.media = "(min-width: 900px)"; src.srcset = "maire/img/deco/accueil-pc.webp";
+    im.src = "maire/img/deco/accueil-tel.webp"; im.alt = "Maire de Paris"; im.width = 941; im.height = 655; im.decoding = "async";
+    ajout(pic, src, im); g.appendChild(pic);
+    var jouer = h("div", "mx-acc-jouer");
     if (s && s.phase !== "fin") {
       var r = bouton("", "mx-jouer", reprise);
-      ajout(r, h("strong", null, "▶ Reprendre ma partie"), h("small", null, (s.defi != null ? "Défi du jour · " : "") + "Mandat " + s.mandat + " · " + date(Math.max(1, s.t))));
-      box.appendChild(r);
-      box.appendChild(bouton("🏛️ Rejoindre une session", "mx-jouer mx-jouer2", function () { ecranSessions(false); }));
-      box.appendChild(bouton("Nouvelle partie", "mx-lien", function () { if (confirm("Commencer une nouvelle partie ? La partie en cours sera perdue.")) creation(); }));
+      ajout(r, h("strong", null, "Reprendre"), h("small", null, (s.defi != null ? "Défi du jour · " : "") + "Mandat " + s.mandat + " · " + date(Math.max(1, s.t))));
+      ajout(jouer, r, ajout(h("div", "mx-acc-sec"), bouton("🏛️ Rejoindre une session", "mx-jouer2", function () { ecranSessions(false); }),
+        bouton("Nouvelle partie", "mx-lien", function () { if (confirm("Commencer une nouvelle partie ? La partie en cours sera perdue.")) creation(); })));
     } else {
-      var j = bouton("", "mx-jouer", creation); ajout(j, h("strong", null, "▶ Jouer"), h("small", null, "Deviens maire de Paris"));
-      box.appendChild(j);
-      box.appendChild(bouton("🏛️ Rejoindre une session", "mx-jouer mx-jouer2", function () { ecranSessions(false); }));
+      var j = bouton("", "mx-jouer", creation); ajout(j, h("strong", null, "Jouer"));
+      ajout(jouer, j, ajout(h("div", "mx-acc-sec"), bouton("🏛️ Rejoindre une session", "mx-jouer2", function () { ecranSessions(false); })));
     }
+    g.appendChild(jouer);
     // Quatre tuiles : chacune ouvre son écran
     var se = G.serie(), ps = G.paliersMois(), roue = G.roueDispo(), t = h("div", "mx-tuiles");
     var TUILE_ICO = { "🔥": "menu-serie", "🎟️": "menu-palier", "🎡": "menu-roue", "🏅": "menu-ligue" };
     function tuile(ico, titre, sous, f, vif) { var b = bouton("", "mx-tuile" + (vif ? " mx-vif" : ""), f); ajout(b, TUILE_ICO[ico] ? icoUI(TUILE_ICO[ico]) : h("span", null, ico), h("strong", null, titre), h("small", null, sous)); return b; }
     ajout(t, tuile("🔥", se.n ? se.n + " jour" + (se.n > 1 ? "s" : "") : "Série", se.fait ? "validé aujourd’hui" : "joue aujourd’hui", ecranSerie, !se.fait),
-      tuile("🎟️", "Palier " + ps.palier + "/20", "objectifs du mois", ecranPass),
+      tuile("🎟️", "Palier " + ps.palier, "sur 20 ce mois", ecranPass),
       tuile("🎡", "Roue", roue ? "tour gratuit !" : "revient lundi", roue ? ecranRoue : function () { toast("🎡 Prochain tour gratuit lundi."); }, roue),
       tuile("🏅", "Ligue", "de la semaine", ecranLigue));
-    box.appendChild(t);
-    // Mes statistiques : seulement avec un compte Google (sinon, on propose de se connecter)
-    var cg = window.compteGoogle && compteGoogle(), bst = bouton("", "mx-messtats" + (cg ? "" : " mx-verrou-stats"), cg ? ecranMesStats : ecranConnexion);
-    ajout(bst, cg ? icoUI("menu-stats") : h("span", null, "🔒"), ajout(h("div"), h("strong", null, "Mes statistiques"), h("small", null, cg ? "tes parties, tes compétences, tes records" : "connecte-toi avec Google pour les voir")));
-    box.appendChild(bst);
+    dr.appendChild(t);
+    // Mes statistiques (avec un compte Google, sinon on propose de se connecter) et Réglages, côte à côte
+    var cg = window.compteGoogle && compteGoogle(), deux = h("div", "mx-acc-btns");
+    var bst = bouton("", "mx-messtats" + (cg ? "" : " mx-verrou-stats"), cg ? ecranMesStats : ecranConnexion);
+    ajout(bst, cg ? icoUI("menu-stats") : h("span", null, "🔒"), ajout(h("div"), h("strong", null, "Mes statistiques"), h("small", null, cg ? "tes parties et tes records" : "connecte-toi pour les voir")), h("em", "mx-chev", "›"));
     var breg = bouton("", "mx-messtats", function () { ecranReglagesSon(accueil); });
-    ajout(breg, icoUI("ui-reglages"), ajout(h("div"), h("strong", null, "Réglages"), h("small", null, "volume de la musique et des effets sonores")));
-    box.appendChild(breg);
+    ajout(breg, icoUI("ui-reglages"), ajout(h("div"), h("strong", null, "Réglages"), h("small", null, "musique et effets")), h("em", "mx-chev", "›"));
+    ajout(dr, ajout(deux, bst, breg), h("div", "mx-acc-sep", "⚜"), ligneCompte());
+    // Niveau du joueur, puis le reste replié
+    var pr = h("div", "mx-profil"), barre = h("div", "mx-xpbarre"), bi = h("i"); bi.style.width = nv.pct + "%"; barre.appendChild(bi);
+    ajout(pr, h("span", "mx-niv mx-niv-gros", String(nv.n)), ajout(h("div"), h("strong", null, nv.titre + ((P.titres || []).length ? " · 🎖️ " + P.titres[P.titres.length - 1] : "")), barre,
+      h("small", null, nv.max ? "Niveau maximum" : nv.depuis + " / " + nv.besoin + " XP vers le niveau " + (nv.n + 1))));
+    dr.appendChild(pr);
     var auj = h("details", "mx-replie"); auj.appendChild(h("summary", null, "📅 Aujourd’hui : défi, quêtes et succès du jour"));
-    var zone = h("div", "m-auj"); auj.appendChild(zone); box.appendChild(auj);
+    var zone = h("div", "m-auj"); auj.appendChild(zone); dr.appendChild(auj);
     Promise.all([index(), quetes()]).then(function () { panneauJour(zone, s); }).catch(function () { zone.textContent = "Indisponible pour le moment."; });
     var plus = h("details", "mx-replie"); plus.appendChild(h("summary", null, "📖 Mon parcours : histoire, succès, objets, déblocages"));
     ajout(plus, carteChapitre(n), carteProfil(), carteDeblocages(n));
-    box.appendChild(plus);
-    box.appendChild(ligneCompte());
+    dr.appendChild(plus);
+    ajout(page, g, dr); box.appendChild(page);
   }
   // ---------- Réglages du joueur : volume de la musique et des effets sonores (gardés sur l'appareil) ----------
   function ecranReglagesSon(retour) {

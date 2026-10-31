@@ -1269,3 +1269,52 @@ body.m-casino .m-pop,#m-telmod{place-items:start center}
 .mx-criseinfo.mx-alerte{color:#ffb0aa;font-weight:700}
 .m-elec-obj{margin:4px 0 0;font-weight:800;font-size:14px}
 .m-elec-obj.m-plus{color:#6fdc95}.m-elec-obj.m-moins{color:#ff8a80}
+/* ---------- Accueil du jeu (maquette « accueil ») ---------- */
+#g-maire.m-accueil>h3{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}   /* le logo est dans l'illustration */
+.mx-acc{display:grid;gap:14px}
+.mx-acc-g,.mx-acc-d{display:grid;gap:12px;align-content:start}
+.mx-hero{display:block;position:relative;margin:0 -16px;line-height:0}
+.mx-hero img{display:block;width:100%;height:auto;-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
+.mx-acc-jouer{display:grid;gap:10px;margin-top:-12px;position:relative}
+.mx-acc .mx-jouer{border-style:solid;border-color:transparent;border-width:14px 34px;border-image:url(img/deco/btn-or.webp) 26 64 fill/14px 34px stretch;background:none;box-shadow:none;border-radius:0;padding:4px 10px;color:#1b2550;filter:drop-shadow(0 8px 16px rgba(0,0,0,.45))}
+.mx-acc .mx-jouer:active{transform:translateY(2px);box-shadow:none}
+.mx-acc .mx-jouer strong{font:900 clamp(30px,8vw,42px)/1.1 Georgia,"Times New Roman",serif;letter-spacing:.01em;text-shadow:0 1px 0 rgba(255,255,255,.4)}
+.mx-acc .mx-jouer small{font-size:13px}
+.mx-acc-sec{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+.mx-acc .mx-jouer2{font:inherit;font-weight:800;font-size:14px;color:#ffe4a0;background:#18225a;border:2px solid #c99a2e;border-radius:14px;padding:10px 16px;cursor:pointer}
+.mx-acc .mx-tuiles{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.mx-acc .mx-tuile{background:linear-gradient(#1d2860,#141c4a)!important;border:2px solid #d9a53a;border-radius:14px;box-shadow:inset 0 0 0 2px rgba(0,0,0,.35),0 4px 12px rgba(0,0,0,.35);padding:10px 4px 8px;gap:2px}
+.mx-acc .mx-tuile.mx-vif{border-color:#ffd56a;box-shadow:0 0 0 2px rgba(255,213,106,.35),0 4px 14px rgba(0,0,0,.35)}
+.mx-acc .mx-tuile strong{font:800 15px/1.15 Georgia,"Times New Roman",serif;color:#fff}
+.mx-acc .mx-tuile small{font-size:10.5px;line-height:1.2}
+.mx-acc .mx-tuile>.mx-ui img{width:46px;height:46px}
+.mx-acc-btns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.mx-acc .mx-messtats{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;text-align:left;background:linear-gradient(#1d2860,#141c4a);border:2px solid #d9a53a;border-radius:14px;padding:10px 10px;color:#fff;font:inherit;cursor:pointer}
+.mx-acc .mx-messtats strong{font:800 15px/1.15 Georgia,"Times New Roman",serif}
+.mx-acc .mx-messtats small{display:block;font-size:11px;color:var(--mut);margin-top:2px}
+.mx-acc .mx-messtats>.mx-ui img{width:32px;height:32px}
+.mx-chev{font-style:normal;font-size:30px;font-weight:900;color:#f5b21a;line-height:1;font-family:Arial,sans-serif}
+.mx-acc-sep{display:flex;align-items:center;gap:10px;color:#f5b21a;font-size:22px;line-height:1}
+.mx-acc-sep::before,.mx-acc-sep::after{content:"";flex:1;height:2px;background:linear-gradient(90deg,transparent,#c99a2e)}
+.mx-acc-sep::after{background:linear-gradient(90deg,#c99a2e,transparent)}
+.mx-compte{display:flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border-radius:16px;background:#141c4a;border:2px solid #2c376e;box-shadow:inset 0 2px 8px rgba(0,0,0,.4)}
+.mx-compte .mx-compte-ico img{width:40px;height:40px;border-radius:10px}
+.mx-compte-nom{flex:1;min-width:0;font-weight:700;font-size:14px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mx-compte-nom b{color:#f5b21a}
+.mx-compte .mx-lien{font-size:13px;white-space:nowrap}
+.mx-compte-pt{width:14px;height:14px;border-radius:50%;background:#59607e;box-shadow:inset 0 -2px 0 rgba(0,0,0,.35);flex:none}
+.mx-compte-pt.mx-on{background:#3fd15a;box-shadow:0 0 8px rgba(63,209,90,.7),inset 0 -2px 0 rgba(0,0,0,.25)}
+@media (max-width:380px){.mx-acc .mx-tuile strong{font-size:13px}.mx-acc .mx-tuile small{display:none}.mx-acc .mx-messtats small{display:none}}
+/* Ordinateur : l'illustration et Jouer à gauche, le reste en colonne à droite */
+@media (min-width:900px){
+  .mx-acc{grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:22px;align-items:start}
+  .mx-hero{margin:0;border-radius:18px;overflow:hidden}
+  .mx-hero img{-webkit-mask-image:none;mask-image:none}
+  .mx-acc-jouer{margin:4px auto 0;width:min(520px,90%)}
+  .mx-acc .mx-tuiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .mx-acc .mx-tuile{padding:16px 8px 12px}
+  .mx-acc .mx-tuile>.mx-ui img{width:72px;height:72px}
+  .mx-acc .mx-tuile strong{font-size:18px}
+  .mx-acc-btns{grid-template-columns:1fr}
+}
+body.m-acc-on .m-fond{display:none}
