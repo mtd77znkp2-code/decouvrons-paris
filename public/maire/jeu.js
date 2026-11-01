@@ -222,17 +222,7 @@
     var breg = bouton("", "mx-messtats", function () { ecranReglagesSon(accueil); });
     ajout(breg, icoUI("ui-reglages"), ajout(h("div"), h("strong", null, "Réglages"), h("small", null, "musique et effets")), h("em", "mx-chev", "›"));
     ajout(dr, ajout(deux, bst, breg), h("div", "mx-acc-sep", "⚜"), ligneCompte());
-    // Niveau du joueur, puis le reste replié
-    var pr = h("div", "mx-profil"), barre = h("div", "mx-xpbarre"), bi = h("i"); bi.style.width = nv.pct + "%"; barre.appendChild(bi);
-    ajout(pr, h("span", "mx-niv mx-niv-gros", String(nv.n)), ajout(h("div"), h("strong", null, nv.titre + ((P.titres || []).length ? " · 🎖️ " + P.titres[P.titres.length - 1] : "")), barre,
-      h("small", null, nv.max ? "Niveau maximum" : nv.depuis + " / " + nv.besoin + " XP vers le niveau " + (nv.n + 1))));
-    dr.appendChild(pr);
-    var auj = h("details", "mx-replie"); auj.appendChild(h("summary", null, "📅 Aujourd’hui : défi, quêtes et succès du jour"));
-    var zone = h("div", "m-auj"); auj.appendChild(zone); dr.appendChild(auj);
-    Promise.all([index(), quetes()]).then(function () { panneauJour(zone, s); }).catch(function () { zone.textContent = "Indisponible pour le moment."; });
-    var plus = h("details", "mx-replie"); plus.appendChild(h("summary", null, "📖 Mon parcours : histoire, succès, objets, déblocages"));
-    ajout(plus, carteChapitre(n), carteProfil(), carteDeblocages(n));
-    dr.appendChild(plus);
+    // (Le niveau du joueur, « Aujourd’hui » et « Mon parcours » ne sont plus affichés sur l’accueil.)
     // Administrateur : tester les jeux du Grand Tournoi, hors session
     if (window.ADMIN_UNLOCKED && window.MaireTournoiUI) dr.appendChild(bouton("🛠 Admin : tester les jeux du Maire", "mx-admin-elec", function () { MaireTournoiUI.entrainement(); }));
     ajout(page, g, dr); box.appendChild(page);
