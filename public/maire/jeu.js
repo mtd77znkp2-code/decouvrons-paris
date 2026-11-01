@@ -1609,7 +1609,7 @@
     ajout(d, ajout(h("div", "mx-roue-tete"), h("span", "mx-roue-disque"), ajout(h("div"), h("small", null, "🎡 Quête de roue"), h("strong", null, e.roue.nom))),
       ajout(h("div", "mx-roue-quete"), h("span", null, e.ico), h("span", null, e.txt), h("b", null, e.cur + " / " + e.but)), barre,
       e.ok ? bouton("Tourner la " + e.roue.nom.toLowerCase() + " !", "btn m-go mx-roue-go", tournerRoue) : h("small", "m-aide", "Réussis la quête pour gagner un tour de roue. Les roues rares (or, saphir) ont moins de pièges et de plus gros gains."));
-    d.querySelector(".mx-roue-disque").style.background = "conic-gradient(" + e.roue.coul + " 0 45deg,#fff3 45deg 90deg," + e.roue.coul + " 90deg 135deg,#fff3 135deg 180deg," + e.roue.coul + " 180deg 225deg,#fff3 225deg 270deg," + e.roue.coul + " 270deg 315deg,#fff3 315deg)";
+    d.querySelector(".mx-roue-disque").style.backgroundImage = "url(maire/img/roue/roue-" + e.roue.id + ".webp)";
     return d;
   }
   function tournerRoue() {
@@ -1617,13 +1617,17 @@
     var r = M.tournerRoueJeu(st); if (!r) return;
     st = r.st; sauver(); signal("roue"); cacherBulle();
     var f = h("div", "m-pop m-roue-pop"), c = h("div", "m-pop-in m-roue-carte mx-roue-" + e.roue.id), n = e.cases.length;
-    var cont = h("div", "m-roue-zone"), roue = h("div", "m-roue2"), fl = h("div", "m-roue-fleche", "▼"), g = [];
-    e.cases.forEach(function (t, k) {
-      var piege = /^(Grève|Scandale|Départs|Chantier retardé)/.test(t);
-      g.push((piege ? "#5a1f24" : k % 2 ? e.roue.coul : "#1d2860") + " " + (k * 360 / n) + "deg " + ((k + 1) * 360 / n) + "deg");
-      var lab = h("span", "m-roue-lab", t.replace(/ : .*$/, "")); lab.style.transform = "rotate(" + ((k + 0.5) * 360 / n) + "deg) translateY(calc(min(270px, 72vw) * -0.32))"; roue.appendChild(lab);
+    var cont = h("div", "m-roue-zone"), roue = h("div", "m-roue2"), fl = h("img", "m-roue-fleche");
+    fl.src = "maire/img/roue/roue-aiguille.webp"; fl.alt = ""; fl.width = 46; fl.height = 46;
+    roue.style.backgroundImage = "url(maire/img/roue/roue-" + e.roue.id + ".webp)";
+    var PIEGE = { greve: 1, scandale: 1, depart: 1, retard: 1 };
+    function court(c) { var v = c[1]; return { argent: "+" + v + " M€", pop: "+" + v, xp: "+" + v, hab: "+" + v, employe: v > 1 ? "×" + v : "", greve: "−" + v + " M€", scandale: "−" + v, depart: "−" + v + " %" }[c[0]] || ""; }
+    e.cs.forEach(function (c, k) {
+      var lab = h("span", "m-roue-lab" + (PIEGE[c[0]] ? " m-roue-piege" : "")), im = h("img");
+      im.src = "maire/img/roue/c-" + c[0] + ".webp"; im.alt = ""; im.width = 30; im.height = 30; im.draggable = false;
+      lab.title = e.cases[k]; ajout(lab, im, court(c) ? h("b", null, court(c)) : null);
+      lab.style.transform = "rotate(" + ((k + 0.5) * 360 / n) + "deg) translateY(calc(var(--rw) * -0.265))"; roue.appendChild(lab);
     });
-    roue.style.background = "conic-gradient(" + g.join(",") + ")";
     var res = h("p", "m-roue-res"), fin = bouton("Continuer", "btn m-go mx-cache", function () { f.remove(); jeu(); });
     ajout(c, h("p", "m-sur", "🎡 " + e.roue.nom), ajout(cont, fl, roue), res, fin); f.appendChild(c); document.body.appendChild(f);
     if (window.sfx) window.sfx("roulette", 0.6);

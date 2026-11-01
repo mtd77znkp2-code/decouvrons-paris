@@ -608,7 +608,7 @@
   function etatRoue(st) {
     if (!st.session || !st.roueQ) return null;
     var q = st.roueQ, v = roueValeurs(st), cur = q.k === "pop" ? Math.round(st.pop) : (v[q.k] || 0) - (q.base[q.k] || 0);
-    return { roue: ROUES[q.roue], n: q.roue, txt: q.txt, ico: q.ico, cur: Math.min(cur, q.but), but: q.but, ok: cur >= q.but, cases: CASES[q.roue].map(texteCase) };
+    return { roue: ROUES[q.roue], n: q.roue, txt: q.txt, ico: q.ico, cur: Math.min(cur, q.but), but: q.but, ok: cur >= q.but, cases: CASES[q.roue].map(texteCase), cs: CASES[q.roue] };
   }
   // À chaque saison : une nouvelle quête de roue de temps en temps
   function suivreRoue(st) {

@@ -1731,3 +1731,13 @@ body.m-acc-on .m-fond{display:none}
 .m-roue-pop{z-index:1400}
 .m-roue-pop .m-roue-carte{grid-template-columns:minmax(0,1fr)!important;grid-auto-flow:row!important}
 .m-roue-pop .m-roue-carte>*{grid-column:1!important}
+/* Roues illustrées (bois → saphir) : image de la roue, aiguille dorée, icônes des cases, décor doré derrière */
+.m-roue-pop .m-roue-zone{--rw:min(280px,66vw);width:var(--rw);margin:calc(var(--rw)*.17) auto calc(var(--rw)*.15)}
+.m-roue-pop .m-roue-zone::before{content:"";position:absolute;inset:-17%;background:url(img/roue/roue-socle.webp) center/contain no-repeat;border-radius:50%;pointer-events:none}
+.m-roue-pop .m-roue2{background:center/contain no-repeat;box-shadow:none;filter:drop-shadow(0 10px 18px rgba(0,0,0,.5))}
+.m-roue-pop .m-roue-lab{display:grid;justify-items:center;align-content:start;gap:0;width:56px;height:auto;margin:-18px 0 0 -28px;font-size:11px;line-height:1.05;letter-spacing:-.01em;text-shadow:0 0 3px #000,0 1px 2px #000}
+.m-roue-pop .m-roue-lab img{width:calc(var(--rw)*.13);height:calc(var(--rw)*.13);filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+.m-roue-pop .m-roue-piege img{border-radius:50%;background:radial-gradient(#7a1d26 55%,transparent 72%)}
+.m-roue-pop .m-roue-piege b{color:#ffb4ab}
+.m-roue-pop .m-roue-fleche{top:calc(var(--rw)*-.07);width:calc(var(--rw)*.19);height:auto;font-size:0;filter:drop-shadow(0 3px 4px rgba(0,0,0,.6))}
+.mx-roue-disque{width:44px;height:44px;border:0;border-radius:50%;background:center/contain no-repeat;box-shadow:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
