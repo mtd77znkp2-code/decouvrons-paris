@@ -154,6 +154,25 @@
       marathon: ["s-coureur", "s-coureur-saut", "s-coureur-glisse", "s-barriere", "s-bache", "s-eau", "s-medaille", "s-coeur", "s-coeur-vide"] }[id] || []).forEach(img);
     img("victoire"); img("defaite");
   }
+  function graine0(o) { return o.graine; }
+  // ---------- Entraînement (admin) : choisir une épreuve et un niveau, jouer sans session ni classement ----------
+  function entrainement() {
+    fermer("mt-jeu");
+    var f = h("div", "m-pop mt-pop"); f.id = "mt-jeu"; f.setAttribute("role", "dialog");
+    var c = h("div", "m-pop-in mt-ecran"), niv = 0, l = h("div", "mt-choix-jeux"), nivs = h("div", "mt-choix-niv");
+    NIVEAUX.forEach(function (n, k) { var b = bouton((k + 1) + " · " + n, "mt-nivbtn" + (k === niv ? " mt-on" : ""), function () { niv = k; Array.prototype.forEach.call(nivs.children, function (x, i) { x.classList.toggle("mt-on", i === k); }); }); nivs.appendChild(b); });
+    J.IDS.forEach(function (id) {
+      var x = J.JEUX[id], b = bouton("", "mt-choix", function () {
+        precharger(id); var o = { id: id, niv: niv, graine: Math.floor(Math.random() * 2e9) + 1 };
+        c.innerHTML = ""; c.classList.add("mt-ecran-jeu"); compteARebours(c, o.graine, o);
+      });
+      var im = h("img"); im.src = "maire/img/tournoi/ico-" + id + ".webp"; im.alt = ""; im.onerror = function () { im.replaceWith(h("span", null, x.ico)); };
+      ajout(b, im, h("b", null, x.nom), h("small", null, J.duree(id) + " s")); l.appendChild(b);
+    });
+    ajout(c, bouton("✕", "m-leonx mt-x", function () { fermer("mt-jeu"); }), h("p", "mt-sur", "🛠 Admin · entraînement"), h("h4", "mt-titre", "Tester les jeux du Maire"),
+      h("p", "mt-accroche", "Hors session : aucun score envoyé, aucun effet sur le tournoi."), h("p", "mt-sur", "Niveau de difficulté"), nivs, h("p", "mt-sur", "Choisis une épreuve"), l);
+    f.appendChild(c); document.body.appendChild(f);
+  }
   function presenter() {
     if (!T) return; precharger(T.jeu); var jx = jeuDe(T), now = maintenant();
     if (T.etat === "clos" || now >= T.cloture) return classement();
@@ -164,26 +183,32 @@
     var ill = h("img", "mt-illu"); ill.src = "maire/img/tournoi/pres-" + T.jeu + ".webp"; ill.alt = ""; ill.onerror = function () { ill.replaceWith(h("div", "mt-illu mt-illu-emo", jx.ico)); };
     var regles = h("ul", "mt-regles"); jx.regles.forEach(function (r) { regles.appendChild(h("li", null, r)); });
     var go = bouton("C’est parti !", "btn m-go", function () { go.disabled = true; go.textContent = "Connexion au tournoi…"; commencer(c); });
-    ajout(c, bouton("✕", "m-leonx mt-x", function () { fermer("mt-jeu"); }), ill, h("p", "mt-sur", "Grand Tournoi des Maires · " + DUREE() + " secondes"), h("h4", "mt-titre", jx.ico + " " + jx.nom),
+    var nv = J.difficulte(Math.max(0, maPlace()));
+    ajout(c, bouton("✕", "m-leonx mt-x", function () { fermer("mt-jeu"); }), ill, h("p", "mt-sur", "Grand Tournoi des Maires · " + DUREE() + " secondes"),
+      h("p", "mt-niv mt-niv-" + nv, "🎚️ " + nivTxt(nv) + " — plus tu es haut dans le classement des maires, plus l’épreuve est dure"), h("h4", "mt-titre", jx.ico + " " + jx.nom),
       h("p", "mt-accroche", jx.accroche), regles, h("p", "mt-avert", "⚠️ Une seule tentative : si tu quittes en pleine partie, elle compte pour 0."), go);
     f.appendChild(c); document.body.appendChild(f);
   }
-  function DUREE() { return J.DUREE; }
+  var NIVEAUX = ["Facile", "Moyen", "Difficile", "Expert"];
+  function maPlace() { return CTX && CTX.session && root.MaireSession ? MaireSession.placeDe(CTX.session, moi()) : 0; }
+  function nivTxt(n) { return "Difficulté " + (n + 1) + "/4 · " + NIVEAUX[n]; }
+  function DUREE() { return T ? J.duree(T.jeu) : J.DUREE; }
   function commencer(c) {
     appel("tournoiCommencer", { tournoi: T.id }).then(function (r) {
       if (r.deja) { fermer("mt-jeu"); toast("Tu as déjà joué ce tournoi."); return classement(); }
-      compteARebours(c, r.graine);
+      compteARebours(c, r.graine, { id: T.jeu, niv: r.niv || 0, tid: T.id });
     }).catch(function (e) { fermer("mt-jeu"); toast("🏆 " + (e.message || "Tournoi indisponible")); });
   }
-  function compteARebours(c, graine) {
+  function compteARebours(c, graine, o) {
     c.innerHTML = ""; c.classList.add("mt-ecran-jeu");
     var n = 3, z = h("div", "mt-321", "3"); c.appendChild(z); son("tictac", 0.6);
-    var iv = setInterval(function () { n--; if (n > 0) { z.textContent = String(n); son("tictac", 0.6); } else { clearInterval(iv); jouer(c, graine); } }, 800);
+    var iv = setInterval(function () { n--; if (n > 0) { z.textContent = String(n); son("tictac", 0.6); } else { clearInterval(iv); jouer(c, graine, o); } }, 800);
   }
 
   // ---------- La boucle de jeu : 30 images par seconde, gestes enregistrés pour le serveur ----------
-  function jouer(c, graine) {
-    var id = T.jeu, jx = J.JEUX[id], s = jx.creer(graine), gestes = [], file = [], tid = T.id;
+  // o : { id, niv, tid } — sans tid, partie d'entraînement (admin), rien n'est envoyé au serveur
+  function jouer(c, graine, o) {
+    var id = o.id, jx = J.JEUX[id], s = J.creer(id, graine, o.niv), gestes = [], file = [], tid = o.tid;
     img("decor-" + id);
     c.innerHTML = "";
     var haut = h("div", "mt-hud"), chrono = h("b", "mt-chrono", ""), score = h("b", "mt-score", "0");
@@ -210,7 +235,7 @@
     var t0 = performance.now(), faites = 0;
     (function boucle(t) {
       if (!document.body.contains(cv)) { document.removeEventListener("keydown", clavier); return; }
-      var dues = Math.min(J.IMAGES, Math.floor((t - t0) / 1000 * J.FPS));
+      var dues = Math.min(s.n, Math.floor((t - t0) / 1000 * J.FPS));
       while (faites < dues && !s.fin) {
         var lot = file.splice(0).map(function (g) { g.f = s.f; return g; });
         lot.forEach(function (g) { gestes.push(g); });
@@ -218,8 +243,8 @@
         if (s.score > sc) son("pieces", 0.25); else if (s.score < sc) son("perdu", 0.25);
       }
       COURANT = id; DESSINS[id](ctx, s, glisse);
-      chrono.textContent = Math.max(0, Math.ceil((J.IMAGES - s.f) / J.FPS)) + " s"; score.textContent = String(s.score);
-      if (s.fin) { document.removeEventListener("keydown", clavier); J.terminer(id, s); return finir(c, s, gestes, tid); }
+      chrono.textContent = Math.max(0, Math.ceil((s.n - s.f) / J.FPS)) + " s"; score.textContent = String(s.score);
+      if (s.fin) { document.removeEventListener("keydown", clavier); J.terminer(id, s); return finir(c, s, gestes, tid, id, o); }
       requestAnimationFrame(boucle);
     })(t0);
   }
@@ -233,13 +258,19 @@
     if (id === "budget") { if (p.y > 460) return geste({ a: "ok" }); var i = Math.floor((p.y - 150) / 52); if (i >= 0 && i < s.opts.length) geste({ a: "opt", k: i }); return; }
     if (id === "une") { var r = Math.floor((p.y - 110) / 130); if (r < 0 || r > 2) return; geste({ a: p.x < 180 ? "evt" : "titre", k: r }); }
   }
-  function finir(c, s, gestes, tid) {
+  function finir(c, s, gestes, tid, id, o) {
     son("fanfare", 0.6);
     c.innerHTML = ""; c.classList.remove("mt-ecran-jeu");
     var res = h("div", "mt-fin"), sc = h("strong", "mt-fin-score", String(s.score)), info = h("p", null, "Vérification du score par le serveur…");
-    var bon = s.score >= J.JEUX[T.jeu].typique * 0.75, ill = h("img", "mt-illu mt-illu-fin"); ill.src = "maire/img/tournoi/" + (bon ? "victoire" : "defaite") + ".webp"; ill.alt = ""; ill.onerror = function () { ill.remove(); };
-    ajout(res, ill, h("p", "mt-sur", bon ? "Belle épreuve !" : "Fin de l’épreuve !"), h("h4", "mt-titre", "🏁 " + J.JEUX[T.jeu].nom), sc, info);
+    var bon = s.score >= J.JEUX[id].typique * 0.75, ill = h("img", "mt-illu mt-illu-fin"); ill.src = "maire/img/tournoi/" + (bon ? "victoire" : "defaite") + ".webp"; ill.alt = ""; ill.onerror = function () { ill.remove(); };
+    ajout(res, ill, h("p", "mt-sur", bon ? "Belle épreuve !" : "Fin de l’épreuve !"), h("h4", "mt-titre", "🏁 " + J.JEUX[id].nom), sc, info);
     c.appendChild(res);
+    if (!tid) {   // entraînement : pas de serveur, on peut rejouer
+      var verif = J.rejouer(id, graine0(o), J.nettoyer(gestes, id), o.niv);
+      info.textContent = "🛠 Entraînement (" + nivTxt(o.niv) + ") · rien n’est envoyé au tournoi · le serveur aurait compté " + verif.score + " points.";
+      ajout(res, bouton("Rejouer", "btn m-go", function () { compteARebours(c, o.graine = Math.floor(Math.random() * 2e9) + 1, o); }), bouton("Autre épreuve", "btn m-sec", function () { fermer("mt-jeu"); entrainement(); }));
+      return;
+    }
     appel("tournoiTerminer", { tournoi: tid, gestes: gestes }).then(function (r) {
       sc.textContent = String(r.score);
       info.textContent = r.motif ? "⚠️ Partie refusée par le serveur (" + r.motif + ")." : "✔ Score vérifié par le serveur. Le classement définitif tombe 30 secondes avant l’élection.";
@@ -295,7 +326,7 @@
   }
 
   root.__dessine = function (ctx, s, id) { COURANT = id; DESSINS[id](ctx, s, null); };   // aperçu des épreuves (tests)
-  root.MaireTournoiUI = { branchement: function (b) { BACK = b; }, tic: tic, bandeau: bandeau, annonce: annonce, classement: classement, presenter: presenter, etat: function () { return T; } };
+  root.MaireTournoiUI = { entrainement: entrainement, branchement: function (b) { BACK = b; }, tic: tic, bandeau: bandeau, annonce: annonce, classement: classement, presenter: presenter, etat: function () { return T; } };
 
   // ===================== Dessin des dix épreuves (Canvas, style « arcade » de la mairie) =====================
   var BLEU = "#141c4a", CARTE = "#1d2860", OR = "#f5b21a", ROUGE = "#c8352e", CLAIR = "#e8e2cf";

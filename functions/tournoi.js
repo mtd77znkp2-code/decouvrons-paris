@@ -17,7 +17,6 @@ const TR = require("./partage/tournoi-regles.js");
 
 const db = () => getFirestore();
 const OPT = { region: "europe-west1", maxInstances: 5 };   // comme les autres fonctions du site
-const LIMITE = 45 * 1000;          // durée d'une épreuve
 const MARGE = 20 * 1000;           // délai de réseau accepté pour rendre sa copie
 
 function lireSession(d) { try { return JSON.parse(d.data().etat); } catch (e) { return null; } }
@@ -66,7 +65,7 @@ export const tournoiCommencer = onCall(OPT, async (req) => {
     const x = s.places[place];
     const part = { uid, nom: String(x.nom || "Un maire").slice(0, 24), ico: String(x.ico || "🙂").slice(0, 8), place, court: S.court(place), debut: maintenant, statut: "en_cours", score: 0 };
     tx.create(pref, part);
-    return { deja: false, part, jeu: t.jeu, graine: gd.data().graine, maintenant };
+    return { deja: false, part, jeu: t.jeu, graine: gd.data().graine, niv: J.difficulte(place), maintenant };
   });
 });
 
@@ -75,18 +74,19 @@ export const tournoiTerminer = onCall(OPT, async (req) => {
   const uid = connecte(req), d = req.data || {}, tid = String(d.tournoi || "");
   const tref = db().doc("tournois/" + tid), pref = tref.collection("parts").doc(uid);
   const maintenant = Date.now();
-  const gestes = J.nettoyer(d.gestes);
+  let gestes = null;
   return db().runTransaction(async (tx) => {
     const td = await tx.get(tref), pd = await tx.get(pref), gd = await tx.get(db().doc("prive/tg_" + tid));
     if (!td.exists || !pd.exists || !gd.exists) throw new HttpsError("not-found", "Tentative inconnue.");
     const t = td.data(), p = pd.data(), graine = gd.data().graine;
     if (p.statut !== "en_cours") return { score: p.score, deja: true };
-    const ecoule = maintenant - p.debut;
+    const ecoule = maintenant - p.debut, LIMITE = J.duree(t.jeu) * 1000;
+    gestes = J.nettoyer(d.gestes, t.jeu);
     let score = 0, motif = "";
     if (!gestes) motif = "gestes invalides";
     else if (maintenant > t.cloture + MARGE || ecoule > LIMITE + MARGE) motif = "trop tard";
     else {
-      const r = J.rejouer(t.jeu, graine, gestes);
+      const r = J.rejouer(t.jeu, graine, gestes, J.difficulte(p.place));   // même niveau de difficulté que pendant la partie
       // Impossible de finir plus vite que le temps de jeu réellement écoulé (moins 3 s de tolérance)
       if (ecoule < r.images / J.FPS * 1000 - 3000) motif = "trop rapide";
       else score = r.score;

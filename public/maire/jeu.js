@@ -233,6 +233,8 @@
     var plus = h("details", "mx-replie"); plus.appendChild(h("summary", null, "📖 Mon parcours : histoire, succès, objets, déblocages"));
     ajout(plus, carteChapitre(n), carteProfil(), carteDeblocages(n));
     dr.appendChild(plus);
+    // Administrateur : tester les jeux du Grand Tournoi, hors session
+    if (window.ADMIN_UNLOCKED && window.MaireTournoiUI) dr.appendChild(bouton("🛠 Admin : tester les jeux du Maire", "mx-admin-elec", function () { MaireTournoiUI.entrainement(); }));
     ajout(page, g, dr); box.appendChild(page);
   }
   // ---------- Réglages du joueur : volume de la musique et des effets sonores (gardés sur l'appareil) ----------

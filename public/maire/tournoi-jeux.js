@@ -10,9 +10,13 @@
   // Hasard reproductible (mulberry32) : rangé dans l'état, il suit la partie
   function rnd(s) { s.r = (s.r + 0x6D2B79F5) | 0; var t = Math.imul(s.r ^ (s.r >>> 15), 1 | s.r); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }
   function ent(s, a, b) { return a + Math.floor(rnd(s) * (b - a + 1)); }
-  function base(graine) { return { r: graine | 0, f: 0, score: 0, fin: false, evts: [] }; }
+  // Paramètres de la partie en cours de création (durée de l'épreuve, niveau de difficulté 0 à 3)
+  var CREATION = { n: IMAGES, d: 0 };
+  function base(graine) { return { r: graine | 0, f: 0, score: 0, fin: false, evts: [], n: CREATION.n, d: CREATION.d }; }
   function pts(s, n, x, y) { s.score = Math.max(0, s.score + n); s.evts.push({ f: s.f, n: n, x: x == null ? W / 2 : x, y: y == null ? H / 3 : y }); if (s.evts.length > 12) s.evts.shift(); }
-  function prog(s) { return Math.min(1, s.f / IMAGES); }   // 0 → 1 au fil de l'épreuve : la difficulté monte
+  // 0 → 1 au fil de l'épreuve : la difficulté monte ; les niveaux 2 à 4 partent de plus haut et montent plus vite
+  function prog(s) { return Math.min(1, s.f / (s.n || IMAGES)); }
+  function D(s) { return s.d || 0; }   // niveau de difficulté 0 à 3 : chaque épreuve en tient compte à sa façon (moins de temps, plus de pièges)
 
   var JEUX = {};
 
@@ -41,8 +45,8 @@
       if (s.f >= s.prochain) {
         var libres = []; for (var k = 0; k < 9; k++) if (!s.p.some(function (o) { return o.k === k; })) libres.push(k);
         if (libres.length) {
-          var t = rnd(s) < 0.42 ? "pickpocket" : GENS[1 + ent(s, 0, 3)];
-          s.p.push({ k: libres[ent(s, 0, libres.length - 1)], t: t, debut: s.f, fin: s.f + Math.round(FPS * (1.7 - 0.8 * p)) });
+          var t = rnd(s) < 0.42 - 0.05 * D(s) ? "pickpocket" : GENS[1 + ent(s, 0, 3)];
+          s.p.push({ k: libres[ent(s, 0, libres.length - 1)], t: t, debut: s.f, fin: s.f + Math.round(FPS * (1.7 - 0.8 * p) * (1 - 0.13 * D(s))) });
         }
         s.prochain = s.f + Math.round(FPS * (0.95 - 0.55 * p));
       }
@@ -62,7 +66,7 @@
       if (r > 0 && !vus[(r - 1) + "," + c]) opts.push([r - 1, c]);
       if (r < N - 1 && !vus[(r + 1) + "," + c]) opts.push([r + 1, c]);
       var o = opts[ent(s, 0, opts.length - 1)];
-      if (rnd(s) < 0.45) o = opts[0];
+      if (rnd(s) < 0.45 - 0.1 * D(s)) o = opts[0];   // plus haut niveau : chemin plus tortueux
       r = o[0]; c = o[1]; vus[r + "," + c] = 1; chemin.push([r, c]);
     }
     var depart = chemin[0][0], arrivee = chemin[chemin.length - 1][0];
@@ -130,7 +134,7 @@
           s.prochain[a] = s.f + Math.round(FPS * (1.6 - 1.0 * p) * (0.7 + rnd(s) * 0.6));
         }
         // Avancer : chaque voiture garde ses distances et s'arrête au feu rouge (ligne à 120 du centre)
-        var l = s.v[a], vit = 4 + 3 * p;
+        var l = s.v[a], vit = (4 + 3 * p) * (1 + 0.15 * D(s));
         for (var i = 0; i < l.length; i++) {
           var o = l[i], limite = i ? l[i - 1].d - 34 : 9999;
           if (!s.feux[a] && o.d <= 150) limite = Math.min(limite, 150);   // feu rouge : on s'arrête à la ligne
@@ -145,7 +149,7 @@
         s.v[0] = s.v[0].filter(function (o) { return dansA.indexOf(o) < 0; }); s.v[1] = s.v[1].filter(function (o) { return dansB.indexOf(o) < 0; });
       }
       // Bouchon : plus de 6 voitures arrêtées sur un axe
-      var bloq = s.v[0].length > 6 || s.v[1].length > 6;
+      var bloq = s.v[0].length > 6 - D(s) || s.v[1].length > 6 - D(s);
       if (bloq && ++s.bouchon >= FPS) { s.bouchon = 0; pts(s, -5, CX, 60); }
     }
   };
@@ -166,7 +170,7 @@
         s.d.splice(s.d.indexOf(cible), 1);
         if (BACS[x.k] === cible.t) { s.serie++; pts(s, 10 + (s.serie >= 5 ? 5 : 0), 45 + x.k * 90, 470); } else { s.serie = 0; pts(s, -5, 45 + x.k * 90, 470); }
       });
-      for (var i = s.d.length - 1; i >= 0; i--) { s.d[i].y += 1.6 + 2.6 * p; if (s.d[i].y > 400) { s.d.splice(i, 1); s.serie = 0; pts(s, -5, 180, 400); } }
+      for (var i = s.d.length - 1; i >= 0; i--) { s.d[i].y += (1.6 + 2.6 * p) * (1 + 0.22 * D(s)); if (s.d[i].y > 400) { s.d.splice(i, 1); s.serie = 0; pts(s, -5, 180, 400); } }
       if (s.f >= s.prochain) {
         var x = DECHETS[ent(s, 0, DECHETS.length - 1)];
         s.d.push({ id: s.f, t: x[0], e: x[1], x: 60 + ent(s, 0, 240), y: 30 });
@@ -180,9 +184,9 @@
     nom: "Le Chantier Express", ico: "🏗️", typique: 450,
     accroche: "Une grue, des pierres de taille, 45 secondes : construis l’immeuble le plus haut !",
     regles: ["Touche l’écran pour lâcher le bloc", "Bien aligné sur l’étage du dessous : +10 (pile : +15)", "Tous les 5 blocs, un étage complet : +25", "Trop décalé : ça s’écroule (−20)"],
-    creer: function (g) { var s = base(g); s.pile = [{ x: 130, w: 100 }]; s.bloc = { x: 0, w: 100, sens: 1 }; s.chute = null; return s; },
+    creer: function (g) { var s = base(g), w = 100 - 10 * D(s); s.pile = [{ x: 180 - w / 2, w: w }]; s.bloc = { x: 0, w: w, sens: 1 }; s.chute = null; return s; },
     pas: function (s, gestes) {
-      var p = prog(s), b = s.bloc, vit = 2.5 + 4.5 * p + s.pile.length * 0.08;
+      var p = prog(s), b = s.bloc, vit = (2.5 + 4.5 * p + s.pile.length * 0.08) * (1 + 0.18 * D(s));
       if (s.chute) { s.chute.y += 9; if (s.chute.y > 600) s.chute = null; return; }
       b.x += vit * b.sens; if (b.x < 0) { b.x = 0; b.sens = 1; } if (b.x + b.w > W) { b.x = W - b.w; b.sens = -1; }
       if (!gestes.some(function (x) { return x.a === "tap"; })) return;
@@ -206,9 +210,9 @@
     nom: "Le Conseil Municipal", ico: "🏛️", typique: 350,
     accroche: "Les élus votent dans un ordre précis… sauras-tu suivre la séance ?",
     regles: ["Regarde l’ordre dans lequel les élus s’allument", "Touche-les dans le même ordre", "Chaque séance réussie rapporte plus · 3 erreurs et la séance est levée"],
-    creer: function (g) { var s = base(g); s.seq = [ent(s, 0, 3), ent(s, 0, 3)]; s.vies = 3; s.i = 0; s.mode = "montre"; s.t = 0; s.allume = -1; s.serie = 0; return s; },
+    creer: function (g) { var s = base(g); s.seq = [ent(s, 0, 3), ent(s, 0, 3)]; for (var q = 0; q < Math.floor((s.d || 0) / 2); q++) s.seq.push(ent(s, 0, 3)); s.vies = 3; s.i = 0; s.mode = "montre"; s.t = 0; s.allume = -1; s.serie = 0; return s; },
     pas: function (s, gestes) {
-      var dureeL = Math.max(8, 15 - s.seq.length);   // un élu reste allumé moins longtemps quand la séquence s'allonge
+      var dureeL = Math.max(6, 15 - s.seq.length - (s.d || 0));   // un élu reste allumé moins longtemps quand la séquence s'allonge
       if (s.mode === "montre") {
         s.t++; var k = Math.floor(s.t / (dureeL + 4)), dans = s.t % (dureeL + 4);
         s.allume = k < s.seq.length && dans < dureeL ? s.seq[k] : -1;
@@ -232,9 +236,9 @@
     nom: "Le Marathon de Paris", ico: "🏃", typique: 400,
     accroche: "Le départ est donné sur les Champs-Élysées : cours, saute, glisse !",
     regles: ["Touche le haut de l’écran (ou ↑ / Espace) pour sauter", "Touche le bas (ou ↓) pour glisser sous les obstacles", "Bouteille d’eau +5, médaille +20 · 3 chocs et c’est l’abandon"],
-    creer: function (g) { var s = base(g); s.y = 0; s.vy = 0; s.glisse = 0; s.obs = []; s.prochain = 40; s.coeurs = 3; s.invul = 0; s.dist = 0; return s; },
+    creer: function (g) { var s = base(g); s.y = 0; s.vy = 0; s.glisse = 0; s.obs = []; s.prochain = 40; s.coeurs = 4; s.invul = 0; s.dist = 0; return s; },
     pas: function (s, gestes) {
-      var p = prog(s), vit = 5 + 5 * p;
+      var p = prog(s), vit = (5 + 5 * p) * (1 + 0.12 * D(s));
       gestes.forEach(function (x) {
         if (x.a === "saut" && s.y === 0 && !s.glisse) s.vy = 13;
         if (x.a === "glisse" && s.y === 0) s.glisse = 18;
@@ -258,7 +262,7 @@
         s.prochain = s.f + Math.round(FPS * (1.3 - 0.6 * p) * (0.8 + rnd(s) * 0.5));
       }
     },
-    finale: function (s) { pts(s, Math.round(s.dist / 20) + s.coeurs * 20); }   // la distance et la survie comptent à la fin
+    finale: function (s) { pts(s, Math.round(s.dist / 30) + s.coeurs * 20); }   // la distance et la survie comptent à la fin
   };
 
   // ---------------- 8. Le Casse du Budget : atteindre exactement le montant demandé ----------------
@@ -284,7 +288,7 @@
     var p = prog(s), nb = 2 + (s.manches > 2 ? 1 : 0) + (p > 0.6 ? 1 : 0), bons = [], v = 0;
     for (var i = 0; i < nb; i++) { var x = ent(s, 1, 8) * 50; bons.push(x); v += x; }
     var opts = bons.map(function (x) { return { v: x }; });
-    var faux = 2 + (p > 0.4 ? 1 : 0);
+    var faux = 2 + (p > 0.4 ? 1 : 0) + Math.ceil(D(s) / 2);
     for (i = 0; i < faux; i++) { var y = ent(s, 1, 8) * 50 * (rnd(s) < 0.35 ? -1 : 1); opts.push({ v: y }); }
     for (i = opts.length - 1; i > 0; i--) { var j = ent(s, 0, i), t = opts[i]; opts[i] = opts[j]; opts[j] = t; }
     s.but = v; s.opts = opts.map(function (o) { return { v: o.v, on: false }; }); s.debut = s.f; s.ok = null;
@@ -297,7 +301,7 @@
     regles: ["Touche les déchets pour les ramasser : +10", "Les pigeons éparpillent ce qui traîne", "Un coin de la place tout propre : +20 · Trop de déchets : la place est perdue"],
     creer: function (g) {
       var s = base(g); s.d = []; s.pg = []; s.prochain = 0; s.nid = 1; s.propre = [0, 0, 0, 0]; s.lourd = 0;
-      for (var i = 0; i < 4; i++) s.pg.push({ x: ent(s, 30, 330), y: ent(s, 80, 500), vx: 0, vy: 0 });
+      for (var i = 0; i < 4 + D(s); i++) s.pg.push({ x: ent(s, 30, 330), y: ent(s, 80, 500), vx: 0, vy: 0 });
       for (i = 0; i < 6; i++) ajoutDechet(s, ent(s, 30, 330), ent(s, 80, 500));
       return s;
     },
@@ -315,7 +319,7 @@
       // Les pigeons filent vers le déchet le plus proche et l'éparpillent en deux
       s.pg.forEach(function (g) {
         var c = null, bd = 1e9; s.d.forEach(function (o) { var dd = (o.x - g.x) * (o.x - g.x) + (o.y - g.y) * (o.y - g.y); if (dd < bd) { bd = dd; c = o; } });
-        if (!c) return; var dx = c.x - g.x, dy = c.y - g.y, n = Math.sqrt(dx * dx + dy * dy) || 1, v = 1.2 + 1.3 * p;
+        if (!c) return; var dx = c.x - g.x, dy = c.y - g.y, n = Math.sqrt(dx * dx + dy * dy) || 1, v = (1.2 + 1.3 * p) * (1 + 0.15 * D(s));
         g.x += dx / n * v; g.y += dy / n * v;
         if (n < 8 && !c.vu) { c.vu = 1; if (s.d.length < 45) ajoutDechet(s, Math.max(20, Math.min(340, c.x + ent(s, -60, 60))), Math.max(70, Math.min(510, c.y + ent(s, -60, 60)))); g.x += ent(s, -80, 80); g.y += ent(s, -80, 80); g.x = Math.max(20, Math.min(340, g.x)); g.y = Math.max(70, Math.min(510, g.y)); }
       });
@@ -354,9 +358,9 @@
         if (x.a === "evt" && s.ev[x.k] && !s.ev[x.k].ok) s.sel = x.k;
         if (x.a === "titre" && s.sel >= 0 && s.ti[x.k] && !s.ti[x.k].ok) {
           if (s.ti[x.k].n === s.ev[s.sel].n) { s.ev[s.sel].ok = s.ti[x.k].ok = true; pts(s, 10, W / 2, 300); }
-          else pts(s, -5, W / 2, 300);
+          else pts(s, -5 - 3 * D(s), W / 2, 300);
           s.sel = -1;
-          if (s.ev.every(function (e) { return e.ok; })) { pts(s, Math.max(0, 15 - Math.floor((s.f - s.debut) / FPS)), W / 2, 260); s.pause = 12; }
+          if (s.ev.every(function (e) { return e.ok; })) { pts(s, Math.max(0, 15 - 3 * D(s) - Math.floor((s.f - s.debut) / FPS)), W / 2, 260); s.pause = 12; }
         }
       });
     }
@@ -375,14 +379,23 @@
   IDS.forEach(function (id) { JEUX[id].id = id; });
 
   // Une image de jeu : on applique les gestes de cette image, puis on avance
-  function pas(id, s, gestes) { if (s.fin) return s; JEUX[id].pas(s, gestes || []); s.f++; if (s.f >= IMAGES) terminer(id, s); return s; }
+  function pas(id, s, gestes) { if (s.fin) return s; JEUX[id].pas(s, gestes || []); s.f++; if (s.f >= (s.n || IMAGES)) terminer(id, s); return s; }
   function terminer(id, s) { if (s.final) return; s.final = true; s.fin = true; if (JEUX[id].finale) JEUX[id].finale(s); s.score = Math.max(0, Math.round(s.score)); }
   // Rejouer une partie complète à partir de la graine et des gestes (c'est ce que fait le serveur)
-  function rejouer(id, graine, gestes) {
+  // Durée de chaque épreuve (secondes) et niveau de difficulté selon la place dans la session (0 = bas du classement … 3 = haut)
+  var DUREES = { marathon: 75 };
+  function duree(id) { return DUREES[id] || DUREE; }
+  function images(id) { return duree(id) * FPS; }
+  function difficulte(place) { return place >= 15 ? 3 : place >= 10 ? 2 : place >= 5 ? 1 : 0; }
+  function creer(id, graine, niv) {
+    CREATION = { n: images(id), d: Math.max(0, Math.min(3, niv | 0)) };
+    try { return JEUX[id].creer(graine); } finally { CREATION = { n: IMAGES, d: 0 }; }
+  }
+  function rejouer(id, graine, gestes, niv) {
     var J = JEUX[id]; if (!J) throw new Error("Épreuve inconnue");
     gestes = Array.isArray(gestes) ? gestes : [];
-    var s = J.creer(graine), k = 0;
-    while (!s.fin && s.f < IMAGES) {
+    var s = creer(id, graine, niv), k = 0;
+    while (!s.fin && s.f < s.n) {
       var lot = [];
       while (k < gestes.length && gestes[k].f <= s.f) { if (gestes[k].f === s.f) lot.push(gestes[k]); k++; }
       pas(id, s, lot);
@@ -392,12 +405,13 @@
   }
   // Gestes acceptés : au plus 450 (10 par seconde), dans l'ordre, pendant l'épreuve, et uniquement les actions du jeu
   var ACTIONS = { tap: 1, feu: 1, bac: 1, elu: 1, saut: 1, glisse: 1, opt: 1, ok: 1, evt: 1, titre: 1 };
-  function nettoyer(gestes) {
-    if (!Array.isArray(gestes) || gestes.length > 450) return null;
+  function nettoyer(gestes, id) {
+    var max = id ? images(id) : IMAGES;
+    if (!Array.isArray(gestes) || gestes.length > max / 3) return null;
     var out = [], der = -1;
     for (var i = 0; i < gestes.length; i++) {
       var x = gestes[i]; if (!x || typeof x !== "object" || !ACTIONS[x.a]) return null;
-      var f = x.f | 0; if (f < der || f < 0 || f >= IMAGES) return null; der = f;
+      var f = x.f | 0; if (f < der || f < 0 || f >= max) return null; der = f;
       var o = { f: f, a: x.a };
       if (x.x != null) o.x = Math.max(0, Math.min(W, +x.x || 0)); if (x.y != null) o.y = Math.max(0, Math.min(H, +x.y || 0));
       if (x.k != null) o.k = x.k | 0; if (x.i != null) o.i = x.i | 0;
@@ -406,7 +420,7 @@
     return out;
   }
 
-  var API = { FPS: FPS, DUREE: DUREE, IMAGES: IMAGES, W: W, H: H, IDS: IDS, JEUX: JEUX, pas: pas, terminer: terminer, rejouer: rejouer, nettoyer: nettoyer,
+  var API = { FPS: FPS, DUREE: DUREE, IMAGES: IMAGES, duree: duree, images: images, difficulte: difficulte, creer: creer, W: W, H: H, IDS: IDS, JEUX: JEUX, pas: pas, terminer: terminer, rejouer: rejouer, nettoyer: nettoyer,
     BACS: BACS, SPOTS: SPOTS, eauTuyaux: eauTuyaux };
   if (typeof module === "object" && module.exports) module.exports = API;
   else root.MaireTournoiJeux = API;
