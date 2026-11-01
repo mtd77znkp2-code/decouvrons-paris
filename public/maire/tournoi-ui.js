@@ -147,6 +147,7 @@
     ({ pickpockets: ["s-pickpocket1", "s-pickpocket2", "s-touriste1", "s-touriste2", "s-touriste3", "s-policier", "s-journaliste", "s-pompier"],
       peripherique: ["s-voiture1", "s-voiture2", "s-taxi", "s-bus", "s-scooter", "s-ambulance", "s-feu-rouge", "s-feu-vert", "s-fumee"],
       eboueurs: ["s-journal", "s-carton", "s-bouteille", "s-bocal", "s-plastique", "s-gobelet", "s-banane", "s-pizza", "s-sac-noir"],
+      tuyaux: ["t-droit", "t-coude", "t-te", "t-droit-eau", "t-coude-eau", "t-te-eau", "t-vanne", "t-maison", "t-fuite"],
       pigeons: ["s-pigeon", "s-pigeon-picore", "s-p-gobelet", "s-p-banane", "s-journal", "s-p-frites", "s-p-papier", "s-p-nouilles"],
       chantier: ["s-c-pierre", "s-c-fenetre", "s-c-balcon", "s-c-crochet", "s-c-poussiere"],
       conseil: ["s-elu0", "s-elu1", "s-elu2", "s-elu3", "s-elu0-main", "s-elu1-main", "s-elu2-main", "s-elu3-main"],
@@ -363,8 +364,18 @@
         var x = 30 + c * 60, y = 120 + r * 60;
         ctx.strokeStyle = "rgba(255,255,255,.12)"; ctx.lineWidth = 1; ctx.strokeRect(x + 1, y + 1, 58, 58);
       }
+      var aImg = img("t-droit") && img("t-coude") && img("t-te") && img("t-droit-eau") && img("t-coude-eau") && img("t-te-eau");
       for (r = 0; r < 5; r++) for (c = 0; c < 5; c++) {
         var m = T2.g[r][c], plein = e.vus[r + "," + c], cx = 60 + c * 60, cy = 150 + r * 60;
+        if (aImg) {   // la pièce dessinée, tournée selon ses ouvertures (dessins de base : droit = gauche-droite, coude = gauche-haut, T = gauche-haut-droite)
+          var forme = [[10, "t-droit"], [9, "t-coude"], [11, "t-te"]].filter(function (f) { var b = f[0]; for (var q = 0; q < 4; q++) { if (b === m) return true; b = ((b << 1) | (b >> 3)) & 15; } return false; })[0];
+          if (forme) {
+            var b = forme[0], q = 0; while (b !== m && q < 4) { b = ((b << 1) | (b >> 3)) & 15; q++; }
+            ctx.save(); ctx.translate(cx, cy); ctx.rotate(q * Math.PI / 2); ctx.drawImage(img(forme[1] + (plein ? "-eau" : "")), -34, -34, 68, 68); ctx.restore();
+            if (plein && s.flux) { ctx.fillStyle = "rgba(111,211,255,.18)"; ctx.fillRect(cx - 30, cy - 30, 60, 60); }
+            continue;
+          }
+        }
         [[1, 0, -30], [2, 30, 0], [4, 0, 30], [8, -30, 0]].forEach(function (d) { if (m & d[0]) tube(cx, cy, cx + d[1], cy + d[2], plein); });
         ctx.beginPath(); ctx.arc(cx, cy, 9, 0, 7); ctx.fillStyle = plein ? "#2f8fe0" : "#8d897f"; ctx.fill(); ctx.strokeStyle = "#2a2018"; ctx.lineWidth = 2; ctx.stroke();
       }
@@ -378,14 +389,14 @@
           if (r1 >= 0 && c1 >= 0 && r1 < 5 && c1 < 5 && e.vus[r1 + "," + c1] && (T2.g[r1][c1] & d[3])) return;
           var fx = 60 + c0 * 60 + d[2] * 30, fy = 150 + r0 * 60 + d[1] * 30;
           ctx.beginPath(); ctx.arc(fx, fy, 10 + 5 * puls, 0, 7); ctx.fillStyle = "rgba(79,195,255," + (0.35 + 0.35 * puls) + ")"; ctx.fill();
-          emo(ctx, "💦", fx + d[2] * 6, fy + d[1] * 6, 16);
+          var gi = img("t-fuite"); if (gi) { ctx.save(); ctx.translate(fx, fy); ctx.rotate(Math.atan2(d[1], d[2])); ctx.drawImage(gi, -6, -14, 28 + 6 * puls, 28); ctx.restore(); } else emo(ctx, "💦", fx + d[2] * 6, fy + d[1] * 6, 16);
         });
       });
       if (!s.flux && !e.vus[T2.depart + ",0"]) { ctx.beginPath(); ctx.arc(30, yD, 10 + 5 * puls, 0, 7); ctx.fillStyle = "rgba(79,195,255," + (0.35 + 0.35 * puls) + ")"; ctx.fill(); emo(ctx, "💦", 40, yD, 16); }
       // La vanne et la maison, avec leur bout de tuyau qui entre dans la grille
       tube(0, yD, 30, yD, true); tube(330, yA, 360, yA, s.flux > 0);
-      bloc(ctx, 0, yD - 24, 26, 48, "#c8352e", "#fff", 6); emo(ctx, "🚰", 13, yD, 22);
-      bloc(ctx, 334, yA - 24, 26, 48, "#2f8a52", "#fff", 6); emo(ctx, "🏠", 347, yA, 20);
+      if (img("t-vanne")) ctx.drawImage(img("t-vanne"), -10, yD - 22, 44, 44); else { bloc(ctx, 0, yD - 24, 26, 48, "#c8352e", "#fff", 6); emo(ctx, "🚰", 13, yD, 22); }
+      if (img("t-maison")) ctx.drawImage(img("t-maison"), 322, yA - 24, 44, 44); else { bloc(ctx, 334, yA - 24, 26, 48, "#2f8a52", "#fff", 6); emo(ctx, "🏠", 347, yA, 20); }
       txt(ctx, "DÉPART →", 46, yD - 40, 11, "#9fdcff"); txt(ctx, "→ ARRIVÉE", 312, yA - 40, 11, "#9cf0b4");
       if (!s.flux && s.f - T2.debut < 90) txt(ctx, "👆 Tourne les tuyaux pour relier les deux", 180, 440, 13, "#fff");
       bulles(ctx, s);
