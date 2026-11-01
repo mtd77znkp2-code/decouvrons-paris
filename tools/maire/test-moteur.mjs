@@ -819,7 +819,7 @@ test("session : attaques entre voisins, bouclier, ripostes des bots", () => {
   let m = s; for (let k = 0; k < 20; k++) m = S.attaquer(m, "u1", 1, "presse", k * 70000, 0.9); assert.equal(S.malusDe(m, 1), 15);
   // Les bots voisins finissent par attaquer, mais à la 21e place une seule fois par mandat
   let r = S.rejoindre(S.nouvelleSession(7, 0), "u1", "Moi", "🙂", 0), vu = 0;
-  for (let k = 0; k < 200; k++) { r = S.ripostes(r, "u1", k * 2000, (k * 0.137) % 1); }
+  for (let k = 0; k < 200; k++) { r = S.ripostes(r, "u1", k * 2000, (k * 0.6180339887) % 1); }
   vu = (r.journal || []).filter(e => e.vers && e.vers.uid === "u1").length; assert.equal(vu, 1, "21e place : 1 attaque par mandat, vu " + vu);
   assert.ok(S.attaquesMax(20) > S.attaquesMax(10) && S.attaquesMax(10) > S.attaquesMax(0), "plus haut = plus attaqué");
 });
