@@ -528,7 +528,7 @@
     var d = h("details", "m-debloc"); d.appendChild(h("summary", null, "🔓 Ce que tu as débloqué"));
     var u = h("ul");
     var l = M.MECANIQUES.concat(M.EXTRAS).map(function (m) { return { niv: m.niv, txt: m.nom }; });
-    Object.keys(M.BATIMENTS).forEach(function (id) { var B = M.BATIMENTS[id]; if (!B.secret) l.push({ niv: B.niv || 1, txt: B.ico + " " + (B.projet ? "Projet : " : "") + B.nom }); });
+    Object.keys(M.BATIMENTS).forEach(function (id) { var B = M.BATIMENTS[id]; if (!B.secret) l.push({ niv: M.nivBat(st, B), txt: B.ico + " " + (B.projet ? "Projet : " : "") + B.nom }); });
     l.sort(function (a, b) { return a.niv - b.niv; }).forEach(function (m) { u.appendChild(h("li", n >= m.niv ? "m-ok" : "", (n >= m.niv ? "✔ " : "🔒 Niveau " + m.niv + " · ") + m.txt)); });
     d.appendChild(u);
     return d;
@@ -1866,7 +1866,7 @@
     });
     d.appendChild(onglets);
     var l = ids.filter(function (id) { return rayonDe(id) === RAYON; });
-    var tri = function (a, b) { var A = M.BATIMENTS[a], B = M.BATIMENTS[b]; return (A.niv || 1) - (B.niv || 1) || A.cout - B.cout; };
+    var tri = function (a, b) { var A = M.BATIMENTS[a], B = M.BATIMENTS[b]; return M.nivBat(st, A) - M.nivBat(st, B) || A.cout - B.cout; };
     var ok = l.filter(function (id) { return M.disponible(st, id); }).sort(tri), bloques = l.filter(function (id) { return !M.disponible(st, id); }).sort(tri);
     if (verrouR[RAYON] && !st.meca[verrouR[RAYON]]) { d.appendChild(h("p", "mx-verrou", "🔒 " + (M.EXTRAS.filter(function (x) { return x.id === verrouR[RAYON]; })[0] || {}).nom + " : se débloque au niveau " + nivMeca(verrouR[RAYON]) + " de la partie.")); return d; }
     if (RAYON === "employes") { d.appendChild(employes()); return d; }

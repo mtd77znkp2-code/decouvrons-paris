@@ -46,6 +46,8 @@
       desc: "Population au début d’une partie de session. Elle grandit seulement si l’on construit des logements." },
     { k: "echelleImpots", g: "Argent", nom: "Échelle des impôts et des frais", unite: "×", def: 0.06, min: 0.005, max: 1, pas: 0.005,
       desc: "Multiplie les impôts et les frais de fonctionnement de la mairie en session (les impôts grandissent avec le nombre d’habitants)." },
+    { k: "aideDebut", g: "Argent", nom: "Coup de pouce du début de partie", unite: "×", def: 0.8, min: 0, max: 3, pas: 0.1,
+      desc: "Au niveau 1, les impôts rapportent X × 20 % de plus et les piliers s’usent deux fois moins vite ; l’aide diminue jusqu’à disparaître au niveau 15." },
     { k: "detteMax", g: "Argent", nom: "Emprunt maximum", unite: "M€", def: 80, min: 0, max: 1500, pas: 10,
       desc: "La mairie ne peut pas emprunter plus que ce montant (au-delà : faillite)." },
     { k: "prixAttaques", g: "Argent", nom: "Prix des attaques", unite: "×", def: 0.3, min: 0.05, max: 3, pas: 0.05,
@@ -66,11 +68,11 @@
       desc: "Pilier logement en moins quand tous les logements sont occupés (les loyers flambent)." },
 
     // ---- Niveaux de la partie (1 à 50) ----
-    { k: "ptsSaison", g: "Niveaux de la partie", nom: "Points par saison (session)", unite: "pts", def: 9, min: 0, max: 100, pas: 1,
+    { k: "ptsSaison", g: "Niveaux de la partie", nom: "Points par saison (session)", unite: "pts", def: 7, min: 0, max: 100, pas: 1,
       desc: "Points de niveau gagnés à chaque saison qui passe." },
-    { k: "ptsDossier", g: "Niveaux de la partie", nom: "Points par dossier tranché (session)", unite: "pts", def: 20, min: 0, max: 300, pas: 1,
+    { k: "ptsDossier", g: "Niveaux de la partie", nom: "Points par dossier tranché (session)", unite: "pts", def: 16, min: 0, max: 300, pas: 1,
       desc: "Points de niveau gagnés à chaque réponse à un dossier." },
-    { k: "nivCourbe", g: "Niveaux de la partie", nom: "Difficulté des niveaux", unite: "pts", def: 30, min: 5, max: 200, pas: 1,
+    { k: "nivCourbe", g: "Niveaux de la partie", nom: "Difficulté des niveaux", unite: "pts", def: 40, min: 5, max: 200, pas: 1,
       desc: "Points demandés pour monter : X × (niveau − 1)^1,6. Plus haut = niveaux plus lents." },
 
     // ---- Casino ----

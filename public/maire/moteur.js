@@ -654,7 +654,7 @@
   function usurePilier(st, k) {
     var r = 0; Object.keys(st.bat).forEach(function (id) { var B = BATIMENTS[id]; if (B && B.usure && B.usure[k] && st.bat[id]) r += B.usure[k] * Math.min(st.bat[id], 3); });
     var cr = criseEnCours(st);
-    return niv(st).usure * (1 - Math.min(0.5, r)) * ((cr && cr.usure && cr.usure[k]) || 1) * (st.session ? R.v.usureSession : 1);
+    return niv(st).usure * (1 - Math.min(0.5, r)) * ((cr && cr.usure && cr.usure[k]) || 1) * (st.session ? R.v.usureSession * (1 - 0.5 * aideDebut(st)) : 1);
   }
   function interets(st) { return arrondi(st.dette * TAUX * (1 - Math.min(0.6, atout(st, "interet") + (bonusMaire(st).interet || 0)))); }
   function protection(st) { return Math.min(0.5, atout(st, "cata")); }
@@ -711,6 +711,10 @@
   // Pour accueillir plus de monde, il faut des logements : chaque bâtiment d'habitation ouvre de la place
   var LOGE = { logements: 18000, residenceEtudiante: 12000, intergeneration: 18000, cooperative: 24000, renovation: 66000, jo: 60000, quartier: 48000, villageVertical: 66000 };
   // En session, on gouverne un arrondissement : population de départ et grandeurs (logements, emplois, besoins) à son échelle
+  // Niveau de déblocage d'un bâtiment : dans les parties à 50 niveaux, les déblocages sont étalés jusqu'au niveau 48
+  function nivBat(st, B) { var n = B.niv || 1; return st && st.np && n > 1 ? Math.min(48, 1 + Math.round((n - 1) * 47 / 35)) : n; }
+  // Aide du début de partie (session) : 1 au niveau 1, 0 à partir du niveau 15 — la difficulté monte doucement
+  function aideDebut(st) { return st.session ? Math.max(0, (15 - (st.nivJ || 1)) / 14) : 0; }
   function h0(st) { return (st.session && st.session.hab0) || HAB0; }
   function ech(st) { return h0(st) / HAB0; }
   // En session, la ville part de 1 000 habitants et se construit : chaque bâtiment compte à l'échelle d'un petit quartier
@@ -747,7 +751,7 @@
     { id: "sante", nom: "médecins", ico: "🩺", bats: ["centreSante", "hopital"], par: 150000 }
   ];
   function etatBesoins(st) {
-    return BESOINS.filter(function (b) { return b.bats.some(function (id) { return BATIMENTS[id] && (BATIMENTS[id].niv || 1) <= (st.nivJ || 99); }); }).map(function (b) {
+    return BESOINS.filter(function (b) { return b.bats.some(function (id) { return BATIMENTS[id] && nivBat(st, BATIMENTS[id]) <= (st.nivJ || 99); }); }).map(function (b) {
       var a = 0; b.bats.forEach(function (id) { a += (st.bat && st.bat[id]) || 0; });
       var requis = 1 + Math.floor(Math.max(0, (st.hab || h0(st)) - h0(st)) / (b.par * echB(st))), x = (st.besoins || {})[b.id];
       return { id: b.id, nom: b.nom, ico: b.ico, a: a, requis: requis, ok: a >= requis, dit: !!x && a < requis, age: a >= requis || !x ? 0 : st.t - x.depuis };
@@ -810,7 +814,7 @@
     var cl = st.session ? equilibre(st).clients : 1;   // en session, les commerces vivent de leurs clients
     Object.keys(st.bat).forEach(function (id) { var R = BATIMENTS[id].rev || 0; if (R) r += R * cl * ((1 - Math.pow(P.rendement, st.bat[id])) / (1 - P.rendement)) * ((st.ampleur && st.ampleur[id]) || 1); });
     combosActifs(st).forEach(function (id) { r += C.COMBOS[id].rev || 0; });
-    if (st.session) r -= (1 - R.v.echelleImpots) * P.impot * st.taux * (0.8 + st.eco / P.ecoRecettes) * niv(st).recettes * (bonusMaire(st).recettes || 1) * ((cr && cr.recettes) || 1) * facteurHab(st) * (st.session.puissance || 1);   // impôts à l'échelle de la petite ville
+    if (st.session) r -= (1 - R.v.echelleImpots * (1 + 0.2 * R.v.aideDebut * aideDebut(st))) * P.impot * st.taux * (0.8 + st.eco / P.ecoRecettes) * niv(st).recettes * (bonusMaire(st).recettes || 1) * ((cr && cr.recettes) || 1) * facteurHab(st) * (st.session.puissance || 1);   // impôts à l'échelle de la petite ville
     return arrondi(r + ((st.mods && st.mods.recettes) || 0));
   }
   function entretien(st) {
@@ -1696,7 +1700,7 @@
   // Tous les prérequis d'un bâtiment, remplis ou non : niveau, trimestres tenus, réélections, bâtiments déjà construits
   function prerequis(st, id) {
     var B = BATIMENTS[id], c = B.si || {}, l = [], re = st.mandat - 1;
-    if ((B.niv || 1) > 1) l.push({ k: "niv", ok: (st.nivJ || 99) >= B.niv, txt: "Niveau " + B.niv, cur: Math.min(st.nivJ || 99, B.niv), but: B.niv });
+    if (nivBat(st, B) > 1) l.push({ k: "niv", ok: (st.nivJ || 99) >= nivBat(st, B), txt: "Niveau " + nivBat(st, B), cur: Math.min(st.nivJ || 99, nivBat(st, B)), but: nivBat(st, B) });
     if (c.t) l.push({ k: "t", ok: st.t >= c.t, txt: st.t >= c.t ? c.t + " trimestres tenus" : "Tiens encore " + (c.t - st.t) + " trimestre" + (c.t - st.t > 1 ? "s" : ""), cur: Math.min(st.t, c.t), but: c.t });
     if (c.reel) l.push({ k: "reel", ok: re >= c.reel, txt: c.reel === 1 ? "Après ta 1re réélection" : "Après ta " + c.reel + "e réélection", cur: Math.min(re, c.reel), but: c.reel });
     Object.keys(c.apres || {}).forEach(function (b) {
@@ -1717,13 +1721,13 @@
     if (B.secret) return !!(st.secrets && st.secrets[id]);
     if (B.pass) return !!(st.passBats && st.passBats[id]);
     if (B.projet && !st.meca.grandsProjets) return false;
-    return (st.nivJ || 99) >= (B.niv || 1) && !objectif(st, id);
+    return (st.nivJ || 99) >= nivBat(st, B) && !objectif(st, id);
   }
   function verrou(st, id) {
     var B = BATIMENTS[id];
     if (B.pass && !st.sansLimite && !(st.passBats && st.passBats[id])) return B.obtenu || "Récompense du pass de combat.";
-    if (B.projet && !st.meca.grandsProjets && !st.sansLimite) return "Se débloque au niveau " + Math.max(B.niv, 6) + ".";
-    if ((st.nivJ || 99) < (B.niv || 1) && !st.sansLimite) return "Se débloque au niveau " + B.niv + ".";
+    if (B.projet && !st.meca.grandsProjets && !st.sansLimite) return "Se débloque au niveau " + Math.max(nivBat(st, B), 6) + ".";
+    if ((st.nivJ || 99) < nivBat(st, B) && !st.sansLimite) return "Se débloque au niveau " + nivBat(st, B) + ".";
     var o = objectif(st, id); return o ? o.txt + "." : "";
   }
   function enChantier(st, id) { return (st.chantiers || []).some(function (c) { return c.id === id; }) || (!!(BATIMENTS[id] || {}).unique && (st.travaux || []).some(function (c) { return c.id === id; })); }
@@ -2052,7 +2056,7 @@
   var API = { MANDAT: MANDAT, PLAFOND_DETTE: PLAFOND_DETTE, TAUX: TAUX, P: P, NIVEAUX: NIVEAUX, PILIERS: PILIERS, ICO: ICO, DOMAINES: DOMAINES,
     MECANIQUES: MECANIQUES, EXTRAS: EXTRAS, mecaniques: mecaniques, BATIMENTS: BATIMENTS, OPPOSANTS: OPPOSANTS, SEUIL_OPP: SEUIL_OPP, LIGNES: LIGNES, CATS: CATS,
     FAMILLE: FAMILLE, SPECIAUX: SPECIAUX, C: C,
-    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, dossierNeglige: dossierNeglige, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, EMPLOYES: EMPLOYES, nbEmp: nbEmp, empDebloque: empDebloque, chantiersMax: chantiersMax, plafond: plafond, fixerNiveau: fixerNiveau, effetEmp: effetEmp, prixEmploye: prixEmploye, salaires: salaires, proprete: proprete, peutEmbaucher: peutEmbaucher, embaucher: embaucher, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
+    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, dossierNeglige: dossierNeglige, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, EMPLOYES: EMPLOYES, nbEmp: nbEmp, empDebloque: empDebloque, chantiersMax: chantiersMax, plafond: plafond, nivBat: nivBat, aideDebut: aideDebut, fixerNiveau: fixerNiveau, effetEmp: effetEmp, prixEmploye: prixEmploye, salaires: salaires, proprete: proprete, peutEmbaucher: peutEmbaucher, embaucher: embaucher, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
     disponible: disponible, enChantier: enChantier, dureeTravaux: dureeTravaux, prix: prix, equilibre: equilibre, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, recit: recit,
     valider: valider, indexer: indexer, engagements: engagements, evenementCourant: evenementCourant, stats: stats, opposant: opposant, humeurOpp: humeurOpp, bonheur: bonheur,
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,
