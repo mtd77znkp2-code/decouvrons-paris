@@ -33,7 +33,7 @@ export const tournoiOuvrir = onCall(OPT, async (req) => {
   const s = sd.exists ? lireSession(sd) : null;
   if (!s) throw new HttpsError("not-found", "Session inconnue.");
   if (S.placeDe(s, uid) < 0) throw new HttpsError("permission-denied", "Tu ne fais pas partie de cette session.");
-  const maintenant = Date.now(), f = TR.fenetre(s), tid = TR.idTournoi(sid, f.election), ref = db().doc("tournois/" + tid);
+  const maintenant = Date.now(), f = TR.fenetre(s), tid = TR.idTournoi(sid, f.election, f.prochaine), ref = db().doc("tournois/" + tid);
   const res = await db().runTransaction(async (tx) => {
     const d = await tx.get(ref);
     if (d.exists) return d.data();

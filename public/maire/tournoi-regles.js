@@ -7,9 +7,10 @@
   var AVANT_MS = 4 * 60000, CLOTURE_MS = 30000, NB = 21;
   var T = root.MaireTournoiJeux || (typeof require === "function" ? require("./tournoi-jeux.js") : null);
 
-  function idTournoi(sessionId, election) { return sessionId + "_" + election; }
+  // Un tournoi par élection programmée : si l'élection est déplacée (élection forcée, anticipée), c'est un nouveau tournoi
+  function idTournoi(sessionId, election, prochaine) { return sessionId + "_" + election + (prochaine ? "_" + Math.round(prochaine / 1000) : ""); }
   // Le tournoi du mandat en cours (celui qui précède l'élection n° s.election + 1)
-  function fenetre(s) { return { election: (s.election || 0) + 1, ouverture: s.prochaine - AVANT_MS, cloture: s.prochaine - CLOTURE_MS }; }
+  function fenetre(s) { return { prochaine: s.prochaine, election: (s.election || 0) + 1, ouverture: s.prochaine - AVANT_MS, cloture: s.prochaine - CLOTURE_MS }; }
   function ouvert(s, maintenant) { var f = fenetre(s); return maintenant >= f.ouverture - 5000 && maintenant < f.cloture; }
 
   // Gain ou perte de popularité selon le rang (1 = premier)

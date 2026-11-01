@@ -54,9 +54,11 @@
   function tic(ctx) {
     CTX = ctx;
     var s = ctx.session, sid = ctx.sid; if (!s || !sid || !TR || !J) return majBandeau();
-    var f = TR.fenetre(s), tid = TR.idTournoi(sid, f.election), now = maintenant();
+    var f = TR.fenetre(s), tid = TR.idTournoi(sid, f.election, f.prochaine), now = maintenant();
     // Le tournoi d'avant reste suivi jusqu'à ce qu'on ait appliqué sa récompense
-    if (TID && TID !== tid && T && T.etat !== "clos" && now < T.cloture + 120000) { cloreSiBesoin(now); return majBandeau(); }
+    // Après l'élection, on garde le tournoi précédent le temps de sa clôture et de la récompense ;
+    // mais si c'est la même élection simplement déplacée (forcée), l'ancien tournoi est abandonné
+    if (TID && TID !== tid && T && T.etat !== "clos" && T.election !== f.election && now < T.cloture + 120000) { cloreSiBesoin(now); return majBandeau(); }
     if (now >= f.ouverture && now < f.cloture && TID !== tid) {
       if (!ESSAIS[tid] || now - ESSAIS[tid] > 15000) {
         ESSAIS[tid] = now;
