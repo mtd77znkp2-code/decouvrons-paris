@@ -506,14 +506,23 @@
     var ps = G.paliersMois(); vider(true);
     box.appendChild(bouton("← Retour", "btn m-sec", accueil));
     box.appendChild(h("h5", null, "🎟️ Les 20 paliers de " + ps.nom));
-    box.appendChild(h("p", "m-aide", "Chaque objectif atteint ce mois-ci débloque un bâtiment exclusif, pour toutes tes parties du mois. Les compteurs s’additionnent d’une partie à l’autre. Tout repart à zéro le 1er du mois prochain."));
+    var cd = h("p", "m-pass-cd", ""); box.appendChild(cd);
+    (function tic() {
+      if (!document.body.contains(cd)) return;
+      var r = Math.max(0, ps.fin - Date.now()), jj = Math.floor(r / 86400000), hh = Math.floor(r % 86400000 / 3600000), mm = Math.floor(r % 3600000 / 60000), ss = Math.floor(r % 60000 / 1000);
+      cd.textContent = "⏳ Nouvelle saison dans " + (jj ? jj + " j " : "") + hh + " h " + (mm < 10 ? "0" : "") + mm + " min " + (ss < 10 ? "0" : "") + ss + " s";
+      setTimeout(tic, 1000);
+    })();
+    box.appendChild(h("p", "m-aide", "Les paliers se font dans l’ordre : le suivant s’ouvre quand le précédent est réussi, et chacun repart de zéro. Chaque palier débloque un bâtiment exclusif pour tes parties du mois. Tout repart à zéro au début de chaque mois."));
     var u = h("ol", "m-paliers");
     ps.paliers.forEach(function (x) {
-      var li = h("li", x.ok ? "m-ok" : "");
-      ajout(li, h("span", "m-pn", String(x.n)), ajout(h("span", "m-pal"), h("b", null, x.txt), h("small", null, "🎁 " + x.batTxt)), h("b", null, x.ok ? "✔" : x.cur + "/" + x.but));
+      var li = h("li", x.ok ? "m-ok" : x.encours ? "m-encours" : "m-verrou");
+      var droite = x.ok ? h("b", null, "✔") : x.encours ? ajout(h("span", "m-pal-prog"), h("b", null, x.cur + "/" + x.but), ajout(h("i", "m-pal-barre"), (function () { var e = h("i"); e.style.width = Math.round(x.cur / x.but * 100) + "%"; return e; })())) : h("b", null, "🔒");
+      ajout(li, h("span", "m-pn", String(x.n)), ajout(h("span", "m-pal"), h("b", null, x.txt), h("small", null, "🎁 " + x.batTxt)), droite);
       u.appendChild(li);
     });
     box.appendChild(u); haut();
+    var en = u.querySelector(".m-encours"); if (en) setTimeout(function () { en.scrollIntoView({ block: "center" }); }, 60);
   }
   function carteDeblocages(n) {
     var d = h("details", "m-debloc"); d.appendChild(h("summary", null, "🔓 Ce que tu as débloqué"));

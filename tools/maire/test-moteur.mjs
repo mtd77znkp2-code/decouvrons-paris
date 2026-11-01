@@ -431,7 +431,7 @@ test("succès journaliers : 5 défis par jour en pleine partie", () => {
   assert.deepEqual(defi.bonus, { tresor: 0, pop: 0, assurance: 0 });
   localStorage.removeItem("maire_profil_v1");
 });
-test("les 20 paliers du mois : objectifs cumulés d'une partie à l'autre, un bâtiment chacun, remise à zéro le mois suivant", () => {
+test("les 20 paliers du mois : dans l'ordre, cumulés d'une partie à l'autre, un bâtiment chacun, remise à zéro le mois suivant", () => {
   localStorage.removeItem("maire_profil_v1");
   const J = 20390;
   assert.equal(G.PALIERS.length, 20); G.PALIERS.forEach(p => assert.ok(M.BATIMENTS[p.bat] && M.BATIMENTS[p.bat].pass, p.bat));
@@ -440,15 +440,18 @@ test("les 20 paliers du mois : objectifs cumulés d'une partie à l'autre, un b�
   assert.ok(!M.disponible(st, "bancsConnectes"));
   let r = G.suivrePartie(st, M, { jour: J }); st = r.st;
   assert.equal(G.paliersMois(J).palier, 1, "palier 1 : jouer une partie"); assert.equal(r.pass.length, 1); assert.ok(M.disponible(st, "bancsConnectes"), "le bâtiment arrive tout de suite");
-  // Les dossiers s'additionnent d'une partie à l'autre, sans double comptage
-  M.stats(st).dossiers = 6; st = G.suivrePartie(st, M, { jour: J }).st; st = G.suivrePartie(st, M, { jour: J }).st;
+  // Paliers dans l'ordre : le palier 3 (bâtiments) n'avance pas tant que le 2 (15 dossiers) n'est pas fait
+  M.stats(st).achats = 12; M.stats(st).dossiers = 6; st = G.suivrePartie(st, M, { jour: J }).st; st = G.suivrePartie(st, M, { jour: J }).st;
+  let pm = G.paliersMois(J); assert.equal(pm.paliers[1].cur, 6); assert.ok(pm.paliers[2].verrou && pm.paliers[2].cur === 0, "palier 3 verrouillé");
   let st2 = M.nouvellePartie({ maire: "tribun", graine: 6, niveauPartie: true, passBats: G.batsExclusifs(J) }); st2.phase = "gestion"; st2.t = 1;
   assert.ok(M.disponible(st2, "bancsConnectes"), "disponible dans les parties suivantes du mois");
-  M.stats(st2).dossiers = 5; r = G.suivrePartie(st2, M, { jour: J });
-  const pm = G.paliersMois(J); assert.equal(pm.paliers[1].cur, 10); assert.ok(pm.paliers[1].ok, "10 dossiers sur deux parties");
+  M.stats(st2).dossiers = 9; r = G.suivrePartie(st2, M, { jour: J });
+  pm = G.paliersMois(J); assert.ok(pm.paliers[1].ok, "15 dossiers sur deux parties"); assert.ok(pm.paliers[2].encours && pm.paliers[2].cur === 0, "le palier 3 s'ouvre et part de zéro");
   assert.equal(pm.paliers[0].cur, 1, "objectif atteint : le compteur affiché s'arrête au but");
+  st2 = r.st; M.stats(st2).achats = 10; st2 = G.suivrePartie(st2, M, { jour: J }).st; assert.ok(G.paliersMois(J).paliers[2].ok);
   // Niveau : le meilleur d'une partie
-  st2 = r.st; st2.nivJ = 6; st2 = G.suivrePartie(st2, M, { jour: J }).st; assert.ok(G.paliersMois(J).paliers[3].ok);
+  st2.nivJ = 8; st2 = G.suivrePartie(st2, M, { jour: J }).st; assert.ok(G.paliersMois(J).paliers[3].ok);
+  assert.ok(G.paliersMois(J).fin > Date.UTC(2025, 9, 31), "fin du mois connue pour le compte à rebours");
   // Mois suivant : tout repart de zéro
   assert.equal(G.paliersMois(J + 40).palier, 0); assert.ok(!G.batsExclusifs(J + 40).bancsConnectes);
   localStorage.removeItem("maire_profil_v1");

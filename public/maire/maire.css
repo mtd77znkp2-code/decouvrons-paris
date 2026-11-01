@@ -1705,3 +1705,9 @@ body.m-acc-on .m-fond{display:none}
 .mt-choix{display:grid;justify-items:center;gap:4px;padding:10px 6px;border-radius:12px;border:2px solid #d9a53a;background:linear-gradient(#26327a,#1a225a);color:#fff;font:inherit;cursor:pointer}
 .mt-choix img{width:56px;height:56px;object-fit:contain}.mt-choix span{font-size:40px}.mt-choix b{font:800 13px Georgia,serif}.mt-choix small{color:#d9dcef}
 @media (min-width:700px){.mt-choix-jeux{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.m-pass-cd{margin:0;padding:8px 12px;border-radius:12px;background:#141c4a;border:2px solid #d9a53a;color:#ffd56a;font-weight:800;text-align:center;font-variant-numeric:tabular-nums}
+.m-paliers li.m-encours{border:2px solid #ffd56a;background:linear-gradient(90deg,rgba(245,178,26,.18),transparent);box-shadow:0 0 14px rgba(245,178,26,.25)}
+.m-paliers li.m-verrou{opacity:.55}
+.m-pal-prog{display:grid;gap:4px;justify-items:end;min-width:64px}
+.m-pal-barre{display:block;width:64px;height:6px;border-radius:99px;background:rgba(255,255,255,.15);overflow:hidden}
+.m-pal-barre i{display:block;height:100%;background:#f5b21a}

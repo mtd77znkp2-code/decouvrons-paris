@@ -446,29 +446,39 @@
 
   // ---------- Les 20 paliers du mois : des objectifs cumulés sur le mois, chacun débloque un bâtiment ----------
   // Compteurs du mois : additionnés d'une partie à l'autre (k) ; « max » : le meilleur résultat d'une partie
+  // Paliers progressifs : on les fait dans l'ordre (le palier 2 ne compte qu'une fois le 1 réussi, etc.) et ils sont de plus en plus durs.
+  // « max » : le meilleur résultat dans une partie (niveau, mandats…) ; sinon, un compteur qui ne démarre qu'à l'ouverture du palier.
   var PALIERS = [
     { k: "parties", but: 1, txt: "Joue une partie", bat: "bancsConnectes" },
-    { k: "dossiers", but: 10, txt: "Tranche 10 dossiers", bat: "boiteLivres" },
-    { k: "achats", but: 5, txt: "Construis 5 bâtiments", bat: "rueAuxEcoles" },
-    { k: "niveau", but: 5, max: 1, txt: "Atteins le niveau 5 dans une partie", bat: "potagerToit" },
-    { k: "casino", but: 3, txt: "Gagne 3 parties au casino", bat: "veloCargo" },
+    { k: "dossiers", but: 15, txt: "Tranche 15 dossiers", bat: "boiteLivres" },
+    { k: "achats", but: 10, txt: "Construis 10 bâtiments", bat: "rueAuxEcoles" },
+    { k: "niveau", but: 8, max: 1, txt: "Atteins le niveau 8 dans une partie", bat: "potagerToit" },
+    { k: "casino", but: 5, txt: "Gagne 5 parties au casino", bat: "veloCargo" },
     { k: "dossiers", but: 40, txt: "Tranche 40 dossiers", bat: "conciergerie" },
-    { k: "elections", but: 1, txt: "Gagne une élection", bat: "kiosque" },
-    { k: "achats", but: 20, txt: "Construis 20 bâtiments", bat: "brigadeCanine" },
-    { k: "employes", but: 5, txt: "Embauche 5 employés", bat: "navetteElectrique" },
-    { k: "niveau", but: 15, max: 1, txt: "Atteins le niveau 15 dans une partie", bat: "residenceArtistes" },
-    { k: "attaques", but: 5, txt: "Réussis 5 attaques contre tes adversaires", bat: "fontaineMonumentale" },
-    { k: "elections", but: 3, txt: "Gagne 3 élections", bat: "centreSecours" },
-    { k: "ventes", but: 1, txt: "Remporte une vente aux enchères", bat: "halleFood" },
-    { k: "dossiers", but: 150, txt: "Tranche 150 dossiers", bat: "teleportVelo" },
-    { k: "mandats", but: 4, max: 1, txt: "Tiens plus de 3 mandats dans une même partie", bat: "immeubleBois" },
-    { k: "niveau", but: 30, max: 1, txt: "Atteins le niveau 30 dans une partie", bat: "observatoire" },
-    { k: "ventes", but: 3, txt: "Remporte 3 ventes aux enchères", bat: "salleArcade" },
-    { k: "places", but: 5, txt: "Gagne 5 places au classement de session", bat: "tourJardin" },
-    { k: "achats", but: 80, txt: "Construis 80 bâtiments", bat: "commissariatModele" },
+    { k: "elections", but: 2, txt: "Gagne 2 élections", bat: "kiosque" },
+    { k: "achats", but: 30, txt: "Construis 30 bâtiments", bat: "brigadeCanine" },
+    { k: "employes", but: 8, txt: "Embauche 8 employés", bat: "navetteElectrique" },
+    { k: "niveau", but: 20, max: 1, txt: "Atteins le niveau 20 dans une partie", bat: "residenceArtistes" },
+    { k: "attaques", but: 10, txt: "Réussis 10 attaques contre tes adversaires", bat: "fontaineMonumentale" },
+    { k: "elections", but: 5, txt: "Gagne 5 élections", bat: "centreSecours" },
+    { k: "ventes", but: 2, txt: "Remporte 2 ventes aux enchères", bat: "halleFood" },
+    { k: "dossiers", but: 120, txt: "Tranche 120 dossiers", bat: "teleportVelo" },
+    { k: "mandats", but: 5, max: 1, txt: "Tiens 5 mandats dans une même partie", bat: "immeubleBois" },
+    { k: "niveau", but: 35, max: 1, txt: "Atteins le niveau 35 dans une partie", bat: "observatoire" },
+    { k: "ventes", but: 5, txt: "Remporte 5 ventes aux enchères", bat: "salleArcade" },
+    { k: "places", but: 15, txt: "Gagne 15 places au classement de session", bat: "tourJardin" },
+    { k: "achats", but: 150, txt: "Construis 150 bâtiments", bat: "commissariatModele" },
     { k: "trone", but: 1, max: 1, txt: "Deviens Maire de Paris", bat: "arcLumieres" }
   ];
-  function moisP(P, j) { var s = saisonDe(j); if (!P.mois || P.mois.saison !== s) P.mois = { saison: s, c: {}, faits: {} }; return P.mois; }
+  function moisP(P, j) {
+    var s = saisonDe(j);
+    if (!P.mois || P.mois.saison !== s) P.mois = { v: 2, saison: s, c: {}, faits: {}, actif: 1, prog: 0 };   // nouveau mois : tout repart à zéro
+    if (P.mois.v !== 2) {   // ancien système (paliers dans le désordre) : on garde seulement ceux réussis dans l'ordre
+      var n = 1, f = {}; while (P.mois.faits[n]) { f[n] = P.mois.faits[n]; n++; }
+      P.mois = { v: 2, saison: s, c: P.mois.c || {}, faits: f, actif: n, prog: 0 };
+    }
+    return P.mois;
+  }
   // Ce que la partie a accompli jusqu'ici, compteur par compteur
   function valeursPartie(st) {
     var x = st.stats || {}, el = st.elections || [];
@@ -479,23 +489,27 @@
   // Ajoute au mois ce qui a avancé depuis la dernière fois, et débloque les paliers atteints
   function suivreMois(P, j, st, M, out) {
     var mo = moisP(P, j), v = valeursPartie(st), vu = st.moisVu;
-    if (!vu || vu.saison !== mo.saison) { vu = st.moisVu = { saison: mo.saison }; mo.c.parties = (mo.c.parties || 0) + 1; }
-    Object.keys(v).forEach(function (k) {
-      var estMax = PALIERS.some(function (p) { return p.k === k && p.max; });
-      if (estMax) mo.c[k] = Math.max(mo.c[k] || 0, v[k]);
-      else if (v[k] > (vu[k] || 0)) mo.c[k] = (mo.c[k] || 0) + v[k] - (vu[k] || 0);
-      vu[k] = v[k];
-    });
-    PALIERS.forEach(function (p, i) {
-      if (mo.faits[i + 1] || (mo.c[p.k] || 0) < p.but) return;
-      mo.faits[i + 1] = j; if (st && M) M.ajouterPassBat(st, p.bat);
-      if (out) out.pass.push({ n: i + 1, txt: p.txt + " → " + (MO.BATIMENTS[p.bat].ico + " " + MO.BATIMENTS[p.bat].nom) });
-    });
+    if (!vu || vu.saison !== mo.saison) vu = st.moisVu = { saison: mo.saison, nouvelle: 1 };
+    var delta = {};
+    if (vu.nouvelle) { delta.parties = 1; delete vu.nouvelle; }
+    Object.keys(v).forEach(function (k) { if (v[k] > (vu[k] || 0)) delta[k] = (delta[k] || 0) + v[k] - (vu[k] || 0); vu[k] = v[k]; });
+    // Seul le palier en cours avance ; une fois réussi, le suivant s'ouvre (et part de zéro)
+    while (mo.actif <= PALIERS.length) {
+      var p = PALIERS[mo.actif - 1];
+      if (p.max) mo.prog = Math.max(mo.prog, v[p.k] || 0); else { mo.prog += delta[p.k] || 0; delta[p.k] = 0; }
+      if (mo.prog < p.but) break;
+      mo.faits[mo.actif] = j; if (st && M) M.ajouterPassBat(st, p.bat);
+      if (out) out.pass.push({ n: mo.actif, txt: p.txt + " → " + (MO.BATIMENTS[p.bat].ico + " " + MO.BATIMENTS[p.bat].nom) });
+      mo.actif++; mo.prog = 0;
+    }
   }
   function paliersMois(j) {
     var P = lire(), mo = moisP(P, j != null ? j : jour()), n = Object.keys(mo.faits).length;
-    return { saison: mo.saison, nom: nomSaison(mo.saison), palier: n, max: PALIERS.length,
-      paliers: PALIERS.map(function (p, i) { var B = MO.BATIMENTS[p.bat]; return { n: i + 1, txt: p.txt, cur: Math.min(mo.c[p.k] || 0, p.but), but: p.but, ok: !!mo.faits[i + 1], bat: p.bat, batTxt: B.ico + " " + B.nom }; }) };
+    // Fin du mois (UTC, comme le changement de saison) : le temps qu'il reste avant la remise à zéro
+    var d = new Date((j != null ? j : jour()) * 86400000), fin = Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1);
+    return { saison: mo.saison, nom: nomSaison(mo.saison), palier: n, max: PALIERS.length, actif: mo.actif, fin: fin,
+      paliers: PALIERS.map(function (p, i) { var B = MO.BATIMENTS[p.bat], k = i + 1;
+        return { n: k, txt: p.txt, cur: k < mo.actif ? p.but : k === mo.actif ? Math.min(mo.prog, p.but) : 0, but: p.but, ok: !!mo.faits[k], encours: k === mo.actif, verrou: k > mo.actif, bat: p.bat, batTxt: B.ico + " " + B.nom }; }) };
   }
   // Bâtiments exclusifs disponibles dans une nouvelle partie : ceux des paliers du mois + ceux gagnés pour toujours (série de jours)
   function batsExclusifs(j) {
