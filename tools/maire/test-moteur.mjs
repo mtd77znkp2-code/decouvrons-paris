@@ -817,10 +817,11 @@ test("session : attaques entre voisins, bouclier, ripostes des bots", () => {
   t = S.attaquer(t, "u1", 1, "manif", 5000, 0.9); assert.equal(t.journal.slice(-1)[0].res, "bloque"); assert.equal(S.malusDe(t, 1), 0);
   // Malus plafonné, remis à zéro à l'élection
   let m = s; for (let k = 0; k < 20; k++) m = S.attaquer(m, "u1", 1, "presse", k * 70000, 0.9); assert.equal(S.malusDe(m, 1), 15);
-  // Les bots voisins finissent par attaquer
+  // Les bots voisins finissent par attaquer, mais à la 21e place une seule fois par mandat
   let r = S.rejoindre(S.nouvelleSession(7, 0), "u1", "Moi", "🙂", 0), vu = 0;
-  for (let k = 0; k < 40; k++) { r = S.ripostes(r, "u1", k * 30000, (k * 0.137) % 1); }
-  vu = (r.journal || []).filter(e => e.vers && e.vers.uid === "u1").length; assert.ok(vu >= 2, "ripostes : " + vu);
+  for (let k = 0; k < 200; k++) { r = S.ripostes(r, "u1", k * 2000, (k * 0.137) % 1); }
+  vu = (r.journal || []).filter(e => e.vers && e.vers.uid === "u1").length; assert.equal(vu, 1, "21e place : 1 attaque par mandat, vu " + vu);
+  assert.ok(S.attaquesMax(20) > S.attaquesMax(10) && S.attaquesMax(10) > S.attaquesMax(0), "plus haut = plus attaqué");
 });
 test("session : salle des ventes, une vente à la fois toutes les 6 minutes, la suivante annoncée", () => {
   const S = require("../../public/maire/session.js"), cat = M.catalogueVentes();

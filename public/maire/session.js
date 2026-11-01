@@ -196,18 +196,22 @@
     noter(s, { q: maintenant, type: "bouclier", de: qui(s, p), vers: null, res: "ok", pts: 0 }); return s;
   }
   // Les bots voisins d'un joueur l'attaquent de temps en temps (appelé quand le joueur envoie son état)
+  // Attaques des bots contre un joueur : plus il est haut, plus on l'attaque (21e : 1 attaque au plus par mandat … Maire de Paris : 6)
+  function attaquesMax(p) { return 1 + Math.floor(Math.min(p, TRONE) * 5 / TRONE); }
   function ripostes(s0, uid, maintenant, alea) {
     var p = placeDe(s0, uid); if (p < 0) return s0;
-    var s = s0;
-    [p + 1, p - 1].forEach(function (b, i) {
-      if (b < 0 || b >= NB || s.places[b].type !== "bot") return;
+    var s = s0, max = attaquesMax(p), ch = (s.attBots || {})[uid], deja = ch && ch.e === s.election ? ch.n : 0;
+    // L'opposant (en dessous) d'abord, puis le rival (au-dessus)
+    [p - 1, p + 1].forEach(function (b, i) {
+      if (deja >= max || b < 0 || b >= NB || s.places[b].type !== "bot") return;
       var bt = s.places[b], k = bt.id + ":bot";
       if (attente(s, k, maintenant)) return;
       var a = (alea * 7.31 + i * 0.37) % 1;
-      if (a > 0.1 + bt.talent * 0.12) return;
+      if (a > (0.1 + bt.talent * 0.12) * (0.5 + p / TRONE) * (i ? 0.6 : 1)) return;   // l'opposant attaque plus souvent que le rival
       var types = ["presse", "manif", "scandale", "debat"], type = types[Math.floor(((alea * 13.7 + i) % 1) * types.length)];
       if (s === s0) s = copie(s0);
-      s.cd = s.cd || {}; s.cd[k] = maintenant + 100000 + Math.round(a * 80000);
+      s.cd = s.cd || {}; s.cd[k] = maintenant + Math.round(mandatMs() / max * (0.7 + a));   // attaques étalées sur le mandat
+      s.attBots = s.attBots || {}; deja++; s.attBots[uid] = { e: s.election, n: deja };
       frapper(s, b, p, type, maintenant, (alea * 3.3) % 1);
     });
     return s;
@@ -320,7 +324,7 @@
     return { p: p, titre: titre(p), court: court(p), arr: arr(p), type: x.type, nom: x.nom, ico: x.ico, uid: x.uid || null, stats: st, puissance: puissance(p), hab: st.hab || habitants(p) };
   }
 
-  var API = { AUTEURS: AUTEURS, BASE_ID: BASE_ID, nomLibre: nomLibre, resume: resume, tendance: tendance, note: note, NB: NB, TRONE: TRONE, peutEntrer: peutEntrer, quitter: quitter, inactif: inactif, ARR: ARR, ORDRE: ORDRE, arr: arr, nomArr: nomArr, titre: titre, court: court, puissance: puissance, habitants: habitants,
+  var API = { AUTEURS: AUTEURS, BASE_ID: BASE_ID, nomLibre: nomLibre, resume: resume, tendance: tendance, note: note, NB: NB, TRONE: TRONE, peutEntrer: peutEntrer, attaquesMax: attaquesMax, quitter: quitter, inactif: inactif, ARR: ARR, ORDRE: ORDRE, arr: arr, nomArr: nomArr, titre: titre, court: court, puissance: puissance, habitants: habitants,
     nouvelleSession: nouvelleSession, rejoindre: rejoindre, attaquer: attaquer, proteger: proteger, ripostes: ripostes, ATTAQUES: ATTAQUES, BOUCLIER: BOUCLIER, prixAction: prixAction, malusDe: malusDe, attente: attente,
     ventesEnCours: ventesEnCours, ventesFinies: ventesFinies, venteSuivante: venteSuivante, prochaineVente: prochaineVente, vente: vente, encherir: encherir, pleine: pleine, signaler: signaler, nettoyer: nettoyer, voter: voter, votesRequis: votesRequis, nbVotes: nbVotes,
     electionDue: electionDue, scores: scores, elire: elire, resultatDe: resultatDe, placeDe: placeDe, joueurs: joueurs, fiche: fiche, statsBot: statsBot, scoreBot: scoreBot };
