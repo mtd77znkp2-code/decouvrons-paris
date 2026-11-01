@@ -1741,3 +1741,24 @@ body.m-acc-on .m-fond{display:none}
 .m-roue-pop .m-roue-piege b{color:#ffb4ab}
 .m-roue-pop .m-roue-fleche{top:calc(var(--rw)*-.07);width:calc(var(--rw)*.19);height:auto;font-size:0;filter:drop-shadow(0 3px 4px rgba(0,0,0,.6))}
 .mx-roue-disque{width:44px;height:44px;border:0;border-radius:50%;background:center/contain no-repeat;box-shadow:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
+/* ===== Onglets de l'écran de jeu (téléphone et tablette) : Ville · Construire · Objectifs · Session · Gestion ===== */
+.mx-onglets{position:sticky;top:0;z-index:6;display:flex;gap:4px;padding:5px;margin:2px 0;border-radius:16px;background:rgba(14,20,56,.94);border:2px solid #d9a53a;box-shadow:0 6px 16px rgba(0,0,0,.4);backdrop-filter:blur(6px)}
+.mx-onglet{position:relative;flex:1 1 0;min-width:0;display:grid;justify-items:center;gap:1px;padding:6px 2px;border:0;border-radius:11px;background:transparent;color:#c9cde6;font:inherit;cursor:pointer}
+.mx-onglet-ico{font-size:20px;line-height:1.1}
+.mx-onglet-nom{font-size:11.5px;font-weight:800;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mx-onglet[aria-selected="true"]{background:linear-gradient(#ffd56a,#d9a53a);color:#1b2550;box-shadow:inset 0 -2px 0 rgba(0,0,0,.2)}
+.mx-onglet-pas{position:absolute;top:1px;right:4px;min-width:18px;height:18px;padding:0 3px;border-radius:9px;background:#c8352e;color:#fff;font:900 11px/18px system-ui,sans-serif;font-style:normal;box-shadow:0 0 0 2px #0e1438}
+.mx-onglet[aria-selected="true"] .mx-onglet-pas{display:none}
+.mx-onglet:focus-visible{outline:3px solid #ffd56a;outline-offset:1px}
+@media (max-width:1099px){
+  #m-app.mx-partie[data-onglet="ville"]>[data-o]:not([data-o="ville"]),
+  #m-app.mx-partie[data-onglet="batir"]>[data-o]:not([data-o="batir"]),
+  #m-app.mx-partie[data-onglet="quetes"]>[data-o]:not([data-o="quetes"]),
+  #m-app.mx-partie[data-onglet="session"]>[data-o]:not([data-o="session"]),
+  #m-app.mx-partie[data-onglet="gestion"]>[data-o]:not([data-o="gestion"]){display:none!important}
+}
+@media (min-width:1100px){.mx-onglets{display:none}}
+.mx-pas-vert{background:#2fae4c}
+.mx-caisse{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding:10px 14px;border-radius:14px;background:linear-gradient(#1d2860,#141c4a);border:2px solid #d9a53a;color:#fff}
+.mx-caisse span{font-weight:800;color:#d9dcef}.mx-caisse b{font:900 22px Georgia,serif;color:#ffd56a}.mx-caisse small{margin-left:auto;color:#d9dcef;font-size:13px}
+@media (min-width:1100px){#m-app.mx-partie>.mx-caisse{display:none}}

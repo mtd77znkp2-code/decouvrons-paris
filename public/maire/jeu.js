@@ -1198,7 +1198,7 @@
     return d;
   }
   function allerEncheres() {
-    RAYON = "enchere"; gestionOuverte = true; jeu();
+    RAYON = "enchere"; gestionOuverte = true; ONGLET = "batir"; jeu();
     setTimeout(function () { var v = document.querySelector(".mx-ventes") || document.querySelector(".mx-boutique"); if (v) v.scrollIntoView({ behavior: "smooth", block: "center" }); }, 50);
   }
   // La prochaine vente, en gris, avec le compte à rebours avant son ouverture
@@ -1411,6 +1411,39 @@
     }, calmeA ? 50 : 300 + lignes.length * 60 + 900);
   }
 
+  // ===== Onglets de l'écran de jeu =====
+  var ONGLET = "ville";
+  function ONGLETS() {
+    var l = [["ville", "🏙️", "Ville"], ["batir", "🏗️", "Bâtir"], ["quetes", "🎯", "Objectifs"]];
+    if (st.session) l.push(["session", "⚔️", "Session"]);
+    l.push(["gestion", "⚙️", "Gestion"]);
+    return l;
+  }
+  function pastilleOnglet(id) {
+    if (id === "quetes") { var e = M.etatRoue(st); if (e && e.ok) return "🎡"; }
+    if (id === "batir") { var n = (st.travaux || []).length; if (st.session && n < M.chantiersMax(st)) return "＋"; }
+    return "";
+  }
+  function barreOnglets() {
+    var d = h("nav", "mx-onglets"); d.setAttribute("role", "tablist"); d.setAttribute("aria-label", "Parties de l’écran de jeu");
+    ONGLETS().forEach(function (x) {
+      var b = bouton("", "mx-onglet", function () { choisirOnglet(x[0], true); }), p = pastilleOnglet(x[0]);
+      b.dataset.id = x[0]; b.setAttribute("role", "tab"); b.setAttribute("aria-selected", String(x[0] === ONGLET));
+      ajout(b, h("span", "mx-onglet-ico", x[1]), h("span", "mx-onglet-nom", x[2]), p ? h("i", "mx-onglet-pas" + (p === "＋" ? " mx-pas-vert" : ""), p) : null);
+      d.appendChild(b);
+    });
+    return d;
+  }
+  function choisirOnglet(id, defiler) {
+    ONGLET = id; box.dataset.onglet = id;
+    Array.prototype.forEach.call(box.querySelectorAll(".mx-onglet"), function (b) { b.setAttribute("aria-selected", String(b.dataset.id === id)); });
+    if (id === "gestion") { var g = box.querySelector(".mx-gestion"); if (g) g.open = true; }
+    var barre = box.querySelector(".mx-onglets");
+    if (defiler && barre && barre.getBoundingClientRect().top < 0) barre.scrollIntoView({ block: "start" });
+  }
+  // Montre un élément même s'il est dans un autre onglet (guide, raccourcis)
+  function allerVers(el) { var z = el && el.closest && el.closest("[data-o]"); if (z && z.dataset.o !== ONGLET) choisirOnglet(z.dataset.o); }
+
   function jeu() {
     envoyerClassement();
     brancherSession();
@@ -1425,14 +1458,22 @@
     var gmp = document.getElementById("g-maire"); if (gmp) gmp.classList.add("m-partie");
     box.classList.add("mx-partie");
     var ciel = h("div", "mx-ciel"); ciel.setAttribute("aria-hidden", "true");
-    ajout(box, entete(), ciel, st.session && window.MaireTournoiUI ? MaireTournoiUI.bandeau() : null, bandeauSession(), tableau(), carteObjectifs(), carteRoue(), piliers(), carteEquilibre(), carteLeon());
-    if (st.opposant) box.appendChild(bandeauOpp());
-    if (st.rapport && st.notes && st.notes.length) box.appendChild(notes());
-    box.appendChild(carteVille(false));
-    box.appendChild(ajout(h("div", "mx-journal-carte"), journal()));
-    box.appendChild(boutique());
-    if (st.chantiers.length || (st.travaux || []).length) box.appendChild(chantiers());   // juste sous la boutique
-    box.appendChild(gestion());
+    // Onglets (téléphone et tablette) : chaque partie de l'écran a sa place ; l'essentiel (sondage, tournoi, dossiers) reste toujours visible
+    function o(el, nom) { if (el) { el.dataset.o = nom; box.appendChild(el); } }
+    ajout(box, entete(), ciel, st.session && window.MaireTournoiUI ? MaireTournoiUI.bandeau() : null, carteLeon(), barreOnglets());
+    o(tableau(), "ville"); o(carteVille(false), "ville"); o(piliers(), "ville"); o(carteEquilibre(), "ville");
+    if (st.opposant) o(bandeauOpp(), "ville");
+    if (st.rapport && st.notes && st.notes.length) o(notes(), "ville");
+    o(ajout(h("div", "mx-journal-carte"), journal()), "ville");
+    var so = M.solde(st);
+    o(ajout(h("div", "mx-caisse"), h("span", null, "💰 Caisse"), h("b", null, argent(st.tresor)), h("small", null, (so >= 0 ? "+" : "") + argent(so) + "/saison" + (st.dette > 0 ? " · dette " + argent(st.dette) : ""))), "batir");
+    o(boutique(), "batir");
+    if (st.chantiers.length || (st.travaux || []).length) o(chantiers(), "batir");   // juste sous la boutique
+    o(carteObjectifs(), "quetes"); o(carteRoue(), "quetes");
+    o(bandeauSession(), "session");
+    o(gestion(), "gestion");
+    if (!ONGLETS().some(function (x) { return x[0] === ONGLET; })) ONGLET = "ville";
+    box.dataset.onglet = ONGLET;
     box.appendChild(barreTrimestre());
     box.style.minHeight = ""; window.scrollTo(0, y);
     // Une enchère restée en mémoire ne doit jamais bloquer le dossier : fenêtre disparue = on oublie l'affichage ; enchère finie + dossier = on la range
@@ -2028,7 +2069,7 @@
 
   // Gestion repliée : impôts, combos, historique et options de la partie
   function gestion() {
-    var d = h("details", "mx-gestion"); d.open = gestionOuverte; d.ontoggle = function () { gestionOuverte = d.open; };
+    var d = h("details", "mx-gestion"); d.open = gestionOuverte || (ONGLET === "gestion" && innerWidth < 1100); d.ontoggle = function () { gestionOuverte = d.open; };
     d.appendChild(h("summary", null, "⚙️ Gestion de la ville"));
     if (st.meca.budget) {
       var c = h("div", "mx-impots"), val = h("b", null, Math.round(st.taux * 100) + " %");
@@ -2281,6 +2322,7 @@
     if (!GA) return;
     var e = GA.g.etapes[GA.i], cible = document.querySelector(e.q);
     if (!cible) return;                           // l'élément n'est pas à l'écran : on attendra le prochain affichage
+    allerVers(cible);
     cible.classList.add("m-focus");
     var dansModale = !!cible.closest("#m-modale");
     var b = h("div", "m-bulle" + (dansModale ? " m-bulle-fixe" : ""));
