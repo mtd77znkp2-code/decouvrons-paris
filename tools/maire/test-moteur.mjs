@@ -966,6 +966,13 @@ test("tournoi : les 10 épreuves rejouées par le serveur donnent exactement le 
   assert.equal(TJ.nettoyer([{ f: 5, a: "tap" }, { f: 2, a: "tap" }]), null, "gestes dans le désordre refusés");
   assert.equal(TJ.nettoyer([{ f: 1, a: "pirater" }]), null, "action inconnue refusée");
 });
+test("tournoi : aucune épreuve ne produit de position invalide, à aucun niveau", () => {
+  const TJ = require("../../public/maire/tournoi-jeux.js");
+  TJ.IDS.forEach((id) => { for (let n = 0; n < 4; n++) {
+    const s = TJ.creer(id, 11, n); for (let f = 0; f < 400 && !s.fin; f++) TJ.pas(id, s, f % 9 ? [] : [{ f: s.f, a: "tap", x: 180, y: 300 }]);
+    assert.ok(!/NaN|null/.test(JSON.stringify(s, (k, v) => (typeof v === "number" && !isFinite(v) ? "NaN" : v))), id + " niveau " + n);
+  } });
+});
 test("tournoi : classement des 21 maires et gains de popularité", () => {
   const TR = require("../../public/maire/tournoi-regles.js"), S = require("../../public/maire/session.js");
   let s = S.nouvelleSession(5, Date.now()); s = S.rejoindre(s, "u1", "A", "🙂", Date.now()); s = S.rejoindre(s, "u2", "B", "🙂", Date.now());

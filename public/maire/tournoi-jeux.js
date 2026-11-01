@@ -12,11 +12,11 @@
   function ent(s, a, b) { return a + Math.floor(rnd(s) * (b - a + 1)); }
   // Paramètres de la partie en cours de création (durée de l'épreuve, niveau de difficulté 0 à 3)
   var CREATION = { n: IMAGES, d: 0 };
-  function base(graine) { return { r: graine | 0, f: 0, score: 0, fin: false, evts: [], n: CREATION.n, d: CREATION.d }; }
+  function base(graine) { return { r: graine | 0, f: 0, score: 0, fin: false, evts: [], n: CREATION.n, niv: CREATION.d }; }
   function pts(s, n, x, y) { s.score = Math.max(0, s.score + n); s.evts.push({ f: s.f, n: n, x: x == null ? W / 2 : x, y: y == null ? H / 3 : y }); if (s.evts.length > 12) s.evts.shift(); }
   // 0 → 1 au fil de l'épreuve : la difficulté monte ; les niveaux 2 à 4 partent de plus haut et montent plus vite
   function prog(s) { return Math.min(1, s.f / (s.n || IMAGES)); }
-  function D(s) { return s.d || 0; }   // niveau de difficulté 0 à 3 : chaque épreuve en tient compte à sa façon (moins de temps, plus de pièges)
+  function D(s) { return s.niv || 0; }   /* « niv » : surtout pas « d », déjà pris par la liste des déchets */   // niveau de difficulté 0 à 3 : chaque épreuve en tient compte à sa façon (moins de temps, plus de pièges)
 
   var JEUX = {};
 
@@ -210,9 +210,9 @@
     nom: "Le Conseil Municipal", ico: "🏛️", typique: 350,
     accroche: "Les élus votent dans un ordre précis… sauras-tu suivre la séance ?",
     regles: ["Regarde l’ordre dans lequel les élus s’allument", "Touche-les dans le même ordre", "Chaque séance réussie rapporte plus · 3 erreurs et la séance est levée"],
-    creer: function (g) { var s = base(g); s.seq = [ent(s, 0, 3), ent(s, 0, 3)]; for (var q = 0; q < Math.floor((s.d || 0) / 2); q++) s.seq.push(ent(s, 0, 3)); s.vies = 3; s.i = 0; s.mode = "montre"; s.t = 0; s.allume = -1; s.serie = 0; return s; },
+    creer: function (g) { var s = base(g); s.seq = [ent(s, 0, 3), ent(s, 0, 3)]; for (var q = 0; q < Math.floor(D(s) / 2); q++) s.seq.push(ent(s, 0, 3)); s.vies = 3; s.i = 0; s.mode = "montre"; s.t = 0; s.allume = -1; s.serie = 0; return s; },
     pas: function (s, gestes) {
-      var dureeL = Math.max(6, 15 - s.seq.length - (s.d || 0));   // un élu reste allumé moins longtemps quand la séquence s'allonge
+      var dureeL = Math.max(6, 15 - s.seq.length - D(s));   // un élu reste allumé moins longtemps quand la séquence s'allonge
       if (s.mode === "montre") {
         s.t++; var k = Math.floor(s.t / (dureeL + 4)), dans = s.t % (dureeL + 4);
         s.allume = k < s.seq.length && dans < dureeL ? s.seq[k] : -1;
