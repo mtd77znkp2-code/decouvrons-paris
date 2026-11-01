@@ -834,8 +834,9 @@ test("session : employés (prix qui monte, effet qui baisse, effets réels)", ()
   const S = require("../../public/maire/session.js");
   let st = M.nouvellePartie({ maire: "tribun", graine: 8, nivJoueur: 10 });
   assert.ok(M.peutEmbaucher(st, "avocat"), "hors session : pas d'employés");
-  st = M.placer(st, { id: "s", place: 4, titre: S.titre(4), hab0: S.habitants(4), puissance: S.puissance(4), rival: { nom: "R", ico: "x" }, opp: { nom: "O", ico: "y" } }); st.phase = "gestion"; st.tresor = 5000;
+  st = M.placer(st, { id: "s", place: 4, titre: S.titre(4), hab0: S.habitants(4), puissance: S.puissance(4), rival: { nom: "R", ico: "x" }, opp: { nom: "O", ico: "y" } }); st.phase = "gestion"; st.tresor = 5000; st.nivJ = 17;   // tous les métiers débloqués
   assert.equal(Object.keys(M.EMPLOYES).length, 6);
+  const st7 = Object.assign({}, st, { nivJ: 7 }); assert.ok(!M.peutEmbaucher(st7, "proprete") && M.peutEmbaucher(st7, "urbaniste"), "les métiers se débloquent niveau par niveau");
   const p0 = M.prixEmploye(st, "avocat"); st = M.embaucher(st, "avocat"); const p1 = M.prixEmploye(st, "avocat"); assert.ok(p1 > p0, "le prix monte");
   const e1 = M.effetEmp(st, "avocat"); st = M.embaucher(st, "avocat"); const e2 = M.effetEmp(st, "avocat") - e1; assert.ok(e2 < e1 && e2 > 0, "chacun sert un peu moins");
   // Comptable : moins de dépenses ; urbaniste : plus de logements ; policier : la sécurité vise plus haut ; salaires comptés

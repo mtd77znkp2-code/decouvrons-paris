@@ -404,6 +404,15 @@
     return n;
   }
   // Nouveau niveau : ses bâtiments arrivent tout de suite en boutique (l'interface le fête grâce à st.montees)
+  // Administration : fixer le niveau de la partie (vers le haut comme vers le bas)
+  function fixerNiveau(st, n) {
+    n = Math.max(1, Math.min(NIV_MAX, n | 0)); if (!st.np) return st;
+    st.pxp = ptsPour(n);
+    if (n >= st.nivJ) { monterNiveau(st); return st; }
+    st.nivJ = n;
+    MECANIQUES.concat(EXTRAS).forEach(function (x) { if (EN_COURS[x.id]) st.meca[x.id] = n >= x.niv; });
+    return st;
+  }
   function monterNiveau(st) {
     if (st.nivFixe || st.phase === "fin") return;
     var cible = st.np ? niveauPartie(st.pxp || 0) : niveauXP(st.xp0 + st.xp);
@@ -1816,12 +1825,12 @@
   // ---------- Employés (en session) : on en embauche autant qu'on veut ; chacun coûte plus cher et sert un peu moins que le précédent ----------
   // effet : ce qu'apporte le 1er ; les suivants apportent ×0,75 à chaque fois. max : plafond de l'effet total. salaire : M€ par trimestre.
   var EMPLOYES = {
-    avocat: { nom: "Avocat", ico: "⚖️", cout: 25, salaire: 2, effet: 0.04, max: 0.35, unite: "pct", txt: "Les attaques de tes adversaires te font perdre moins de points dans les sondages." },
-    proprete: { nom: "Agent de propreté", ico: "🧹", cout: 15, salaire: 1, effet: 3, unite: "espaces", txt: "Entretient tes espaces de vie (parcs, jardins, fontaines…) : un agent pour 3. Sans eux, ils se dégradent et finissent par fermer." },
-    policier: { nom: "Policier municipal", ico: "👮", cout: 25, salaire: 2, effet: 1.2, max: 8, unite: "pilier", pilier: "securite", txt: "Patrouille dans tes rues : le pilier Sécurité monte." },
-    presse: { nom: "Attaché de presse", ico: "📣", cout: 30, salaire: 2, effet: 0.05, max: 0.35, unite: "pct", txt: "Tes attaques font perdre plus de points à tes adversaires." },
-    comptable: { nom: "Comptable", ico: "🧮", cout: 50, salaire: 2, effet: 0.01, max: 0.12, unite: "pct", txt: "Traque le gaspillage : les frais de fonctionnement de la mairie baissent." },
-    urbaniste: { nom: "Urbaniste", ico: "📐", cout: 40, salaire: 2, effet: 0.02, max: 0.15, unite: "pct", txt: "Densifie intelligemment : ton arrondissement peut loger plus d’habitants." }
+    avocat: { niv: 13, nom: "Avocat", ico: "⚖️", cout: 25, salaire: 2, effet: 0.04, max: 0.35, unite: "pct", txt: "Les attaques de tes adversaires te font perdre moins de points dans les sondages." },
+    proprete: { niv: 7, nom: "Agent de propreté", ico: "🧹", cout: 15, salaire: 1, effet: 3, unite: "espaces", txt: "Entretient tes espaces de vie (parcs, jardins, fontaines…) : un agent pour 3. Sans eux, ils se dégradent et finissent par fermer." },
+    policier: { niv: 9, nom: "Policier municipal", ico: "👮", cout: 25, salaire: 2, effet: 1.2, max: 8, unite: "pilier", pilier: "securite", txt: "Patrouille dans tes rues : le pilier Sécurité monte." },
+    presse: { niv: 15, nom: "Attaché de presse", ico: "📣", cout: 30, salaire: 2, effet: 0.05, max: 0.35, unite: "pct", txt: "Tes attaques font perdre plus de points à tes adversaires." },
+    comptable: { niv: 11, nom: "Comptable", ico: "🧮", cout: 50, salaire: 2, effet: 0.01, max: 0.12, unite: "pct", txt: "Traque le gaspillage : les frais de fonctionnement de la mairie baissent." },
+    urbaniste: { niv: 17, nom: "Urbaniste", ico: "📐", cout: 40, salaire: 2, effet: 0.02, max: 0.15, unite: "pct", txt: "Densifie intelligemment : ton arrondissement peut loger plus d’habitants." }
   };
   function nbEmp(st, id) { return ((st.emp || {})[id]) || 0; }
   function cumul(e, n) { var r = Math.min(0.99, R.v.empRendement); return e * (1 - Math.pow(r, n)) / (1 - r); }
@@ -1832,8 +1841,11 @@
   // Espaces de vie à entretenir : les bâtiments « cadre de vie »
   function espaces(st) { var n = 0; Object.keys(st.bat || {}).forEach(function (id) { if (BATIMENTS[id] && BATIMENTS[id].cat === "cadre") n += st.bat[id]; }); return n; }
   function proprete(st) { var e = espaces(st), ok = effetEmp(st, "proprete"); return { espaces: e, couverts: Math.min(e, ok), manque: Math.max(0, Math.ceil((e - ok) / EMPLOYES.proprete.effet)) }; }
+  // Les métiers se débloquent un par un, niveau après niveau (propreté au niveau 7, … urbaniste au niveau 17)
+  function empDebloque(st, id) { return st.sansLimite || (st.nivJ || 1) >= (EMPLOYES[id].niv || 1); }
   function peutEmbaucher(st, id) {
     if (!EMPLOYES[id] || !st.session || st.phase === "fin") return "Impossible pour l’instant.";
+    if (!empDebloque(st, id)) return "Se débloque au niveau " + EMPLOYES[id].niv + ".";
     if (st.tresor < prixEmploye(st, id)) return "Pas assez d’argent.";
     return "";
   }
@@ -2018,7 +2030,7 @@
   var API = { MANDAT: MANDAT, PLAFOND_DETTE: PLAFOND_DETTE, TAUX: TAUX, P: P, NIVEAUX: NIVEAUX, PILIERS: PILIERS, ICO: ICO, DOMAINES: DOMAINES,
     MECANIQUES: MECANIQUES, EXTRAS: EXTRAS, mecaniques: mecaniques, BATIMENTS: BATIMENTS, OPPOSANTS: OPPOSANTS, SEUIL_OPP: SEUIL_OPP, LIGNES: LIGNES, CATS: CATS,
     FAMILLE: FAMILLE, SPECIAUX: SPECIAUX, C: C,
-    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, dossierNeglige: dossierNeglige, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, EMPLOYES: EMPLOYES, nbEmp: nbEmp, effetEmp: effetEmp, prixEmploye: prixEmploye, salaires: salaires, proprete: proprete, peutEmbaucher: peutEmbaucher, embaucher: embaucher, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
+    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, dossierNeglige: dossierNeglige, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, EMPLOYES: EMPLOYES, nbEmp: nbEmp, empDebloque: empDebloque, fixerNiveau: fixerNiveau, effetEmp: effetEmp, prixEmploye: prixEmploye, salaires: salaires, proprete: proprete, peutEmbaucher: peutEmbaucher, embaucher: embaucher, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
     disponible: disponible, enChantier: enChantier, dureeTravaux: dureeTravaux, prix: prix, equilibre: equilibre, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, recit: recit,
     valider: valider, indexer: indexer, engagements: engagements, evenementCourant: evenementCourant, stats: stats, opposant: opposant, humeurOpp: humeurOpp, bonheur: bonheur,
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,

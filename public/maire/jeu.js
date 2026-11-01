@@ -1082,6 +1082,12 @@
     var actions = ajout(h("div", "mx-ses-actions"), majAttaque(verrouMeca("attaques", bouton("⚔️ Attaquer", "mx-ses-act mx-ses-attaque", salleGuerre))), ajout(bouton("", "mx-ses-act mx-ses-btn", classementSession), icoUI("ui-classement"), document.createTextNode(" Classement")));
     ajout(d, titre, duo, actions, h("small", "mx-ses-malus", ""));
     // Administrateur seulement : forcer l'élection de cette session (elle a lieu dans 30 s, pour tous les joueurs)
+    if (window.ADMIN_UNLOCKED && st.np) d.appendChild(bouton("🛠 Admin : définir mon niveau (actuel : " + st.nivJ + ")", "mx-admin-elec", function () {
+      var v = prompt("Niveau de la partie (1 à " + M.NIV_MAX + ") :", String(st.nivJ)); if (v == null) return;
+      var n = parseInt(v, 10); if (!(n >= 1 && n <= M.NIV_MAX)) return toast("Niveau invalide.");
+      st = M.fixerNiveau(st, n); sauver(); jeu(); toast("🛠 Niveau " + st.nivJ + " : fonctionnalités et bâtiments à jour.");
+      if (SES.id) window.SessionLigne.signaler(SES.id, etatSes());
+    }));
     if (window.ADMIN_UNLOCKED) d.appendChild(bouton("🛠 Admin : lancer le Grand Tournoi maintenant", "mx-admin-elec", function () {
       if (!confirm("Lancer le Grand Tournoi maintenant ? L’élection de la session est replacée dans 4 minutes (pour tous les joueurs).")) return;
       window.SessionLigne.modifier(SES.id, function (s) { s = JSON.parse(JSON.stringify(s)); s.prochaine = Date.now() + 238000; return s; }).then(function () { toast("🏆 Le tournoi s’ouvre dans quelques secondes."); });
@@ -1795,8 +1801,12 @@
     var pr = M.proprete(st);
     if (pr.manque) d.appendChild(h("p", "mx-emp-alerte", "🧹 " + pr.espaces + " espaces de vie, seulement " + pr.couverts + " entretenus : il manque " + pr.manque + " agent" + (pr.manque > 1 ? "s" : "") + " de propreté. Sinon, ils finiront par fermer !"));
     var g = h("div", "mx-emps");
-    Object.keys(M.EMPLOYES).forEach(function (id) {
+    Object.keys(M.EMPLOYES).sort(function (a, b) { return (M.EMPLOYES[a].niv || 1) - (M.EMPLOYES[b].niv || 1); }).forEach(function (id) {
       var E = M.EMPLOYES[id], n = M.nbEmp(st, id), px = M.prixEmploye(st, id), non = M.peutEmbaucher(st, id);
+      if (!M.empDebloque(st, id)) {   // métier pas encore débloqué : une carte grisée avec le niveau à atteindre
+        g.appendChild(ajout(h("div", "mx-emp mx-emp-verrou"), ajout(h("div", "mx-emp-tete"), icoUI("emp-" + id, "mx-emp-ico"), ajout(h("div"), h("b", null, E.nom), h("small", null, "🔒 Se débloque au niveau " + E.niv))), h("p", "mx-emp-txt", E.txt)));
+        return;
+      }
       var en = M.effetEmp(st, id), plus = M.effetEmp(st, id, 1) - en;
       var c = h("div", "mx-emp" + (n ? " mx-emp-on" : "") + (id === "proprete" && pr.manque ? " mx-emp-urgent" : ""));
       ajout(c, ajout(h("div", "mx-emp-tete"), icoUI("emp-" + id, "mx-emp-ico"), ajout(h("div"), h("b", null, E.nom), h("small", null, n ? "Salaires : " + argent(E.salaire * n) + "/trim." : "Aucun")), n ? h("em", "mx-emp-n", "×" + n) : null),

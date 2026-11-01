@@ -1711,3 +1711,4 @@ body.m-acc-on .m-fond{display:none}
 .m-pal-prog{display:grid;gap:4px;justify-items:end;min-width:64px}
 .m-pal-barre{display:block;width:64px;height:6px;border-radius:99px;background:rgba(255,255,255,.15);overflow:hidden}
 .m-pal-barre i{display:block;height:100%;background:#f5b21a}
+.mx-emp.mx-emp-verrou{opacity:.55;filter:grayscale(.6)}
