@@ -212,7 +212,6 @@
     function tuile(ico, titre, sous, f, vif) { var b = bouton("", "mx-tuile" + (vif ? " mx-vif" : ""), f); ajout(b, TUILE_ICO[ico] ? icoUI(TUILE_ICO[ico]) : h("span", null, ico), h("strong", null, titre), h("small", null, sous)); return b; }
     ajout(t, tuile("🔥", se.n ? se.n + " jour" + (se.n > 1 ? "s" : "") : "Série", se.fait ? "validé aujourd’hui" : "joue aujourd’hui", ecranSerie, !se.fait),
       tuile("🎟️", "Palier " + ps.palier, "sur " + ps.max + " ce mois", ecranPass),
-      tuile("🎡", "Roue", roue ? "tour gratuit !" : "revient lundi", roue ? ecranRoue : function () { toast("🎡 Prochain tour gratuit lundi."); }, roue),
       tuile("🏅", "Ligue", "de la semaine", ecranLigue));
     dr.appendChild(t);
     // Mes statistiques (avec un compte Google, sinon on propose de se connecter) et Réglages, côte à côte
@@ -1426,7 +1425,7 @@
     var gmp = document.getElementById("g-maire"); if (gmp) gmp.classList.add("m-partie");
     box.classList.add("mx-partie");
     var ciel = h("div", "mx-ciel"); ciel.setAttribute("aria-hidden", "true");
-    ajout(box, entete(), ciel, st.session && window.MaireTournoiUI ? MaireTournoiUI.bandeau() : null, bandeauSession(), tableau(), carteObjectifs(), piliers(), carteEquilibre(), carteLeon());
+    ajout(box, entete(), ciel, st.session && window.MaireTournoiUI ? MaireTournoiUI.bandeau() : null, bandeauSession(), tableau(), carteObjectifs(), carteRoue(), piliers(), carteEquilibre(), carteLeon());
     if (st.opposant) box.appendChild(bandeauOpp());
     if (st.rapport && st.notes && st.notes.length) box.appendChild(notes());
     box.appendChild(carteVille(false));
@@ -1601,6 +1600,43 @@
       ajout(d, b, h("small", "mx-criseinfo mx-gris", ok ? "Objectifs remplis : le vote aurait lieu 3 trimestres plus tard." : "Possible quand 2 objectifs sur 3 sont remplis (et que le vote prévu est encore loin)."));
     }
     return d;
+  }
+  // ---------- Roue de la fortune : une quête, puis un tour sur une roue (bois, bronze, argent, or, saphir) ----------
+  function carteRoue() {
+    var e = M.etatRoue(st); if (!e) return null;
+    var d = h("div", "mx-roue mx-roue-" + e.roue.id + (e.ok ? " mx-roue-prete" : ""));
+    var barre = h("div", "mx-barre"), i = h("i"); i.style.width = Math.round(e.cur / Math.max(1, e.but) * 100) + "%"; i.style.background = e.roue.coul; barre.appendChild(i);
+    ajout(d, ajout(h("div", "mx-roue-tete"), h("span", "mx-roue-disque"), ajout(h("div"), h("small", null, "🎡 Quête de roue"), h("strong", null, e.roue.nom))),
+      ajout(h("div", "mx-roue-quete"), h("span", null, e.ico), h("span", null, e.txt), h("b", null, e.cur + " / " + e.but)), barre,
+      e.ok ? bouton("Tourner la " + e.roue.nom.toLowerCase() + " !", "btn m-go mx-roue-go", tournerRoue) : h("small", "m-aide", "Réussis la quête pour gagner un tour de roue. Les roues rares (or, saphir) ont moins de pièges et de plus gros gains."));
+    d.querySelector(".mx-roue-disque").style.background = "conic-gradient(" + e.roue.coul + " 0 45deg,#fff3 45deg 90deg," + e.roue.coul + " 90deg 135deg,#fff3 135deg 180deg," + e.roue.coul + " 180deg 225deg,#fff3 225deg 270deg," + e.roue.coul + " 270deg 315deg,#fff3 315deg)";
+    return d;
+  }
+  function tournerRoue() {
+    var e = M.etatRoue(st); if (!e || !e.ok) return;
+    var r = M.tournerRoueJeu(st); if (!r) return;
+    st = r.st; sauver(); signal("roue"); cacherBulle();
+    var f = h("div", "m-pop m-roue-pop"), c = h("div", "m-pop-in m-roue-carte mx-roue-" + e.roue.id), n = e.cases.length;
+    var cont = h("div", "m-roue-zone"), roue = h("div", "m-roue2"), fl = h("div", "m-roue-fleche", "▼"), g = [];
+    e.cases.forEach(function (t, k) {
+      var piege = /^(Grève|Scandale|Départs|Chantier retardé)/.test(t);
+      g.push((piege ? "#5a1f24" : k % 2 ? e.roue.coul : "#1d2860") + " " + (k * 360 / n) + "deg " + ((k + 1) * 360 / n) + "deg");
+      var lab = h("span", "m-roue-lab", t.replace(/ : .*$/, "")); lab.style.transform = "rotate(" + ((k + 0.5) * 360 / n) + "deg) translateY(calc(min(270px, 72vw) * -0.32))"; roue.appendChild(lab);
+    });
+    roue.style.background = "conic-gradient(" + g.join(",") + ")";
+    var res = h("p", "m-roue-res"), fin = bouton("Continuer", "btn m-go mx-cache", function () { f.remove(); jeu(); });
+    ajout(c, h("p", "m-sur", "🎡 " + e.roue.nom), ajout(cont, fl, roue), res, fin); f.appendChild(c); document.body.appendChild(f);
+    if (window.sfx) window.sfx("roulette", 0.6);
+    requestAnimationFrame(function () {
+      roue.style.transition = calme() ? "none" : "transform 4.2s cubic-bezier(.15,.85,.2,1)";
+      roue.style.transform = "rotate(" + (360 * 6 - (r.i + 0.5) * 360 / n) + "deg)";
+    });
+    setTimeout(function () {
+      res.textContent = (r.bon ? "🎉 " : "😬 ") + r.txt; res.className = "m-roue-res " + (r.bon ? "m-plus" : "m-moins");
+      if (window.sfx) window.sfx(r.bon ? "succes" : "perdu", 0.7); if (r.bon && e.n >= 3) confettis();
+      fin.classList.remove("mx-cache");
+      if (st.roueBouclier && SES.id) { delete st.roueBouclier; sauver(); window.SessionLigne.proteger(SES.id).catch(function () {}); }   // bouclier gratuit dans la session
+    }, calme() ? 150 : 4300);
   }
   // Tableau de bord : le sondage en grand (c'est lui qui décide de l'élection) et trois chiffres
   var SOND = null;

@@ -1712,3 +1712,22 @@ body.m-acc-on .m-fond{display:none}
 .m-pal-barre{display:block;width:64px;height:6px;border-radius:99px;background:rgba(255,255,255,.15);overflow:hidden}
 .m-pal-barre i{display:block;height:100%;background:#f5b21a}
 .mx-emp.mx-emp-verrou{opacity:.55;filter:grayscale(.6)}
+/* Roue de la fortune en partie */
+.mx-roue{display:grid;gap:8px;padding:12px 14px;border-radius:16px;background:linear-gradient(#1d2860,#141c4a);border:2px solid #d9a53a;color:#fff}
+.mx-roue-bois{border-color:#8a5a2b}.mx-roue-bronze{border-color:#b8733a}.mx-roue-argent{border-color:#c9d1de}.mx-roue-or{border-color:#f5b21a;box-shadow:0 0 16px rgba(245,178,26,.35)}.mx-roue-saphir{border-color:#4f8bff;box-shadow:0 0 22px rgba(79,139,255,.55)}
+.mx-roue-tete{display:flex;align-items:center;gap:10px}.mx-roue-tete small{display:block;color:#d9dcef;font-size:12px}.mx-roue-tete strong{font:800 16px Georgia,serif}
+.mx-roue-disque{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.4);flex:none}
+.mx-roue-prete .mx-roue-disque{animation:mxRoueT 2.5s linear infinite}
+@keyframes mxRoueT{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.mx-roue-prete .mx-roue-disque{animation:none}}
+.mx-roue-quete{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:6px;align-items:center;font-size:14px}
+.mx-roue .mx-barre{height:8px}
+.m-roue-carte{width:min(420px,100%);display:grid;gap:10px;justify-items:center;padding:16px;border-radius:20px;background:linear-gradient(#1d2860,#141c4a);border:3px solid #d9a53a;color:#fff}
+.m-roue-pop{position:fixed;inset:0;z-index:1300;display:grid;place-items:center;padding:16px;background:rgba(5,8,25,.78)}
+.m-roue-carte{box-sizing:border-box;max-width:calc(100vw - 32px)}
+.m-roue-carte .m-roue-zone{width:min(270px,72vw);margin:22px auto 8px}
+.m-roue-res.m-plus{color:#6fdc95;font-weight:900}.m-roue-res.m-moins{color:#ff8a80;font-weight:900}
+.mx-acc .mx-tuiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+.m-roue-pop{z-index:1400}
+.m-roue-pop .m-roue-carte{grid-template-columns:minmax(0,1fr)!important;grid-auto-flow:row!important}
+.m-roue-pop .m-roue-carte>*{grid-column:1!important}

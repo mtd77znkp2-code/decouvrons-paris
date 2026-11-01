@@ -578,6 +578,67 @@
     st.mandatBats = {}; st.mandatTypes = {};
     var x = stats(st); st.mandatBase = { projetsOk: x.projetsOk, encheres: x.encheres || 0, dossiers: x.dossiers || 0 };
   }
+  // ---------- Roues de la fortune (session) : une quête tirée au hasard fait gagner un tour sur une roue, du bois au saphir ----------
+  var ROUES = [
+    { id: "bois", nom: "Roue en bois", p: 55, coul: "#8a5a2b" }, { id: "bronze", nom: "Roue en bronze", p: 25, coul: "#b8733a" },
+    { id: "argent", nom: "Roue en argent", p: 12, coul: "#a9b3c4" }, { id: "or", nom: "Roue en or", p: 5, coul: "#f5b21a" }, { id: "saphir", nom: "Roue en saphir", p: 3, coul: "#2f6fe0" }];
+  // 8 cases par roue : plus la roue est rare, plus les gains sont gros et moins il y a de pièges
+  var CASES = [
+    [["argent", 8], ["pop", 2], ["xp", 25], ["greve", 6], ["hab", 40], ["scandale", 2], ["chantier", 1], ["retard", 1]],
+    [["argent", 18], ["pop", 3], ["xp", 50], ["greve", 8], ["employe", 1], ["hab", 80], ["chantier", 1], ["depart", 2]],
+    [["argent", 35], ["pop", 4], ["xp", 90], ["bouclier", 1], ["employe", 1], ["batRare", 1], ["chantier", 1], ["scandale", 2]],
+    [["argent", 70], ["pop", 6], ["xp", 150], ["bouclier", 1], ["batRare", 1], ["employe", 1], ["hab", 200], ["greve", 5]],
+    [["argent", 140], ["pop", 9], ["xp", 260], ["batRare", 1], ["bouclier", 1], ["employe", 2], ["hab", 400], ["batRare", 1]]];
+  function texteCase(c) {
+    var v = c[1];
+    return { argent: "+" + v + " M€", pop: "+" + v + " popularité", xp: "+" + v + " points de niveau", hab: "+" + v + " habitants", chantier: "Chantier terminé", employe: v > 1 ? v + " employés offerts" : "Employé offert",
+      batRare: "Bâtiment rare offert", bouclier: "Bouclier gratuit", greve: "Grève : −" + v + " M€", scandale: "Scandale : −" + v + " popularité", depart: "Départs : −" + v + " % d’habitants", retard: "Chantier retardé" }[c[0]];
+  }
+  function roueValeurs(st) { var x = stats(st); return { dossiers: x.dossiers || 0, achats: x.achats || 0, casino: casinoGagnes(st), employes: totalEmp(st), attaques: x.attaquesOk || 0 }; }
+  // Une nouvelle quête (le type de roue est tiré tout de suite : 55 % bois … 3 % saphir)
+  function nouvelleQueteRoue(st) {
+    var v = rnd(st) * 100, k = 0; while (k < 4 && v >= ROUES[k].p) { v -= ROUES[k].p; k++; }
+    var l = [{ k: "dossiers", but: 1 + k, txt: "Tranche " + (1 + k) + " dossier" + (k ? "s" : ""), ico: "📂" }, { k: "achats", but: 1 + Math.floor(k / 2), txt: "Construis " + (1 + Math.floor(k / 2)) + " bâtiment" + (k >= 2 ? "s" : ""), ico: "🏗️" },
+      { k: "casino", but: 1, txt: "Gagne une partie au casino", ico: "🎰" }, { k: "pop", but: Math.min(95, Math.round(st.pop) + 2 + k), txt: "Monte ta popularité à " + Math.min(95, Math.round(st.pop) + 2 + k), ico: "📣" }];
+    if (st.meca.employes) l.push({ k: "employes", but: 1, txt: "Embauche un employé", ico: "👔" });
+    if (st.meca.attaques) l.push({ k: "attaques", but: 1, txt: "Réussis une attaque", ico: "⚔️" });
+    var q = l[Math.floor(rnd(st) * l.length)];
+    st.roueQ = { roue: k, k: q.k, but: q.but, txt: q.txt, ico: q.ico, base: roueValeurs(st), t: st.t };
+  }
+  function etatRoue(st) {
+    if (!st.session || !st.roueQ) return null;
+    var q = st.roueQ, v = roueValeurs(st), cur = q.k === "pop" ? Math.round(st.pop) : (v[q.k] || 0) - (q.base[q.k] || 0);
+    return { roue: ROUES[q.roue], n: q.roue, txt: q.txt, ico: q.ico, cur: Math.min(cur, q.but), but: q.but, ok: cur >= q.but, cases: CASES[q.roue].map(texteCase) };
+  }
+  // À chaque saison : une nouvelle quête de roue de temps en temps
+  function suivreRoue(st) {
+    if (!st.session || st.roueQ || st.phase === "fin") return;
+    if (st.t >= (st.roueProchaine || 2)) nouvelleQueteRoue(st);
+  }
+  // Le tour de roue (quête réussie) : la case est tirée par le moteur, l'interface n'anime que le résultat
+  function tournerRoueJeu(st0) {
+    var e = etatRoue(st0); if (!e || !e.ok) return null;
+    var st = copie(st0), cs = CASES[e.n], i = Math.floor(rnd(st) * cs.length), c = cs[i], v = c[1], txt = texteCase(c), autre = null;
+    if (c[0] === "argent") mouvement(st, v, "🎡 " + ROUES[e.n].nom);
+    else if (c[0] === "greve") { mouvement(st, -v, "🎡 Grève (roue)"); if (!financement(st)) faillite(st); }
+    else if (c[0] === "pop") st.pop = borne(st.pop + v);
+    else if (c[0] === "scandale") st.pop = borne(st.pop - v);
+    else if (c[0] === "xp") points(st, v);
+    else if (c[0] === "hab") { var a = st.hab || h0(st); st.hab = Math.min(Math.max(a, capacite(st)), a + v); if (st.hab === a) { mouvement(st, Math.round(v / 10), "🎡 Pas de logement libre : compensation"); txt += " (pas de logement libre : +" + Math.round(v / 10) + " M€)"; } }
+    else if (c[0] === "depart") bougerHab(st, -v);
+    else if (c[0] === "chantier") { if ((st.travaux || []).length) { st.travaux[0].fin = st.t; } else { mouvement(st, 10, "🎡 Pas de chantier : compensation"); txt += " (aucun en cours : +10 M€)"; } }
+    else if (c[0] === "retard") { if ((st.travaux || []).length) st.travaux[0].fin += 1; else txt += " (aucun en cours, ouf !)"; }
+    else if (c[0] === "employe") { var ids = Object.keys(EMPLOYES).filter(function (id) { return empDebloque(st, id) && !(EMPLOYES[id].limite && nbEmp(st, id) >= EMPLOYES[id].limite); });
+      if (ids.length) for (var k = 0; k < v; k++) { var id = ids[Math.floor(rnd(st) * ids.length)]; st.emp = st.emp || {}; st.emp[id] = (st.emp[id] || 0) + 1; autre = EMPLOYES[id].nom; }
+      else { mouvement(st, 20, "🎡 Aucun métier débloqué : compensation"); txt += " (aucun métier débloqué : +20 M€)"; } if (autre) txt += " : " + autre; }
+    else if (c[0] === "batRare") { var rares = Object.keys(BATIMENTS).filter(function (id) { return BATIMENTS[id].pass && !BATIMENTS[id].unique; }); var b = rares[Math.floor(rnd(st) * rares.length)];
+      construire(st, b, 0, "🎡 " + BATIMENTS[b].nom + " (roue)", true); txt += " : " + BATIMENTS[b].ico + " " + BATIMENTS[b].nom; }
+    else if (c[0] === "bouclier") st.roueBouclier = 1;   // l'interface active le service de communication dans la session
+    st.historique.push({ t: st.t, titre: "🎡 " + ROUES[e.n].nom, choix: txt, d: { pop: 0, bon: 0, coh: 0, bud: 0, pil: {} }, c: "roue" });
+    st.roueQ = null; st.roueProchaine = st.t + 2 + Math.floor(rnd(st) * 4);
+    return { st: st, i: i, txt: txt, bon: ["greve", "scandale", "depart", "retard"].indexOf(c[0]) < 0, roue: ROUES[e.n] };
+  }
+
   // Session : un mandat dure quelques minutes ; 50 mandats possibles, la difficulté monte jusqu'au 41e puis reste au plus haut.
   // 1er mandat : trois objectifs très simples (1 bâtiment, 2 dossiers, 2 bâtiments différents), sans crise.
   // Ensuite : trois objectifs tirés dans une réserve de 15 sortes (jamais deux de la même famille, jamais ceux du mandat précédent),
@@ -1237,6 +1298,9 @@
   // Les dossiers, eux, arrivent quand le joueur appuie sur « Dossier suivant » (dossierSession).
   var GARDE = ["phase", "evenement", "evPerso", "special", "resultat", "resultatVu", "pariRes"];
   function avancerSession(st0, base) {
+    var r0 = avancerSession0(st0, base); if (r0 !== st0 && r0.phase !== "fin") suivreRoue(r0); return r0;
+  }
+  function avancerSession0(st0, base) {
     if (st0.phase === "fin" || st0.phase === "election") return st0;
     if ((st0.bj && !st0.bj.fini) || (st0.enchere && !st0.enchere.fini)) return st0;
     var enAttente = st0.phase === "evenement" || (st0.resultat && !st0.resultatVu), mis = {};
@@ -2056,7 +2120,7 @@
   var API = { MANDAT: MANDAT, PLAFOND_DETTE: PLAFOND_DETTE, TAUX: TAUX, P: P, NIVEAUX: NIVEAUX, PILIERS: PILIERS, ICO: ICO, DOMAINES: DOMAINES,
     MECANIQUES: MECANIQUES, EXTRAS: EXTRAS, mecaniques: mecaniques, BATIMENTS: BATIMENTS, OPPOSANTS: OPPOSANTS, SEUIL_OPP: SEUIL_OPP, LIGNES: LIGNES, CATS: CATS,
     FAMILLE: FAMILLE, SPECIAUX: SPECIAUX, C: C,
-    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, dossierNeglige: dossierNeglige, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, EMPLOYES: EMPLOYES, nbEmp: nbEmp, empDebloque: empDebloque, chantiersMax: chantiersMax, plafond: plafond, nivBat: nivBat, aideDebut: aideDebut, fixerNiveau: fixerNiveau, effetEmp: effetEmp, prixEmploye: prixEmploye, salaires: salaires, proprete: proprete, peutEmbaucher: peutEmbaucher, embaucher: embaucher, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
+    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, dossierNeglige: dossierNeglige, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, EMPLOYES: EMPLOYES, nbEmp: nbEmp, empDebloque: empDebloque, chantiersMax: chantiersMax, plafond: plafond, ROUES: ROUES, etatRoue: etatRoue, tournerRoueJeu: tournerRoueJeu, nouvelleQueteRoue: nouvelleQueteRoue, nivBat: nivBat, aideDebut: aideDebut, fixerNiveau: fixerNiveau, effetEmp: effetEmp, prixEmploye: prixEmploye, salaires: salaires, proprete: proprete, peutEmbaucher: peutEmbaucher, embaucher: embaucher, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
     disponible: disponible, enChantier: enChantier, dureeTravaux: dureeTravaux, prix: prix, equilibre: equilibre, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, recit: recit,
     valider: valider, indexer: indexer, engagements: engagements, evenementCourant: evenementCourant, stats: stats, opposant: opposant, humeurOpp: humeurOpp, bonheur: bonheur,
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,

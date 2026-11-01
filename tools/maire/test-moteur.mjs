@@ -784,6 +784,16 @@ test("session : réforme de l'argent (caisses presque vides, une construction à
   // Construire des logements fait grandir la ville
   const cap0 = M.capacite(st); st.bat.logements = 2; assert.ok(M.capacite(st) >= cap0 + 500);
 });
+test("roues de la fortune : quêtes, 5 roues (bois 55 % … saphir 3 %), un tour par quête réussie", () => {
+  let st = partieSession(41); const cnt = [0, 0, 0, 0, 0];
+  for (let g = 1; g <= 3000; g++) { const x = JSON.parse(JSON.stringify(st)); x.rng = g * 7919; M.nouvelleQueteRoue(x); cnt[x.roueQ.roue]++; }
+  assert.ok(cnt[0] > 1450 && cnt[0] < 1850 && cnt[4] > 50 && cnt[4] < 140, "répartition " + cnt);
+  for (let t = 0; t < 4; t++) st = M.avancerSession(st, base);
+  const e = M.etatRoue(st); assert.ok(e && !e.ok, "une quête apparaît");
+  assert.equal(M.tournerRoueJeu(st), null, "pas de tour avant d'avoir réussi la quête");
+  st.roueQ.k = "pop"; st.roueQ.but = 0; const r = M.tournerRoueJeu(st);
+  assert.ok(r && r.txt && r.st.roueQ === null && r.st.roueProchaine > r.st.t, "un tour, puis une nouvelle quête plus tard");
+});
 test("session : le temps passe tout seul, les dossiers arrivent à la demande", () => {
   const S = require("../../public/maire/session.js");
   let st = M.nouvellePartie({ maire: "tribun", graine: 21, nivJoueur: 1 });
