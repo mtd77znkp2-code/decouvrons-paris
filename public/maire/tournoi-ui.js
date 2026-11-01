@@ -145,7 +145,11 @@
     ({ pickpockets: ["s-pickpocket1", "s-pickpocket2", "s-touriste1", "s-touriste2", "s-touriste3", "s-policier", "s-journaliste", "s-pompier"],
       peripherique: ["s-voiture1", "s-voiture2", "s-taxi", "s-bus", "s-scooter", "s-ambulance", "s-feu-rouge", "s-feu-vert", "s-fumee"],
       eboueurs: ["s-journal", "s-carton", "s-bouteille", "s-bocal", "s-plastique", "s-gobelet", "s-banane", "s-pizza", "s-sac-noir"],
-      pigeons: ["s-gobelet", "s-banane", "s-journal", "s-pizza", "s-carton"] }[id] || []).forEach(img);
+      pigeons: ["s-pigeon", "s-pigeon-picore", "s-p-gobelet", "s-p-banane", "s-journal", "s-p-frites", "s-p-papier", "s-p-nouilles"],
+      chantier: ["s-c-pierre", "s-c-fenetre", "s-c-balcon", "s-c-crochet", "s-c-poussiere"],
+      conseil: ["s-elu0", "s-elu1", "s-elu2", "s-elu3", "s-elu0-main", "s-elu1-main", "s-elu2-main", "s-elu3-main"],
+      marathon: ["s-coureur", "s-coureur-saut", "s-coureur-glisse", "s-barriere", "s-bache", "s-eau", "s-medaille", "s-coeur", "s-coeur-vide"] }[id] || []).forEach(img);
+    img("victoire"); img("defaite");
   }
   function presenter() {
     if (!T) return; precharger(T.jeu); var jx = jeuDe(T), now = maintenant();
@@ -230,7 +234,8 @@
     son("fanfare", 0.6);
     c.innerHTML = ""; c.classList.remove("mt-ecran-jeu");
     var res = h("div", "mt-fin"), sc = h("strong", "mt-fin-score", String(s.score)), info = h("p", null, "Vérification du score par le serveur…");
-    ajout(res, h("p", "mt-sur", "Fin de l’épreuve !"), h("h4", "mt-titre", "🏁 " + J.JEUX[T.jeu].nom), sc, info);
+    var bon = s.score >= J.JEUX[T.jeu].typique * 0.75, ill = h("img", "mt-illu mt-illu-fin"); ill.src = "maire/img/tournoi/" + (bon ? "victoire" : "defaite") + ".webp"; ill.alt = ""; ill.onerror = function () { ill.remove(); };
+    ajout(res, ill, h("p", "mt-sur", bon ? "Belle épreuve !" : "Fin de l’épreuve !"), h("h4", "mt-titre", "🏁 " + J.JEUX[T.jeu].nom), sc, info);
     c.appendChild(res);
     appel("tournoiTerminer", { tournoi: tid, gestes: gestes }).then(function (r) {
       sc.textContent = String(r.score);
@@ -253,9 +258,11 @@
     var c = h("div", "m-pop-in mt-classement");
     ajout(c, bouton("✕", "m-leonx mt-x", function () { fermer("mt-classement"); }), h("p", "mt-sur", jeuDe(T).ico + " " + jeuDe(T).nom), h("h4", "mt-titre", "🏆 Classement du tournoi"),
       h("p", "mt-etat", ""), h("ol", "mt-liste"));
+    c.insertBefore(petite("m-coupe", "🏆", 64), c.querySelector(".mt-sur"));
     f.appendChild(c); document.body.appendChild(f); f.onclick = function (e) { if (e.target === f) fermer("mt-classement"); };
     majClassement();
   }
+  function petite(nom, emo, t) { var i = h("img", "mt-mini"); i.src = "maire/img/tournoi/" + nom + ".webp"; i.alt = emo || ""; i.width = i.height = t || 14; i.onerror = function () { i.replaceWith(document.createTextNode(emo || "")); }; return i; }
   function majClassement() {
     var c = document.querySelector(".mt-classement"); if (!c || !T) return;
     var clos = T.etat === "clos", now = maintenant();
@@ -263,8 +270,8 @@
     var l = c.querySelector(".mt-liste"); l.innerHTML = "";
     lignesClassement().forEach(function (x) {
       var li = h("li", "mt-l" + (x.rang <= 10 ? " mt-top" : "") + (x.uid && x.uid === moi() ? " mt-moi" : ""));
-      var g = h("em", "mt-gain " + (x.gain > 0 ? "mt-plus" : "mt-moins"), (x.gain > 0 ? "+" : "") + x.gain + " %");
-      ajout(li, h("b", "mt-rang", x.rang <= 3 ? ["🥇", "🥈", "🥉"][x.rang - 1] : String(x.rang)), h("span", "mt-av", x.ico || "🙂"),
+      var g = ajout(h("em", "mt-gain " + (x.gain > 0 ? "mt-plus" : "mt-moins")), petite(x.gain > 0 ? "m-hausse" : "m-baisse"), document.createTextNode((x.gain > 0 ? "+" : "") + x.gain + " %"));
+      ajout(li, x.rang <= 3 ? ajout(h("b", "mt-rang"), petite(["m-or", "m-argent", "m-bronze"][x.rang - 1], ["🥇", "🥈", "🥉"][x.rang - 1], 28)) : h("b", "mt-rang", String(x.rang)), h("span", "mt-av", x.ico || "🙂"),
         ajout(h("span", "mt-nom"), document.createTextNode((x.uid === moi() ? "⭐ Toi" : x.nom) + (x.bot ? " 🤖" : "")), h("small", null, (root.MaireSession ? MaireSession.court(x.place) : "") + (x.absent && !clos ? " · pas encore joué" : x.enCours ? " · en jeu…" : x.absent ? " · absent" : ""))),
         h("b", "mt-sc", String(x.score)), g);
       l.appendChild(li);
@@ -293,6 +300,11 @@
   var IMGS = {}, COURANT = null;
   function img(nom) { var i = IMGS[nom]; if (!i) { i = IMGS[nom] = new Image(); i.decoding = "async"; i.src = "maire/img/tournoi/" + nom + ".webp"; } return i.complete && i.naturalWidth ? i : null; }
   function spr(ctx, nom, x, y, t, e) { var i = img(nom); if (!i) return emo(ctx, e || "❔", x, y, t); var w = t * 1.15; ctx.drawImage(i, x - w / 2, y - w / 2, w, w); }
+  function tuile(ctx, nom, x, y, w, ht, coul) {   // un étage : la pierre dessinée répétée sur toute sa largeur
+    var i = img(nom); if (!i) return bloc(ctx, x, y, w, ht, coul, "#8a7350", 3);
+    ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, ht); ctx.clip(); ctx.fillStyle = coul || "#e9d7b0"; ctx.fillRect(x, y, w, ht); for (var k = x; k < x + w; k += ht) ctx.drawImage(i, k, y, ht, ht); ctx.restore();
+    ctx.strokeStyle = "#6b5535"; ctx.lineWidth = 1.5; ctx.strokeRect(x, y, w, ht);
+  }
   function decor(ctx) {
     if (!COURANT) return false; var i = img("decor-" + COURANT); if (!i) return false;
     if (COURANT === "marathon") return false;   // décor qui défile : dessiné par l'épreuve
@@ -379,11 +391,12 @@
       fond(ctx, "#8fc1ff", "#cfe6ff");
       var decal = Math.max(0, (s.pile.length - 8) * 26);   // la vue monte avec l'immeuble
       ctx.fillStyle = "#6b5a45"; ctx.fillRect(0, 520 + decal, 360, 30);
-      s.pile.forEach(function (b, i) { var y = 494 - i * 26 + decal; bloc(ctx, b.x, y, b.w, 26, i % 5 === 0 ? "#d8c39a" : "#e9d7b0", "#8a7350", 3); for (var w = b.x + 8; w < b.x + b.w - 10; w += 20) bloc(ctx, w, y + 7, 10, 12, "#3b5d8a", null, 2); });
+      s.pile.forEach(function (b, i) { var y = 494 - i * 26 + decal; tuile(ctx, i === 0 ? "s-c-pierre" : i % 5 === 0 ? "s-c-balcon" : "s-c-fenetre", b.x, y, b.w, 26, "#e9d7b0"); });
       // La grue et son bloc
       ctx.fillStyle = OR; ctx.fillRect(0, 40, 360, 8); ctx.fillRect(s.bloc.x + s.bloc.w / 2 - 2, 48, 4, 40);
-      bloc(ctx, s.bloc.x, 88, s.bloc.w, 26, "#f0e0bd", "#8a7350", 3);
-      if (s.chute) bloc(ctx, s.chute.x, s.chute.y, s.chute.w, 26, "#c9b48c", "#8a7350", 3);
+      if (img("s-c-crochet")) spr(ctx, "s-c-crochet", s.bloc.x + s.bloc.w / 2, 72, 30);
+      tuile(ctx, (s.pile.length) % 5 === 0 ? "s-c-balcon" : "s-c-fenetre", s.bloc.x, 88, s.bloc.w, 26, "#f0e0bd");
+      if (s.chute) { tuile(ctx, "s-c-pierre", s.chute.x, s.chute.y, s.chute.w, 26, "#c9b48c"); spr(ctx, "s-c-poussiere", s.chute.x + s.chute.w / 2, Math.min(500, s.chute.y), 60, "💨"); }
       txt(ctx, "Étages : " + (s.pile.length - 1), 60, 20, 14, BLEU, "left"); txt(ctx, "Touche pour lâcher !", 250, 20, 13, BLEU);
       bulles(ctx, s);
     },
@@ -395,7 +408,7 @@
       E.forEach(function (e, k) {
         var x = (k % 2) * 180 + 10, y = 140 + Math.floor(k / 2) * 190, on = s.allume === k;
         bloc(ctx, x, y, 160, 170, on ? e[1] : "rgba(255,255,255,.08)", on ? "#fff" : e[1], 18);
-        emo(ctx, e[0], x + 80, y + 75, on ? 78 : 64); emo(ctx, "🎤", x + 80, y + 140, 22);
+        if (img("s-elu" + k)) spr(ctx, "s-elu" + k + (on ? "-main" : ""), x + 80, y + 88, on ? 132 : 120); else { emo(ctx, e[0], x + 80, y + 75, on ? 78 : 64); emo(ctx, "🎤", x + 80, y + 140, 22); }
       });
       bulles(ctx, s);
     },
@@ -415,11 +428,11 @@
       }
       s.obs.forEach(function (o) {
         if (o.pris && (o.t === "eau" || o.t === "medaille")) return;
-        if (o.t === "barriere") emo(ctx, "🚧", o.x, 362, 40); else if (o.t === "bache") { bloc(ctx, o.x - 26, 280, 52, 50, "#c8352e", "#fff", 4); emo(ctx, "⬇️", o.x, 305, 20); }
-        else if (o.t === "eau") emo(ctx, "🧴", o.x, 362, 30); else emo(ctx, "🏅", o.x, 290, 32);
+        if (o.t === "barriere") spr(ctx, "s-barriere", o.x, 358, 46, "🚧"); else if (o.t === "bache") { if (img("s-bache")) spr(ctx, "s-bache", o.x, 300, 66); else { bloc(ctx, o.x - 26, 280, 52, 50, "#c8352e", "#fff", 4); emo(ctx, "⬇️", o.x, 305, 20); } }
+        else if (o.t === "eau") spr(ctx, "s-eau", o.x, 362, 30, "🧴"); else spr(ctx, "s-medaille", o.x, 290, 34, "🏅");
       });
-      var yy = 360 - s.y; if (!(s.invul && s.f % 6 < 3)) { if (s.glisse) emo(ctx, "🏃", 75, yy + 10, 34); else emo(ctx, "🏃", 75, yy - 6, 46); }
-      txt(ctx, "❤️".repeat(Math.max(0, s.coeurs)), 300, 24, 16); txt(ctx, Math.round(s.dist / 20) + " m", 50, 24, 16, BLEU);
+      var yy = 360 - s.y; if (!(s.invul && s.f % 6 < 3)) { if (s.glisse) spr(ctx, "s-coureur-glisse", 75, yy + 8, 52, "🏃"); else spr(ctx, s.y > 0 ? "s-coureur-saut" : "s-coureur", 75, yy - 10, 56, "🏃"); }
+      if (img("s-coeur")) for (var c = 0; c < 3; c++) spr(ctx, c < s.coeurs ? "s-coeur" : "s-coeur-vide", 278 + c * 24, 24, 18); else txt(ctx, "❤️".repeat(Math.max(0, s.coeurs)), 300, 24, 16); txt(ctx, Math.round(s.dist / 20) + " m", 50, 24, 16, BLEU);
       txt(ctx, "Haut : sauter · Bas : glisser", 180, 520, 13, "#fff");
       bulles(ctx, s);
     },
@@ -439,8 +452,8 @@
     pigeons: function (ctx, s) {
       fond(ctx, "#cdbf9f", "#b3a582");
       txt(ctx, "Ramasse les déchets ! (" + s.d.length + " par terre)", 180, 30, 14, s.d.length > 25 ? ROUGE : BLEU);
-      s.d.forEach(function (o) { var n = { "🥤": "s-gobelet", "🍌": "s-banane", "📰": "s-journal", "🍟": "s-pizza", "🧻": "s-journal", "🥡": "s-carton" }[o.e]; spr(ctx, n, o.x, o.y, 28, o.e); });
-      s.pg.forEach(function (g) { emo(ctx, "🐦", g.x, g.y, 28); });
+      s.d.forEach(function (o) { var n = { "🥤": "s-p-gobelet", "🍌": "s-p-banane", "📰": "s-journal", "🍟": "s-p-frites", "🧻": "s-p-papier", "🥡": "s-p-nouilles" }[o.e]; spr(ctx, n, o.x, o.y, 30, o.e); });
+      s.pg.forEach(function (g, k) { spr(ctx, (s.f + k * 7) % 40 < 20 ? "s-pigeon" : "s-pigeon-picore", g.x, g.y, 34, "🐦"); });
       bulles(ctx, s);
     },
     une: function (ctx, s) {

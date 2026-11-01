@@ -103,7 +103,7 @@
     pas: function (s, gestes) {
       if (s.flux) { if (--s.flux === 0) s.T = grilleTuyaux(s); return; }   // l'eau coule, puis nouvelle canalisation
       gestes.forEach(function (x) {
-        if (x.a !== "tap") return;
+        if (x.a !== "tap" || x.x == null || x.y == null) return;   // toucher sans position : ignoré
         var c = Math.floor((x.x - 30) / 60), r = Math.floor((x.y - 120) / 60);
         if (r < 0 || c < 0 || r > 4 || c > 4) return;
         s.T.g[r][c] = tourne(s.T.g[r][c]);

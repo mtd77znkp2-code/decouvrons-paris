@@ -1692,3 +1692,7 @@ body.m-acc-on .m-fond{display:none}
 .mt-sc{font:900 15px Georgia,serif;font-variant-numeric:tabular-nums}
 .mt-gain{font-style:normal;font-weight:900;font-size:13px;text-align:right}.mt-plus{color:#6fdc95}.mt-moins{color:#ff8a80}
 .mt-l.mt-moi .mt-plus{color:#13652b}.mt-l.mt-moi .mt-moins{color:#9a1c14}
+.mt-mini{vertical-align:middle;object-fit:contain}
+.mt-gain .mt-mini{margin-right:3px}
+.mt-classement>.mt-mini{justify-self:center}
+.mt-illu-fin{max-height:200px;object-fit:cover;object-position:center 20%}
