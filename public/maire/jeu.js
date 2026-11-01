@@ -604,7 +604,8 @@
   // ---------- Nouvelle partie ----------
   function creation() {
     var m = M.mecaniques(nivJ());
-    var liste = G.maires(), dernier = null;
+    // Les maires débloqués d'abord, puis ceux encore verrouillés (l'ordre d'origine est gardé dans chaque groupe)
+    var liste = G.maires().map(function (x, i) { return [x, i]; }).sort(function (a, b) { return (b[0].dispo - a[0].dispo) || (a[1] - b[1]); }).map(function (x) { return x[0]; }), dernier = null;
     try { dernier = localStorage.getItem("maire_perso"); } catch (e) {}
     var premier = liste.filter(function (x) { return x.dispo && x.id === dernier; })[0] || liste.filter(function (x) { return x.dispo; })[0];
     CHOIX = { maire: premier ? premier.id : null, amb: [], sac: [] };
