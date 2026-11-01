@@ -183,19 +183,17 @@
   JEUX.chantier = {
     nom: "Le Chantier Express", ico: "🏗️", typique: 450,
     accroche: "Une grue, des pierres de taille, 45 secondes : construis l’immeuble le plus haut !",
-    regles: ["Touche l’écran pour lâcher le bloc", "Bien aligné sur l’étage du dessous : +10 (pile : +15)", "Tous les 5 blocs, un étage complet : +25", "Trop décalé : ça s’écroule (−20)"],
+    regles: ["Touche l’écran pour lâcher le bloc", "Bien aligné sur l’étage du dessous : +10 (pile : +15)", "Tous les 5 blocs, un étage complet : +25", "⚠️ Un bloc lâché à côté de la tour : la partie s’arrête !"],
     creer: function (g) { var s = base(g), w = 100 - 10 * D(s); s.pile = [{ x: 180 - w / 2, w: w }]; s.bloc = { x: 0, w: w, sens: 1 }; s.chute = null; return s; },
     pas: function (s, gestes) {
       var p = prog(s), b = s.bloc, vit = (2.5 + 4.5 * p + s.pile.length * 0.08) * (1 + 0.18 * D(s));
-      if (s.chute) { s.chute.y += 9; if (s.chute.y > 600) s.chute = null; return; }
+      if (s.chute) { s.chute.y += 9; if (s.chute.y > 600) { s.chute = null; if (s.perdu) s.fin = true; } return; }   // le bloc tombe, puis fin de partie
       b.x += vit * b.sens; if (b.x < 0) { b.x = 0; b.sens = 1; } if (b.x + b.w > W) { b.x = W - b.w; b.sens = -1; }
       if (!gestes.some(function (x) { return x.a === "tap"; })) return;
       var haut = s.pile[s.pile.length - 1], g0 = Math.max(b.x, haut.x), d0 = Math.min(b.x + b.w, haut.x + haut.w), rec = d0 - g0;
       if (rec < b.w * 0.3) {
-        // Trop décalé : le bloc tombe et les deux derniers étages avec
-        pts(s, -20, b.x + b.w / 2, 200); s.chute = { x: b.x, w: b.w, y: 120 };
-        if (s.pile.length > 1) s.pile.splice(Math.max(1, s.pile.length - 2), 2);
-        b.w = Math.max(70, s.pile[s.pile.length - 1].w); b.x = 0; b.sens = 1; return;
+        // Lâché à côté de la tour : le bloc tombe et la partie s'arrête (le score acquis est gardé)
+        s.chute = { x: b.x, w: b.w, y: 120 }; s.perdu = true; return;
       }
       var parfait = Math.abs(b.x - haut.x) <= 4;
       var nv = parfait ? { x: haut.x, w: haut.w } : { x: g0, w: rec };

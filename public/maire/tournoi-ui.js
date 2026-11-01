@@ -475,6 +475,7 @@
       if (img("s-c-crochet")) spr(ctx, "s-c-crochet", s.bloc.x + s.bloc.w / 2, 72, 30);
       tuile(ctx, (s.pile.length) % 5 === 0 ? "s-c-balcon" : "s-c-fenetre", s.bloc.x, 88, s.bloc.w, 26, "#f0e0bd");
       if (s.chute) { tuile(ctx, "s-c-pierre", s.chute.x, s.chute.y, s.chute.w, 26, "#c9b48c"); spr(ctx, "s-c-poussiere", s.chute.x + s.chute.w / 2, Math.min(500, s.chute.y), 60, "💨"); }
+      if (s.perdu) { bloc(ctx, 30, 200, 300, 70, "rgba(200,53,46,.9)", "#fff", 14); txt(ctx, "💥 Raté ! La partie s’arrête", 180, 235, 18, "#fff"); }
       txt(ctx, "Étages : " + (s.pile.length - 1), 60, 20, 14, BLEU, "left"); txt(ctx, "Touche pour lâcher !", 250, 20, 13, BLEU);
       bulles(ctx, s);
     },
