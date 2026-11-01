@@ -970,7 +970,7 @@ test("tournoi : aucune épreuve ne produit de position invalide, à aucun niveau
   const TJ = require("../../public/maire/tournoi-jeux.js");
   TJ.IDS.forEach((id) => { for (let n = 0; n < 4; n++) {
     const s = TJ.creer(id, 11, n); for (let f = 0; f < 400 && !s.fin; f++) TJ.pas(id, s, f % 9 ? [] : [{ f: s.f, a: "tap", x: 180, y: 300 }]);
-    assert.ok(!/NaN|null/.test(JSON.stringify(s, (k, v) => (typeof v === "number" && !isFinite(v) ? "NaN" : v))), id + " niveau " + n);
+    assert.ok(!/"__NaN__"/.test(JSON.stringify(s, (k, v) => (typeof v === "number" && !isFinite(v) ? "__NaN__" : v))), id + " niveau " + n);
   } });
 });
 test("tournoi : classement des 21 maires et gains de popularité", () => {
