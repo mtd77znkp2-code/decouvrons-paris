@@ -98,7 +98,7 @@
   JEUX.tuyaux = {
     nom: "Le Jeu des Tuyaux", ico: "🔧", typique: 250,
     accroche: "Une canalisation a cédé sous la chaussée : l’eau doit repartir !",
-    regles: ["Touche un tuyau pour le tourner d’un quart de tour", "Relie la source (à gauche) à l’arrivée (à droite)", "Chaque canalisation réparée : +100 et bonus de vitesse"],
+    regles: ["L’eau part de la vanne rouge (à gauche) et doit arriver à la maison verte (à droite)", "Touche un tuyau pour le tourner d’un quart de tour : les tuyaux pleins d’eau deviennent bleus", "💦 montre où l’eau s’échappe : c’est le prochain tuyau à tourner", "Chaque canalisation réparée : +100 et bonus de vitesse"],
     creer: function (g) { var s = base(g); s.T = grilleTuyaux(s); s.reparees = 0; s.flux = 0; return s; },
     pas: function (s, gestes) {
       if (s.flux) { if (--s.flux === 0) s.T = grilleTuyaux(s); return; }   // l'eau coule, puis nouvelle canalisation

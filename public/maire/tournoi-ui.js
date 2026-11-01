@@ -343,17 +343,51 @@
       bulles(ctx, s);
     },
     tuyaux: function (ctx, s) {
-      fond(ctx, "#2b2016", "#1a120c"); txt(ctx, s.flux ? "💧 L’eau circule ! Canalisation suivante…" : "Relie 💧 à 🚰 en tournant les tuyaux", 180, 70, 15, OR);
-      txt(ctx, "Réparées : " + s.reparees, 180, 95, 13, CLAIR, "center", false);
-      var T2 = s.T, e = T2.eau || { vus: {} };
-      for (var r = 0; r < 5; r++) for (var c = 0; c < 5; c++) {
-        var x = 30 + c * 60, y = 120 + r * 60, m = T2.g[r][c], plein = e.vus[r + "," + c];
-        bloc(ctx, x + 2, y + 2, 56, 56, "#3d2e20", "#5a4430", 6);
-        ctx.strokeStyle = plein ? (s.flux ? "#4fc3ff" : "#3a9bd8") : "#9a9a9a"; ctx.lineWidth = 14; ctx.lineCap = "round";
-        var cx = x + 30, cy = y + 30;
-        [[1, 0, -28], [2, 28, 0], [4, 0, 28], [8, -28, 0]].forEach(function (d) { if (m & d[0]) { ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + d[1], cy + d[2]); ctx.stroke(); } });
+      fond(ctx, "#2b2016", "#1a120c");
+      var T2 = s.T, e = T2.eau || { vus: {} }, yD = 120 + T2.depart * 60 + 30, yA = 120 + T2.arrivee * 60 + 30, puls = 0.5 + 0.5 * Math.sin(s.f / 4);
+      bloc(ctx, 12, 30, 336, 76, "rgba(20,28,74,.88)", OR, 12);
+      txt(ctx, s.flux ? "💧 L’eau arrive ! Canalisation suivante…" : "Fais couler l’eau de la vanne jusqu’à la maison", 180, 52, 14, OR);
+      txt(ctx, s.flux ? "Réparées : " + s.reparees : "Touche un tuyau pour le tourner · Réparées : " + s.reparees, 180, 82, 12, CLAIR, "center", false);
+      // Un tuyau « en métal » : contour sombre, corps, reflet ; rempli d'eau s'il est relié à la vanne
+      function tube(x1, y1, x2, y2, eau) {
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "#2a2018"; ctx.lineWidth = 20; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+        ctx.strokeStyle = eau ? (s.flux ? "#6fd3ff" : "#2f8fe0") : "#a7a39a"; ctx.lineWidth = 14; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+        ctx.strokeStyle = eau ? "rgba(255,255,255,.55)" : "rgba(255,255,255,.35)"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x1 - 2, y1 - 3); ctx.lineTo(x2 - 2, y2 - 3); ctx.stroke();
       }
-      emo(ctx, "💧", 14, 120 + T2.depart * 60 + 30, 24); emo(ctx, "🚰", 346, 120 + T2.arrivee * 60 + 30, 24);
+      bloc(ctx, 26, 116, 308, 308, "rgba(14,18,44,.72)", "rgba(245,178,26,.5)", 10);   // la grille se détache du décor
+      // Départ (vanne à gauche) et arrivée (maison à droite) : bien visibles, avec leur ligne en surbrillance
+      ctx.fillStyle = "rgba(79,195,255," + (0.12 + 0.1 * puls) + ")"; ctx.fillRect(30, yD - 30, 60, 60);
+      ctx.fillStyle = "rgba(111,220,149," + (0.12 + 0.1 * puls) + ")"; ctx.fillRect(270, yA - 30, 60, 60);
+      for (var r = 0; r < 5; r++) for (var c = 0; c < 5; c++) {
+        var x = 30 + c * 60, y = 120 + r * 60;
+        ctx.strokeStyle = "rgba(255,255,255,.12)"; ctx.lineWidth = 1; ctx.strokeRect(x + 1, y + 1, 58, 58);
+      }
+      for (r = 0; r < 5; r++) for (c = 0; c < 5; c++) {
+        var m = T2.g[r][c], plein = e.vus[r + "," + c], cx = 60 + c * 60, cy = 150 + r * 60;
+        [[1, 0, -30], [2, 30, 0], [4, 0, 30], [8, -30, 0]].forEach(function (d) { if (m & d[0]) tube(cx, cy, cx + d[1], cy + d[2], plein); });
+        ctx.beginPath(); ctx.arc(cx, cy, 9, 0, 7); ctx.fillStyle = plein ? "#2f8fe0" : "#8d897f"; ctx.fill(); ctx.strokeStyle = "#2a2018"; ctx.lineWidth = 2; ctx.stroke();
+      }
+      // Fuites : là où l'eau sort d'un tuyau sans entrer dans le suivant → c'est la case à tourner
+      if (!s.flux) Object.keys(e.vus).forEach(function (k) {
+        var rc = k.split(","), r0 = +rc[0], c0 = +rc[1], m0 = T2.g[r0][c0];
+        [[1, -1, 0, 4], [2, 0, 1, 8], [4, 1, 0, 1], [8, 0, -1, 2]].forEach(function (d) {
+          if (!(m0 & d[0])) return; var r1 = r0 + d[1], c1 = c0 + d[2];
+          if (c0 === 0 && d[0] === 8 && r0 === T2.depart) return;                       // l'entrée côté vanne
+          if (c1 > 4 && r0 === T2.arrivee) return;                                        // la sortie côté maison
+          if (r1 >= 0 && c1 >= 0 && r1 < 5 && c1 < 5 && e.vus[r1 + "," + c1] && (T2.g[r1][c1] & d[3])) return;
+          var fx = 60 + c0 * 60 + d[2] * 30, fy = 150 + r0 * 60 + d[1] * 30;
+          ctx.beginPath(); ctx.arc(fx, fy, 10 + 5 * puls, 0, 7); ctx.fillStyle = "rgba(79,195,255," + (0.35 + 0.35 * puls) + ")"; ctx.fill();
+          emo(ctx, "💦", fx + d[2] * 6, fy + d[1] * 6, 16);
+        });
+      });
+      if (!s.flux && !e.vus[T2.depart + ",0"]) { ctx.beginPath(); ctx.arc(30, yD, 10 + 5 * puls, 0, 7); ctx.fillStyle = "rgba(79,195,255," + (0.35 + 0.35 * puls) + ")"; ctx.fill(); emo(ctx, "💦", 40, yD, 16); }
+      // La vanne et la maison, avec leur bout de tuyau qui entre dans la grille
+      tube(0, yD, 30, yD, true); tube(330, yA, 360, yA, s.flux > 0);
+      bloc(ctx, 0, yD - 24, 26, 48, "#c8352e", "#fff", 6); emo(ctx, "🚰", 13, yD, 22);
+      bloc(ctx, 334, yA - 24, 26, 48, "#2f8a52", "#fff", 6); emo(ctx, "🏠", 347, yA, 20);
+      txt(ctx, "DÉPART →", 46, yD - 40, 11, "#9fdcff"); txt(ctx, "→ ARRIVÉE", 312, yA - 40, 11, "#9cf0b4");
+      if (!s.flux && s.f - T2.debut < 90) txt(ctx, "👆 Tourne les tuyaux pour relier les deux", 180, 440, 13, "#fff");
       bulles(ctx, s);
     },
     peripherique: function (ctx, s) {
