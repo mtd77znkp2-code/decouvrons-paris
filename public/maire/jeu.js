@@ -211,7 +211,7 @@
     var TUILE_ICO = { "🔥": "menu-serie", "🎟️": "menu-palier", "🎡": "menu-roue", "🏅": "menu-ligue" };
     function tuile(ico, titre, sous, f, vif) { var b = bouton("", "mx-tuile" + (vif ? " mx-vif" : ""), f); ajout(b, TUILE_ICO[ico] ? icoUI(TUILE_ICO[ico]) : h("span", null, ico), h("strong", null, titre), h("small", null, sous)); return b; }
     ajout(t, tuile("🔥", se.n ? se.n + " jour" + (se.n > 1 ? "s" : "") : "Série", se.fait ? "validé aujourd’hui" : "joue aujourd’hui", ecranSerie, !se.fait),
-      tuile("🎟️", "Palier " + ps.palier, "sur 20 ce mois", ecranPass),
+      tuile("🎟️", "Palier " + ps.palier, "sur " + ps.max + " ce mois", ecranPass),
       tuile("🎡", "Roue", roue ? "tour gratuit !" : "revient lundi", roue ? ecranRoue : function () { toast("🎡 Prochain tour gratuit lundi."); }, roue),
       tuile("🏅", "Ligue", "de la semaine", ecranLigue));
     dr.appendChild(t);
@@ -505,7 +505,7 @@
   function ecranPass() {
     var ps = G.paliersMois(); vider(true);
     box.appendChild(bouton("← Retour", "btn m-sec", accueil));
-    box.appendChild(h("h5", null, "🎟️ Les 20 paliers de " + ps.nom));
+    box.appendChild(h("h5", null, "🎟️ Les " + ps.max + " paliers de " + ps.nom));
     var cd = h("p", "m-pass-cd", ""); box.appendChild(cd);
     (function tic() {
       if (!document.body.contains(cd)) return;
@@ -2108,7 +2108,7 @@
     if (r.parfait) notifier({ type: "fait", txt: "🌞 Journée parfaite !" });
     if (r.joker) notifier({ type: "fait", txt: "🃏 Joker utilisé : ta série est sauvée" });
     if (r.serie) notifier({ type: "fait", txt: "🔥 " + r.serie.n + " jour" + (r.serie.n > 1 ? "s" : "") + " d’affilée", titre: r.serie.txt });
-    r.pass.forEach(function (x) { notifier({ type: "fait", txt: "🎟️ Palier " + x.n + "/20 du mois atteint !", titre: x.txt }); });
+    r.pass.forEach(function (x) { notifier({ type: "fait", txt: "🎟️ Palier " + x.n + "/" + G.PALIERS.length + " du mois atteint !", titre: x.txt }); });
   }
   // File d'affichage : un niveau passe avant les petites pastilles ; elles ne s'empilent jamais au-delà de 4
   var FILE = [], notifActive = null;

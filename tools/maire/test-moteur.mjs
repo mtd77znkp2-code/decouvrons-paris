@@ -431,11 +431,11 @@ test("succès journaliers : 5 défis par jour en pleine partie", () => {
   assert.deepEqual(defi.bonus, { tresor: 0, pop: 0, assurance: 0 });
   localStorage.removeItem("maire_profil_v1");
 });
-test("les 20 paliers du mois : dans l'ordre, cumulés d'une partie à l'autre, un bâtiment chacun, remise à zéro le mois suivant", () => {
+test("les 50 paliers du mois : dans l'ordre, cumulés d'une partie à l'autre, un bâtiment chacun, remise à zéro le mois suivant", () => {
   localStorage.removeItem("maire_profil_v1");
   const J = 20390;
-  assert.equal(G.PALIERS.length, 20); G.PALIERS.forEach(p => assert.ok(M.BATIMENTS[p.bat] && M.BATIMENTS[p.bat].pass, p.bat));
-  assert.equal(new Set(G.PALIERS.map(p => p.bat)).size, 20);
+  assert.equal(G.PALIERS.length, 50); G.PALIERS.forEach(p => assert.ok(p.bat ? M.BATIMENTS[p.bat] && M.BATIMENTS[p.bat].pass : G.SAC[p.sac], p.txt));
+  assert.equal(new Set(G.PALIERS.filter(p => p.bat).map(p => p.bat)).size, 20, "les 20 bâtiments exclusifs, chacun une fois");
   let st = M.nouvellePartie({ maire: "tribun", graine: 5, niveauPartie: true }); st.phase = "gestion"; st.t = 1;
   assert.ok(!M.disponible(st, "bancsConnectes"));
   let r = G.suivrePartie(st, M, { jour: J }); st = r.st;

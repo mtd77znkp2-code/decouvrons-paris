@@ -277,7 +277,7 @@
   s2("diversite", "Construction", "Paris aux mille visages", "Construis 25 bâtiments différents dans une même partie.", 3, function (R) { return Object.keys(R.x.bats).length >= 25; });
   s2("jourParfait", "Défis", "Journée parfaite du maire", "Réussis les 5 succès du jour.", 2, function (R, P) { return (P.parfaites || 0) >= 1; });
   s2("jourParfait7", "Défis", "Semaine sans faute", "Réussis les 5 succès du jour 7 fois.", 3, function (R, P) { return (P.parfaites || 0) >= 7; });
-  s2("passComplet", "Défis", "Les 20 paliers du mois", "Atteins les 20 paliers d’un même mois.", 4, function (R, P) { return !!P.mois && Object.keys(P.mois.faits).length >= 20; });
+  s2("passComplet", "Défis", "Les 50 paliers du mois", "Atteins les 50 paliers d’un même mois.", 4, function (R, P) { return !!P.mois && Object.keys(P.mois.faits).length >= PALIERS.length; });
   s2("serie7", "Défis", "Fidèle au poste", "Joue 7 jours d’affilée.", 2, function (R, P) { return ((P.assidu || {}).max || 0) >= 7; });
   s2("serie30", "Défis", "Maire infatigable", "Joue 30 jours d’affilée.", 4, function (R, P) { return ((P.assidu || {}).max || 0) >= 30; });
   s2("coffre1", "Événements rares", "Butin électoral", "Ouvre un coffre de la victoire.", 1, function (R) { return (R.x.coffres || 0) >= 1; });
@@ -448,28 +448,60 @@
   // Compteurs du mois : additionnés d'une partie à l'autre (k) ; « max » : le meilleur résultat d'une partie
   // Paliers progressifs : on les fait dans l'ordre (le palier 2 ne compte qu'une fois le 1 réussi, etc.) et ils sont de plus en plus durs.
   // « max » : le meilleur résultat dans une partie (niveau, mandats…) ; sinon, un compteur qui ne démarre qu'à l'ouverture du palier.
+  // 50 paliers : un bâtiment exclusif sur les 20 paliers marqués « bat », un bonus de départ (sac) sur les autres
   var PALIERS = [
     { k: "parties", but: 1, txt: "Joue une partie", bat: "bancsConnectes" },
-    { k: "dossiers", but: 15, txt: "Tranche 15 dossiers", bat: "boiteLivres" },
-    { k: "achats", but: 10, txt: "Construis 10 bâtiments", bat: "rueAuxEcoles" },
-    { k: "niveau", but: 8, max: 1, txt: "Atteins le niveau 8 dans une partie", bat: "potagerToit" },
-    { k: "casino", but: 5, txt: "Gagne 5 parties au casino", bat: "veloCargo" },
-    { k: "dossiers", but: 40, txt: "Tranche 40 dossiers", bat: "conciergerie" },
+    { k: "dossiers", but: 10, txt: "Tranche 10 dossiers", sac: "bainDeFoule" },
+    { k: "achats", but: 8, txt: "Construis 8 bâtiments", bat: "boiteLivres" },
+    { k: "niveau", but: 6, max: 1, txt: "Atteins le niveau 6 dans une partie", sac: "assurance" },
+    { k: "casino", but: 3, txt: "Gagne 3 parties au casino", bat: "rueAuxEcoles" },
+    { k: "dossiers", but: 20, txt: "Tranche 20 dossiers", sac: "coupDePouce" },
+    { k: "elections", but: 1, txt: "Gagne 1 élection", bat: "potagerToit" },
+    { k: "achats", but: 15, txt: "Construis 15 bâtiments", sac: "bainDeFoule" },
+    { k: "employes", but: 4, txt: "Embauche 4 employés", bat: "veloCargo" },
+    { k: "niveau", but: 10, max: 1, txt: "Atteins le niveau 10 dans une partie", sac: "assurance" },
+    { k: "attaques", but: 3, txt: "Réussis 3 attaques contre tes adversaires", sac: "coupDePouce" },
+    { k: "dossiers", but: 30, txt: "Tranche 30 dossiers", bat: "conciergerie" },
+    { k: "casino", but: 5, txt: "Gagne 5 parties au casino", sac: "bainDeFoule" },
     { k: "elections", but: 2, txt: "Gagne 2 élections", bat: "kiosque" },
-    { k: "achats", but: 30, txt: "Construis 30 bâtiments", bat: "brigadeCanine" },
-    { k: "employes", but: 8, txt: "Embauche 8 employés", bat: "navetteElectrique" },
-    { k: "niveau", but: 20, max: 1, txt: "Atteins le niveau 20 dans une partie", bat: "residenceArtistes" },
-    { k: "attaques", but: 10, txt: "Réussis 10 attaques contre tes adversaires", bat: "fontaineMonumentale" },
-    { k: "elections", but: 5, txt: "Gagne 5 élections", bat: "centreSecours" },
-    { k: "ventes", but: 2, txt: "Remporte 2 ventes aux enchères", bat: "halleFood" },
-    { k: "dossiers", but: 120, txt: "Tranche 120 dossiers", bat: "teleportVelo" },
-    { k: "mandats", but: 5, max: 1, txt: "Tiens 5 mandats dans une même partie", bat: "immeubleBois" },
-    { k: "niveau", but: 35, max: 1, txt: "Atteins le niveau 35 dans une partie", bat: "observatoire" },
-    { k: "ventes", but: 5, txt: "Remporte 5 ventes aux enchères", bat: "salleArcade" },
-    { k: "places", but: 15, txt: "Gagne 15 places au classement de session", bat: "tourJardin" },
-    { k: "achats", but: 150, txt: "Construis 150 bâtiments", bat: "commissariatModele" },
+    { k: "achats", but: 25, txt: "Construis 25 bâtiments", sac: "assurance" },
+    { k: "ventes", but: 1, txt: "Remporte 1 vente aux enchères", bat: "brigadeCanine" },
+    { k: "employes", but: 8, txt: "Embauche 8 employés", sac: "coupDePouce" },
+    { k: "niveau", but: 15, max: 1, txt: "Atteins le niveau 15 dans une partie", bat: "navetteElectrique" },
+    { k: "attaques", but: 6, txt: "Réussis 6 attaques contre tes adversaires", sac: "bainDeFoule" },
+    { k: "dossiers", but: 45, txt: "Tranche 45 dossiers", sac: "assurance" },
+    { k: "places", but: 5, txt: "Gagne 5 places au classement de session", bat: "residenceArtistes" },
+    { k: "casino", but: 8, txt: "Gagne 8 parties au casino", sac: "coupDePouce" },
+    { k: "elections", but: 3, txt: "Gagne 3 élections", bat: "fontaineMonumentale" },
+    { k: "achats", but: 40, txt: "Construis 40 bâtiments", sac: "bainDeFoule" },
+    { k: "mandats", but: 3, max: 1, txt: "Tiens 3 mandats dans une même partie", bat: "centreSecours" },
+    { k: "ventes", but: 2, txt: "Remporte 2 ventes aux enchères", sac: "assurance" },
+    { k: "employes", but: 12, txt: "Embauche 12 employés", sac: "coupDePouce" },
+    { k: "niveau", but: 20, max: 1, txt: "Atteins le niveau 20 dans une partie", bat: "halleFood" },
+    { k: "attaques", but: 10, txt: "Réussis 10 attaques contre tes adversaires", sac: "bainDeFoule" },
+    { k: "dossiers", but: 70, txt: "Tranche 70 dossiers", bat: "teleportVelo" },
+    { k: "places", but: 10, txt: "Gagne 10 places au classement de session", sac: "assurance" },
+    { k: "casino", but: 12, txt: "Gagne 12 parties au casino", sac: "coupDePouce" },
+    { k: "elections", but: 5, txt: "Gagne 5 élections", bat: "immeubleBois" },
+    { k: "achats", but: 60, txt: "Construis 60 bâtiments", sac: "bainDeFoule" },
+    { k: "ventes", but: 3, txt: "Remporte 3 ventes aux enchères", sac: "assurance" },
+    { k: "niveau", but: 25, max: 1, txt: "Atteins le niveau 25 dans une partie", bat: "observatoire" },
+    { k: "employes", but: 16, txt: "Embauche 16 employés", sac: "coupDePouce" },
+    { k: "attaques", but: 15, txt: "Réussis 15 attaques contre tes adversaires", sac: "bainDeFoule" },
+    { k: "dossiers", but: 100, txt: "Tranche 100 dossiers", bat: "salleArcade" },
+    { k: "mandats", but: 4, max: 1, txt: "Tiens 4 mandats dans une même partie", sac: "assurance" },
+    { k: "places", but: 15, txt: "Gagne 15 places au classement de session", sac: "coupDePouce" },
+    { k: "casino", but: 16, txt: "Gagne 16 parties au casino", bat: "tourJardin" },
+    { k: "elections", but: 7, txt: "Gagne 7 élections", sac: "bainDeFoule" },
+    { k: "achats", but: 90, txt: "Construis 90 bâtiments", sac: "assurance" },
+    { k: "niveau", but: 32, max: 1, txt: "Atteins le niveau 32 dans une partie", sac: "coupDePouce" },
+    { k: "ventes", but: 5, txt: "Remporte 5 ventes aux enchères", bat: "commissariatModele" },
+    { k: "attaques", but: 20, txt: "Réussis 20 attaques contre tes adversaires", sac: "bainDeFoule" },
+    { k: "mandats", but: 5, max: 1, txt: "Tiens 5 mandats dans une même partie", sac: "assurance" },
+    { k: "niveau", but: 40, max: 1, txt: "Atteins le niveau 40 dans une partie", sac: "coupDePouce" },
     { k: "trone", but: 1, max: 1, txt: "Deviens Maire de Paris", bat: "arcLumieres" }
   ];
+  function recompensePalier(p) { if (p.bat) { var B = MO.BATIMENTS[p.bat]; return B.ico + " " + B.nom; } return SAC[p.sac].ico + " " + SAC[p.sac].nom + " (bonus de départ)"; }
   function moisP(P, j) {
     var s = saisonDe(j);
     if (!P.mois || P.mois.saison !== s) P.mois = { v: 2, saison: s, c: {}, faits: {}, actif: 1, prog: 0 };   // nouveau mois : tout repart à zéro
@@ -498,8 +530,10 @@
       var p = PALIERS[mo.actif - 1];
       if (p.max) mo.prog = Math.max(mo.prog, v[p.k] || 0); else { mo.prog += delta[p.k] || 0; delta[p.k] = 0; }
       if (mo.prog < p.but) break;
-      mo.faits[mo.actif] = j; if (st && M) M.ajouterPassBat(st, p.bat);
-      if (out) out.pass.push({ n: mo.actif, txt: p.txt + " → " + (MO.BATIMENTS[p.bat].ico + " " + MO.BATIMENTS[p.bat].nom) });
+      mo.faits[mo.actif] = j;
+      if (p.bat && st && M) M.ajouterPassBat(st, p.bat);
+      if (p.sac) { P.sac = P.sac || {}; P.sac[p.sac] = (P.sac[p.sac] || 0) + 1; }
+      if (out) out.pass.push({ n: mo.actif, txt: p.txt + " → " + recompensePalier(p) });
       mo.actif++; mo.prog = 0;
     }
   }
@@ -508,14 +542,14 @@
     // Fin du mois (UTC, comme le changement de saison) : le temps qu'il reste avant la remise à zéro
     var d = new Date((j != null ? j : jour()) * 86400000), fin = Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1);
     return { saison: mo.saison, nom: nomSaison(mo.saison), palier: n, max: PALIERS.length, actif: mo.actif, fin: fin,
-      paliers: PALIERS.map(function (p, i) { var B = MO.BATIMENTS[p.bat], k = i + 1;
-        return { n: k, txt: p.txt, cur: k < mo.actif ? p.but : k === mo.actif ? Math.min(mo.prog, p.but) : 0, but: p.but, ok: !!mo.faits[k], encours: k === mo.actif, verrou: k > mo.actif, bat: p.bat, batTxt: B.ico + " " + B.nom }; }) };
+      paliers: PALIERS.map(function (p, i) { var k = i + 1;
+        return { n: k, txt: p.txt, cur: k < mo.actif ? p.but : k === mo.actif ? Math.min(mo.prog, p.but) : 0, but: p.but, ok: !!mo.faits[k], encours: k === mo.actif, verrou: k > mo.actif, bat: p.bat || null, batTxt: recompensePalier(p) }; }) };
   }
   // Bâtiments exclusifs disponibles dans une nouvelle partie : ceux des paliers du mois + ceux gagnés pour toujours (série de jours)
   function batsExclusifs(j) {
     var P = lire(), mo = moisP(P, j != null ? j : jour()), b = {};
     Object.keys(P.passBats || {}).forEach(function (id) { if (!PALIERS.some(function (p) { return p.bat === id; })) b[id] = P.passBats[id]; });
-    Object.keys(mo.faits).forEach(function (n) { b[PALIERS[n - 1].bat] = 1; });
+    Object.keys(mo.faits).forEach(function (n) { var p = PALIERS[n - 1]; if (p && p.bat) b[p.bat] = 1; });
     return b;
   }
 

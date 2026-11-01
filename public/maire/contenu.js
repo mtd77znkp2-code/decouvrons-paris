@@ -179,7 +179,7 @@
   };
   // Bâtiments exclusifs : pass de combat (paliers 8, 18 et 30) et série de 7 jours
   var PASS_BATIMENTS = {
-    // Bâtiments des 20 paliers du mois (objectifs mensuels) : disponibles dans toutes les parties du mois du palier atteint
+    // Bâtiments des paliers du mois (objectifs mensuels) : disponibles dans toutes les parties du mois du palier atteint
     bancsConnectes: { nom: "Bancs connectés", ico: "🪑", cat: "cadre", cout: 40, ent: 0, e: { cadre: 2 }, popT: 0.05, obtenu: "Palier 1 du mois.", txt: "Des bancs qui rechargent les téléphones : les habitants s’y attardent." },
     boiteLivres: { nom: "Boîtes à livres", ico: "📦", cat: "cadre", cout: 30, ent: 0, e: { cadre: 2 }, pop: 1, obtenu: "Palier 2 du mois.", txt: "Prends un livre, laisse un livre : le quartier lit davantage." },
     rueAuxEcoles: { nom: "Rues aux écoles", ico: "🚸", cat: "securite", cout: 50, ent: 1, e: { securite: 2, cadre: 1 }, obtenu: "Palier 3 du mois.", txt: "Les rues devant les écoles deviennent piétonnes aux heures d’entrée et de sortie." },
