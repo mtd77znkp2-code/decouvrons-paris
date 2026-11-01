@@ -140,8 +140,15 @@
   function fermer(id) { var e = document.getElementById(id); if (e) e.remove(); }
 
   // ---------- Présentation de l'épreuve, puis la partie ----------
+  function precharger(id) {
+    img("decor-" + id);
+    ({ pickpockets: ["s-pickpocket1", "s-pickpocket2", "s-touriste1", "s-touriste2", "s-touriste3", "s-policier", "s-journaliste", "s-pompier"],
+      peripherique: ["s-voiture1", "s-voiture2", "s-taxi", "s-bus", "s-scooter", "s-ambulance", "s-feu-rouge", "s-feu-vert", "s-fumee"],
+      eboueurs: ["s-journal", "s-carton", "s-bouteille", "s-bocal", "s-plastique", "s-gobelet", "s-banane", "s-pizza", "s-sac-noir"],
+      pigeons: ["s-gobelet", "s-banane", "s-journal", "s-pizza", "s-carton"] }[id] || []).forEach(img);
+  }
   function presenter() {
-    if (!T) return; var jx = jeuDe(T), now = maintenant();
+    if (!T) return; precharger(T.jeu); var jx = jeuDe(T), now = maintenant();
     if (T.etat === "clos" || now >= T.cloture) return classement();
     if (PARTS[moi()]) return classement();
     fermer("mt-jeu");
@@ -170,6 +177,7 @@
   // ---------- La boucle de jeu : 30 images par seconde, gestes enregistrés pour le serveur ----------
   function jouer(c, graine) {
     var id = T.jeu, jx = J.JEUX[id], s = jx.creer(graine), gestes = [], file = [], tid = T.id;
+    img("decor-" + id);
     c.innerHTML = "";
     var haut = h("div", "mt-hud"), chrono = h("b", "mt-chrono", ""), score = h("b", "mt-score", "0");
     ajout(haut, ajout(h("span"), h("small", null, "⏱️"), chrono), h("strong", "mt-hud-nom", jx.ico + " " + jx.nom), ajout(h("span"), h("small", null, "Score"), score));
@@ -202,7 +210,7 @@
         var sc = s.score; J.pas(id, s, lot); faites++;
         if (s.score > sc) son("pieces", 0.25); else if (s.score < sc) son("perdu", 0.25);
       }
-      DESSINS[id](ctx, s, glisse);
+      COURANT = id; DESSINS[id](ctx, s, glisse);
       chrono.textContent = Math.max(0, Math.ceil((J.IMAGES - s.f) / J.FPS)) + " s"; score.textContent = String(s.score);
       if (s.fin) { document.removeEventListener("keydown", clavier); J.terminer(id, s); return finir(c, s, gestes, tid); }
       requestAnimationFrame(boucle);
@@ -276,14 +284,26 @@
     }
   }
 
-  root.__dessine = function (ctx, s, id) { DESSINS[id](ctx, s, null); };   // aperçu des épreuves (tests)
+  root.__dessine = function (ctx, s, id) { COURANT = id; DESSINS[id](ctx, s, null); };   // aperçu des épreuves (tests)
   root.MaireTournoiUI = { branchement: function (b) { BACK = b; }, tic: tic, bandeau: bandeau, annonce: annonce, classement: classement, presenter: presenter, etat: function () { return T; } };
 
   // ===================== Dessin des dix épreuves (Canvas, style « arcade » de la mairie) =====================
   var BLEU = "#141c4a", CARTE = "#1d2860", OR = "#f5b21a", ROUGE = "#c8352e", CLAIR = "#e8e2cf";
-  function fond(ctx, haut, bas) { var g = ctx.createLinearGradient(0, 0, 0, J.H); g.addColorStop(0, haut); g.addColorStop(1, bas); ctx.fillStyle = g; ctx.fillRect(0, 0, J.W, J.H); }
+  // Illustrations (maire/img/tournoi) : chargées à la demande ; tant qu'une image n'est pas prête, le dessin simple prend le relais
+  var IMGS = {}, COURANT = null;
+  function img(nom) { var i = IMGS[nom]; if (!i) { i = IMGS[nom] = new Image(); i.decoding = "async"; i.src = "maire/img/tournoi/" + nom + ".webp"; } return i.complete && i.naturalWidth ? i : null; }
+  function spr(ctx, nom, x, y, t, e) { var i = img(nom); if (!i) return emo(ctx, e || "❔", x, y, t); var w = t * 1.15; ctx.drawImage(i, x - w / 2, y - w / 2, w, w); }
+  function decor(ctx) {
+    if (!COURANT) return false; var i = img("decor-" + COURANT); if (!i) return false;
+    if (COURANT === "marathon") return false;   // décor qui défile : dessiné par l'épreuve
+    ctx.drawImage(i, 0, 0, J.W, J.H);
+    if (COURANT !== "une" && COURANT !== "chantier") { ctx.fillStyle = "rgba(10,14,40,.18)"; ctx.fillRect(0, 0, J.W, J.H); }
+    return true;
+  }
+  function fond(ctx, haut, bas) { if (decor(ctx)) return; var g = ctx.createLinearGradient(0, 0, 0, J.H); g.addColorStop(0, haut); g.addColorStop(1, bas); ctx.fillStyle = g; ctx.fillRect(0, 0, J.W, J.H); }
   function emo(ctx, e, x, y, t) { ctx.fillStyle = "#000"; /* opaque : sinon la transparence du fond déteint sur l'émoji */ ctx.font = (t || 32) + "px system-ui, 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(e, x, y); }
-  function txt(ctx, t, x, y, taille, coul, align, gras) { ctx.font = (gras === false ? "" : "bold ") + (taille || 14) + "px Georgia, serif"; ctx.fillStyle = coul || "#fff"; ctx.textAlign = align || "center"; ctx.textBaseline = "middle"; ctx.fillText(t, x, y); }
+  function txt(ctx, t, x, y, taille, coul, align, gras) { ctx.font = (gras === false ? "" : "bold ") + (taille || 14) + "px Georgia, serif"; ctx.textAlign = align || "center"; ctx.textBaseline = "middle"; if (clair(coul || "#fff")) { ctx.lineWidth = 3; ctx.strokeStyle = "rgba(0,0,0,.55)"; ctx.lineJoin = "round"; ctx.strokeText(t, x, y); }   /* contour seulement pour les textes clairs */ ctx.fillStyle = coul || "#fff"; ctx.fillText(t, x, y); }
+  function clair(c) { var m = /^#([0-9a-f]{6})$/i.exec(c); if (!m) return true; var n = parseInt(m[1], 16); return ((n >> 16) * 0.3 + ((n >> 8) & 255) * 0.59 + (n & 255) * 0.11) > 128; }
   function bloc(ctx, x, y, w, ht, coul, bord, r) { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, ht, r == null ? 10 : r); else ctx.rect(x, y, w, ht); ctx.fillStyle = coul; ctx.fill(); if (bord) { ctx.strokeStyle = bord; ctx.lineWidth = 2; ctx.stroke(); } }
   function lignes(ctx, t, x, y, larg, taille, coul) {   // texte sur plusieurs lignes
     ctx.font = "bold " + taille + "px Georgia, serif"; var mots = t.split(" "), l = "", ys = y, out = [];
@@ -293,15 +313,17 @@
   function bulles(ctx, s) {   // les points gagnés ou perdus s'envolent
     s.evts.forEach(function (e) { var a = (s.f - e.f) / 25; if (a > 1 || !e.n) return; ctx.globalAlpha = 1 - a; txt(ctx, (e.n > 0 ? "+" : "") + e.n, e.x, e.y - a * 40, 20, e.n > 0 ? "#6fdc95" : "#ff6b6b"); ctx.globalAlpha = 1; });
   }
+  var SPR = { pickpocket: ["s-pickpocket1", "s-pickpocket2"], touriste: ["s-touriste1", "s-touriste2", "s-touriste3"], policier: ["s-policier"], journaliste: ["s-journaliste"], pompier: ["s-pompier"] };
+  var DECH = { "📰": "s-journal", "✉️": "s-journal", "📦": "s-carton", "🍾": "s-bouteille", "🫙": "s-bocal", "🥛": "s-bocal", "🧴": "s-plastique", "🥤": "s-gobelet", "🛍️": "s-plastique", "🍌": "s-banane", "🍕": "s-pizza", "🦴": "s-sac-noir" };
   var PERSO = { pickpocket: "🦹", touriste: "🧑‍🦰", policier: "🕵️", journaliste: "🧑‍💼", pompier: "🧑‍🚒" };
   var DESSINS = {
     pickpockets: function (ctx, s) {
       fond(ctx, "#27306b", BLEU); emo(ctx, "🗼", 300, 60, 70); txt(ctx, "Touche les pickpockets 🦹", 150, 40, 15, OR);
-      J.SPOTS.forEach(function (sp) { bloc(ctx, sp[0] - 48, sp[1] - 55, 96, 112, "rgba(255,255,255,.06)", "rgba(255,255,255,.12)", 14); });
+      J.SPOTS.forEach(function (sp) { bloc(ctx, sp[0] - 48, sp[1] - 55, 96, 112, "rgba(20,28,74,.28)", "rgba(255,255,255,.18)", 14); });
       s.p.forEach(function (o) {
         var sp = J.SPOTS[o.k], age = Math.min(1, (s.f - o.debut) / 6);
         ctx.save(); ctx.translate(sp[0], sp[1] + (1 - age) * 30); ctx.globalAlpha = age;
-        emo(ctx, PERSO[o.t], 0, -6, 52); if (o.t === "pickpocket") emo(ctx, "👜", 22, 22, 22);
+        var v = SPR[o.t][(o.k + o.debut) % SPR[o.t].length]; spr(ctx, v, 0, -4, 78, PERSO[o.t]);
         ctx.restore();
       });
       bulles(ctx, s);
@@ -322,17 +344,21 @@
     },
     peripherique: function (ctx, s) {
       fond(ctx, "#2f4a2f", "#1e331e");
-      ctx.fillStyle = "#3b3b45"; ctx.fillRect(0, 230, 360, 80); ctx.fillRect(140, 0, 80, 430);
-      ctx.strokeStyle = "#e8e2cf"; ctx.setLineDash([12, 10]); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, 270); ctx.lineTo(360, 270); ctx.moveTo(180, 0); ctx.lineTo(180, 430); ctx.stroke(); ctx.setLineDash([]);
+      if (!img("decor-peripherique")) {
+        ctx.fillStyle = "#3b3b45"; ctx.fillRect(0, 230, 360, 80); ctx.fillRect(140, 0, 80, 430);
+        ctx.strokeStyle = "#e8e2cf"; ctx.setLineDash([12, 10]); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, 270); ctx.lineTo(360, 270); ctx.moveTo(180, 0); ctx.lineTo(180, 430); ctx.stroke(); ctx.setLineDash([]);
+      }
       // Voitures : axe 0 de gauche à droite, axe 1 de haut en bas (d = distance parcourue)
       // d = 270 : le centre du carrefour ; d = 150 : la ligne d'arrêt
-      s.v[0].forEach(function (o) { emo(ctx, o.amb ? "🚑" : "🚗", o.d - 90, 255, 28); });
-      s.v[1].forEach(function (o) { emo(ctx, o.amb ? "🚑" : "🚙", 165, o.d, 28); });
+      var VEH = ["s-voiture1", "s-voiture2", "s-taxi", "s-bus", "s-scooter"];
+      s.v[0].forEach(function (o, i) { spr(ctx, o.amb ? "s-ambulance" : VEH[(i * 3 + Math.round(o.d / 400)) % 5 === 3 ? 0 : (i + 1) % 5], o.d - 90, 255, 34, o.amb ? "🚑" : "🚗"); });
+      s.v[1].forEach(function (o, i) { spr(ctx, o.amb ? "s-ambulance" : VEH[(i + 2) % 5], 165, o.d, 34, o.amb ? "🚑" : "🚙"); });
+      var crash = s.evts.filter(function (e) { return e.n === -40 && s.f - e.f < 20; })[0]; if (crash) spr(ctx, "s-fumee", 180, 265, 70, "💥");
       ctx.fillStyle = "#fff"; ctx.fillRect(56, 232, 4, 76); ctx.fillRect(142, 146, 76, 4);
       // Les deux feux, gros boutons en bas
       [0, 1].forEach(function (k) {
         var x = k ? 270 : 90; bloc(ctx, x - 70, 448, 140, 80, CARTE, OR, 14);
-        ctx.beginPath(); ctx.arc(x - 30, 488, 18, 0, 7); ctx.fillStyle = s.feux[k] ? "#3fd15a" : "#ff4b4b"; ctx.fill();
+        if (img("s-feu-vert")) spr(ctx, s.feux[k] ? "s-feu-vert" : "s-feu-rouge", x - 34, 488, 62); else { ctx.beginPath(); ctx.arc(x - 30, 488, 18, 0, 7); ctx.fillStyle = s.feux[k] ? "#3fd15a" : "#ff4b4b"; ctx.fill(); }
         txt(ctx, k ? "↕ Nord-Sud" : "↔ Est-Ouest", x + 20, 480, 12); txt(ctx, s.feux[k] ? "VERT" : "ROUGE", x + 20, 500, 12, s.feux[k] ? "#6fdc95" : "#ff8a80");
       });
       if (s.feux[0] && s.feux[1]) txt(ctx, "⚠️ Les deux feux sont verts !", 180, 215, 15, "#ffd56a");
@@ -341,8 +367,8 @@
     },
     eboueurs: function (ctx, s, glisse) {
       fond(ctx, "#33405e", "#232c45"); txt(ctx, "Fais glisser chaque déchet dans la bonne poubelle", 180, 18, 12, OR);
-      s.d.forEach(function (o) { if (glisse && glisse.id === o.id) return; emo(ctx, o.e, o.x, o.y, 40); });
-      if (glisse) { var o = s.d.filter(function (q) { return q.id === glisse.id; })[0]; if (o) emo(ctx, o.e, glisse.x, glisse.y, 46); }
+      s.d.forEach(function (o) { if (glisse && glisse.id === o.id) return; spr(ctx, DECH[o.e], o.x, o.y, 46, o.e); });
+      if (glisse) { var o = s.d.filter(function (q) { return q.id === glisse.id; })[0]; if (o) spr(ctx, DECH[o.e], glisse.x, glisse.y, 54, o.e); }
       ctx.fillStyle = "rgba(255,80,80,.25)"; ctx.fillRect(0, 404, 360, 4);
       var B = [["📰", "Papier", "#2b6fe0"], ["🍾", "Verre", "#2fae4c"], ["🧴", "Plastique", "#e0b92b"], ["🗑️", "Ordures", "#6b6b78"]];
       B.forEach(function (b, k) { var x = k * 90; bloc(ctx, x + 4, 424, 82, 110, b[2], "#fff", 12); emo(ctx, b[0], x + 45, 465, 30); txt(ctx, b[1], x + 45, 508, 13); });
@@ -374,10 +400,19 @@
       bulles(ctx, s);
     },
     marathon: function (ctx, s) {
-      fond(ctx, "#ffcf8a", "#ff9a6a");
-      var dec = (s.dist * 0.3) % 120; for (var x = -dec; x < 400; x += 120) { bloc(ctx, x, 230, 90, 150, "#d9b38a", "#a6825e", 4); bloc(ctx, x + 20, 260, 20, 26, "#5b7fb3", null, 2); bloc(ctx, x + 55, 260, 20, 26, "#5b7fb3", null, 2); }
-      emo(ctx, "🗼", 300 - (s.dist * 0.05) % 400, 150, 60);
-      ctx.fillStyle = "#6b6b78"; ctx.fillRect(0, 380, 360, 160); ctx.fillStyle = "#fff"; for (x = -(s.dist % 60); x < 360; x += 60) ctx.fillRect(x, 450, 30, 4);
+      var rue = img("decor-marathon"), x;
+      if (rue) {
+        // Avenue qui défile : la chaussée de l'image tombe sous les pieds du coureur (y ≈ 380)
+        var hh = 462, ww = rue.naturalWidth * hh / rue.naturalHeight, off = (s.dist * 0.6) % ww;
+        ctx.fillStyle = "#3a3550"; ctx.fillRect(0, 0, J.W, J.H);
+        for (x = -off; x < J.W; x += ww) ctx.drawImage(rue, x, 0, ww, hh);
+        ctx.fillStyle = "#4a4560"; ctx.fillRect(0, hh, J.W, J.H - hh);
+      } else {
+        fond(ctx, "#ffcf8a", "#ff9a6a");
+        var dec = (s.dist * 0.3) % 120; for (x = -dec; x < 400; x += 120) { bloc(ctx, x, 230, 90, 150, "#d9b38a", "#a6825e", 4); bloc(ctx, x + 20, 260, 20, 26, "#5b7fb3", null, 2); bloc(ctx, x + 55, 260, 20, 26, "#5b7fb3", null, 2); }
+        emo(ctx, "🗼", 300 - (s.dist * 0.05) % 400, 150, 60);
+        ctx.fillStyle = "#6b6b78"; ctx.fillRect(0, 380, 360, 160); ctx.fillStyle = "#fff"; for (x = -(s.dist % 60); x < 360; x += 60) ctx.fillRect(x, 450, 30, 4);
+      }
       s.obs.forEach(function (o) {
         if (o.pris && (o.t === "eau" || o.t === "medaille")) return;
         if (o.t === "barriere") emo(ctx, "🚧", o.x, 362, 40); else if (o.t === "bache") { bloc(ctx, o.x - 26, 280, 52, 50, "#c8352e", "#fff", 4); emo(ctx, "⬇️", o.x, 305, 20); }
@@ -393,7 +428,7 @@
       bloc(ctx, 20, 30, 320, 90, CARTE, OR, 14); txt(ctx, "Objectif : économiser", 180, 55, 14, CLAIR); txt(ctx, (s.but * 1000).toLocaleString("fr-FR") + " €", 180, 88, 26, OR);
       var tot = s.opts.reduce(function (n, o) { return n + (o.on ? o.v : 0); }, 0);
       s.opts.forEach(function (o, i) {
-        var y = 150 + i * 52; bloc(ctx, 20, y, 320, 44, o.on ? "#2f8a52" : "rgba(255,255,255,.08)", o.on ? "#9cf0b4" : "rgba(255,255,255,.2)", 10);
+        var y = 150 + i * 52; bloc(ctx, 20, y, 320, 44, o.on ? "#2f8a52" : "rgba(20,28,74,.86)", o.on ? "#9cf0b4" : "rgba(255,255,255,.3)", 10);
         txt(ctx, (o.on ? "☑ " : "☐ ") + (o.v > 0 ? "Économie de " : "Dépense en plus : ") + (Math.abs(o.v) * 1000).toLocaleString("fr-FR") + " €", 36, y + 22, 14, "#fff", "left");
       });
       txt(ctx, "Ta sélection : " + (tot * 1000).toLocaleString("fr-FR") + " €", 180, 445, 14, tot === s.but ? "#6fdc95" : CLAIR);
@@ -402,14 +437,14 @@
       bulles(ctx, s);
     },
     pigeons: function (ctx, s) {
-      fond(ctx, "#cdbf9f", "#b3a582"); ctx.strokeStyle = "rgba(0,0,0,.08)"; for (var x = 0; x < 360; x += 40) { ctx.beginPath(); ctx.moveTo(x, 60); ctx.lineTo(x, 540); ctx.stroke(); }
+      fond(ctx, "#cdbf9f", "#b3a582");
       txt(ctx, "Ramasse les déchets ! (" + s.d.length + " par terre)", 180, 30, 14, s.d.length > 25 ? ROUGE : BLEU);
-      s.d.forEach(function (o) { emo(ctx, o.e, o.x, o.y, 26); });
+      s.d.forEach(function (o) { var n = { "🥤": "s-gobelet", "🍌": "s-banane", "📰": "s-journal", "🍟": "s-pizza", "🧻": "s-journal", "🥡": "s-carton" }[o.e]; spr(ctx, n, o.x, o.y, 28, o.e); });
       s.pg.forEach(function (g) { emo(ctx, "🐦", g.x, g.y, 28); });
       bulles(ctx, s);
     },
     une: function (ctx, s) {
-      fond(ctx, "#f2ead7", "#e2d6b8"); txt(ctx, "Touche un événement, puis son titre", 180, 40, 15, BLEU); txt(ctx, "LE JOURNAL DE PARIS", 180, 80, 18, "#3a2a10");
+      fond(ctx, "#f2ead7", "#e2d6b8"); bloc(ctx, 16, 20, 328, 76, "rgba(250,243,226,.94)", "#8a7350", 10); txt(ctx, "Touche un événement, puis son titre", 180, 40, 15, BLEU); txt(ctx, "LE JOURNAL DE PARIS", 180, 80, 18, "#3a2a10");
       s.ev.forEach(function (e, i) { var y = 110 + i * 130; bloc(ctx, 8, y, 166, 118, e.ok ? "#bfe6c6" : s.sel === i ? "#ffe39a" : "#fffaf0", "#8a7350", 8); lignes(ctx, e.txt, 91, y + 59, 150, 13, "#2a2010"); });
       s.ti.forEach(function (t, i) { var y = 110 + i * 130; bloc(ctx, 186, y, 166, 118, t.ok ? "#bfe6c6" : "#1b2550", "#8a7350", 8); lignes(ctx, t.txt, 269, y + 59, 150, 13, t.ok ? "#2a2010" : "#fff"); });
       bulles(ctx, s);
