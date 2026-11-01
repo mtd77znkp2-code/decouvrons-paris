@@ -1,7 +1,7 @@
 // Grand Tournoi des Maires : les règles (module pur, partagé entre le serveur et le navigateur).
 // Un tournoi par session et par mandat : il ouvre 4 minutes avant l'élection et ferme 30 secondes avant.
 // Une seule épreuve, tirée par le serveur, pour les 21 maires de la session (les maires robots ont un score selon leur place).
-// Récompenses à la clôture : 1er +10 de popularité, 2e +9 … 10e +1 ; à partir de la 11e place : −11 (la popularité reste entre 0 et 100).
+// Récompenses à la clôture : 1er +10 de popularité, 2e +9 … 10e +1 ; puis 11e −1, 12e −2 … 21e −11 (la popularité reste entre 0 et 100).
 (function (root) {
   "use strict";
   var AVANT_MS = 4 * 60000, CLOTURE_MS = 30000, NB = 21;
@@ -14,7 +14,7 @@
   function ouvert(s, maintenant) { var f = fenetre(s); return maintenant >= f.ouverture - 5000 && maintenant < f.cloture; }
 
   // Gain ou perte de popularité selon le rang (1 = premier)
-  function gain(rang) { return rang <= 10 ? 11 - rang : -11; }
+  function gain(rang) { return rang <= 10 ? 11 - rang : -(rang - 10); }   // 1er +10 … 10e +1, puis 11e −1, 12e −2 … 21e −11
 
   // Score d'un maire robot : selon sa place dans la session (les mieux placés sont plus forts), avec un peu de hasard reproductible
   function hache(a, b) { var h = (a ^ Math.imul(b + 0x9e3779b9, 0x85ebca6b)) | 0; h = Math.imul(h ^ (h >>> 16), 0x7feb352d); h = Math.imul(h ^ (h >>> 15), 0x846ca68b); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }

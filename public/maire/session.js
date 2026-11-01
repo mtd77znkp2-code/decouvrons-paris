@@ -158,7 +158,7 @@
   };
   var BOUCLIER = { nom: "Service de communication", ico: "🛡️", cout: 50, cd: 120000, txt: "Arrête la prochaine attaque reçue (jusqu’à l’élection)." };
     // Prix d'une action selon la place : plus on est puissant (et riche), plus elle coûte cher (×1 en bas, ×3 au trône)
-  function prixAction(cout, p) { return Math.round(cout * (1 + Math.min(p, TRONE) * 0.1) / 5) * 5; }
+  function prixAction(cout, p) { return Math.max(1, Math.round(cout * (1 + Math.min(p, TRONE) * 0.1) * R.v.prixAttaques)); }   // réglable (petite ville : attaques moins chères)
   function cle(x) { return x.type === "joueur" ? x.uid : x.id; }
   function qui(s, p) { var x = s.places[p]; return { nom: x.nom, ico: x.ico, court: court(p), uid: x.uid || null, bot: x.type === "bot" }; }
   function malusDe(s, p) { return ((s.malus || {})[cle(s.places[p])]) || 0; }

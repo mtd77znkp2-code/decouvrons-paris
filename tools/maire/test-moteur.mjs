@@ -757,20 +757,32 @@ test("sessions : 21 places, on commence en bas, on défie son rival, une place g
   // Fiches comparables pour les bots comme pour les joueurs
   const f = S.fiche(t, 5); assert.ok(f.nom && f.stats && f.titre && f.hab > 0);
 });
-test("mode session : arrondissement à son échelle, pas d'élection interne, résultat de la session appliqué", () => {
+test("mode session : la ville part de 1 000 habitants, pas d'élection interne, résultat de la session appliqué", () => {
   const S = require("../../public/maire/session.js");
   let st = M.nouvellePartie({ maire: "tribun", graine: 5, nivJoueur: 1 });
   const info = p => ({ id: "s1", place: p, titre: S.titre(p), hab0: S.habitants(p), puissance: S.puissance(p), rival: { nom: "Bernard Morel", ico: "🎩" }, opp: p ? { nom: "Sylvie Roux", ico: "👩" } : null });
-  st = M.placer(st, info(0)); assert.equal(st.hab, S.habitants(0)); assert.ok(!st.opposant || !st.opposant.actif, "à la dernière place, personne n'attaque");
-  assert.ok(M.capacite(st) < 30000, "logements à l'échelle de l'arrondissement");
+  st = M.placer(st, info(0)); assert.equal(st.hab, 1000); assert.ok(!st.opposant || !st.opposant.actif, "à la dernière place, personne n'attaque");
+  assert.ok(M.capacite(st) < 1100, "presque aucun logement libre au départ : il faut en construire");
   // 60 trimestres sans élection interne
   for (let k = 0; k < 60 && st.phase !== "fin"; k++) st = st.phase === "evenement" ? M.choisir(st, base, M.choixLibre(M.evenementCourant(st, base))[0] || 0) : M.debutTour(st, base);
   assert.equal(st.elections.length, 0); assert.equal(st.mandat, 1);
   const e = M.etatSession(st); assert.ok(e.score > 0 && e.hab > 0);
-  // Victoire contre le rival : on monte, la population suit le nouvel arrondissement, l'opposant prend un nom
+  // Victoire contre le rival : on monte, la population reste la sienne, l'opposant prend un nom
   const h = st.hab; st = M.electionSession(st, { election: 1, avant: 0, apres: 1, titre: S.titre(1) }); assert.equal(st.mandat, 2); assert.ok(st.elections[0].monte);
   assert.deepEqual(M.electionSession(st, { election: 1, avant: 0, apres: 1 }), st, "pas deux fois");
-  st = M.placer(st, info(1)); assert.equal(st.opposant.nom, "Sylvie Roux"); assert.ok(st.opposant.actif); assert.equal(Math.round(st.hab / h * 100), Math.round(S.habitants(1) / S.habitants(0) * 100));
+  st = M.placer(st, info(1)); assert.equal(st.opposant.nom, "Sylvie Roux"); assert.ok(st.opposant.actif); assert.equal(st.hab, h);
+});
+test("session : réforme de l'argent (caisses presque vides, une construction à la fois, urbanistes)", () => {
+  const S = require("../../public/maire/session.js");
+  let st = M.nouvellePartie({ maire: "tribun", graine: 9, niveauPartie: true, session: true });
+  st = M.placer(st, { id: "s", place: 0, titre: S.titre(0), hab0: S.habitants(0), puissance: S.puissance(0) }); st.phase = "gestion";
+  assert.ok(st.tresor <= 30, "caisses presque vides : " + st.tresor); assert.equal(st.hab, 1000);
+  assert.equal(M.chantiersMax(st), 1, "une construction à la fois");
+  const so = M.solde(st); assert.ok(so > 0 && so < 15, "quelques M€ par saison : " + so);
+  st.nivJ = 12; st.tresor = 2000; st = M.embaucher(st, "urbaniste"); st = M.embaucher(st, "urbaniste");
+  assert.equal(M.chantiersMax(st), 3); assert.ok(M.peutEmbaucher(st, "urbaniste"), "2 urbanistes au plus");
+  // Construire des logements fait grandir la ville
+  const cap0 = M.capacite(st); st.bat.logements = 2; assert.ok(M.capacite(st) >= cap0 + 500);
 });
 test("session : le temps passe tout seul, les dossiers arrivent à la demande", () => {
   const S = require("../../public/maire/session.js");
@@ -839,10 +851,10 @@ test("session : employés (prix qui monte, effet qui baisse, effets réels)", ()
   const st7 = Object.assign({}, st, { nivJ: 7 }); assert.ok(!M.peutEmbaucher(st7, "proprete") && M.peutEmbaucher(st7, "urbaniste"), "les métiers se débloquent niveau par niveau");
   const p0 = M.prixEmploye(st, "avocat"); st = M.embaucher(st, "avocat"); const p1 = M.prixEmploye(st, "avocat"); assert.ok(p1 > p0, "le prix monte");
   const e1 = M.effetEmp(st, "avocat"); st = M.embaucher(st, "avocat"); const e2 = M.effetEmp(st, "avocat") - e1; assert.ok(e2 < e1 && e2 > 0, "chacun sert un peu moins");
-  // Comptable : moins de dépenses ; urbaniste : plus de logements ; policier : la sécurité vise plus haut ; salaires comptés
-  const d0 = M.depenses(st), c0 = M.capacite(st), s0 = M.cible(st).securite;
-  let a = M.embaucher(st, "comptable"); assert.ok(M.depenses(a) < d0);
-  a = M.embaucher(st, "urbaniste"); assert.ok(M.capacite(a) > c0);
+  // Comptable : moins de dépenses ; urbaniste : un chantier de plus ; policier : la sécurité vise plus haut ; salaires comptés
+  const d0 = M.depenses(st) - M.salaires(st), c0 = M.chantiersMax(st), s0 = M.cible(st).securite;
+  let a = M.embaucher(st, "comptable"); assert.ok(M.depenses(a) - M.salaires(a) < d0);
+  a = M.embaucher(st, "urbaniste"); assert.equal(M.chantiersMax(a), c0 + 1, "un urbaniste = un chantier de plus");
   a = M.embaucher(st, "policier"); assert.ok(M.cible(a).securite > s0);
   assert.ok(M.salaires(a) > M.salaires(st));
   // Avocats et attachés de presse dans les attaques de la session
@@ -928,7 +940,7 @@ test("session : 1er mandat avec 3 objectifs très simples et sans crise", () => 
   assert.ok(ob.every(o => o.but <= 2), "cibles minuscules : " + ob.map(o => o.txt).join(" / "));
 });
 test("session : un bâtiment met des saisons à se construire et n'agit qu'une fois fini", () => {
-  let st = partieSession(32); st.tresor = 5000;
+  let st = partieSession(32); st.tresor = 5000; st.emp = { urbaniste: 1 };   // 2 chantiers à la fois
   const id = Object.keys(M.BATIMENTS).find(i => { const B = M.BATIMENTS[i]; return !B.projet && !B.enchere && B.cout <= 50 && !M.peutAcheter(st, i); });
   const id2 = Object.keys(M.BATIMENTS).find(i => { const B = M.BATIMENTS[i]; return i !== id && !B.projet && !B.enchere && B.cout > 50 && !M.peutAcheter(st, i); });
   assert.equal(M.dureeTravaux(st, id), 1); assert.ok(M.dureeTravaux(st, id2) >= 2, "les plus chers sont plus longs");
@@ -983,7 +995,7 @@ test("tournoi : classement des 21 maires et gains de popularité", () => {
   const r = TR.classement({ id: "x_1", jeu: "budget" }, s, { u1: { score: 9999, fin: 5, statut: "fini" } });
   assert.equal(r.length, 21); assert.equal(r[0].uid, "u1"); assert.equal(r[0].gain, 10);
   assert.ok(r.find((x) => x.uid === "u2").absent, "un joueur qui n'a pas joué compte pour 0");
-  assert.deepEqual(r.map((x) => x.gain), [10,9,8,7,6,5,4,3,2,1].concat(Array(11).fill(-11)));
+  assert.deepEqual(r.map((x) => x.gain), [10,9,8,7,6,5,4,3,2,1].concat([-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11]));
   const f = TR.fenetre(s); assert.equal(f.cloture - f.ouverture, 4 * 60000 - 30000);
 });
 

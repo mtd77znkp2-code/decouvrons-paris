@@ -106,7 +106,8 @@ export const tournoiClore = onCall(OPT, async (req) => {
     if (t.etat === "clos") return { resultats: t.resultats };
     const sd = await tx.get(db().doc("sessions/" + t.session)), s = sd.exists ? lireSession(sd) : null;
     if (!s) throw new HttpsError("not-found", "Session disparue.");
-    if (maintenant < t.cloture && (s.election || 0) < t.election) throw new HttpsError("failed-precondition", "Le tournoi n'est pas encore clos.");
+    const deplace = TR.idTournoi(t.session, (s.election || 0) + 1, s.prochaine) !== tid;   // élection déplacée (forcée) : ce tournoi est terminé
+    if (maintenant < t.cloture && (s.election || 0) < t.election && !deplace) throw new HttpsError("failed-precondition", "Le tournoi n'est pas encore clos.");
     const p = {};
     parts.forEach((d) => {
       const x = d.data();

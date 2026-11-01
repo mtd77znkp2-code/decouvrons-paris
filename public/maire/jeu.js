@@ -1467,7 +1467,7 @@
     return s > 0 ? "dans " + mmss(s) : "à la prochaine saison";
   }
   function chantiers() {
-    var nT = (st.travaux || []).length, mxT = st.session ? RG().v.chantiersMax : 0;
+    var nT = (st.travaux || []).length, mxT = st.session ? M.chantiersMax(st) : 0;
     var d = h("div", "m-chantiers"); d.appendChild(h("h5", null, "🏗️ Chantiers en cours" + (mxT ? " (" + nT + "/" + mxT + ")" : "")));
     // Bâtiments en travaux (session) : ils agissent une fois terminés
     (st.travaux || []).forEach(function (w) {
@@ -1618,7 +1618,7 @@
     var jg = h("div", "mx-jauge"), ji = h("i"); ji.style.width = Math.max(2, Math.min(100, v)) + "%"; jg.appendChild(ji); gauche.appendChild(jg);
     var STAT_ICO = { "💰": "stat-argent", "😊": "stat-bonheur", "📣": "stat-popularite", "👥": "stat-habitants" };
     function stat(ico, val, lib, alerte, cls) { var e = h("div", "mx-stat" + (alerte ? " mx-alerte" : "") + (cls ? " " + cls : "")), b = h("b"); b.innerHTML = val; ajout(e, STAT_ICO[ico] ? icoUI(STAT_ICO[ico]) : h("span", null, ico), b, h("small", null, lib)); return e; }
-    function millions(n) { return n >= 1e6 ? (Math.round(n / 10000) / 100).toFixed(2).replace(".", ",") + " M" : Math.round(n / 1000) + " k"; }
+    function millions(n) { return n >= 1e6 ? (Math.round(n / 10000) / 100).toFixed(2).replace(".", ",") + " M" : n >= 10000 ? Math.round(n / 1000) + " k" : Math.round(n).toLocaleString("fr-FR"); }
     var g = h("div", "mx-stats");
     ajout(g, stat("💰", argent(st.tresor), (so >= 0 ? "+" : "") + argent(so) + "/trim." + (st.dette > 0 ? " · dette " + argent(st.dette) : ""), st.dette > M.PLAFOND_DETTE * 0.6 || so < 0),
       stat("😊", String(Math.round(M.bonheur(st))), "bonheur", M.bonheur(st) < 40),
@@ -1793,11 +1793,11 @@
   // ---------- Employés : autant qu'on veut, chacun plus cher et un peu moins efficace que le précédent ----------
   function effetCourtEmp(id, v) {
     var pc = Math.round(v * 100);
-    return { avocat: "−" + pc + " % de points perdus", presse: "+" + pc + " % de dégâts", comptable: "−" + pc + " % de frais", urbaniste: "+" + pc + " % de logements", policier: "+" + virg(Math.round(v * 10) / 10) + " Sécurité", proprete: "+" + Math.round(v) + " espaces entretenus" }[id];
+    return { avocat: "−" + pc + " % de points perdus", presse: "+" + pc + " % de dégâts", comptable: "−" + pc + " % de frais", urbaniste: "+" + Math.round(v) + " chantier" + (Math.round(v) > 1 ? "s" : "") + " en même temps", policier: "+" + virg(Math.round(v * 10) / 10) + " Sécurité", proprete: "+" + Math.round(v) + " espaces entretenus" }[id];
   }
   function employes() {
     var d = h("div", "mx-employes");
-    ajout(d, h("p", "mx-aide", "Embauche autant que tu veux : chaque nouvel employé coûte plus cher et apporte un peu moins. Ils touchent un salaire chaque trimestre."));
+    ajout(d, h("p", "mx-aide", "Chaque nouvel employé coûte plus cher et apporte un peu moins (l’urbaniste : 2 au plus). Ils touchent un salaire chaque saison."));
     var pr = M.proprete(st);
     if (pr.manque) d.appendChild(h("p", "mx-emp-alerte", "🧹 " + pr.espaces + " espaces de vie, seulement " + pr.couverts + " entretenus : il manque " + pr.manque + " agent" + (pr.manque > 1 ? "s" : "") + " de propreté. Sinon, ils finiront par fermer !"));
     var g = h("div", "mx-emps");
@@ -1877,9 +1877,9 @@
     }
     if (RAYON === "enchere") d.appendChild(h("p", "mx-aide", "🔨 30 secondes d’enchères contre un autre arrondissement."));
     var nTr = (st.travaux || []).length;
-    if (st.session && nTr >= RG().v.chantiersMax && RAYON !== "projet") {
+    if (st.session && nTr >= M.chantiersMax(st) && RAYON !== "projet") {
       var proch = Math.max(1, Math.min.apply(null, st.travaux.map(function (w) { return w.fin - st.t; })));
-      d.appendChild(ajout(h("p", "mx-plein"), document.createTextNode("🏗️ " + nTr + " chantiers en cours sur " + RG().v.chantiersMax + " : un emplacement se libère "), h("b", "mx-cd-chantier", attenteChantier()), document.createTextNode(".")));
+      d.appendChild(ajout(h("p", "mx-plein"), document.createTextNode("🏗️ " + nTr + " chantier" + (nTr > 1 ? "s" : "") + " en cours sur " + M.chantiersMax(st) + " : un emplacement se libère "), h("b", "mx-cd-chantier", attenteChantier()), document.createTextNode(".")));
     }
     var g = h("div", "mx-bats");
     ok.forEach(function (id) { g.appendChild(carteBat(id)); });
@@ -2948,7 +2948,7 @@
     if (plein && st.pop >= 50) sujet(12, "Crise du logement : plus une place libre", ["Impossible de trouver un appartement, il faut construire !", "Douze visites, douze refus. Paris est plein.", "Je vais devoir partir en banlieue, faute de logement."], 1);
     if (p.logement < 40) sujet(45 - p.logement, "Loyers : la colère monte", ["1 400 € pour 18 m², c’est une blague ?", "Mon loyer a encore augmenté.", "Les logements sociaux, il y a dix ans d’attente."], 1);
     if (p.transports < 40) sujet(45 - p.transports, "Transports : la galère quotidienne", ["Ligne 13 bondée, encore et toujours.", "Une heure pour traverser Paris en bus…", "Le métro est en panne une fois sur deux."], 1);
-    if (st.dette > M.PLAFOND_DETTE * 0.5) sujet(14, "Finances : la dette inquiète", ["La mairie dépense trop, qui va payer ?", "On paiera les dettes de la ville pendant vingt ans."], 1);
+    if (st.dette > M.plafond(st) * 0.5) sujet(14, "Finances : la dette inquiète", ["La mairie dépense trop, qui va payer ?", "On paiera les dettes de la ville pendant vingt ans."], 1);
     if (so < 0) sujet(8, "Budget dans le rouge", ["Les caisses se vident chaque trimestre.", "Il faudrait des recettes, pas que des dépenses."], 1);
     if (st.neglige && st.neglige.t >= st.t - 1) sujet(80, "📂 Dossiers en souffrance : " + st.neglige.perte.toLocaleString("fr-FR") + " Parisiens quittent l’arrondissement",
       ["La mairie ne répond plus à rien. On déménage.", "Trois mois que mon dossier attend sur le bureau du maire !", "Un maire qui ne tranche rien, ça ne sert à rien. Je m’en vais."]);

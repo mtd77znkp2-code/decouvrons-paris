@@ -58,7 +58,7 @@
     // Le tournoi d'avant reste suivi jusqu'à ce qu'on ait appliqué sa récompense
     // Après l'élection, on garde le tournoi précédent le temps de sa clôture et de la récompense ;
     // mais si c'est la même élection simplement déplacée (forcée), l'ancien tournoi est abandonné
-    if (TID && TID !== tid && T && T.etat !== "clos" && T.election !== f.election && now < T.cloture + 120000) { cloreSiBesoin(now); return majBandeau(); }
+    if (TID && TID !== tid && T && T.etat !== "clos" && now < T.cloture + 120000 && (T.election !== f.election || PARTS[moi()])) { cloreSiBesoin(now, T.election === f.election); return majBandeau(); }
     if (now >= f.ouverture && now < f.cloture && TID !== tid) {
       if (!ESSAIS[tid] || now - ESSAIS[tid] > 15000) {
         ESSAIS[tid] = now;
@@ -72,8 +72,8 @@
     cloreSiBesoin(now);
     majBandeau();
   }
-  function cloreSiBesoin(now) {
-    if (!T || T.etat === "clos" || now < T.cloture + 1500) return;
+  function cloreSiBesoin(now, deplace) {   // deplace : l'élection a été déplacée, le tournoi joué se clôt tout de suite
+    if (!T || T.etat === "clos" || (!deplace && now < T.cloture + 1500)) return;
     if (CLOS_DEMANDE[T.id] && now - CLOS_DEMANDE[T.id] < 8000) return;
     CLOS_DEMANDE[T.id] = now;
     appel("tournoiClore", { tournoi: T.id }).catch(function () {});

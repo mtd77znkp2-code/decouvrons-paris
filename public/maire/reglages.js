@@ -36,17 +36,29 @@
     // ---- Construction des bâtiments (session) ----
     { k: "dureeConstruction", g: "Construction", nom: "Durée des travaux", unite: "×", def: 1, min: 0, max: 4, pas: 0.25,
       desc: "Un bâtiment met de 1 saison (les moins chers) à 5 saisons (les plus chers) à sortir de terre, multiplié par X. 0 = construction immédiate." },
-    { k: "chantiersMax", g: "Construction", nom: "Travaux en même temps", unite: "", def: 3, min: 1, max: 10, pas: 1,
-      desc: "Nombre de bâtiments qu’on peut construire en même temps." },
+    { k: "chantiersMax", g: "Construction", nom: "Travaux en même temps (sans urbaniste)", unite: "", def: 1, min: 1, max: 10, pas: 1,
+      desc: "Nombre de bâtiments qu’on peut construire en même temps au départ. Chaque urbaniste (2 au plus) en ajoute un." },
 
     // ---- Argent ----
-    { k: "dossierSession", g: "Argent", nom: "Montants des dossiers en session", unite: "×", def: 1, min: 0.1, max: 3, pas: 0.05,
+    { k: "tresorDepart", g: "Argent", nom: "Caisse au départ", unite: "M€", def: 20, min: 0, max: 1000, pas: 5,
+      desc: "Argent dans les caisses au début d’une partie de session (les caisses sont presque vides : chaque bâtiment est un investissement)." },
+    { k: "habDepart", g: "Argent", nom: "Habitants au départ", unite: "", def: 1000, min: 200, max: 50000, pas: 100,
+      desc: "Population au début d’une partie de session. Elle grandit seulement si l’on construit des logements." },
+    { k: "echelleImpots", g: "Argent", nom: "Échelle des impôts et des frais", unite: "×", def: 0.06, min: 0.005, max: 1, pas: 0.005,
+      desc: "Multiplie les impôts et les frais de fonctionnement de la mairie en session (les impôts grandissent avec le nombre d’habitants)." },
+    { k: "detteMax", g: "Argent", nom: "Emprunt maximum", unite: "M€", def: 80, min: 0, max: 1500, pas: 10,
+      desc: "La mairie ne peut pas emprunter plus que ce montant (au-delà : faillite)." },
+    { k: "prixAttaques", g: "Argent", nom: "Prix des attaques", unite: "×", def: 0.3, min: 0.05, max: 3, pas: 0.05,
+      desc: "Multiplie le prix des attaques et du service de communication." },
+    { k: "dossierSession", g: "Argent", nom: "Montants des dossiers en session", unite: "×", def: 0.2, min: 0.1, max: 3, pas: 0.05,
       desc: "Multiplie l’argent gagné ou perdu par les réponses aux dossiers (1 = montants normaux)." },
     { k: "fraisSession", g: "Argent", nom: "Frais de fonctionnement en session", unite: "×", def: 0.85, min: 0.3, max: 2, pas: 0.05,
       desc: "Multiplie les frais de fonctionnement de la ville à chaque saison (plus bas = plus facile)." },
 
     // ---- Ville : bâtiments et équilibre logement / emploi / commerces (en session) ----
-    { k: "effetBat", g: "Ville et équilibre", nom: "Effet des bâtiments sur les piliers", unite: "×", def: 0.55, min: 0.1, max: 2, pas: 0.05,
+    { k: "usureSession", g: "Ville et équilibre", nom: "Usure des piliers en session", unite: "×", def: 0.5, min: 0, max: 2, pas: 0.05,
+      desc: "Vitesse à laquelle les piliers (sécurité, logement…) baissent tout seuls à chaque saison." },
+    { k: "effetBat", g: "Ville et équilibre", nom: "Effet des bâtiments sur les piliers", unite: "×", def: 0.85, min: 0.1, max: 2, pas: 0.05,
       desc: "Multiplie ce que chaque bâtiment apporte aux piliers (sécurité, logement…). Plus bas = une bonne note se mérite davantage." },
     { k: "penaliteChomage", g: "Ville et équilibre", nom: "Poids du chômage sur le bonheur", unite: "pts/%", def: 0.6, min: 0, max: 3, pas: 0.1,
       desc: "Chaque point de chômage au-dessus de 8 % retire X points de bonheur (et donc de note)." },
