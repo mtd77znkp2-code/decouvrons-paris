@@ -712,10 +712,31 @@
       s.lots = lots;
       return chargerLots(lots);
     }).then(function () {
-      st = M.reprendre(s, BASE); st.sansMissions = true; st.mission = null; sauver(); choixNiveau(st.niveau, true);
-      if (st.phase === "pret") return demarrerPartie();
-      jeu();
-    }).catch(echec(reprise));
+      function lancer(s1) {
+        st = M.reprendre(s1, BASE); st.sansMissions = true; st.mission = null; sauver(); choixNiveau(st.niveau, true);
+        if (st.phase === "pret") return demarrerPartie();
+        JEU_ERR = 0; jeu0();
+      }
+      try { lancer(s); }
+      catch (e1) {
+        noterErreur(e1, "reprise");
+        // Sauvegarde abîmée : on la répare (dossier introuvable, partie de cartes ouverte, données manquantes…) au lieu de la supprimer
+        try { lancer(M.reparer(s, BASE)); toast("🔧 Ta partie a été réparée, tu peux continuer."); }
+        catch (e2) { noterErreur(e2, "reprise-reparee"); partieBloquee(e2); }
+      }
+    }).catch(function (e) { if (e && e.reseau) erreurReseau(reprise, e); else { noterErreur(e, "chargement"); partieBloquee(e); } });
+  }
+  // Dernier recours : on ne supprime JAMAIS la partie d'office ; on propose de réessayer (la sauvegarde est gardée)
+  function partieBloquee(e) {
+    fenetreErreur("🔧", "Petit souci au chargement",
+      "Ta partie est bien gardée, mais elle n’a pas pu s’afficher. Réessaie dans un instant (le jeu se met peut-être à jour). Si ça recommence, envoie une capture de ce message.",
+      [["🔄 Réessayer", function () { location.reload(); }, true], ["🏠 Accueil", accueil], ["Recommencer une nouvelle partie", function () {
+        if (confirm("Supprimer ta partie en cours et en recommencer une ? (ton niveau, tes succès et tes paliers sont conservés)")) { effacer(); try { localStorage.removeItem("maire_reserve"); } catch (x) {} accueil(); }
+      }]], e && (e.message + (e.stack ? " · " + String(e.stack).split("\n")[1] : "")));
+  }
+  // Les erreurs sont gardées (les 10 dernières) pour l'admin
+  function noterErreur(e, ou) {
+    try { console.error("[Maire]", ou, e); var l = JSON.parse(localStorage.getItem("maire_erreurs") || "[]"); l.push({ q: Date.now(), ou: ou, m: String(e && e.message || e).slice(0, 200), s: String(e && e.stack || "").slice(0, 400), t: st && st.t }); localStorage.setItem("maire_erreurs", JSON.stringify(l.slice(-10))); } catch (x) {}
   }
 
   // Tirage du mandat : l'opposant (s'il est débloqué), puis la crise et les trois objectifs
@@ -860,7 +881,9 @@
   function jouerTrimestre() {
     if (SES.jetons < 1) return toast("⏳ Prochain dossier dans " + mmss(Math.max(1000, (SES.tick || prochainDossier(Date.now())) - Date.now())) + ".");
     var s2 = M.dossierSession(st, BASE); if (s2 === st) return;
-    SES.jetons--; garderReserve(); st = s2; sauver(); jeu();
+    SES.jetons--; garderReserve(); st = s2; MASQUE = null; sauver(); jeu();
+    // le dossier tiré s'ouvre toujours au même toucher (jamais de jeton perdu sans fenêtre)
+    if (st.phase === "evenement" && !document.getElementById("m-modale")) modale();
   }
   // ---------- Outils de test (boutons de l'admin, onglet « Réglages du jeu ») : agissent sur la partie ouverte ----------
   window.confettis = function () { confettis(); };   // utilisé par le Grand Tournoi
@@ -1007,6 +1030,9 @@
     if (visible && SS().electionDue(SES.s, now) && now - SES.elire > 5000) { SES.elire = now; window.SessionLigne.elire(SES.id); }
     var libre = visible && (st.phase === "gestion" || st.phase === "pret") && !document.getElementById("m-modale") && !document.getElementById("m-telmod") && !document.body.classList.contains("m-casino") && !(st.enchere && !st.enchere.fini) && !(st.bj && !st.bj.fini);
     rechargerReserve(now);
+    // Roue de la fortune : 3 minutes après un tour, une nouvelle quête arrive
+    var r2 = M.relancerRoue(st, now);
+    if (r2 !== st) { st = r2; sauver(); var eR = M.etatRoue(st); toast("🎡 Nouvelle quête : " + (eR ? eR.roue.nom + " · " + eR.txt : "une roue t’attend")); if (libre) return jeuAuto(); SES.aRedessiner = true; }
     if (window.MaireTournoiUI && st.session) MaireTournoiUI.tic({ sid: SES.id, session: SES.s, toast: toast, appliquer: gainTournoi });   // Grand Tournoi des Maires
     if (recupererVentes() && libre) return jeuAuto();
     // Le temps passe tout seul (saisons, recettes, dépenses), même pendant un dossier ; seulement quand le jeu est à l'écran
@@ -1057,6 +1083,7 @@
     if (!SES.s) return;
     Array.prototype.forEach.call(document.querySelectorAll(".mx-cd[data-fin]"), function (e) { var s = secondesAvant(+e.dataset.fin); e.textContent = s > 0 ? "prêt dans " + mmss(s) : "prêt à la prochaine saison"; });
     var cc = document.querySelector(".mx-cd-chantier"); if (cc) cc.textContent = attenteChantier();
+    var rc = document.querySelector(".mx-roue-cd"); if (rc && st) { var ra = M.attenteRoue(st, Date.now()); if (ra != null) rc.textContent = "dans " + mmss(ra); }
     majAttaque();
     var e = document.querySelector(".mx-ses-elec"); if (e) e.textContent = "🗳️ " + mmss(SES.s.prochaine - Date.now());
     var v = document.querySelector(".mx-ses-votes"); if (v) v.textContent = SS().nbVotes(SES.s) + "/" + SS().votesRequis(SES.s) + " vote" + (SS().votesRequis(SES.s) > 1 ? "s" : "");
@@ -1446,7 +1473,16 @@
   // Montre un élément même s'il est dans un autre onglet (guide, raccourcis)
   function allerVers(el) { var z = el && el.closest && el.closest("[data-o]"); if (z && z.dataset.o !== ONGLET) choisirOnglet(z.dataset.o); }
 
+  var JEU_ERR = 0;
   function jeu() {
+    try { jeu0(); JEU_ERR = 0; }
+    catch (e) {
+      noterErreur(e, "jeu");
+      if (!st || JEU_ERR++ > 1) return partieBloquee(e);
+      try { st = M.reparer(st, BASE); sauver(); jeu0(); JEU_ERR = 0; } catch (e2) { noterErreur(e2, "jeu-repare"); partieBloquee(e2); }
+    }
+  }
+  function jeu0() {
     envoyerClassement();
     brancherSession();
     progresser();
@@ -1646,7 +1682,14 @@
   }
   // ---------- Roue de la fortune : une quête, puis un tour sur une roue (bois, bronze, argent, or, saphir) ----------
   function carteRoue() {
-    var e = M.etatRoue(st); if (!e) return null;
+    var e = M.etatRoue(st);
+    if (!e) {
+      var att = M.attenteRoue(st, Date.now()); if (att == null) return null;
+      var w = h("div", "mx-roue mx-roue-attend");
+      ajout(w, ajout(h("div", "mx-roue-tete"), h("span", "mx-roue-disque mx-roue-mystere", "?"), ajout(h("div"), h("small", null, "🎡 Prochaine quête de roue"), h("strong", "mx-roue-cd", "dans " + mmss(att)))),
+        h("small", "m-aide", "Une nouvelle quête arrive bientôt, avec une roue tirée au hasard : bois, bronze, argent, or… ou saphir !"));
+      return w;
+    }
     var d = h("div", "mx-roue mx-roue-" + e.roue.id + (e.ok ? " mx-roue-prete" : ""));
     var barre = h("div", "mx-barre"), i = h("i"); i.style.width = Math.round(e.cur / Math.max(1, e.but) * 100) + "%"; i.style.background = e.roue.coul; barre.appendChild(i);
     ajout(d, ajout(h("div", "mx-roue-tete"), h("span", "mx-roue-disque"), ajout(h("div"), h("small", null, "🎡 Quête de roue"), h("strong", null, e.roue.nom))),
@@ -1657,7 +1700,7 @@
   }
   function tournerRoue() {
     var e = M.etatRoue(st); if (!e || !e.ok) return;
-    var r = M.tournerRoueJeu(st); if (!r) return;
+    var r = M.tournerRoueJeu(st, Date.now()); if (!r) return;
     st = r.st; sauver(); signal("roue"); cacherBulle();
     var f = h("div", "m-pop m-roue-pop"), c = h("div", "m-pop-in m-roue-carte mx-roue-" + e.roue.id), n = e.cases.length;
     var cont = h("div", "m-roue-zone"), roue = h("div", "m-roue2"), fl = h("img", "m-roue-fleche");
@@ -2136,7 +2179,7 @@
     var cartes = (st.bj && !st.bj.fini) || (st.enchere && !st.enchere.fini);
     var auto = !!(st.session && SES.id);
     b.appendChild(bouton(st.phase === "evenement" ? "📂 Un dossier t’attend" : cartes ? "🃏 Une partie de cartes est en cours" : auto ? "" : "📂 Dossier suivant →", "btn m-go mx-dossier" + (auto ? " mx-auto" : ""), function () {
-      if (st.phase === "evenement" || (st.resultat && !st.resultatVu)) return modale();
+      if (st.phase === "evenement" || (st.resultat && !st.resultatVu)) { MASQUE = null; return modale(); }
       if (st.bj && !st.bj.fini) return ouvrirTelephone();
       if (auto) return jouerTrimestre();
       // Partie de session pas encore reconnectée (retour en jeu) : on attend la session au lieu de sauter un trimestre

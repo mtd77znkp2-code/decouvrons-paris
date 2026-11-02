@@ -821,8 +821,34 @@ test("roues de la fortune : quêtes, 5 roues (bois 55 % … saphir 3 %), un tour
   for (let t = 0; t < 4; t++) st = M.avancerSession(st, base);
   const e = M.etatRoue(st); assert.ok(e && !e.ok, "une quête apparaît");
   assert.equal(M.tournerRoueJeu(st), null, "pas de tour avant d'avoir réussi la quête");
-  st.roueQ.k = "pop"; st.roueQ.but = 0; const r = M.tournerRoueJeu(st);
-  assert.ok(r && r.txt && r.st.roueQ === null && r.st.roueProchaine > r.st.t, "un tour, puis une nouvelle quête plus tard");
+  st.roueQ.k = "pop"; st.roueQ.but = 0; const T0 = 1e12, r = M.tournerRoueJeu(st, T0);
+  assert.ok(r && r.txt && r.st.roueQ === null, "un tour");
+  // puis 3 minutes d'attente (temps réel), même si les saisons passent ; ensuite une nouvelle quête
+  let s2 = r.st; for (let t = 0; t < 6; t++) s2 = M.avancerSession(s2, base);
+  assert.ok(!s2.roueQ, "pas de nouvelle quête avant la fin du chrono");
+  assert.equal(M.attenteRoue(s2, T0 + 60000), 120000);
+  assert.equal(M.relancerRoue(s2, T0 + 179000), s2);
+  const s3 = M.relancerRoue(s2, T0 + 180000); assert.ok(s3.roueQ && M.etatRoue(s3), "nouvelle quête au bout de 3 minutes");
+});
+test("bugs : construction jamais bloquée, partie de cartes oubliée, sauvegarde abîmée réparée", () => {
+  let st = partieSession(43); st.tresor = 900; st.nivJ = 30; st.np = true;
+  const id = Object.keys(M.BATIMENTS).find(k => !M.peutAcheter(st, k) && M.dureeTravaux(st, k) >= 2);
+  st = M.acheter(st, id); assert.equal(st.travaux.length, 1);
+  const id2 = Object.keys(M.BATIMENTS).find(k => k !== id && M.dureeTravaux(st, k) && M.peutAcheter(st, k) === "Chantiers pleins.");
+  assert.ok(id2, "un seul chantier à la fois");
+  // la roue « chantier terminé » libère la place tout de suite
+  st.roueQ = { roue: 0, k: "pop", but: 0, txt: "", ico: "", base: {}, t: st.t };
+  let fini = null; for (let g = 1; g < 400 && !fini; g++) { const x = JSON.parse(JSON.stringify(st)); x.rng = g * 104729; const r = M.tournerRoueJeu(x, 1); if (r && /Chantier terminé/.test(r.txt)) fini = r.st; }
+  assert.ok(fini && fini.travaux.length === 0 && fini.bat[id] >= 1 && M.peutAcheter(fini, id2) !== "Chantiers pleins.", "chantier terminé = bâtiment construit et place libre");
+  // une main de blackjack laissée en plan n'arrête pas le temps plus d'une saison
+  let b = JSON.parse(JSON.stringify(st)); b.bj = { mise: 5, deck: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], j: [12, 3], c: [5, 6], fini: false, res: null };
+  const t0 = b.t; for (let k = 0; k < 3; k++) b = M.avancerSession(b, base);
+  assert.ok(b.t > t0 && (!b.bj || b.bj.fini), "le temps repart");
+  // sauvegarde abîmée : réparée, jamais à supprimer
+  const abime = JSON.parse(JSON.stringify(st)); abime.phase = "evenement"; abime.evenement = "dossier-disparu"; abime.travaux.push({ id: "inconnu", fin: 3 }); abime.bat.inconnu = 2; abime.tresor = null; abime.historique = undefined; abime.piliers.cadre = "x";
+  const rep = M.reparer(abime, base);
+  assert.equal(rep.phase, "gestion"); assert.ok(!rep.bat.inconnu && rep.travaux.every(w => M.BATIMENTS[w.id])); assert.equal(rep.tresor, 0); assert.ok(Array.isArray(rep.historique)); assert.equal(rep.piliers.cadre, 50);
+  const apres = M.avancerSession(rep, base); assert.ok(apres.t > rep.t, "la partie réparée continue");
 });
 test("session : le temps passe tout seul, les dossiers arrivent à la demande", () => {
   const S = require("../../public/maire/session.js");

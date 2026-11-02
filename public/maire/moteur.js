@@ -612,11 +612,17 @@
   }
   // À chaque saison : une nouvelle quête de roue de temps en temps
   function suivreRoue(st) {
-    if (!st.session || st.roueQ || st.phase === "fin") return;
+    if (!st.session || st.roueQ || st.phase === "fin" || st.roueApres) return;   // après un tour : c'est le chrono (3 min) qui relance
     if (st.t >= (st.roueProchaine || 2)) nouvelleQueteRoue(st);
   }
+  // Après un tour de roue : une nouvelle quête au bout de R.v.roueAttente secondes (temps réel)
+  function attenteRoue(st, maintenant) { return st && st.session && !st.roueQ && st.roueApres ? Math.max(0, st.roueApres - maintenant) : null; }
+  function relancerRoue(st0, maintenant) {
+    if (!st0.session || st0.roueQ || st0.phase === "fin" || !st0.roueApres || maintenant < st0.roueApres) return st0;
+    var st = copie(st0); delete st.roueApres; nouvelleQueteRoue(st); return st;
+  }
   // Le tour de roue (quête réussie) : la case est tirée par le moteur, l'interface n'anime que le résultat
-  function tournerRoueJeu(st0) {
+  function tournerRoueJeu(st0, maintenant) {
     var e = etatRoue(st0); if (!e || !e.ok) return null;
     var st = copie(st0), cs = CASES[e.n], i = Math.floor(rnd(st) * cs.length), c = cs[i], v = c[1], txt = texteCase(c), autre = null;
     if (c[0] === "argent") mouvement(st, v, "🎡 " + ROUES[e.n].nom);
@@ -635,7 +641,8 @@
       construire(st, b, 0, "🎡 " + BATIMENTS[b].nom + " (roue)", true); txt += " : " + BATIMENTS[b].ico + " " + BATIMENTS[b].nom; }
     else if (c[0] === "bouclier") st.roueBouclier = 1;   // l'interface active le service de communication dans la session
     st.historique.push({ t: st.t, titre: "🎡 " + ROUES[e.n].nom, choix: txt, d: { pop: 0, bon: 0, coh: 0, bud: 0, pil: {} }, c: "roue" });
-    st.roueQ = null; st.roueProchaine = st.t + 2 + Math.floor(rnd(st) * 4);
+    st.roueQ = null; st.roueProchaine = st.t + 1; st.roueApres = (maintenant || Date.now()) + R.v.roueAttente * 1000;
+    finirTravaux(st);   // « chantier terminé » : le bâtiment rejoint la ville tout de suite
     return { st: st, i: i, txt: txt, bon: ["greve", "scandale", "depart", "retard"].indexOf(c[0]) < 0, roue: ROUES[e.n] };
   }
 
@@ -1173,6 +1180,16 @@
   }
 
   // ---------- Trimestre suivant ----------
+  // Les bâtiments dont les travaux sont finis rejoignent la ville (à chaque saison, et tout de suite après « chantier terminé »)
+  function finirTravaux(st, notes) {
+    var prets = (st.travaux || []).filter(function (w) { return w.fin <= st.t && BATIMENTS[w.id]; });
+    st.travaux = (st.travaux || []).filter(function (w) { return w.fin > st.t && BATIMENTS[w.id]; });
+    prets.forEach(function (w) {
+      construire(st, w.id, w.px, BATIMENTS[w.id].nom, true);
+      if (notes) notes.push({ txt: BATIMENTS[w.id].ico + " " + BATIMENTS[w.id].nom + " : travaux terminés !", d: { pop: 0, bon: 0, coh: 0, bud: 0, pil: {} } });
+      else message(st, BATIMENTS[w.id].ico, "Travaux terminés", BATIMENTS[w.id].nom + " ouvre ses portes !");
+    });
+  }
   function debutTour(st0, base) {
     if (st0.phase !== "pret" && st0.phase !== "gestion") return st0;    // un dossier attend une décision : rien à rejouer
     if (st0.bj && !st0.bj.fini) return st0;                              // une partie de cartes est en cours
@@ -1203,11 +1220,7 @@
     });
     finis.forEach(function (ch) { inaugurer(st, ch, notes); });
     // Travaux des bâtiments (session) : ceux qui sont terminés rejoignent la ville
-    var prets = (st.travaux || []).filter(function (w) { return w.fin <= st.t; });
-    if (prets.length) {
-      st.travaux = st.travaux.filter(function (w) { return w.fin > st.t; });
-      prets.forEach(function (w) { construire(st, w.id, w.px, BATIMENTS[w.id].nom, true); notes.push({ txt: BATIMENTS[w.id].ico + " " + BATIMENTS[w.id].nom + " : travaux terminés !", d: { pop: 0, bon: 0, coh: 0, bud: 0, pil: {} } }); });
-    }
+    finirTravaux(st, notes);
     entretienEspaces(st, notes);
     var restants = [];
     st.prevus.forEach(function (p) {
@@ -1302,7 +1315,10 @@
   }
   function avancerSession0(st0, base) {
     if (st0.phase === "fin" || st0.phase === "election") return st0;
-    if ((st0.bj && !st0.bj.fini) || (st0.enchere && !st0.enchere.fini)) return st0;
+    // Une partie de cartes laissée en plan n'arrête jamais le temps de la session : le croupier joue la fin de la main
+    // (on laisse une saison pour finir la main ou l'enchère en cours ; au-delà, elle est close d'office)
+    if (st0.bj && !st0.bj.fini) { st0 = copie(st0); if (!st0.bj.attente) { st0.bj.attente = 1; return st0; } jouerCroupier(st0); }
+    if (st0.enchere && !st0.enchere.fini) { if (!st0.enchere.attente) { st0 = copie(st0); st0.enchere.attente = 1; return st0; } st0 = finirEnchere(st0); }
     var enAttente = st0.phase === "evenement" || (st0.resultat && !st0.resultatVu), mis = {};
     var s = copie(st0);
     if (enAttente) { GARDE.forEach(function (k) { mis[k] = s[k]; }); s.phase = "gestion"; }
@@ -1811,7 +1827,7 @@
     if ((bonusMaire(st).interdit || []).indexOf(id) >= 0) return "Ton personnage refuse de construire ça.";
     if (enChantier(st, id)) return "En travaux.";
     if (B.projet && st.chantiers.length >= 2) return "Deux chantiers à la fois, pas plus.";
-    if (dureeTravaux(st, id) && (st.travaux || []).length >= chantiersMax(st)) return "Chantiers pleins.";
+    if (dureeTravaux(st, id) && (st.travaux || []).filter(function (w) { return w.fin > st.t; }).length >= chantiersMax(st)) return "Chantiers pleins.";
     var px = B.projet ? Math.round(coutBat(st, id) * 0.3) : prix(st, id);
     if (px > st.tresor + (plafond(st) - st.dette) * 0.5) return "Pas assez d’argent, même en empruntant.";
     return "";
@@ -2018,6 +2034,35 @@
     return st;
   }
 
+  // ---------- Réparation d'une sauvegarde abîmée (au lieu de la supprimer) ----------
+  // Remet d'aplomb tout ce qui pourrait empêcher la partie de reprendre : listes manquantes, nombres invalides,
+  // dossier introuvable, partie de cartes ou enchère restée ouverte, bâtiments ou travaux inconnus.
+  function reparer(st0, base) {
+    var st = copie(st0), PH = ["pret", "gestion", "evenement", "election", "fin"];
+    ["chantiers", "travaux", "incidents", "messages", "recurrents", "prevus", "historique", "montees", "objets", "combos", "elections", "notes", "missionsOk", "decouvertes", "ambitions"].forEach(function (k) { if (!Array.isArray(st[k])) st[k] = []; });
+    ["bat", "emp", "connus", "vus", "meca", "encheresCd", "besoinsOk"].forEach(function (k) { if (!st[k] || typeof st[k] !== "object" || Array.isArray(st[k])) st[k] = {}; });
+    function nb(k, d) { if (typeof st[k] !== "number" || !isFinite(st[k])) st[k] = d; }
+    nb("t", 1); nb("tresor", 0); nb("dette", 0); nb("pop", 50); nb("coh", 50); nb("mandat", 1); nb("taux", 1);
+    if (st.hab != null) nb("hab", 1000);
+    st.piliers = st.piliers && typeof st.piliers === "object" ? st.piliers : {};
+    PK.forEach(function (k) { if (typeof st.piliers[k] !== "number" || !isFinite(st.piliers[k])) st.piliers[k] = 50; });
+    Object.keys(st.bat).forEach(function (id) { if (!BATIMENTS[id] || !(st.bat[id] >= 0)) delete st.bat[id]; });
+    Object.keys(st.emp).forEach(function (id) { if (!EMPLOYES[id] || !(st.emp[id] >= 0)) delete st.emp[id]; });
+    st.travaux = st.travaux.filter(function (w) { return w && BATIMENTS[w.id] && isFinite(w.fin); });
+    st.chantiers = st.chantiers.filter(function (c) { return c && BATIMENTS[c.id]; });
+    st.incidents = st.incidents.filter(function (x) { return x && BATIMENTS[x.cid]; });
+    if (st.bj && !st.bj.fini) st.bj = null;
+    if (st.enchere && (!st.enchere.fini || !BATIMENTS[st.enchere.id])) st.enchere = null;
+    if (st.roueQ && (!ROUES[st.roueQ.roue] || !st.roueQ.base)) delete st.roueQ;
+    if (st.quartier && typeof st.quartier !== "object") delete st.quartier;
+    if (PH.indexOf(st.phase) < 0) st.phase = "gestion";
+    var ev = st.evPerso || (st.evenement && base && base.parId ? base.parId[st.evenement] : null);
+    if ((st.phase === "evenement" || (st.resultat && !st.resultatVu)) && !(ev && ev.choix && ev.choix.length)) {
+      st.phase = st.phase === "evenement" ? "gestion" : st.phase; st.evenement = null; st.evPerso = null; st.special = null; st.resultat = null; st.resultatVu = true; st.mj = null;
+    }
+    st.repare = (st.repare || 0) + 1;
+    return st;
+  }
   // ---------- Bilan, explications et récit de la partie ----------
   function scoreDefi(st) {
     if (!st.scenario) return null;
@@ -2120,7 +2165,7 @@
   var API = { MANDAT: MANDAT, PLAFOND_DETTE: PLAFOND_DETTE, TAUX: TAUX, P: P, NIVEAUX: NIVEAUX, PILIERS: PILIERS, ICO: ICO, DOMAINES: DOMAINES,
     MECANIQUES: MECANIQUES, EXTRAS: EXTRAS, mecaniques: mecaniques, BATIMENTS: BATIMENTS, OPPOSANTS: OPPOSANTS, SEUIL_OPP: SEUIL_OPP, LIGNES: LIGNES, CATS: CATS,
     FAMILLE: FAMILLE, SPECIAUX: SPECIAUX, C: C,
-    nouvellePartie: nouvellePartie, migrer: migrer, debutTour: debutTour, avancerSession: avancerSession, dossierNeglige: dossierNeglige, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, EMPLOYES: EMPLOYES, nbEmp: nbEmp, empDebloque: empDebloque, chantiersMax: chantiersMax, plafond: plafond, ROUES: ROUES, etatRoue: etatRoue, tournerRoueJeu: tournerRoueJeu, nouvelleQueteRoue: nouvelleQueteRoue, nivBat: nivBat, aideDebut: aideDebut, fixerNiveau: fixerNiveau, effetEmp: effetEmp, prixEmploye: prixEmploye, salaires: salaires, proprete: proprete, peutEmbaucher: peutEmbaucher, embaucher: embaucher, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
+    nouvellePartie: nouvellePartie, migrer: migrer, reparer: reparer, relancerRoue: relancerRoue, attenteRoue: attenteRoue, debutTour: debutTour, avancerSession: avancerSession, dossierNeglige: dossierNeglige, catalogueVentes: catalogueVentes, gagnerVente: gagnerVente, payer: payer, EMPLOYES: EMPLOYES, nbEmp: nbEmp, empDebloque: empDebloque, chantiersMax: chantiersMax, plafond: plafond, ROUES: ROUES, etatRoue: etatRoue, tournerRoueJeu: tournerRoueJeu, nouvelleQueteRoue: nouvelleQueteRoue, nivBat: nivBat, aideDebut: aideDebut, fixerNiveau: fixerNiveau, effetEmp: effetEmp, prixEmploye: prixEmploye, salaires: salaires, proprete: proprete, peutEmbaucher: peutEmbaucher, embaucher: embaucher, dossierSession: dossierSession, continuer: continuer, choisir: choisir, acheter: acheter, peutAcheter: peutAcheter,
     disponible: disponible, enChantier: enChantier, dureeTravaux: dureeTravaux, prix: prix, equilibre: equilibre, regler: regler, demissionner: demissionner, duree: duree, reprendre: reprendre, bilan: bilan, analyse: analyse, recit: recit,
     valider: valider, indexer: indexer, engagements: engagements, evenementCourant: evenementCourant, stats: stats, opposant: opposant, humeurOpp: humeurOpp, bonheur: bonheur,
     cible: cible, recettes: recettes, depenses: depenses, entretien: entretien, solde: solde, sondage: sondage, trimMandat: trimMandat,

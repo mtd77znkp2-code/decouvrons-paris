@@ -33,6 +33,9 @@
     { k: "objGrace", g: "Mandats et objectifs", nom: "Mandat trop court pour être jugé", unite: "saisons", def: 0, min: 0, max: 20, pas: 1,
       desc: "Un joueur arrivé moins de X saisons avant l’élection n’est pas jugé : il n’est pas éliminé et reçoit de nouveaux objectifs comme les autres." },
 
+    { k: "roueAttente", g: "Mandats et objectifs", nom: "Attente avant une nouvelle quête de roue", unite: "secondes", def: 180, min: 10, max: 1800, pas: 10,
+      desc: "Après un tour de roue de la fortune, une nouvelle quête (et une nouvelle roue) arrive au bout de X secondes." },
+
     // ---- Construction des bâtiments (session) ----
     { k: "dureeConstruction", g: "Construction", nom: "Durée des travaux", unite: "×", def: 1, min: 0, max: 4, pas: 0.25,
       desc: "Un bâtiment met de 1 saison (les moins chers) à 5 saisons (les plus chers) à sortir de terre, multiplié par X. 0 = construction immédiate." },
