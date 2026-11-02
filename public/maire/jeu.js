@@ -887,7 +887,7 @@
   // Anti-AFK : le dernier geste du joueur (toucher, clic, touche) ; 15 minutes sans rien faire et on quitte la session
   var ACTIF = Date.now();
   ["pointerdown", "keydown"].forEach(function (t) { document.addEventListener(t, function () { ACTIF = Date.now(); }, true); });
-  function etatSes() { var e = M.etatSession(st); e.actif = ACTIF; e.note = SS().note(e); return e; }
+  function etatSes() { var e = M.etatSession(st); e.actif = ACTIF; e.note = SS().note(e); if (window.MaireQuartier && st.quartier) { e.q = MaireQuartier.encoder(st.quartier, 120); e.qv = [Math.round(st.piliers.cadre), Math.round(st.piliers.securite), Math.round(st.piliers.transports)]; } return e; }
   // Écran d'attente « Tu es toujours là ? » : la place est gardée pendant le compte à rebours
   function fermerAttente() { var v = document.getElementById("m-attente"); if (v) v.remove(); }
   function attenteAFK(now) {
@@ -1315,6 +1315,7 @@
     a.appendChild(t);
     if (f.type === "bot") a.appendChild(h("p", "m-ses-tend m-tend-" + o.tendance, o.tendance === "croissance" ? "📈 En pleine croissance : son sondage grimpe pendant le mandat." : o.tendance === "declin" ? "📉 En déclin : son sondage baisse pendant le mandat. C’est le moment de l’attaquer !" : "➡️ Stable pour l’instant."));
     a.appendChild(h("small", "m-aide", f.type === "bot" ? "Les places libres sont tenues par des maires robots (🤖) : ils progressent ou déclinent d’une élection à l’autre, et les vrais joueurs les remplacent en arrivant." : "Un vrai joueur de ta session."));
+    if (p !== moiP && window.MaireQuartier && MaireQuartier.Vue) a.appendChild(bouton("🏘️ Visiter son quartier", "btn m-go mx-visite", function () { fermerTel(); visiterQuartier(f); }));
     c.appendChild(a); pop.appendChild(c); (document.getElementById("g-maire") || document.body).appendChild(pop);
     document.body.classList.add("m-modal"); pop.onclick = function (e) { if (e.target === pop) fermerTel(); };
   }
@@ -1353,6 +1354,7 @@
   }
   function annonceElection(r, s) {
     var monte = r.apres > r.avant, descend = r.apres < r.avant, cl = s.classement || [], moi = moiSes();
+    if (!descend) evenementQuartier("fete");
     var ecart = Math.abs(r.apres - r.avant), places = ecart + " place" + (ecart > 1 ? "s" : "");
     var titre = r.apres >= SS().TRONE && monte ? "👑 Maire de Paris !" : monte ? "🎉 Tu gagnes " + places + " !" : descend ? "📉 Tu perds " + places : "🗳️ Tu gardes ta place";
     var v = document.getElementById("m-election"); if (v) v.remove(); cacherBulle();
@@ -1461,7 +1463,7 @@
     // Onglets (téléphone et tablette) : chaque partie de l'écran a sa place ; l'essentiel (sondage, tournoi, dossiers) reste toujours visible
     function o(el, nom) { if (el) { el.dataset.o = nom; box.appendChild(el); } }
     ajout(box, entete(), ciel, st.session && window.MaireTournoiUI ? MaireTournoiUI.bandeau() : null, carteLeon(), barreOnglets());
-    o(tableau(), "ville"); o(carteVille(false), "ville"); o(piliers(), "ville"); o(carteEquilibre(), "ville");
+    o(tableau(), "ville"); o(carteQuartier() || carteVille(false), "ville"); o(piliers(), "ville"); o(carteEquilibre(), "ville");
     if (st.opposant) o(bandeauOpp(), "ville");
     if (st.rapport && st.notes && st.notes.length) o(notes(), "ville");
     o(ajout(h("div", "mx-journal-carte"), journal()), "ville");
@@ -1680,6 +1682,7 @@
       res.textContent = (r.bon ? "🎉 " : "😬 ") + r.txt; res.className = "m-roue-res " + (r.bon ? "m-plus" : "m-moins");
       if (window.sfx) window.sfx(r.bon ? "succes" : "perdu", 0.7); if (r.bon && e.n >= 3) confettis();
       fin.classList.remove("mx-cache");
+      var kq = e.cs[r.i] && e.cs[r.i][0]; if (kq === "greve" || kq === "scandale" || kq === "depart") evenementQuartier(kq);
       if (st.roueBouclier && SES.id) { delete st.roueBouclier; sauver(); window.SessionLigne.proteger(SES.id).catch(function () {}); }   // bouclier gratuit dans la session
     }, calme() ? 150 : 4300);
   }
@@ -3002,6 +3005,98 @@
     var tr = SS().fiche(ses, SS().TRONE), t = h("button", "m-trone-pl" + (moiP >= SS().TRONE ? " m-z-moi" : ""));
     t.type = "button"; ajout(t, h("span", null, "👑"), h("b", null, moiP >= SS().TRONE ? "Tu es Maire de Paris" : "Maire de Paris : " + tr.nom));
     t.onclick = function (e) { e.stopPropagation(); ficheSession(SS().TRONE); }; cadre.appendChild(t);
+  }
+
+  // ===================== Le quartier : vue isométrique animée de l'arrondissement =====================
+  var QV = null, QBOITE = null, QEV = [];   // vue de l'onglet Ville (gardée d'un affichage à l'autre), événements récents
+  function Q() { return window.MaireQuartier; }
+  function itemQ(id, k) { var B = M.BATIMENTS[id]; return { cle: id + ":" + k, id: id, nom: B.nom, ico: B.ico, cat: B.cat, gros: !!(B.projet || B.enchere || B.pass || B.secret), img: DESSINS[id] ? srcBat(id) : null }; }
+  function itemsQuartier(s) {
+    var l = [];
+    Object.keys(s.bat).forEach(function (id) { if (!M.BATIMENTS[id]) return; for (var k = 0; k < Math.min(s.bat[id], 20); k++) l.push(itemQ(id, k)); });
+    var vu = {};
+    (s.travaux || []).forEach(function (w) {
+      if (!M.BATIMENTS[w.id]) return;
+      vu[w.id] = (vu[w.id] || 0) + 1;
+      var it = itemQ(w.id, (s.bat[w.id] || 0) + vu[w.id] - 1); it.chantier = true; it.pct = (w.du - Math.max(1, w.fin - s.t)) / Math.max(1, w.du); l.push(it);
+    });
+    return l;
+  }
+  // Ce qui se passe en ce moment dans le quartier (3 minutes) : attaques reçues, roue, élection
+  function evtsQuartier() {
+    var now = Date.now(), l = QEV.filter(function (e) { return now - e.t < 180000; });
+    if (st.session && SES.s && SES.s.journal) SES.s.journal.forEach(function (e) {
+      if (!e.vers || e.vers.uid !== moiSes() || !e.de || e.de.uid === moiSes() || now - e.q > 180000) return;
+      l.push({ k: e.res === "bloque" ? "bouclier" : e.type === "manif" ? "manif" : e.type === "scandale" ? "scandale" : "presse", t: e.q });
+    });
+    return l;
+  }
+  function evenementQuartier(k) { QEV = QEV.filter(function (e) { return Date.now() - e.t < 180000; }); QEV.push({ k: k, t: Date.now() }); }
+  function donneesQuartier() {
+    var items = itemsQuartier(st), pos = Q().disposer(items, st.quartier);
+    if (JSON.stringify(pos) !== JSON.stringify(st.quartier || {})) { st.quartier = pos; sauver(); }
+    var pr = st.session && st.meca.employes ? M.proprete(st) : null;
+    return { items: items, pos: pos, saison: Math.max(0, st.t - 1) % 4, hab: st.hab || M.HAB0, bon: M.bonheur(st), pil: st.piliers, sale: !!(pr && pr.manque > 0), evts: evtsQuartier() };
+  }
+  function carteQuartier() {
+    if (!Q() || !Q().Vue) return null;
+    var d = donneesQuartier(), nb = d.items.filter(function (x) { return !x.chantier; }).length, ch = d.items.length - nb;
+    if (!QBOITE || QBOITE._pid !== st.pid) {
+      if (QV) QV.fin();
+      var b = h("div", "mx-quartier"), cv = h("canvas", "mx-q-canvas");
+      cv.setAttribute("role", "img"); cv.setAttribute("aria-label", "Ton quartier, vu du ciel");
+      b.appendChild(ajout(h("div", "mx-q-tete"), h("strong", null, "🏘️ " + (st.session && SS() && st.session.place < SS().TRONE ? "Ton " + SS().court(st.session.place) + " arrondissement" : "Ton quartier")), h("small", "mx-q-nb")));
+      b.appendChild(cv);
+      b.appendChild(ajout(h("div", "mx-q-bas"), bouton("🔍 Plein écran", "mx-lien", function () { pleinEcranQuartier(); }), bouton("🗺️ Plan de Paris", "mx-lien", pleinEcranVille)));
+      cv.onclick = function () { pleinEcranQuartier(); };
+      b._pid = st.pid; QBOITE = b; QV = new (Q().Vue)(cv, {});
+    }
+    QBOITE.querySelector(".mx-q-nb").textContent = nb + " bâtiment" + (nb > 1 ? "s" : "") + (ch ? " · " + ch + " chantier" + (ch > 1 ? "s" : "") : "");
+    setTimeout(function () { if (QV) QV.maj(d); }, 0);
+    return QBOITE;
+  }
+  // Plein écran : se promener, zoomer, déplacer ses bâtiments (ou visiter le quartier d'un autre maire)
+  function pleinEcranQuartier(o) {
+    o = o || {};
+    var lecture = !!o.lecture, m = h("div", "m-pop m-pop-quartier"); m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true");
+    var c = h("div", "mx-q-plein"), cv = h("canvas", "mx-q-canvas mx-q-grand"), info = h("p", "mx-q-info", lecture ? "Fais glisser pour te promener, pince ou utilise + et − pour zoomer." : "Touche un bâtiment pour voir son nom. « Déplacer » pour réorganiser ton quartier.");
+    var vue, bDep;
+    function fermer() { if (vue) vue.fin(); m.remove(); document.body.classList.remove("m-modal"); if (!lecture) jeu(); }
+    function dire(t2) { info.textContent = t2; }
+    var outils = ajout(h("div", "mx-q-outils"), bouton("−", "mx-q-btn", function () { vue.zoomer(1 / 1.3); }), bouton("+", "mx-q-btn", function () { vue.zoomer(1.3); }),
+      lecture ? null : (bDep = bouton("✋ Déplacer", "mx-q-btn mx-q-dep", function () {
+        vue.mode = vue.mode === "deplacer" ? "voir" : "deplacer"; vue.sel = null; bDep.classList.toggle("mx-actif", vue.mode === "deplacer");
+        bDep.textContent = vue.mode === "deplacer" ? "✓ Terminé" : "✋ Déplacer";
+        dire(vue.mode === "deplacer" ? "Touche le bâtiment à déplacer, puis une parcelle libre (ou un autre bâtiment pour les échanger)." : "Touche un bâtiment pour voir son nom.");
+      })));
+    ajout(c, ajout(h("div", "m-tel-tete"), h("strong", null, o.titre || "🏘️ Ton quartier"), bouton("✕", "m-leonx", fermer)), cv, outils, info);
+    m.appendChild(c); m.onclick = function (e) { if (e.target === m) fermer(); };
+    (document.getElementById("g-maire") || document.body).appendChild(m); document.body.classList.add("m-modal");
+    vue = new (Q().Vue)(cv, { grand: true,
+      onTap: function (it, k) {
+        if (k === "voir") dire(!it ? "Fais glisser pour te promener." : it.mairie ? "🏛️ La mairie d’arrondissement" + (lecture ? "" : " : ton bureau !") : it.ico + " " + it.nom + (it.chantier ? " · en travaux (" + Math.round((it.pct || 0) * 100) + " %)" : ""));
+        else if (k === "choisi") dire("Où l’installer ? Touche une parcelle libre (les grands bâtiments prennent un îlot entier).");
+        else if (k === "rien") dire("Touche d’abord le bâtiment à déplacer.");
+        else if (k === "pose") dire("✓ C’est fait ! Touche un autre bâtiment pour continuer.");
+        else if (k === "impossible") dire("Impossible ici : choisis une parcelle libre de la bonne taille.");
+      },
+      onMove: function (n) { st.quartier = n; sauver(); } });
+    setTimeout(function () { vue.maj(o.d || donneesQuartier()); }, 30);
+  }
+  // Visiter le quartier d'un autre maire de la session (les robots ont un quartier tiré selon leur niveau)
+  function visiterQuartier(f) {
+    if (!Q() || !Q().Vue) return;
+    var o = f.stats || {}, items, pos;
+    if (f.type === "bot" || !o.q) {
+      var b = Q().quartierBot(((SES.s && SES.s.graine) || 7) * 31 + f.p * 7919, Math.max(3, Math.min(80, o.bats || 8)), o.niv || 1, M.BATIMENTS);
+      items = b.items.map(function (x) { var i = itemQ(x.id, +x.cle.split(":")[1]); return i; }); pos = b.pos;
+    } else {
+      pos = Q().decoder(o.q);
+      items = Object.keys(pos).map(function (k) { var i = k.lastIndexOf(":"), id = k.slice(0, i); return M.BATIMENTS[id] ? itemQ(id, +k.slice(i + 1)) : null; }).filter(Boolean);
+    }
+    var qv = o.qv || [50, 50, 50];
+    pleinEcranQuartier({ lecture: true, titre: "🏘️ " + f.court + " · " + f.nom + (f.type === "bot" ? " 🤖" : ""),
+      d: { items: items, pos: pos, saison: Math.max(0, st.t - 1) % 4, hab: f.hab, bon: o.bon == null ? 50 : o.bon, pil: { cadre: qv[0], securite: qv[1], transports: qv[2] }, sale: false, evts: [] } });
   }
   function carteVille(fin) {
     var l = M.planVille(st), nouveaux = {};

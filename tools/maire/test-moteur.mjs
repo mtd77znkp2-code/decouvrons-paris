@@ -784,6 +784,36 @@ test("session : réforme de l'argent (caisses presque vides, une construction à
   // Construire des logements fait grandir la ville
   const cap0 = M.capacite(st); st.bat.logements = 2; assert.ok(M.capacite(st) >= cap0 + 500);
 });
+test("quartier : placement sans chevauchement, grands bâtiments sur un îlot, places gardées, déplacement, échange, visite", () => {
+  const Q = require("../../public/maire/quartier.js");
+  const ids = Object.keys(M.BATIMENTS), items = [];
+  for (let i = 0; i < 90; i++) { const id = ids[(i * 37) % ids.length], B = M.BATIMENTS[id]; items.push({ cle: id + ":" + i, id, cat: B.cat, gros: !!(B.projet || B.enchere || B.pass || B.secret) }); }
+  const pos = Q.disposer(items, {});
+  function verif(pos) {
+    const occ = {};
+    items.forEach(it => { const p = pos[it.cle]; if (!p) return; assert.ok(Q.valide(p, it.gros), "place invalide " + it.cle);
+      Q.cellules(p, it.gros).forEach(c => { const k = c.join(","); assert.ok(!occ[k], "chevauchement " + k); occ[k] = 1; }); });
+  }
+  verif(pos);
+  assert.ok(Object.keys(pos).length >= 50, "trop de bâtiments sans place : " + Object.keys(pos).length);
+  // les places déjà choisies ne bougent pas quand on construit
+  const plus = items.concat([{ cle: "parc:999", id: "parc", cat: "cadre", gros: false }]), pos2 = Q.disposer(plus, pos);
+  Object.keys(pos).forEach(k => assert.deepEqual(pos2[k], pos[k]));
+  // déplacer vers une parcelle libre, puis échanger deux petits bâtiments (quartier à moitié bâti)
+  { const items = plus.slice(0, 30), pos = Q.disposer(items, {});
+  const petits = items.filter(it => !it.gros && pos[it.cle]);
+  let libre = null; for (let x = 1; x < Q.N - 1 && !libre; x++) for (let y = 1; y < Q.N - 1 && !libre; y++) if (Q.valide([x, y], false) && !Object.values(pos).some(p => p[0] === x && p[1] === y) && !items.some(it => it.gros && pos[it.cle] && Q.cellules(pos[it.cle], true).some(c => c[0] === x && c[1] === y))) libre = [x, y];
+  const d1 = Q.deplacer(items, pos, petits[0].cle, libre); assert.ok(d1); assert.deepEqual(d1[petits[0].cle], libre); verif(d1);
+  const d2 = Q.deplacer(items, pos, petits[0].cle, pos[petits[1].cle]); assert.ok(d2); assert.deepEqual(d2[petits[1].cle], pos[petits[0].cle]); verif(d2);
+  assert.equal(Q.deplacer(items, pos, petits[0].cle, [0, 0]), null);    // une rue : impossible
+  }
+  // texte court pour les visites, et quartier d'un robot (toujours le même)
+  assert.deepEqual(Q.decoder(Q.encoder(pos)), pos);
+  assert.deepEqual(Q.decoder("x;<script>@1,2;parc.0@4,5"), { "parc:0": [4, 5] });
+  const b1 = Q.quartierBot(42, 25, 12, M.BATIMENTS), b2 = Q.quartierBot(42, 25, 12, M.BATIMENTS);
+  assert.deepEqual(b1.pos, b2.pos); assert.equal(Object.keys(b1.pos).length, 25);
+});
+
 test("roues de la fortune : quêtes, 5 roues (bois 55 % … saphir 3 %), un tour par quête réussie", () => {
   let st = partieSession(41); const cnt = [0, 0, 0, 0, 0];
   for (let g = 1; g <= 3000; g++) { const x = JSON.parse(JSON.stringify(st)); x.rng = g * 7919; M.nouvelleQueteRoue(x); cnt[x.roueQ.roue]++; }
