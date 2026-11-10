@@ -1473,6 +1473,17 @@
   // Montre un élément même s'il est dans un autre onglet (guide, raccourcis)
   function allerVers(el) { var z = el && el.closest && el.closest("[data-o]"); if (z && z.dataset.o !== ONGLET) choisirOnglet(z.dataset.o); }
 
+  // Alerte faillite : toujours visible quand la dette approche du maximum (la faillite arrive d'un coup, au-delà de l'emprunt autorisé)
+  function alerteFaillite() {
+    if (!st || st.phase === "fin") return null;
+    var pl = M.plafond(st), so = M.solde(st), marge = st.tresor + pl - st.dette;
+    var saisons = so < 0 ? Math.floor(marge / -so) : null;
+    if (!(st.dette >= pl * 0.5 || (saisons != null && saisons <= 6))) return null;
+    var grave = saisons != null && saisons <= 3;
+    return ajout(h("div", "mx-faillite" + (grave ? " mx-grave" : "")), h("b", null, (grave ? "🚨 " : "⚠️ ") + "Risque de faillite"),
+      h("small", null, "Dette " + argent(st.dette) + " sur " + argent(pl) + " autorisés" + (saisons != null ? " · " + (saisons <= 0 ? "dès la prochaine saison" : "dans " + saisons + " saison" + (saisons > 1 ? "s" : "") + " à ce rythme") : "") +
+        ". Arrête de construire, monte un peu les impôts (Gestion) ou choisis des réponses qui rapportent."));
+  }
   var JEU_ERR = 0;
   function jeu() {
     try { jeu0(); JEU_ERR = 0; }
@@ -1498,7 +1509,7 @@
     var ciel = h("div", "mx-ciel"); ciel.setAttribute("aria-hidden", "true");
     // Onglets (téléphone et tablette) : chaque partie de l'écran a sa place ; l'essentiel (sondage, tournoi, dossiers) reste toujours visible
     function o(el, nom) { if (el) { el.dataset.o = nom; box.appendChild(el); } }
-    ajout(box, entete(), ciel, st.session && window.MaireTournoiUI ? MaireTournoiUI.bandeau() : null, carteLeon(), barreOnglets());
+    ajout(box, entete(), ciel, st.session && window.MaireTournoiUI ? MaireTournoiUI.bandeau() : null, alerteFaillite(), carteLeon(), barreOnglets());
     o(tableau(), "ville"); o(carteQuartier() || carteVille(false), "ville"); o(piliers(), "ville"); o(carteEquilibre(), "ville");
     if (st.opposant) o(bandeauOpp(), "ville");
     if (st.rapport && st.notes && st.notes.length) o(notes(), "ville");
@@ -2754,6 +2765,8 @@
       })();
     } else {
       var roue = roueSVG(); zone.appendChild(roue.el);
+      // La bille a déjà été lancée (fenêtre fermée pendant qu'elle tournait) : on montre le résultat au lieu de boutons qui ne feraient plus rien
+      if (J().roue) { roue.lancer(J().roue.n, fin); return; }
       var g = ajout(h("div", "m-bas"), bouton("🔴 Rouge", "btn m-mj-rouge", function () { lancer("rouge"); }), bouton("⚫ Noir", "btn m-mj-noir", function () { lancer("noir"); }));
       var aide = h("small", "m-aide", "Le zéro (vert) fait perdre.");
       zone.appendChild(g); zone.appendChild(aide);

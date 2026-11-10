@@ -140,7 +140,7 @@
           if (!s.feux[a] && o.d <= 150) limite = Math.min(limite, 150);   // feu rouge : on s'arrête à la ligne
           o.d = Math.max(o.d, Math.min(o.d + vit * (o.amb ? 1.3 : 1), limite));
         }
-        while (l.length && l[0].d > 470) { var q = l.shift(); pts(s, q.amb ? 30 : 10, a ? CX : 340, a ? 520 : CY); }
+        while (l.length && l[0].d > 470) { var q = l.shift(); pts(s, Math.round((q.amb ? 30 : 10) / (1 + 0.15 * D(s))), a ? CX : 340, a ? 520 : CY); }   // plus de voitures au haut niveau, chacune rapporte moins
       }
       // Collision : une voiture de chaque axe dans le carrefour en même temps
       var dansA = s.v[0].filter(function (o) { return o.d > 210 && o.d < 330; }), dansB = s.v[1].filter(function (o) { return o.d > 210 && o.d < 330; });
@@ -310,7 +310,7 @@
         var best = -1, bd = 34 * 34;
         s.d.forEach(function (o, i) { var dd = (o.x - x.x) * (o.x - x.x) + (o.y - x.y) * (o.y - x.y); if (dd < bd) { bd = dd; best = i; } });
         if (best >= 0) {
-          var o = s.d.splice(best, 1)[0], z = zone(o); pts(s, 10, o.x, o.y);
+          var o = s.d.splice(best, 1)[0], z = zone(o); pts(s, Math.round(40 / (4 + D(s))), o.x, o.y);   // plus de pigeons au haut niveau, mais chaque déchet rapporte moins
           if (!s.d.some(function (q) { return zone(q) === z; }) && s.propre[z] >= 3) { pts(s, 20, o.x, o.y - 20); s.propre[z] = 0; }
         }
       });
