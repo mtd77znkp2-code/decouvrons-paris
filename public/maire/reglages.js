@@ -59,6 +59,10 @@
       desc: "Multiplie l’argent gagné ou perdu par les réponses aux dossiers (1 = montants normaux)." },
     { k: "fraisSession", g: "Argent", nom: "Frais de fonctionnement en session", unite: "×", def: 0.85, min: 0.3, max: 2, pas: 0.05,
       desc: "Multiplie les frais de fonctionnement de la ville à chaque saison (plus bas = plus facile)." },
+    { k: "entretienSession", g: "Argent", nom: "Entretien des bâtiments en session", unite: "×", def: 0.9, min: 0.3, max: 2, pas: 0.05,
+      desc: "Multiplie l’entretien des bâtiments à chaque saison (plus bas = plus facile en fin de partie)." },
+    { k: "arriveesSession", g: "Ville et équilibre", nom: "Arrivée de nouveaux habitants", unite: "×", def: 1.15, min: 0.3, max: 3, pas: 0.05,
+      desc: "Vitesse à laquelle de nouveaux habitants emménagent dans les logements libres (elles ralentissent sous 40 de bonheur et s’arrêtent sous 30)." },
 
     // ---- Ville : bâtiments et équilibre logement / emploi / commerces (en session) ----
     { k: "usureSession", g: "Ville et équilibre", nom: "Usure des piliers en session", unite: "×", def: 0.5, min: 0, max: 2, pas: 0.05,

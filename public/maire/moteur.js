@@ -871,7 +871,7 @@
     if (ch > 10) pct = Math.min(pct, 0) - (ch - 10) * 0.04;
     // Session : de nouveaux habitants emménagent dans les logements libres, tant que la ville est agréable
     // (les départs liés à la popularité sont plus doux, les arrivées dépendent du bonheur et des logements libres)
-    if (st.session) { if (pct < 0) pct *= 0.5; var lib = capacite(st) - (st.hab || h0(st)); if (lib > 0 && bonheur(st) >= 40) pct += Math.min(5, lib / (st.hab || h0(st)) * 100 * 0.3); }
+    if (st.session) { if (pct < 0) pct *= 0.5; var lib = capacite(st) - (st.hab || h0(st)); var rampe = Math.max(0, Math.min(1, (bonheur(st) - 30) / 10)); if (lib > 0 && rampe > 0) pct += Math.min(5, lib / (st.hab || h0(st)) * 100 * 0.3 * (R.v.arriveesSession || 1) * rampe); }   // arrivées réduites entre 30 et 40 de bonheur, au lieu d'un arrêt net
     // Les arrivées s'arrêtent quand tous les logements sont occupés
     if (pct > 0) { var cap = capacite(st), a = st.hab || h0(st); pct = a >= cap ? 0 : Math.min(pct, (cap - a) / a * 100); }
     st.habDelta = pct ? bougerHab(st, pct) : 0;
@@ -889,7 +889,7 @@
     var t = 0;
     Object.keys(st.bat).forEach(function (id) { t += BATIMENTS[id].ent * st.bat[id]; });
     combosActifs(st).forEach(function (id) { t += C.COMBOS[id].ent || 0; });
-    return arrondi(t * ((st.mods && st.mods.entretien) || 1) * (1 - Math.min(0.25, atout(st, "entretienPct") / 100)));
+    return arrondi(t * ((st.mods && st.mods.entretien) || 1) * (st.session ? (R.v.entretienSession || 1) : 1) * (1 - Math.min(0.25, atout(st, "entretienPct") / 100)));
   }
   // En session, une mairie d'arrondissement coûte un peu moins à faire tourner (×0,85)
   function depenses(st) {
