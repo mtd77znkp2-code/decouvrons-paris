@@ -41,5 +41,6 @@ Chargé par `public/js/app.js` dans cet ordre : reglages → contenu → poker �
 
 ## Idées en attente
 - 10 fonds d'écran (5 téléphone, 5 PC) à générer par l'utilisateur ; il avait un « problème » avec les fonds, à éclaircir.
+- Planches pixel art pour le quartier (mairie, Parisiens, voitures, rues…) : à proposer.
 - Équilibrage de fin de partie en session : adouci (11/2026) — entretien ×0,9 (`entretienSession`), arrivées ×1,15 (`arriveesSession`) et ralentissement progressif entre 40 et 30 de bonheur au lieu d'un arrêt net. À revoir si les joueurs trouvent la fin trop facile.
-- Quartier illustré (11/2026) : images dans `public/maire/img/quartier/` (mairie jour/nuit/neige/fête, dalles de rues et de parcelles, véhicules, 16 Parisiens), découpées par `tools/maire/decouper-quartier.py` ; l'hiver garde le sol dessiné en code (neige). Fonction `sprite()` dans `quartier.js`, repli sur l'ancien dessin si une image manque.
+- Planches pixel art du quartier (consignes dans `tools/maire/a-generer.md`) : 4 planches proposées (mairie, Parisiens, véhicules, rues) ; en attente des images de l'utilisateur. Aujourd'hui mairie, habitants et véhicules sont dessinés en code dans `quartier.js`.
