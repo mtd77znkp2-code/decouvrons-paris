@@ -248,4 +248,3 @@ Le centre de l'image doit rester dégagé et sombre (on y place la roulette par-
 ```
 
 À envoyer : la planche J en PNG (fond transparent) et les deux fonds.
-
