@@ -95,6 +95,18 @@
     var TW = 64, TH = 32;
     var IMG = {};
     function image(src) { if (!src) return null; var i = IMG[src]; if (!i) { i = IMG[src] = new Image(); i.decoding = "async"; i.src = src; } return i.complete && i.naturalWidth ? i : null; }
+    // Images du quartier (public/maire/img/quartier, découpées par tools/maire/decouper-quartier.py)
+    function sprite(x, nom, cx, by, w, miroir) {
+      var img = image("maire/img/quartier/" + nom + ".webp"); if (!img) return false;
+      var h = w * img.naturalHeight / img.naturalWidth;
+      if (miroir) { x.save(); x.translate(cx, 0); x.scale(-1, 1); x.drawImage(img, -w / 2, by - h, w, h); x.restore(); }
+      else x.drawImage(img, cx - w / 2, by - h, w, h);
+      return true;
+    }
+    // Dalle de sol illustrée posée sur la case (u, v) ; l'épaisseur de la dalle dépasse sous la case
+    function dalle(x, nom, u, v, miroir) { var b = P(u + 1, v + 1); return sprite(x, nom, b[0], b[1] + TW * 0.14, TW * 1.04, miroir); }
+    var PIETONS = ["homme", "baguette", "enfant", "canne", "joggeuse", "chien", "touriste", "serveur", "balayeur", "policier", "etudiante", "accordeon", "poussette", "peintre"];
+    var AUTOS = ["voiture", "voiture", "taxi", "taxi", "camionnette", "voiture", "benne", "ambulance", "pompiers"];
     function P(u, v) { return [(u - v) * TW / 2, (u + v) * TH / 2]; }
     function inv(sx, sy) { var a = sx / (TW / 2), b = sy / (TH / 2); return [(a + b) / 2, (b - a) / 2]; }
     function losange(x, u, v, w, h, fill, trait) {
@@ -255,6 +267,7 @@
       // sol : herbe, rues, trottoirs, passages piétons
       for (var u = z.x0; u <= z.x1; u++) for (var v = z.y0; v <= z.y1; v++) {
         var ru = u % 3 === 0, rv = v % 3 === 0;
+        if (s !== 0 && (ru || rv) && dalle(x, ru && rv ? "croisement" : (ru ? v : u) % 3 === 1 && hache(u * 31 + v, 9) < 0.3 ? "passage" : "rue", u, v, rv && !ru)) continue;
         if (ru || rv) {
           losange(x, u, v, 1, 1, s === 0 ? "#8d939b" : "#6f757e");
           if (ru && rv) { // carrefour : passages piétons
@@ -281,6 +294,11 @@
       for (var u2 = z.x0; u2 <= z.x1; u2++) for (var v2 = z.y0; v2 <= z.y1; v2++) {
         if (!estParcelle(u2, v2) || mairie(u2, v2) || occ[u2 + "," + v2]) continue;
         var hh = hache(u2 * 97 + v2, 5);
+        if (s !== 0 && image("maire/img/quartier/pelouse.webp")) {
+          (function (a, b, h) { var nom = h < 0.35 ? "pelouse" : h < 0.55 ? "sol-arbre" : h < 0.7 ? "place" : h < 0.8 ? "sol-banc" : h < 0.88 ? "sol-lampe" : "pelouse";
+            objs.push({ p: a + b + 0.9, f: function () { dalle(x, nom, a, b, hache(a, b) < 0.5); } }); })(u2, v2, hh);
+          continue;
+        }
         if (hh < 0.55) (function (a, b, h) { objs.push({ p: a + b + 1, f: function () { arbre(x, a + 0.3 + h * 0.4, b + 0.35 + hache(a, b) * 0.3, s, 0.8 + h * 0.4); } }); })(u2, v2, hh);
         if (hh < 0.2) (function (a, b) { objs.push({ p: a + b + 1.2, f: function () { arbre(x, a + 0.75, b + 0.8, s, 0.7); } }); })(u2, v2);
       }
@@ -341,6 +359,10 @@
       }
     }
     function dessinerMairie(x, u, v, s, t, V) {
+      var nu = V.d && V.d.nuit != null ? V.d.nuit : window.MAIRE_NUIT != null ? window.MAIRE_NUIT : nuit(), bm = P(u + 2, v + 2);
+      if (sprite(x, V.ev("fete") ? "mairie-fete" : s === 0 ? "mairie-neige" : nu > 0.5 ? "mairie-nuit" : "mairie-jour", bm[0], bm[1] + 6, TW * 2.15)) {
+        V._mairie = [bm[0] - TW * 1.07, bm[1] - TW * 2.1, TW * 2.15, TW * 2.15]; return;
+      }
       losange(x, u, v, 2, 2, "#cfc6b0");
       losange(x, u + 0.15, v + 0.15, 1.7, 1.7, "#e4dccb");
       // parterres
@@ -385,6 +407,13 @@
     }
     function agent(x, a, u, v, t, nu) {
       var b = P(u, v), dx = (a.dir[0] - a.dir[1]), dy = (a.dir[0] + a.dir[1]) * 0.5;   // direction à l'écran
+      var miroir = dx < 0, bob = a.pause > 0 ? 0 : Math.abs(Math.sin(t * 9 + a.ph)) * 0.8;
+      if (a.type === "pieton" && sprite(x, PIETONS[Math.floor(a.n * PIETONS.length)], b[0], b[1] + 1 - bob, 14, miroir)) {
+        if (a.coeur > 0) { x.fillStyle = "rgba(230,60,90," + Math.min(1, a.coeur) + ")"; x.font = "7px sans-serif"; x.textAlign = "center"; x.fillText("♥", b[0], b[1] - 19 - (1.6 - a.coeur) * 6); }
+        return;
+      }
+      if (a.type === "velo" && sprite(x, a.n < 0.6 ? "cycliste" : "livreur", b[0], b[1] + 1, 17, miroir)) return;
+      if ((a.type === "voiture" || a.type === "bus") && sprite(x, a.type === "bus" ? "bus" : AUTOS[Math.floor(a.n * AUTOS.length)], b[0], b[1] + 3, a.type === "bus" ? 42 : 28, miroir)) return;
       if (a.type === "pieton") {
         var pas = a.pause > 0 ? 0 : Math.sin(t * 9 + a.ph) * 1.4;
         x.fillStyle = "#2b2b3a"; x.fillRect(b[0] - 1.6 + pas * 0.3, b[1] - 4, 1.3, 4); x.fillRect(b[0] + 0.3 - pas * 0.3, b[1] - 4, 1.3, 4);
