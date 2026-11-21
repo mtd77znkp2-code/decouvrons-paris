@@ -513,16 +513,24 @@
       setTimeout(tic, 1000);
     })();
     box.appendChild(h("p", "m-aide", "Les paliers se font dans l’ordre : le suivant s’ouvre quand le précédent est réussi, et chacun repart de zéro. Chaque palier débloque un bâtiment exclusif pour tes parties du mois. Tout repart à zéro au début de chaque mois."));
-    var pb = h("div", "m-pass-prem" + (ps.premium ? " m-actif" : ""));
-    ajout(pb, h("b", null, ps.premium ? "👑 Pass de combat actif" : "👑 Pass de combat"),
-      h("small", null, ps.premium ? "Tu reçois aussi la 2e récompense de chaque palier." : "Une 2e récompense sur chaque palier (XP, bonus de départ, titres). Les paliers déjà réussis sont rattrapés à l’activation."));
-    if (!ps.premium) { var bp = bouton("Bientôt disponible", "btn m-sec", function () {}); bp.disabled = true; pb.appendChild(bp); }
+    // Bandeau du Pass de combat : la partie payante, bien mise en avant
+    var pb = h("div", "m-pass-prem" + (ps.premium ? " m-actif" : "")), nOk = ps.paliers.filter(function (x) { return x.ok; }).length;
+    ajout(pb, h("span", "m-pp-couronne", "👑"),
+      ajout(h("div", "m-pp-txt"), h("b", null, ps.premium ? "Pass de combat activé" : "Pass de combat"),
+        h("small", null, ps.premium ? "Tu gagnes les deux récompenses de chaque palier jusqu’à la fin du mois." :
+          "Double tes récompenses : XP, bonus de départ et 5 titres exclusifs." + (nOk ? " Tes " + nOk + " paliers déjà réussis sont rattrapés tout de suite." : ""))));
+    if (!ps.premium) { var bp = bouton("Bientôt disponible", "btn m-pp-btn", function () {}); bp.disabled = true; pb.appendChild(bp); }
     box.appendChild(pb);
-    var u = h("ol", "m-paliers");
+    var tete = h("div", "m-pal-tete"); ajout(tete, h("span", "m-rg", "🎁 Gratuit"), h("span", "m-rp", "👑 Pass de combat")); box.appendChild(tete);
+    var u = h("ol", "m-paliers m-pal2");
     ps.paliers.forEach(function (x) {
       var li = h("li", x.ok ? "m-ok" : x.encours ? "m-encours" : "m-verrou");
-      var droite = x.ok ? h("b", null, "✔") : x.encours ? ajout(h("span", "m-pal-prog"), h("b", null, x.cur + "/" + x.but), ajout(h("i", "m-pal-barre"), (function () { var e = h("i"); e.style.width = Math.round(x.cur / x.but * 100) + "%"; return e; })())) : h("b", null, "🔒");
-      ajout(li, h("span", "m-pn", String(x.n)), ajout(h("span", "m-pal"), h("b", null, x.txt), h("small", null, "🎁 Gratuit : " + x.batTxt), h("small", "m-prem" + (x.premOk ? " m-ok" : ps.premium ? "" : " m-bloque"), (ps.premium ? "👑 " : "🔒 👑 ") + "Pass : " + x.premTxt + (x.premOk ? " ✔" : ""))), droite);
+      var droite = x.ok ? h("b", "m-pal-etat", "✔") : x.encours ? ajout(h("span", "m-pal-prog"), h("b", null, x.cur + "/" + x.but), ajout(h("i", "m-pal-barre"), (function () { var e = h("i"); e.style.width = Math.round(x.cur / x.but * 100) + "%"; return e; })())) : h("b", "m-pal-etat", "🔒");
+      var obj = h("div", "m-pal-obj"); ajout(obj, h("span", "m-pn", String(x.n)), h("b", null, x.txt), droite);
+      var rec = h("div", "m-pal-rec");
+      ajout(rec, h("span", "m-rec-g" + (x.ok ? " m-pris" : ""), x.batTxt + (x.ok ? " ✔" : "")),
+        h("span", "m-rec-p" + (x.premOk ? " m-pris" : ps.premium ? "" : " m-ferme"), (ps.premium ? "" : "🔒 ") + x.premTxt + (x.premOk ? " ✔" : "")));
+      ajout(li, obj, rec);
       u.appendChild(li);
     });
     box.appendChild(u); haut();
