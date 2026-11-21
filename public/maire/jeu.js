@@ -701,7 +701,7 @@
       try { localStorage.setItem("maire_perso", CHOIX.maire); } catch (e) {}
       st = M.nouvellePartie({ maire: CHOIX.maire, ligne: "centre", ambitions: CHOIX.amb, lots: lots, niveau: niveau, xpJoueur: G.lire().xp, niveauPartie: true, pid: Date.now().toString(36), secrets: G.lire().secrets, sansLimite: sansLimiteAdmin(), missions: false, session: !!window.SessionLigne,
         passBats: G.batsExclusifs(), bonus: G.utiliserSac(CHOIX.sac) });
-      SES.jetons = 0; garderReserve();   // nouvelle partie : toujours 0 dossier en réserve
+      SES.jetons = 0; garderReserve();   // nouvelle partie : toujours 0 dossier en réserve (sauf tout nouveau joueur, voir lireReserve)
       sauver(); demarrerPartie();
     }).catch(function (e) { if (e && e.reseau) erreurReseau(succes, e); else { toast("⚠️ " + (e && e.message || e)); accueil(); } });
   }
@@ -866,6 +866,8 @@
   function lireReserve() {
     SES.jetons = 0; SES.tick = null;
     try { var r = JSON.parse(localStorage.getItem("maire_reserve") || "null"); if (r && r.id === SES.id && r.pid === (st && st.pid)) SES.jetons = Math.min(r.jetons || 0, RG().v.reserveMax); } catch (e) {}
+    // Tout nouveau joueur : son premier dossier est là tout de suite (pas d'attente avant de pouvoir jouer)
+    if (st && (st.t || 0) <= 1 && !st.premierDossier && !G.guideVu("base") && SES.jetons < 1) { SES.jetons = 1; st.premierDossier = 1; sauver(); setTimeout(function () { if (st && st.phase !== "fin" && st.phase !== "evenement") guide("jeu"); }, 500); }
     garderReserve();
   }
   function garderReserve() { try { localStorage.setItem("maire_reserve", JSON.stringify({ id: SES.id, pid: st && st.pid, jetons: SES.jetons })); } catch (e) {} }
@@ -894,7 +896,7 @@
   function jouerTrimestre() {
     if (SES.jetons < 1) return toast("⏳ Prochain dossier dans " + mmss(Math.max(1000, (SES.tick || prochainDossier(Date.now())) - Date.now())) + ".");
     var s2 = M.dossierSession(st, BASE); if (s2 === st) return;
-    SES.jetons--; garderReserve(); st = s2; MASQUE = null; sauver(); jeu();
+    SES.jetons--; garderReserve(); st = s2; MASQUE = null; sauver(); signal("trimestre"); jeu();
     // le dossier tiré s'ouvre toujours au même toucher (jamais de jeton perdu sans fenêtre)
     if (st.phase === "evenement" && !document.getElementById("m-modale")) modale();
   }
@@ -2312,14 +2314,19 @@
   // Chaque séquence : où elle peut se lancer (ecran), quand (si), et ses étapes { q: élément visé, t: une phrase, a: action attendue }.
   // a = "ok" : un bouton OK dans la bulle (ou toucher l'élément) suffit.
   var GUIDES = [
+    { id: "debut", ecran: "jeu", si: function () { return (st.phase === "gestion" || st.phase === "pret") && !G.guideVu("base") && !!document.querySelector(".m-barmois .btn:not(.mx-vide)"); }, etapes: [
+      { q: ".m-barmois .btn", t: "👋 Bienvenue à la mairie ! Ton premier dossier t’attend : ouvre-le.", a: "trimestre" }] },
     { id: "base", ecran: "modale", si: function () { return st.phase === "evenement" && !st.special; }, etapes: [
-      { q: "#m-modale .m-choix", t: "📂 Un dossier t’attend : choisis une réponse. Les pourcentages montrent ce qu’ont choisi les autres maires.", a: "choix" },
-      { q: "#m-modale .m-delta, #m-modale .m-res", t: "Voilà les conséquences de ta décision.", a: "ok" },
-      { q: "#m-modale .m-go", t: "Retourne à ta mairie.", a: "fermer" },
-      { q: ".mx-tableau", t: "🗳️ Ton but : rester au-dessus de 50 % jusqu’à l’élection.", a: "ok" },
-      { q: ".mx-piliers", t: "Ces 4 piliers font le bonheur de tes habitants. Ils baissent avec le temps : construis pour les remonter.", a: "ok" },
-      { q: ".mx-bat:not(:disabled)", t: "🛒 Achète un bâtiment pour faire monter un pilier.", a: "achat" },
-      { q: ".m-barmois .btn", t: "Bravo ! Appelle le dossier suivant.", a: "trimestre" }] },
+      { q: "#m-modale .m-choix", t: "📂 Choisis une réponse. Pas de piège : chaque choix a du bon et du moins bon.", a: "choix" },
+      { q: "#m-modale .m-go", t: "Voilà l’effet de ta décision. Retourne à ta mairie.", a: "fermer" },
+      { q: ".mx-piliers", t: "Le bonheur de tes habitants tient à ces 4 piliers. Ils baissent avec le temps.", a: "ok" },
+      { q: ".mx-bat:not(:disabled):not(.mx-bat-off)", t: "🛒 Construis un bâtiment pour faire remonter un pilier.", a: "achat" },
+      { q: ".mx-tableau", t: "🎉 Bravo, tu as les bases ! Garde ton sondage au-dessus de 50 % jusqu’à l’élection.", a: "ok" }] },
+    { id: "session", ecran: "jeu", si: function () { return !!document.querySelector(".mx-session") && G.guideVu("base"); }, etapes: [
+      { q: ".mx-session", t: "🏛️ Tu es maire du plus petit arrondissement. Toutes les " + mmss(SS() ? SS().MANDAT_MS : 390000) + ", élection : bats les maires devant toi pour grimper vers le trône de Maire de Paris.", a: "ok" },
+      { q: ".m-barmois", t: "📂 Un nouveau dossier arrive toutes les " + mmss(dossierMs()) + " (le bouton s’illumine). Ne traîne pas : les autres maires avancent aussi !", a: "ok" }] },
+    { id: "attaque-ses", ecran: "jeu", si: function () { return !!document.querySelector(".mx-ses-attaque") && G.guideVu("session") && st.t >= 4; }, etapes: [
+      { q: ".mx-ses-attaque", t: "⚔️ Attaque ton rival pour faire baisser son sondage avant l’élection. Le bouclier 🛡️ te protège.", a: "ok" }] },
     { id: "budget", ecran: "jeu", si: function () { return st.meca.budget && st.phase === "gestion"; }, etapes: [
       { q: ".mx-gestion summary", t: "💶 Nouveau : les impôts ! Règle-les dans « Gestion de la ville ».", a: "ok" }] },
     { id: "opposant", ecran: "jeu", si: function () { return st.meca.opposant && st.opposant && st.phase === "gestion"; }, etapes: [
@@ -2344,15 +2351,10 @@
       { q: ".m-chantiers", t: "🏗️ Ton chantier avance chaque trimestre et se paie par tranches. Gare aux imprévus !", a: "ok" }] },
     { id: "rare", ecran: "modale", si: function () { return (st.special === "rare" || st.special === "legendaire") && st.phase === "evenement"; }, etapes: [
       { q: "#m-modale .m-choix", t: "✨ Un événement rare ! Aucune réponse n’est toujours la meilleure : à toi de jouer.", a: "choix" }] },
-    { id: "session", ecran: "jeu", si: function () { return !!document.querySelector(".mx-session"); }, etapes: [
-      { q: ".mx-session", t: "🏛️ Tu commences maire du plus petit arrondissement. Toutes les " + mmss(SS() ? SS().MANDAT_MS : 390000) + ", élection : tous les maires sont classés selon leur score. Meilleur que 10 maires devant toi ? Tu gagnes 10 places d’un coup, jusqu’au trône de Maire de Paris. Ton opposant (juste en dessous) veut la tienne.", a: "ok" },
-      { q: ".m-barmois", t: "📂 C’est toi qui appelles le dossier suivant. Un nouveau arrive toutes les " + mmss(dossierMs()) + " (le bouton s’illumine) et tu peux en garder 4 en réserve. Les saisons, elles, passent toutes seules : recettes et dépenses tombent sans que tu aies à cliquer. Le petit emoji montre la saison. Ne traîne pas trop : les autres maires avancent pendant ce temps !", a: "ok" },
-      { q: ".mx-ses-attaque", t: "⚔️ Attaque ton rival ou ton opposant pour faire baisser son sondage avant l’élection. Le bouclier 🛡️ te protège de la prochaine attaque.", a: "ok" },
-      { q: ".mx-ses-btn", t: "🏆 Le classement de ta session : de vrais joueurs et des maires robots. Touche un maire pour comparer vos villes.", a: "ok" }] },
-    { id: "habitants3", ecran: "jeu", si: function () { return st.phase === "gestion"; }, etapes: [
-      { q: ".mx-hab", t: "👥 Les habitants : plus ton arrondissement est peuplé, plus les impôts rapportent. Ils arrivent quand ta popularité monte… s’il y a des logements libres (construis-en pour en accueillir plus).", a: "ok" },
-      { q: ".mx-chom", t: "💼 Une ville cohérente : plus il y a d’habitants, plus il faut de sécurité, de cadre de vie et d’emplois (les commerces en créent). Sinon, ou si ta popularité baisse, les habitants s’en vont.", a: "ok" },
-      { q: ".m-journal", t: "📰 Le Journal de Paris te dit ce que veulent les habitants : lis-le à chaque trimestre !", a: "ok" }] },
+    { id: "habitants3", ecran: "jeu", si: function () { return st.phase === "gestion" && G.guideVu("session") && st.t >= 3; }, etapes: [
+      { q: ".mx-hab", t: "👥 Plus tu as d’habitants, plus les impôts rapportent. Ils arrivent s’il y a des logements libres et que ta ville leur plaît.", a: "ok" },
+      { q: ".mx-chom", t: "💼 Plus d’habitants, c’est aussi plus de sécurité, de cadre de vie et d’emplois à prévoir (les commerces en créent).", a: "ok" },
+      { q: ".m-journal", t: "📰 Le Journal de Paris te dit ce que veulent tes habitants.", a: "ok" }] },
     { id: "casino", ecran: "modale", si: function () { return st.phase === "evenement" && !!document.querySelector("#m-modale .m-mj"); }, etapes: [
       { q: "#m-modale .m-mj", t: "🎰 Chaque réponse se joue au casino (blackjack, roulette ou poker) : gagne pour la prendre. La réponse « ne rien faire » reste libre.", a: "ok" }] },
     { id: "xp", ecran: "jeu", si: function () { return st.phase === "gestion" && st.t >= 2 && !st.nivFixe; }, etapes: [
@@ -2363,6 +2365,7 @@
   var GA = null, BULLE = null;   // séquence en cours : { g, i }
   function guide(ecran) {
     if (ecran !== "creation" && (!st || st.phase === "fin")) return cacherBulle();
+    if (GA && GA.i === 0 && !document.querySelector(GA.g.etapes[0].q)) GA = null;   // pas encore commencée et rien à montrer : on laisse la place à une autre
     if (!GA) {
       var g = GUIDES.filter(function (x) {
         if (x.ecran !== ecran || !x.si()) return false;
@@ -2381,7 +2384,8 @@
   }
   function avancer() {
     GA.i++;
-    if (GA.i >= GA.g.etapes.length) { G.marquerGuide(GA.cle); GA = null; cacherBulle(); return; }
+    if (GA.i >= GA.g.etapes.length) { var fini = GA.g.id; G.marquerGuide(GA.cle); GA = null; cacherBulle(); if (fini === "base") setTimeout(function () { if (!document.getElementById("m-modale")) guide("jeu"); }, 1500); return; }
+    if (GA.g.id === "base" && GA.i === GA.g.etapes.length - 1) { confettis(); if (window.sfx) window.sfx("succes", 0.7); }   // les bases sont acquises : petite fête
     setTimeout(montrerEtape, 60);
   }
   function cacherBulle() {
@@ -2525,7 +2529,7 @@
     var cadre = h("div", "m-pop-in");
     MASQUE = null;
     // Toujours un moyen de sortir : le dossier reste en attente, le bouton « Un dossier t’attend » le rouvre
-    cadre.appendChild(bouton("✕ Fermer", "m-pop-fermer", function () { MASQUE = cleMasque(); casino(false); fermerModale(); }));
+    cadre.appendChild(bouton("✕ Fermer", "m-pop-fermer", function () { MASQUE = cleMasque(); casino(false); fermerModale(); signal("fermer"); }));
     var TITRES_POP = { catastrophe: "Alerte : une catastrophe frappe Paris", opposition: "Ton opposant passe à l’attaque", chance: "Bonne nouvelle pour Paris !",
       rare: "✨ Quelque chose d’inhabituel se produit…", legendaire: "🌟 Un événement légendaire !", historique: "📜 Une décision historique", suite: "🔁 Une vieille décision revient", chantier: "🏗️ Des nouvelles du chantier" };
     if (TITRES_POP[st.special]) cadre.appendChild(h("p", "m-pop-titre", TITRES_POP[st.special]));

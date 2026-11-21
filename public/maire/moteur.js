@@ -1632,6 +1632,7 @@
     if (st0.mj && st0.mj.t === st0.t && st0.mj.ev === st0.evenement) return st0;
     var ev = st0.phase === "evenement" && !st0.evPerso ? base.parId[st0.evenement] : null;
     if (!ev || !ev.choix || ev.choix.length < 2) return st0.mj ? Object.assign(copie(st0), { mj: null }) : st0;
+    if (st0.premierDossier && !(st0.stats && st0.stats.dossiers)) return st0.mj ? Object.assign(copie(st0), { mj: null }) : st0;   // tout nouveau joueur : son 1er dossier se joue sans casino
     var st = copie(st0), libres = choixLibre(ev);
     // Chaque réponse jouée tire son jeu : poker 20 %, blackjack 40 %, roulette 40 %
     st.mj = { t: st.t, ev: st.evenement, best: meilleurChoix(st0, base), jeux: ev.choix.map(function (c, i) {
