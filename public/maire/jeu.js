@@ -513,11 +513,16 @@
       setTimeout(tic, 1000);
     })();
     box.appendChild(h("p", "m-aide", "Les paliers se font dans l’ordre : le suivant s’ouvre quand le précédent est réussi, et chacun repart de zéro. Chaque palier débloque un bâtiment exclusif pour tes parties du mois. Tout repart à zéro au début de chaque mois."));
+    var pb = h("div", "m-pass-prem" + (ps.premium ? " m-actif" : ""));
+    ajout(pb, h("b", null, ps.premium ? "👑 Pass de combat actif" : "👑 Pass de combat"),
+      h("small", null, ps.premium ? "Tu reçois aussi la 2e récompense de chaque palier." : "Une 2e récompense sur chaque palier (XP, bonus de départ, titres). Les paliers déjà réussis sont rattrapés à l’activation."));
+    if (!ps.premium) { var bp = bouton("Bientôt disponible", "btn m-sec", function () {}); bp.disabled = true; pb.appendChild(bp); }
+    box.appendChild(pb);
     var u = h("ol", "m-paliers");
     ps.paliers.forEach(function (x) {
       var li = h("li", x.ok ? "m-ok" : x.encours ? "m-encours" : "m-verrou");
       var droite = x.ok ? h("b", null, "✔") : x.encours ? ajout(h("span", "m-pal-prog"), h("b", null, x.cur + "/" + x.but), ajout(h("i", "m-pal-barre"), (function () { var e = h("i"); e.style.width = Math.round(x.cur / x.but * 100) + "%"; return e; })())) : h("b", null, "🔒");
-      ajout(li, h("span", "m-pn", String(x.n)), ajout(h("span", "m-pal"), h("b", null, x.txt), h("small", null, "🎁 " + x.batTxt)), droite);
+      ajout(li, h("span", "m-pn", String(x.n)), ajout(h("span", "m-pal"), h("b", null, x.txt), h("small", null, "🎁 Gratuit : " + x.batTxt), h("small", "m-prem" + (x.premOk ? " m-ok" : ps.premium ? "" : " m-bloque"), (ps.premium ? "👑 " : "🔒 👑 ") + "Pass : " + x.premTxt + (x.premOk ? " ✔" : ""))), droite);
       u.appendChild(li);
     });
     box.appendChild(u); haut();
@@ -898,6 +903,7 @@
     ceremonie: function () { if (!SES.s || !st || !st.session) return; var p = st.session.place, cl = [];
       for (var q = 0; q < SS().NB; q++) { var f = SS().fiche(SES.s, q); cl.push({ nom: f.nom, ico: f.ico, bot: f.type === "bot", uid: f.type === "bot" ? null : moiSes(), score: 70 - q * 2, avant: q, apres: q === p ? Math.min(SS().NB - 1, q + 3) : q > p && q <= p + 3 ? q - 1 : q }); }
       annonceElection({ avant: p, apres: Math.min(SS().NB - 1, p + 3), score: 44.8, vs: [{ g: 1 }, { g: 1 }, { g: 1 }] }, { election: 3, nom: SES.s.nom, classement: cl }); },
+    passPremium: function () { G.activerPremium(); },
     elimine: function () { if (!st) return; st.fin = { gagne: false, raison: { type: "objectifs", txt: "Fin du mandat : 1 objectif réussi sur 3 (il en fallait 2)." }, t: st.t }; st.phase = "fin"; sauver(); jeu(); },
     election30: function () { if (!SES.id) return false; window.SessionLigne.modifier(SES.id, function (s) { s = JSON.parse(JSON.stringify(s)); s.prochaine = Date.now() + 30000; return s; }); return true; }
   };

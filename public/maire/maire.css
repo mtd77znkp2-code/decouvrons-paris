@@ -1788,3 +1788,10 @@ body.m-acc-on .m-fond{display:none}
 @keyframes mxAlerte{50%{box-shadow:0 0 0 4px rgba(255,138,128,.35)}}
 @media (prefers-reduced-motion:reduce){.mx-faillite.mx-grave{animation:none}}
 @media (min-width:1100px){#m-app.mx-partie>.mx-faillite{grid-area:auto}}
+
+/* Pass de combat (partie payante des paliers du mois) */
+.m-pass-prem{display:flex;flex-direction:column;gap:4px;margin:8px 0;padding:10px 12px;border-radius:12px;background:linear-gradient(135deg,#3a2a00,#6b4c00);color:#ffe7a3;border:1px solid #c9a227}
+.m-pass-prem.m-actif{background:linear-gradient(135deg,#5a4100,#a67c00);color:#fff}
+.m-pass-prem .btn{align-self:flex-start;margin-top:4px}
+.m-paliers .m-prem{display:block;color:#a67c00;font-weight:600}
+.m-paliers .m-prem.m-bloque{opacity:.55;font-weight:400}

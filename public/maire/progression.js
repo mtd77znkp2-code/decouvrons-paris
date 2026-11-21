@@ -501,6 +501,26 @@
     { k: "niveau", but: 40, max: 1, txt: "Atteins le niveau 40 dans une partie", sac: "coupDePouce" },
     { k: "trone", but: 1, max: 1, txt: "Deviens Maire de Paris", bat: "arcLumieres" }
   ];
+  // Pass de combat (partie payante, paiement à brancher plus tard) : une 2e récompense sur chaque palier
+  function recompensePremium(n) {
+    if (n === PALIERS.length) return { titre: "Légende de la saison", xp: 400 };
+    if (n % 10 === 0) return { titre: ["Maire de saison", "Pilier de la saison", "Bâtisseur de la saison", "Stratège de la saison"][n / 10 - 1], xp: 150 };
+    var c = ["coupDePouce", "bainDeFoule", "assurance"][n % 3];
+    return n % 2 ? { xp: 40 + n * 4 } : { sac: c, n: n > 25 ? 2 : 1 };
+  }
+  function donnerPremium(P, n, st, M, j) {
+    var r = recompensePremium(n), mo = P.mois; mo.prem = mo.prem || {};
+    if (mo.prem[n]) return; mo.prem[n] = j;
+    if (r.xp) { if (st && M) { M.gagnerXP(st, "Pass de combat", r.xp); crediter(st, P); } else { P.xp += r.xp; ajouterHebdo(P, j, r.xp); } }
+    if (r.sac) { P.sac = P.sac || {}; P.sac[r.sac] = (P.sac[r.sac] || 0) + (r.n || 1); }
+    if (r.titre) { var t = r.titre === "Légende de la saison" ? "Légende de " + nomSaison(mo.saison) : r.titre; P.titres = P.titres || []; if (P.titres.indexOf(t) < 0) P.titres.push(t); }
+  }
+  // Active le pass du mois en cours et donne d'un coup les récompenses des paliers déjà réussis
+  function activerPremium(j) {
+    j = j != null ? j : jour(); var P = lire(), mo = moisP(P, j);
+    mo.premium = 1; Object.keys(mo.faits).forEach(function (n) { donnerPremium(P, +n, null, null, j); });
+    ecrire(P); return P;
+  }
   function recompensePalier(p) { if (p.bat) { var B = MO.BATIMENTS[p.bat]; return B.ico + " " + B.nom; } return SAC[p.sac].ico + " " + SAC[p.sac].nom + " (bonus de départ)"; }
   function moisP(P, j) {
     var s = saisonDe(j);
@@ -533,7 +553,8 @@
       mo.faits[mo.actif] = j;
       if (p.bat && st && M) M.ajouterPassBat(st, p.bat);
       if (p.sac) { P.sac = P.sac || {}; P.sac[p.sac] = (P.sac[p.sac] || 0) + 1; }
-      if (out) out.pass.push({ n: mo.actif, txt: p.txt + " → " + recompensePalier(p) });
+      if (mo.premium) donnerPremium(P, mo.actif, st, M, j);
+      if (out) out.pass.push({ n: mo.actif, txt: p.txt + " → " + recompensePalier(p) + (mo.premium ? " + 👑 " + texteRecompense(recompensePremium(mo.actif), M, mo.saison) : "") });
       mo.actif++; mo.prog = 0;
     }
   }
@@ -541,9 +562,9 @@
     var P = lire(), mo = moisP(P, j != null ? j : jour()), n = Object.keys(mo.faits).length;
     // Fin du mois (UTC, comme le changement de saison) : le temps qu'il reste avant la remise à zéro
     var d = new Date((j != null ? j : jour()) * 86400000), fin = Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1);
-    return { saison: mo.saison, nom: nomSaison(mo.saison), palier: n, max: PALIERS.length, actif: mo.actif, fin: fin,
+    return { saison: mo.saison, nom: nomSaison(mo.saison), palier: n, max: PALIERS.length, actif: mo.actif, fin: fin, premium: !!mo.premium,
       paliers: PALIERS.map(function (p, i) { var k = i + 1;
-        return { n: k, txt: p.txt, cur: k < mo.actif ? p.but : k === mo.actif ? Math.min(mo.prog, p.but) : 0, but: p.but, ok: !!mo.faits[k], encours: k === mo.actif, verrou: k > mo.actif, bat: p.bat || null, batTxt: recompensePalier(p) }; }) };
+        return { n: k, txt: p.txt, cur: k < mo.actif ? p.but : k === mo.actif ? Math.min(mo.prog, p.but) : 0, but: p.but, ok: !!mo.faits[k], encours: k === mo.actif, verrou: k > mo.actif, bat: p.bat || null, batTxt: recompensePalier(p), premTxt: texteRecompense(recompensePremium(k), MO, mo.saison), premOk: !!(mo.prem && mo.prem[k]) }; }) };
   }
   // Bâtiments exclusifs disponibles dans une nouvelle partie : ceux des paliers du mois + ceux gagnés pour toujours (série de jours)
   function batsExclusifs(j) {
@@ -797,7 +818,7 @@
   }
 
   var API = { jour: jour, niveau: niveau, xpPour: xpPour, lire: lire, ecrire: ecrire, profilVide: profilVide, resume: resume, terminer: terminer, suivrePartie: suivrePartie, queteProgres: queteProgres,
-    maires: maires, JOURS: JOURS, journaliers: journaliers, journaliersPartie: journaliersPartie, pass: pass, PASS: PASS, PASS_PTS: PASS_PTS, PALIERS: PALIERS, paliersMois: paliersMois, batsExclusifs: batsExclusifs, suivreMois: suivreMois, SAC: SAC, utiliserSac: utiliserSac,
+    maires: maires, JOURS: JOURS, journaliers: journaliers, journaliersPartie: journaliersPartie, pass: pass, PASS: PASS, PASS_PTS: PASS_PTS, PALIERS: PALIERS, paliersMois: paliersMois, activerPremium: activerPremium, recompensePremium: recompensePremium, batsExclusifs: batsExclusifs, suivreMois: suivreMois, SAC: SAC, utiliserSac: utiliserSac,
     saisonDe: saisonDe, nomSaison: nomSaison, serie: serie, SERIE: SERIE, texteSerie: texteSerie, recompenseSerie: recompenseSerie,
     ROUE: ROUE, roueDispo: roueDispo, tournerRoue: tournerRoue, semaine: semaine, LIGUES: LIGUES, ligue: ligue, nouvelleLigue: nouvelleLigue, donneesLigue: donneesLigue, noterVote: noterVote,
     nivJoueur: nivJoueur, fixerNiveau: fixerNiveau, synchroniser: synchroniser, reputation: reputation, oublierTutos: oublierTutos, guideVu: guideVu, marquerGuide: marquerGuide, chapitre: chapitre,
